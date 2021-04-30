@@ -817,6 +817,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $killClient: "Destroy the client gateway connection.;$killClient",
  $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
-  $lerefImages: "Return a random images of Leref;$lerefImages"
+  $lerefImages: "Return a random images of Leref;$lerefImages",
+  $ms: "Converts ms or duration as an example of \"1w\" to ms or duration"
 };
 module.exports = Parser;
