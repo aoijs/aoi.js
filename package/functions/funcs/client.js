@@ -48,10 +48,8 @@ module.exports = async (d) => {
       "clienttag",
       "rawavatar",
       "mfaenabled",
-      "dmchannel",
       "ownerid",
       "teamid",
-      "partial",
       "ispublic"
     ].includes(option)
   )
@@ -97,17 +95,11 @@ module.exports = async (d) => {
     case "mfaenabled":
         option = d.client.user.mfaEnabled;
         break;
-    case "dmchannel":
-        option = d.client.user.dmChannel;
-        break;
     case "ownerid":
         option = d.client.ownerID;
         break;
     case "teamid":
         option = bapp.owner;
-        break;
-    case "partial":
-        option = d.client.partial;
         break;
     case "ispublic":
         option = bapp.botPublic;
