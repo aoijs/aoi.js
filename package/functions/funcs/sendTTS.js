@@ -17,16 +17,24 @@ module.exports = async d => {
     ] = inside.splits
 
     
+if(!msg){
 
+d.error(`No Text Was Provided In $sendTTS[${inside.splits.join(";")}]`)
+
+}
     
-
+else{
     
-
+try {
     const chan = await d.message.guild.channels.cache.get(channel)
 
     
     chan.send(msg,{tts:true})
+}
 
+catch(e){}
+
+}
     
 
     return {
@@ -35,4 +43,5 @@ module.exports = async d => {
 
     }
 
-}// it worked i dont know lmao how even this trash code works 
+}
+// it worked i dont know lmao how even this trash code works 
