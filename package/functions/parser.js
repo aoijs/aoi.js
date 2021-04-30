@@ -815,8 +815,9 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   //New Update DBD.JS v3.0.7 <3
   $dbPing: "Returns the Database Ping;$dbPing",
   $killClient: "Destroy the client gateway connection.;$killClient",
- $clientToken: "Return the client token;$clientToken",
+  $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
-  $lerefImages: "Return a random images of Leref;$lerefImages"
+  $lerefImages: "Return a random images of Leref;$lerefImages",
+  $ms:"converts ms to duration or duration like "1d" to ms.It uses a known npm package named ms;$ms[ms/duration]"
 };
 module.exports = Parser;
