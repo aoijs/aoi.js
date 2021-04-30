@@ -7,8 +7,9 @@ module.exports = async d => {
 	const err = d.inside(inside)
 
 	if (err) return d.error(err)
+const [opt,Pos = 0] = inside.splits
 
-    const option = Object.keys(songOptions).find(key => key === inside.inside)
+    const option = Object.keys(songOptions).find(key => key === opt)
 
     if (!option) return d.error(`:x: Invalid option '${inside}' in \`$songInfo${inside}\``)
 
@@ -16,8 +17,9 @@ module.exports = async d => {
 
     if (!server) return d.error(`:x: Nothing is being played`)
     if (!server.songs.length) return d.error(`:x: Nothing is being played!`)
+if(Pos >= server.songs.length) return d.error(`:x: No Track present at that position`)
 
     return {
-        code: code.replaceLast(`$songInfo${inside}`, String(server.songs[0][option](server)).deleteBrackets())
+        code: code.replaceLast(`$songInfo${inside}`, String(server.songs[Pos][option](server)).deleteBrackets())
     }
 }
