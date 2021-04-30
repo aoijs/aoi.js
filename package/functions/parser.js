@@ -374,7 +374,7 @@ const Parser = {
   $deleteEmojis:
     "Delete an emoji or emojis from this server.;$deleteEmojis[emoji1;emoji2;...]",
   $serverEmojis: "Returns the emojis of this guild.",
-  $emojiCount: "Returns the amount of emojis in this server",
+  $emojiCount: "Returns the amount of emojis in this server;$emojiCount[type(normal/animated/all, optional);guildID (optional)]",
   $randomRoleID: "Returns a random role ID from this guild.",
   $findRole:
     "Returns a role ID if the query matches an option.;$findRole[id/name/mention]",
@@ -525,7 +525,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $serverNames: `Returns the name of every guild you bot is in;$serverNames or $serverNames[separator]`,
   $error: "Returns the error the interpreter threw;$error",
   $executionTime: `Returns the time the interpreter took to execute every function in the code (in milliseconds)\nThis function won't work in embeds`,
-  $allEmojiCount: `Returns the total emoji count of all the guilds your bot is in`,
+  $allEmojiCount: "Returns the total emoji count of all the guilds your bot is in;$allEmojiCount or $allEmojiCount[type]",
   $findMembers:
     "Finds multiple member from this guild through given query and optionally makes a list of members found or chooses one of the list, returning the ID;$findMembers[query;limit (optional);{position} - {username} - {id} (optional);getID (optional)]",
   $vanityUses: `The uses the vanity link of this server have`,
@@ -818,6 +818,5 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
  $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages"
- 
 };
 module.exports = Parser;
