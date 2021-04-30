@@ -95,7 +95,7 @@ module.exports = async (d) => {
     case "readyat":
       option = readyat;
       break;
-      case "token":
+    case "token":
       option = d.client.token;
       break;
     default:
