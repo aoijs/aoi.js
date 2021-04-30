@@ -374,7 +374,7 @@ const Parser = {
   $deleteEmojis:
     "Delete an emoji or emojis from this server.;$deleteEmojis[emoji1;emoji2;...]",
   $serverEmojis: "Returns the emojis of this guild.",
-  $emojiCount: "Returns the amount of emojis in this server;$emojiCount[type(mormal/animated/all, optional);guildID (optional)]",
+  $emojiCount: "Returns the amount of emojis in this server;$emojiCount[type(normal/animated/all, optional);guildID (optional)]",
   $randomRoleID: "Returns a random role ID from this guild.",
   $findRole:
     "Returns a role ID if the query matches an option.;$findRole[id/name/mention]",
@@ -814,7 +814,9 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //New Update DBD.JS v3.0.7 <3
   $dbPing: "Returns the Database Ping;$dbPing",
-  $clientToken: "Returns the client / bot token",
-  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world' ;$uri[decode/encode;text]",
+  $killClient: "Destroy the client gateway connection.;$killClient",
+ $clientToken: "Return the client token;$clientToken",
+  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
+  $lerefImages: "Return a random images of Leref;$lerefImages"
 };
 module.exports = Parser;
