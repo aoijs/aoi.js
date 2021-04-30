@@ -1,4 +1,5 @@
 const Parser = {
+  $sendTTS: "send a tts message in the current channel (optional)" ,
   $lerefImages: "Sends Images Of leref OwO",
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
