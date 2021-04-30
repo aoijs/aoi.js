@@ -525,7 +525,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $serverNames: `Returns the name of every guild you bot is in;$serverNames or $serverNames[separator]`,
   $error: "Returns the error the interpreter threw;$error",
   $executionTime: `Returns the time the interpreter took to execute every function in the code (in milliseconds)\nThis function won't work in embeds`,
-  $allEmojiCount: `Returns the total emoji count of all the guilds your bot is in`,
+  $allEmojiCount: `Returns the total emoji count of all the guilds your bot is in;$allEmojiCount[type(animated/normal)]`,
   $findMembers:
     "Finds multiple member from this guild through given query and optionally makes a list of members found or chooses one of the list, returning the ID;$findMembers[query;limit (optional);{position} - {username} - {id} (optional);getID (optional)]",
   $vanityUses: `The uses the vanity link of this server have`,
@@ -813,6 +813,6 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $joinVC: "Make the bot join a voice channel.;$joinVC[channelID]",
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //New Update DBD.JS v3.0.7 <3
-  $dbPing: "Returns the Database Ping;$dbPing"
+  $test: "test function"
 };
 module.exports = Parser;
