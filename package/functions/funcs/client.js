@@ -41,6 +41,7 @@ module.exports = async (d) => {
       "lastmessageid",
       "readyat",
       "readytimestamp",
+      "token",
     ].includes(option)
   )
     return d.error(`:x: Invalid property in \`$client${inside}\`.`);
@@ -93,6 +94,9 @@ module.exports = async (d) => {
       break;
     case "readyat":
       option = readyat;
+      break;
+      case "token":
+      option = d.client.token;
       break;
     default:
       undefined;
