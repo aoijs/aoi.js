@@ -12,6 +12,8 @@ module.exports = async (d) => {
 
   let option = inside.inside;
 
+  let bapp = await d.client.fetchApplication()
+
   /* Returns the date and time the bot came online */
   let readyat = moment(d.client.readyAt).format("LLLL");
 
@@ -41,6 +43,16 @@ module.exports = async (d) => {
       "lastmessageid",
       "readyat",
       "readytimestamp",
+      "token",
+      "verified",
+      "clienttag",
+      "rawavatar",
+      "mfaenabled",
+      "dmchannel",
+      "ownerid",
+      "teamid",
+      "partial",
+      "ispublic"
     ].includes(option)
   )
     return d.error(`:x: Invalid property in \`$client${inside}\`.`);
@@ -73,6 +85,36 @@ module.exports = async (d) => {
     case "presence":
       option = d.client.presence.status;
       break;
+    case "token":
+        option = d.client.token;
+        break;
+    case "verified":
+        option = d.client.user.verified;
+        break;
+    case "clienttag":
+        option = d.client.user.username + '#' + d.client.user.discriminator;
+        break;
+    case "rawavatar":
+        option = d.client.user.avatar;
+        break;
+    case "mfaenabled":
+        option = d.client.user.mfaEnabled;
+        break;
+    case "dmchannel":
+        option = d.client.user.dmChannel;
+        break;
+    case "ownerid":
+        option = d.client.ownerID;
+        break;
+    case "teamid":
+        option = bapp.owner;
+        break;
+    case "partial":
+        option = d.client.partial;
+        break;
+    case "ispublic":
+        option = bapp.botPublic;
+        break;
     case "activity":
       option = d.client.presence.activities;
       if (d.client.presence.activities[0]) {
