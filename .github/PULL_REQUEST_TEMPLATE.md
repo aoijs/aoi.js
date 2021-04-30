@@ -1,9 +1,9 @@
 ## Pull Request Type
-  [ ] Bug Fix
-  [ ] Functions: <Function Name>
-  [ ] Callbakcs: <Callback Name>
-  [ ] Handlers: <Handler Type>
-  [ ] Others: \_____
+- [ ] Bug Fix
+- [ ] Functions: <Function Name>
+- [ ] Callbakcs: <Callback Name>
+- [ ] Handlers: <Handler Type>
+- [ ] Others: \_____
 
 Dependencies (Third Party Modules) needed: <Name | Github Link> (Maximum: 20MB- size)
 
