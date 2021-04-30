@@ -1,4 +1,5 @@
 const Parser = {
+  $lerefImages: "Sends Images Of leref OwO",
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
