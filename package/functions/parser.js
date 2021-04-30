@@ -815,6 +815,6 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   //New Update DBD.JS v3.0.7 <3
   $dbPing: "Returns the Database Ping;$dbPing",
   $clientToken: "Returns the client / bot token",
-  $killClient: "Stops the sercer process completely.;$killClient"
+  $killClient: "Stops the sercer process completely.;$killClient",
 };
 module.exports = Parser;
