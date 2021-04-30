@@ -1,9 +1,4 @@
 module.exports = async (d) => {
-  
-  const code = d.command.code;
-
-  const r = code.split(`$allEmojisCount`).length - 1;
-
   const inside = d.unpack();
 
   const fields = inside.splits;
@@ -15,7 +10,7 @@ module.exports = async (d) => {
   if (type === "animated") {
     count = d.client.emojis.cache.filter(a => a.animated === true).size
   } else if(type === "normal") {
-    count = d.client.emojis.cache.size.filter(a => a.animated === false).size
+    count = d.client.emojis.cache.filter(a => a.animated === false).size
   } else if (type === "all") { 
     count = d.client.emojis.cache.size
   }
