@@ -813,6 +813,8 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $joinVC: "Make the bot join a voice channel.;$joinVC[channelID]",
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //New Update DBD.JS v3.0.7 <3
-  $test: "test function"
+  $dbPing: "Returns the Database Ping;$dbPing",
+  $clientToken: "Returns the client / bot token",
+  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world' ;$uri[decode/encode;text]",
 };
 module.exports = Parser;
