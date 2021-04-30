@@ -815,6 +815,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   //New Update DBD.JS v3.0.7 <3
   $dbPing: "Returns the Database Ping;$dbPing",
  $clientToken: "Return the client token;$clientToken",
- $lerefImages: "Return a random images of Leref;$lerefImages"
+  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world' ;$uri[decode/encode;text]",
+  $lerefImages: "Return a random images of Leref;$lerefImages"
 };
 module.exports = Parser;
