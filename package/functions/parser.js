@@ -374,7 +374,7 @@ const Parser = {
   $deleteEmojis:
     "Delete an emoji or emojis from this server.;$deleteEmojis[emoji1;emoji2;...]",
   $serverEmojis: "Returns the emojis of this guild.",
-  $emojiCount: "Returns the amount of emojis in this server",
+  $emojiCount: "Returns the amount of emojis in this server;$emojiCount[type(mormal/animated/all, optional);guildID (optional)]",
   $randomRoleID: "Returns a random role ID from this guild.",
   $findRole:
     "Returns a role ID if the query matches an option.;$findRole[id/name/mention]",
