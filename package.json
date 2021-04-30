@@ -2,7 +2,7 @@
   "installed_version": "1.0.0-pre",
   "name": "aoi.js",
   "version": "1.0.0",
-  "description": "Aoi.js - Library that simplifies coding for your Discord Bot",
+  "description": "Aoi.js - Library that simplifies coding for developing your Discord Bot",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
   "scripts": {
@@ -43,7 +43,13 @@
   "files": [
     "package"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "keywords": [
     "aoi.js",
     "api",

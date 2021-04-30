@@ -1,4 +1,4 @@
-declare module "dbd.js" {
+declare module "aoi.js" {
   import { Client } from "discord.js";
   import { EventEmitter } from "events";
 
