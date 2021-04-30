@@ -12,17 +12,17 @@ module.exports = async d => {
 
       
 
-         msg
+         msg,channel= d.message.channel
 
     ] = inside.splits
 
     
 
-    msg = msg
+    
 
     
 
-    const channel = await d.message.channel
+    const channel = await d.message.guild.channels.cache.get(channel)
 
     
     channel.send(msg,{tts:true})
