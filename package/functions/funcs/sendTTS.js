@@ -12,7 +12,7 @@ module.exports = async d => {
 
       
 
-         msg,channel= d.message.channel
+         msg,channel= d.message.channel.id
 
     ] = inside.splits
 
