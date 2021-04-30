@@ -85,9 +85,6 @@ module.exports = async (d) => {
     case "presence":
       option = d.client.presence.status;
       break;
-    case "token":
-        option = d.client.token;
-        break;
     case "verified":
         option = d.client.user.verified;
         break;
@@ -135,6 +132,9 @@ module.exports = async (d) => {
       break;
     case "readyat":
       option = readyat;
+      break;
+    case "token":
+      option = d.client.token;
       break;
     default:
       undefined;
