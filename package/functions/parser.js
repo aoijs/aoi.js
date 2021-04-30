@@ -818,6 +818,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
-  $ms:"converts ms to duration or duration like "1d" to ms.It uses a known npm package named ms;$ms[ms/duration]"
+  $ms:"converts ms to duration or duration like "1d" to ms.It uses a known npm package named ms;$ms[ms/duration]",
+  $randomEmoji:"Returns a random emoji if a guild id is provided it will send a random emoji from the guild; $randomEmoji[guildID(optional)]"
 };
 module.exports = Parser;
