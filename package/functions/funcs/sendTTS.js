@@ -22,10 +22,10 @@ module.exports = async d => {
 
     
 
-    const channel = await d.message.guild.channels.cache.get(channel)
+    const chan = await d.message.guild.channels.cache.get(channel)
 
     
-    channel.send(msg,{tts:true})
+    chan.send(msg,{tts:true})
 
     
 
