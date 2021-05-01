@@ -7,14 +7,14 @@ const multi = async d => {
 
   if (err) return d.error(err);
 
-    const fields = inside.split(";");
+    const fields = inside.splits
 
     if (fields.some(n => isNaN(Number(n)))) return d.error(`:x: Invalid number in \`$multi[${inside}]\``);
 
     const n = fields.reduce((x, y) => Number(x) * Number(y))  ;
 
     return {
-        code: code.replaceLast(`$multi[${inside}]`, n)
+        code: code.replaceLast(`$multi${inside}`, n)
     }
 }
 
