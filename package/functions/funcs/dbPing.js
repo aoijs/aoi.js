@@ -1,9 +1,10 @@
-module.exports = (d) => {
+module.exports = async (d) => {
    const start = Date.now() 
 
-d.client.db.set("main", Date.now())
-  return {
-    code: d.command.code.replaceLast("$dbPing", 
-    `${Date.now() - start}`),
-  };
+   await d.client.db.all("main")
+   
+   return {
+      code: d.command.code.replaceLast("$dbPing", 
+      `${Date.now() - start}`),
+   };
 };
