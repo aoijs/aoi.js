@@ -50,7 +50,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/aoijs/aoi.js.git"
   },
