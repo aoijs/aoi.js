@@ -171,6 +171,17 @@ const interpreter = async (
 
   let channel = message.channel;
 
+  let author = message.author
+
+let guild = message.guild 
+
+let mentions = message.mentions 
+
+let member = message.member 
+
+let msg = message 
+
+let application = await client.fetchApplication() 
   const restFunctions = Object.keys(functions).filter((func) =>
     code.toLowerCase().includes(func.toLowerCase())
   );
@@ -233,6 +244,12 @@ const interpreter = async (
           reaction: message.reaction,
           message: message,
           randoms: randoms,
+          guild : guild ,
+          author : author ,
+          member : member ,
+          mentions : mentions ,
+          msg : msg ,
+          application : application,
           disabledMentions: disabledMentions,
           error: (err) => {
             if (!message || !message.channel) {
