@@ -816,5 +816,6 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $dbPing: "Returns the Database Ping;$dbPing",
   $clientToken: "Returns the client / bot token",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world' ;$uri[decode/encode;text]",
+  $maximumMembers: "Return the maximum members can join the server;$maximumMembers or $maximumMembers[guildID]"
 };
 module.exports = Parser;
