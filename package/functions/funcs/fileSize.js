@@ -1,8 +1,8 @@
+const fs = require('fs')
+
 module.exports = async (d) => {
 
  //ayaka was here
-
- const fs = require('fs')
 
   const code = d.command.code
 
@@ -18,11 +18,11 @@ let options = ["b","kb","mb","gb"]
 
  
 
- if(size=== undefined) return d.error(`No option given in $filesize[${inside.splits.join(" ")}]`)
+ if(size=== undefined) return d.error(`No option given in $filesize${inside}`)
 let result;
 try{
 
- const stats = fs.statSync(file)
+ const stats = await fs.promises.stat(file)
 
    switch (size.toLowerCase()){
 
@@ -52,7 +52,7 @@ try{
 
            default :
 
-          result = d.error(`❌ invalid size in $filesize[${inside}]`)
+          result = d.error(`❌ invalid size in $filesize${inside}`)
 
            ;
 
