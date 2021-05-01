@@ -818,10 +818,13 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //Aoi.JS <3
   $dbPing: "Returns the Database Ping;$dbPing",
+  $defaultMessageNotifications: "Return the guild default message notification level (All or Mentions).;$defaultMessageNotifications or $defaultMessageNotifications[guildID]",
+  $maximumMembers: "Return the maximum members can join the server;$maximumMembers or $maximumMembers[guildID]",
   $killClient: "Destroy the client gateway connection.;$killClient",
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
+  $variablesCount: "Returns amount of bot variables the bot has.;$variablesCount",
   $isEveryoneMentioned: "Returns true/false if @everyone was mentioned in the command.;$isEveryoneMentioned",
   $mentionedRolesCount: "Returns amount of mentioned roles in the command's message.;$mentionedRolesCount",
   $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
