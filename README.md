@@ -113,3 +113,6 @@ Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
 - [Website](https://dbd.js.org)
 - [Discord Server](https://dbd.js.org/invite)
 - [Documentation](https://dbd.leref.ga)
+
+## Contributing
+Please read [Contributing](https://www.github.com/aoijs/aoi.js/.github%2FCONTRIBUTING.md)

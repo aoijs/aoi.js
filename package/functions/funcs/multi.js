@@ -1,18 +1,20 @@
 const multi = async d => {
 
-    const code = d.command.code
+    const code = d.command.code;
 
-    const inside = d.unpack()
-	const err = d.
+    const inside = d.unpack();
+	const err = d.inside(inside);
 
-    const fields = inside.split(";")
+  if (err) return d.error(err);
 
-    if (fields.some(n => isNaN(Number(n)))) return d.error(`:x: Invalid number in \`$multi[${inside}]\``)
+    const fields = inside.splits
 
-    const n = fields.reduce((x, y) => Number(x) * Number(y))  
+    if (fields.some(n => isNaN(Number(n)))) return d.error(`:x: Invalid number in \`$multi[${inside}]\``);
+
+    const n = fields.reduce((x, y) => Number(x) * Number(y))  ;
 
     return {
-        code: code.replaceLast(`$multi[${inside}]`, n)
+        code: code.replaceLast(`$multi${inside}`, n)
     }
 }
 

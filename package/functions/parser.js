@@ -1,4 +1,8 @@
 const Parser = {
+  $fileSize : "Returns the size Of file in The project In the Provided Unit",
+  $getAttachments: "Gets attachment info of the provided Message",
+  $sendTTS: "send a tts message in the current channel (optional)" ,
+  $lerefImages: "Sends Images Of leref OwO",
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -306,7 +310,7 @@ const Parser = {
   $rolePerms:
     "Returns the role key permissions.;$rolePerms[roleID;separator (optional)]",
   $songInfo:
-    "Displays information about the song that is being played.;$songInfo[property]",
+    "Displays information about the song that is being played.;$songInfo[property;position]",
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
@@ -374,7 +378,7 @@ const Parser = {
   $deleteEmojis:
     "Delete an emoji or emojis from this server.;$deleteEmojis[emoji1;emoji2;...]",
   $serverEmojis: "Returns the emojis of this guild.",
-  $emojiCount: "Returns the amount of emojis in this server",
+  $emojiCount: "Returns the amount of emojis in this server;$emojiCount[type(normal/animated/all, optional);guildID (optional)]",
   $randomRoleID: "Returns a random role ID from this guild.",
   $findRole:
     "Returns a role ID if the query matches an option.;$findRole[id/name/mention]",
@@ -525,7 +529,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $serverNames: `Returns the name of every guild you bot is in;$serverNames or $serverNames[separator]`,
   $error: "Returns the error the interpreter threw;$error",
   $executionTime: `Returns the time the interpreter took to execute every function in the code (in milliseconds)\nThis function won't work in embeds`,
-  $allEmojiCount: `Returns the total emoji count of all the guilds your bot is in`,
+  $allEmojiCount: "Returns the total emoji count of all the guilds your bot is in;$allEmojiCount or $allEmojiCount[type]",
   $findMembers:
     "Finds multiple member from this guild through given query and optionally makes a list of members found or chooses one of the list, returning the ID;$findMembers[query;limit (optional);{position} - {username} - {id} (optional);getID (optional)]",
   $vanityUses: `The uses the vanity link of this server have`,
@@ -812,10 +816,20 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $parseTime: "Parse human readable time into milliseconds;$parseTime[time]",
   $joinVC: "Make the bot join a voice channel.;$joinVC[channelID]",
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
-  //New Update DBD.JS v3.0.7 <3
+  //Aoi.JS <3
   $dbPing: "Returns the Database Ping;$dbPing",
-  $clientToken: "Returns the client / bot token",
-  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world' ;$uri[decode/encode;text]",
-  $defaultMessageNotifications: "Return the guild default message notification level (All or Mentions).;$defaultMessageNotifications or $defaultMessageNotifications[guildID]"
+  $defaultMessageNotifications: "Return the guild default message notification level (All or Mentions).;$defaultMessageNotifications or $defaultMessageNotifications[guildID]",
+  $maximumMembers: "Return the maximum members can join the server;$maximumMembers or $maximumMembers[guildID]",
+  $killClient: "Destroy the client gateway connection.;$killClient",
+  $clientToken: "Return the client token;$clientToken",
+  $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
+  $lerefImages: "Return a random images of Leref;$lerefImages",
+  $variablesCount: "Returns amount of bot variables the bot has.;$variablesCount",
+  $isEveryoneMentioned: "Returns true/false if @everyone was mentioned in the command.;$isEveryoneMentioned",
+  $mentionedRolesCount: "Returns amount of mentioned roles in the command's message.;$mentionedRolesCount",
+  $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
+  $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
+  $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
+  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]"
 };
 module.exports = Parser;
