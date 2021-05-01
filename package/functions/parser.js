@@ -822,6 +822,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
+  $variablesCount: "Returns amount of bot variables the bot has.;$variablesCount",
   $isEveryoneMentioned: "Returns true/false if @everyone was mentioned in the command.;$isEveryoneMentioned",
   $mentionedRolesCount: "Returns amount of mentioned roles in the command's message.;$mentionedRolesCount",
   $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
