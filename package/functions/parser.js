@@ -708,7 +708,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "Returns the channel permission overwrites;$channelOverwrites or $channelOverwrites[channelID;{mention} ({type}):\\nAllow: {allowed}\\nDeny: {denied};separator]",
   $disableEveryoneMentions: "Disables all mentions with @everyone Role.",
   $abbreviate: "Abbreviate the provided numbers.;$abbreviate[number]",
-  "channel[":
+  '$channel[':
     "A compact function with 18 different functionalities!;$channel[channelID;option]",
   $emoji:
     "A compact function with 10 different functionalities!;$emoji[emojiID;option]",
@@ -720,7 +720,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "A compact funcion with 16 different functionalities;$role[roleID;option]",
   $user:
     "A compact funcion with 12 different functionalities;$user[userID;option]",
-  $client: `A compact funcion with 15 different functionalities;$client[option]`,
+  '$client[': `A compact funcion with 15 different functionalities;$client[option]`,
   $ordinal: "Returns the given number as an ordinal number.",
   $isEmoji:
     "Returns true if the content is a default emoji. Returns false otherwise.",

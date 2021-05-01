@@ -4,9 +4,7 @@ const moment = require("moment");
 module.exports = async (d) => {
   let code = d.command.code;
 
-  let r = code.split("$channel").length - 1;
-
-  let inside = code.split("$channel")[r].after();
+  const inside = d.unpack();
 
   const err = d.inside(inside);
 
