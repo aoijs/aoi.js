@@ -27,6 +27,7 @@ module.exports = async (d) => {
     "createdtimestamp",
     "description",
     "rpcorigins",
+    "token",
     ].includes(option)
   )
   return d.error(`:x: Invalid property given inside \`$clientApplication${inside}\`.`);
@@ -61,6 +62,12 @@ module.exports = async (d) => {
         break;
     case "owner":
         option = clientapp.owner;
+        break;
+    case "rpcorigins":
+        option = clientapp.rpcOrigins.length != 0 ? clientapp.rpcOrigins :  null;
+        break;
+    case "token":
+        option = d.client.token;
         break;
     default:
       undefined;
