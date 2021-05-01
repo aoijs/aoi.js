@@ -830,6 +830,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
   $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
-  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]"
+  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
+  $getAuditLogs: "Get audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]"
 };
 module.exports = Parser;
