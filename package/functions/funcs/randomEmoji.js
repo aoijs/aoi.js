@@ -3,7 +3,7 @@ module.exports = d => {
     
     const inside = d.unpack();
     
-    var guildId = inside.splits;
+    var guildId = inside.inside;
 
     const guild = d.client.guilds.cache.get(guildId) || d.client.guilds.cache.get(d.message.guild.id);
 
