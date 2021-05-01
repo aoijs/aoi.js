@@ -181,7 +181,6 @@ let member = message.member
 
 let msg = message 
 
-let application = await client.fetchApplication() 
   const restFunctions = Object.keys(functions).filter((func) =>
     code.toLowerCase().includes(func.toLowerCase())
   );
@@ -249,7 +248,6 @@ let application = await client.fetchApplication()
           member : member ,
           mentions : mentions ,
           msg : msg ,
-          application : application,
           disabledMentions: disabledMentions,
           error: (err) => {
             if (!message || !message.channel) {
