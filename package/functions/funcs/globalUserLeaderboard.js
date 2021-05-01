@@ -29,7 +29,7 @@ module.exports = async d => {
         if (user) {
             y++
 
-            let text = custom.replace(`{top}`, y).replace("{id}", user.id).replace(`{username}`, user.username.removeBrackets()).replace(`{value}`, Number(data.data.value))
+            let text = custom.replace(`{top}`, y).replace("{id}", user.id).replace("{tag}", user.tag).replace(`{username}`, user.username.removeBrackets()).replace(`{value}`, Number(data.data.value))
             
             if (text.includes("{execute:")) {
                 let ins = text.split("{execute:")[1].split("}")[0] 
