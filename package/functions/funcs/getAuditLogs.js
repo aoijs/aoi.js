@@ -21,7 +21,7 @@ module.exports = async d => {
 
         if (!audit) return d.error(`:x: Failed fetching audit logs!`)
         
-        const text = audit.entries.map(logs => format.replace(`{executor.username}`, logs.executor.username).replace(`{executor.mention}`, logs.executor).replace(`{executor.id}`, logs.executor.id).replace(`{executor.tag}`, logs.executor.id).replace("{target.id}", logs.id).replace("{action}", logs.action)).join('\n')
+        const text = audit.entries.map(logs => format.replace(`{executor.username}`, logs.executor.username).replace(`{executor.mention}`, logs.executor).replace(`{executor.id}`, logs.executor.id).replace(`{executor.tag}`, logs.executor.tag).replace("{target.id}", logs.id).replace("{action}", logs.action)).join('\n')
 
         return {
             code: code.replaceLast(`$getAuditLogs${inside}`, text)
