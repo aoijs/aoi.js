@@ -3,7 +3,7 @@ module.exports = async (d) => {
 
   const inside = d.unpack();
 
-  if (inside.inside) {
+  if (!d.inside(inside)) {
     const guildID = inside.inside;
 
     const guild = d.client.guilds.cache.get(guildID);
