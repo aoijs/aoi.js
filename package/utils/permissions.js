@@ -24,4 +24,10 @@ module.exports = {
     deafenmembers: "DEAFEN_MEMBERS", 
     attachfiles: "ATTACH_FILES", 
     connect: "CONNECT"
+    stream: "STREAM",
+    usevad: "USE_VAD",
+    externalemojis: "USE_EXTERNAL_EMOJIS",
+    sendtts: "SEND_TTS_MESSAGES",
+    changenickname: "CHANGE_NICKNAME",
+    priorityspeaker: "PRIORITY_SPEAKER"
 }
