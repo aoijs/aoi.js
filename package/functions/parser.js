@@ -812,10 +812,10 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $parseTime: "Parse human readable time into milliseconds;$parseTime[time]",
   $joinVC: "Make the bot join a voice channel.;$joinVC[channelID]",
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
-  //New Update DBD.JS v3.0.7 <3
+  //Aoi.JS <3
   $dbPing: "Returns the Database Ping;$dbPing",
   $killClient: "Destroy the client gateway connection.;$killClient",
- $clientToken: "Return the client token;$clientToken",
+  $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
