@@ -115,4 +115,4 @@ Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
 - [Documentation](https://dbd.leref.ga)
 
 ## Contributing
-Please read [Contributing](https://www.github.com/aoijs/aoi.js/.github%2FCONTRIBUTING.md)
+Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)
