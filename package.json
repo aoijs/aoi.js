@@ -1,7 +1,7 @@
 {
-  "installed_version": "1.0.0-pre",
+  "installed_version": "1.0.1-pre",
   "name": "aoi.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Aoi.js - Library that simplifies coding for developing your Discord Bot",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
