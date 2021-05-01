@@ -818,6 +818,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //Aoi.JS <3
   $dbPing: "Returns the Database Ping;$dbPing",
+  $maximumMembers: "Return the maximum members can join the server;$maximumMembers or $maximumMembers[guildID]",
   $killClient: "Destroy the client gateway connection.;$killClient",
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
