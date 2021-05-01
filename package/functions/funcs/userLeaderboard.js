@@ -29,7 +29,7 @@ module.exports = async d => {
                 if (member) {
                     y++
                     
-                    let text = custom.replace(`{top}`, y).replace("{id}", member.user.id).replace(`{username}`, member.user.username.removeBrackets()).replace(`{value}`, Number(data.data.value))
+                    let text = custom.replace(`{top}`, y).replace("{id}", member.user.id).replace("{tag}", member.user.tag).replace(`{username}`, member.user.username.removeBrackets()).replace(`{value}`, Number(data.data.value))
 
                     if (custom.includes("{execute:")) {
                         const awaited = d.client.awaited_commands.find(c => c.name === custom.split("{execute:")[1].split("}")[0])
