@@ -4,7 +4,7 @@ module.exports = async (d) => {
   return {
     code: d.command.code.replaceLast(
       `$mentionedUsersCount`,
-      message ? message.mentions.users.size : undefined
+      message ? message.mentions.users.size : 0
     ),
   };
 };
