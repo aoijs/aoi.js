@@ -1,4 +1,6 @@
 module.exports = async d => {
+    const code = d.command.code
+
     const inside = d.unpack()
 
         const options = [
@@ -13,7 +15,7 @@ module.exports = async d => {
 
         if (!guild) return d.error(`:x: Invalid guild ID in \`$getAuditLogs${inside}\``)
 
-        const user = userID ? d.client.users.cache.get(userID) : null
+        const user = userID ? (await d.client.users.fetch(userID).catch(d.noop) || null) : null
 
         const audit = await guild.fetchAuditLogs({limit: limit, user: user, type: action})
 
