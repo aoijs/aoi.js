@@ -18,6 +18,6 @@ module.exports = d => {
     }
 
     return { 
-        code: code.replaceLast(`$randomEmoji${inside ? inside : ""}`, `${emoji.toString()}`)
+        code: code.replaceLast(`$randomEmoji${inside ? inside : ""}`, emoji.toString())
     }
 }
