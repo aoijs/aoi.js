@@ -310,7 +310,7 @@ const Parser = {
   $rolePerms:
     "Returns the role key permissions.;$rolePerms[roleID;separator (optional)]",
   $songInfo:
-    "Displays information about the song that is being played.;$songInfo[property]",
+    "Displays information about the song that is being played.;$songInfo[property;position]",
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
