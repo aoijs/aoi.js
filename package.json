@@ -21,10 +21,10 @@
     "soundcloud-downloader": "^0.2.4",
     "spotify-url-info": "^2.2.0",
     "yt-search": "^2.7.6",
-    "ytdl-core": "^4.5.0"
+    "ytdl-core": "^4.5.0",
+    "axios": "^0.21.1"
   },
   "devDependencies": {
-    "axios": "^0.21.1",
     "dbd.db": "^1.4.5",
     "dblapi.js": "^2.4.1",
     "discord-paginator.js": "^1.0.2",
