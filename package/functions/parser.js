@@ -28,7 +28,7 @@ const Parser = {
   $memberExists:
     "Checks if given user ID is in the server;$memberExists[userID;guildID (optional)]",
   $parseDate: "Parses given ms to date or time;$parseDate[ms;date/time]",
-  $customEmoji: "Returns a custom emoji;$customEmoji[name]",
+  $customEmoji: "Returns a custom emoji;$customEmoji[name;guildID(optional)]",
   $createChannel:
     "Creates a channel with given type and name. If 3rd field is set to 'yes', the function will return the newly created channel ID. If categoryID field is present, the channel will be created under the category with given ID;$createChannel[name;type;return ID (yes/no);categoryID (optional)]",
   $deleteChannels:

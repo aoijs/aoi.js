@@ -1,18 +1,33 @@
 module.exports = async (d) => {
   const code = d.command.code;
 
-  const r = code.split("$customEmoji").length - 1;
+  const inside = d.unpack();
 
-  const inside = code.split("$customEmoji")[r].after();
+  const options = [
+    emoji,
+    guildID
+  ] = inside.splits
+
+  var find;
+
+  if (guildID) {
+    let guild = d.client.guilds.cache.get(guildID)
+
+    if (!guild) return d.error(`:x: Invalid guild ID in \`$customEmoji${inside}\``)
+
+    find = guild.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
+
+    if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
+  } else {
+    find = d.client.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
+
+    if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
+  }
 
   return {
     code: code.replaceLast(
       `$customEmoji${inside}`,
-      `${
-        d.client.emojis.cache.find(
-          (e) => e.name.toLowerCase() === inside.inside.toLowerCase()
-        ) || ""
-      }`
+      find.toString() || ""
     ),
   };
 };
