@@ -23,7 +23,7 @@ module.exports = {
     speak: "SPEAK", 
     deafenmembers: "DEAFEN_MEMBERS", 
     attachfiles: "ATTACH_FILES", 
-    connect: "CONNECT"
+    connect: "CONNECT",
     stream: "STREAM",
     usevad: "USE_VAD",
     externalemojis: "USE_EXTERNAL_EMOJIS",
