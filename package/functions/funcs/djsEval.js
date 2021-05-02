@@ -9,6 +9,14 @@ module.exports = async (d) => {
     array,
     randoms,
     client,
+guild,
+author,
+msg,
+member,
+mentions,
+
+reaction,
+
   } = d;
 
   const code = d.command.code;
