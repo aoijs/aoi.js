@@ -810,7 +810,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $isValidImageLink:
     "Return true if the provided link is an image otherwise false;$isValidImageLink[link]",
   $complexCooldown:
-    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldwon[type;time;error]",
+    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldown[type;time;error]",
   $resolveColor:
     "Convert's RGB Color/ Basic Color's into Hex or Color Number.;$resolveColor[red;green;blue;toHex (yes or no) (optional) (default to yes);type (rgb / number) (default to rgb)]",
   $parseTime: "Parse human readable time into milliseconds;$parseTime[time]",
