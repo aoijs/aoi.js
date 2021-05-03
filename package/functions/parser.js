@@ -498,11 +498,11 @@ const Parser = {
     "Play SoundCloud Track URL;$playSoundCloud[url;soundcloud client id (optional);leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
   //1.3.0
   $getSlashCommandOptions: `Get the options of a slash command using its command name;$getSlashCommandOptions[name] or $getSlashCommandOptions[name;guildID]`,
-  $getSlashCommandID: `Get the ID of a slash command by using its name;$getSlashCommandID[name] or $getSlashCommandID[name;guildID]`,
+  $getSlashCommandID: `Get the ID of a slash command by using its name;$getSlashCommandID[name] or $getSlashCommandID[name;guildID/global]`,
   $reply: `Replies to given message ID;$reply[messageID;message;mention (yes/no)]`,
-  $modifySlashCommand: `Modify a slash command by using the ID of the guild it belongs to and the ID of the command;$modifySlashCommand[guildID;commandID;name;description;options (optional)]`,
-  $deleteSlashCommand: `Deletes a slash command from given guild ID, by either using slash command name or ID;$deleteSlashCommand[guildID;name/id]`,
-  $createSlashCommand: `Creates a slash command for given guild ID, said guild MUST have invited the bot with bot.applications scope authorized, everything after description field is optional;$createSlashCommand[guildID;name;description;options;options;...]||
+  $modifySlashCommand: `Modify a slash command by using the ID of the guild it belongs to and the ID of the command;$modifySlashCommand[guildID/global;commandID;name;description;options (optional)]`,
+  $deleteSlashCommand: `Deletes a slash command from given guild ID, by either using slash command name or ID;$deleteSlashCommand[guildID/global;name/id]`,
+  $createSlashCommand: `Creates a slash command for given guild ID, said guild MUST have invited the bot with bot.applications scope authorized, everything after description field is optional;$createSlashCommand[guildID/global;name;description;options;options;...]||
 //Create a slash command with one option, that is required
 $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I have to repeat:true:3] Successfully created a slash command! 
 
@@ -520,7 +520,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $reactionCount: `Returns the amount of people that have given this reaction to this message;$reactionCount[channelID;messageID;emoji]`,
   $botPing: "Returns the Client Latency ms",
   $interactionReply:
-    "replies to an interaction (slash command);$interactionReply[message;embeds...]",
+    "replies to an interaction (slash command);$interactionReply[message;embeds...;type (default is 0 , 64 for ephemeral)]",
   $clearSongQueue:
     "Clear all songs in queue besides 1st song in queue;$clearSongQueue",
   $messageID: `Returns the user's message ID `,
@@ -810,7 +810,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $isValidImageLink:
     "Return true if the provided link is an image otherwise false;$isValidImageLink[link]",
   $complexCooldown:
-    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldwon[type;time;error]",
+    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldown[type;time;error]",
   $resolveColor:
     "Convert's RGB Color/ Basic Color's into Hex or Color Number.;$resolveColor[red;green;blue;toHex (yes or no) (optional) (default to yes);type (rgb / number) (default to rgb)]",
   $parseTime: "Parse human readable time into milliseconds;$parseTime[time]",
@@ -831,12 +831,12 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
   $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
-  $getAuditLogs: "Get audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
-  $nodeVersion: "Get Node.js version;$nodeVersion",
-  $pruneMembers: "Prune an amount of members for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
-  $pruneStatus: "Get an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
+  $getAuditLogs: "Returns audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
+  $nodeVersion: "Return Node.js version;$nodeVersion",
+  $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
+  $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
+  $clientApplication: "Returns information from client application;$clientApplication[properties]",
   $setAFKChannel: "Set the AFK channel for a guild;$setAFKChannel[channelID;guildID(optional)]",
   $setAFKTimeout: "Set the AFK timeout for a guild;$setAFKTimeout[time in second;guildID(optional)]",
-  $charCase: "Check the case for the text;$charCase[text]"
 };
 module.exports = Parser;
