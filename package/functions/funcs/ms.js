@@ -7,7 +7,7 @@ module.exports = async (d) => {
   const inside = d.unpack();
   const err = d.inside(inside);
   if (err) return d.error(err);
-  const time = -1;
+  let time = -1;
   try{
   time = ms(inside.inside);
   }
