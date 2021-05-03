@@ -833,7 +833,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
   $getAuditLogs: "Get audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
   $nodeVersion: "Get Node.js version;$nodeVersion",
-  $pruneMembers: "Prune members;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
+  $pruneMembers: "Prune a member for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
   $pruneStatus: "Get an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
 };
 module.exports = Parser;
