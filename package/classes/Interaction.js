@@ -1,4 +1,3 @@
-//class that djs doesn't have so we create it ourselves 
 const Discord = require("discord.js") 
 const axios = require("axios") 
 
@@ -33,16 +32,22 @@ class Interaction {
         this.options = data.data.options
     }
     
-    reply(content, embed) {
+    reply(content,embed,type) {
         try {
-        axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
+       axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
+     
             type: 4,
             data: {
-                content: typeof content === "string" ? content : "", 
-                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [] 
+                content: typeof content == "string" ? content : "", 
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                flags: type
             }
+                
         }) 
-       .then(res => "successful").catch(e => console.log(e.message))
+            
+            
+            
+       .then(res => "successful").catch(e => {console.log(e.message)})
         } catch (e) {
             console.log(e.message)
         }

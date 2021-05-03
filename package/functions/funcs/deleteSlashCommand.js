@@ -13,7 +13,30 @@ module.exports = async (d) => {
 
   const [guildID, option] = inside.splits;
 
-  let commands = await axios
+  let commands;
+    if(guildID == "global"){
+        commands = await axios
+
+    .get(
+
+      d._api(`/applications/${d.client.user.id}/commands`),
+
+      {
+
+        headers: {
+
+          Authorization: `Bot ${d.client.token}`,
+
+        },
+
+      }
+
+    )
+
+    .catch((err) => null);
+    }
+    else{
+    commands = await axios
     .get(
       d._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`),
       {
@@ -23,7 +46,7 @@ module.exports = async (d) => {
       }
     )
     .catch((err) => null);
-
+}
   if (!commands) return d.error(`:x: Failed to fetch guild commands`);
   else commands = commands.data;
 
