@@ -835,6 +835,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $nodeVersion: "Return Node.js version;$nodeVersion",
   $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
   $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
-  $clientApplication: "Returns information from client application;$clientApplication[properties]"
+  $clientApplication: "Returns information from client application;$clientApplication[properties]",
+  $giveMassRole: "Gives mass role to everyone in the guild;$giveMassRole[role id]"
 };
 module.exports = Parser;
