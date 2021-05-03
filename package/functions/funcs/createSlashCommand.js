@@ -16,7 +16,45 @@ module.exports = async (d) => {
   }
 
   try {
-    const request = await axios
+      if(guildID == "global"){
+          let request = await axios
+
+      .post(
+
+        d._api(`/applications/${d.client.user.id}/commands`),
+
+        {
+
+          name: name,
+
+          description: description,
+
+          options: options,
+
+        },
+
+        {
+
+          headers: {
+
+            Authorization: `Bot ${d.client.token}`,
+
+          },
+
+            
+
+        }
+
+          
+
+      )
+
+    
+
+      .catch((err) => null);
+      }
+      else{
+    let request = await axios
       .post(
         d._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`),
         {
@@ -28,8 +66,11 @@ module.exports = async (d) => {
           headers: {
             Authorization: `Bot ${d.client.token}`,
           },
+            
         }
+          
       )
+    
       .catch((err) => null);
 
     if (!request) return d.error(`❌ Failed to create slash command`);
@@ -37,7 +78,9 @@ module.exports = async (d) => {
     return {
       code: code.replaceLast(`$createSlashCommand${inside}`, ""),
     };
-  } catch (e) {
+  }
+}
+  catch (e) {
     return d.error(`:x: ${e.message}`);
   }
 };
