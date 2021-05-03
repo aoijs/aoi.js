@@ -111,7 +111,7 @@ More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 
 ## Links
 Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
-- [Website](https://dbd.js.org)
+- [Website](https://aoi.js.org)
 - [Discord Server](https://dbd.js.org/invite)
 - [Documentation](https://aoi.leref.ga)
 
