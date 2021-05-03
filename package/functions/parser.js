@@ -831,12 +831,9 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
   $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
-  $getAuditLogs: "Returns audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
-  $nodeVersion: "Return Node.js version;$nodeVersion",
-  $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
-  $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
-  $clientApplication: "Returns information from client application;$clientApplication[properties]",
-  $setAFKChannel: "Set the AFK channel for a guild;$setAFKChannel[channelID;guildID(optional)]",
-  $setAFKTimeout: "Set the AFK timeout for a guild;$setAFKTimeout[time in second;guildID(optional)]",
+  $getAuditLogs: "Get audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
+  $nodeVersion: "Get Node.js version;$nodeVersion",
+  $pruneMembers: "Prune a member for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
+  $pruneStatus: "Get an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
 };
 module.exports = Parser;
