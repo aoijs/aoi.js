@@ -14,12 +14,21 @@ if (err) return d.error(err)
     
     const [name, guildID = d.message.guild.id] = inside.splits
     
-    let commands = await axios.get(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`), {
+    let commands ;
+ if(guildID == "global"){
+command = await axios.get(d.client._api(`/applications/${d.client.user.id}/commands`), {
         headers: {
             Authorization: `Bot ${d.client.token}`
         }
     }).catch(err => null) 
-    
+}
+else{
+ command = await axios.get(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`), {
+        headers: {
+            Authorization: `Bot ${d.client.token}`
+        }
+    }).catch(err => null) 
+    }
     if (!commands) return d.error(`❌ Failed to fetch slash commands`) 
     
     else commands = commands.data 
