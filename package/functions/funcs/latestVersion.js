@@ -1,12 +1,8 @@
 const axios = require('axios')
 
 module.exports = async d => {
-  axios.get('https://api.leref.ga/package/version')
-    .then(function (response) {
-      let version = response.data.version
-
-      return {
-        code: d.command.code.replaceLast(`$latestVersion`, version)
-      }
-    })
+  let version = axios.get('https://registry.npmjs.org/aoi.js').then(a => a.data["dist-tags"].latest)
+  return {
+    code: d.command.code.replaceLast(`$latestVersion`, version)
+  }
 }
