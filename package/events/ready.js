@@ -1,6 +1,5 @@
 const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
-const DanBotHosting = require("danbot-hosting");
 const Discord = require("discord.js");
 const api = require("../handlers/api");
 
