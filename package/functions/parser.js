@@ -1,4 +1,8 @@
 const Parser = {
+  $fileSize : "Returns the size Of file in The project In the Provided Unit",
+  $getAttachments: "Gets attachment info of the provided Message",
+  $sendTTS: "send a tts message in the current channel (optional)" ,
+  $lerefImages: "Sends Images Of leref OwO",
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -24,7 +28,7 @@ const Parser = {
   $memberExists:
     "Checks if given user ID is in the server;$memberExists[userID;guildID (optional)]",
   $parseDate: "Parses given ms to date or time;$parseDate[ms;date/time]",
-  $customEmoji: "Returns a custom emoji;$customEmoji[name]",
+  $customEmoji: "Returns a custom emoji;$customEmoji[name;guildID(optional)]",
   $createChannel:
     "Creates a channel with given type and name. If 3rd field is set to 'yes', the function will return the newly created channel ID. If categoryID field is present, the channel will be created under the category with given ID;$createChannel[name;type;return ID (yes/no);categoryID (optional)]",
   $deleteChannels:
@@ -306,7 +310,7 @@ const Parser = {
   $rolePerms:
     "Returns the role key permissions.;$rolePerms[roleID;separator (optional)]",
   $songInfo:
-    "Displays information about the song that is being played.;$songInfo[property]",
+    "Displays information about the song that is being played.;$songInfo[property;position]",
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
@@ -494,11 +498,11 @@ const Parser = {
     "Play SoundCloud Track URL;$playSoundCloud[url;soundcloud client id (optional);leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
   //1.3.0
   $getSlashCommandOptions: `Get the options of a slash command using its command name;$getSlashCommandOptions[name] or $getSlashCommandOptions[name;guildID]`,
-  $getSlashCommandID: `Get the ID of a slash command by using its name;$getSlashCommandID[name] or $getSlashCommandID[name;guildID]`,
+  $getSlashCommandID: `Get the ID of a slash command by using its name;$getSlashCommandID[name] or $getSlashCommandID[name;guildID/global]`,
   $reply: `Replies to given message ID;$reply[messageID;message;mention (yes/no)]`,
-  $modifySlashCommand: `Modify a slash command by using the ID of the guild it belongs to and the ID of the command;$modifySlashCommand[guildID;commandID;name;description;options (optional)]`,
-  $deleteSlashCommand: `Deletes a slash command from given guild ID, by either using slash command name or ID;$deleteSlashCommand[guildID;name/id]`,
-  $createSlashCommand: `Creates a slash command for given guild ID, said guild MUST have invited the bot with bot.applications scope authorized, everything after description field is optional;$createSlashCommand[guildID;name;description;options;options;...]||
+  $modifySlashCommand: `Modify a slash command by using the ID of the guild it belongs to and the ID of the command;$modifySlashCommand[guildID/global;commandID;name;description;options (optional)]`,
+  $deleteSlashCommand: `Deletes a slash command from given guild ID, by either using slash command name or ID;$deleteSlashCommand[guildID/global;name/id]`,
+  $createSlashCommand: `Creates a slash command for given guild ID, said guild MUST have invited the bot with bot.applications scope authorized, everything after description field is optional;$createSlashCommand[guildID/global;name;description;options;options;...]||
 //Create a slash command with one option, that is required
 $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I have to repeat:true:3] Successfully created a slash command! 
 
@@ -516,7 +520,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $reactionCount: `Returns the amount of people that have given this reaction to this message;$reactionCount[channelID;messageID;emoji]`,
   $botPing: "Returns the Client Latency ms",
   $interactionReply:
-    "replies to an interaction (slash command);$interactionReply[message;embeds...]",
+    "replies to an interaction (slash command);$interactionReply[message;embeds...;type (default is 0 , 64 for ephemeral)]",
   $clearSongQueue:
     "Clear all songs in queue besides 1st song in queue;$clearSongQueue",
   $messageID: `Returns the user's message ID `,
@@ -704,7 +708,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "Returns the channel permission overwrites;$channelOverwrites or $channelOverwrites[channelID;{mention} ({type}):\\nAllow: {allowed}\\nDeny: {denied};separator]",
   $disableEveryoneMentions: "Disables all mentions with @everyone Role.",
   $abbreviate: "Abbreviate the provided numbers.;$abbreviate[number]",
-  "channel[":
+  '$channel[':
     "A compact function with 18 different functionalities!;$channel[channelID;option]",
   $emoji:
     "A compact function with 10 different functionalities!;$emoji[emojiID;option]",
@@ -716,7 +720,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "A compact funcion with 16 different functionalities;$role[roleID;option]",
   $user:
     "A compact funcion with 12 different functionalities;$user[userID;option]",
-  $client: `A compact funcion with 15 different functionalities;$client[option]`,
+  '$client[': `A compact funcion with 15 different functionalities;$client[option]`,
   $ordinal: "Returns the given number as an ordinal number.",
   $isEmoji:
     "Returns true if the content is a default emoji. Returns false otherwise.",
@@ -806,7 +810,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $isValidImageLink:
     "Return true if the provided link is an image otherwise false;$isValidImageLink[link]",
   $complexCooldown:
-    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldwon[type;time;error]",
+    "Set a cooldown for all, channel, server, globalUser, or user depends on type;$complexCooldown[type;time;error]",
   $resolveColor:
     "Convert's RGB Color/ Basic Color's into Hex or Color Number.;$resolveColor[red;green;blue;toHex (yes or no) (optional) (default to yes);type (rgb / number) (default to rgb)]",
   $parseTime: "Parse human readable time into milliseconds;$parseTime[time]",
@@ -814,11 +818,23 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //Aoi.JS <3
   $dbPing: "Returns the Database Ping;$dbPing",
+  $defaultMessageNotifications: "Return the guild default message notification level (All or Mentions).;$defaultMessageNotifications or $defaultMessageNotifications[guildID]",
+  $maximumMembers: "Return the maximum members can join the server;$maximumMembers or $maximumMembers[guildID]",
   $killClient: "Destroy the client gateway connection.;$killClient",
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
+  $variablesCount: "Returns amount of bot variables the bot has.;$variablesCount",
+  $isEveryoneMentioned: "Returns true/false if @everyone was mentioned in the command.;$isEveryoneMentioned",
+  $mentionedRolesCount: "Returns amount of mentioned roles in the command's message.;$mentionedRolesCount",
+  $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
+  $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
-  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]"
+  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
+  $getAuditLogs: "Returns audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
+  $nodeVersion: "Return Node.js version;$nodeVersion",
+  $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
+  $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
+  $clientApplication: "Returns information from client application;$clientApplication[properties]"
 };
 module.exports = Parser;

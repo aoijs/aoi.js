@@ -15,8 +15,28 @@ module.exports = async d => {
     if (opts.length) {
         options = parser(opts)
     }
-    
-    const request = await axios.patch(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands/${commandID}`), {
+    let request;
+    if(guildID == "global"){
+       request = await axios.patch(d.client._api(`/applications/${d.client.user.id}/commands/${commandID}`), {
+
+        name, 
+
+        description, 
+
+        options: options 
+
+    }, {
+
+        headers: {
+
+            Authorization: `Bot ${d.client.token}`
+
+        }
+
+    }).catch(err => null) 
+    }
+    else{
+   request = await axios.patch(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands/${commandID}`), {
         name, 
         description, 
         options: options 
@@ -25,7 +45,7 @@ module.exports = async d => {
             Authorization: `Bot ${d.client.token}`
         }
     }).catch(err => null) 
-    
+    }
     if (!request) return d.error(`❌ Failed to modify slash command`)
     return {
         code: code.replaceLast(`$modifySlashCommand${inside}`, "")

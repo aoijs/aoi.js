@@ -1,7 +1,7 @@
 {
-  "installed_version": "1.0.1-pre",
+  "installed_version": "1.0.5-pre",
   "name": "aoi.js",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "Aoi.js - Library that simplifies coding for developing your Discord Bot",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "danbot-hosting": "^0.1.6",
     "dbdjs.db": "^1.0.1",
     "discord.js": "^12.5.3",
     "moment": "^2.29.1",
@@ -25,6 +24,7 @@
   },
   "devDependencies": {
     "axios": "^0.21.1",
+    "danbot-hosting": "^0.1.6",
     "dbd.db": "^1.4.5",
     "dblapi.js": "^2.4.1",
     "discord-paginator.js": "^1.0.2",
@@ -50,12 +50,13 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/aoijs/aoi.js.git"
   },
   "keywords": [
     "aoi.js",
+    "aoi",
     "api",
     "dbd.js",
     "dbd",

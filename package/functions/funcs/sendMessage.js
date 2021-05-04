@@ -11,7 +11,7 @@ module.exports = async d=> {
   
   const fields = inside.splits
   
-  if (fields.length <= 1) return d.error(`❌ Invalid fields in \`$sendMessage${inside}\``)
+  if (fields.length < 1) return d.error(`❌ Invalid fields in \`$sendMessage${inside}\``)
   
   const returnID = fields.pop()
   

@@ -16,6 +16,7 @@
   - [Slash Commands](#slash-commands)
   - [Music](#music)
 - [Links](#links)
+- [Contributing](#contributing)
 
 
 ## About
@@ -88,7 +89,7 @@ bot.interactionCommand({
 bot.onInteractionCreate()
 ```
 
-More Information in our [Documentation](https://dbd.leref.ga/guide/slash-commands)
+More Information in our [Documentation](https://aoi.leref.ga/guide/slash-commands)
 
 #### Music
 
@@ -106,13 +107,13 @@ code: `$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/
 })
 ```
 
-More Information in our [Documentation](https://dbd.leref.ga/guide/music)
+More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 
 ## Links
 Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
-- [Website](https://dbd.js.org)
+- [Website](https://aoi.js.org)
 - [Discord Server](https://dbd.js.org/invite)
-- [Documentation](https://dbd.leref.ga)
+- [Documentation](https://aoi.leref.ga)
 
 ## Contributing
-Please read [Contributing](https://www.github.com/aoijs/aoi.js/.github%2FCONTRIBUTING.md)
+Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)

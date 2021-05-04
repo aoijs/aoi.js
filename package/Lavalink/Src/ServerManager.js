@@ -146,7 +146,9 @@ class ServerManager extends EventEmitter {
         break;
       case "playerUpdate":
         {
-          this.timeState = packet.state.position;
+          if (!packet.guildId) return;
+        const Player = this.get(packet.guildId);
+        Player.timeState = packet.state.position;
         }
         break;
       case "status":

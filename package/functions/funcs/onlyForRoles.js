@@ -8,10 +8,10 @@ module.exports = async d => {
 	
 	if (err) return d.error(err)
 
-    const IDs = inside.splits
+    let fields = inside.splits
 
-    const errorMessage = IDs.pop()
-``
+    const errorMessage = fields.pop()
+const IDs = fields
     if (!IDs.some(id => d.message.member.roles.cache.find(r => id === r.id || r.name === id))) return errorHandler(d, errorMessage)
 
     return {
