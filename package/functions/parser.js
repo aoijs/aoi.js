@@ -1,8 +1,5 @@
 const Parser = {
-  $fileSize : "Returns the size Of file in The project In the Provided Unit",
-  $getAttachments: "Gets attachment info of the provided Message",
-  $sendTTS: "send a tts message in the current channel (optional)" ,
-  $lerefImages: "Sends Images Of leref OwO",
+  
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -823,6 +820,16 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
   $lerefImages: "Return a random images of Leref;$lerefImages",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
-  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]"
+  $randomEmoji: "Returns a random custom emoji from Guild/global;$randomEmoji or $randomEmoji[guildId/global]",
+$fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
+  $getAttachments: "Gets attachment info of the provided Message; $getAttachments[channelID;messageID;position;property] \n property: name , id , size , height , width , url",
+  $sendTTS: "send a tts message in the current channel (optional);$sendTTS[text] or $sendTTS[text;channelID]" ,
+  $lerefImages: "Sends Images Of leref OwO",
+  //new functions 
+  $writeFile: "writes a text in the provided file. If file doesn't exist , it will create it.;$writeFile[file location;text; encoding (optional)]",
+  $readFile: "returns the data of the file;$readFile[file location]",
+  $renameFile: "renames the provided file;$renameFile[oldname;newname]",
+  $serverLeaderboard: "returns a learderboard of servers of the provided variable;$serverLeaderboard[variable;asc/desc(optional);{top}. {servername}. {value} (optional);list(optional);page(optional)]",
+  $vcSize : "returns the size of the provided type in Provided guild or global;$vcSize[channels/users/songs;guildID/global (optional)]"
 };
 module.exports = Parser;
