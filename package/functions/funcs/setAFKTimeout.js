@@ -20,9 +20,9 @@ module.exports = async d => {
 
     if (!guild) return d.error(`:x: Failed to set AFK Timeout!`);
 
-    if (!opts[inside.addBrackets()]) return d.error(`:x: Invalid input at \`$setGuildAFKTimeout${inside}\``);
+    if (!opts[inside.addBrackets()]) return d.error(`:x: Invalid input at \`$setAFKTimeout${inside}\``);
 
     return {
-        code: code.replaceLast(`$setGuildAFKTimeout${inside}`, "")
+        code: code.replaceLast(`$setAFKTimeout${inside}`, "")
     }
 }
