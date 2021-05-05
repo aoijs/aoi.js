@@ -835,6 +835,20 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $nodeVersion: "Return Node.js version;$nodeVersion",
   $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
   $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
-  $clientApplication: "Returns information from client application;$clientApplication[properties]"
+  $clientApplication: "Returns information from client application;$clientApplication[properties]",
+  $oldGuild:
+    "Holds data for the guild before it was updated, this is from discord cache and might be empty depending on whether it's cached, so use partial option before attempting to access any property. (guildUpdate callback);$oldGuild[guildOption]",
+  $newGuild:
+    "Holds data for the guild after the update, might be a good idea to check partial option before accessing any property. (guildUpdate callback);$newGuild[guildOption]",
+  $oldEmoji:
+    "Holds data for the emoji before it was updated/ deleted. (emojiUpdate and emojiDelete callback);$oldEmoji[emojiOption]",
+  $newEmoji:
+    "Holds data for the emoji after the creation/ update. (emojiCreate and emojiUpdate callback);$newEmoji[emojiOption]",
+  $pinsUpdate:
+    "Holds data for the channel the channel pins were updated in. (channelPinsUpdate callback);$pinsUpdate[pinsUpdateOption]",
+  $webhookUpdate:
+    "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
+  $bulk:
+    "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
 };
 module.exports = Parser;
