@@ -13,6 +13,6 @@ module.exports = async d => {
     if (!guild) return d.error(`:x: Failed to set AFK Channel!`);
 
     return {
-        code: code.replaceLast(`$setGuildAFKChannel${inside}`, "")
+        code: code.replaceLast(`$setAFKChannel${inside}`, "")
     }
 }
