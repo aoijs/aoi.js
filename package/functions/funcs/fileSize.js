@@ -72,7 +72,7 @@ try{
 
   return{
 
-    code: code.replaceLast(`$fileSize${inside}`, result)
+    code: code.replaceLast(`$fileSize${inside}`, result || "")
 
   } 
 
