@@ -17,11 +17,11 @@ module.exports = async (d) => {
 
     find = guild.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
 
-    if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
+   // if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
   } else {
     find = d.client.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
 
-    if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
+    //if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
   }
 
   return {
