@@ -9,7 +9,7 @@ module.exports = async d => {
     const opts = {
         "1m": 60,
         "5m": 300,
-        "15": 900,
+        "15m": 900,
         "30m": 1800,
         "1h": 3600
     }
