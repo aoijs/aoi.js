@@ -840,6 +840,6 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $setAFKTimeout: "Set the guild AFK timeout;$setAFKTimeout[duration(1m/5m/15m/30m/1h)]",
   $setSystemChannel: "Set the guild System Channel;$setSystemChannel[channelID]",
   $setVerifyLevel: "Set the guild Verification Level;$setVerifyLevel[0=NONE/1=LOW/2=MEDIUM/3=HIGH/4=VERY_HIGH]",
-  $setExplicitFilter: "Set the guild Explicit Content Filter Level;$setExplicitFilter[0=DISABLED/1=MEMBERS_WITHOUT_ROLES/2=ALL_MEMBERS]"
+  $setContentFilter: "Set the guild Explicit Content Filter Level;$setExplicitFilter[0=DISABLED/1=MEMBERS_WITHOUT_ROLES/2=ALL_MEMBERS]"
 };
 module.exports = Parser;
