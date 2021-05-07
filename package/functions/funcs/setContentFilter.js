@@ -16,9 +16,9 @@ module.exports = async d => {
         explicitContentFilter: opts[inside.addBrackets()]
     }).catch(err => {})
 
-    if (!guild) return d.error(`:x: Failed to set Verification Level!`)
+    if (!guild) return d.error(`:x: Failed to set Explicit Content Filter Level!`)
 
     return {
-        code: code.replaceLast(`$setExplicitFilter${inside}`, "")
+        code: code.replaceLast(`$setContentFilter${inside}`, "")
     }
 }
