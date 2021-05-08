@@ -8,7 +8,7 @@ module.exports = async d => {
 
         let [text] = inside.splits
 
-        let err = undefined
+        let error = undefined
 
         
         let result;
