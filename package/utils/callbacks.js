@@ -23,8 +23,6 @@ module.exports = [
   "onMessageUpdate()",
   "onPresenceUpdate()", 
   "onUserUpdate()", 
-  "onMessageDelete()", 
-  "onMusicStart()", 
-  "onMusicEnd()",
+  "onMessageDelete()",
   "onInteractionCreate()"
 ]
