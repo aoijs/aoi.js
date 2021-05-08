@@ -20,10 +20,13 @@
 
 
 ## About
-Aoi.JS is a package that aim to allows you to make your Discord Bots with Ease.
+Aoi.JS is a package with simplified and ready-to-use functions for Discord Bot Developers to develop their own Discord Bot.
 
 Aiming to be the easiest package to learn <br>
-It's swift and flexible using functions </br>
+It's swift and flexible using functions. </br>
+
+ Open Source for the Community ❤️ <br>
+ </br>
 
 ## Examples
 
