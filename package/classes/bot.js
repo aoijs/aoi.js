@@ -183,6 +183,13 @@ client.cpu = 0.01313515189;
 client.voice_state_update_commands = new Discord.Collection();
 client.member_update_commands = new Discord.Collection();
 client.loop_commands = new Discord.Collection();
+client.guild_update_commands = new Discord.Collection();
+client.channel_pins_update_commands = new Discord.Collection();
+client.webhook_update_commands = new Discord.Collection();
+client.message_delete_bulk_commands = new Discord.Collection();
+client.emoji_update_commands = new Discord.Collection();
+client.emoji_delete_commands = new Discord.Collection();
+client.emoji_create_commands = new Discord.Collection();
 client.channel_update_commands = new Discord.Collection();
 client.channel_delete_commands = new Discord.Collection();
 client.channel_create_commands = new Discord.Collection();
@@ -228,6 +235,9 @@ const MusicEnd = require("../events/musicEnd");
 const GuildCreate = require("../events/guildCreate");
 const GuildDelete = require("../events/guildDelete.js");
 const MessageUpdate = require("../events/messageUpdate.js");
+const ChannelPinsUpdate = require("../events/channelPinsUpdate.js");
+const webhookUpdate = require("../events/webhookUpdate.js");
+const MessageDeleteBulk = require("../events/messageDeleteBulk.js");
 const Message = require("../events/message.js");
 const Ready = require("../events/ready.js");
 const MessageDelete = require("../events/messageDelete.js");
@@ -419,7 +429,54 @@ class Client {
       d
     );
   }
-
+  
+  channelPinsUpdateCommand(d = {}) {
+    client.channel_pins_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  webhookUpdateCommand(d = {}) {
+    client.webhook_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  messageDeleteBulkCommand(d = {}) {
+    client.message_delete_bulk_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  emojiUpdateCommand(d = {}) {
+    client.emoji_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  emojiDeleteCommand(d = {}) {
+    client.emoji_delete_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  emojiCreateCommand(d = {}) {
+    client.emoji_create_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  
+  guildUpdateCommand(d = {}) {
+    client.guild_update_commands.set(
+      Math.floor(Math.random() * 5993838594992),
+      d
+    );
+  }
+  
   memberUpdateCommand(d = {}) {
     client.member_update_commands.set(client.member_update_commands.size, d);
   }
@@ -430,7 +487,7 @@ class Client {
       d
     );
   }
-
+  
   channelCreateCommand(d = {}) {
     client.channel_create_commands.set(
       Math.floor(Math.random() * 5939293959),
@@ -787,7 +844,7 @@ class Client {
       require("../events/voiceStateUpdate")(client, olds, news);
     });
   }
-
+  
   onChannelDelete() {
     client.on("channelDelete", (channel) =>
       require("../events/channelDelete")(client, channel)
@@ -805,6 +862,51 @@ class Client {
       require("../events/channelUpdate")(client, oldc, newc)
     );
   }
+  
+  onMessageDeleteBulk() {
+    client.on("messageDeleteBulk", (bulk) => {
+      require("../events/messageDeleteBulk")(client, bulk);
+    });
+  }
+  
+  onGuildUpdate() {
+    client.on("guildUpdate", (oldg, newg) =>
+      require("../events/guildUpdate")(client, oldg, newg)
+    );
+  }
+  
+     // event only provides data about the channel, not the message itself:
+  onChannelPinsUpdate() {
+    client.on("channelPinsUpdate", (pinch) =>
+      require("../events/channelPinsUpdate")(client, pinch)
+    );
+  }
+    
+    // event only provides data about the channel, not the webhook itself:
+  onWebhookUpdate() {
+    client.on("webhookUpdate", (whc) =>
+      require("../events/webhookUpdate")(client, whc)
+    );
+  }
+    
+  onEmojiUpdate() {
+    client.on("emojiUpdate", (olde, newe) =>
+      require("../events/emojiUpdate")(client, olde, newe)
+    );
+  }
+  
+   onEmojiDelete() {
+    client.on("emojiDelete", (emoji) =>
+      require("../events/emojiDelete")(client, emoji)
+    );
+  }
+  
+  onEmojiCreate() {
+    client.on("emojiCreate", (emoji) =>
+      require("../events/emojiCreate")(client, emoji)
+    );
+  }
+  
   onRoleUpdate() {
     client.on("roleUpdate", (oldr, newr) =>
       require("../events/roleUpdate")(client, oldr, newr)
