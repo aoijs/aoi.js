@@ -836,6 +836,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
   $pruneStatus: "Return an amount of members that can be pruned;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);roleid1:roleid2:roleid3...]",
   $clientApplication: "Returns information from client application;$clientApplication[properties]",
-  $NSFWtype: "Returns type of nsfw, $NSFWtype[IMAGE-URL]"
+  $NSFWtype: "Returns type of nsfw, $NSFWtype[IMAGE-URL]",
+  $containsCount: "Returns how many words contain a term, $containsCount[Some words...;Word to search]"
 };
 module.exports = Parser;
