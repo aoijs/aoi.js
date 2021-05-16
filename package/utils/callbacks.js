@@ -24,5 +24,12 @@ module.exports = [
   "onPresenceUpdate()", 
   "onUserUpdate()", 
   "onMessageDelete()",
-  "onInteractionCreate()"
+  "onInteractionCreate()",
+  "onFunctionError()",
+  "onVariableCreate()",
+  "onVariableUpdate()",
+  "onVariableDelete()",
+  "onApplicationCmdCreate()",
+  "onApplicationCmdUpdate()",
+  "onApplicationCmdDelete()"
 ]
