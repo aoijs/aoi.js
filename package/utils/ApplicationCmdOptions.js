@@ -8,5 +8,5 @@ guildID:"guildID of the slash cmd (returns null for global);.guildID",
 applicationID:"returns Application ID",
 defaultPermission : "returns default permission of the slash cmd;.defaultPermission",
 timestamp:"returns timestamp of the creation of slash cmd (in ms);.timestamp",
-createdAt:"returns the date of creation of slash cmd;.created at"
+createdAt:"returns the date of creation of slash cmd;.createdAt"
 }
