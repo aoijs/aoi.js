@@ -39,7 +39,7 @@ module.exports = [
   "reactionRemoveEmojiCommand()",
   "messageDeleteBulkCommand()",
   "webhookUpdateCommand()",
-  "channelPinUpdateCommand()",
+  "channelPinsUpdateCommand()",
   "functionErrorCommand()",
   "variableCreateCommand()",
   "variableUpdateCommand()",
