@@ -257,18 +257,17 @@ const GuildMemberRemove = require("../events/guildMemberRemove.js");
 const MessageReactionAdd = require("../events/messageReactionAdd.js");
 const MessageReactionRemove = require("../events/messageReactionRemove.js");
 
-const CustomError = require ("../events/customError.js");
-const VarCreate = require("../events/variableCreate.js");
-const VarUpdate = require("../events/variableUpdate.js");
-const VarDelete = require("../events/variableDelete.js");
-const CheckGlobalSlashCreate = require("../events/checkGlobalSlashCreate.js");
-const CheckSlashUpdate = require("../events/checkSlashUpdate.js");
-const AppCmdCreate = require("../events/applicationCommandCreate.js");
-const AppCmdUpdate = require("../events/applicationCommandUpdate.js");
-const AppCmdDelete= require("../events/applicationCommandDelete.js");
+const CustomError = require ("../handlers/errorCommands.js");
+const VarCreate = require("../handlers/variableCreateCommands.js");
+const VarUpdate = require("../handlers/variableUpdateCommands.js");
+const VarDelete = require("../handlers/variableDeleteCommands.js");
+const AppCmdCreate = require("../handlers/applicationCreateCommands.js");
+const CheckGlobalSlashCreate = require("../handlers/checkGlobalSlashCreate.js");
+const CheckSlashUpdate = require("../handlers/checkSlashUpdate.js");
+const AppCmdUpdate = require("../handlers/applicationUpdateCommands.js");
+const AppCmdDelete= require("../handlers/applicationDeleteCommands.js");
 
 require("../handlers/UpdateWarning")();
-
 const parser = require("../functions/parser");
 /**
  * The Class that log in the Discord bot to Discord
