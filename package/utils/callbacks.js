@@ -33,7 +33,7 @@ module.exports = [
   "onReactionRemoveEmoji()",
   "onMessageDeleteBulk()",
   "onWebhookUpdate()",
-  "onChannelPinUpdate()",
+  "onChannelPinsUpdate()",
   "onFunctionError()",
   "onVariableCreate()",
   "onVariableUpdate()",
