@@ -23,7 +23,7 @@ module.exports = async d =>{
          break; 
      case "songs" :
       for(i=0;c.size >i;i++){
-          res +=d.client.servers.get(c.array()[i].channel.guild.id).songs.length
+          res +=d.client.servers.get(c.array()[i].channel.guild.id) ?d.client.servers.get(c.array()[i].channel.guild.id).songs.length : 0
           }
                 break;
           }
