@@ -847,6 +847,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk:
     "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
+  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
 //4.0.0
 
 $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
