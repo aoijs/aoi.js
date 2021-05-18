@@ -8,7 +8,7 @@ module.exports = async d =>{
     if(!["channels","users","songs"].includes(type)) return d.error(`:x: Invalid Type Provided In $vcSize${inside}`) 
     let c = d.client.voice.connections
 
-        if(!c.size ==0) return res = 0
+        if(c.size ==0) return res = 0
     
     if(guildID == "all"){
      let i ;
