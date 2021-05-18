@@ -813,6 +813,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $joinVC: "Make the bot join a voice channel.;$joinVC[channelID]",
   $leaveVC: "Make the bot leave from voice channel, if any.;$leaveVC",
   //New Update DBD.JS v3.0.7 <3
-  $dbPing: "Returns the Database Ping;$dbPing"
+  $dbPing: "Returns the Database Ping;$dbPing",
+  $giveMassRole: "Gives mass role to everyone in the guild;$giveMassRole[role id]"
 };
 module.exports = Parser;
