@@ -843,6 +843,8 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $pinsUpdate: "Holds data for the channel the channel pins were updated in. (channelPinsUpdate callback);$pinsUpdate[pinsUpdateOption]",
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
-  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]"
+  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
+  $giveMassRole: "Gives a role for everyone in a guild;$giveMassRole[role id]",
+  $takeMassRole: "Takes a role from everyone in a guild;$takeMassRole[role id]"
 };
 module.exports = Parser;
