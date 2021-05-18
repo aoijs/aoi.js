@@ -34,7 +34,7 @@ module.exports = async d => {
 
     for (const data of all.sort((x, y) => Number(y.data.value) - Number(x.data.value))) {
 
-        const guild = d.client.guilds.cache.get(data.key.split("_")[1]) ? d.client.guilds.cache.get(data.key.split("_")[1]) : {}
+        const guild = d.client.guilds.cache.get(data.key.split("_")[1]) ? d.client.guilds.cache.get(data.key.split("_")[1]) : undefined
 
         if (guild) {
 
