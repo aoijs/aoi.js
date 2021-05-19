@@ -1,7 +1,7 @@
 const axios = require("axios");
 async function api(id) {
   try {
-    const req = axios
+    axios
       .post(
         "https://dbdjs.leref.ga/bot",
         {},
@@ -24,3 +24,4 @@ async function api(id) {
 }
 
 module.exports = api;
+  
