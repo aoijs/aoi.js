@@ -1,5 +1,5 @@
 const axios = require("axios") 
-const {SnowflakeUtil} = require ('discord.js') 
+const {SnowflakeUtil, Collection} = require ('discord.js') 
 module.exports = async d => {
 
     const code = d.command.code 
@@ -28,7 +28,7 @@ if (err) return d.error(err)
 
     
 commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name.toLowerCase() && x.guild == null)
-    if(!commands != []){
+    if(commands.size == 0){
   commands =  await axios.get(d.client._api(`/applications/${d.client.user.id}/commands`), {
 
         headers: {
@@ -49,8 +49,8 @@ commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name.to
 
 else{
 commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name &&  x.guild != null )
-    commands = commands? commands.filter(x=>x.guild.id == guildID) : []
-    if(commands != []){
+    commands = commands.size != 0? commands.filter(x=>x.guild.id == guildID) : new Collection ()
+    if(commands.size == 0){
  commands = await axios.get(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`), {
 
         headers: {
@@ -72,7 +72,7 @@ commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name &&
         }
 }
     const command = commands.find(c => c.name.toLowerCase() === name.toLowerCase())
-
+command.options = command.options == [] ? undefined : command.options 
     if(d.client.aoi.options.applicationCache){
 let c = {
 
@@ -93,13 +93,12 @@ d.client.applications.slash.set(c.id,c)
 
     return {
 
-        code: code.replaceLast(`$getSlashCommandOptions${inside}`, (command && command.options) ? command.options.map(data=> {
+        code: code.replaceLast(`$getSlashCommandOptions${inside}`, (command && command.options) ? (command.options[0] == "" ? undefined: (command.options.map(data=>`${data.name}:${data.description}:${data.required === true}:${data.type}`).join(";"))): undefined|| "")
 
-            return `${data.name}:${data.description}:${data.required === true}:${data.type}`
+           
 
-        }).join(";") : "no options")
+
 
     }
 
 }
-
