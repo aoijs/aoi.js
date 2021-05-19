@@ -10,7 +10,7 @@ if(!["equal","starts","ends","includes"].includes(type)) return d.error(`Invalid
 let res;
     switch (type){
       case "equal" :
-            res = d.array.filter(x=>x == query)
+            res = d.array.filter(x=>x === query)
             break;
             case "starts":
             res = d.array.filter(x=>x.startsWith(query))
