@@ -856,6 +856,8 @@ $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileS
   $handleError: "function that is used in onFunctionError callback;$handleError[functionError option]",
   $oldVariable: "gets the data from variable Callbacks (update and delete one);$oldVariable[variable options]",
   $newVariable: "gets the data from variable Callbacks (Update and Create one);$newVariable[variable options]",
-  $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]"
+  $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
+  $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
+  $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]"
 };
 module.exports = Parser;
