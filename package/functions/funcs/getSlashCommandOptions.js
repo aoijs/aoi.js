@@ -27,9 +27,10 @@ if (err) return d.error(err)
  if(guildID == "global"){
 
     
-commands = d.client.applications.cache.find(x=>x.name.toLowerCase() == name.toLowerCase() && x.guild == null)
-    if(!commands){
+commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name.toLowerCase() && x.guild == null)
+    if(!commands != []){
   commands =  await axios.get(d.client._api(`/applications/${d.client.user.id}/commands`), {
+
         headers: {
 
             Authorization: `Bot ${d.client.token}`
@@ -47,8 +48,9 @@ commands = d.client.applications.cache.find(x=>x.name.toLowerCase() == name.toLo
 }
 
 else{
-commands = d.client.applications.slash.find(x=>x.name.toLowerCase() == name &&  x.guild != null ?x.guild.id == guildID: undefined)
-    if(!commands){
+commands = d.client.applications.slash.filter(x=>x.name.toLowerCase() == name &&  x.guild != null )
+    commands = commands? commands.filter(x=>x.guild.id == guildID) : []
+    if(commands != []){
  commands = await axios.get(d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`), {
 
         headers: {
@@ -60,6 +62,7 @@ commands = d.client.applications.slash.find(x=>x.name.toLowerCase() == name &&  
     }).catch(err => null) 
 
     
+
     if (!commands) return d.error(`❌ Failed to fetch slash commands`) 
 
     
@@ -97,4 +100,6 @@ d.client.applications.slash.set(c.id,c)
         }).join(";") : "no options")
 
     }
+
 }
+
