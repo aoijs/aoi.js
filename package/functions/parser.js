@@ -858,6 +858,7 @@ $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileS
   $newVariable: "gets the data from variable Callbacks (Update and Create one);$newVariable[variable options]",
   $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
-  $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]"
+  $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
+  $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]"
 };
 module.exports = Parser;
