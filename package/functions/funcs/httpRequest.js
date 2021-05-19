@@ -3,6 +3,8 @@ const methods = require('http').METHODS
 const axios = require('axios').default.create({
 	responseType: 'text',
 	transformResponse(data) {
+    if (data === undefined) return
+
 		try {
 			return JSON.parse(data)
 		} catch {
@@ -19,7 +21,7 @@ module.exports = async d => {
 	if (err) return d.error(err)
 
 	const header = {
-		'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (dbd.js; https://www.npmjs.com/package/dbd.js)'
+		'User-Agent': 'DiscordBot (https://npmjs.com/package/aoi.js, 1.0.6)'
 	}
 
 	let [
@@ -51,9 +53,9 @@ module.exports = async d => {
 		method,
 		data: body,
 		headers: header
-	}).then(res => res.data).catch(d.noop)
+	}).then(res => res.data).catch(err => undefined)
 
-	if (typeof response === undefined) {
+	if (response === undefined) {
 		return execError()
 	}
 
