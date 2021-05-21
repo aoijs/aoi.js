@@ -843,6 +843,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $pinsUpdate: "Holds data for the channel the channel pins were updated in. (channelPinsUpdate callback);$pinsUpdate[pinsUpdateOption]",
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
-  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]"
+  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
+  $firstMessageID: "Returns First message's ID from the current channel or in given channel;$firstMessageID or $firstMessageID[channelID]"
 };
 module.exports = Parser;
