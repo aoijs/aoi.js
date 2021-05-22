@@ -1,5 +1,6 @@
 const Parser = {
   $fileSize : "Returns the size Of file in The project In the Provided Unit",
+  $lastPinTimestamp : "Returns the last pinned message timestamp in channel or returns null",
   $getAttachments: "Gets attachment info of the provided Message",
   $sendTTS: "send a tts message in the current channel (optional)" ,
   $lerefImages: "Sends Images Of leref OwO",
