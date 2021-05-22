@@ -845,6 +845,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
   $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
   $giveMassRole: "Gives a role for everyone in a guild;$giveMassRole[role id]",
-  $takeMassRole: "Takes a role from everyone in a guild;$takeMassRole[role id]"
+  $takeMassRole: "Takes a role from everyone in a guild;$takeMassRole[role id]",
+  $clientVariables: "Returns all the client variables and it's default value;$clientVariables"
 };
 module.exports = Parser;
