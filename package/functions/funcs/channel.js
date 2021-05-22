@@ -47,6 +47,7 @@ module.exports = async (d) => {
       "parentname",
       "isviewable",
       "isdeletable",
+      "lastpintimestamp"
     ].includes(option.toLowerCase())
   )
     return d.error(`:x: Invalid option in 2nd field of \`$channel${inside}\`.`);
@@ -117,6 +118,9 @@ module.exports = async (d) => {
       break;
     case "isdeletable":
       option = CH.deletable;
+    case "lastpintimestamp":
+      option = CH.lastPinTimestamp;
+      break;
 
     default:
       undefined;
