@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "dbdjs.db": "^1.0.1",
+    "dbdjs.db": "^1.0.4",
     "discord.js": "^12.5.3",
     "moment": "^2.29.1",
     "ms-parser": "^1.0.5",
