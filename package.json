@@ -25,7 +25,6 @@
   "devDependencies": {
     "axios": "^0.21.1",
     "danbot-hosting": "^0.1.6",
-    "discord-paginator.js": "^1.0.2",
     "ffmpeg-static": "^4.3.0",
     "ms": "^2.1.3",
     "node-fetch": "^2.6.1",
