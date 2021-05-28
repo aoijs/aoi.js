@@ -845,6 +845,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
   $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
   $firstMessageID: "Returns First message's ID from the current channel or in given channel;$firstMessageID or $firstMessageID[channelID]",
-  $randomCase: "Generates the given text with Random cases;$randomCase[text]"
+  $randomCase: "Generates the given text with Random cases;$randomCase[text]",
+  $reverse: "Converts the given characters into reverse order;$reverse[text or characters]"
 };
 module.exports = Parser;
