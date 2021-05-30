@@ -25,7 +25,9 @@ let command;
               Authorization:`Bot ${d.client.token}`
 }
             })
-          
+          if (!commands) return d.error(`:x: Failed to fetch guild commands`);
+
+  else commands = commands.data;
            }
        
     }
