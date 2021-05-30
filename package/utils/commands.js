@@ -30,5 +30,21 @@ module.exports = [
   "presenceUpdateCommand()", 
   "userUpdateCommand()", 
   "botJoinCommand()", 
-  "interactionCommand()"
+  "interactionCommand()",
+  "guildUpdateCommand()",
+  "emojiCreateCommand()",
+  "emojiUpdateCommand()",
+  "emojiDeleteCommand()",
+  "reactionRemoveAllCommand()",
+  "reactionRemoveEmojiCommand()",
+  "messageDeleteBulkCommand()",
+  "webhookUpdateCommand()",
+  "channelPinsUpdateCommand()",
+  "functionErrorCommand()",
+  "variableCreateCommand()",
+  "variableUpdateCommand()",
+  "variableDeleteCommand()",
+  "applicationCmdCreateCommand()",
+  "applicationCmdUpdateCommand()",
+  "applicationCmdDeleteCommand()"
 ]
