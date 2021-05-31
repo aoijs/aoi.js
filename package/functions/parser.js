@@ -1,8 +1,5 @@
 const Parser = {
-  $fileSize : "Returns the size Of file in The project In the Provided Unit",
-  $getAttachments: "Gets attachment info of the provided Message",
-  $sendTTS: "send a tts message in the current channel (optional)" ,
-  $lerefImages: "Sends Images Of leref OwO",
+  
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -830,7 +827,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $mentionedUsersCount: "Returns amount of mentioned users in the command's message.;$mentionedUsersCount",
   $mentionedChannelsCount: "Returns amount of mentioned channels in the command's message.;$mentionedChannelsCount",
   $ms: "Converts ms or duration as an example of \"1w\" to ms or duration",
-  $randomEmoji: "Returns a random custom emoji from Guild;$randomEmoji of $randomEmoji[guildId]",
+  $randomEmoji: "Returns a random custom emoji from Guild/global;$randomEmoji or $randomEmoji[guildId/global]",
   $getAuditLogs: "Returns audit log information, every field is optional, action default to everything;$getAuditLogs[limit;userID;action;guildID;format]",
   $nodeVersion: "Return Node.js version;$nodeVersion",
   $pruneMembers: "Prunes members with role for a certain amount of time;$pruneMembers[amount of days(optional, defaults to 7);guildID(optional);reason(optional, defaults to none);roleid1:roleid2:roleid3...]",
@@ -843,6 +840,25 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $pinsUpdate: "Holds data for the channel the channel pins were updated in. (channelPinsUpdate callback);$pinsUpdate[pinsUpdateOption]",
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
-  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]"
+  $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
+//4.0.0
+
+$fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
+  $getAttachments: "Gets attachment info of the provided Message; $getAttachments[channelID;messageID;position;property] \n property: name , id , size , height , width , url",
+  $sendTTS: "send a tts message in the current channel (optional);$sendTTS[text] or $sendTTS[text;channelID]" ,
+
+  //new functions 
+  $writeFile: "writes a text in the provided file. If file doesn't exist , it will create it.;$writeFile[file location;text; encoding (optional)]",
+  $readFile: "returns the data of the file;$readFile[file location]",
+  $renameFile: "renames the provided file;$renameFile[oldname;newname]",
+  $serverLeaderboard: "returns a learderboard of servers of the provided variable;$serverLeaderboard[variable;asc/desc(optional);{top}. {servername}. {value} (optional);list(optional);page(optional)]",
+  $vcSize : "returns the size of the provided type in Provided guild or global;$vcSize[channels/users/songs;guildID/global (optional)]",
+  $handleError: "function that is used in onFunctionError callback;$handleError[functionError option]",
+  $oldVariable: "gets the data from variable Callbacks (update and delete one);$oldVariable[variable options]",
+  $newVariable: "gets the data from variable Callbacks (Update and Create one);$newVariable[variable options]",
+  $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
+  $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
+  $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
+  $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]"
 };
 module.exports = Parser;

@@ -1,7 +1,7 @@
 {
-  "installed_version": "1.0.6-pre",
+  "installed_version": "3.0.0-pre",
   "name": "aoi.js",
-  "version": "1.0.6",
+  "version": "3.0.0",
   "description": "Aoi.JS - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.5.0",
-    "dbdjs.db": "^1.0.1",
+    "dbdjs.db": "^1.0.4",
     "discord.js": "^12.5.3",
     "moment": "^2.29.1",
     "ms-parser": "^1.0.5",
@@ -25,9 +25,6 @@
   "devDependencies": {
     "axios": "^0.21.1",
     "danbot-hosting": "^0.1.6",
-    "dbd.db": "^1.4.5",
-    "dblapi.js": "^2.4.1",
-    "discord-paginator.js": "^1.0.2",
     "ffmpeg-static": "^4.3.0",
     "ms": "^2.1.3",
     "node-fetch": "^2.6.1",

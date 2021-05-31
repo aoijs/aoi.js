@@ -40,6 +40,9 @@ module.exports = async d => {
     })
 
     collector.on("collect", async (reaction, user) => {
+
+        if(!reactionOrReactions.includes(reaction.emoji.name) && !reactionOrReactions.includes(reaction.emoji.id)) return ;
+
         if (user.partial) {
             await user.fetch()
         } 

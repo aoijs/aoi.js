@@ -17,11 +17,12 @@ module.exports = async (d) => {
 
   try {
       if(guildID == "global"){
+          d.client.emit("checkGlobalSlashCreate",guildID,name,d.client)
           let request = await axios
 
       .post(
 
-        d._api(`/applications/${d.client.user.id}/commands`),
+         d.client._api(`/applications/${d.client.user.id}/commands`),
 
         {
 
@@ -54,9 +55,10 @@ module.exports = async (d) => {
       .catch((err) => null);
       }
       else{
+          d.client.emit("checkGlobalSlashCreate",guildID,name,d.client)
     let request = await axios
       .post(
-        d._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`),
+        d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`),
         {
           name: name,
           description: description,

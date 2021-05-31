@@ -34,19 +34,19 @@ try{
 
            case "kb":
 
-           result = stats.size/1000
+           result = stats.size/1024
 
            break;
 
            case "mb":
 
-           result = stats.size/1000000
+           result = stats.size/1024/1024
 
            break;
 
            case "gb":
 
-           result = stats.size/1000000000
+           result = stats.size/1024/1024/1024
 
            break;
 
