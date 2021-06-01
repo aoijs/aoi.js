@@ -252,6 +252,7 @@ let msg = message
           error: (err) => {
             if (!message || !message.channel) {
               return console.log(err.addBrackets());
+                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             }
             if (suppressErrors !== undefined) {
               embedE(
@@ -263,6 +264,7 @@ let msg = message
                 },
                 suppressErrors.split("{error}").join(err)
               );
+                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             } else {
               try {
                 message.channel.send(
@@ -275,9 +277,11 @@ let msg = message
                         ) + 1 || "unknown"
                     }`
                 );
+      client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)  
               } catch (e) {
                 if (err.addBrackets().trim().length)
                   message.channel.send(err.addBrackets());
+   client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
               }
             }
           },

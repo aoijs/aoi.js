@@ -858,7 +858,7 @@ $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileS
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
   $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
   $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]",
-  $cpuModel: "Returns Cpu model",
-  $cpuPlatform: "Returns os info - cpu platform",
+   $cpuModel: "Returns Cpu model",
+  $cpuPlatform: "Returns os info - cpu platform"
 };
 module.exports = Parser;

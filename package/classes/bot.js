@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
-
+const axios = require('axios')
 const DBDdb = require("dbdjs.db");
-
+const snowflake = Discord.SnowflakeUtil
 const WorkerPool = require("../handlers/workerPool");
 const searchIndexes = require("../handlers/KMP");
 const Lavalink = require("./Lavalink.js");
@@ -176,13 +176,23 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 });
 
 client._api = (url) =>
-  `https://discord.com/api/v8/${url.startsWith("/") ? url.slice(1) : url}`;
+  `https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;
 //DBD.JS :)
 const fs = require("fs");
 client.cpu = 0.01313515189;
+client.applications = {
+    slash: new Discord.Collection()
+    }
 client.voice_state_update_commands = new Discord.Collection();
 client.member_update_commands = new Discord.Collection();
 client.loop_commands = new Discord.Collection();
+client.guild_update_commands = new Discord.Collection();
+client.channel_pins_update_commands = new Discord.Collection();
+client.webhook_update_commands = new Discord.Collection();
+client.message_delete_bulk_commands = new Discord.Collection();
+client.emoji_update_commands = new Discord.Collection();
+client.emoji_delete_commands = new Discord.Collection();
+client.emoji_create_commands = new Discord.Collection();
 client.channel_update_commands = new Discord.Collection();
 client.channel_delete_commands = new Discord.Collection();
 client.channel_create_commands = new Discord.Collection();
@@ -218,6 +228,14 @@ client.reaction_add_commands = new Discord.Collection();
 client.reaction_remove_commands = new Discord.Collection();
 client.timeout_pulse_commands = new Discord.Collection();
 
+client.function_error_commands = new Discord.Collection()
+client.variable_create_commands = new Discord.Collection()
+client.variable_update_commands = new Discord.Collection()
+client.variable_delete_commands = new Discord.Collection()
+client.application_cmd_create_commands = new Discord.Collection() 
+client.application_cmd_update_commands = new Discord.Collection() 
+client.application_cmd_delete_commands = new Discord.Collection() 
+
 const InteractionCreate = require("../events/interactionCreate");
 const InviteCreate = require("../events/inviteCreate");
 const InviteDelete = require("../events/inviteDelete");
@@ -228,6 +246,9 @@ const MusicEnd = require("../events/musicEnd");
 const GuildCreate = require("../events/guildCreate");
 const GuildDelete = require("../events/guildDelete.js");
 const MessageUpdate = require("../events/messageUpdate.js");
+const ChannelPinsUpdate = require("../events/channelPinsUpdate.js");
+const webhookUpdate = require("../events/webhookUpdate.js");
+const MessageDeleteBulk = require("../events/messageDeleteBulk.js");
 const Message = require("../events/message.js");
 const Ready = require("../events/ready.js");
 const MessageDelete = require("../events/messageDelete.js");
@@ -236,8 +257,17 @@ const GuildMemberRemove = require("../events/guildMemberRemove.js");
 const MessageReactionAdd = require("../events/messageReactionAdd.js");
 const MessageReactionRemove = require("../events/messageReactionRemove.js");
 
-require("../handlers/UpdateWarning")();
+const CustomError = require ("../handlers/errorCommands.js");
+const VarCreate = require("../handlers/variableCreateCommands.js");
+const VarUpdate = require("../handlers/variableUpdateCommands.js");
+const VarDelete = require("../handlers/variableDeleteCommands.js");
+const AppCmdCreate = require("../handlers/applicationCreateCommands.js");
+const CheckGlobalSlashCreate = require("../handlers/checkGlobalSlashCreate.js");
+const CheckSlashUpdate = require("../handlers/checkSlashUpdate.js");
+const AppCmdUpdate = require("../handlers/applicationUpdateCommands.js");
+const AppCmdDelete= require("../handlers/applicationDeleteCommands.js");
 
+require("../handlers/UpdateWarning")();
 const parser = require("../functions/parser");
 /**
  * The Class that log in the Discord bot to Discord
@@ -259,8 +289,13 @@ class Client {
       disabledFunctionsStarting: [],
       fetchInvites: false,
       boosterToken: null,
+      applicationCache: true
     }
   ) {
+client.aoi = {
+   options: options 
+    }
+
     if (options.typingStopEvent)
       client.on("typingStart", (channel, user) =>
         require("../handlers/typingStopHandling")(client, channel, user)
@@ -348,6 +383,132 @@ class Client {
       Database.connect();
     }
 
+if(options.applicationCache == true){
+        client.once("ready",() =>{ 
+
+    axios.get(client._api(`/applications/${client.user.id}/commands`), {
+
+        headers: {
+
+            Authorization: `Bot ${options.token}`
+
+        }
+
+    }).then(d=>{let i;
+d = d.data
+                let data;
+
+for(i=0;d.length >i ;i++){
+
+                if(d){
+
+                data = {
+
+                id: d[i].id,
+
+                name: d[i].name,
+
+                defaultPermission: d[i]. default_permission,
+
+                application : client,
+
+                guild : null, 
+
+                version : d[i].version ,
+
+                description: d[i]. description,
+
+                options: d[i].options || [],
+                    timestamp: snowflake.deconstruct(d[i].id).timestamp ,
+                    createdAt :snowflake.deconstruct(d[i].id).date
+
+                   }
+
+                }
+
+                else {
+
+                    data = {
+
+                        id:""
+
+                        }
+
+                    }
+
+                
+
+                   
+
+                    client.applications.slash.set(data.id,data)}
+
+    })
+
+    })
+        client.ws.on("APPLICATION_COMMAND_CREATE",(application) =>{
+            const data = {
+
+    id : application.id,
+
+    version: application.version ,
+
+    application: client,
+
+    defaultPermission : application.default_permission ,
+
+    name: application.name,
+
+    description: application.description ,
+
+    options: application.options ,
+
+    guild: client.guilds.cache.get(application.guild_id)|| null ,
+
+    timestamp :application.timestamp || Date.now() ,
+
+    createdAt: application.createdAt || new Date()
+
+    }
+            client.applications.slash.set(data.id,data)
+            })
+ client.ws.on("APPLICATION_COMMAND_UPDATE",(d,olda)=>{
+    
+     
+     let newData = {
+
+       id: d.id,
+
+       name: d.name,
+
+       description:d.description,
+
+       options: d.options || [],
+
+       defaultPermission : d.default_permission ,
+
+       guild : null ,
+
+       application : client ,
+
+       timestamp : Snowflake.deconstruct(d.id).timestamp,
+
+       createdAt: Snowflake.deconstruct(d.id).date
+
+       } 
+     client.applications.slash.set(d.id,newData)
+     })
+            
+            client.ws.on("APPLICATION_COMMAND_DELETE",(data) =>{
+          client.applications.slash.delete(data.id)
+                })
+            }else{}
+
+        client.on("checkGlobalSlashCreate",(type,name,client) =>{ CheckGlobalSlashCreate(type,name,client) 
+                                })                                 
+     client.on("checkSlashUpdate",(client,commandID,guildID,oldData) =>{ CheckSlashUpdate(client,commandID,guildID,oldData)
+                                               })
+        
+
     client.login(options.token).catch((err) => TypeError(`Invalid token`));
   }
 
@@ -419,7 +580,54 @@ class Client {
       d
     );
   }
-
+  
+  channelPinsUpdateCommand(d = {}) {
+    client.channel_pins_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  webhookUpdateCommand(d = {}) {
+    client.webhook_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  messageDeleteBulkCommand(d = {}) {
+    client.message_delete_bulk_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+    
+  emojiUpdateCommand(d = {}) {
+    client.emoji_update_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  emojiDeleteCommand(d = {}) {
+    client.emoji_delete_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  emojiCreateCommand(d = {}) {
+    client.emoji_create_commands.set(
+      Math.floor(Math.random() * 5939293959),
+      d
+    );
+  }
+  
+  guildUpdateCommand(d = {}) {
+    client.guild_update_commands.set(
+      Math.floor(Math.random() * 5993838594992),
+      d
+    );
+  }
+  
   memberUpdateCommand(d = {}) {
     client.member_update_commands.set(client.member_update_commands.size, d);
   }
@@ -430,7 +638,7 @@ class Client {
       d
     );
   }
-
+  
   channelCreateCommand(d = {}) {
     client.channel_create_commands.set(
       Math.floor(Math.random() * 5939293959),
@@ -574,6 +782,101 @@ class Client {
     d.id = Math.floor(Math.random() * 494993848489);
 
     client.join_commands.set(d.id, d);
+  }
+
+functionErrorCommand(d = {}) {
+    if (!d.channel)
+      throw new Error(
+        `Error Command ${client.function_error_commands.size} needs a channel!`
+      );   
+    d.id = Math.floor(Math.random() * 494993848489);
+    client.function_error_commands.set(d.id, d);
+  }
+    
+    variableCreateCommand(d = {}) {
+    if (!d.channel)
+      throw new Error(
+        `Error Command ${client.variable_create_commands.size} needs a channel!`
+      );   
+
+    d.id = Math.floor(Math.random() * 494993848489);
+    client.variable_create_commands.set(d.id, d);
+  }
+       variableUpdateCommand(d = {}) {
+    if (!d.channel)
+      throw new Error(
+        `Error Command ${client.variable_update_commands.size} needs a channel!`
+      );    
+
+    d.id = Math.floor(Math.random() * 494993848489);
+    client.variable_update_commands.set(d.id, d);
+  }
+    variableDeleteCommand(d = {}) {
+   if (!d.channel)
+      throw new Error(
+        `Error Command ${client.variable_delete_commands.size} needs a channel!`
+     );    
+     
+
+    d.id = Math.floor(Math.random() * 494993848489);
+    client.variable_delete_commands.set(d.id, d);
+  }   
+    applicationCmdCreateCommand(d = {}) {
+
+    if (!d.channel)
+
+      throw new Error(
+
+        `Error Command ${client.application_cmd_create_commands.size} needs a channel!`
+
+      );
+
+    
+
+     
+
+    d.id = Math.floor(Math.random() * 494993848489);
+
+    client.application_cmd_create_commands.set(d.id, d);
+
+  }
+    applicationCmdUpdateCommand(d = {}) {
+
+    if (!d.channel)
+
+      throw new Error(
+
+        `Error Command ${client.application_cmd_update_commands.size} needs a channel!`
+
+      );
+
+    
+
+     
+
+    d.id = Math.floor(Math.random() * 494993848489);
+
+    client.application_cmd_update_commands.set(d.id, d);
+
+  }
+    applicationCmdDeleteCommand(d = {}) {
+
+    if (!d.channel)
+
+      throw new Error(
+
+        `Error Command ${client.application_cmd_delete_commands.size} needs a channel!`
+
+      );
+
+    
+
+     
+
+    d.id = Math.floor(Math.random() * 494993848489);
+
+    client.application_cmd_delete_commands.set(d.id, d);
+
   }
 
   status(
@@ -787,7 +1090,7 @@ class Client {
       require("../events/voiceStateUpdate")(client, olds, news);
     });
   }
-
+  
   onChannelDelete() {
     client.on("channelDelete", (channel) =>
       require("../events/channelDelete")(client, channel)
@@ -805,6 +1108,51 @@ class Client {
       require("../events/channelUpdate")(client, oldc, newc)
     );
   }
+  
+  onMessageDeleteBulk() {
+    client.on("messageDeleteBulk", (bulk) => {
+      require("../events/messageDeleteBulk")(client, bulk);
+    });
+  }
+  
+  onGuildUpdate() {
+    client.on("guildUpdate", (oldg, newg) =>
+      require("../events/guildUpdate")(client, oldg, newg)
+    );
+  }
+  
+     // event only provides data about the channel, not the message itself:
+  onChannelPinsUpdate() {
+    client.on("channelPinsUpdate", (pinch) =>
+      require("../events/channelPinsUpdate")(client, pinch)
+    );
+  }
+    
+    // event only provides data about the channel, not the webhook itself:
+  onWebhookUpdate() {
+    client.on("webhookUpdate", (whc) =>
+      require("../events/webhookUpdate")(client, whc)
+    );
+  }
+    
+  onEmojiUpdate() {
+    client.on("emojiUpdate", (olde, newe) =>
+      require("../events/emojiUpdate")(client, olde, newe)
+    );
+  }
+  
+   onEmojiDelete() {
+    client.on("emojiDelete", (emoji) =>
+      require("../events/emojiDelete")(client, emoji)
+    );
+  }
+  
+  onEmojiCreate() {
+    client.on("emojiCreate", (emoji) =>
+      require("../events/emojiCreate")(client, emoji)
+    );
+  }
+  
   onRoleUpdate() {
     client.on("roleUpdate", (oldr, newr) =>
       require("../events/roleUpdate")(client, oldr, newr)
@@ -908,6 +1256,57 @@ class Client {
   onMessageDelete() {
     client.on("messageDelete", (msg) => MessageDelete(client, msg, client.db));
   }
+
+  onFunctionError() {
+
+    client.on("CUSTOM_ERROR", (client,err,db,command,message) => CustomError(client, err, client.db,command,message));
+
+  }
+    
+    onVariableCreate() {
+
+    client.on("VARIABLE_CREATE", (client,db, variables,keys, values, timestamp) => VarCreate(client,client.db,variables,keys, values, timestamp));
+
+  }
+    
+    onVariableUpdate() {
+
+    client.on("VARIABLE_UPDATE", (client,db,oldv,newv) => VarUpdate(client,client.db,oldv,newv));
+
+  }
+
+    onVariableDelete() {
+
+    client.on("VARIABLE_DELETE", (client,db,variable,key,value,type, timestamp) => VarDelete(client,client.db, variable,key,value,type, timestamp));
+
+  }
+    
+    onApplicationCmdCreate() {
+
+    client.on("applicationCommandCreate", (application) => AppCmdCreate(application,client));
+
+  }
+    onApplicationCmdUpdate(){
+        client.on("applicationCommandUpdate",(oldData,newData) => {
+            
+            AppCmdUpdate(oldData,newData,client)
+            
+        })
+                  }
+    onApplicationCmdDelete(){
+
+        client.on("applicationCommandDelete", (client,application) => {
+
+            
+
+            AppCmdDelete(client, application)
+
+            
+
+        })
+
+                  }
+    
 
   variables(op = {}) {
     Object.assign(client.variables, op);
