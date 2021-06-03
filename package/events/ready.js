@@ -2,6 +2,7 @@ const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
 const Discord = require("discord.js");
 const api = require("../handlers/api");
+const DanBotHosting = require("danbot-hosting")
 
 module.exports = async (client, Database) => {
   const owner = (await client.fetchApplication()).owner;
