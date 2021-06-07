@@ -56,7 +56,7 @@ button.start(data.message.id,data.author.id,data.button.customID,data)
      button.once("CustomCollectorOff",async data =>{d.data.buttonEnd = data })
  }
     return {
-        code: code.replaceLast(`$testCollector${inside}`,"")
+        code: code.replaceLast(`$buttonCollector${inside}`,"")
     }
     
 }
