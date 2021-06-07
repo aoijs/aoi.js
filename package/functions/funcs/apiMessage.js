@@ -25,6 +25,6 @@ module.exports = async d=>{
      }).catch(e=>console.log(e.message))
 // console.log(msg)
  return {
-     code: code.replaceLast(`$testApi${inside}`,returnID === "no" ? "" : msg.data.id )
+     code: code.replaceLast(`$apiMessage${inside}`,returnID === "no" ? "" : msg.data.id )
  }
 }
