@@ -10,5 +10,6 @@ module.exports = {
 	flanger: "Apply a flanging effect for the audio;Value '1' to enable and '0' to disable;flanger;;[0,1].includes({value})&&{value}==1",
 	phaser: "Add a phasing effect for the audio;Value '1' to enable and '0' to disable;aphaser;;[0,1].includes({value})&&{value}==1",
 	surround: "Apply surround filter for the audio;Value '1' to enable and '0' to disable;surround;;[0,1].includes({value})&&{value}==1",
-	earwax: "Make audio easier to listen on headphones;Value '1' to enable and '0' to disable;earwax;;[0,1].includes({value})&&{value}==1"
+	earwax: "Make audio easier to listen on headphones;Value '1' to enable and '0' to disable;earwax;;[0,1].includes({value})&&{value}==1",
+        eightd: "Make audio \"move\" through L and R channels on your headphones;Value '1' to enable and value '0' to disable;apulsator;hz=0.08;[0,1].includes({value})$${value}==1"
 }
