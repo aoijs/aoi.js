@@ -18,24 +18,36 @@ class Interaction {
         this.author = new Discord.User(this.client, this.member.user)
         
         this.token = data.token
-        
+       
         this.id = data.id
         
         this.type = data.type 
-        
+      if(this.type === 2){
         this.command = {
             id: data.data.id,
             name: data.data.name,
             description: data.data.description
+            }
+          this.options = data.data.options
+          }
+        if(this.type === 3){
+            this.button = {
+            customID : data.data.custom_id,
+            componentType : data.data.component_type 
+            }
             
-            
-        }
+                this.message = new Discord.Message(this.client,data.message,this.channel) 
+            }
+        
        
-        this.options = data.data.options
-  
+        
+ //console.log(this)
+// console.log(data)
+        
     }
   
     reply(content,embed,type) {
+      if(this.type === 2){
         try {
       var check;
     let c;      if(this.client.aoi.options.applicationCache){
@@ -162,6 +174,27 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
        .then(res =>"successful").catch(e => {console.log(e.message)})
         } catch (e) {
             console.log(e.message)
+        }
+            }
+        else{
+      try {
+          axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
+     
+            type: 4,
+            data: {
+                content: typeof content == "string" ? content : "", 
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                flags: type
+            }
+                
+        }) 
+            
+            
+            
+       .then(res =>"successful").catch(e => {console.log(e.message)})
+        } catch (e) {
+            console.log(e.message)
+        }
         }
     }
     
