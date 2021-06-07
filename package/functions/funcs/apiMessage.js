@@ -9,15 +9,15 @@ module.exports = async d=>{
     const [content,embed = {},components=[],returnID="no"] = inside.splits 
     if(!content && embed === {} && embed === "") return d.error("Provide Either A Content Or A Embed Structure") 
    const e = embed === {} ? embed : await ErrorParser(embed) 
-    //console.log(e)
+   
    const c = components === [] ? [] : await ComponentParser(components) 
- //  console.log(JSON.stringify(c,null,2))
+
  let msg =  await axios.post(d.client._api(`channels/${d.channel.id}/messages`),{
      content: content ,
      embed: e,
      components: c
          
-  //   message_reference: msgReply 
+  //   message_reference: msgReply
      },{
      headers:{
          Authorization:`Bot ${d.client.token}`
