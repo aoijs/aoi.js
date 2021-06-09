@@ -8,7 +8,7 @@ module.exports = async d =>{
     const err = d.inside(inside) 
     if (err) return d.error(err) 
 //----------------------------------------//
-    let [messageID,filter,time,customIDs,cmds,errorMsg="", collectorendmsg=""] = inside.splits 
+    let [messageID,filter,time,customIDs,cmds,errorMsg="", endcommand=""] = inside.splits 
  time = require('ms')(time) 
 
 if(!time) return d.error("Invalid Time provided") 
@@ -22,6 +22,7 @@ if(d.client.awaited_commands.find(y=>y.name === x)){}
 //---------------------------------------//
  console.log("messageid:"+messageID)
 const button = new CustomCollector(messageID,filter,time,customIDs,cmds,errorMsg.split(","),d.client)
+const endcmd = d.client.awaited_commands.find(x=>x.name === endcommand);
 // console.log("test collection")
 //    console.log(d.data.interaction)
 //---------------------------------------//
@@ -33,6 +34,7 @@ button.start(data.message.id,data.author.id,data.button.customID,data)
      )
  button.on("ItemFound",async data =>{
      const cmd =d.client.awaited_commands.find(x=>x.name === cmds[customIDs.indexOf(data.button.customID)])
+     
      if(!cmd) return ;
      await Interpreter (d.client,
                         {
@@ -52,8 +54,20 @@ button.start(data.message.id,data.author.id,data.button.customID,data)
      }
      )
  })
- if(collectorendmsg !== ""){
-     button.once("CustomCollectorOff",async data =>{d.data.buttonEnd = data })
+ if(endcommand!== ""){
+     button.once("CustomCollectorOff",async data =>{await Interpreter (d.client,
+                        {
+         
+     },
+                        [],
+                        endcmd,
+                        undefined,
+                        undefined,
+                        undefined,
+                        {
+         interaction :data
+     }
+     )})
  }
     return {
         code: code.replaceLast(`$buttonCollector${inside}`,"")
