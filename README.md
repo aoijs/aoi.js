@@ -1,11 +1,11 @@
   <br />
     <p>
-    <a href="https://dbd.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
+    <a href="https://aoi.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
   </p>
 
 # Aoi.JS
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
-[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://dbd.js.org/invite)
+[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://aoi.js.org/invite)
 
 ## Table Of Contents
 - [About](#about)
