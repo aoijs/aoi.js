@@ -109,7 +109,6 @@ module.exports = async (client, Database) => {
     f();
   }
   readyCommands(client);
-  console.log(`Ready on client ${client.user.tag}`);
 
   if (client.dbhToken) {
     const API = new DanBotHosting.Client(client.dbhToken, client);
