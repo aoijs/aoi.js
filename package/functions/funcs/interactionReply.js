@@ -1,3 +1,4 @@
+const ComponentParser = require('../../handlers/componentParser.js')
 const embed = require("../../handlers/errors")
 module.exports = async d => {
     const code = d.command.code 
@@ -9,11 +10,7 @@ module.exports = async d => {
     
     const fields = inside.splits
     let fie = fields
-    let type = 0
-    let content = fie [0]
-    if(fields.length >= 3){
-        type = isNaN(fie[fie.length-1]) == false ? fie.pop() : 0
-        }
+    let [c,e, components="",flags=0,type=4] = fields
  
     const m = await embed(d, fie.shift(), true) 
     
@@ -26,7 +23,7 @@ module.exports = async d => {
     }
     
     if (d.data.interaction) {
-        const msg = await d.data.interaction.reply(m.message, embeds,type) 
+        const msg = await d.data.interaction.reply(m.message, embeds, components === "" ? "" : ComponentParser(components),flags,type) 
         //if (! msg) return d.error(`❌ Failed to reply to slash command!`
     }
     
