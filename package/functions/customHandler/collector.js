@@ -3,7 +3,7 @@ const axios = require('axios')
 const {Collection} = require ('discord.js')
 const {EventEmitter} = require('events') 
 class CustomCollector extends EventEmitter {
-constructor(msgid,userFilter,time,data,cmds,errorMessage="",client){
+constructor(msgid,userFilter,time,data,cmds,errorMessage="",client,command){
     super();
    
     this.msgid = msgid 
@@ -13,6 +13,7 @@ constructor(msgid,userFilter,time,data,cmds,errorMessage="",client){
     this.cmds = cmds
     this.errmsg = errorMessage
     this.mainData = []
+    this.timeout = setTimeout(()=>{client.applications.events.emit("stopcollection")},this._timeout)
    this.endsOn = (Date.now() + Number(time));
    Object.defineProperty(this,"client",{value:client})
    }
@@ -23,11 +24,11 @@ constructor(msgid,userFilter,time,data,cmds,errorMessage="",client){
          this.mainData.push(data)
          this.emit("ItemFound",data)
      }
-  else if(this.endson < Date.now() && this._timeout){
+  this.once("stopcollection",()=>{
 this.emit("CustomCollectorOff",this.mainData); 
 delete this._timeout   
 //this.off("ItemFound",this.listeners("ItemFound")[0])
-}
+})
    
     /* else{console.log(`no matching data found.
 data : ${JSON.stringify(this.data)} 
@@ -40,21 +41,21 @@ author: ${this.filter}
 user: ${user},
 errmsg:${JSON.stringify([this.errmsg[0],ErrorParser(this.errmsg[1]),this.errmsg[2]])}
 `)
-          } */
- if(this.filter !== "everyone" && this.filter !== user && this.errmsg !== []){
-  
+          }*/
+ if(this.filter !== "everyone" && this.filter !== user && this.errmsg !== [] && this._timeout){
+     //console.log([ErrorParser(this.errmsg[1])])
 axios.post(this.client._api(`/interactions/${data.id}/${data.token}/callback`),{
     type:4,
     data:{
     content:this.errmsg[0] || "",
     embeds:(this.errmsg[1] !== "" || this.errmsg[1]) ? [JSON.parse(JSON.stringify(ErrorParser(this.errmsg[1])).replace(/#COMMA#/g,","))] : [],
-    flags: this.errmsg[2] !== "" ? Number(this.errmsg[2]): 64
+    flags: this.errmsg[2] !== "" ? Number(this.errmsg[2]): 0
 }
     },{
     headers:{
         Authorization:`Bot ${this.client.token}`
     }
-})
+}).catch(err=>{})
 }
 }    
     }
