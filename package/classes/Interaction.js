@@ -46,8 +46,8 @@ class Interaction {
         
     }
   
-    reply(content,embed,type) {
-      if(this.type === 2){
+    reply(content,embed, components,flags,type) {     
+    if(this.type === 2){
         try {
       var check;
     let c;      if(this.client.aoi.options.applicationCache){
@@ -160,11 +160,13 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
            //console.log(this.command)
             axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
      
-            type: 4,
+            type: type,
             data: {
                 content: typeof content == "string" ? content : "", 
                 embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                flags: type
+               
+             
+                flags: flags
             }
                 
         }) 
@@ -180,11 +182,12 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
       try {
           axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
      
-            type: 4,
+            type: type,
             data: {
                 content: typeof content == "string" ? content : "", 
                 embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                flags: type
+                components: typeof components === "object" ? Array.isArray(components) ? components : [components] : [] ,
+                flags: flags
             }
                 
         }) 
@@ -198,9 +201,44 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
         }
     }
     
-    async delete() {
+   async delete() {
         const req = await axios.delete
     }
+  async get(){
+      const e = await axios.get(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      })
+      return e.data 
+  }
+ async  edit(content,embed, components){
+      const e = await axios.patch(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+         
+
+                content: typeof content == "string" ? content : "", 
+
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+
+              components: components 
+
+              
+
+            }
+      ,{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      }).catch(e=>console.log(e.message))
+     
+ }
+ async deleteResponse(){
+      const e = await axios.delete(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      })
+ }
 }
 
 module.exports =Interaction
