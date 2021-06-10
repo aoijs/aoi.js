@@ -44,6 +44,11 @@ bot.command({
 name: "ping", //Trigger name (command name)
 code: `$ping Pong!` //Code
 })
+
+bot.readyCommand({
+    channel: "", //You can use this or not.
+    code: `$log[Ready on $userTag[$clientID]]` //Enter the code / message.
+})
 ```
 
 ### Variables
