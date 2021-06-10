@@ -28,6 +28,7 @@ constructor(msgid,userFilter,time,data,cmds,errorMessage="",client,command){
 this.emit("CustomCollectorOff",this.mainData); 
 delete this._timeout   
 //this.off("ItemFound",this.listeners("ItemFound")[0])
+    delete this._events.ItemFound 
 },this._timeout)
    
     /* else{console.log(`no matching data found.
