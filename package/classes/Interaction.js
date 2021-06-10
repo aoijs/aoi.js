@@ -18,24 +18,36 @@ class Interaction {
         this.author = new Discord.User(this.client, this.member.user)
         
         this.token = data.token
-        
+       
         this.id = data.id
         
         this.type = data.type 
-        
+      if(this.type === 2){
         this.command = {
             id: data.data.id,
             name: data.data.name,
             description: data.data.description
+            }
+          this.options = data.data.options
+          }
+        if(this.type === 3){
+            this.button = {
+            customID : data.data.custom_id,
+            componentType : data.data.component_type 
+            }
             
-            
-        }
+                this.message = new Discord.Message(this.client,data.message,this.channel) 
+            }
+        
        
-        this.options = data.data.options
-  
+        
+ //console.log(this)
+// console.log(data)
+        
     }
   
-    reply(content,embed,type) {
+    reply(content,embed, components,flags,type) {     
+    if(this.type === 2){
         try {
       var check;
     let c;      if(this.client.aoi.options.applicationCache){
@@ -148,11 +160,13 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
            //console.log(this.command)
             axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
      
-            type: 4,
+            type: type,
             data: {
                 content: typeof content == "string" ? content : "", 
                 embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                flags: type
+               
+             
+                flags: flags
             }
                 
         }) 
@@ -163,11 +177,68 @@ d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
         } catch (e) {
             console.log(e.message)
         }
+            }
+        else{
+      try {
+          axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
+     
+            type: type,
+            data: {
+                content: typeof content == "string" ? content : "", 
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                components: typeof components === "object" ? Array.isArray(components) ? components : [components] : [] ,
+                flags: flags
+            }
+                
+        }) 
+            
+            
+            
+       .then(res =>"successful").catch(e => {console.log(e.message)})
+        } catch (e) {
+            console.log(e.message)
+        }
+        }
     }
     
-    async delete() {
+   async delete() {
         const req = await axios.delete
     }
+  async get(){
+      const e = await axios.get(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      })
+      return e.data 
+  }
+ async  edit(content,embed, components){
+      const e = await axios.patch(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+         
+
+                content: typeof content == "string" ? content : "", 
+
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+
+              components: components 
+
+              
+
+            }
+      ,{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      }).catch(e=>console.log(e.message))
+     
+ }
+ async deleteResponse(){
+      const e = await axios.delete(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`),{
+          headers:{
+              Authorization:`Bot ${this.client.token}`
+              }
+      })
+ }
 }
 
 module.exports =Interaction
