@@ -27,7 +27,7 @@ const endcmd = d.client.awaited_commands.find(x=>x.name === endcommand);
 //    console.log(d.data.interaction)
 //---------------------------------------//
  d.client.applications.events.on("ButtonClick",async data=>{ 
-     console.log("buttonclick event working")
+     //console.log("buttonclick event working")
 
 button.start(data.message.id,data.author.id,data.button.customID,data)
  }
