@@ -13,7 +13,7 @@ constructor(msgid,userFilter,time,data,cmds,errorMessage="",client,command){
     this.cmds = cmds
     this.errmsg = errorMessage
     this.mainData = []
-    this.timeout = setTimeout(()=>{client.applications.events.emit("stopcollection")},this._timeout)
+    this.timeout = setTimeout
    this.endsOn = (Date.now() + Number(time));
    Object.defineProperty(this,"client",{value:client})
    }
@@ -24,11 +24,11 @@ constructor(msgid,userFilter,time,data,cmds,errorMessage="",client,command){
          this.mainData.push(data)
          this.emit("ItemFound",data)
      }
-  this.once("stopcollection",()=>{
+  this.timeout(()=>{
 this.emit("CustomCollectorOff",this.mainData); 
 delete this._timeout   
 //this.off("ItemFound",this.listeners("ItemFound")[0])
-})
+},this._timeout)
    
     /* else{console.log(`no matching data found.
 data : ${JSON.stringify(this.data)} 
@@ -42,7 +42,7 @@ user: ${user},
 errmsg:${JSON.stringify([this.errmsg[0],ErrorParser(this.errmsg[1]),this.errmsg[2]])}
 `)
           }*/
- if(this.filter !== "everyone" && this.filter !== user && this.errmsg !== [] && this._timeout){
+ if(this.filter !== "everyone" && this.filter !== user && this.errmsg !== [] && this.endsOn > Date.now()){
      //console.log([ErrorParser(this.errmsg[1])])
 axios.post(this.client._api(`/interactions/${data.id}/${data.token}/callback`),{
     type:4,
