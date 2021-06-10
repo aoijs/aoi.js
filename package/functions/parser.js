@@ -517,7 +517,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $reactionCount: `Returns the amount of people that have given this reaction to this message;$reactionCount[channelID;messageID;emoji]`,
   $botPing: "Returns the Client Latency ms",
   $interactionReply:
-    "replies to an interaction (slash command);$interactionReply[message;embeds...;type (default is 0 , 64 for ephemeral)]",
+    "replies to an interaction (slash command);$interactionReply[content;embeds;components (optional);flags (optional);type (optional)]",
   $clearSongQueue:
     "Clear all songs in queue besides 1st song in queue;$clearSongQueue",
   $messageID: `Returns the user's message ID `,
