@@ -3,15 +3,19 @@ const ComponentParser = (c) =>{
     
     if(checker("actionRow")){ 
         const actionRows = c.split("{actionRow:").slice(1)
-    let buttons = [] 
+    
     let res = [] 
     let data;
     actionRows.forEach(x=>{
-        let y = x.split("}")[0]
+       
+        let y = x.split("}")[0] 
+        //console.log("y:"+y)
         const inside = y.split(":")
+       // console.log("inside:"+inside)
+        let buttons = [] 
         inside.forEach(z=>{
         let [label,type,style,cus,emoji=undefined] = z.split(",") 
-     //   console.log(z)
+//     console.log(z)
        
     //   console.log(emoji)
        if(style == 5){
@@ -34,6 +38,7 @@ const ComponentParser = (c) =>{
     })
         
     return res 
+        //console.log(res)
         }
 }
 module.exports = ComponentParser;
