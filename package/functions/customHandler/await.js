@@ -17,7 +17,7 @@ async await(msgid,user,customID,data){
    if(this.msgID === msgid && this.user === user && this.customIDs.includes(customID) && this.uses > this.tries){
 this.emit("AwaitButton",data)
     
-     /*  console.log(`tries: ${this.tries},
+       /*console.log(`tries: ${this.tries},
 uses: ${this.uses}`)*/
        this.tries += 1
        }
@@ -27,6 +27,7 @@ uses: ${this.uses}`)*/
  }
   
   if(this.user !== user && this.uses > this.tries){
+      if(this.error.length !==0){
       axios.post(this.client._api(`interactions/${data.id}/${data.token}/callback`),{
           type:4,
           data:{
@@ -39,7 +40,7 @@ uses: ${this.uses}`)*/
               Authorization:`Bot ${this.client.token}` 
               }
           }).catch(err=>console.log(err.message))
-                   
+                   }
       }
       }
       
