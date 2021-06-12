@@ -20,7 +20,7 @@ if(d.client.awaited_commands.find(y=>y.name === x)){}
      })
  customIDs = customIDs.split(",") 
 //---------------------------------------//
- console.log("messageid:"+messageID)
+ //console.log("messageid:"+messageID)
 const button = new CustomCollector(messageID,filter,time,customIDs,cmds,errorMsg.split(","),d.client)
 const endcmd = d.client.awaited_commands.find(x=>x.name === endcommand);
 // console.log("test collection")
