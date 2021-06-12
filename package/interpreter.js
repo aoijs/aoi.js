@@ -27,7 +27,9 @@ const interpreter = async (
     .split("\\}")
     .join("#LEFT_BRACKET#")
     .split("\\:")
-    .join("#COLON#");
+    .join("#COLON#")
+    .split("\\,")
+    .join("#COMMA#");
 
   //if statements
   if (code.toLowerCase().includes("$if[")) {

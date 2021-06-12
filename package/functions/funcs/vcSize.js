@@ -32,7 +32,7 @@ module.exports = async d =>{
 if(c.size == 0){res = 0}
         const guild = d.client.guilds.cache.get(guildID) 
         if(!guild) return d.error(`:x: Invalid guildID Provided in $vcSize${inside}`) 
-      let oo =  c.filter(x=>x.channel.guild.id == guild.id) 
+      let oo =  c.find(x=>x.channel.guild.id == guild.id) 
     if(oo.size == 0) { res = 0 }
 else{
     switch (type) {

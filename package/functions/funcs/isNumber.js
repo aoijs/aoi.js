@@ -11,7 +11,7 @@ module.exports = (d) => {
   return {
     code: code.replaceLast(
       `$isNumber${inside}`,
-      inside.inside === "" ? false : isNaN(inside.inside) ? false : true
+      inside.inside.trim() === "" ? false : isNaN(inside.inside.trim()) ? false : true
     ),
   };
 };
