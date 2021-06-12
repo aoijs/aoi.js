@@ -11,7 +11,7 @@ module.exports = async d=>{
    const e =embed !== "" ? await ErrorParser(embed) : {}
     //console.log(e)
    const c = components === [] ? [] : await ComponentParser(components) 
- //  console.log(JSON.stringify(c,null,2))
+//console.log(JSON.stringify(c,null,2))
 
 const data = {  content: content ,
      embed: e,
@@ -22,15 +22,17 @@ if(msgReply !== ""){
        let [Reply,mention = false] = msgReply.split(":")
 
   data.message_reference= {message_id : Reply} 
-    data.allowed_mentions.replied_user = mention 
+    data.allowed_mentions.replied_user = mention.replace("yes",true).replace("no",false)
 }
  let msg =  await axios.post(d.client._api(`channels/${d.channel.id}/messages`),
   data,{
      headers:{
          Authorization:`Bot ${d.client.token}`
          }
-     }).catch(e=>d.error(e.message))
-
+     }).catch(e=>{console.log("$apiMessageError:"+e.message)
+d.error(e.message)                 
+                 })
+// console.log(msg)
  return {
      code: code.replaceLast(`$apiMessage${inside}`,returnID === "no" ? "" : msg.data.id )
  }
