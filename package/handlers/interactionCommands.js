@@ -30,7 +30,8 @@ if(interaction.type === 2){
         member: interaction.member,
         guild: interaction.guild,
         channel: interaction.channel,
-        message: interaction.message 
+        message: interaction.message,
+        client : client 
       },
       args,
       command,
