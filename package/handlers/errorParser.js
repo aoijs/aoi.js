@@ -52,7 +52,7 @@ if( checker("color")){
 if(msg.includes("{timestamp")){
     let timestamp = msg.split("{timestamp")[1].split("}")[0].replace(":","")
 
-    if(timestamp===""){timestamp = Date.now()} 
+    if(timestamp==="" || timestamp === "ms"){timestamp = Date.now()} 
     embed.timestamp = new Date(Number(timestamp))
   }
 //---------------------------------------//
