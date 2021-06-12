@@ -1,4 +1,3 @@
-
 const ErrorParser = (msg) =>{
  const checker = (thingy)  => msg.includes("{"+thingy+":");
     const embed = {}
@@ -11,17 +10,22 @@ const ErrorParser = (msg) =>{
 //---------------------------------------//
    if(checker("footer")){ 
       const footer = msg.split("{footer:")[1].split("}")[0]
- const [footerText,footerURL=null] = footer.split(":") 
+ const fields = footer.split(":") 
+     const  footerText = fields.shift()
+     const  footerURL = fields.join(":")
  embed.footer ={text:footerText,icon_url:footerURL} 
        }
 //---------------------------------------//
     if(checker ("author")){
-     const author =   msg.split("{author")[1].split("}")[0] 
-    const [authorName,authorIcon=null,authorURL=""]= author.split(":") 
+     const author =   msg.split("{author:")[1].split("}")[0] 
+    const fields = author.split(":") 
+const authorName = fields.shift() 
+const authorURL = fields.pop()
+const authorIcon = fields.join(":")
     embed.author = {
-        name:authorName,
+        name:authorName.replace(/#COLON#/g,":"),
         icon_url:authorIcon,
-        url:authorURL 
+       //url:authorURL.replace(/#COLON#/g,":") 
         }
         }
 //---------------------------------------//
@@ -45,10 +49,11 @@ if( checker("color")){
 }
      }
 //---------------------------------------//
-if( checker ("timestamp")){
-    const timestamp = msg.split("{timestamp:")[1].split("}")[0]
+if(msg.includes("{timestamp")){
+    let timestamp = msg.split("{timestamp")[1].split("}")[0].replace(":","")
+
     if(timestamp===""){timestamp = Date.now()} 
-    embed.timestamp = timestamp 
+    embed.timestamp = new Date(Number(timestamp))
   }
 //---------------------------------------//
  if( checker("field")){
@@ -56,8 +61,13 @@ if( checker ("timestamp")){
  const res = [] 
  fields.forEach(x=>{
      const y = x.split("}")[0]
-    const [name, value,incline=false] = y.split(":") 
-    res.push({name:name,value:value,incline:incline}) 
+    const field = y.split(":")
+    const name = field.shift() 
+    const inline = field.pop()
+    const value = field.join(":")
+
+ 
+    res.push({name:name.replace(/#COLON#/g,":"),value:value.replace(/#COLON#/g,":"),incline:inline.replace("yes",true).replace("no",false)}) 
      })
   embed.fields = res 
      }
