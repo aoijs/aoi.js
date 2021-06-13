@@ -25,7 +25,7 @@ const authorIcon = fields.join(":")
     embed.author = {
         name:authorName.replace(/#COLON#/g,":"),
         icon_url:authorIcon,
-       //url:authorURL.replace(/#COLON#/g,":") 
+       url:authorURL.replace(/#COLON#/g,":") 
         }
         }
 //---------------------------------------//
