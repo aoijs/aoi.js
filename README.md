@@ -1,11 +1,11 @@
   <br />
     <p>
-    <a href="https://dbd.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
+    <a href="https://aoi.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
   </p>
 
 # Aoi.JS
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
-[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://dbd.js.org/invite)
+[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://aoi.js.org/invite)
 
 ## Table Of Contents
 - [About](#about)
@@ -43,6 +43,11 @@ bot.onMessage() //Allows to run Commands
 bot.command({
 name: "ping", //Trigger name (command name)
 code: `$ping Pong!` //Code
+})
+
+bot.readyCommand({
+    channel: "", //You can use this or not.
+    code: `$log[Ready on $userTag[$clientID]]` //Enter the code / message.
 })
 ```
 
@@ -115,7 +120,7 @@ More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 ## Links
 Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
 - [Website](https://aoi.js.org)
-- [Discord Server](https://dbd.js.org/invite)
+- [Discord Server](https://aoi.js.org/invite)
 - [Documentation](https://aoi.leref.ga)
 
 ## Contributing

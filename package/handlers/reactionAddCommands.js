@@ -12,7 +12,7 @@ module.exports = async (client, reaction, user) => {
 
   const channelUsed = reaction.message.channel
 
-  reaction.message = {...reaction.message}
+ // reaction.message = {...reaction.message}
 
   reaction.channelUsed = channelUsed.id
   reaction.message.reaction = reaction

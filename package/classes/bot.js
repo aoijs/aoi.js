@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const axios = require('axios')
 const DBDdb = require("dbdjs.db");
+const {EventEmitter} = require ('events') 
 const snowflake = Discord.SnowflakeUtil
 const WorkerPool = require("../handlers/workerPool");
 const searchIndexes = require("../handlers/KMP");
@@ -180,9 +181,12 @@ client._api = (url) =>
 //DBD.JS :)
 const fs = require("fs");
 client.cpu = 0.01313515189;
+Object.defineProperty(client,"global",{value:{}})
 client.applications = {
-    slash: new Discord.Collection()
+    slash: new Discord.Collection(),
+    events: new EventEmitter()
     }
+client.applications.events.on('ButtonClick',interaction =>{})
 client.voice_state_update_commands = new Discord.Collection();
 client.member_update_commands = new Discord.Collection();
 client.loop_commands = new Discord.Collection();
@@ -1323,7 +1327,8 @@ String.prototype.deleteBrackets = function () {
     .replace(/</g, "#LEFT_CLICK#")
     .replace(/=/g, "#EQUAL#")
     .replace(/{/g, "#RIGHT_BRACKET#")
-    .replace(/}/g, "#LEFT_BRACKET#");
+    .replace(/}/g, "#LEFT_BRACKET#")
+    .replace(/\,/g,"#COMMA#")
 };
 
 String.prototype.removeBrackets = String.prototype.deleteBrackets;
@@ -1440,7 +1445,8 @@ String.prototype.addBrackets = function () {
     .replace(/#LEFT_CLICK#/g, "<")
     .replace(/#EQUAL#/g, "=")
     .replace(/#RIGHT_BRACKET#/g, "{")
-    .replace(/#LEFT_BRACKET#/g, "}");
+    .replace(/#LEFT_BRACKET#/g, "}")
+    .replace(/#COMMA#/g,",")
 };
 
 Array.prototype.goof = function (sep = "_") {
