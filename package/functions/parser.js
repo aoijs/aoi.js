@@ -848,7 +848,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
     "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk:
     "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]"
-	$sqrt:
-	"Test"
+    $sqrt:
+	"Finds the square root of a number;$sqrt[num]"
 };
 module.exports = Parser;
