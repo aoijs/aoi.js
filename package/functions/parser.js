@@ -847,7 +847,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $webhookUpdate:
     "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk:
-    "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]"
+    "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
     $sqrt:
 	"Finds the square root of a number;$sqrt[num]"
 };
