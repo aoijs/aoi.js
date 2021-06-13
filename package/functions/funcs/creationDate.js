@@ -16,14 +16,15 @@ module.exports = async (d) => {
 
   let m;
 
-  let opt =
-    d.client.guilds.cache.get(option) ||
+  
+ let opt = 
+     d.client.guilds.cache.get(option) ||
     d.client.users.cache.get(option) ||
-    d.guild === null ? undefined : d.guild.roles.cache.get(option) ||
+    (d.guild === null ? undefined: d.guild.roles.cache.get(option)) ||
     d.client.channels.cache.get(option) ||
     d.client.emojis.cache.get(option) ||
     d.message.channel.messages.cache.get(option);
-
+//console.log("guild:"+d.client.guilds.cache.get(option)+"\nopt:"+opt)
   if (!opt) {
     opt = await d.client.users.fetch(option).catch((err) => {});
 

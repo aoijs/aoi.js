@@ -43,7 +43,7 @@ user: ${user},
 errmsg:${JSON.stringify([this.errmsg[0],ErrorParser(this.errmsg[1]),this.errmsg[2]])}
 `)
           }*/
- if(this.filter !== "everyone" && this.filter !== user && this.errmsg !== [] && this.endsOn > Date.now()){
+ if(this.filter !== "everyone" && this.filter !== user && this.errmsg.length !== 0 && this.endsOn > Date.now()){
      //console.log([ErrorParser(this.errmsg[1])])
 axios.post(this.client._api(`/interactions/${data.id}/${data.token}/callback`),{
     type:4,
