@@ -2,7 +2,7 @@ const interpreter = require("../interpreter");
 
 module.exports = async (client, interaction) => {
    let commands;
-if(interaction.type === 2){
+if(interaction.type === 3){
     client.applications.events.emit("ButtonClick",interaction)
 }
   commands = client.slash_commands
