@@ -16,7 +16,7 @@
     "discord.js": "^12.5.3",
     "moment": "^2.29.1",
     "ms-parser": "^1.0.5",
-    "parse-ms": "^3.0.0",
+    "parse-ms": "2.0.0",
     "soundcloud-downloader": "^1.0.0",
     "spotify-url-info": "^2.2.0",
     "yt-search": "^2.8.0",
