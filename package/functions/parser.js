@@ -841,8 +841,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
   $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
-//v3
-$fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
+  $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
   $getAttachments: "Gets attachment info of the provided Message; $getAttachments[channelID;messageID;position;property] \n property: name , id , size , height , width , url",
   $sendTTS: "send a tts message in the current channel (optional);$sendTTS[text] or $sendTTS[text;channelID]" ,
   $writeFile: "writes a text in the provided file. If file doesn't exist , it will create it.;$writeFile[file location;text; encoding (optional)]",
@@ -857,11 +856,13 @@ $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileS
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
   $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
   $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]",
-//3.0.5 
-$apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optional), components (optional), reference _message_id:mention the replied user(default false); Return id (optional default no)]",
-$awaitButtons: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
-$buttonCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
-$interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
-$interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)"
+  $apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optional), components (optional), reference _message_id:mention the replied user(default false); Return id (optional default no)]",
+  $awaitButtons: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
+  $buttonCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
+  $interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
+  $interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
+  $firstMessageID: "Returns First message's ID from the current channel or in given channel;$firstMessageID or $firstMessageID[channelID]",
+  $randomCase: "Generates the given text with Random cases;$randomCase[text]",
+  $reverse: "Converts the given characters into reverse order;$reverse[text or characters]"
 };
 module.exports = Parser;

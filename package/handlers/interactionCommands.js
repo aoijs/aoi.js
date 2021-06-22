@@ -2,13 +2,13 @@ const interpreter = require("../interpreter");
 
 module.exports = async (client, interaction) => {
    let commands;
-if(interaction.type === 2){
+if(interaction.type === 3){
     client.applications.events.emit("ButtonClick",interaction)
 }
   commands = client.slash_commands
     .array()
     .filter(
-      (c) =>interaction.type===2 ?c.name.toLowerCase() === interaction.command.name.toLowerCase() : (c.prototype ===  "button" && Array.isArray(c.name) ? c.name.includes(interaction.button.customID) : c.name === interaction.button.customID)
+      (c) =>interaction.type===2 ?c.name.toLowerCase() === interaction.command.name.toLowerCase() : (c.prototype ===  "button" && Array.isArray(c.name) ? c.name.find(x=> x === interaction.button.customID) : c.name === interaction.button.customID)
     );
   if (!commands.length) return;
 
@@ -30,7 +30,8 @@ if(interaction.type === 2){
         member: interaction.member,
         guild: interaction.guild,
         channel: interaction.channel,
-        message: interaction.message 
+        message: interaction.message,
+        client : client 
       },
       args,
       command,
