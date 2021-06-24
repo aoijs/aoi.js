@@ -849,7 +849,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $renameFile: "renames the provided file;$renameFile[oldname;newname]",
   $serverLeaderboard: "returns a learderboard of servers of the provided variable;$serverLeaderboard[variable;asc/desc(optional);{top}. {servername}. {value} (optional);list(optional);page(optional)]",
   $vcSize : "returns the size of the provided type in Provided guild or global;$vcSize[channels/users/songs;guildID/global (optional)]",
-  $handleError: "function that is used in onFunctionError callback;$handleError[functionError option]",
+  $handleError: "function that is used in onFunctionError callback;$handleError[option];$handleError[command]",
   $oldVariable: "gets the data from variable Callbacks (update and delete one);$oldVariable[variable options]",
   $newVariable: "gets the data from variable Callbacks (Update and Create one);$newVariable[variable options]",
   $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
