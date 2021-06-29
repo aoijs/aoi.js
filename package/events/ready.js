@@ -25,7 +25,7 @@ module.exports = async (client, Database) => {
           parallel.removeAllListeners();
           resolve();
         }
-      }); //Copyright © DBD.JS by DBD.JS Team
+      }); //Copyright © Aoi.JS
 
       const guilds = client.guilds.cache.array();
 
@@ -62,9 +62,9 @@ module.exports = async (client, Database) => {
       }
     });
 
-  console.log("Running Aoi.js <3");
+  console.log(`Ready on aoi.js || v` + require("../../package.json").version);
   console.log(
-    "Need help? Visit our Support Server! https://discord.gg/HMUfMXDQsV"
+    "Our Discord Server: https://aoi.js.org/invite"
   );
 
   if (client.statuses.size) {
