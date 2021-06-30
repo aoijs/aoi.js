@@ -6,9 +6,9 @@ module.exports = {
    * @param {!Object} options The options to use Discord as a Bot
    * @example
    *
-   *        new Bot({token:"Discord Bot Token", prefix:"!"})
+   *        new Bot({token:"Discord Bot Token", prefix:"Prefix"})
    */
   Bot: Client,
 };
 
-//DBD.JS client
+//Aoi.JS client
