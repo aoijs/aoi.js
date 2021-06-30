@@ -1,6 +1,6 @@
   <br />
     <p>
-    <a href="https://aoi.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
+    <a href="(https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
   </p>
 
 # Aoi.JS
@@ -12,7 +12,7 @@
   - [Setup](#setup)
   - [Variables](#variables)
   - [Events / Callbacks](#callbacks)
-- [Additional Support](#methods)
+- [Additional Support](#additional-support)
   - [Slash Commands](#slash-commands)
   - [Music](#music)
 - [Links](#links)
@@ -79,7 +79,7 @@ bot.joinCommand({
 bot.onJoined()
 ```
 
-## Additional Support
+### Additional Support
 
 ### Slash Commands
 
