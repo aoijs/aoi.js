@@ -4,8 +4,9 @@
   </p>
 
 # Aoi.JS
+[![Discord Server](https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white)](https://aoi.js.org/invite)
+[![NPM Version](https://img.shields.io/npm/v/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
-[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://aoi.js.org/invite)
 
 ## Table Of Contents
 - [About](#about)
@@ -27,6 +28,14 @@ It's swift and flexible using functions. </br>
 
  Open Source for the Community ❤️ <br>
  </br>
+ 
+## Installation
+
+**Node.js 12.0.0 or newer is required.**  
+
+```sh-session
+npm install aoi.js
+```
 
 ## Examples
 
