@@ -109,6 +109,22 @@ declare module "aoi.js" {
     onPresenceUpdate(): void;
     onVoiceStateUpdate(): void;
     onInteractionCreate(): void;
+    onGuildUpdate(): void;
+    onEmojiCreate(): void;
+    onEmojiUpdate(): void;
+    onEmojiDelete(): void;
+    onReactionRemoveAll(): void;
+    onReactionRemoveEmoji(): void;
+    onMessageDeleteBulk(): void;
+    onWebhookUpdate(): void;
+    onChannelPinsUpdate(): void;
+    onFunctionError(): void;
+    onVariableCreate(): void;
+    onVariableUpdate(): void;
+    onVariableDelete(): void;
+    onApplicationCmdCreate(): void;
+    onApplicationCmdUpdate(): void;
+    onApplicationCmdDelete(): void;
 
     onMessage(options: Interfaces.Message): void;
 
@@ -145,5 +161,22 @@ declare module "aoi.js" {
     reactionRemoveCommand(command: Interfaces.Command): void;
     presenceUpdateCommand(command: Interfaces.Command): void;
     voiceStateUpdateCommand(command: Interfaces.Command): void;
+    guildUpdateCommand(command: Interfaces.Command): void;
+    emojiCreateCommand(command: Interfaces.Command): void;
+    emojiUpdateCommand(command: Interfaces.Command): void;
+    emojiDeleteCommand(command: Interfaces.Command): void;
+    reactionRemoveAllCommand(command: Interfaces.Command): void;
+    reactionRemoveEmojiCommand(command: Interfaces.Command): void;
+    messageDeleteBulkCommand(command: Interfaces.Command): void;
+    webhookUpdateCommand(command: Interfaces.Command): void;
+    channelPinsUpdateCommand(command: Interfaces.Command): void;
+    functionErrorCommand(command: Interfaces.Command): void;
+    variableCreateCommand(command: Interfaces.Command): void;
+    variableUpdateCommand(command: Interfaces.Command): void;
+    variableDeleteCommand(command: Interfaces.Command): void;
+    applicationCmdCreateCommand(command: Interfaces.Command): void;
+    applicationCmdUpdateCommand(command: Interfaces.Command): void;
+    applicationCmdDeleteCommand(command: Interfaces.Command): void;
+
   }
 }
