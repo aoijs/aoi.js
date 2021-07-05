@@ -13,10 +13,10 @@ module.exports = async (d) => {
   const de = Number(dec);
 
   if (isNaN(n))
-    return d.error(`:x: Invalid number in \`$abbreviate${inside.total}\``);
+    return d.error(`\`$abbreviate: Invalid number in ${inside.total}\``);
 
   if (isNaN(de))
-    return d.error(`:x: Invalid decimal in \`$abbreviate${inside.total}\``);
+    return d.error(`\`$abbreviate: Invalid decimal in ${inside.total}\``);
 
   let a;
 
@@ -24,14 +24,14 @@ module.exports = async (d) => {
     a = abbreviate(n, de);
   } catch {
     return d.error(
-      `:x: There's an error while abbreviating \`$abbreviate${inside.total}\``
+        `\`$abbreviate: There's an error while abbreviating ${inside.total}\``
     );
   }
 
   return {
     code: code.replaceLast(`$abbreviate${inside.total}`, a),
   };
-};
+}
 
 const SI_SYMBOL = [
   "",
