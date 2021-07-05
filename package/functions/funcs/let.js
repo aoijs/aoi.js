@@ -8,13 +8,16 @@ let vars = d.vars
 
     let inside = code.split("$let")[r].after()
 
-	if (!inside.inside) return d.error(`:x: Invalid usage in $let${inside.total}`)
+
+    const err = d.inside(inside);
+
+    if (err) return d.error(err);
 
     let [letname, value] = inside.splits
 
     vars[letname] = value;
 
-    code = code.replaceLast(`$let${inside.total}`, "")
+    code = code.replaceLast(`$let${inside}`, "")
     
     return {
         code: code

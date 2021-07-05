@@ -1,5 +1,3 @@
-//hi
-//im on pc u gotta see fast codem
 module.exports = async (d) => {
   const code = d.command.code;
 

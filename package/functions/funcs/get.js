@@ -10,7 +10,11 @@ module.exports = async (d) => {
 
   let value = vars[inside.inside];
 
-  code = code.replaceLast(`$get${inside.total}`, value || "");
+  const err = d.inside(inside);
+
+  if (err) return d.error(err);
+
+  code = code.replaceLast(`$get${inside}`, value || "");
 
   return {
     code: code,

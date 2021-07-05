@@ -82,7 +82,7 @@ let start = Date.now()
             }, suppressErrors.split("{error}").join(err)) 
          } else {
             try {
-            	message.channel.send(err.addBrackets() + ` at line ${code.split("\n").findIndex(c => c.includes(err.split("$")[1].split("[")[0])) + 1 || "unknown"}`)
+            	message.channel.send(err.addBrackets())
             } catch(e) {
               message.channel.send(err.addBrackets())
             } 
@@ -167,7 +167,7 @@ let start = Date.now()
          
           const react = await msg.react(reaction).catch(err => {})
           
-          if (!react) msg.channel.send(`❌ Failed to add '${reaction}' reaction `)
+          if (!react) msg.channel.send(`\`ReactionError: Failed to add '${reaction}' reaction\``)
           
         }
       } 

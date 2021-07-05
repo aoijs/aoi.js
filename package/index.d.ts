@@ -20,6 +20,8 @@ declare module "aoi.js" {
       mobile?: boolean;
       database?: object;
       dbhToken?: boolean;
+      suppressAll?: boolean;
+      errorMessage?: boolean;
       sharding?: boolean;
       autoUpdate?: boolean;
       shardAmount?: number;

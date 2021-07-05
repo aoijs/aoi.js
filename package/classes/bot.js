@@ -281,12 +281,14 @@ const parser = require("../functions/parser");
  *
  *            new Client({token:"Discord Bot Token", prefix:"!"})
  */
-
+const embedE = require('../handlers/errors.js')
 class Client {
   constructor(
     options = {
       sharding: false,
       shardAmount: null,
+      suppressAll: false,
+      errorMessage: null,
       mobile: false,
       typingStopEvent: false,
       disabledFunctions: [],
@@ -338,6 +340,20 @@ client.aoi = {
 
       console.log(`Enabled mobile presence`);
     }
+
+if (options.suppressAll) {
+  if (options.errorMessage) {
+    embedE(
+      {
+        message: client.message,
+        interpreter: interpreter,
+        channel: client.channel,
+        client: client,
+      }),
+      
+(      options.errorMessage.split("{error}").join(err))}
+       console.log(`initialized SuppressAll`);};
+
 
     if (options.sharding) {
       if (options.shardAmount) {

@@ -38,7 +38,7 @@ const interpreter = async (
       const r = code.toLowerCase().split("$if[").length - 1;
 
       if (!code.toLowerCase().includes("$endif"))
-        return message.channel.send(`:x: $if is missing $endif`);
+        return message.channel.send(`\`$if: Invalid usage: missing $endif\``);
 
       const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -68,7 +68,7 @@ const interpreter = async (
       if (elseIfAction) {
         for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
           if (!data.toLowerCase().includes("$endelseif"))
-            return message.channel.send(`❌ $elseIf is missing $endelseIf!`);
+            return message.channel.send(`\`$elseIf: Invalid Usage: is missing $endelseIf\``);
 
           const inside = data.split(/\$endelseIf/gi)[0];
 
@@ -268,15 +268,7 @@ let msg = message
             } else {
               try {
                 message.channel.send(
-                  err.addBrackets() +
-                    ` at line ${
-                      code
-                        .split("\n")
-                        .findIndex((c) =>
-                          c.includes(err.split("$")[1].split("[")[0])
-                        ) + 1 || "unknown"
-                    }`
-                );
+                  err.addBrackets())
       client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)  
               } catch (e) {
                 if (err.addBrackets().trim().length)
@@ -290,12 +282,11 @@ let msg = message
           unpack() {
             const last = code.split(`$${FNAME}`).length - 1;
             const sliced = code.split(`$${FNAME}`)[last];
-
             return sliced.after();
           },
           inside(unpacked) {
             if (typeof unpacked.inside !== "string")
-              return `:x: Invalid usage in $${FNAME}${unpacked}`;
+              return `\`$${FNAME}: Invalid usage\``;
             return false;
           },
           noop() {},
@@ -420,12 +411,12 @@ let msg = message
           for (const reaction of reactions) {
             const react = await msg.react(reaction).catch((err) => {
               console.log(
-                `Could not react with ${reaction} to ${msg.id} in ${msg.channel.name}: ${err.message}`
+                `\`Could not react with ${reaction} to ${msg.id} in ${msg.channel.name}: ${err.message}\``
               );
             });
 
             if (!react)
-              msg.channel.send(`❌ Failed to add '${reaction}' reaction `);
+              msg.channel.send(`\`ReactionError: Failed to add '${reaction}' reaction\``);
           }
         }
 
