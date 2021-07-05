@@ -1344,7 +1344,7 @@ String.prototype.deleteBrackets = function () {
     .replace(/=/g, "#EQUAL#")
     .replace(/{/g, "#RIGHT_BRACKET#")
     .replace(/}/g, "#LEFT_BRACKET#")
-    //.replace(/\,/g,"#COMMA#")
+    .replace(/\,/g,"#COMMA#")
 };
 
 String.prototype.removeBrackets = String.prototype.deleteBrackets;
