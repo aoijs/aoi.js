@@ -16,7 +16,7 @@ const interpreter = async (
   returnExecution
 ) => {
   let code = command.code;
-
+let waitPls;
   code = code
     .split("\\]")
     .join("#LEFT#")
@@ -38,7 +38,7 @@ const interpreter = async (
       const r = code.toLowerCase().split("$if[").length - 1;
 
       if (!code.toLowerCase().includes("$endif"))
-        return message.channel.send(`\`$if: Invalid usage: missing $endif\``);
+        return message.channel.send(`$if: Invalid Usage: missing $endif`);
 
       const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -68,7 +68,7 @@ const interpreter = async (
       if (elseIfAction) {
         for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
           if (!data.toLowerCase().includes("$endelseif"))
-            return message.channel.send(`\`$elseIf: Invalid Usage: is missing $endelseIf\``);
+            return message.channel.send(`$elseIf: Invalid Usage: missing $endelseIf!`);
 
           const inside = data.split(/\$endelseIf/gi)[0];
 
@@ -254,7 +254,30 @@ let msg = message
               return console.log(err.addBrackets());
                 client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             }
-            if (suppressErrors !== undefined) {
+    if(client.aoi.options.suppressAll){
+      if(client.aoi.options.errorMessage&& !waitPls){
+         embedE(
+
+                {
+
+                  message: message,
+
+                  interpreter: interpreter,
+
+                  channel,
+
+                  client: client,
+
+                },
+
+               client.aoi.options.errorMessage 
+
+              );
+          waitPls = true 
+      }
+        else return ;
+    }
+           else if (suppressErrors !== undefined) {
               embedE(
                 {
                   message: message,
@@ -268,7 +291,7 @@ let msg = message
             } else {
               try {
                 message.channel.send(
-                  err.addBrackets())
+                  err.addBrackets());
       client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)  
               } catch (e) {
                 if (err.addBrackets().trim().length)
@@ -282,11 +305,12 @@ let msg = message
           unpack() {
             const last = code.split(`$${FNAME}`).length - 1;
             const sliced = code.split(`$${FNAME}`)[last];
+
             return sliced.after();
           },
           inside(unpacked) {
             if (typeof unpacked.inside !== "string")
-              return `\`$${FNAME}: Invalid usage\``;
+            return `\`$${FNAME}: Invalid usage\``;
             return false;
           },
           noop() {},
@@ -416,7 +440,7 @@ let msg = message
             });
 
             if (!react)
-              msg.channel.send(`\`ReactionError: Failed to add '${reaction}' reaction\``);
+             msg.channel.send(`\`ReactionError: Failed to add '${reaction}' reaction\``);
           }
         }
 
