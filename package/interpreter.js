@@ -261,21 +261,16 @@ let msg = message
                 {
 
                   message: message,
-
                   interpreter: interpreter,
-
                   channel,
-
                   client: client,
-
                 },
-
-               client.aoi.options.errorMessage 
+               client.aoi.options.errorMessage
 
               );
           waitPls = true 
       }
-        else return ;
+        else return;
     }
            else if (suppressErrors !== undefined) {
               embedE(

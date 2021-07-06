@@ -312,7 +312,8 @@ client.aoi = {
     this.paths = [];
 
     //this.loadUtils()
-
+    client.options.suppressAll = options.suppressAll;
+    client.options.errorMessage = options.errorMessage;
     client.options.fetchInvites = options.fetchInvites;
 
     if (options.boosterToken) {
@@ -340,20 +341,6 @@ client.aoi = {
 
       console.log(`Enabled mobile presence`);
     }
-
-if (options.suppressAll) {
-  if (options.errorMessage) {
-    embedE(
-      {
-        message: client.message,
-        interpreter: interpreter,
-        channel: client.channel,
-        client: client,
-      }),
-      
-(      options.errorMessage.split("{error}").join(err))}
-       console.log(`initialized SuppressAll`);};
-
 
     if (options.sharding) {
       if (options.shardAmount) {
