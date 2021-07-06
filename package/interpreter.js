@@ -38,7 +38,7 @@ let waitPls;
       const r = code.toLowerCase().split("$if[").length - 1;
 
       if (!code.toLowerCase().includes("$endif"))
-        return message.channel.send(`$if: Invalid Usage: missing $endif`);
+        return message.channel.send(`\`$if: Invalid Usage: missing $endif\``);
 
       const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -68,7 +68,7 @@ let waitPls;
       if (elseIfAction) {
         for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
           if (!data.toLowerCase().includes("$endelseif"))
-            return message.channel.send(`$elseIf: Invalid Usage: missing $endelseIf!`);
+            return message.channel.send(`\`$elseIf: Invalid Usage: missing $endelseIf!\``);
 
           const inside = data.split(/\$endelseIf/gi)[0];
 
@@ -305,7 +305,7 @@ let msg = message
           },
           inside(unpacked) {
             if (typeof unpacked.inside !== "string")
-            return `\`$${FNAME}: Invalid usage\``;
+            return `\`$${FNAME}: Invalid Usage\``;
             return false;
           },
           noop() {},
