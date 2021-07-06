@@ -384,7 +384,7 @@ client.aoi = {
       client.db = options.database;
     } else {
       Database.once("ready", () => {
-        console.log(`Database ready!`);
+        console.log(`Database is ready!`);
       });
 
       Database.connect();

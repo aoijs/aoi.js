@@ -20,7 +20,7 @@ module.exports = async (client, Database) => {
 
       parallel.on("finish", async (check) => {
         if (check === client.guilds.cache.size) {
-          console.log("Fetched all guild invites.");
+          console.log("Fetched all Guild invites.");
 
           parallel.removeAllListeners();
           resolve();
@@ -62,9 +62,9 @@ module.exports = async (client, Database) => {
       }
     });
 
-  console.log(`Ready on aoi.js || v` + require("../../package.json").version);
+  console.log(`Initialized on aoi.js || v` + require("../../package.json").version);
   console.log(
-    "Our Discord Server: https://aoi.js.org/invite"
+    "Visit Our Official Discord Server: https://aoi.js.org/invite"
   );
 
   if (client.statuses.size) {
@@ -105,7 +105,7 @@ module.exports = async (client, Database) => {
       y++;
     };
 
-    console.log("Running statuses.");
+    console.log("Running all Statuses.");
 
     f();
   }
