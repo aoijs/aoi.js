@@ -9,7 +9,7 @@ const setVar = async (d) => {
   const [variable, value] = inside.splits;
 
   if (d.client.variables[variable] === undefined)
-    return d.error(`:x: Variable '${variable}' not found`);
+    return d.error(`\`VariableError: '${variable}' not found!\``);
 
   await d.client.db.set("main", variable, value);
 

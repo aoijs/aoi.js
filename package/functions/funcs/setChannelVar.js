@@ -9,7 +9,7 @@ const setChannelVar = async d => {
 
  const [ variable, value, channelID = d.message.channel.id ] = inside.splits
 
- if (d.client.variables[variable] === undefined) return d.error(`❌ Variable '${variable}' not found`)
+ if (d.client.variables[variable] === undefined) return d.error(`\`VariableError: '${variable}' not found!\``)
 
  
  d.client.db.set("main", `${variable}_${channelID}`, value)

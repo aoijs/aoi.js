@@ -9,7 +9,7 @@ const setServerVar = async d => {
 
  const [ variable, value, guildID = d.message.guild.id ] = inside.splits
 
- if (d.client.variables[variable] === undefined) return d.error(`❌ Variable '${variable}' not found`)
+ if (d.client.variables[variable] === undefined) return d.error(`\`VariableError: '${variable}' not found!\``)
 
 
  d.client.db.set("main", `${variable}_${guildID}`, value)
