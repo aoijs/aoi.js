@@ -5,12 +5,13 @@ const getMessageVar = async d => {
  const r = code.split("$getMessageVar").length - 1
 
  const inside = code.split("$getMessageVar")[r].after()
+ const err = d.inside(inside)
 
- if (!inside.inside) return d.error(`:x: Invalid usage in $getMessageVar${inside}`)
+ if (err) return d.error(err)
 
  const [ variable, messageID = d.message.id ] = inside.splits
 
- if (d.client.variables[variable] === undefined) return d.error(`❌ Variable '${variable}' not found!`)
+ if (d.client.variables[variable] === undefined) return d.error(`\`VariableError: '${variable}' not found!\``)
 
  let item = await d.client.db.get("main",`${variable}_${messageID}`)
  
