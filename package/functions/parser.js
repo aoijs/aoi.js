@@ -1,5 +1,4 @@
 const Parser = {
-  $testApiMessage:"nodejs 14 apiMessage which is in V5;$testApiMessage[chsnnelid; content; embedParser; componentParser; refrenceMessageID:yes/no;return id]",
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
