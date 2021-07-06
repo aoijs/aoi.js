@@ -274,16 +274,16 @@ const Parser = {
   $setMessageVar:
     "Sets a message variable value;$setMessageVar[variable;value;messageID (optional)]",
   $suppressErrors:
-    "Suppress all the errors and sends a custom one. {error} will contain the error that was thrown.;$suppressErrors or $suppressErrors[message]",
+    "Suppress any given errors and sends a custom one. {error} will contain the error that was thrown.;$suppressErrors or $suppressErrors[message]",
   $serverChannelExists: "$serverChannelExists;$serverChannelExists[channelID]",
   $filterMessage:
     "Removes letters or numbers from given text;$filterMessage[message;letterOrSymbols]",
   $onlyNSFW:
     "Makes this command only executable in nsfw channels.;$onlyNSFW[error message]",
   $playSong:
-    "Plays a song from youtube. Support Playlist & URL;$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
+    "Plays a song from Youtube. Support Playlist & URL;$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
   $getRoleColor: "Gets the color of given role ID;$getRoleColor[roleID]",
-  $getBotInvite: "Returns the bot's invite.",
+  $getBotInvite: "Returns the Client invite.",
   $onlyForServers:
     "the command will only be executable in these guild IDs.;$onlyForServers[guildID;guildID;...]",
   $log: "Logs something in the console / terminal.;$log[text]",
@@ -293,7 +293,7 @@ const Parser = {
   $messageAttachment:
     "Returns the first attachment url of this message. (if any)",
   $volume:
-    "Returns Current Volume Number & Set a volume for the Songs;$volume or $volume[number]",
+    "Returns Current Volume Number & Sets a volume for the all songs in queue.;$volume or $volume[number]",
   $onlyBotPerms:
     "Checks for bot permissions in this guild;$onlyBotPerms[perm1;perm2;...;error message]",
   $sendDM: "Sends a dm message to given user ID.;$sendDM[userID;message]",
@@ -311,7 +311,7 @@ const Parser = {
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
-  $uptime: "Uptime of the bot",
+  $uptime: "Returns the Uptime of the Client",
   $hasRole:
     "Checks if the user has the given role.;$hasRole[userID;roleID;guildID (optional)]",
   $channelUsed: "Returns the channel ID where this callback came from",
