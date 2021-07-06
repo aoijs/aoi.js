@@ -24,7 +24,7 @@ module.exports = async (d) => {
 
   if (!types.includes(type))
     return d.error(
-      `:x: Invalid channel type '${type}' in \`$createChannel${inside}\``
+      `\`${d.func}: Invalid channel type '${type}' in ${inside}\``
     );
 
   let channel;
@@ -47,7 +47,7 @@ module.exports = async (d) => {
   }
 
   if (!channel)
-    return d.error(`:x: Could not create channel '${name}:${type}'!`);
+    return d.error(`\`Could not create channel '${name}:${type}'\``);
 
   return {
     code: code.replaceLast(

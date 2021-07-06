@@ -21,7 +21,7 @@ module.exports = async (d) => {
   const errorMessage = fields.join(";");
 
   if (!ms(time))
-    return d.error(`❌ Invalid time '${time}' in \`$cooldown${inside}\``);
+    return d.error(`\`${d.func}: Invalid time '${time}' in ${inside}\``);
 
   const item = await d.client.db.get(
     "main",

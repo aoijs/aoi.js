@@ -8,7 +8,7 @@ module.exports = async (d) => {
   const guild = d.client.guilds.cache.get(guildID);
 
   if (!guild)
-    return d.error(`:x: Invalid guildID in \`$cacheMembers${inside.total}\``);
+    return d.error(`\`${d.func}: Invalid guildID in ${inside.total}\``);
 
   const prev = guild.members.cache.size;
 

@@ -8,11 +8,11 @@ module.exports = async (d) => {
   const [variable, userID = d.message.author.id] = inside.splits;
 
   if (d.client.variables[variable] === undefined)
-    return d.error(`:x: Variable '${variable}' not found`);
+    return d.error(`\`VariableError: '${variable}' not found\``);
 
   if (!userID)
     return d.error(
-      `:x: userID field not provided in \`$deleteGlobalUserVar${inside}\``
+      `\`${d.func}: userID field not provided in ${inside}\``
     );
 let old = await d.client.db.get("main",`${variable}_${userID}`) 
 

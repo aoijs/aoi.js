@@ -295,6 +295,7 @@ let msg = message
               }
             }
           },
+          func: `${FNAME}`,
           channel: message.channel,
           interpreter: interpreter,
           unpack() {

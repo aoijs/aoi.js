@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
   if (!userID)
     return d.message.channel.send(
-      `❌ Invalid user ID in \`$boostingSince${data.total}\``
+      `\`${d.func}: Invalid user ID in ${data.total}\``
     );
 
   return {

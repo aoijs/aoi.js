@@ -29,7 +29,7 @@ if(msgReply !== ""){
      headers:{
          Authorization:`Bot ${d.client.token}`
          }
-     }).catch(e=>{console.log("$apiMessageError:"+e.message)
+     }).catch(e=>{console.log(`${d.func}:`+e.message)
 d.error(e.message)                 
                  })
 // console.log(msg)

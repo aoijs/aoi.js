@@ -23,14 +23,14 @@ module.exports = async (d) => {
   ] = inside.splits;
 
   if (!ms(time))
-    return d.error(`\`$awaitReaction: Invalid time '${time}' in ${inside}\``);
+    return d.error(`\`${d.func}: Invalid time '${time}' in ${inside}\``);
 
   const m = await embed(d, botMsg, "object");
 
   for (const reaction of reactionOrReactions.split(" ").join("").split(",")) {
     const r = await m.react(reaction).catch((rr) => {});
 
-    if (!r) return d.error(`ReactionError: Failed to react with '${reaction}'`);
+    if (!r) return d.error(`\`ReactionError: Failed to react with '${reaction}'\``);
   }
 
   const filter = (reaction, user) => {

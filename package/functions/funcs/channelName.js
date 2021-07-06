@@ -12,7 +12,7 @@ module.exports = (d) => {
     const channel = d.message.guild.channels.cache.get(id.addBrackets());
 
     if (!channel)
-      return d.error(`❌ Invalid channel ID in \`$channelName${after}\``);
+      return d.error(`\`${d.func}: Invalid channel ID in ${after}\``);
 
     return {
       code: code.replaceLast(

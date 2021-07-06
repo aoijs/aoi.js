@@ -28,7 +28,7 @@ module.exports = async (d) => {
   if (!opt) {
     opt = await d.client.users.fetch(option).catch((err) => {});
 
-    if (!opt) return d.error(`:x: Invalid ID in \`$creationDate${inside}\``);
+    if (!opt) return d.error(`\`${d.func}: Invalid ID in ${inside}\``);
   }
 
   if (date === "ms") {

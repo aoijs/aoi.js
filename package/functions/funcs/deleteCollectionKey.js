@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
   if (!c)
     return d.error(
-      `❌ Invalid collection name in \`$deleteCollectionKey${inside}\``
+      `\`${d.func}: Invalid collection name in ${inside}\``
     );
 
   c.delete(key.addBrackets());

@@ -28,7 +28,7 @@ module.exports = async (d) => {
 
   if (!channel)
     return d.error(
-      `❌ Invalid channel ID in \`$awaitReactionsUntil${inside}\``
+      `\`${d.func}: Invalid channel ID in ${inside}\``
     );
 
   const msg = await channel.messages.fetch(messageID).catch((err) => null);

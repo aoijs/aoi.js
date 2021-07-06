@@ -30,7 +30,7 @@ module.exports = async (d) => {
     })
     .catch((err) => {});
 
-  if (!role) return d.error(`:x: Failed to create role!`);
+  if (!role) return d.error(`\`Failed to create role\``);
 
   return {
     code: code.replaceLast(`$createRole${inside}`, ""),

@@ -8,11 +8,11 @@ module.exports = async (d) => {
   const [variable, channelID = d.message.channel.id] = inside.splits;
 
   if (d.client.variables[variable] === undefined)
-    return d.error(`:x: Variable '${variable}' not found`);
+    return d.error(`\`VariableError: '${variable}' not found\``);
 
   if (!channelID)
     return d.error(
-      `:x: channelID field not provided in \`$deleteChannelVar${inside}\``
+      `\`${d.func}: channelID field not provided in ${inside}\``
     );
 let old = await d.client.db.get("main",`${variable}_${channelID}`) 
 old = old ? old : {key: variable,value:d.client.variables[variable]}

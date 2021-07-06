@@ -18,7 +18,7 @@ module.exports = async (d) => {
 
   if (!channel)
     return d.error(
-      `❌ Invalid channel ID in \`$channelOverwrites${data.total}\``
+      `\`${d.func}: Invalid channel ID in ${data.total}\``
     );
 
   const placer = channel.permissionOverwrites

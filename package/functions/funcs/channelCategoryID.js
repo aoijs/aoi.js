@@ -12,7 +12,7 @@ module.exports = async (d) => {
 
     if (!channel)
       return d.error(
-        `❌ Invalid channel ID in \`$channelCategoryID${inside}\``
+        `\`${d.func}: Invalid channel ID in ${inside}\``
       );
 
     return {

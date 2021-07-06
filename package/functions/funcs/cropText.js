@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   limit = Number(limit);
 
-  if (!limit) return d.error(`:x: Invalid number in \`$cropText${inside}\``);
+  if (!limit) return d.error(`\`${d.func}: Invalid number in ${inside}\``);
 
   let texts;
 

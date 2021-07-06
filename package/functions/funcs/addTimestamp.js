@@ -4,7 +4,7 @@ const addTimestamp = (d) => {
   const r = d.command.code.split("$addTimestamp").length - 1;
 
   if (r >= 3)
-    return d.message.channel.send(`\`$addTimestamp: Can't use more than one\``);
+    return d.message.channel.send(`\`${d.func}: Can't use more than one\``);
 
   const after = code.split("$addTimestamp")[r].after();
 

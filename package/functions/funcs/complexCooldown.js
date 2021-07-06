@@ -18,12 +18,12 @@ async function complexCooldown(d) {
 
   if (!validTypes.includes(type))
     return d.error(
-      `:x: Invalid cooldown type '${type}' in \`$complexCooldown${inside}\``
+      `\`${d.func}: Invalid cooldown type '${type}' in ${inside}\``
     );
 
   if (!time)
     return d.error(
-      `:x: Invalid time '${time}' in \`$complexCooldown${inside}\``
+      `\`${d.func}: Invalid time '${time}' in ${inside}\``
     );
 
   let format = `cooldown_${d.command.name}`;

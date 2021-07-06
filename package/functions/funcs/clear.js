@@ -18,7 +18,7 @@ module.exports = async (d) => {
 
   const channel = d.message.guild.channels.cache.get(channelID);
 
-  if (!channel) return d.error(`:x: Invalid channel ID in \`$clear${inside}\``);
+  if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
   let input = Number(amount);
   let deleteds = 0;
@@ -35,7 +35,7 @@ module.exports = async (d) => {
       })
       .catch((err) => null);
 
-    if (!messages) return d.error(":x: Failed to fetch messages");
+    if (!messages) return d.error(`\`Failed to fetch messages\``);
 
     if (messages.size <= 0) break;
 
@@ -48,7 +48,7 @@ module.exports = async (d) => {
       )
       .catch((err) => null);
 
-    if (!deleted) return d.error(":x: Failed to delete messages");
+    if (!deleted) return d.error(`\`Failed to delete messages\``);
 
     if (deleted.size <= 0) break;
 

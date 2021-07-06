@@ -7,7 +7,7 @@ module.exports = async (d) => {
 
   const time = ms(inside.inside);
 
-  if (!time) return d.error(`:x: Invalid time in \`$deleteIn${inside}\``);
+  if (!time) return d.error(`\`${d.func}: Invalid time in ${inside}\``);
 
   return {
     deleteIn: time, //ez w

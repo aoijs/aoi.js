@@ -22,7 +22,7 @@ module.exports = async (d) => {
 
   if (!ms(time))
     return d.error(
-      `❌ Invalid time '${time}' in \`$channelCooldown${inside}\``
+      `\`${d.func}: Invalid time '${time}' in ${inside}\``
     );
 
   const item = await d.client.db.get(

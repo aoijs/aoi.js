@@ -19,7 +19,7 @@ module.exports = async (d) => {
 
   if (!channel)
     return d.error(
-      `:x: Invalid channel ID in \`$channelSendMessage${inside}\``
+      `\`${d.func}: Invalid channel ID in ${inside}\``
     );
 
   const m = await embed(d, text, "withMessage", channel);

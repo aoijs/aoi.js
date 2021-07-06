@@ -10,7 +10,7 @@ module.exports = async (d) => {
 
     if (!guild)
       return d.error(
-        `:x: Invalid guild ID in \`$defaultMessageNotifications${inside}\``
+        `\`${d.func}: Invalid guild ID in ${inside}\``
       );
 
     return {

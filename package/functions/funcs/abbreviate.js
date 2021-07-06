@@ -13,10 +13,10 @@ module.exports = async (d) => {
   const de = Number(dec);
 
   if (isNaN(n))
-    return d.error(`\`$abbreviate: Invalid number in ${inside.total}\``);
+    return d.error(`\`${d.func}: Invalid number in ${inside.total}\``);
 
   if (isNaN(de))
-    return d.error(`\`$abbreviate: Invalid decimal in ${inside.total}\``);
+    return d.error(`\`${d.func}: Invalid decimal in ${inside.total}\``);
 
   let a;
 
@@ -24,7 +24,7 @@ module.exports = async (d) => {
     a = abbreviate(n, de);
   } catch {
     return d.error(
-        `\`$abbreviate: There's an error while abbreviating ${inside.total}\``
+        `\`${d.func}: There's an error while abbreviating ${inside.total}\``
     );
   }
 

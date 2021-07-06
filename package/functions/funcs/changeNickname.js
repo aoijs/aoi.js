@@ -13,19 +13,19 @@ module.exports = async (d) => {
 
   if (!nickname)
     return d.error(
-      `:x: Nickname can't be empty in \`$changeNickname${inside}\``
+      `\`${d.func}: Nickname can't be empty in ${inside}\``
     );
 
   const member = await d.message.guild.members.fetch(userID).catch((err) => {});
 
   if (!member)
-    return d.error(`:x: Invalid user ID in \`$changeNickname${inside}\``);
+    return d.error(`\`${d.func}: Invalid user ID in ${inside}\``);
 
   const m = await member.setNickname(nickname.addBrackets()).catch((err) => {});
 
   if (!m)
     return d.error(
-      `:x: Failed to change nickname for user ${member.user.username}`
+      `\`Failed to change nickname for user ${member.user.username}\``
     );
 
   return {

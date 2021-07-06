@@ -13,12 +13,12 @@ module.exports = async (d) => {
 
   const role = d.message.guild.roles.cache.get(roleID);
 
-  if (!role) return d.error(`:x: Invalid role ID in \`$colorRole${inside}\``);
+  if (!role) return d.error(`\`${d.func}: Invalid role ID in ${inside}\``);
 
   const re = await role.setColor(color).catch((err) => {});
 
   if (!re)
-    return d.error(`:x: Failed to change ${role.name} color to ${color}!`);
+    return d.error(`\`Failed to change ${role.name} color to ${color}\``);
 
   return {
     code: code.replaceLast(`$colorRole${inside}`, ""),

@@ -10,7 +10,7 @@ module.exports = async (d) => {
 
     const u = await d.client.users.fetch(id).catch((err) => {});
 
-    if (!u) return d.error(`\`$activity: Invalid user ID in ${after.total}\``);
+    if (!u) return d.error(`\`${d.func}: Invalid user ID in ${after.total}\``);
 
     return {
       code: code.replaceLast(

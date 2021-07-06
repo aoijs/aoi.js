@@ -3,7 +3,7 @@ const addCmdReactions = async (d) => {
 
   if (code.split("$addCmdReactions").length >= 3)
     return d.message.channel.send(
-      `\`$addCmdReactions: Can't use more than one\` `
+      `\`${d.func}: Can't use more than one\` `
     );
 
   const inside = code.split("$addCmdReactions")[1].after();

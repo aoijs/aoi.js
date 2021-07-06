@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
   let clientapp = await d.client.fetchApplication()
 
-  if (!option) return d.error(`:x: Missing property in \`$clientApplication${inside}\`.`);
+  if (!option) return d.error(`\`${d.func}: Missing property in ${inside}\``);
   if(
     ![
     "id",
@@ -30,7 +30,7 @@ module.exports = async (d) => {
     "token",
     ].includes(option)
   )
-  return d.error(`:x: Invalid property given inside \`$clientApplication${inside}\`.`);
+  return d.error(`\`Invalid property given inside ${inside}\``);
 
   switch (option) {
     case "ispublic":

@@ -21,37 +21,19 @@ module.exports = async (d) => {
           let request = await axios
 
       .post(
-
          d.client._api(`/applications/${d.client.user.id}/commands`),
 
         {
-
           name: name,
-
           description: description,
-
           options: options,
-
         },
-
         {
-
           headers: {
-
             Authorization: `Bot ${d.client.token}`,
-
           },
-
-            
-
         }
-
-          
-
       )
-
-    
-
       .catch((err) => null);
       }
       else{
@@ -75,7 +57,7 @@ module.exports = async (d) => {
     
       .catch((err) => null);
 
-    if (!request) return d.error(`❌ Failed to create slash command`);
+    if (!request) return d.error(`\`SlashError: Failed to create slash command\``);
 
     return {
       code: code.replaceLast(`$createSlashCommand${inside}`, ""),
@@ -83,6 +65,6 @@ module.exports = async (d) => {
   }
 }
   catch (e) {
-    return d.error(`:x: ${e.message}`);
+    return d.error(`\` ${e.message}\``);
   }
 };

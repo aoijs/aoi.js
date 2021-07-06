@@ -2,7 +2,7 @@ const author = (d) => {
   const r = d.command.code.split("$author[").length - 1;
 
   if (r >= 3)
-    return d.message.channel.send(`$author: Can't use more than one`);
+    return d.message.channel.send(`\`${d.func}: Can't use more than one\``);
 
   const inside = ("[" + d.command.code.split("$author[")[r]).after();
 

@@ -22,12 +22,12 @@ module.exports = async (d) => {
 
     if (!member)
       return d.error(
-        `❌ Invalid user ID in \`$channelPermissionsFor${inside}\``
+        `\`${d.func}: Invalid user ID in ${inside}\``
       );
 
     if (!d.message.guild.channels.cache.has(channelID))
       return d.error(
-        `❌ Invalid channel ID in \`$channelPermissionsFor${inside}\``
+        `\`${d.func}: Invalid channel ID in ${inside}\``
       );
 
     return {

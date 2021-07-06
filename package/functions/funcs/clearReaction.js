@@ -14,17 +14,17 @@ module.exports = async (d) => {
   const channel = d.client.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(`❌ Invalid channel ID in \`$clearReaction${inside}\``);
+    return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
   const msg = await channel.messages.fetch(messageID).catch((err) => null);
 
   if (!msg)
-    return d.error(`❌ Invalid message ID in \`$clearReaction${inside}\``);
+    return d.error(`\`${d.func}: Invalid message ID in ${inside}\``);
 
   const user = await d.client.users.fetch(userID).catch((err) => null);
 
   if (!user)
-    return d.error(`❌ Invalid user ID in \`$clearReaction${inside}\``);
+    return d.error(`\`${d.func}: Invalid user ID in ${inside}\``);
 
   const emoji = emojiOptions.includes("<")
     ? emojiOptions.split(":")[2].split(">")[0]

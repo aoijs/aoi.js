@@ -9,11 +9,11 @@ module.exports = async (d) => {
     const channel = d.message.guild.channels.cache.get(id);
 
     if (!channel)
-      return d.error(`:x: Invalid channel ID in \`$deleteChannels${inside}\``);
+      return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
     const del = await channel.delete().catch((err) => {});
 
-    if (!del) return d.error(`:x: Failed to delete channel ${channel.name}!`);
+    if (!del) return d.error(`\`Failed to delete channel ${channel.name}\``);
   }
 
   return {

@@ -13,7 +13,7 @@ module.exports = async (d) => {
   if (guildID) {
     let guild = d.client.guilds.cache.get(guildID)
 
-    if (!guild) return d.error(`:x: Invalid guild ID in \`$customEmoji${inside}\``)
+    if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
 
     find = guild.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
 

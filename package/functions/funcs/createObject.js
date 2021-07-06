@@ -8,7 +8,7 @@ module.exports = async (d) => {
   try {
     var json = JSON.parse(inside.addBrackets());
   } catch (error) {
-    return d.error(`:x: Invalid object given in \`$createObject${inside}\``);
+    return d.error(`\`${d.func}: Invalid object given in ${inside}\``);
   }
 
   return {

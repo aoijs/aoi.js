@@ -28,7 +28,7 @@ module.exports = async (d) => {
   const timer = ms(time);
 
   if (!timer)
-    return d.error(`\`$awaitCmdReaction: Invalid time in ${inside}\``);
+    return d.error(`\`${d.func}: Invalid time in ${inside}\``);
 
   const filter = (r, u) => {
     return userFilter === "everyone"

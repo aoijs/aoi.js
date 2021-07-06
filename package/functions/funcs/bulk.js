@@ -13,7 +13,7 @@ module.exports = async (d) => {
     (opt) => opt === inside.inside
   );
 
-  if (!option) return d.error(`❌ Invalid option in \`$bulk${inside}\``);
+  if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``);
 
   const executor = messageDeleteBulkOptions[option].split(";")[1];
 

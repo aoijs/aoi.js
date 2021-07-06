@@ -43,7 +43,7 @@ module.exports = async (d) => {
     const user = await d.client.users.fetch(userID).catch((err) => null);
 
     if (!user)
-      return d.error(`\`$awaitMessages: Invalid user ID in ${inside}\``);
+      return d.error(`\`${d.func}: Invalid user ID in ${inside}\``);
 
     channel = await user.createDM();
   }

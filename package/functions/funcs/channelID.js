@@ -11,7 +11,7 @@ const channelID = async (d) => {
     const channel = d.client.channels.cache.find((c) => c.name === inside);
 
     if (!channel)
-      return d.error(`:x: Invalid channel name in \`$channelID${after}\``);
+      return d.error(`\`${d.func}: Invalid channel name in ${after}\``);
 
     code = code.replaceLast(`$channelID${after}`, channel.id);
   } else {
