@@ -7,7 +7,7 @@ module.exports = async d=>{
     const err = d.inside(inside)
     if(err) return d.error(err) 
     const [content,embed = "",components="",msgReply = "" ,returnID="no"] = inside.splits 
-    if(!content  && embed === "") return d.error("Provide Either A Content Or A Embed Structure") 
+    if(!content  && embed === "") return d.error(`\`Provide Either A Content Or A Embed Structure\``)
    const e =embed !== "" ? await ErrorParser(embed) : {}
     //console.log(e)
    const c = components === "" ? [] : await ComponentParser(components) 

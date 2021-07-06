@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
   if (!d.object)
     return d.error(
-      `❌ No object present in \`$addObjectProperty${inside.total}\``
+      `\`$addObjectProperty: No object present in ${inside.total}\``
     );
 
   let result = "";

@@ -28,7 +28,7 @@ module.exports = async (d) => {
   const timer = ms(time);
 
   if (!timer)
-    return d.error(`❌ Invalid time in \`$awaitCmdReaction${inside}\``);
+    return d.error(`\`$awaitCmdReaction: Invalid time in ${inside}\``);
 
   const filter = (r, u) => {
     return userFilter === "everyone"
@@ -55,7 +55,7 @@ module.exports = async (d) => {
       );
 
       if (!cmd)
-        return d.error(`❌ Awaited command '${commands[index]}' not found.`);
+        return d.error(`\`Awaited command '${commands[index]}' not found.\``);
 
       const msg = Object.assign(Object.create(d.message), d.message);
 

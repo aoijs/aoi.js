@@ -3,7 +3,7 @@ const addCmdReactions = async (d) => {
 
   if (code.split("$addCmdReactions").length >= 3)
     return d.message.channel.send(
-      `❌ Can't use more than one $addCmdReactions `
+      `\`$addCmdReactions: Can't use more than one\` `
     );
 
   const inside = code.split("$addCmdReactions")[1].after();
@@ -13,7 +13,7 @@ const addCmdReactions = async (d) => {
       .react(reaction.addBrackets())
       .catch((err) => {});
 
-    if (!react) return d.error(`❌ Failed to add '${reaction}' reaction `);
+    if (!react) return d.error(`\`ReactionError: Failed to add '${reaction}' reaction \``);
   }
 
   return {

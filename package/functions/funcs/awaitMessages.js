@@ -43,7 +43,7 @@ module.exports = async (d) => {
     const user = await d.client.users.fetch(userID).catch((err) => null);
 
     if (!user)
-      return d.error(`❌ Invalid user ID in \`$awaitMessages${inside}\``);
+      return d.error(`\`$awaitMessages: Invalid user ID in ${inside}\``);
 
     channel = await user.createDM();
   }
@@ -75,13 +75,13 @@ module.exports = async (d) => {
             );
 
       if (!cmd)
-        return d.error(`❌ Awaited command ${m.content} does not exist`);
+        return d.error(`\`Awaited command ${m.content} does not exist\``);
 
       interpreter(d.client, m, m.content.split(" "), cmd);
     })
     .catch((err) => {
       if (!err || !err.message) embed(d, error);
-      else if (err.message) return d.error(`❌ ${err.message}`);
+      else if (err.message) return d.error(`\` ${err.message}\``);
     });
 
   return {

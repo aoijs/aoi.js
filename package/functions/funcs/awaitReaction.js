@@ -23,14 +23,14 @@ module.exports = async (d) => {
   ] = inside.splits;
 
   if (!ms(time))
-    return d.error(`Invalid time '${time}' in \`$awaitReaction${inside}\``);
+    return d.error(`\`$awaitReaction: Invalid time '${time}' in ${inside}\``);
 
   const m = await embed(d, botMsg, "object");
 
   for (const reaction of reactionOrReactions.split(" ").join("").split(",")) {
     const r = await m.react(reaction).catch((rr) => {});
 
-    if (!r) return d.error(`:x: Failed to react with '${reaction}'`);
+    if (!r) return d.error(`ReactionError: Failed to react with '${reaction}'`);
   }
 
   const filter = (reaction, user) => {
@@ -76,11 +76,11 @@ module.exports = async (d) => {
   ];
 
   if (!command)
-    return d.error(`:x: Command '${command}' not found! (internal error)`);
+    return d.error(`\`Command '${command}' not found! (internal error)\``);
 
   const cmd = d.client.awaited_commands.find((c) => c.name === command);
 
-  if (!cmd) return d.error(`:x: Command '${command}' not found!`);
+  if (!cmd) return d.error(`\`Command '${command}' not found!\``);
 
   await interpreter(
     d.client,

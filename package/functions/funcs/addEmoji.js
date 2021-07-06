@@ -24,7 +24,7 @@ module.exports = async (d) => {
     .catch((err) => {});
 
   if (!emoji)
-    return d.error(`:x: Failed to create emoji! url: ${url}, name: ${name} `);
+    return d.error(`\`$addEmoji: Failed to create emoji! url: ${url}, name: ${name} \``);
 
   return {
     code: code.replaceLast(

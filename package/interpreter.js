@@ -430,7 +430,7 @@ let msg = message
           for (const reaction of reactions) {
             const react = await msg.react(reaction).catch((err) => {
               console.log(
-                `\`Could not react with ${reaction} to ${msg.id} in ${msg.channel.name}: ${err.message}\``
+                `\`ReactionError: Could not react with ${reaction} to ${msg.id} in ${msg.channel.name}: ${err.message}\``
               );
             });
 
