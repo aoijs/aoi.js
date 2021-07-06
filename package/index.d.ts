@@ -21,7 +21,7 @@ declare module "aoi.js" {
       database?: object;
       dbhToken?: boolean;
       suppressAll?: boolean;
-      errorMessage?: boolean;
+      errorMessage?: string;
       sharding?: boolean;
       autoUpdate?: boolean;
       shardAmount?: number;
