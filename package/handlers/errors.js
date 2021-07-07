@@ -215,7 +215,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 		        
 		        const sender = await errorHandler(d, code, true)
 		        
-		        await m.suppressEmbeds(suppress) 
+		   if(suppress){     await m.suppressEmbeds(suppress) }
 		        await m.edit(sender.message, sender.embed).catch(err => null)
 		        
 		    }
