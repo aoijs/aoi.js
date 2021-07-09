@@ -16,7 +16,7 @@ module.exports = async d => {
 
         let invite
 
-        if (channel) invite = await channel.createInvite().catch(Err => {})
+        if (channel) invite = await channel.createInvite({maxAge: 0, maxUses: 0}).catch(Err => {})
 
         return {
             code: code.replaceLast(`$getServerInvite${after}`, invite ? invite.toString() : "missing permissions")   
@@ -26,7 +26,7 @@ module.exports = async d => {
 
         let invite 
 
-        if (channel) invite = await channel.createInvite().catch(Err => {})
+        if (channel) invite = await channel.createInvite({maxAge: 0, maxUses: 0}).catch(Err => {})
 
         return {
             code: code.replaceLast(`$getServerInvite`, invite ? invite.toString() : "missing permissions")   
