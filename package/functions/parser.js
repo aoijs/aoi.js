@@ -233,6 +233,7 @@ const Parser = {
     "checks if the author has the provided permissions.;$onlyPerms[perm1;perm2;...;error message]",
   $checkCondition:
     "Checks if given condition is true or false.;$checkCondition[value(!=/==/>=/<=/>/<)value2]",
+  $removeLinks: "Removes all links from the provided text.;$removeLinks[text]",
   $serverIDs:
     "returns the ID of all the servers this bot is in;$serverIDs or $serverIDs[separator]",
   $clientID: "Returns the Bot ID",
