@@ -147,6 +147,7 @@ const Parser = {
   "$color[": "Sets a embed color;$color[hex or number]",
   $guildID:
     "Returns the ID of this guild or given guild name.;$guildID[guild name]",
+  $serverRulesChannelID: "Returns the server's rules channel ID.;$serverRulesChannelID[(optional) guildID]",
   $addField:
     "Adds a field to the embed;$addField[name;value;inline (yes/no)(optional)]",
   $changeNickname:
