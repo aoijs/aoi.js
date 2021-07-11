@@ -12,7 +12,6 @@ class Await extends EventEmitter {
         this.uses = uses
         this.error = errorMsg
         this.tries = 0
-        //console.log("usee"+this.uses)
     }
     async await (msgid, user, customID, data) {
         
