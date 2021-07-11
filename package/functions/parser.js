@@ -69,6 +69,7 @@ const Parser = {
   $textSplit: "Splits a text by <separator>;$textSplit[some_text;separator]",
   $serverIcon:
     "Returns the Server Icon;$serverIcon or $serverIcon[guildID;size (optional);dynamic (yes/no)(optional)]",
+  $serverRulesChannelID: "Returns the server's rules channel ID.;$serverRulesChannelID[(optional) guildID]",
   $giveRoles:
     "Gives a role or roles to given user ID;$giveRoles[userID;roleID;roleID;...]",
   $findMember:
