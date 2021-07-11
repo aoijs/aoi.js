@@ -81,7 +81,7 @@ module.exports = async d => {
 		thumbnail: () => video.thumbnail,
 		duration_left: (server) => {
 			if (!server) return;
-			const ms = msp(info.duration().split(" ")[0] + "s").ms
+			const ms = msp(obj.duration().split(" ")[0] + "s").ms
 			const time = Math.floor(ms - (server.connection.dispatcher.streamTime + (d.client.servers.get(d.message.guild.id).seek || 0)))
 			const ISO = new Date(time).toISOString().substr(11, 11).split(":")
 
