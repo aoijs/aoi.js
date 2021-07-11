@@ -41,6 +41,7 @@ module.exports = async (d) => {
       "lastmcid",
       "lastmid",
       "lastmessageid",
+      "prefix",
       "readyat",
       "readytimestamp",
       "token",
@@ -128,6 +129,9 @@ module.exports = async (d) => {
     case "token":
       option = d.client.token;
       break;
+    case "prefix":
+    option = d.client.prefix.join(", ");
+    break;
     default:
       undefined;
   }
