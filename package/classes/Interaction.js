@@ -44,7 +44,7 @@ class Interaction {
         
     }
     
-    reply(content, embed, components, flags, type) {
+    reply(content, embed, components, flags, type = 4) {
         if (this.type === 2) {
             try {
                 var check;
@@ -55,19 +55,7 @@ class Interaction {
                     
                     if (!c) {
                         setTimeout(async () => {
-                            let d = await axios.get(this.client._api(`applications/${this.client.user.id}/guilds/${this.guild.id}/commands`), {
-                                
-                                headers: {
-                                    
-                                    Authorization: `Bot ${this.client.token}`
-                                    
-                                }
-                                
-                            })
-                            
-                            
-                            
-                            d = d.data
+                            let d = await this.client.api.applications(this.client.user.id).guilds(this.guild.id).commands.get()
                             
                             d = d.find(x => x.id == this.command.id)
                             
@@ -109,22 +97,9 @@ class Interaction {
                     
                     if (!check) {
                         setTimeout(async () => {
-                            let d = await axios.get(this.client._api(`applications/${this.client.user.id}/commands`), {
-                                
-                                headers: {
-                                    
-                                    Authorization: `Bot ${this.client.token}`
-                                    
-                                }
-                                
-                            })
-                            
-                            
-                            
-                            d = d.data
-                            
+                            let d = await this.client.api.applications(this.client.user.id).commands.get()
+
                             d = d.find(x => x.name.toLowerCase() == this.command.name.toLowerCase())
-                            
                             
                             if (d) {
                                 c = {
@@ -164,48 +139,31 @@ class Interaction {
                 }
                 
                 
-                axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
-                        
-                        type: type
-                        , data: {
-                            content: typeof content == "string" ? content : ""
-                            , embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                            
-                            
-                            flags: flags
+                const data = this.client.api.interactions(this.id, this.token).callback.post({
+                    data: {
+                        type, 
+                        data: {
+                            content: content || undefined,
+                            embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                            flags 
                         }
-                        
-                    })
-                    
-                    
-                    
-                    .then(res => "successful")
-                    .catch(e => {
-                        console.log(e.message)
-                    })
+                    }
+                })
             } catch (e) {
                 console.log(e.message)
             }
         } else {
             try {
-                axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
-                        
-                        type: type
-                        , data: {
-                            content: typeof content == "string" ? content : ""
-                            , embeds: embed ? Array.isArray(embed) ? embed : [embed] : []
-                            , components: typeof components === "object" ? Array.isArray(components) ? components : [components] : []
-                            , flags: flags
+                const data = this.client.api.interactions(this.id, this.token).callback.post({
+                    data: {
+                        type, 
+                        data: {
+                            content: content || undefined,
+                            embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                            flags 
                         }
-                        
-                    })
-                    
-                    
-                    
-                    .then(res => "successful")
-                    .catch(e => {
-                        console.log(e.message)
-                    })
+                    }
+                })
             } catch (e) {
                 console.log(e.message)
             }
@@ -215,41 +173,25 @@ class Interaction {
     async delete() {
         const req = await axios.delete
     }
+
     async get() {
-        const e = await axios.get(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`), {
-            headers: {
-                Authorization: `Bot ${this.client.token}`
-            }
-        })
-        return e.data
+        const d = await this.client.api.webhooks(this.client.user.id, this.token).messages("@original").get()
+
+        return d 
     }
+
     async edit(content, embed, components) {
-        const e = await axios.patch(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`), {
-                    
-                    
-                    content: typeof content == "string" ? content : "",
-                    
-                    embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                    
-                    components: components
-                    
-                    
-                    
-                }
-                , {
-                    headers: {
-                        Authorization: `Bot ${this.client.token}`
-                    }
-                })
-            .catch(e => console.log(e.message))
-        
-    }
-    async deleteResponse() {
-        const e = await axios.delete(this.client._api(`webhooks/${this.client.user.id}/${this.token}/messages/@original`), {
-            headers: {
-                Authorization: `Bot ${this.client.token}`
+        await this.client.api.webhooks(this.client.user.id, this.token).messages("@original").patch({
+            data: {
+                content,
+                components: components,
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : []
             }
-        })
+        })        
+    }
+
+    async deleteResponse() {
+        const got = await this.client.api.webhooks(this.client.user.id, this.token).messages("@original").delete()
     }
 }
 
