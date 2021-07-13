@@ -37,21 +37,16 @@ class CustomCollector extends EventEmitter {
         }, this._timeout)
         
         if (this.filter !== "everyone" && this.filter !== user && this.errmsg.length !== 0 && this.endsOn > Date.now()) {
-            
-            axios.post(this.client._api(`/interactions/${data.id}/${data.token}/callback`), {
-                    type: 4
-                    , data: {
-                        content: this.errmsg[0] || ""
-                        , embeds: (this.errmsg[1] !== "" || this.errmsg[1]) ? [JSON.parse(JSON.stringify(ErrorParser(this.errmsg[1]))
-                            .replace(/#COMMA#/g, ","))] : []
-                        , flags: this.errmsg[2] !== "" ? Number(this.errmsg[2]) : 0
+            this.client.api.interactions(data.id, data.token).callback.post({
+                data: {
+                    type: 4, 
+                    data: {
+                        content: this.errmsg[0] || "", 
+                        embeds: (this.errmsg[1] !== "" || this.errmsg[1]) ? [JSON.parse(JSON.stringify(ErrorParser(this.errmsg[1])).replace(/#COMMA#/g, ","))] : [],
+                        flags: this.errmsg[2] !== "" ? Number(this.errmsg[2]) : 0
                     }
-                }, {
-                    headers: {
-                        Authorization: `Bot ${this.client.token}`
-                    }
-                })
-                .catch(err => {})
+                }  
+            }).catch(() => null)
         }
     }
 }

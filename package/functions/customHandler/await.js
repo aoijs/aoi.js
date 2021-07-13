@@ -27,19 +27,16 @@ class Await extends EventEmitter {
         
         if (this.user !== user && this.uses > this.tries) {
             if (this.error.length !== 0) {
-                axios.post(this.client._api(`interactions/${data.id}/${data.token}/callback`), {
-                        type: 4
-                        , data: {
-                            content: typeof this.error[0] === "string" ? this.error[0] : ""
-                            , embeds: this.error[1] ? (Array.isArray(this.error[1]) ? this.error[1] : [this.error[1]]) : []
-                            , flags: this.error[2] === "" ? 0 : this.error[2]
+                this.client.api.intereactions(data.id, data.token).callback.post({
+                    data: {
+                        type,
+                        data: {
+                            content: typeof this.error[0] === "string" ? this.error[0] : "",
+                            embeds: this.error[1] ? (Array.isArray(this.error[1]) ? this.error[1] : [this.error[1]]) : [],
+                            flags: this.error[2] === "" ? 0 : this.error[2]
                         }
-                    }, {
-                        headers: {
-                            Authorization: `Bot ${this.client.token}`
-                        }
-                    })
-                    .catch(err => console.log(err.message))
+                    }
+                })
             }
         }
     }
