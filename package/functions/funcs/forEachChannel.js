@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
       if (!cmd)
         return d.error(
-          `❌ Invalid awaited command ${command} in \`$forEachChannel${inside}\``
+          `\`${d.func}: Invalid awaited command ${command} in ${inside}\``
         );
 
       d.interpreter(d.client, m, d.args, cmd);

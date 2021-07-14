@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
   if (!collection)
     return d.error(
-      `❌ Invalid collection name in \`$findCollectionKey${inside}\``
+      `\`${d.func}: Invalid collection name in ${inside}\``
     );
 
   const key = collection.findKey((val) => {

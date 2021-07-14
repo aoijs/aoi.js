@@ -17,12 +17,12 @@ module.exports = async (d) => {
 
   if (!webhook)
     return d.error(
-      `❌ Invalid webhook ID or token in \`$deleteWebhook${inside}\``
+      `\`${d.func}: Invalid webhook ID or token in ${inside}\``
     );
 
   const w = await webhook.delete().catch((err) => null);
 
-  if (!w) return d.error(`❌ Failed to delete webhook`);
+  if (!w) return d.error(`\`Failed to delete webhook\``);
 
   return {
     code: code.replaceLast(`$deleteWebhook${inside}`, ""),

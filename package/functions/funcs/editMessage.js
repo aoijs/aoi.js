@@ -16,15 +16,15 @@ module.exports = async (d) => {
   const channel = d.client.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(`❌ Invalid channel ID in \`$editMessage${inside}\``);
+    return d.error(`\`${d.func}: Invalid channel ID in \`$editMessage${inside}\``);
 
   const message = await channel.messages.fetch(messageID).catch((err) => {});
 
   if (!message)
-    return d.error(`❌ Invalid message ID in \`$editMessage${inside}\``);
+    return d.error(`\`${d.func}: Invalid message ID in \`$editMessage${inside}\``);
 
   if (message.author.id !== d.client.user.id)
-    return d.error(`❌ Unauthored message!`);
+    return d.error(`\`Unauthored message\``);
 
   const m = await embed(d, msg.addBrackets(), true);
 

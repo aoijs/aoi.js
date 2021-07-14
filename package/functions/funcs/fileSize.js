@@ -2,8 +2,6 @@ const fs = require('fs')
 
 module.exports = async (d) => {
 
- //ayaka was here
-
   const code = d.command.code
 
   const inside = d.unpack()
@@ -16,9 +14,7 @@ module.exports = async (d) => {
 
 let options = ["b","kb","mb","gb"]
 
- 
-
- if(size=== undefined) return d.error(`No option given in $filesize${inside}`)
+ if(size=== undefined) return d.error(`\`${d.func}: No option given in ${inside}\``)
 let result;
 try{
 
@@ -52,7 +48,7 @@ try{
 
            default :
 
-          result = d.error(`❌ invalid size in $filesize${inside}`)
+          result = d.error(`\`${d.func}: Invalid size in ${inside}\``)
 
            ;
 
@@ -62,7 +58,7 @@ try{
 
     catch(e) {
 
-        d.error(`no file like ${file} exist`)}
+        d.error(`\`${d.func}: No file: ${file} exist\``)}
 
     
 

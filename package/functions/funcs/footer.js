@@ -2,7 +2,7 @@ const footer = (d) => {
   const r = d.command.code.split("$footer").length;
 
   if (r >= 3)
-    return d.message.channel.send(`❌ Can't use more than one $footer. `);
+    return d.message.channel.send(`\`${d.func}: Can't use more than one\``);
 
   const inside = d.unpack();
   const err = d.inside(inside);

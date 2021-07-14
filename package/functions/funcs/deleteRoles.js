@@ -9,11 +9,11 @@ module.exports = async (d) => {
     const role = d.message.guild.roles.cache.get(id);
 
     if (!role)
-      return d.error(`:x: Invalid role ID in \`$deleteRoles${inside}\``);
+      return d.error(`\`${d.func}: Invalid role ID in {inside}\``);
 
     const del = await role.delete().catch((err) => {});
 
-    if (!del) return d.error(`:x: Failed to delete role ${role.name}!`);
+    if (!del) return d.error(`\`Failed to delete role ${role.name}\``);
   }
 
   return {

@@ -14,13 +14,13 @@ let Options = ["name","id","size","height","width","url"]
 
      const channel = d.client.channels.cache.get(channelid)
 
-         if(!channel) return d.error(`:x: Invalid Channel ID Provided In $getAttachments${inside}`)
+         if(!channel) return d.error(`\`${d.func}: Invalid Channel ID Provided In ${inside}\``)
 
-    if(pos <= 0) return d.error("Position Can't Be Less Than 1")
+    if(pos <= 0) return d.error(`\`Position Can't Be Less Than 1\``)
 
 const msg = await channel.messages.fetch(msgid) 
 
-if(!msg) return d.error(`:x: Invalid Message ID Provided In $getAttachments${inside}`)
+if(!msg) return d.error(`\`${d.func}: Invalid Message ID Provided In ${inside}\``)
 
     
 

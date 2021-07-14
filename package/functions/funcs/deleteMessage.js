@@ -18,12 +18,12 @@ module.exports = async (d) => {
   const channel = d.client.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(`❌ Invalid channel ID in \`$deleteMessage${inside}\``);
+    return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
   const m = await channel.messages.fetch(messageID).catch((err) => null);
 
   if (!m)
-    return d.error(`❌ Invalid message ID in \`$deleteMessage${inside}\``);
+    return d.error(`\`${d.func}: Invalid message ID in ${inside}\``);
 
   await m.delete().catch((err) => null);
 

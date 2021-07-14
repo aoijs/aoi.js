@@ -9,13 +9,13 @@ module.exports = async (d) => {
     array,
     randoms,
     client,
-guild,
-author,
-msg,
-member,
-mentions,
-args,
-reaction,
+    guild,
+    author,
+    msg,
+    member,
+    mentions,
+    args,
+    reaction,
 
   } = d;
 
