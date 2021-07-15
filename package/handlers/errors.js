@@ -196,7 +196,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 	const ch = channel || d.channel 
 	
 	if ((errorMessage.length || send || embed.files.length) && d && ch) {
-		const m = await ch.send(errorMessage.addBrackets(), send ? embed : embed.files.length? {
+		const m = await ch.send(errorMessage.addBrackets(), send ? embed : embed.files?.length? {
 		    files: embed.files
 		}: undefined).catch(Err => {
 		})

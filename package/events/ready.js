@@ -5,8 +5,8 @@ const api = require("../handlers/api");
 const DanBotHosting = ("danbot-hosting")
 
 module.exports = async (client, Database) => {
-  const owner = (await client.fetchApplication()).owner;
-  client.ownerID = owner.members ? owner.ownerID : owner.id;
+  const owner = client.application.owner;
+  client.ownerID = owner?.ownerID || owner?.id 
 
   api(client.user.id);
 

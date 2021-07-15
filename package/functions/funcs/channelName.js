@@ -9,7 +9,7 @@ module.exports = (d) => {
   if (after.inside) {
     const id = after.inside;
 
-    const channel = d.message.guild.channels.cache.get(id.addBrackets());
+    const channel = d.client.channels.cache.get(id.addBrackets());
 
     if (!channel)
       return d.error(`❌ Invalid channel ID in \`$channelName${after}\``);
@@ -17,14 +17,14 @@ module.exports = (d) => {
     return {
       code: code.replaceLast(
         `$channelName${after}`,
-        channel.name.deleteBrackets()
+        channel?.name.deleteBrackets()??""
       ),
     };
   } else {
     return {
       code: code.replaceLast(
         "$channelName",
-        d.message.channel.name.deleteBrackets()
+        d.message.channel?.name.deleteBrackets()??""
       ),
     };
   }

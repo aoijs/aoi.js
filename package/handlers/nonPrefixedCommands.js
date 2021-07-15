@@ -3,7 +3,7 @@ const interpreter = require("../interpreter.js")
 module.exports = async (client, message, db) => {
 
 //hey when music 
-  const commands = client.bot_commands.array().filter(c => c.nonPrefixed)
+  const commands = client.cmd.default.array().filter(c => c.nonPrefixed)
 
     if (!commands.length) return
 

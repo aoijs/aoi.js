@@ -862,6 +862,7 @@ $apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optio
 $awaitButtons: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
 $buttonCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
 $interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
-$interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)"
+$interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
+$botMessageID: "returns bot message"
 };
 module.exports = Parser;

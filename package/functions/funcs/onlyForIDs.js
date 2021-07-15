@@ -1,4 +1,4 @@
-const errorHandler = require("../../handlers/errors.js")
+const {ErrorHandler} = require("../../Handler/parsers.js")
 
 module.exports = async d => {
     const code = d.command.code

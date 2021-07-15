@@ -1,470 +1,210 @@
-const fs = require("fs");
-const functions = require("./functions/parser.js");
-const Discord = require("discord.js");
-const embedE = require("./handlers/errors.js");
-
-const interpreter = async (
-  client,
-  message,
-  args,
-  command,
-  db,
-  returnCode = false,
-  channelUsed,
-  data = {},
-  returnMessage,
-  returnExecution
-) => {
-  let code = command.code;
-
-  code = code
-    .split("\\]")
-    .join("#LEFT#")
-    .split("\\$")
-    .join("#CHAR#")
-    .split("\\;")
-    .join("#SEMI#")
-    .split("\\}")
-    .join("#LEFT_BRACKET#")
-    .split("\\:")
-    .join("#COLON#")
-    .split("\\,")
-    .join("#COMMA#");
-
-  //if statements
-  if (code.toLowerCase().includes("$if[")) {
-    for (let statement of code
-      .split(/\$if\[/gi)
-      .slice(1)
-      .reverse()) {
-      const r = code.toLowerCase().split("$if[").length - 1;
-
-      if (!code.toLowerCase().includes("$endif"))
-        return message.channel.send(`:x: $if is missing $endif`);
-
-      const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
-
-      statement = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
-
-      let condition = statement.split("\n")[0].trim();
-
-      condition = condition.slice(0, condition.length - 1);
-
-      const pass =
-        (await interpreter(
-          client,
-          message,
-          args,
-          {
-            code: `$checkCondition[${condition}]`,
-            name: "check",
-          },
-          undefined,
-          true
-        )) === "true";
-
-      const elseIfAction = statement.toLowerCase().includes("$elseif");
-
-      const elseIfs = {};
-
-      if (elseIfAction) {
-        for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
-          if (!data.toLowerCase().includes("$endelseif"))
-            return message.channel.send(`❌ $elseIf is missing $endelseIf!`);
-
-          const inside = data.split(/\$endelseIf/gi)[0];
-
-          let CONDITION = inside.split("\n")[0].trim();
-
-          CONDITION = CONDITION.slice(0, CONDITION.length - 1);
-
-          const CODE = inside.split("\n").slice(1).join("\n");
-
-          elseIfs[CONDITION] = CODE;
-
-          function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\\n]/g, "\\$&");
-          }
-
-          statement = statement.replace(
-            new RegExp(`\\$elseif\\[${escapeRegExp(inside)}\\$endelseif`, "mi"),
-            ""
-          );
-        }
-      }
-
-      const elseAction = statement.toLowerCase().includes("$else");
-
-      const ifCode = elseAction
-        ? statement
-            .split("\n")
-            .slice(1)
-            .join("\n")
-            .split(/\$else/gi)[0]
-        : statement
-            .split("\n")
-            .slice(1)
-            .join("\n")
-            .split(/\$endif/gi)[0];
-
-      const elseCode = elseAction
-        ? statement.split(/\$else/gi)[1].split(/\$endif/gi)[0]
-        : "";
-
-      let passes = false;
-
-      let lastCode;
-
-      if (elseIfAction) {
-        for (const data of Object.entries(elseIfs)) {
-          if (!passes) {
-            const response =
-              (await interpreter(
-                client,
-                message,
-                args,
-                {
-                  code: `$checkCondition[${data[0]}]`,
-                  name: "check",
-                },
-                undefined,
-                true
-              )) === "true";
-
-            if (response) {
-              passes = true;
-              lastCode = data[1];
-            }
-          }
-        }
-      }
-
-      code = code.replace(/\$if\[/gi, "$if[").replace(/\$endif/gi, "$endif");
-      code = code.replaceLast(
-        `$if[${everything}$endif`,
-        pass ? ifCode : passes ? lastCode : elseCode
-      );
-    }
-  }
-
-  let randoms = {};
-
-  let embed = new Discord.MessageEmbed();
-
-  let timezone = "UTC";
-
-  let letVariables = {};
-
+const fs = require('fs') 
+const location = "./functions/"
+const Functions = Object.keys(require(location+"parser.js"))
+const Discord = require('discord.js');
+const {ErrorHandler,EmbedParser,FileParser, ComponentParser} = require('./Handler/parsers.js')
+const Interpreter =async (client,message,args,command,db,returnCode = false, channelUsed,data = {},useChannel,returnMessage, returnExecution,returnID)=>{
+    let code = command.code.replace(/\\]/g,"#LEFT#").split("\\[").join("#RIGHT#").replace("\\,","#COMMA#")
+    const oldcode = code 
+  let [randoms,timezone,letVars,object,disableMentions,array,reactions,channel,author,guild,mentions,member,msg]= [{},"UTC",{},data.object || {},["roles","users","everyone"],data.array ||[],[],message.channel,message.author,message.guild,message.mentions,message.member,message];
+  let anErrorOccuredPlsWait;
+  let embeds;
   let deleteIn;
-
-  let object = data.object || {};
-
-  let disabledMentions = ["roles", "users", "everyone"];
-
   let suppressErrors;
-
   let editIn;
+  let attachments;
+  let components;
+  let reply; 
+  let FuncData;
+  let msgobj;
+    if(client?.aoiOptions?.debugs?.interpreter){
+    console.log("|------------------------------------------|")
+    console.log("Raw Code:"+(code))
+}
+    let customFuncs = [] 
+    
+    let funcs = [] 
+    let loadsOfFunc = Functions.filter(thatfunc =>code.toLowerCase().includes(thatfunc.toLowerCase()))
 
-  let array = data.array || [];
-
-  let attachment;
-
-  let reactions = [];
-
-  let channel = message.channel;
-
-  let author = message.author
-
-let guild = message.guild 
-
-let mentions = message.mentions 
-
-let member = message.member 
-
-let msg = message 
-
-  const restFunctions = Object.keys(functions).filter((func) =>
-    code.toLowerCase().includes(func.toLowerCase())
-  );
-
-  //insensitive interpreter ™
-  for (const func of restFunctions) {
-    //don't touch
-    const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
-
-    code = code.replace(regex, func);
-  }
-
-  const funcs = code.split("$");
-
-  let start = Date.now();
-
-  for (const func of funcs.reverse()) {
-    const FUNC = `$${func}`;
-
-    let F = restFunctions.filter((f) => f === FUNC.slice(0, f.length));
-
-    //incase only one function was found, exit directly
-    if (F.length === 1) F = F[0];
-    //if multiple matches found, we have to filter until we find the right function
-    if (typeof F === "object" && F.length > 1) {
-      const maxIndex = F.sort((x, y) => y.length - x.length)[0].length;
-
-      const option = FUNC.slice(0, maxIndex);
-
-      F = F.find((f) => f === option);
+    const funcyboys = code.split("$")
+if(client?.aoiOptions?.debugs?.interpreter){
+ console.time("exact interpreter time")
     }
-
-    if (!F || F.length === 0) {
-    } else if (F) {
-      //ugly attempt to catch interpreter errors
-      try {
-        const FNAME = F.replace("$", "").replace("[", "");
-        const FFUNC = require(`./functions/funcs/${FNAME}.js`);
-
-        var EXECUTION = await FFUNC({
-          command: {
-            name: command.name,
-            code: code,
-            error: command.error,
-            asynchronous: command.asynchronous,
-          },
-          _api: (url) =>
-            `https://discord.com/api/v8/${
-              url.startsWith("/") ? url.slice(1) : url
-            }`,
-          data: data,
-          timezone: timezone,
-          object: object,
-          embed: embed,
-          channelUsed: channelUsed,
-          vars: letVariables,
-          args: args,
-          client: client,
-          array: array,
-          reaction: message.reaction,
-          message: message,
-          randoms: randoms,
-          guild : guild ,
-          author : author ,
-          member : member ,
-          mentions : mentions ,
-          msg : msg ,
-          disabledMentions: disabledMentions,
-          error: (err) => {
-            if (!message || !message.channel) {
-              return console.log(err.addBrackets());
-                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
-            }
-            if (suppressErrors !== undefined) {
-              embedE(
-                {
-                  message: message,
-                  interpreter: interpreter,
-                  channel,
-                  client: client,
-                },
-                suppressErrors.split("{error}").join(err)
-              );
-                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
-            } else {
-              try {
-                message.channel.send(
-                  err.addBrackets() +
-                    ` at line ${
-                      code
-                        .split("\n")
-                        .findIndex((c) =>
-                          c.includes(err.split("$")[1].split("[")[0])
-                        ) + 1 || "unknown"
-                    }`
-                );
-      client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)  
-              } catch (e) {
-                if (err.addBrackets().trim().length)
-                  message.channel.send(err.addBrackets());
-   client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
-              }
-            }
-          },
-          channel: message.channel,
-          interpreter: interpreter,
-          unpack() {
-            const last = code.split(`$${FNAME}`).length - 1;
-            const sliced = code.split(`$${FNAME}`)[last];
+    const start = Date.now()
+  for(const funcboy of funcyboys.reverse()){
+    let Func = loadsOfFunc.filter(f=>(f).toLowerCase() === ("$"+funcboy.toLowerCase()).slice(0,f.length))
+     
+ if(!Func.length){continue;}
+ if(Func.length === 1){funcs.push(Func[0])}
+ else if(Func.length > 1){
+   funcs.push(Func.sort((a,b)=>b.length - a.length)[0])
+     }
+ }
+    if(client?.aoiOptions?.debugs?.interpreter){
+        console.log("Functions Found:"+funcs)
+        }
+ for(const func of funcs){
+     const regex = new RegExp ("\\"+func.replace("[","\\["),"gi") 
+  code = code.replace(regex,func)   
+   try{ 
+     FuncData = await require(location+"funcs/"+func.replace("$","").replace("[","")+".js")({
+    randoms:randoms,
+    command:{
+        name: command.name,
+        code:code,
+        error:command.error,
+        async:command.async || false ,
+        },
+    args:args,
+    func:func,
+    timezone:timezone,   
+    channelUsed:channelUsed,
+    vars:letVars,
+    object:object,
+    disableMentions:disableMentions,
+    array:array,
+    reactions:[],
+    message:message,
+    msg:msg,
+    author:author,
+    guild:guild,
+    channel:channel,
+    member:member,
+    mentions:mentions,
+    unpack() {
+            const last = code.split(func.replace("[","")).length - 1;
+            const sliced = code.split(func.replace("[",""))[last];
 
             return sliced.after();
           },
-          inside(unpacked) {
-            if (typeof unpacked.inside !== "string")
-              return `:x: Invalid usage in $${FNAME}${unpacked}`;
-            return false;
+    inside(unpacked) {
+if (typeof unpacked.inside !== "string"){
+    if(suppressErrors) return suppressErrors
+   else{ const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` `
+    return e 
+        }
+    }
+     else return false 
           },
-          noop() {},
-        });
-      } catch (error) {
-        if (typeof command.error === "string") {
-          try {
-            interpreter(
-              client,
-              message,
-              args,
-              {
-                name: "ERR",
-                code: command.error,
-              },
-              undefined,
-              undefined,
-              undefined,
-              {
-                error: error,
-              }
-            );
-          } catch {
-            return console.error(error);
-          }
-        } else {
-          console.error(error);
-        }
-
-        return undefined;
-      }
-
-      if (typeof EXECUTION === "object") {
-        code = EXECUTION.code;
-        if (EXECUTION.disabledMentions) {
-          disabledMentions = EXECUTION.disabledMentions;
-        }
-        if (EXECUTION.embed) {
-          embed = EXECUTION.embed;
-        } //dbd.js server
-        if (EXECUTION.deleteIn) {
-          deleteIn = EXECUTION.deleteIn;
-        }
-        if (EXECUTION.object) {
-          object = EXECUTION.object;
-        }
-        if (EXECUTION.suppressErrors !== undefined) {
-          suppressErrors = EXECUTION.suppressErrors;
-        }
-        if (EXECUTION.channel) {
-          channel = EXECUTION.channel;
-        }
-        if (EXECUTION.reactions) {
-          reactions = EXECUTION.reactions;
-        }
-        if (EXECUTION.randoms) {
-          randoms = EXECUTION.randoms;
-        }
-        if (EXECUTION.editIn) {
-          editIn = EXECUTION.editIn;
-        }
-        if (EXECUTION.array) {
-          array = EXECUTION.array;
-        }
-        if (EXECUTION.attachment) {
-          attachment = EXECUTION.attachment;
-        }
-        if (EXECUTION.timezone) {
-          timezone = EXECUTION.timezone;
-        }
-      } else return;
+    noop() {},
+  async  error(err){
+      
+if(client.options.suppressAllErrors){
+    if(client.options.errorMessage){
+     if(!message || !message.channel){
+console.error(client.options.errorMessage.addBrackets())
+     }
+     else{
+         let [con,em, com,fil] = [" ", "","",""]
+ let isArray = Array.isArray(client.options.errorMessage)
+ if(isArray){
+isArray = client.options.errorMessage
+con = (isArray[0] === "" || !isArray[0])? " " : isArray[0] 
+em =isArray[1] !== "" && isArray[1]? await EmbedParser(isArray[1]||""):[] 
+fil= isArray[3] !== "" && isArray[3]? await FileParser(isArray[3]||""):[] 
+com= isArray[2] !== "" && isArray[2] ? await ComponentParser(isArray[2]||""): []
+ }
+         else{
+             con = client.options.errorMessage.addBrackets() === ""? " " : client.options.errorMessage.addBrackets()
+   
+         }
+         
+if(!anErrorOccuredPlsWait){message.channel.send({content: con,embeds:em||[], components: com||[],files:fil||[]})}
+         anErrorOccuredPlsWait = true 
     }
-  }
-
-  if (typeof code === "string") {
-    code = code.replace(/\$executionTime/gi, Date.now() - start);
-  }
-
-  if (returnCode) return code;
-
-  if (channel) {
-    let send = true;
-
-    if (
-      !(
-        embed.image ||
-        embed.length ||
-        embed.author ||
-        embed.timestamp ||
-        embed.color ||
-        embed.thumbnail
-      )
-    )
-      send = false;
-    code = code.trim();
-
-    if (!(code.length || send || embed.files.length)) return;
-
-    if (code.length || send || embed.files.length) {
-      const msg = await channel
-        .send(
-          code ? code.addBrackets() : undefined,
-          send
-            ? embed
-            : embed.files.length
-            ? {
-                files: embed.files,
-                allowedMentions: {
-                  parse: disabledMentions,
-                },
-              }
-            : {
-                allowedMentions: {
-                  parse: disabledMentions,
-                },
-              }
-        )
-        .catch((err) => {});
-
-      if (msg) {
-        if (reactions.length) {
-          for (const reaction of reactions) {
-            const react = await msg.react(reaction).catch((err) => {
-              console.log(
-                `Could not react with ${reaction} to ${msg.id} in ${msg.channel.name}: ${err.message}`
-              );
-            });
-
-            if (!react)
-              msg.channel.send(`❌ Failed to add '${reaction}' reaction `);
-          }
-        }
-
-        if (editIn) {
-          const edit = setInterval(async () => {
-            const m = await embedE({}, editIn.fields[0].addBrackets(), true);
-
-            if (m.reactions) {
-              m.reactions.map(async (r) => msg.react(r).catch((err) => null));
-            }
-
-            msg.edit(m.message, m.embed);
-            editIn.fields.shift();
-            if (!editIn.fields.length) return clearInterval(edit);
-          }, editIn.time);
-        }
-
-        if (deleteIn) {
-          msg.delete({
-            timeout: deleteIn,
-          });
-        }
-        if (returnMessage) return msg;
-      }
+}
+    else return ;
     }
+else{
+    anErrorOccuredPlsWait = true 
+if(!message || !message.channel){
+    console.error(err.addBrackets())
+}
+ if(suppressErrors){
+ErrorHandler({channel:channel,message:message,guild:guild,author:author}, suppressErrors?.split("{error}").join(err.addBrackets()))
+ }
+ else{
+ message.channel.send(err?.addBrackets())
+ }
+    }
+          },
+    interpreter:Interpreter,
+    client:client,
+    embed:new Discord.MessageEmbed()
+    })
+         }catch(err){console.error(err)
+                    FuncData= {}}
+    if(FuncData?.code){code = FuncData.code}
+if(FuncData?.randoms){randoms = FuncData.randoms}
+
+ if(FuncData?.timezone){timezone = FuncData.timezone}   
+    if(FuncData?.embeds){embeds = FuncData.embeds||[]}
+ if(FuncData?.reactions){reactions = FuncData.reactions}
+     if(FuncData?.disableMentions){disableMentions = FuncData.disableMentions}
+     if(FuncData?.editIn){editIn = FuncData.editIn} 
+     if(FuncData?.attachments){attachments=FuncData.attachments||[]}
+     if(client.options.suppressAllErrors || FuncData?.suppressErrors){suppressErrors = client.options.suppressAllErrors || FuncData?.suppressErrors}
+     if(FuncData?.components){components = FuncData.components||[]}
+     if(FuncData?.reply){reply = FuncData.reply }
+     if(FuncData?.useChannel){useChannel = FuncData.useChannel}
+     if(FuncData?.returnID){
+         returnID = FuncData.returnID 
+     }
+ if(client?.aoiOptions?.debugs?.interpreter){    
+console.log(func+":"+require('util').inspect(FuncData))
+     }
+ }
+    code = code.replace(/\$executiontime/gi,(Date.now()-start))
+    if(client?.aoiOptions?.debugs?.interpreter){
+    console.timeEnd("exact interpreter time")
+
+console.log("executionTime™:"+(Date.now()-start)+"ms")
+ }
+code = code.trim()     
+ if(returnCode) return code;
+    if(code.length && !anErrorOccuredPlsWait){
+  const send = {
+      embeds:embeds,
+      files: attachments,
+      components: components,
+      allowedMentions:{parse: disableMentions,repliedUser:reply?.user|| false},
+      referenceMessage:reply?.message||{}
   }
+  if(code !== ""){send.content = code.addBrackets()}
+    if(!useChannel){
+   msgobj = await message.channel.send(
+    send
+)
+        }
+    else{
+      msgobj = await useChannel.send(send)
+    }
+    if(client?.aoiOptions?.debugs?.interpreter){
+   console.log("Final Code:"+code.addBrackets())
 
-  if (returnExecution)
-    return {
-      object,
-      embed,
-      array,
-    };
-};
+  console.log("|------------------------------------------|")     
+        }
+if(reactions?.length){
+  const react = setInterval(()=>{const r = reactions.shift() 
+  msgobj.react(r)
+    if(!reactions.length){clearInterval(react)} 
+  },1500)
+}
+if(editIn?.length){
+    const ee = setInterval(()=>{const m = editIn.msgs 
+    msgobj.edit(m.shift())
+         if(!m.length){ClearInterval(ee)}
+  }, editIn.time)
+}
+if(deleteIn){
+setTimeout(()=>msgobj.delete(),deleteIn)
+}
 
-String.prototype.decryptAndExecute = async function (d) {
-  return await eval(Buffer.from(this, "base64").toString());
-};
+if(returnID){return msgobj?.id} 
+    
 
-module.exports = interpreter;
+if(returnExecution){ return (object,data, array,letVars)}
+ }
+}
+
+module.exports = Interpreter

@@ -1,4 +1,4 @@
-const channelOptions = require("../../utils/channelOptions") 
+const {ChannelOptions} = require("../../Utils/Constants.js") 
 
 module.exports = async d => {
     const code = d.command.code 
@@ -7,14 +7,10 @@ module.exports = async d => {
 	const err = d.inside(inside)
 
 	if (err) return d.error(err)
-    
-    const option = Object.keys(channelOptions).find(opt => opt === inside.inside) 
-    
-    if (!option) return d.error(`❌ Invalid option in \`$oldChannel${inside}\``) 
-    
-    const executor = channelOptions[option].split(";")[1] 
-    
+    if(!Object.keys(ChannelOptions).includes(inside.inside)) return d.error(`\`${d.func}: Invalid Option Provided In ${inside}\` `)
+ const OptExe = ChannelOptions[inside.inside].split(";")[1]
+const ans = eval(`d.data?.oldc?.${OptExe}`)||""
     return {
-        code: code.replaceLast(`$oldChannel${inside}`, d.data.old_channel ? eval(`d.data.old_channel${executor}`) : "")
+        code: code.replaceLast(`$oldChannel${inside}`,ans)
     }
 }
