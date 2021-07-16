@@ -1,5 +1,5 @@
 module.exports = {
-    "autoUpdate": "AutoUpdate the Client to latest version of Aoi.JS (true or false)",
+    "autoUpdate": "AutoUpdate the Client to latest version of Aoi.JS (true / false)",
     "dbhToken": "The DBH token (used to post Bot Stats)", 
     "fetchInvites": "Whether to enable invite tracker system (true / false) (defaults to false)", 
     "sharding": "Whether to Shard Bot internally (true / false)", 
