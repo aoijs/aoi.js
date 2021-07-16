@@ -10,7 +10,7 @@ module.exports = async d => {
     
     const channel = d.client.channels.cache.get(channelID)
     
-    if (!channel) return d.error(`❌ Invalid channel ID in \`$messageExists${inside}\``)
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
         
     const msg = await channel.messages.fetch(messageID).catch(err => null)
 

@@ -8,17 +8,18 @@ module.exports = async d => {
 	const server = d.client.servers.get(d.message.guild.id)
 
 	if (!server || !server.songs.length || !server.connection.dispatcher)
-		return d.error(':x: No song is playing')
-		
-	if (!inside.inside)
-		return d.error(`:x: Invalid usage in $songFilter${inside.total}`)
+		return d.error(`\`songError: Nothing is being played\``)
+
+	const err = d.inside(inside)
+
+	if (err) return d.error(err)
 
 	let i = 0
 
 	while (i < inside.splits.length) {
 		const [ type ] = inside.splits[i].split(':')
 
-		if (!songFilters[type]) return d.error(`:x: Invalid song filter \`${type}\` in \`$songFilter${inside.total}\``)
+		if (!songFilters[type]) return d.error(`\`${d.func}: Invalid song filter '${type}' in ${inside.total}\``)
 
 		i++
 	}
@@ -37,7 +38,6 @@ module.exports = async d => {
 	if (!server.ffmpegArgs.filter)
 		server.ffmpegArgs.filter = { }
 
-	//Deep-copy
 	const old = JSON.parse(JSON.stringify(server.ffmpegArgs.filter))
 
 	while (i < inside.splits.length) {

@@ -11,7 +11,7 @@ module.exports = async (d) => {
       
       const user = await d.client.users.fetch(id, false).catch(err => null)
       
-      if (!user) return d.message.channel.send(`\`$getUserBadges: Invalid user ID in ${after}\``)
+      if (!user) return d.message.channel.send(`\`${d.func}: Invalid user ID in ${after}\``)
       
       if (!user.flags) await user.fetchFlags().catch(err => null) 
       

@@ -1,6 +1,5 @@
 const ms = require("parse-ms")
 const parse = require("ms-parser")
-
 module.exports = async d => {
 	const code = d.command.code
 
@@ -8,8 +7,7 @@ module.exports = async d => {
 
 	const inside = code.split("$parseDate")[r].after()
 
-	if (new Date(Number(inside.splits[0])).toLocaleString('en-US') === "Invalid Date") return d.error(":x: Invalid Date in $parseDate" + inside.total)
-	//what u doing
+	if (new Date(Number(inside.splits[0])).toLocaleString('en-US') === "Invalid Date") return d.error(`\`${d.func}: Invalid Date in ${inside.total}\``)
 
 	return {
 		code: code.replaceLast(`$parseDate${inside.total}`, inside.splits[1] !== "time" ? new Date(Number(inside.splits[0])).toLocaleString('en-US') : parse(Object.entries(ms(Number(inside.splits[0]))).map((x, y) => {

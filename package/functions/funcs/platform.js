@@ -11,7 +11,7 @@ module.exports = async d => {
 
         const user = await d.client.users.fetch(userID).catch(Err => {})
 
-        if (!user) return d.error(`:x: Invalid user ID in \`$platform${inside}\``)
+        if (!user) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
         
         return {
             code: code.replaceLast(`$platform${inside}`, !user.presence.clientStatus || user.presence.status === "offline" ? "none" : Object.keys(user.presence.clientStatus || {none:'none'}).join(separator))

@@ -1,5 +1,4 @@
 const roleOptions = require("../../utils/roleOptions");
-
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -11,7 +10,7 @@ module.exports = async (d) => {
 
   const option = Object.keys(roleOptions).find((opt) => opt === inside.inside);
 
-  if (!option) return d.error(`❌ Invalid option in \`$oldRole${inside}\``);
+  if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``);
 
   const executor = roleOptions[option].split(";")[1];
 

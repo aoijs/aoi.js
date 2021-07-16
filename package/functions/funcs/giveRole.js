@@ -10,7 +10,7 @@ module.exports = async d => {
     
     const s = await d.client.api.guilds(d.message.guild.id).members(userID).roles(roleID).put().catch(err => null)
     
-    if (!s) return d.error(`❌ Failed to give role! `) 
+    if (!s) return d.error(`\`${d.func}: Failed to give role\``)
     
     return {
         code: code.replaceLast(`$giveRole${inside}`, "")

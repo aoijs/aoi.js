@@ -1,10 +1,9 @@
 const setServerVar = async d => {
-
  const code = d.command.code
 
  const inside = d.unpack()
-	const err = d.inside(inside)
 
+	const err = d.inside(inside)
 	if (err) return d.error(err)
 
  const [ variable, value, guildID = d.message.guild.id ] = inside.splits
@@ -13,9 +12,6 @@ const setServerVar = async d => {
 
 
  d.client.db.set("main", `${variable}_${guildID}`, value)
- 
- 
-
  return {
  code: code.replaceLast(`$setServerVar${inside}`, "")
  }

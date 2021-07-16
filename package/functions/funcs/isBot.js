@@ -8,7 +8,7 @@ module.exports = async d => {
 
         const user = await d.client.users.fetch(inside).catch(Err =>{})
 
-        if (!user) return d.error(`:x: Invalid user ID in \`$isBot${after}\``)
+        if (!user) return d.error(`\`${d.func}: Invalid user ID in ${after}\``)
 
         return {
             code: code.replaceLast(`$isBot${after}`, user.bot)

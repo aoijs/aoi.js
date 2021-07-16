@@ -12,7 +12,7 @@ module.exports = async d => {
  
  const cmd = d.client.awaited_commands.find(c => c.name === command) 
  
- if (!cmd) return d.error(`❌ Invalid awaited command in \`$map${inside}\``)
+ if (!cmd) return d.error(`\`${d.func}: Invalid awaited command in ${inside}\``)
  
  const array = reader.addBrackets().split(split.addBrackets()) 
  

@@ -10,13 +10,13 @@ module.exports = async d => {
     
     const channel = d.message.guild.channels.cache. get(channelID) 
     
-    if (!channel) return d.error(`❌  Invalid channel ID in \`$setChannelTopic${inside}\``) 
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
     
     const ch = await channel.edit({
         topic: topic.addBrackets()
     }).catch(err => null) 
     
-    if (!ch) return d.error(`❌ Failed to edit channel topic!`)
+    if (!ch) return d.error(`\`Failed to edit channel topic\``)
     
     return {
         code: code.replaceLast(`$setChannelTopic${inside}`, "")

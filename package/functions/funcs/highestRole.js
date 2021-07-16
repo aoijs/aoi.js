@@ -10,7 +10,7 @@ module.exports = async d => {
 
         const member = await d.message.guild.members.fetch(inside).catch(err => {})
 
-        if (!member) return d.error(`:x: Invalid user ID in \`$highestRole${after}\``)
+        if (!member) return d.error(`\`${d.func}: Invalid user ID in ${after}\``)
 
         else return {
             code: code.replaceLast(`$highestRole${after}`, member.roles.highest.id)

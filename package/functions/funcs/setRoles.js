@@ -3,19 +3,20 @@ module.exports = async d => {
 	
 	const r = code.split('$setRoles').length - 1
 	const inside = code.split('$setRoles')[r].after()
-	
-	if (!inside.inside) return d.error(`:x: Invalid usage in $setRoles${inside.total}`)
+
+	const err = d.inside(inside)
+	if (err) return d.error(err)
 	
 	const [ userID, ...roles ] = inside.splits
 	
 	const m = await d.message.guild.members.fetch(userID).catch(err => null)
 	
-	if (!m) return d.error(`:x: Invalid userID in \`$setRoles${inside.total}\``)
+	if (!m) return d.error(`\`${d.func}: Invalid userID in ${inside.total}\``)
 	
 	try {
 		await m.roles.set(roles)
 	} catch {
-		return d.error(`:x: Failed to set roles to user in \`$setRoles${inside.total}\``)
+		return d.error(`\`${d.func}: Failed to set roles to user in ${inside.total}\``)
 	}
 	
 	return {

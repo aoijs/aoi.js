@@ -11,7 +11,7 @@ const userAvatar = async (d) => {
 
   const user = await d.client.users.fetch(id).catch(d.noop);
 
-  if (!user) return d.error(`❌ Invalid user ID in \`$userAvatar${inside}\``);
+  if (!user) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``);
 
   code = code.replaceLast(
     `$userAvatar${inside}`,

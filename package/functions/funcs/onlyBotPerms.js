@@ -1,6 +1,5 @@
 const keyPerms = require("../../utils/permissions")
 const embed = require("../../handlers/errors.js")
-
 module.exports = async d => {
     const code = d.command.code
 
@@ -18,7 +17,7 @@ module.exports = async d => {
     for (const field of fields) {
         const perm = keyPerms[field]
 
-        if (!perm) return d.error(`:x: Invalid perm '${field}' in \`$onlyBotPerms${inside}\``)
+        if (!perm) return d.error(`\`${d.func}: Invalid perm '${field}' in ${inside}\``)
 
         else perms.push(perm)
     }

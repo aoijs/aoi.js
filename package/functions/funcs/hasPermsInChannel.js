@@ -14,11 +14,11 @@ module.exports = async d => {
  
  const user = await d.client.users.fetch(userID).catch(err => null) 
  
- if (!channel || !user) return d.error(`❌ Invalid channel or user ID in \`$hasPermsInChannel${inside}\``) 
+ if (!channel || !user) return d.error(`\`${d.func}: Invalid channel or user ID in ${inside}\``)
  
  const pms = perms.map(key => permissions[key]) 
  
- if (pms.includes(undefined)) return d.error(`❌ Invalid permissions in \`$hasPermsInChannel${inside}\``) 
+ if (pms.includes(undefined)) return d.error(`\`${d.func}: Invalid permissions in ${inside}\``)
  
  const upms = channel.permissionsFor(userID) 
  

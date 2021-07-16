@@ -1,7 +1,7 @@
 const ms = require("parse-ms");
-
 const uptime = (d) => {
   let code = d.command.code;
+
   return {
     code: code.replaceLast(
       `$uptime`,

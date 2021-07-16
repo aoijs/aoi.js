@@ -1,5 +1,4 @@
 module.exports = d => {
-  
   const code = d.command.code
   
   const inside = d.unpack()

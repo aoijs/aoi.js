@@ -20,7 +20,7 @@ module.exports = async d => {
 
     const role = d.message.guild.roles.cache.get(roleID)
 
-    if (!role) return d.error(`:x: Invalid role ID in \`$usersWithRole${inside}\``)
+    if (!role) return d.error(`\`${d.func}: Invalid role ID in ${inside}\``)
 
     return {
         code: code.replaceLast(`$usersWithRole${inside}`, role.members.map(m => m.user.tag).join(separator).removeBrackets())

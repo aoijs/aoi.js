@@ -8,7 +8,7 @@ module.exports = async d => {
 
         const guild = d.client.guilds.cache.get(guildID)
 
-        if (!guild) return d.error(`:x: Invalid guild ID in \`$serverContentFilter${inside}\``)
+        if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
 
         return {
             code: code.replaceLast(`$serverContentFilter${inside}`, guild.explicitContentFilter.split("_").map(word => word.toLowerCase().replace(word.toLowerCase()[0], word[0])).join(" "))

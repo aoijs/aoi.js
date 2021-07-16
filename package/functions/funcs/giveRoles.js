@@ -12,11 +12,11 @@ module.exports = async d => {
 
     const member = await d.message.guild.members.fetch(userID).catch(err => {})
 
-    if (!member) return d.error(`:x: invalid user ID in \`$giveRoles${inside}\``)
+    if (!member) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
     const m = await member.roles.add(fields).catch(Err => {})
 
-    if (!m) return d.error(`:x: Failed to add roles to ${member.user.username}!`)
+    if (!m) return d.error(`\`${d.func}: Failed to add roles to ${member.user.username}\``)
 
     return {
         code: code.replaceLast(`$giveRoles${inside}`, "")

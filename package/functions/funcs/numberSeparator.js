@@ -11,7 +11,7 @@ module.exports = async d => {
         separator = ','
     ] = inside.splits
 
-    if (isNaN(Number(number))) return d.error(`:x: Invalid number in \`$numberSeparator${inside}\``)
+    if (isNaN(Number(number))) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
 	let separated = splitArray(number.split('').reverse(), 3)
 	separated = separated.reverse().map(num => num.reverse().join(''))

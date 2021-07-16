@@ -5,9 +5,9 @@ module.exports = async (d) => {
      if (err) return d.error(err);
 
      let option = inside.inside;
-     if (!option) return d.error(`:x: Missing text in \`$randomCase${inside}\``);
+     if (!option) return d.error(`\`${d.func}: Missing text in ${inside}\``);
      const regex = !/[^a-zA-Z0-9 ]+/g.test(option);
-     if (!regex) return d.error(`:x: Invalid text in \`$randomCase${inside}\``);
+     if (!regex) return d.error(`\`${d.func}: Invalid text in ${inside}\``);
      let Cases = [
   String.prototype.toUpperCase,
   String.prototype.toLowerCase

@@ -8,7 +8,7 @@ module.exports = async d => {
     
     const user = await d.message.guild.members.fetch(inside.inside).catch(err => {})
     
-    if (!user) return d.error(`❌ Invalid user ID in \`$isMuted${inside}\``)
+    if (!user) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
         
     return {
         code: code.replaceLast(`$isMuted${inside}`, user.voice.selfMute || user.voice.serverMute)

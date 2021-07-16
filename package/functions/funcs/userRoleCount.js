@@ -8,7 +8,7 @@ module.exports = async d => {
 
         const m = await d.message.guild.members.fetch(userID).catch(Err => {})
 
-        if (!m) return d.error(`:x: Invalid user ID in \`$userRoleCount${inside}\``)
+        if (!m) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
         return {
             code: code.replaceLast(`$userRoleCount${inside}`, m.roles.cache.size - 1)  

@@ -9,7 +9,7 @@ const mentionedRoles = d => {
   
   const mention = inside.inside
   
-  if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentionedRoles${inside}\``)
+  if (isNaN(mention)) return d.error(`\`${d.func}: Invalid mention number in ${inside}\``)
   
   const role = d.message.mentions.roles.array()[Number(mention) - 1]
   

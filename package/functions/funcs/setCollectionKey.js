@@ -1,5 +1,4 @@
-const ms = require("ms") 
-
+const ms = require("ms")
 module.exports = async d => {
     const code =d.command.code 
     
@@ -10,19 +9,18 @@ module.exports = async d => {
     
     const [cname, key, value, temporal] = inside.splits
     
-    if (!d.client.collections[cname.addBrackets()]) return d.error(`❌ Invalid collection name in \`$setCollectionKey${inside}\``) 
+    if (!d.client.collections[cname.addBrackets()]) return d.error(`\`${d.func}: Invalid collection name in ${inside}\``)
     
     d.client.collections[cname.addBrackets()].set(key.addBrackets(), value.addBrackets()) 
     
     if (temporal) {
         const time = ms(temporal) 
         
-        if (!time) return d.error(`❌ Invalid temp duration in \`$setCollectionKey${inside}\``) 
+        if (!time) return d.error(`\`${d.func}: Invalid temp duration in ${inside}\``)
         
         setTimeout(() => d. client.collections[cname.addBrackets()].delete(key.addBrackets()), time)
         
     }
-    
     return {
         code: code.replaceLast(`$setCollectionKey${inside}`, "")
     }

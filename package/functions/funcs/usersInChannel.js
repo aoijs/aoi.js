@@ -10,7 +10,7 @@ module.exports = async d => {
     
     const channel = d.message.guild.channels.cache.get(channelID)
     
-    if (!channel) return d.error(`❌ Invalid channel ID in \`$usersInChannel${inside}\``)
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
         
     const users = channel.members.map(m => options ==="mention" ? m.user.toString() : m.user[options.toLowerCase()]).join(separator).removeBrackets()
         

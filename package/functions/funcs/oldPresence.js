@@ -1,5 +1,4 @@
-const presenceOptions = require("../../utils/presenceOptions") 
-
+const presenceOptions = require("../../utils/presenceOptions")
 module.exports = async d => {
     const code = d.command.code 
     
@@ -10,7 +9,7 @@ module.exports = async d => {
     
     const option = Object.keys(presenceOptions).find(opt => opt === inside.inside) 
     
-    if (!option) return d.error(`❌ Invalid option in \`$oldPresence${inside}\``) 
+    if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``)
     
     const executor = presenceOptions[option].split(";")[1] 
     

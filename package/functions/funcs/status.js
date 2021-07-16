@@ -6,9 +6,9 @@ module.exports = async d => {
     if (inside.inside) {
         const user = await d.client.users.fetch(inside.inside).catch(err => {})
 
-        if (!user) return d.error(`:x: Invalid user ID in \`$status${inside}\``)
+        if (!user) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
-        if (!user.presence) return d.error(`:x: No presence status`)
+        if (!user.presence) return d.error(`\`No presence status\``)
 
         return {
             code: code.replaceLast(`$status${inside}`, user.presence.status ? user.presence.status || "" : "")

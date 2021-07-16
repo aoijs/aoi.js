@@ -8,7 +8,7 @@ module.exports = async d => {
     
     const b = await d.client.user.setUsername(inside.addBrackets()).catch(err => {})
     
-    if (!b) return d.error(`❌ Failed to change bot name`)
+    if (!b) return d.error(`\`Failed to change bot name\``)
         
     return {
         code: code.replaceLast(`$setBotName${inside}`,"")

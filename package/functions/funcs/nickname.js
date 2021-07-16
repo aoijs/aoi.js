@@ -1,5 +1,4 @@
 const nickname  = async d => {
-  
   let code = d.command.code
   
   const inside = d.unpack()
@@ -7,7 +6,7 @@ const nickname  = async d => {
   if (inside.inside) {
     const member = await d.message.guild.members.fetch(inside.inside).catch(err => {})
     
-    if (!member)  return d.error(`❌ Invalid user ID in \`$nickname${inside}\``)
+    if (!member)  return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
     
     code = code.replaceLast(`$nickname${inside}`, member.displayName.deleteBrackets())
   } else {

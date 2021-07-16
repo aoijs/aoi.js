@@ -10,32 +10,21 @@ module.exports = async d => {
 
     if(err) return d.error(err)
 
- //Yes its Me Ayaka#5057 with dumb codes
-
     let [oldfile,newfile] = inside.splits
-
-   
 
    if(fs.existsSync(oldfile) && !fs.existsSync(newfile)){
 
     fs.renameSync(oldfile,newfile) 
 
        } else {
-if(!fs.existsSync(oldfile)) return d.error(`Couldn't Found the ${oldfile} file`) 
-if(fs.existsSync(newfile)) return d.error(`File with name \`${newfile}\` already exist`)
 
+    if(!fs.existsSync(oldfile)) return d.error(`\`Couldn't Found the ${oldfile} file\``)
+    if(fs.existsSync(newfile)) return d.error(`\`File with name \`${newfile}\` already exist\``)
 
-           }
-
-        
-
+   }
     return{
 
     code: code.replaceLast(`$renameFile${inside}`,"")
 
   }
-
     }
-
-     
-

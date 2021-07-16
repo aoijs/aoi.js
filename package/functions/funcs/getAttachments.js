@@ -26,14 +26,14 @@ if(!msg) return d.error(`\`${d.func}: Invalid Message ID Provided In ${inside}\`
 
     const option = Options.includes(opt)
 
-    if(!option) return d.error(`:x: Invalid Option Provided In $getAttachments${inside}`)
+    if(!option) return d.error(`\`${d.func}: Invalid Option Provided In ${inside}\``)
  
 
     let attachment = msg.attachments.map(x=>x) 
 
-if(attachment.length ==0) return d.error(`No attachment Found In Provided Message ID`)
+if(attachment.length ==0) return d.error(`\`No attachment Found In Provided Message ID\``)
         
-       if(!attachment[pos-1]) return d.error(`No attachment Was Found At ${pos}  Position`)
+       if(!attachment[pos-1]) return d.error(`\`No attachment Was Found At ${pos} Position\``)
 
 let res ;
 

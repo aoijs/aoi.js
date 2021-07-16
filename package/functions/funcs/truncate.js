@@ -8,7 +8,7 @@ module.exports = async d => {
 
     const n = Number(inside.addBrackets())
 
-    if (isNaN(n)) return d.error(`:x: Invalid number in \`$truncate${inside}\``)
+    if (isNaN(n)) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     return {
         code: code.replaceLast(`$truncate${inside}`, Math.trunc(n))

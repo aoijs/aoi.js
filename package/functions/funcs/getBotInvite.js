@@ -20,11 +20,11 @@ module.exports = async d => {
       const y = permissionsBitField[x]
 
       if (!x) {
-        error = ":x: Invalid Permission of `" + perms[i] + "` in `$getBotInvite" + inside.total + "`";
+        error = `\`${d.func}: Invalid Permission of ${perms[i]} in ${inside.total}\``;
         break loop;
       }
       if (done.includes(y)) {
-        error = ":x: Duplicated Permission of `" + perms[i] + "` in `$getBotInvite" + inside.total + "`";
+        error = `\`${d.func}: Duplicated Permission of ${perms[i]} in ${inside.total}\``;
         break loop;
       }
       done.push(y)

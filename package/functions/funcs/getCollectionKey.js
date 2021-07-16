@@ -5,13 +5,15 @@ module.exports = async d => {
     
     const inside = code.split("$getCollectionKey")[r].after()
 
-	if (!inside.inside) return d.error(`:x: Invalid usage in $getCollectionKey${inside}`)
+    const err = d.inside(inside);
+
+    if (err) return d.error(err);
     
     const [cname, key] = inside.splits 
     
     const collection = d.client.collections[cname.addBrackets()]
     
-    if (!collection) return d.error(`❌ Invalid collection name in \`$getCollectionKey${inside}\``) 
+    if (!collection) return d.error(`\`${d.func}: Invalid collection name in ${inside}\``)
     
     const data = collection.get(key.addBrackets())
     

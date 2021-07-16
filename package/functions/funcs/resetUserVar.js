@@ -13,11 +13,10 @@ module.exports = async (d) => {
 
   if (d.client.variables[inside.inside] === undefined)
     return d.error(
-      `:x: Invalid variable '${variable}' in \`$resetUserVar${inside}\``
-    );
+      `\`${d.func}: Invalid variable '${variable}' in ${inside}\``);
 
   if (!guildID)
-    return d.error(`:x: No guildID provided in \`$resetUserVar${inside}\``);
+    return d.error(`\`${d.func}: No guild ID provided in ${inside}\``);
 
   const all = await d.client.db.all("main", {
     filter: (x) => x.key.startsWith(`${variable}_${guildID}_`),

@@ -10,7 +10,7 @@ module.exports = async d => {
     
     reg = reg.startsWith("/") && reg.endsWith("/") ? reg.slice(1, reg.length - 1) : reg
     
-    if (newT === undefined) return d.error(`❌ Invalid amount of fields in \`$replaceTextWithRegex${inside}\``) 
+    if (newT === undefined) return d.error(`\`${d.func}: Invalid amount of fields in ${inside}\``)
     
     return {
         code: code.replaceLast(`$replaceTextWithRegex${inside}`, text.addBrackets().replace(new RegExp(reg.addBrackets(), flags || undefined), newT.addBrackets()).deleteBrackets())

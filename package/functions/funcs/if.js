@@ -1,3 +1,3 @@
 module.exports = async d => {
- return d.error(`\`$if: Invalid Usage\``)
+ return d.error(`\`${d.func}: Invalid Usage\``)
 }

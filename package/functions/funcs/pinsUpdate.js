@@ -12,7 +12,7 @@ module.exports = async (d) => {
     (opt) => opt === inside.inside
   );
 
-  if (!option) return d.error(`❌ Invalid option in \`$pinsUpdate${inside}\``);
+  if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``);
 
   const executor = channelPinsOptions[option].split(";")[1];
 

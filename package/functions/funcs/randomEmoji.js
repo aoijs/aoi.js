@@ -1,8 +1,5 @@
 module.exports = d => {
-
     const code = d.command.code
-
-    
 
     const inside = d.unpack();
 
@@ -10,36 +7,22 @@ module.exports = d => {
 
     var guildId = inside.inside;
 
-if(guildId == "global"){
+    if(guildId == "global"){
 
-guild = d.client
-
-}
-
+    guild = d.client
+    }
 else{
 
     guild = d.client.guilds.cache.get(guildId) || d.client.guilds.cache.get(d.message.guild.id);
-
 }
-
-    if (!guild.emojis.cache.size) return { 
-
+    if (!guild.emojis.cache.size) return {
         code: code.replaceLast(`$randomEmoji${inside ? inside : ""}`, "")
-
     }
-
     const emoji = guild.emojis.cache.random()
-
-    
-
-    if (emoji.deleted) return { 
-
+    if (emoji.deleted) return {
         code: code.replaceLast(`$randomEmoji${inside ? inside : ""}`, "")
-
     }
-
-    return { 
-
+    return {
         code: code.replaceLast(`$randomEmoji${inside ? inside : ""}`, emoji.toString())
 
     }

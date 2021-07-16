@@ -11,7 +11,7 @@ module.exports = async d => {
 
         const guild = d.client.guilds.cache.get(guildID)
 
-        if (!guild) return d.error(`:x: Invalid guild ID in \`$serverFeatures${inside}\``)
+        if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
 
         return {
             code: code.replaceLast(`$serverFeatures${inside}`, guild.features.map(feature => feature.split("_").map(word => word.toLowerCase().replace(word.toLowerCase()[0], word[0])).join(" ")).join(separator))

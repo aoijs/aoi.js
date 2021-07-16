@@ -1,5 +1,4 @@
 const ytdl = require("ytdl-core");
-const embed = require("../../handlers/errors.js");
 const execute = require("../../handlers/MusicPlayer.js");
 const msp = require("ms-parser");
 const pms = require("parse-ms");
@@ -19,9 +18,9 @@ module.exports = async (d) => {
   let [
     url,
     time = "1s",
-    deafen = false,
+    deafen = true,
     leaveEmpty = "no",
-    error = ":x: Error while making the request.",
+    error = `\`${d.func}: Error while making the request\``,
   ] = inside.splits;
   try {
     time = msp(time).ms;
@@ -178,7 +177,7 @@ module.exports = async (d) => {
       } catch (err) {
         console.log(err);
 
-        return embed(d, error);
+        return d.error(`\`$${d.func}: Error while making the request\``);
       }
     }
   }
@@ -186,7 +185,7 @@ module.exports = async (d) => {
   const video = videos.videos[0];
 
   if (!video) {
-    return embed(d, error);
+    return d.error(`\`$${d.func}: Error while making the request\``);
   }
 
   const info = {
@@ -245,12 +244,12 @@ module.exports = async (d) => {
   if (!server) {
     const vc = d.message.member.voice.channel;
 
-    if (!vc) return embed(d, error);
+    if (!vc) return d.error(`\`$${d.func}: Error while making the request\``);
     (async () => {
       const connection = vc.join().catch((err) => {
         console.error(err);
 
-        embed(d, error);
+        d.error(`\`$${d.func}: Error while making the request\``);
       });
 
       const constructor = {
@@ -286,7 +285,7 @@ module.exports = async (d) => {
       } catch (err) {
         console.error(err);
 
-        embed(d, error);
+        d.error(`\`$${d.func}: Error while making the request\``);
       }
     })();
   } else {
@@ -296,7 +295,7 @@ module.exports = async (d) => {
       execute(d, true, error).catch((err) => {
         console.error(err);
 
-        embed(d, error);
+        d.error(`\`$${d.func}: Error while making the request\``);
       });
     }
 

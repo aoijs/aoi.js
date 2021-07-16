@@ -14,7 +14,7 @@ module.exports = async d => {
 
 		const m = await d.message.guild.members.fetch(userID).catch(err => { })
 
-		if (!m) return d.error(`:x: Invalid user ID in \`$memberJoinedDate${inside}\``)
+		if (!m) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
 		let opt
 

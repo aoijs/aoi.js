@@ -1,13 +1,11 @@
-const Discord = require("discord.js") 
-
+const Discord = require("discord.js")
 module.exports = async (d) => {
-let code = d.command.code
-let vars = d.vars
+    let code = d.command.code
+    let vars = d.vars
 
     let r = code.split("$let").length - 1
 
     let inside = code.split("$let")[r].after()
-
 
     const err = d.inside(inside);
 

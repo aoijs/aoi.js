@@ -1,11 +1,9 @@
 module.exports = async d => {
-
     const code = d.command.code
 
     const inside = d.unpack()
 
 	const err = d.inside(inside)
-
 	if (err) return d.error(err)
 
     const [
@@ -42,21 +40,13 @@ module.exports = async d => {
 
             let text = custom.replace(`{top}`, y).replace("{id}", guild.id).replace(`{servername}`, guild.name.removeBrackets()).replace(`{value}`, Number(data.data.value))
 
-            
-
             if (text.includes("{execute:")) {
 
-                let ins = text.split("{execute:")[1].split("}")[0] 
+                let ins = text.split("{execute:")[1].split("}")[0]
 
-                
+                const awaited = d.client.awaited_commands.find(c =>c.name ===ins)
 
-                const awaited = d.client.awaited_commands.find(c =>c.name ===ins) 
-
-                
-
-                if (!awaited) return d.error(`❌ Invalid awaited command '${ins}' in \`$serverLeaderboard${inside}\``) 
-
-                
+                if (!awaited) return d.error(`\`${d.func}: Invalid awaited command '${ins}' in ${inside}\``)
 
                 const CODE = await d.interpreter(d.client, {
 
@@ -66,36 +56,19 @@ module.exports = async d => {
 
                     author: d.author
 
-                }, d.args, awaited, undefined, true) 
-
-                
+                }, d.args, awaited, undefined, true)
 
                 text = text.replace(`{execute:${ins}}`, CODE)
-
             }
-
-            
-
             content.push(text)
-
         }
-
     }
-
-    
 
     if (type === "desc") content = content.reverse()
 
     const px = page * list - list, py = page * list
 
     return {
-
         code: code.replaceLast(`$serverLeaderboard${inside}`, content.slice(px, py).join("\n"))
-
     }
-
-    //yeah
-
-//it so longg
-
 }

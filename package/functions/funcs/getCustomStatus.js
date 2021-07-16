@@ -11,7 +11,7 @@ module.exports = async d => {
         
         const user = await d.client.users.fetch(id).catch(err => { })
 
-        if (!user) return d.error(`:x: Invalid user ID in \`$getCustomStatus${after}\``)
+        if (!user) return d.error(`\`${d.func}: Invalid user ID in ${after}\``)
 
         const activity = user.presence.activities.find(c => c.name === "Custom Status")
 

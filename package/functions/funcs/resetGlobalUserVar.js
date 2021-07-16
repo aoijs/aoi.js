@@ -8,7 +8,7 @@ module.exports = async (d) => {
 
   if (d.client.variables[inside.inside] === undefined)
     return d.error(
-      `:x: Invalid variable '${inside.inside}' in \`$resetGlobalUserVar${inside}\``
+      `\`${d.func}: Invalid variable '${inside.inside}' in ${inside}\``
     );
 
   const all = await d.client.db.all('main', {

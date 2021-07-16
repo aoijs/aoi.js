@@ -10,7 +10,7 @@ module.exports = async d => {
 
     const option = Object.keys(channelOptions).find(opt => opt === inside.inside) 
     
-    if (!option) return d.error(`❌ Invalid option in \`$newChannel${inside}\``) 
+    if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``)
     
     const executor = channelOptions[option].split(";")[1] 
     

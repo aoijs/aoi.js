@@ -8,7 +8,7 @@ module.exports = async d => {
     
     const inside = code.split(`$getSlashCommandID`)[r].after()
     
-    if (!inside.inside) return d.error(`:x: Invalid usage in $getSlashCommandID${inside}`)
+    if (!inside.inside) return d.error(`\`${d.func}: Invalid usage in ${inside}\``)
     
     const [name, guildID = d.message.guild.id] = inside.splits
     let commands;
@@ -23,7 +23,7 @@ module.exports = async d => {
         }
         
         
-        if (!commands) return d.error(`❌ Failed to fetch slash commands`)
+        if (!commands) return d.error(`\`SlashError: Failed to fetch slash commands\``)
         
         
         if (!d.client.aoi.options.applicationCache) {
@@ -39,7 +39,7 @@ module.exports = async d => {
                 .guilds(guildID)
                 .commands.get()
                 .catch(err => null)
-            if (!commands) return d.error(`❌ Failed to fetch slash commands`)
+            if (!commands) return d.error(`\`SlashError: Failed to fetch slash commands\``)
             
         }
         

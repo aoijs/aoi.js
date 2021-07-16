@@ -10,7 +10,7 @@ module.exports = async d => {
     
     const s = await d.client.api.guilds(d.message.guild.id).members(userID).roles(roleID).delete().catch(err => null)
     
-    if (!s) return d.error(`❌ Failed to remove role! `) 
+    if (!s) return d.error(`\`Failed to remove role\``)
     
     return {
         code: code.replaceLast(`$takeRole${inside}`, "")

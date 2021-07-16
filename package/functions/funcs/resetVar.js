@@ -8,8 +8,7 @@ module.exports = async (d) => {
 
   if (d.client.variables[inside.inside] === undefined)
     return d.error(
-      `:x: Invalid variable '${inside.inside}' in \`$resetVar${inside}\``
-    );
+      `\`${d.func}: Invalid variable '${inside.inside}' in ${inside}\``);
 
   await d.client.db.delete("main", inside.inside);
 

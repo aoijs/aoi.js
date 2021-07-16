@@ -23,7 +23,7 @@ module.exports = async (d) => {
   }[type];
 
   if (!types)
-    return d.error(`❌ Invalid cooldown type on \`$getCooldownTime${inside}\``);
+    return d.error(`\`${d.func}: Invalid cooldown type on ${inside}\``);
 
   const times = require("ms")(time);
 

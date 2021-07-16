@@ -14,9 +14,9 @@ module.exports = async d => {
  
  const time = ms(duration) 
  
- if (!time) return d.error(`❌ Invalid duration for the timeout in \`$setTimeout${inside}\``) 
+ if (!time) return d.error(`\`${d.func}: Invalid duration for the timeout in ${inside}\``)
  
- if (pulse && !ms(pulse)) return d.error(`❌ Invalid timeout heartbeat in \`$setTimeout${inside}\``) 
+ if (pulse && !ms(pulse)) return d.error(`\`${d.func}: Invalid timeout heartbeat in ${inside}\``)
  
  const max = ms("21d") 
  

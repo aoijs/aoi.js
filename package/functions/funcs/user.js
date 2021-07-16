@@ -16,13 +16,13 @@ module.exports = async (d) => {
     (await d.client.users.fetch(id).catch(d.noop));
 
   if (!user)
-    return d.error(`❌ Invalid user ID in 1st field of \`$user${inside}\`.`);
+    return d.error(`\`${d.func}: Invalid user ID in 1st field of ${inside}\``);
 
   let ch = d.message.channel.id;
   let result = option.toLowerCase();
 
   if (!result)
-    return d.error(`❌ Missing option in 2nd field of \`$user${inside}\`.`);
+    return d.error(`\`${d.func}: Missing option in 2nd field of ${inside}\``);
   if (
     ![
       "avatar",
@@ -39,7 +39,7 @@ module.exports = async (d) => {
       "timestamp",
     ].includes(result.toLowerCase())
   )
-    return d.error(`❌ Invalid option in 2nd field of \`$user${inside}\`.`);
+    return d.error(`\`${d.func}: Invalid option in 2nd field of ${inside}\``);
 
   switch (result) {
     case "avatar":

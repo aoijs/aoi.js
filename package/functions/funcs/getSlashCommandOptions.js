@@ -29,7 +29,7 @@ module.exports = async d => {
                 .guilds(guildID)
                 .commands.get()
                 .catch(err => null)
-            if (!commands) return d.error(`❌ Failed to fetch slash commands`)
+            if (!commands) return d.error(`\`SlashError: Failed to fetch slash commands\``)
             
         }
         
@@ -44,7 +44,7 @@ module.exports = async d => {
             
             
             
-            if (!commands) return d.error(`❌ Failed to fetch slash commands`)
+            if (!commands) return d.error(`\`SlashError: Failed to fetch slash commands\``)
             
         }
     }

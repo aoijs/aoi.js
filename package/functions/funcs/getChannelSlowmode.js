@@ -4,13 +4,15 @@ module.exports = async d => {
     const r = code.split("$getChannelSlowmode").length - 1 
     
     const after = code.split("$getChannelSlowmode")[r].after()
-    
+
     if (after.inside) {
-        const inside = after.inside
+        const err = d.inside(inside);
+
+        if (err) return d.error(err);
         
         const channel = d.client.channels.cache.get(inside) 
         
-        if (!channel) return d.error(`❌ Invalid channel ID in \`$getChannelSlowmode${after}\``) 
+        if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${after}\``)
         
         return {
             code: code.replaceLast(`$getChannelSlowmode${after}`, channel.rateLimitPerUser || 0)

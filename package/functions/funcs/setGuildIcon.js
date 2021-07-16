@@ -10,7 +10,7 @@ module.exports = async d => {
         icon: inside.addBrackets()
     }).catch(err => {})
 
-    if (!guild) return d.error(`:x: Failed to edit Guild Icon!`)
+    if (!guild) return d.error(`\`Failed to edit Guild Icon\``)
 
     return {
         code: code.replaceLast(`$setGuildIcon${inside}`, "")

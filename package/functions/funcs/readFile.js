@@ -14,19 +14,15 @@ module.exports = async d => {
 
     let file = inside.inside 
 
-   
-
    if(fs.existsSync(file)){
 
        res = fs.readFileSync(process.cwd()+"/"+file) 
 
        } else {
 
-          res =  d.error(`Couldn't Found the ${file}`)
+          res =  d.error(`\`Couldn't Found the ${file}\``)
 
            }
-
-        
 
     return{
 

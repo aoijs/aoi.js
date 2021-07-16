@@ -19,12 +19,12 @@ module.exports = async (d) => {
   const [option, id = d.message.author.id] = inside.splits;
 
   if (!userInfo[option])
-    return d.error(`:x: Invalid option in \`$userInfo${inside.total}\``);
+    return d.error(`\`${d.func}: Invalid option in ${inside.total}\``);
 
   const user = await d.client.users.fetch(id).catch((err) => {});
 
   if (!user)
-    return d.error(`:x: Invalid userID in \`$userInfo${inside.total}\``);
+    return d.error(`\`${d.func}: Invalid userID in ${inside.total}\``);
 
   const data =
     (await d.client.db

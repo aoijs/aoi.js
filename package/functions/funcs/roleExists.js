@@ -1,5 +1,4 @@
 module.exports = async d => {
-  
   const code = d.command.code
   
   const inside = d.unpack()
@@ -13,4 +12,3 @@ module.exports = async d => {
     code: code.replaceLast(`$roleExists${inside}`, role ? true : false) 
   } 
 }
-

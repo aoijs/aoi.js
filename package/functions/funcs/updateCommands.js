@@ -1,16 +1,10 @@
-const Discord = require('discord.js');
-
 module.exports = async d => {
 	const code = d.command.code;
 
 	if (!d.client.bot.paths.length)
 		return d.error(
-			`❌ Function <Bot>.loadCommands(path) was not used for the command handler.`
+			`\`Function <Bot>.loadCommands(path) was not used for the command handler\``
 		);
-
-	//d.client.bot_commands.sweep(c => typeof c.path === 'string');
-
-	//New Version of loadCommands 
 	for (const key of Object.keys(d.client).filter(f => f.endsWith("commands"))) {
 		d.client[key].sweep(cmd => {
 			if (cmd.load) {

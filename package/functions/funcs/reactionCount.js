@@ -10,11 +10,11 @@ module.exports = async d => {
     
     const channel = d.client.channels.cache.get(channelID) 
     
-    if (!channel) return d.error(`❌ Invalid channel ID in \`$reactionCount${inside}\``) 
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
     
     const msg = await channel.messages.fetch(messageID).catch(err => null) 
     
-    if (!msg) return d.error(`❌ Invalid message ID in \`$reactionCount${inside}\``) 
+    if (!msg) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``)
     
     const reaction = msg.reactions.cache.get(emoji.addBrackets().includes("<") ? emoji.addBrackets().split(":")[2].split(">")[0] : emoji)
     

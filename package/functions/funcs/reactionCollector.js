@@ -17,18 +17,18 @@ module.exports = async d => {
         removeReactions = "no"
     ] = inside.splits
 
-    if (!time) return d.error(`:x: Not enough fields in \`$reactionCollector${inside}\``)
+    if (!time) return d.error(`\`${d.func}: Not enough fields in ${inside}\``)
   
-    if (!ms(time)) return d.error(`:x: Failed to parse '${time}' in \`$reactionCollector${inside}\``)
+    if (!ms(time)) return d.error(`\`${d.func}: Failed to parse '${time}' in ${inside}\``)
 
     const msg = await d.message.channel.messages.fetch(messageID).catch(err => {})
 
-    if (!msg) return d.error(`:x: Invalid message ID in \`$reactionCollector${inside}\``)
+    if (!msg) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``)
 
     for (const reaction of reactionOrReactions.split(" ").join("").split(",")) {
         const r = await msg.react(reaction.addBrackets()).catch(Err => null)
 
-        if (!r) return d.error(`:x: Failed to react with '${reaction}'`)
+        if (!r) return d.error(`\`Failed to react with '${reaction}'\``)
     }
 
     const filter = (reaction, user) => {
@@ -53,11 +53,11 @@ module.exports = async d => {
 
         const command = commandOrCommands.split(" ").join("").split(",")[reactionOrReactions.split(" ").join("").split(",").findIndex(rc => rc.includes(reaction.emoji.name) || rc.includes(reaction.emoji.id))]
 
-        if (!command) return d.error(`:x: Command '${command}' not found! (internal error)`)
+        if (!command) return d.error(`\`Command '${command}' not found! (internal error)\``)
     
         const cmd = d.client.awaited_commands.find(c => c.name === command)
     
-        if (!cmd) return d.error(`:x: Command '${command}' not found!`)
+        if (!cmd) return d.error(`\`Command '${command}' not found!\``)
         
         const { type, flags, createdTimestamp, createdAt, reference, partial, pinnable } = d.message 
         

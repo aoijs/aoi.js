@@ -10,7 +10,7 @@ module.exports = async d => {
 
         const guild = d.client.guilds.cache.get(guildID)
 
-        if (!guild) return d.error(`:x: Invalid guild ID in \`$getServerInvite${after}\``)
+        if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${after}\``)
 
         const channel = guild.channels.cache.find(ch => ch.type === "text" && ch.permissionsFor(d.client.user.id).has("CREATE_INSTANT_INVITE"))
 

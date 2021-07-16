@@ -10,7 +10,7 @@ module.exports = async d => {
 
     const to = Number(inside.splits[1])
 
-    if (!n || !to) return d.error(`:x: Invalid number in \`$roundTenth${inside}\``)
+    if (!n || !to) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     return {
         code: code.replaceLast(`$roundTenth${inside}`, n.toFixed(to))

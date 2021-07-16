@@ -1,5 +1,4 @@
 const sum = async d => {
-
     const code = d.command.code
 
     const inside = d.unpack()
@@ -9,7 +8,7 @@ const sum = async d => {
 
     const fields = inside.splits
 
-    if (fields.some(n => isNaN(Number(n)))) return d.error(`:x: Invalid number in \`$sum${inside}\``)
+    if (fields.some(n => isNaN(Number(n)))) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     const n = fields.reduce((x, y) => Number(x) + Number(y))
 

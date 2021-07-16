@@ -10,14 +10,14 @@ module.exports = async d => {
  
  const emoji = d.message.guild.emojis.cache.get(emojiID) 
  
- if (!emoji) return d.error(`❌ Invalid emoji ID in \`$modifyEmoji${inside}\``) 
+ if (!emoji) return d.error(`\`${d.func}: Invalid emoji ID in ${inside}\``)
  
  const e = await emoji.edit({
  name, 
  roles 
  }).catch(err => null) 
  
- if (!e) return d.error(`❌ Failed to edit emoji!`)
+ if (!e) return d.error(`\`Failed to edit emoji\``)
  
  return {
  code: code.replaceLast(`$modifyEmoji${inside}`, "")

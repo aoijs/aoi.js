@@ -1,5 +1,4 @@
 const emojiOptions = require("../../utils/emojiOptions");
-
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -14,7 +13,7 @@ console.log(d.data.old_emoji)
     (opt) => opt === inside.inside
   );
 
-  if (!option) return d.error(`❌ Invalid option in \`$oldEmoji${inside}\``);
+  if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``);
 
   const executor = emojiOptions[option].split(";")[1];
 

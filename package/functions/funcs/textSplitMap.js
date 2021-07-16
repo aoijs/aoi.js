@@ -1,5 +1,4 @@
 const interpreter = require("../../interpreter.js")
-
 module.exports = async d => {
  
   const code = d.command.code
@@ -17,7 +16,7 @@ module.exports = async d => {
     for (const command of commands) {
       const cmd = d.client.awaited_commands.find(c => c.name === command)
 
-      if (!cmd) return d.error(`:x: Invalid awaited command '${command}' in \`$textSplitMap${inside}\``)
+      if (!cmd) return d.error(`\`${d.func}: Invalid awaited command '${command}' in ${inside}\``)
 
       const newArgs = [...d.args]
 

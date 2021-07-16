@@ -1,18 +1,14 @@
 module.exports = async d =>{
-
     let code = d.command.code 
 
-let inside = d.unpack() 
+    let inside = d.unpack()
 
-let err = d.inside(inside) 
-
-if(err) return d.error(err) 
-
-    
+    let err = d.inside(inside)
+    if(err) return d.error(err)
 
     let opt = inside.inside 
 
-    if(!["id","name","version","description","options","guildID","timestamp","createdAt","applicationID","defaultPermission"].includes(opt)) return d.error(`:x: Invalid Option Provided In $oldApplicationCmd${inside}`) 
+    if(!["id","name","version","description","options","guildID","timestamp","createdAt","applicationID","defaultPermission"].includes(opt)) return d.error(`\`${d.func}: Invalid Option Provided In ${inside}`)
 
     return {
 

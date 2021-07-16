@@ -11,7 +11,7 @@ module.exports = async d => {
 	if (err) return d.error(err)
 
 	const headers = {
-		'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (dbd.js; https://www.npmjs.com/package/dbd.js)'
+		'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (aoi.js; https://www.npmjs.com/package/aoi.js)'
 	}
 	const [url, get = '', error, ...header] = inside.splits
 

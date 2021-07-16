@@ -5,7 +5,7 @@ module.exports = async d => {
 
 	const member = await d.message.guild.members.fetch(userID).catch(d.noop)
 
-	if (!member) return d.error(`:x: Invalid userID in \`$hoistedRole${inside}\``)
+	if (!member) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
 	const roles = member.roles.cache.sort((x, y) => y.position - x.position)
 	const role = (roles.find(role => role.hoist) || { id: d.message.guild.id }).id

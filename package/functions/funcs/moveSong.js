@@ -8,11 +8,13 @@ module.exports = async d => {
 	
 	const n = Number(inside.splits[0])
 
-  if (!inside.total.startsWith("[")) return d.error(":x: Invalid usage in $moveSong")
+	const err = d.inside(inside)
 
-	if (!server) return d.error(':x: Nothing is playing!')
+	if (err) return d.error(err)
 
-	if (!(n > 1) || n > server.songs.length) return d.error(`:x: Invalid number in \`$moveSong${inside.total}\``)
+	if (!server) return d.error('songError: Nothing is being played')
+
+	if (!(n > 1) || n > server.songs.length) return d.error(`\`${d.func}: Invalid number in ${inside.total}\``)
 
 	const to = Number(inside.splits[1])
 	
@@ -20,7 +22,7 @@ module.exports = async d => {
 	
 	if (to === 1) {
 		if (!server.connection.dispatcher)
-			return d.error(`:x: No song is playing!`)
+			return d.error(`songError: Nothing is being played`)
 
 		const first = server.songs[0]
 		const lq = server.loopQueue
