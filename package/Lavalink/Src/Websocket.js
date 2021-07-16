@@ -16,7 +16,7 @@ class LavalinkWebsocket extends EventEmitter {
       password: "",
       userID: 123,
       url: "example.com",
-      resumeKey: "npm i dbd.js",
+      resumeKey: "npm i aoi.js",
       timeout: 60,
     }
   ) {
@@ -42,7 +42,7 @@ class LavalinkWebsocket extends EventEmitter {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
     const headers = {
       "Client-Name":
-        options.userAgent || "dbd.js; https://www.npmjs.com/package/dbd.js",
+        options.userAgent || "aoi.js; https://www.npmjs.com/package/aoi.js",
       "Num-Shards": options.shardCount || 1,
       Authorization: options.password,
       "User-Id": options.userID,
@@ -82,7 +82,7 @@ class LavalinkWebsocket extends EventEmitter {
     this.configureResuming(this.options.timeout);
   }
 
-  configureResuming(timeout = 60, key = "npm i dbd.js") {
+  configureResuming(timeout = 60, key = "npm i aoi.js") {
     this.resumeKey = key;
     return this.send({
       userAgent: "Lavalink",

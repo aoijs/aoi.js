@@ -44,7 +44,7 @@ class LavalinkHTTP {
             "Content-Type": "application/json",
             Accept: "application/json",
             "User-Agent":
-              "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (dbd.js; https://www.npmjs.com/package/dbd.js)",
+              "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (aoi.js; https://www.npmjs.com/package/aoi.js)",
           },
         },
         resolve

@@ -443,12 +443,7 @@ for(i=0;d.length >i ;i++){
 
                     }
 
-                
-
-                   
-
                     client.applications.slash.set(data.id,data)}
-
     })
 
     })
@@ -571,15 +566,6 @@ for(i=0;d.length >i ;i++){
 
     this.client.lavalink.on("error", () => {});
   }
-
-  //utils loader
-  /*loadUtils() {
-      client.util = {} 
-      
-      for (const Util of fs.readdirSync("./package/utils/")) {
-          client.util[Util.replace(".js", "")] = require(`../utils/${Util}`)
-      }
-  }*/
 
   channelUpdateCommand(d = {}) {
     client.channel_update_commands.set(
