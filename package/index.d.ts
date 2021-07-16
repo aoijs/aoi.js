@@ -75,12 +75,12 @@ declare module "aoi.js" {
     }
   }
 
-  export type cap = false
+
 
   export class Bot {
     constructor(options: Interfaces.Options);
 
-    isGay(): this is cap;
+
 
     client: Client;
     paths: Interfaces.Path[];
