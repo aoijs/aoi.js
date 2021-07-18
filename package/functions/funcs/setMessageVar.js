@@ -1,5 +1,4 @@
 const setMessageVar = async d => {
-
  const code = d.command.code
 
  const inside = d.unpack()
@@ -10,12 +9,8 @@ const setMessageVar = async d => {
  const [ variable, value, messageID = d.message.id ] = inside.splits
 
  if (d.client.variables[variable] === undefined) return d.error(`\`VariableError: '${variable}' not found!\``)
-
  
  d.client.db.set("main", `${variable}_${messageID}`, value)
- 
- 
- 
 
  return {
  code: code.replaceLast(`$setMessageVar${inside}`, "")

@@ -75,8 +75,12 @@ declare module "aoi.js" {
     }
   }
 
+
+
   export class Bot {
     constructor(options: Interfaces.Options);
+
+
 
     client: Client;
     paths: Interfaces.Path[];

@@ -8,15 +8,15 @@ module.exports = async d => {
         
         const channel = d.message.guild.channels.cache.get(channelID) 
         
-        if (!channel) return d.error(`❌ Invalid channel ID in \`$unpinMessage${inside}\``) 
+        if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
         
         const msg = await channel.messages.fetch(messageID).catch(err => null) 
         
-        if (!msg) return d.error(`❌ Invalid message ID in \`$unpinMessage${inside}\``) 
+        if (!msg) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``)
         
         const m = await msg.unpin().catch(err => null) 
         
-        if (!m) return d.error(`:x: Failed to unpin message`)
+        if (!m) return d.error(`\`Failed to unpin message\``)
         
         return {
             code: code.replaceLast(`$unpinMessage${inside}`, "")
@@ -24,7 +24,7 @@ module.exports = async d => {
     } else {
         const m = await d.message.unpin().catch(err => null) 
         
-        if (!m) return d.error(`❌ Failed to unpin message`)
+        if (!m) return d.error(`\`Failed to unpin message\``)
         
         return {
             code: code.replaceLast(`$unpinMessage`, "")

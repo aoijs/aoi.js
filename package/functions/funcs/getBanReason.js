@@ -14,11 +14,11 @@ module.exports = async (d) => {
   const guild = d.client.guilds.cache.get(guildID);
 
   if (!guild)
-    return d.error(`❌ Invalid guild ID in \`$getBanReason${inside}\``);
+    return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``);
 
   const ban = await guild.fetchBan(userID).catch((err) => null);
 
-  if (!ban) return d.error(`❌ Unknown ban in \`$getBanReason${inside}\``);
+  if (!ban) return d.error(`\`${d.func}: Unable to find reason in ${inside}\``);
 
   return {
     code: code.replaceLast(

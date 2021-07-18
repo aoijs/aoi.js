@@ -7,7 +7,6 @@ module.exports = async (d) => {
 
   const manager = d.message.guild.roles.cache;
 
-  //console.log(inside.toLowerCase().addBrackets())
   const role =
     manager.get(inside.addBrackets()) ||
     manager.find(

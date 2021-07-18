@@ -1,11 +1,15 @@
 module.exports = async d =>{
     const code = d.command.code
+
     let inside = d.unpack()
+
     let err = d.inside(inside)
     if(err) return d.error(err)
+
     let [type,guildID = d.message.guild.id] = inside.splits 
     let res =0
-    if(!["channels","users","songs"].includes(type)) return d.error(`:x: Invalid Type Provided In $vcSize${inside}`) 
+
+    if(!["channels","users","songs"].includes(type)) return d.error(`\`${d.func}: Invalid Type Provided In ${inside}\``)
     let c = d.client.voice.connections
         if(c.size ==0) return {
       code:  code.replaceLast(`$vcSize${inside}`,0)
@@ -31,7 +35,7 @@ module.exports = async d =>{
     else{
 if(c.size == 0){res = 0}
         const guild = d.client.guilds.cache.get(guildID) 
-        if(!guild) return d.error(`:x: Invalid guildID Provided in $vcSize${inside}`) 
+        if(!guild) return d.error(`\`${d.func}: Invalid guild ID Provided in ${inside}\``)
       let oo =  c.find(x=>x.channel.guild.id == guild.id) 
     if(oo.size == 0) { res = 0 }
 else{
@@ -39,8 +43,7 @@ else{
        case "channels" :
             res = oo.size 
             break;
-       case "users" : 
-//Ayaka#5057 #aoi.js #dbd.js
+       case "users" :
             res = oo.channel.members.size 
             break;
        case "songs" :

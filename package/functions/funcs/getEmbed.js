@@ -14,11 +14,11 @@ module.exports = async (d) => {
   const channel = d.message.guild.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(`:x: Invalid channel ID in \`$getEmbed${inside}\``);
+    return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
   const msg = await channel.messages.fetch(messageID).catch((err) => {});
 
-  if (!msg) return d.error(`:x: Invalid message ID in \`$getEmbed${inside}\``);
+  if (!msg) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``);
 
   if (!msg.embeds[0]) return d.error(`:x: Message contains no embeds`);
 

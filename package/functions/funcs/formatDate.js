@@ -19,7 +19,7 @@ module.exports = (d) => {
 
   if (isNaN(checkIsValid.getTime())) {
     return d.error(
-      `❌ Invalid date for $formatDate in \`$formatDate${inside}\`!`
+      `\`${d.func}: Invalid date in ${inside}\``
     );
   }
 

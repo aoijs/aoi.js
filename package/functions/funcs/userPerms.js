@@ -1,5 +1,4 @@
 const keyPerms = require("../../utils/permissions.js");
-
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -13,7 +12,7 @@ module.exports = async (d) => {
       .catch((err) => {});
 
     if (!member)
-      return d.error(`:x: Invalid user ID in \`$userPerms${inside}\``);
+      return d.error(`\`${d.func}: Invalid user ID in ${inside}\``);
 
     return {
       code: code.replaceLast(

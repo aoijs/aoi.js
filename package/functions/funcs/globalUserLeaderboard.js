@@ -36,7 +36,7 @@ module.exports = async d => {
                 
                 const awaited = d.client.awaited_commands.find(c =>c.name ===ins) 
                 
-                if (!awaited) return d.error(`❌ Invalid awaited command '${ins}' in \`$globalUserLeaderboard${inside}\``) 
+                if (!awaited) return d.error(`\`${d.func}: Invalid awaited command '${ins}' in ${inside}\``)
                 
                 const CODE = await d.interpreter(d.client, {
                     guild: d.message.guild, 

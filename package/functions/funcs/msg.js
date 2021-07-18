@@ -12,7 +12,7 @@ module.exports = async d => {
     
     let channel = d.client.channels.cache.get(channelID)
     
-    if (!channel) return d.error(`:x: Invalid channel ID in 1st field of \`$msg${inside}\`.`)
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in 1st field of ${inside}\``)
     
 
 
@@ -22,7 +22,7 @@ module.exports = async d => {
 
  if (!result && (option != "isdeleted")) result = undefined
 
- if(!result)  return d.error(`:x: Missing option in 3rd field of \`$msg${inside}\`.`)
+ if(!result)  return d.error(`\`${d.func}: Missing option in 3rd field of ${inside}\``)
  if(![
     "author",
     "authormention",
@@ -44,8 +44,7 @@ module.exports = async d => {
     "cleancontent",
     "guildname",
     "url"
-].includes(result.toLowerCase())) return d.error(`:x: Invalid option in 3rd field of \`$msg${inside}\`.`)
-
+].includes(result.toLowerCase())) return d.error(`\`${d.func}: Invalid option in 3rd field of ${inside}\``)
 
 try {
     let message = await d.channel.messages.fetch(messageID) 
@@ -91,18 +90,13 @@ try {
             break;
         case "url": result = message.url;
             break;
-    
             default: undefined
             break;
-        };
+        }
     
 } catch {
-return d.error(`:x: Invalid message ID in 2nd field of \`$msg${inside}\``)
+return d.error(`\`${d.func}: Invalid message ID in 2nd field of ${inside}\``)
 }
-
-
-    // if (!result) result = "undefined";
-
     return {
         code: code.replaceLast(`$msg${inside}`, result)
     }

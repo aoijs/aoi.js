@@ -12,7 +12,7 @@ module.exports = async d => {
 
     const member = await d.message.guild.members.fetch(userID).catch(Err => {})
 
-    if (!member) return d.error(`:x: Invalid user ID in \`$hasRoles${inside}\``)
+    if (!member) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
     return {
         code: code.replaceLast(`$hasRoles${inside}`, fields.every(id => member.roles.cache.has(id)))

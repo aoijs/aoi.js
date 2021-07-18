@@ -20,7 +20,7 @@ module.exports = async d => {
         status: status 
     }).catch(err => {})
 
-    if (!bot) return d.error(`:x: Failed to change bot status`)
+    if (!bot) return d.error(`\`Failed to change bot status\``)
 
     return {
         code: code.replaceLast(`$setStatus${inside}`, "")

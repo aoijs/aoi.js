@@ -8,7 +8,7 @@ module.exports = async d => {
     
     const b = await d.client.user.setAvatar(inside.addBrackets()).catch(err => {})
     
-    if (!b) return d.error(`❌ Failed to change bot avatar`)
+    if (!b) return d.error(`\`Failed to change bot avatar\``)
         
     return {
         code: code.replaceLast(`$setBotAvatar${inside}`,"")

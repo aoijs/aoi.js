@@ -11,12 +11,12 @@ module.exports = async d => {
     let [messageID, filter, time, customIDs, cmds, errorMsg = "", endcommand = ""] = inside.splits
     time = require('ms')(time)
     
-    if (!time) return d.error("Invalid Time provided")
+    if (!time) return d.error("\`Invalid Time provided\`")
 
     cmds = cmds.split(",")
     cmds.forEach(x => {
         if (d.client.awaited_commands.find(y => y.name === x)) {} else {
-            d.error("\`Could not find awaitedCommand \`" + x)
+            d.error("\`Could not find awaitedCommand\`" + x)
         }
     })
     customIDs = customIDs.split(",")

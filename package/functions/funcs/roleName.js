@@ -8,7 +8,7 @@ module.exports = async d => {
 
     const role = d.message.guild.roles.cache.get(inside.inside)
 
-    if (!role) return d.error(`:x: Invalid role ID in \`$roleName${inside}\``)
+    if (!role) return d.error(`\`${d.func}: Invalid role ID in ${inside}\``)
 
     return {
         code: code.replaceLast(`$roleName${inside}`, role.name)

@@ -14,14 +14,14 @@ module.exports = async d => {
     
     const [channelID, messageID, userID, reaction] = fields 
     
-    if (!reaction) return d.error(`❌ No emoji provided in \`$userReacted${inside}\``) 
+    if (!reaction) return d.error(`\`${d.func}: No emoji provided in ${inside}\``)
     const channel = d.client.channels.cache.get(channelID) 
     
-    if (!channel) return d.error(`❌ Invalid channel ID in \`$userReacted${inside}\``) 
+    if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
     
     const m = await channel.messages.fetch(messageID).catch(err => null) 
     
-    if (!m) return d.error(`❌ Invalid message ID in \`$userReacted${inside}\``) 
+    if (!m) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``)
     
     const emoji = reaction.includes("<") ? reaction.split(":")[2].split(">")[0] : reaction 
     

@@ -31,7 +31,7 @@ const execute = async (d, old, error, ffmpegArgs) => {
       const axio = axios.create({
         headers: {
           "user-agent":
-            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (dbd.js; https://www.npmjs.com/package/dbd.js)",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (aoi.js; https://www.npmjs.com/package/aoi.js)",
         },
       });
       const sdl = scdl.create({

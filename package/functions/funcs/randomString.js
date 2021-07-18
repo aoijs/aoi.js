@@ -1,5 +1,4 @@
 const chars = require("../../utils/characters.js")
-
 module.exports= async d => {
     const code = d.command.code
 
@@ -10,7 +9,7 @@ module.exports= async d => {
 
     const length = Number(inside.inside)
 
-    if (!length) return d.error(`:x: Invalid number in \`$randomString${inside}\``)
+    if (!length) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
     
     let result = []
     

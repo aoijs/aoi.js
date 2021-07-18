@@ -3,14 +3,14 @@ module.exports = async d => {
     const code = d.command.code
     const server = d.client.servers.get(d.message.guild.id)
 
-    if(!server || !server.connection.dispatcher) return d.error(`:x: Nothing is being played!`)
+    if(!server || !server.connection.dispatcher) return d.error(`\`songError: Nothing is being played\``)
 
     var songs = server.songs
     
     const inside = d.unpack()
     const n = new Number(inside.inside || 0)
         if (inside.inside) {
-            if(isNaN(n)) return embed(d, ":x: Argument is not a number in $skipTo"+inside.inside+"")
+            if(isNaN(n)) return d.error(`\`${d.func}: Argument is not a number in ${inside.inside}\``)
 if(n < 2) { server.connection.dispatcher.end()
 return {
 code: d.command.code.replaceLast(`$skipTo${inside.total ? inside.total : ""}`, "")
@@ -32,7 +32,7 @@ if (server.loopQueue == true) server.songs.push(...spliced)
     
             return {code: d.command.code.replaceLast(`$skipTo${inside.total ? inside.total : ""}`, "")}
         } else {
-            return embed(d, ":x: Command name $skipTo is invalid")
+            return d.error(`\`Command name $skipTo is invalid\``)
         }
     
 }

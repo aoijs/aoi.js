@@ -1,5 +1,3 @@
-const execute = require("../../handlers/MusicPlayer");
-
 const seek = async d => {
 	const code = d.command.code
 	const r = code.split("$seekTo").length - 1
@@ -7,15 +5,15 @@ const seek = async d => {
 	const server = d.client.servers.get(d.message.guild.id)
 
 	if (!server || !server.connection.dispatcher) {
-		return d.error(":x: Nothing is being played!")
+		return d.error(`\`songError: Nothing is being played\``)
 	}
 
 	if (!inside.inside) {
-		return d.error(`:x: Command \`$seekTo\` is invalid`)
+		return d.error(`\`\`${d.func}: Command is invalid`)
 	}
 
 	if (isNaN(parseInt(inside.inside))) {
-		return d.error(`:x: Field \`${inside.inside}\` is not a Number in \`$seekTo${inside.total}\``)
+		return d.error(`\`${d.func}: Field \`${inside.inside}\` is not a Number in ${inside.total}\``)
 	}
 
 	if (server.songs[0].duration().split(' ')[0] == 0) {

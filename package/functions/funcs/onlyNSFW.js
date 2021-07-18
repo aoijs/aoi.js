@@ -1,5 +1,4 @@
 const embed = require("../../handlers/errors")
-
 module.exports = async d => {
     const code = d.command.code
 

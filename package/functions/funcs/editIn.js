@@ -4,7 +4,7 @@ const editIn = async (d) => {
   const code = d.command.code;
 
   if (code.split("$editIn").length >= 3)
-    return d.message.channel.send(`:x: Cant use more than one $editIn.`);
+    return d.message.channel.send(`\`${d.func}: Cant use more than one\``);
 
   const inside = code.split("$editIn")[1].after();
 

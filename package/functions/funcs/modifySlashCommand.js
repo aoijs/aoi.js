@@ -109,7 +109,7 @@ module.exports = async d => {
         }
     }).catch(err => null) 
     }
-    if (!request) return d.error(`❌ Failed to modify slash command`)
+    if (!request) return d.error(`\`SlashError: Failed to modify slash command\``)
     
     return {
         code: code.replaceLast(`$modifySlashCommand${inside}`, "")

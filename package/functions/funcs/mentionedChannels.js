@@ -9,7 +9,7 @@ const mentionedChannels = d => {
   
   const [ mention, returnChannel = "no" ] = inside.splits
   
-  if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentionedChannels${inside}\``)
+  if (isNaN(mention)) return d.error(`\`${d.func}: Invalid mention number in ${inside}\``)
   
   const channel = d.message.mentions.channels.array()[Number(mention) - 1]
   

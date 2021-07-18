@@ -1,9 +1,4 @@
-//bruh - ruben was gay over here/
-// who ever read it
-
 module.exports = async (d) => {
-  //stfu
-
   const code = d.command.code;
 
   const inside = d.unpack();

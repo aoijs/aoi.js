@@ -3,7 +3,7 @@ const dm = async (d) => {
     user;
 
   if (code.split("$dm").length >= 3)
-    return d.message.channel.send(`❌ Can't use more than one $dm`);
+    return d.message.channel.send(`\`${d.func}: Can't use more than one\``);
 
   const after = code.split("$dm")[1].after();
 
@@ -12,7 +12,7 @@ const dm = async (d) => {
 
     user = await d.client.users.cache.get(inside);
 
-    if (!user) return d.error(`❌ Invalid user ID in \`$dm${after}\``);
+    if (!user) return d.error(`\`${d.func}: Invalid user ID in ${after}\``);
 
     code = code.replaceLast(`$dm${after}`, "");
   } else {

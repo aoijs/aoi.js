@@ -6,6 +6,4 @@ module.exports = async (d) => {
       Leref.displayAvatarURL({ dynamic: true, size: 4096 })
     ),
   };
-
-  //Lets all simp for Leref Uwu
 };

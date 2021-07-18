@@ -21,7 +21,7 @@ module.exports = async d => {
 	if (err) return d.error(err)
 
 	const header = {
-		'User-Agent': 'DiscordBot (https://npmjs.com/package/aoi.js, 1.0.6)'
+		'User-Agent': 'DiscordBot (https://npmjs.com/package/aoi.js, 4.2.0)'
 	}
 
 	let [
@@ -33,12 +33,12 @@ module.exports = async d => {
 		...headers
 	] = inside.splits
 
-	if (!url) return d.error(`:x: No url specified in \`$httpRequest${inside}\``)
+	if (!url) return d.error(`\`${d.func}: No URL specified in ${inside}\``)
 
 	url = url.addBrackets()
 	method = method.toUpperCase()
 
-	if (!methods.includes(method)) return d.error(`:x: Invalid method '${method}' in \`$httpRequest${inside}\``)
+	if (!methods.includes(method)) return d.error(`\`${d.func}: Invalid method '${method}' in ${inside}\``)
 
 	for (let head of headers) {
 		head = head.addBrackets()

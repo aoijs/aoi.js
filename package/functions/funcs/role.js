@@ -23,7 +23,7 @@ module.exports = async (d) => {
   let result = option.toLowerCase();
 
   if (!result)
-    return d.error(`:x: Missing option in 2nd field of \`$role${inside}\`.`);
+    return d.error(`\`${d.func}: Missing option in 2nd field of ${inside}\``);
   if (
     ![
       "created",
@@ -44,7 +44,7 @@ module.exports = async (d) => {
       "timestamp",
     ].includes(result)
   )
-    return d.error(`:x: Invalid option in 2nd field of \`$role${inside}\`.`);
+    return d.error(`\`${d.func}: Invalid option in 2nd field of ${inside}\``);
 
   if (!ROLE & (result !== "isdeleted")) result = undefined;
 
@@ -114,64 +114,3 @@ module.exports = async (d) => {
     code: code.replaceLast(`$role${inside}`, result),
   };
 };
-
-// const moment = require("moment")
-
-// const role = async (client, message, args, name, code) => {
-
-//     let r = code.split("$role[").length - 1
-
-//     let inside = code.split("$role[")[r].split("]")[0]
-
-//     let [id, option] = inside.split(";")
-
-//     let role = message.guild.roles.cache.get(id) || message.guild.roles.cache.find(role => role.id === inside)
-
-//  let opt = option
-
-//  if(!opt) return message.channel.send(`:x: Missing option in 2nd field of \`$role[${inside}]\`.`)
-//  if(![
-//     "created",
-//     "hex",
-//     "id",
-//     "isdeleted",
-//     "iseditable",
-//     "ishoisted",
-//     "ismanaged",
-//     "ismentionable",
-//     "mention",
-//     "name",
-//     "postition",
-//     "rawposition",
-//     "server",
-//     "servername",
-//     "usercount"
-// ].includes(opt)) return message.channel.send(`:x: Invalid option in 2nd field of \`$role[${inside}]\`.`)
-
-//     if(opt === "name") opt = role.name || undefined
-//         else if(opt === "id") opt = role.id || undefined
-//         else if(opt === "mention") opt = role.toString(id) || undefined
-//         else if(opt === "ismentionable") opt = role.mentionable || undefined
-//         else if(opt === "ishoisted") opt = role.hoist || undefined
-//         else if(opt === "position") opt = role.position || undefined
-//         else if(opt === "rawposition") opt = role.rawPosition || undefined
-//         else if(opt === "ismanaged") opt = role.managed || undefined
-//         else if(opt === "iseditable") opt = role.editable || undefined
-//         else if(opt === "server") opt = role.guild || undefined
-//         else if(opt === "servername") opt = role.guild.name || undefined
-//         else if(opt === "hex") opt = role.hexColor.replace("#", "") || undefined
-//         else if(opt === "usercount") opt = message.guild.members.cache.filter(m => m.roles.cache.has(role.id)).size
-//         else if(opt === "created") opt = moment(role.createdAt).format("LLLL")
-//         if(role.deleted === undefined) opt = true
-//         else if(opt === "isdeleted") opt = role.deleted
-
-//         if(!role) return message.channel.send(`:x: Invalid role ID in 1st field of \`$role[${inside}]\`.`)
-
-//      code = code.replaceLast(`$role[${inside}]`, opt)
-
-//      return {
-//          code: code
-//      }
-//  }
-
-//  module.exports = role;

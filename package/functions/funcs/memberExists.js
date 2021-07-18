@@ -10,7 +10,7 @@ module.exports = async d => {
     
     const guild = d.client.guilds.cache.get(guildID) 
     
-    if (!guild) return d.error(`❌ Invalid guild ID in \`$memberExists${inside}\``) 
+    if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
     
     const member = await guild.members.fetch(userID || "none").catch(err => null)
     

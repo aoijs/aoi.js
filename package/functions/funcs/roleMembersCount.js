@@ -8,7 +8,7 @@ module.exports = async d => {
     
     const role = d.message.guild.roles.cache.get(inside.inside) 
     
-    if (!role) return message.channel.send(`❌ Invalid role ID in \`$roleMembersCount${inside}\``) 
+    if (!role) return message.channel.send(`\`${d.func}: Invalid role ID in ${inside}\``)
     
     return {
         code: code.replaceLast(`$roleMembersCount${inside}`, role.members.size)

@@ -1,5 +1,4 @@
-const memberOptions = require("../../utils/memberOptions") 
-
+const memberOptions = require("../../utils/memberOptions")
 module.exports = async d => {
  const code = d.command.code 
  
@@ -10,7 +9,7 @@ module.exports = async d => {
  
  const option = Object.keys(memberOptions).find(opt => opt === inside.inside) 
  
- if (!option) return d.error(`❌ Invalid option in \`$oldMember${inside}\``) 
+ if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``)
  
  const executor = memberOptions[option].split(";").slice(1).join(";")
  

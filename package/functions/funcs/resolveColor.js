@@ -24,12 +24,12 @@ const BASIC_COLORS = {
 
 function check(color, inside) {
   if (isNaN(color))
-    return `❌ Invalid Number \`${color}\` at \`$resolveColor${
+    return `\`${d.func}: Invalid Number ${color} at ${
       inside.total ? inside.total : ""
     }\``;
 
   if (new Number(color) < 0 || new Number(color) > 255)
-    return `❌ Invalid Color \`${color}\` at \`$resolveColor${
+    return `\`${d.func}: Invalid Color ${color} at ${
       inside.total ? inside.total : ""
     }\``;
 }

@@ -12,7 +12,7 @@ const divide = async (d) => {
   const fields = inside.splits;
 
   if (fields.some((n) => isNaN(Number(n))))
-    return d.error(`:x: Invalid number in \`$divide${inside}\``);
+    return d.error(`\`${d.func}: Invalid number in ${inside}\``);
 
   const n = fields.reduce((x, y) => Number(x) / Number(y));
 

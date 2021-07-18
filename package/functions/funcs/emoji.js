@@ -25,14 +25,14 @@ module.exports = async (d) => {
     if (!emote && result.toLowerCase() === "isdeleted") result = true;
     else if (!emote)
       return d.error(
-        `:x: Invalid emoji ID in 1st field of \`$emoji${inside}\``
+        `\`${d.func}: Invalid emoji ID in 1st field of ${inside}\``
       );
   } catch {
-    return d.error(`:x: Invalid emoji ID in 1st field of \`$emoji${inside}\``);
+    return d.error(`\`${d.func}: Invalid emoji ID in 1st field of ${inside}\``);
   }
 
   if (!result)
-    return d.error(`:x: Missing option in 2nd field of \`$emoji${inside}\``);
+    return d.error(`\`${d.func}: Missing option in 2nd field of ${inside}\``);
   if (
     ![
       "created",
@@ -47,7 +47,7 @@ module.exports = async (d) => {
       "url",
     ].includes(result.toLowerCase())
   )
-    return d.error(`:x: Invalid option in 2nd field of \`$emoji${inside}\``);
+    return d.error(`\`${d.func}: Invalid option in 2nd field of ${inside}\``);
 
   switch (result) {
     case "id":

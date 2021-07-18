@@ -13,7 +13,7 @@ module.exports = async d => {
     cmds = cmds.split(",")
     cmds.forEach(x => {
         if (d.client.awaited_commands.find(y => y.name === x)) {} else {
-            d.error("Could not find awaitedCommand " + x)
+            d.error("\`Could not find awaitedCommand\`" + x)
         }
     })
     customIDs = customIDs.split(",")

@@ -10,8 +10,7 @@ module.exports = async (d) => {
   if (!time) return d.error(`\`${d.func}: Invalid time in ${inside}\``);
 
   return {
-    deleteIn: time, //ez w
-    //now we go to interpreter
+    deleteIn: time,
     code: code.replaceLast(`$deleteIn${inside}`, ""),
   };
 };

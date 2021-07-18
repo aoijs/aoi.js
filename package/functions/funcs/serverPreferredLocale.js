@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   if (!guild)
     return d.error(
-      `❌ Invalid guild ID in \`$serverPreferredLocale${data.total}\``
+      `\`${d.func}: Invalid guild ID in ${data.total}\``
     );
 
   return {

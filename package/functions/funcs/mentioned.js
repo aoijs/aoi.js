@@ -9,7 +9,7 @@ const mentioned = d => {
 
   const [ mention, returnUser = "no" ] = inside.splits
   
-  if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentioned${inside}\``)
+  if (isNaN(mention)) return d.error(`\`${d.func}: Invalid mention number in ${inside}\``)
   
   const user = d.message.mentions.users.array()[Number(mention) - 1]
   

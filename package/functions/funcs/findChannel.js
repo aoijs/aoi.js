@@ -1,5 +1,4 @@
 module.exports = (d) => {
-  //gay const = dm.user.client.message(stfu);
   const code = d.command.code;
 
   const r = code.split("$findChannel").length - 1;

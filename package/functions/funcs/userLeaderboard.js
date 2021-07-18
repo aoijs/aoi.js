@@ -1,9 +1,8 @@
 module.exports = async d => {
+    const code = d.command.code
 
-            const code = d.command.code
-
-            const inside = d.unpack()
-	const err = d.inside(inside)
+    const inside = d.unpack()
+    const err = d.inside(inside)
 
 	if (err) return d.error(err)
 
@@ -33,7 +32,7 @@ module.exports = async d => {
 
                     if (custom.includes("{execute:")) {
                         const awaited = d.client.awaited_commands.find(c => c.name === custom.split("{execute:")[1].split("}")[0])
-                        if (!awaited) return d.error(`❌ Invalid awaited command in \`$userLeaderboard${inside}\``)
+                        if (!awaited) return d.error(`\`${d.func}: Invalid awaited command in ${inside}\``)
 
                         const CODE = await d.interpreter(d.client, {
                             author: member.user,
@@ -57,6 +56,4 @@ module.exports = async d => {
             return {
                 code: code.replaceLast(`$userLeaderboard${inside}`, content.slice(px, py).join("\n"))
             }
-            //yeah
-            //it so longg
 }

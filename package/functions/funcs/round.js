@@ -8,7 +8,7 @@ module.exports = async d => {
 
     const n = Number(inside.inside)
 
-    if (isNaN(n)) return d.error(`:x: Invalid number in \`$round${inside}\``)
+    if (isNaN(n)) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     return {
         code: code.replaceLast(`$round${inside}`, Math.round(n))

@@ -4,8 +4,9 @@ module.exports = async (d) => {
   const r = code.split("$editChannel").length - 1;
   const inside = code.split("$editChannel")[r].after();
 
-  if (!inside.splits.length)
-    return d.error(`:x: Invalid usage in $editChannel${inside.total}`);
+  const err = d.inside(inside);
+
+  if (err) return d.error(err);
 
   const [
     channelID,
@@ -23,7 +24,7 @@ module.exports = async (d) => {
 
   if (!channel)
     return d.error(
-      `:x: Invalid channel given in \`$editChannel${inside.total}\``
+      `\`${d.func}: Invalid channel given in ${inside}\``
     );
 
   try {
@@ -47,11 +48,11 @@ module.exports = async (d) => {
   } catch (err) {
     console.error(err);
     return d.error(
-      `:x: Failed to edit channel in \`$editChannel${inside.total}\``
+      `\`${d.func}: Failed to edit channel in ${inside}\``
     );
   }
 
   return {
-    code: code.replaceLast(`$editChannel${inside.total}`, ""),
+    code: code.replaceLast(`$editChannel${inside}`, ""),
   };
 };

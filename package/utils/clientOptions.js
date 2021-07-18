@@ -1,5 +1,5 @@
 module.exports = {
-    "prefix": "The Prefix or array of Prefixes", 
+    "autoUpdate": "AutoUpdate the Client to latest version of Aoi.JS (true / false)",
     "dbhToken": "The DBH token (used to post Bot Stats)", 
     "fetchInvites": "Whether to enable invite tracker system (true / false) (defaults to false)", 
     "sharding": "Whether to Shard Bot internally (true / false)", 
@@ -8,6 +8,7 @@ module.exports = {
     "errorMessage": "Customize the SuppressAll error message in a string field",
     "mobile": "Whether to connect the Bot to the gateway through mobile status (true / false)", 
     "disabledFunctionsStarting": "Array of strings that will disable every function starting with provided function names.", 
-    "disabledFunctions": "Array of functions to disable.\nDisabling functions that you don't use will improve bot performance and speed", 
-    "token": "The Token of the Bot"
+    "disabledFunctions": "Array of functions to disable.\nDisabling functions that you don't use will improve bot performance and speed",
+    "prefix": "The Prefix or array of Prefixes", 
+    "token": "The Token of the Client"
 }

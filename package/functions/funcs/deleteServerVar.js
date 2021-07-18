@@ -11,11 +11,11 @@ module.exports = async (d) => {
   ] = inside.splits;
 
   if (d.client.variables[variable] === undefined)
-    return d.error(`:x: Variable '${variable}' not found`);
+    return d.error(`\`VariableError: '${variable}' not found\``);
 
   if (!guildID)
     return d.error(
-      `:x: guildID field not provided in \`$deleteServerVar${inside}\``
+      `\`${d.func}: guildID field not provided in ${inside}\``
     );
 let old = await d.client.db.get("main",`${variable}_${guildID}`) 
 

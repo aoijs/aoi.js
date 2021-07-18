@@ -12,11 +12,11 @@ module.exports = async d => {
 
     const member = await d.message.guild.members.fetch(userID).catch(err => {})
 
-    if (!member) return d.error(`:x: invalid user ID in \`$takeRoles${inside}\``)
+    if (!member) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
     const m = await member.roles.remove(fields).catch(Err => {})
 
-    if (!m) return d.error(`:x: Failed to remove roles from ${member.user.username}!`)
+    if (!m) return d.error(`\`Failed to remove roles from ${member.user.username}\``)
 
     return {
         code: code.replaceLast(`$takeRoles${inside}`, "")

@@ -7,7 +7,7 @@ module.exports = async (d) => {
     const guild = d.client.guilds.cache.get(inside.inside);
 
     if (!guild)
-      return d.error(`:x: Invalid guild ID in \`$maximumMembers${inside}\``);
+      return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``);
 
     return {
       code: code.replaceLast(

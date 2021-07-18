@@ -2,7 +2,7 @@ const useChannel = async (d) => {
   const code = d.command.code;
 
   if (code.split("$useChannel").length >= 3)
-    return d.message.channel.send(`❌ Can't use more than one $useChannel.`);
+    return d.message.channel.send(`\`${d.func}: Can't use more than one\``);
 
   const inside = d.unpack();
   const err = d.inside(inside);
@@ -12,7 +12,7 @@ const useChannel = async (d) => {
   let channel = d.client.channels.cache.get(inside.inside);
 
   if (!channel)
-    return d.error(`❌ Invalid channel ID in \`$useChannel${inside}\``);
+    return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``);
 
   return {
     channel: channel,

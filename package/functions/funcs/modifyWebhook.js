@@ -10,14 +10,14 @@ module.exports = async d => {
     
     const webhook = await d.client.fetchWebhook(webhookID, webhookToken).catch(err => null) 
     
-    if (!webhook) return d.error(`❌ Invalid webhook token or ID in \`$modifyWebhook${inside}\``) 
+    if (!webhook) return d.error(`\`${d.func}: Invalid webhook token or ID in ${inside}\``)
     
     const w = await webhook.edit({
         name, 
         avatar
     }).catch(err => null) 
     
-    if (!w) return d.error(`❌ Failed to modify webhook!`) 
+    if (!w) return d.error(`\`Failed to modify webhook\``)
     
     return {
         code: code.replaceLast(`$modifyWebhook${inside}`, "")

@@ -1,5 +1,4 @@
-const voiceStateOptions = require("../../utils/voiceStateOptions") 
-
+const voiceStateOptions = require("../../utils/voiceStateOptions")
 module.exports = async d => {
  const code = d.command.code 
  
@@ -10,7 +9,7 @@ module.exports = async d => {
  
  const option = Object.keys(voiceStateOptions).find(opt => opt === inside.inside) 
  
- if (!option) return d.error(`❌ Invalid option in \`$oldState${inside}\``) 
+ if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``)
  
  const executor = voiceStateOptions[option].split(";").slice(1).join(";")
  

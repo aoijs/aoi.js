@@ -9,7 +9,7 @@ const replaceText = async (d) => {
   let [text, match, replace] = inside.splits;
 
   if (replace === undefined)
-    return d.error(`❌ Not enough fields in \`$replaceText${inside}\``);
+    return d.error(`\`${d.func}: Not enough fields in ${inside}\``);
 
   return {
     code: code.replaceLast(

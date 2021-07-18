@@ -1,5 +1,3 @@
-const djs = require("discord.js")
-const embed = require("../../handlers/errors")
 const execute = require("../../handlers/MusicPlayer")
 const spotify = require('spotify-url-info')
 const msp = require("ms-parser")
@@ -16,10 +14,10 @@ module.exports = async d => {
 		url,
 		showsuccess = "",
 		time = "1s",
-		deafen = "no",
+		deafen = true,
 		leaveEmpty = "no",
-    useFilter = "yes",
-		error = ":x: Error while making the request."
+    	useFilter = "yes",
+		error = `\`${d.func}: Error while making the request\``
 	] = inside.splits
 	let list = []
 
@@ -35,7 +33,7 @@ module.exports = async d => {
 	try {
 		list = await spotify.getTracks(url.addBrackets())
 	} catch {
-		return embed(d, error)
+		return d.error(`\`$${d.func}: Error while making the request\``);
 	}
 
 
@@ -44,11 +42,11 @@ module.exports = async d => {
 	if (!server) {
 		const vc = d.message.member.voice.channel
 
-		if (!vc) return embed(d, error);
+		if (!vc) return d.error(`\`$${d.func}: Error while making the request\``);
 
 			const connection = vc.join().catch(err => {
-				console.error("I was unable to Join, Reason: \n" + err)
-				embed(d, "I was unable to join, Error: " + err.message)
+				console.error("Unable to Join, Reason: \n" + err)
+				d.error("Unable to join, Error: " + err.message)
 			})
 
 			const constructor = {

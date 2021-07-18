@@ -14,7 +14,7 @@ module.exports = async (d) => {
   const n = Number(index);
 
   if (!n)
-    return d.error(`Invalid number in \`$editTextSplitElement${inside}\``);
+    return d.error(`\`${d.func}: Invalid number in ${inside}\``);
 
   d.array[n - 1] = value.addBrackets();
 

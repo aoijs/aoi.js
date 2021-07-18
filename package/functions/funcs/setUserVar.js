@@ -1,11 +1,10 @@
 const setUserVar = async d => {
-
  const code = d.command.code
 
  const inside = d.unpack()
-	const err = d.inside(inside)
+ const err = d.inside(inside)
 
-	if (err) return d.error(err)
+ if (err) return d.error(err)
 
  let [ variable, value, userID = d.message.author.id, guildID] = inside.splits
  

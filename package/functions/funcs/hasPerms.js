@@ -13,14 +13,14 @@ module.exports = async d => {
 
     const member = await d.message.guild.members.fetch(userID).catch(err => {})
 
-    if (!member) return d.error(`:x: Invalid user ID in \`$hasPerms${inside}\``)
+    if (!member) return d.error(`\`${d.func}: Invalid user ID in ${inside}\``)
 
     const reqPerms = []
 
     for (const field of fields) {
         const perm = permissions[field]
 
-        if (!perm) return d.error(`:x: Invalid perm '${field}' in \`$hasPerms${inside}\``)
+        if (!perm) return d.error(`\`${d.func}: Invalid perm '${field}' in ${inside}\``)
 
         else reqPerms.push(perm)
     } 

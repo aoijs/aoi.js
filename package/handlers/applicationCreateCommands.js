@@ -3,9 +3,6 @@ const axios = require('axios')
 module.exports = async (application,client) => {
 //gets the commands from the collection array
   for (const commands of client.application_cmd_create_commands.array()) {
-    
-      
-
         
 const data = {
     id : application.id,

@@ -1,5 +1,4 @@
 const errorHandler = require("../../handlers/errors.js")
-
 module.exports = async d => {
     const code = d.command.code
 

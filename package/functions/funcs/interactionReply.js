@@ -23,8 +23,7 @@ module.exports = async d => {
     }
     
     if (d.data.interaction) {
-        const msg = await d.data.interaction.reply(m.message, embeds, components === "" ? "" : ComponentParser(components),flags,type) 
-        //if (! msg) return d.error(`❌ Failed to reply to slash command!`
+        const msg = await d.data.interaction.reply(m.message, embeds, components === "" ? "" : ComponentParser(components),flags,type)
     }
     
     return {

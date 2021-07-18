@@ -4,8 +4,10 @@ module.exports = async d => {
     const r = code.split("$stringStartsWith").length - 1 
     
     const inside = code.split("$stringStartsWith" )[r].after()
-    
-    if (!inside.inside) return d.error(`❌ Invalid usage in \`$stringStartsWith\``)
+
+    const err = d.inside(inside)
+
+    if (err) return d.error(err)
     
     return {
         code: code.replaceLast(`$stringStartsWith${inside.total}`, inside.splits[0].addBrackets().startsWith(inside.splits.slice(1).join(";").addBrackets())) 

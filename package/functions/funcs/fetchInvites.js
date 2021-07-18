@@ -7,7 +7,7 @@ module.exports = async (d) => {
 
   const invites = await d.message.guild.fetchInvites().catch((err) => null);
 
-  if (!invites) return d.error(`❌ Could not fetch invites`);
+  if (!invites) return d.error(`\`FetchError: Could not fetch invites\``);
 
   for (const invite of invites.array()) {
     for (const command of inside.splits) {
@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
       if (!cmd)
         return d.error(
-          `❌ Invalid command ${command} in \`$fetchInvites${inside}\``
+          `\`${d.func}: Invalid command ${command} in ${inside}\``
         );
 
       d.interpreter(

@@ -1,6 +1,4 @@
-//done
 const Discord = require("discord.js")
-
 const embed = require("../../handlers/errors")
 
 module.exports = async d => {
@@ -31,7 +29,7 @@ module.exports = async d => {
         embeds: embeds.length ? embeds : undefined 
     }).catch(err => null)
     
-    if (!webhook) return d.error(`:x: Failed to send message with webhook`)
+    if (!webhook) return d.error(`\`Failed to send message with webhook\``)
     
     return {
         code:code.replaceLast(`$sendWebhook${inside}`, "")

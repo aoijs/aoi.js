@@ -5,7 +5,7 @@ let err = d.inside(inside)
 if(err) return d.error(err) 
 let [query,type = "equal", separator = ","] = inside.splits 
 
-if(!["equal","starts","ends","includes"].includes(type)) return d.error(`Invalid Typr Provided in $filterTextSplitElement${inside}`) 
+if(!["equal","starts","ends","includes"].includes(type)) return d.error(`\`${d.func}: Invalid Type Provided in ${inside}\``)
 
 let res;
     switch (type){

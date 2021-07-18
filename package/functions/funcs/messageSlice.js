@@ -13,7 +13,7 @@ module.exports = async d => {
 
     const x = Number(from), y = Number(to)
 
-    if (isNaN(x)|| isNaN(y)) return d.error(`:x: Invalid number in \`$messageSlice${inside}\``)
+    if (isNaN(x)|| isNaN(y)) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     return {
         code: code.replaceLast(`$messageSlice${inside}`, d.args.slice(x, y + 1).join(" ").deleteBrackets())

@@ -17,7 +17,7 @@ if (err) return d.error(err)
 
  const errorMessage = fields.join(";")
 
- if (!ms(time)) return d.error(`❌ Invalid time '${time}' in \`$serverCooldown${inside}\``)
+ if (!ms(time)) return d.error(`\`${d.func}: Invalid time '${time}' in ${inside}\``)
 
  const item = await d.client.db.get("main", `cooldown_${d.command.name}_${d.message.guild.id}`)
 

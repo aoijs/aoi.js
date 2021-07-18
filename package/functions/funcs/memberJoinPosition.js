@@ -9,7 +9,7 @@ module.exports = async d => {
     
     const member = await d.message.guild.members.fetch(userID).catch(err => null) 
     
-    if (!member) return d.error(`❌ Invalid user ID in \`$memberJoinPosition${data.total}]\``)
+    if (!member) return d.error(`\`${d.func}: Invalid user ID in ${data.total}]\``)
     
     const position = d.message.guild.members.cache.array().sort((x, y) => x.joinedTimestamp - y.joinedTimestamp).findIndex(m => m.id === userID) + 1 || "" 
     

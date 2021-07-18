@@ -1,5 +1,4 @@
 module.exports = d => {
-  
   let code = d.command.code
   
   const inside = d.unpack()
@@ -10,7 +9,7 @@ module.exports = d => {
     let n = inside.inside
         
     if (["last", ">"].includes(n.addBrackets())) n = args.length  
-    if (isNaN(n)) return d.error(`❌ Invalid number in \`$noMentionMessage${inside}\``)
+    if (isNaN(n)) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
     
     code = code.replaceLast(`$noMentionMessage${inside}`, args[Number(n) - 1] ? args[Number(n) - 1].deleteBrackets() : "")
   } else {

@@ -1,5 +1,4 @@
-const userOptions = require("../../utils/userOptions") 
-
+const userOptions = require("../../utils/userOptions")
 module.exports = async d => {
     const code = d.command.code 
     
@@ -10,7 +9,7 @@ module.exports = async d => {
     
     const option = Object.keys(userOptions).find(opt => opt === inside.inside) 
     
-    if (!option) return d.error(`❌ Invalid option in \`$oldUser${inside}\``) 
+    if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``)
     
     const executor = userOptions[option].split(";")[1] 
     

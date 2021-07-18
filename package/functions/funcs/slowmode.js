@@ -12,7 +12,7 @@ module.exports = async d => {
     
     const channel = d.message.guild.channels.cache.get(channelID)
     
-    if (!channel) return d.error(`❌ Invalid channel ID in \`$slowmode${inside}\``)
+    if (!channel) return d.error(`Invalid channel ID in \`$slowmode${inside}\``)
         
     const time = slowmode === "0" ? 0 : ms(slowmode)
         

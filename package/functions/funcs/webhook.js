@@ -22,9 +22,9 @@ module.exports = async d => {
     
     let opt = fields[1]
 
-    if (!hook && (opt != "exists")) return d.error(`❌ Invalid webhookURL in 1st field of \`$webhook${inside}\``) 
+    if (!hook && (opt != "exists")) return d.error(`\`${d.func}: Invalid webhookURL in 1st field of ${inside}\``)
 
- if(!opt) return d.error(`:x: Missing option in 2nd field of \`$webhook${inside}\`.`)
+ if(!opt) return d.error(`\`${d.func}: Missing option in 2nd field of ${inside}\``)
  if(![
     "avatar",
     "channelid",
@@ -36,7 +36,7 @@ module.exports = async d => {
     "type",
     "url",
     "exists"
-].includes(opt.toLowerCase())) return d.error(`:x: Invalid option in 2nd field of \`$webhook${inside}\`.`)
+].includes(opt.toLowerCase())) return d.error(`\`${d.func}: Invalid option in 2nd field of ${inside}\``)
 
 switch (opt) {
     case "avatar": opt = `https://cdn.discordapp.com/avatars/${hook.id}/${hook.avatar}.png`
@@ -62,7 +62,6 @@ switch (opt) {
     default: undefined
         break;
 }
-
         return {
             code: code.replaceLast(`$webhook${inside}`, opt)
         }

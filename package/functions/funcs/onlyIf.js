@@ -1,5 +1,4 @@
 const errorHandler = require("../../handlers/errors.js");
-
 const onlyIf = async (d) => {
   const code = d.command.code;
 
@@ -24,7 +23,7 @@ const onlyIf = async (d) => {
   const op = operators(condition);
 
   if (!op)
-    return d.error(`:x: No valid operator in \`$onlyIf${inside}\``);
+    return d.error(`\`${d.func}: No valid operator in ${inside}\``);
 
   const fields = condition.split(op);
 

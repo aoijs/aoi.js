@@ -8,7 +8,7 @@ module.exports = async d => {
         
         const user = await d.client.users.fetch(id).catch(err => null) 
         
-        if (!user) return d.error(`❌ Invalid user ID in \`$isUserDMEnabled${after}\``) 
+        if (!user) return d.error(`\`${d.func}: Invalid user ID in ${after}\``)
         
         const c = await user.send("").catch(err => err.code)
         

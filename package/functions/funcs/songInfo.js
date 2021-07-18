@@ -1,5 +1,4 @@
 const songOptions  =require("../../utils/songOptions")
-
 module.exports = async d => {
 
     const code = d.command.code
@@ -12,24 +11,19 @@ module.exports = async d => {
 
 const [opt,Pos = 0] = inside.splits
 
-    
-
     const option = Object.keys(songOptions).find(key => key === opt)
 
-    if (!option) return d.error(`:x: Invalid option '${inside}' in \`$songInfo${inside}\``)
+    if (!option) return d.error(`\`${d.func}: Invalid option '${inside}' in ${inside}\``)
 
     const server = d.client.servers.get(d.message.guild.id)
 
-    if (!server) return d.error(`:x: Nothing is being played`)
+    if (!server) return d.error(`\`songError: Nothing is being played\``)
 
-    if (!server.songs.length) return d.error(`:x: Nothing is being played!`)
+    if (!server.songs.length) return d.error(`\`songError: Nothing is being played\``)
 
-if(Pos >= server.songs.length) return d.error(`:x: No Track present at that position`)
+if(Pos >= server.songs.length) return d.error(`\`songError: No Track present at that position\``)
 
     return {
-
-       
-
         code: code.replaceLast(`$songInfo${inside}`, String(server.songs[Pos][option](server)).deleteBrackets())
 
     }

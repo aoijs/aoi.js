@@ -1,5 +1,4 @@
 const webhookUpdateOptions = require("../../utils/webhookUpdateOptions");
-
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -12,7 +11,7 @@ module.exports = async (d) => {
     (opt) => opt === inside.inside
   );
 
-  if (!option) return d.error(`❌ Invalid option in \`$webhookUpdate{inside}\``);
+  if (!option) return d.error(`\`${d.func}: Invalid option in ${inside}\``);
 
   const executor = webhookUpdateOptions[option].split(";")[1];
 

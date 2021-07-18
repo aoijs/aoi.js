@@ -37,7 +37,7 @@ module.exports = async d => {
     "timestamp",
     "acronym",
     "emojicount"
-].includes(result.toLowerCase())) return d.error(`:x: Invalid option in 2nd field of \`$guild${inside}\`.`)
+].includes(result.toLowerCase())) return d.error(`\`${d.func}: Invalid option in 2nd field of ${inside}\``)
 
 switch(result) {
     case "name": result = server.name;

@@ -10,7 +10,7 @@ module.exports = async (d) => {
 
   if (!n)
     return d.error(
-      `:x: Invalid number in \`$removeTextSplitElement${inside}\``
+      `\`${d.func}: Invalid number in ${inside}\``
     );
 
   return {

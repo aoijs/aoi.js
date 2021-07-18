@@ -8,15 +8,15 @@ module.exports = async d => {
         
         const channel = d.message.guild.channels.cache.get(channelID) 
         
-        if (!channel) return d.error(`❌ Invalid channel ID in \`$pinMessage${inside}\``) 
+        if (!channel) return d.error(`\`${d.func}: Invalid channel ID in ${inside}\``)
         
         const msg = await channel.messages.fetch(messageID).catch(err => null) 
         
-        if (!msg) return d.error(`❌ Invalid message ID in \`$pinMessage${inside}\``) 
+        if (!msg) return d.error(`\`${d.func}: Invalid message ID in ${inside}\``)
         
         const m = await msg.pin().catch(err => null) 
         
-        if (!m) return d.error(`Failed to pin message`)
+        if (!m) return d.error(`\`Failed to pin message\``)
         
         return {
             code: code.replaceLast(`$pinMessage${inside}`, "")
@@ -24,7 +24,7 @@ module.exports = async d => {
     } else {
         const m = await d.message.pin().catch(err => null) 
         
-        if (!m) return d.error(`❌ Failed to pin message`)
+        if (!m) return d.error(`\`Failed to pin message\``)
         
         return {
             code: code.replaceLast(`$pinMessage`, "")

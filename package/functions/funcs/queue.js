@@ -8,7 +8,7 @@ module.exports = async d => {
     if (!after.inside) {
         const server = d.client.servers.get(d.message.guild.id) 
         
-        if (!server) return d.error(`:x: Nothing is being played!`) 
+        if (!server) return d.error(`\`songError: Nothing is being played\``)
         
         return {
             code: code.replaceLast(`$queue`, server.songs.slice(0, 10).map((song, index) => {
@@ -30,14 +30,7 @@ module.exports = async d => {
     
     const server = d.client.servers.get(d.message.guild.id)
 
-    if (!server) return d.error(`:x: Nothing is being played!`)
-
-  /*let k = 10;
-
-  for (let i = 0; i < server.songs.length; i += 10) {
-    const current = server.songs.slice(i, k);
-    let j = i;
-    k += 10; */
+    if (!server) return d.error(`\`songError: Nothing is being played\``)
 
     const songs = []
     let y = amount * page - amount
@@ -45,7 +38,6 @@ module.exports = async d => {
 	if (current.toLowerCase() !== "yes" && y <= 0)
 		y = 1
 
-//ignore below
     for (const song of server.songs.slice(y, amount * page)) {
 		let user
 
@@ -56,7 +48,6 @@ module.exports = async d => {
 
         y++
     }
-
     return {
         code: code.replaceLast(`$queue${after.total}`, songs.join("\n").deleteBrackets())
     }
