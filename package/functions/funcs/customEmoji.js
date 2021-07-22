@@ -24,6 +24,8 @@ module.exports = async (d) => {
     //if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
   }
 
+  if (!find) return d.error(`\`CustomEmojiError: Failed to find custom emoji\``);
+
   return {
     code: code.replaceLast(
       `$customEmoji${inside}`,
