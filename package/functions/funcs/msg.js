@@ -33,9 +33,15 @@ module.exports = async d => {
     "channelmention",
     "nomentioncontent",
     "content",
+    "iscrosspostable"
     "created",
+    "editedat",
+    "editedtimestamp",
     "guildid",
     "id",
+    "istts",
+    "type",
+    "issystem",
     "isdeletable",
     "isdeleted",
     "iseditable",
@@ -43,6 +49,7 @@ module.exports = async d => {
     "ispinned",
     "cleancontent",
     "guildname",
+    "webhookid",
     "url"
 ].includes(result.toLowerCase())) return d.error(`\`${d.func}: Invalid option in 3rd field of ${inside}\``)
 
@@ -68,11 +75,23 @@ try {
             break;
         case "content": result = message.content;
             break;
+        case "iscrosspostable": result = message.crosspostable;
+            break;
         case "created": result = moment(message.createdAt).format("LLLL");
+            break;
+        case "editedat": result = moment(message.editedAt).format("LLLL");
+            break;
+        case "editedtimestamp": result = message.editedTimestamp;
             break;
         case "guildid": result = message.guild;
             break;
         case "id": result = message.id;
+            break;
+        case "istts": result = message.tts;
+            break;
+        case "type": result = message.type;
+            break;
+        case "issystem": result = message.system;
             break;
         case "isdeletable": result = message.deletable;
             break;
@@ -87,6 +106,8 @@ try {
         case "cleancontent": result = message.cleanContent.split('@').join('');
             break;
         case "guildname": result = message.guild.name;
+            break;
+        case "webhookid": result = message.webhookID;
             break;
         case "url": result = message.url;
             break;
