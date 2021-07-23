@@ -14,3 +14,8 @@ IDE Support is available, you can clone this folder to use Aoi.js Lavalink Wrapp
 - Nodejs v12 Support
 - Fix for Soundcloud ID Tracker and Youtube Age Restricted ( Lavaplayer side and has been bumped to v1.3.78 )
 - Fixed issue where Audio is not sending any sound when Client is moved
+
+## Setting up Lavalink Server
+You can download the dev branch of Lavalink JAR File [here](https://www.mediafire.com/file/tcai7t5y1p77p1p/Lavalink.jar/file)
+
+More Instructions can be found [here](https://github.com/freyacodes/Lavalink/tree/dev#server-configuration)
