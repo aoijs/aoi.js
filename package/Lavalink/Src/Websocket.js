@@ -12,7 +12,7 @@ class LavalinkWebsocket {
   /**
    *
    * @param {import("./LavalinkConnection")} ServerManager
-   * @param {import(".").WSOptions} options
+   * @param {import("../index").WSOptions} options
    */
   constructor(
     ServerManager,
