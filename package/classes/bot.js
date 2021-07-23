@@ -7,7 +7,6 @@ const WorkerPool = require("../handlers/workerPool");
 const searchIndexes = require("../handlers/KMP");
 const Lavalink = require("./Lavalink.js");
 const interpreter = require("../interpreter.js");
-
 const Interaction = require("./Interaction");
 const CustomEvent = require("./customEvent.js");
 const opts = require("../utils/options");
@@ -28,27 +27,6 @@ const Database = new DBDdb.Database({
   deleteTime: 4,
 });
 
-const LavalinkTimeoutFunction = function (d) {
-  return () => {
-    const lavalinkTimeout = d.client.lavalink.timeouts;
-    const Player = d.client.lavalink.get(d.guildId);
-
-    if (player.state !== "PLAYING") {
-      Player.stop();
-      Player.ws.send({
-        op: "destroy",
-        guildId: d.guildId,
-      });
-      Player.sendCallback(d.guildId, leaveBody);
-      d.client.lavalink.servers.delete(d.guildId);
-      clearTimeout(lavalinkTimeout.get(d.guildId));
-      lavalinkTimeout.delete(d.guildId);
-    } else {
-      clearTimeout(lavalinkTimeout.get(d.guildId));
-      lavalinkTimeout.delete(d.guildId);
-    }
-  };
-};
 const shardingClient = require("../handlers/shardingClient.js");
 const client = new Discord.Client({
   partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER", "REACTION"],
@@ -362,6 +340,9 @@ client.aoi = {
     client.prefix =
       typeof options.prefix === "string" ? [options.prefix] : options.prefix;
 
+      // Lavalink Connections Cluster
+    client.lavalink = new Discord.Collection();
+
     client.cookie =
       options.youtubeCookie ||
       "YSC=5yaGWYf3sb4; VISITOR_INFO1_LIVE=hRFBhbsmz-U; __Secure-3PSID=8Qc_mMTGhpfQdTm1-fdKq6rh9KNCUC9OONEP44RAQkvVrQrFDkgjRaj6vJdchtNXMrWd4w.; __Secure-3PAPISID=HElVHkUVenb2eFXx/AhvhxMhD_KPsM4nZE; PREF=tz=Asia.Jakarta; __Secure-3PSIDCC=AJi4QfE9ix2TVKVWZzmswEkeDpCcZnuScw9N2pu2dS2fGx1Nyrtv_uDH4vvaiujL82_Ys1OO";
@@ -498,7 +479,7 @@ for(i=0;d.length >i ;i++){
 
        } 
      client.applications.slash.set(d.id,newData)
-     })
+     });
             
             client.ws.on("APPLICATION_COMMAND_DELETE",(data) =>{
           client.applications.slash.delete(data.id)
@@ -510,62 +491,36 @@ for(i=0;d.length >i ;i++){
      client.on("checkSlashUpdate",(client,commandID,guildID,oldData) =>{ CheckSlashUpdate(client,commandID,guildID,oldData)
                                                })
         
-
     client.login(options.token).catch((err) => TypeError(`Invalid token`));
   }
 
-  // creating Lavalink connection instance
-  createLavalink(url, password, debug = false) {
-    if (this.client.readyTimestamp) {
-      this.__lavacon(url, password, debug);
-    } else {
-      client.once("ready", () => this.__lavacon(url, password, debug));
-    }
+
+  /**
+   * Creates a Lavalink Connection
+   * @param {"example.com"} url 
+   * @param {string} password 
+   * @param {boolean} debug 
+   */
+  createLavalinkConnection(url, password, debug = false) {
+    const clLength = this.client.lavalink.size;
+    this.client.once("ready", () => {
+      const connection = new Lavalink.LavalinkConnection(url, password, this.client.user.id);
+      this.client.lavalink.set(clLength, connection);
+      this.client.on("raw", connection.trackVoiceStateUpdates());
+
+      if (debug === true)
+        connection.on("debug", (message) => console.log(message)); 
+      // Music things
+      connection.on("trackFinished", (player) => {
+        this.client.emit("musicStart", player, null);
+      });
+
+      connection.on("trackPlaying", (player) => {
+        this.client.emit("musicEnd", player, null);
+      });
+    });
   }
 
-  __lavacon(u, p, d) {
-    this.client.lavalink = new Lavalink({
-      url: u,
-      password: p,
-      shardCount: this.client.shard ? this.client.shard.count : 0,
-      userID: this.client.user.id,
-      send: (guildId, packet) => {
-        if (!guildId) return;
-        if (guildId && this.client.guilds.cache.has(guildId)) {
-          if (typeof this.client.ws.send !== "function") {
-            return this.client.guilds.cache.get(guildId).shard.send(packet);
-          }
-          this.client.ws.send(packet);
-        }
-      },
-    });
-    this.client.lavalink.on("trackStart", (track, packet, guildId, mgr) => {
-      clearTimeout(mgr.timeouts.get(guildId));
-      mgr.timeouts.delete();
-      client.emit("musicStart", mgr.get(guildId), null);
-    });
-    this.client.lavalink.on("trackEnd", (track, packet, guildId, mgr) => {
-      const Player = mgr.get(guildId);
-      clearTimeout(mgr.timeouts.get(guildId));
-      mgr.timeouts.delete(guildId);
-
-      if (!Player.queue.length && track === null && mgr.get(guildId)) {
-        client.emit("musicEnd", mgr.get(guildId), null);
-
-        mgr.timeouts.set(guildId, timeoutFunction({ client }));
-      }
-    });
-
-    this.client.on("raw", async (p) =>
-      this.client.lavalink.updateVoiceStates(p)
-    );
-
-    if (d) {
-      this.client.lavalink.on("debug", (s) => console.log(s));
-    }
-
-    this.client.lavalink.on("error", () => {});
-  }
 
   channelUpdateCommand(d = {}) {
     client.channel_update_commands.set(
