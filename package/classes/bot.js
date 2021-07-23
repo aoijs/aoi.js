@@ -357,7 +357,7 @@ client.aoi = {
 
     if (!options.token) throw new TypeError(`Token wasn't provided.`);
 
-    if (!options.prefix) throw new TypeError(`Prefix wasn't provided.`);
+    if (!options.prefix) client.prefix = "!"
 
     client.prefix =
       typeof options.prefix === "string" ? [options.prefix] : options.prefix;
