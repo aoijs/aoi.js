@@ -16,6 +16,6 @@ IDE Support is available, you can clone this folder to use Aoi.js Lavalink Wrapp
 - Fixed issue where Audio is not sending any sound when Client is moved
 
 ## Setting up Lavalink Server
-You can download the dev branch of Lavalink JAR File [here](https://www.mediafire.com/file/tcai7t5y1p77p1p/Lavalink.jar/file)
+You can download the dev branch of Lavalink JAR File [here](https://ci.fredboat.com/repository/download/Lavalink_Build/8231:id/Lavalink.jar?guest=1 )
 
 More Instructions can be found [here](https://github.com/freyacodes/Lavalink/tree/dev#server-configuration)
