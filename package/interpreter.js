@@ -250,9 +250,9 @@ let msg = message
           msg : msg ,
           disabledMentions: disabledMentions,
           error: (err) => {
+client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             if (!message || !message.channel) {
               return console.log(err.addBrackets());
-                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             }
     if(client.aoi.options.suppressAll){
       if(client.aoi.options.errorMessage&& !waitPls){
@@ -282,16 +282,13 @@ let msg = message
                 },
                 suppressErrors.split("{error}").join(err)
               );
-                client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
             } else {
               try {
                 message.channel.send(
-                  err.addBrackets());
-      client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)  
+                  err.addBrackets()); 
               } catch (e) {
                 if (err.addBrackets().trim().length)
                   message.channel.send(err.addBrackets());
-   client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
               }
             }
           },
