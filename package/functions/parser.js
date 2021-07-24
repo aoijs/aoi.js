@@ -241,6 +241,7 @@ const Parser = {
   $serverIDs:
     "returns the ID of all the servers this bot is in;$serverIDs or $serverIDs[separator]",
   $clientID: "Returns the Bot ID",
+  $shardCount: "Returns how many shards the bot has.",
   $blackListRoleIDs:
     "Blacklist roles from using this command by using their IDs.;$blackListRoleIDs[roleID;roleID;...;error message]",
   $blackListIDs:
