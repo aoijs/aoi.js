@@ -500,11 +500,17 @@ for(i=0;d.length >i ;i++){
    * @param {"example.com"} url 
    * @param {string} password 
    * @param {boolean} debug 
+   * @param {boolean} useSecureProtocol
    */
-  createLavalinkConnection(url, password, debug = false) {
+  createLavalinkConnection(url, password, debug = false, useSecureProtocol = false) {
     const clLength = this.client.lavalink.size;
     this.client.once("ready", () => {
-      const connection = new Lavalink.LavalinkConnection(url, password, this.client.user.id);
+      const shard = this.client.shard;
+      let shardCount = 1;
+      if (shard) shardCount = shard.count;
+      
+      const connection = new Lavalink.LavalinkConnection(url, password, this.client.user.id, shardCount, {useSafeProtocol: useSecureProtocol});
+
       this.client.lavalink.set(clLength, connection);
       this.client.on("raw", connection.trackVoiceStateUpdates());
 
