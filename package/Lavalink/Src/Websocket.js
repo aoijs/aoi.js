@@ -42,7 +42,7 @@ class LavalinkWebsocket {
   connect(options) {
     if (options) options = Object.assign(options, this.options);
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
-    const useSecure = (options.useSafeProtocol === "yes") || false;
+    const useSecure = (options.useSafeProtocol === true) || false;
     let protocol = "ws://";
     if (useSecure) protocol = "wss://"
     const headers = {
@@ -54,7 +54,7 @@ class LavalinkWebsocket {
     };
     if (this.resumeKey) headers["Resume-Key"] = this.resumeKey;
     this._debug("Connecting", options);
-    this.ws = new WebSocket("wss://" + options.url, { headers });
+    this.ws = new WebSocket(protocol + options.url, { headers });
     this.triedReconnecting += 1;
     this.ws.once("open", () => this._open(options));
     this.ws.once("upgrade", (...args) => this._upgrade(options, ...args));
