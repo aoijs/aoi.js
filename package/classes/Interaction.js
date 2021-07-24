@@ -146,7 +146,7 @@ class Interaction {
                             content: content || undefined,
                             embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
                             flags ,
-                            components: components||[]
+                            components: typeof components === "object" ? Array.isArray(components) ? components : [components] : []
                         }
                     }
                 })
@@ -162,7 +162,7 @@ class Interaction {
                             content: content || undefined,
                             embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
                             flags ,
-                            components: components||[]
+                            components: typeof components === "object" ? Array.isArray(components) ? components : [components] : []
                         }
                     }
                 })
