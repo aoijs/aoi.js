@@ -25,11 +25,11 @@ const Available_Methods = [
     "version",
     "connect",
     "disconnect",
-    "destroy"
+    "destroy",
+    "volume"
 ]
 
 const Deprecated_Methods = [
-    "volume",
     "join",
     "leave"
 ];
@@ -67,7 +67,7 @@ async function Main(d)
     let response = "";
     const [method, ...data] = inside.splits;
 
-    if (Deprecated_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is deprecated, further use shouldn't be used!\``);
+    if (Deprecated_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is deprecated and will be removed in the future, further use shouldn't be continued!\``);
     if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
     // Position here to not invoke or add inefficient codes
     const player = connection._players.get(message.guild.id);
@@ -204,6 +204,17 @@ async function Main(d)
             };
 
             player.filters = constructFilter;
+        }
+        break;
+        case "volume": {
+          if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+          console.warn("Lavalink Warning: Method 'volume' is deprecated and will be removed in the future, further use shouldn't be continued");
+
+          player.manager._ws.send({
+            op: "volume",
+            guildId: message.guild.id,
+            volume: Number(data[0])
+          });
         }
     }
 
