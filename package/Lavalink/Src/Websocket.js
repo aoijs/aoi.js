@@ -1,33 +1,35 @@
+/*
+  Copyright (c) 2021 Andrew Trims and Contributors
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 const WebSocket = require("ws");
-const { EventEmitter } = require("events");
-const ServerManager = require("./ServerManager");
-class LavalinkWebsocket extends EventEmitter {
+class LavalinkWebsocket {
   /**
    *
-   * @param {ServerManager} ServerManager
-   * @param {!Object} options
+   * @param {import("./LavalinkConnection")} ServerManager
+   * @param {import("../index").WSOptions} options
    */
   constructor(
     ServerManager,
-    options = {
-      reconnectDelay: 3000,
-      reconnectMaxAttempts: 5,
-      shardCount: 1,
-      password: "",
-      userID: 123,
-      url: "example.com",
-      resumeKey: "npm i aoi.js",
-      timeout: 60,
-    }
+    options
   ) {
-    super();
+    options.resumeKey = options.resumeKey || "TGF2YVdyYXA=@1-b";
+    if (isNaN(options.timeout)) options.timeout = 60;
+    if (isNaN(options.shardCount)) options.shardCount = 1;
+
     this.options = options;
     this.reconnectDelay = options.reconnectDelay || 3000;
     this.reconnectMaxAttempts = options.reconnectMaxAttempts || 5;
-    this.connect(this.options);
+    this.mgr = ServerManager;
     this._queue = [];
     this.isManualClosed = false;
-    this.mgr = ServerManager;
+    this.connect(this.options);
+
   }
 
   close(code, data) {
@@ -40,40 +42,43 @@ class LavalinkWebsocket extends EventEmitter {
   connect(options) {
     if (options) options = Object.assign(options, this.options);
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
+    const useSecure = (options.useSafeProtocol === true) || false;
+    let protocol = "ws://";
+    if (useSecure) protocol = "wss://"
     const headers = {
       "Client-Name":
-        options.userAgent || "aoi.js; https://www.npmjs.com/package/aoi.js",
+        options.userAgent || "NodeJS; https://nodejs.org/en/",
       "Num-Shards": options.shardCount || 1,
       Authorization: options.password,
       "User-Id": options.userID,
     };
     if (this.resumeKey) headers["Resume-Key"] = this.resumeKey;
     this._debug("Connecting", options);
-    this.ws = new WebSocket("ws://" + options.url, { headers });
+    this.ws = new WebSocket(protocol + options.url, { headers });
     this.triedReconnecting += 1;
     this.ws.once("open", () => this._open(options));
     this.ws.once("upgrade", (...args) => this._upgrade(options, ...args));
     this.ws.once("close", (...args) => this._close(options, ...args));
-    this.ws.once("error", (...args) => this._error(options, ...args));
+    this.ws.on("error", (...args) => this._error(options, ...args));
     this.ws.on("message", (...args) => this._message(options, ...args));
   }
 
   _debug(task, options, message) {
     if (task) {
-      this.emit(
+      this.mgr.emit(
         "debug",
         `[Lavalink Websocket]: TASK ${task}(${options.url}) EXECUTED ${
           message ? "WITH MESSAGE " + message : ""
         }`
       );
     } else {
-      this.emit("debug", `[Lavalink Websocket]: ${message}`);
+      this.mgr.emit("debug", `[Lavalink Websocket]: ${message}`);
     }
   }
 
   _open(options) {
     this._debug("Connected", options);
-    this.emit("open");
+    this.mgr.emit("open");
     this.triedReconnecting = 0;
     for (const Packet of this._queue) {
       this._send(Packet);
@@ -82,7 +87,7 @@ class LavalinkWebsocket extends EventEmitter {
     this.configureResuming(this.options.timeout);
   }
 
-  configureResuming(timeout = 60, key = "npm i aoi.js") {
+  configureResuming(timeout = 60, key = "TGF2YVdyYXA=@1-b") {
     this.resumeKey = key;
     return this.send({
       userAgent: "Lavalink",
@@ -93,6 +98,7 @@ class LavalinkWebsocket extends EventEmitter {
   }
 
   send(d) {
+
     return new Promise((resolve, reject) => {
       const serialized = JSON.stringify(d);
       const packet = { resolve, reject, data: serialized };
@@ -106,7 +112,7 @@ class LavalinkWebsocket extends EventEmitter {
 
   _send({ resolve, reject, data }) {
     this._debug("Sending Packet", this.options);
-    this.emit("send", resolve, reject, data);
+    this.mgr.emit("send", resolve, reject, data);
     this.ws.send(data, (error) => {
       if (error) {
         reject(error);
@@ -118,7 +124,7 @@ class LavalinkWebsocket extends EventEmitter {
 
   _close(options, ...args) {
     this._debug("Closed", options);
-    this.emit("close", ...args);
+    this.mgr.emit("close", ...args);
     this.ws.removeAllListeners();
     this._reconnect();
   }
@@ -132,7 +138,7 @@ class LavalinkWebsocket extends EventEmitter {
     } catch (err) {
       packet = d;
     }
-    this.emit("message", packet);
+    this.mgr.emit("message", packet);
     this._debug(
       "Received Message [ " +
         (packet.op === "event"
@@ -143,9 +149,8 @@ class LavalinkWebsocket extends EventEmitter {
         " ] ",
       options
     );
-    if (packet.guildId && this.mgr.servers.has(packet.guildId)) {
-      this.mgr.handleMessage(packet)
-    }
+
+    if (packet) this.mgr.handleMessage(packet);
   }
 
   _reconnect() {
@@ -158,7 +163,7 @@ class LavalinkWebsocket extends EventEmitter {
     new Promise((resolve) => {
       setTimeout(resolve, this.reconnectDelay);
     }).then(async () => {
-      this.emit("reconnect");
+      this.mgr.emit("reconnect");
       try {
         this.connect(this.options);
       } catch (error) {
@@ -169,13 +174,13 @@ class LavalinkWebsocket extends EventEmitter {
   }
 
   _error(options, ...args) {
-    this.emit("error", ...args);
+    this.mgr.emit("error", ...args)
     this._debug("Error", options);
     this._close(options, ...args);
   }
 
   _upgrade(options, ...args) {
-    this.emit("upgrade", ...args);
+    this.mgr.emit("upgrade", ...args);
     this._debug("Upgrade", options);
   }
 }
