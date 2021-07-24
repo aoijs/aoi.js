@@ -19,8 +19,8 @@ class LavalinkWebsocket {
     options
   ) {
     options.resumeKey = options.resumeKey || "TGF2YVdyYXA=@1-b";
-    options.timeout = isNaN(Number(options.timeout)) ? 60 : Number(options.timeout);
-    options.shardCount = isNaN(Number(options.shardCount)) ? 1 : Number(options.shardCount);
+    if (isNaN(options.timeout)) options.timeout = 60;
+    if (isNaN(options.shardCount)) options.shardCount = 1;
 
     this.options = options;
     this.reconnectDelay = options.reconnectDelay || 3000;
