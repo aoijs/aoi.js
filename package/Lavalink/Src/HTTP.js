@@ -1,36 +1,64 @@
-const http = require("http");
+/*
+    Copyright (c) 2021 Andrew Trims and Contributors
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 const url = require("url");
 const SearchTypes = {
   soundcloud: "scsearch",
   youtube: "ytsearch",
   youtubemusic: "ytmsearch",
 };
+
 class LavalinkHTTP {
-  constructor(url, password, options) {
-    (this.url = url), (this.password = password), (this.options = options);
+  constructor() {
+    this.requestHeaders = {
+        Authorization: null,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "User-Agent":
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (NodeJS; https://nodejs.org/en/)",
+    }
   }
 
-  getURL() {
-    return new url.URL("http://" + this.url);
+  getURL(origin, https) {
+    if (https) return new url.URL("https://" + origin);
+    return new url.URL("http://" + origin);
+    
   }
-
-  load(SearchQuery = String) {
-    const url = this.getURL();
+  /**
+   * 
+   * @param {string} SearchQuery 
+   * @returns 
+   */
+  load(SearchQuery, origin, password, useHTTPS = false) {
+    const url = this.getURL(origin, useHTTPS);
+    const src = SearchQuery.split(":").shift();
     if (
       !(
-        SearchTypes[SearchQuery.split(":")[0]] ||
-        Object.values(SearchTypes).includes(SearchQuery.split(":")[0])
+        Object.values(SearchTypes).includes(src)
       )
     )
       throw new TypeError(
-        "Search type '" + SearchQuery.split(":")[0] + "' does not exist!"
+        "Search type '" + (src) + "' does not exist!"
       );
     url.pathname = "/loadtracks";
     url.searchParams.append("identifier", SearchQuery);
-    return this.do("GET", url);
+    return this.do("GET", url, password);
   }
 
-  do(method, url, data) {
+  do(method, url, authorization) {
+    const headers = {...this.requestHeaders};
+    headers.Authorization = authorization;
+    
+    let http = require("http");
+    if (url.protocol === "https:") http = require("https");
+
     return new Promise((resolve) => {
       const ClientRequest = http.request(
         {
@@ -39,19 +67,10 @@ class LavalinkHTTP {
           port: url.port,
           path: url.pathname + url.search,
           protocol: url.protocol,
-          headers: {
-            Authorization: this.password,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "User-Agent":
-              "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (aoi.js; https://www.npmjs.com/package/aoi.js)",
-          },
+          headers,
         },
         resolve
       );
-      if (data) {
-        ClientRequest.write(data);
-      }
       ClientRequest.end();
     }).then((message) => {
       return new Promise((resolve, reject) => {
@@ -76,12 +95,8 @@ class LavalinkHTTP {
             }
           });
         } else {
-          throw new Error(
-            "[HTTP]: Received " +
-              message.statusCode +
-              " (" +
-              http.STATUS_CODES[message.statusCode] +
-              ")"
+          reject(
+            new Error("API Response Status code of '" + message.statusCode + "'")
           );
         }
       });
@@ -89,4 +104,4 @@ class LavalinkHTTP {
   }
 }
 
-module.exports = LavalinkHTTP;
+module.exports = new LavalinkHTTP();
