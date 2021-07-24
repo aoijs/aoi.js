@@ -44,7 +44,7 @@ class Interaction {
         
     }
     
-    reply(content, embed, components, flags, type = 4) {
+    reply(content, embed, components=[], flags=0, type = 4) {
         if (this.type === 2) {
             try {
                 var check;
@@ -145,7 +145,8 @@ class Interaction {
                         data: {
                             content: content || undefined,
                             embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                            flags 
+                            flags ,
+                            components: components||[]
                         }
                     }
                 })
@@ -160,7 +161,8 @@ class Interaction {
                         data: {
                             content: content || undefined,
                             embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
-                            flags 
+                            flags ,
+                            components: components||[]
                         }
                     }
                 })
