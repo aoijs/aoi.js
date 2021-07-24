@@ -8,7 +8,6 @@
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-const http = require("http");
 const url = require("url");
 const SearchTypes = {
   soundcloud: "scsearch",
@@ -27,16 +26,18 @@ class LavalinkHTTP {
     }
   }
 
-  getURL(origin) {
+  getURL(origin, https) {
+    if (https) return new url.URL("https://" + origin);
     return new url.URL("http://" + origin);
+    
   }
   /**
    * 
    * @param {string} SearchQuery 
    * @returns 
    */
-  load(SearchQuery, origin, password) {
-    const url = this.getURL(origin);
+  load(SearchQuery, origin, password, useHTTPS = false) {
+    const url = this.getURL(origin, useHTTPS);
     const src = SearchQuery.split(":").shift();
     if (
       !(
@@ -54,6 +55,9 @@ class LavalinkHTTP {
   do(method, url, authorization) {
     const headers = {...this.requestHeaders};
     headers.Authorization = authorization;
+    
+    let http = require("http");
+    if (url.protocol === "https:") http = require("https");
 
     return new Promise((resolve) => {
       const ClientRequest = http.request(
