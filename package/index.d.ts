@@ -86,7 +86,7 @@
   status(status: Interfaces.Status): void;
   createCustomEvent(emitter: EventEmitter): CustomEvent;
   loadCommands(path: string, debug?: boolean): Promise<void>;
-  createLavalinkConnection(url: "example.com", password: string, debug?: boolean): void;
+  createLavalinkConnection(url: "example.com", password: string, debug?: boolean, useSecureProtocol?: boolean): void;
 
   onLeave(): void;
   onJoined(): void;
