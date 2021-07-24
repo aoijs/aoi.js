@@ -42,10 +42,12 @@ class LavalinkConnection extends EventEmitter {
           shardCount: ShardAmount,
           ...WebsocketOptions
         });
+        this._useSafe = WebsocketOptions.useSafeProtocol;
         this.userId = UserId;
         /** @type {import("../index").LavalinkStatusMessage} */
         this.hostStatus = {};
-        this.apiInformation = [LavalinkURL, LavalinkAuthorizationPassword];
+        this._uri = LavalinkURL;
+        this._pass = LavalinkAuthorizationPassword;
         /** @type {Map<`${bigint}`, import("../index").LavalinkPacketVoiceState>} */
         this.voiceStates = new Map();
     }
@@ -59,7 +61,7 @@ class LavalinkConnection extends EventEmitter {
       let player = this._players.get(guild.id);
 
       if (!player) {
-        const opt = [...this.apiInformation];
+        const opt = [this._uri, this._pass];
         opt.push(this);
         player = new Player(...opt);
         this._players.set(guild.id, player);
@@ -110,8 +112,9 @@ class LavalinkConnection extends EventEmitter {
     }
 
     async search(searchQuery, requesterUserId) {
-      const results = await API.load(searchQuery, ...this.apiInformation);
-      /** @type {import("./index").RawTrack} */
+
+      const results = await API.load(searchQuery, this._uri, this._pass, this._useSafe);
+      /** @type {import("../index").RawTrack} */
       const track = results.tracks[0];
 
       return this._buildTrack(track, requesterUserId);
@@ -119,7 +122,7 @@ class LavalinkConnection extends EventEmitter {
 
     /**
      * 
-     * @param {import("./index").LavalinkIncomingMesssage} d 
+     * @param {import("../index").LavalinkIncomingMesssage} d 
      */
     handleMessage(d) {
       if (d.op === LavalinkIncomingMessageType.event) 
@@ -140,7 +143,7 @@ class LavalinkConnection extends EventEmitter {
 
     /**
      * 
-     * @param {import("./index").LavalinkIncomingMesssage} d 
+     * @param {import("../index").LavalinkIncomingMesssage} d 
      */
     handleEvent(d) {
       const Player = this._players.get(d.guildId);
@@ -193,8 +196,8 @@ class LavalinkConnection extends EventEmitter {
 
     /**
      * 
-     * @param {import("./index").RawTrack} rawtrack 
-     * @returns {import("./index").Track}
+     * @param {import("../index").RawTrack} rawtrack 
+     * @returns {import("../index").Track}
      */
     _buildTrack(rawtrack, requesterUserId) {
       let thumbnail = `https://img.youtube.com/vi/${rawtrack.info.identifier}/maxresdefault.jpg`;
