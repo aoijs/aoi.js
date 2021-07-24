@@ -141,6 +141,10 @@ const Parser = {
   $noMentionMessage:
     "User's message without mentions;$noMentionMessage or $noMentionMessage[arg number]",
   $replaceText: "Replaces A to X in TEXT;$replaceText[some text;sample;new]",
+  $unsuppressEmbeds: "Unsuppresses embeds on a message.;$unsuppressEmbeds[channelID;messageID]",
+  $suppressEmbeds: "Suppresses embeds on a message.;$suppressEmbeds[channelID;messageID]",
+  $removeNumbers: "Removes numbers from the provided text.;$removeNumbers[text]",
+  $removeNewLines: "Removes new lines from the provided text.;$removeNewLines[text]",
   $divide: "Divides a number by X;$divide[5;2]",
   $getUserVar:
     "Gets an user variable value;$getUserVar[variable;userID (optional);guildID (optional)]",
