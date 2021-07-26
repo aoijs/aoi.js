@@ -862,7 +862,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
   $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
   $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]",
-  $apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optional), components (optional), reference _message_id:mention the replied user(default false); Return id (optional default no)]",
+  $apiMessage: "sends a message using Discord api;$apiMessage[channelID;content;embed (optional); components (optional); reference _message_id:mention the replied user(default false); Return id (optional default no)]",
   $awaitButtons: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
   $buttonCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
   $interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
