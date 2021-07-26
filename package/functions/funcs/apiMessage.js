@@ -6,7 +6,7 @@ module.exports = async d => {
     const code = d.command.code
     const err = d.inside(inside)
     if (err) return d.error(err)
-    const [content, embed = "", components = "", msgReply = "", returnID = "no"] = inside.splits
+    const [channelId=d.channel.id,content, embed = "", components = "", msgReply = "", returnID = "no"] = inside.splits
     if (!content && embed === "") return d.error(`\`Provide Either A Content Or A Embed Structure\``)
     const e = embed !== "" ? await ErrorParser(embed) : {}
 
@@ -29,7 +29,7 @@ module.exports = async d => {
         data.allowed_mentions.replied_user = mention.replace("yes", true)
             .replace("no", false)
     }
-    let msg = await d.client.api.channels(d.channel.id).messages.post({
+    let msg = await d.client.api.channels(channelId).messages.post({
         data 
     }).catch(() => null)
 
