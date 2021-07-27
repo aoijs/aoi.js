@@ -27,7 +27,8 @@ const Available_Methods = [
     "disconnect",
     "destroy",
     "volume",
-    "queueLength"
+    "queueLength",
+    "queue"
 ]
 
 const Deprecated_Methods = [
