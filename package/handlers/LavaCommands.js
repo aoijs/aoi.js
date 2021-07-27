@@ -28,7 +28,9 @@ const Available_Methods = [
     "destroy",
     "volume",
     "queueLength",
-    "queue"
+    "queue",
+    "loopqueue",
+    "loopsong"
 ]
 
 const Deprecated_Methods = [
@@ -242,6 +244,19 @@ async function Main(d)
             }
             response = array.join("\n")
         }
+        break;
+        case "loopqueue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopQueue = !player.loopQueue;
+            response = player.loopQueue;
+        };
+        break;
+        case "loopsong": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopSong = !player.loopSong;
+            response = player.loopSong;
+        }
+        break;
     }
 
     return {
