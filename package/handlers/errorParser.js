@@ -1,3 +1,4 @@
+const Discord = require('discord.js')
 const {mustEscape} = require('../utils/mustEscape.js')
 const ErrorParser =async (msg) => {
 msg = await mustEscape (msg)
