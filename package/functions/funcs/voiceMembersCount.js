@@ -7,7 +7,9 @@ module.exports = async (d) => {
   const guild = d.client.guilds.cache.get(guildID)
   
   if(!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
-  result = guild.channels.cache.filter(x=>x.type == "voice").map(x=>x.members.size).reduce((x,y) => x+y)
+  
+  const channels = guild.channels.cache.filter(x=>x.type == "voice").map(x=>x.members.size)
+  result = channels.length == 0 ? 0 : channels.reduce((x,y) => x+y)
   
 
   return {
