@@ -21,14 +21,14 @@ c = await mustEscape(c)
        
     //   console.log(emoji)
        if(style == 5){
-      data ={label:label.addBrackets(),type:Number(type),style:Number(style),url:cus.addBrackets(),disabled:disabled.addBrackets()}
+      data ={label:label.addBrackets(),type:Number(type),style:Number(style),url:cus.addBrackets(),disabled:disabled}
            if(emoji){
                const [ename,eid=0,eani=false] = emoji.split("|")
                data.emoji = {name:ename.addBrackets(),id:eid.addBrackets(), animated:eani.addBrackets()}
            }
            }
            else {
-               data = {label:label.addBrackets(),type:Number(type),style:Number(style),custom_id:cus.addBrackets(), disabled:disabled.addBrackets()}
+               data = {label:label.addBrackets(),type:Number(type),style:Number(style),custom_id:cus.addBrackets(), disabled:disabled}
                if(emoji){
                const [ename,eid=0,eani=false] = emoji.split("|")
                data.emoji = {name:ename.addBrackets(),id:eid.addBrackets(), animated:eani.addBrackets()}
