@@ -78,8 +78,8 @@ msg = await mustEscape (msg)
             
             
             res.push({
-                name: name.replace(/#COLON#/g, ":")
-                , value: value.replace(/#COLON#/g, ":")
+                name: name
+                , value: value
                 , incline: inline.replace("yes", true)
                     .replace("no", false)
             })
