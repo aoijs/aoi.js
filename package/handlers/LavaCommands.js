@@ -137,6 +137,8 @@ async function Main(d)
             if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             if (player.isPlaying()) {
                 player.stop();
+                const skipNumber = Number(data[0]);
+                if (skipNumber) player.queue.splice(0, skipNumber)
                 // If player state was changed to Idle after Playing,
                 //  Next track will be processed,
                 // does not flaw loopSong and loopQueue system
