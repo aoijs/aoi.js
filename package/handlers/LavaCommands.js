@@ -201,7 +201,7 @@ async function Main(d)
             const constructFilter = {...player.filters};
 
             for (const input of data) {
-                let [key, value = ""] = input.split(":");
+                let [key, value = ""] = input.split("=");
                 value = JSON.stringify(`'${value}'`);
                 constructFilter[key] = value;
             };
