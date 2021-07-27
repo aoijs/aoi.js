@@ -26,13 +26,15 @@ const Available_Methods = [
     "connect",
     "disconnect",
     "destroy",
-    "volume"
+    "volume",
+    "queueLength"
 ]
 
 const Deprecated_Methods = [
     "join",
     "leave"
 ];
+
 // IDE is out of range in Package Folders
 // Arrange Lavalink files (all) in one directory
 // for IDE to acknowledge
@@ -215,6 +217,27 @@ async function Main(d)
             guildId: message.guild.id,
             volume: Number(data[0])
           });
+        }
+        break;
+        case "queueLength": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            response = player.queue.length;
+        }
+        break;
+        case "queue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            const mapFormat = data.join(";").addBrackets();
+            const array = []
+            for (const track of player.queue) {
+                const clone = {...track, userID: track.requesterId};
+                const res = mapFormat.replace(/{\w+}/g, (match) => {
+                    const r = track[match.replace(/{}/g, "");
+                    if (r) return r;
+                    return "";
+                    });
+                array.push(res);
+            }
+            response = array.join("\n")
         }
     }
 
