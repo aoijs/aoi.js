@@ -10,7 +10,6 @@ module.exports = async (d) => {
   
   const channels = guild.channels.cache.filter(x=>x.type == "voice").map(x=>x.members.size)
   result = channels.length == 0 ? 0 : channels.reduce((x,y) => x+y)
-  
 
   return {
     code: code.replaceLast(`$voiceMembersCount${inside.total}`, result),
