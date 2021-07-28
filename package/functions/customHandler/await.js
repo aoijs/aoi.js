@@ -29,7 +29,7 @@ class Await extends EventEmitter {
             if (this.error.length !== 0) {
                 this.client.api.interactions(data.id, data.token).callback.post({
                     data: {
-                        type,
+                        type:4,
                         data: {
                             content: typeof this.error[0] === "string" ? this.error[0] : "",
                             embeds: this.error[1] ? (Array.isArray(this.error[1]) ? this.error[1] : [this.error[1]]) : [],
