@@ -18,7 +18,7 @@ module.exports = async (d) => {
   let [
     url,
     time = "1s",
-    deafen = true,
+    deafen = "yes",
     leaveEmpty = "no",
     error = `\`${d.func}: Error while making the request\``,
   ] = inside.splits;
@@ -27,7 +27,7 @@ module.exports = async (d) => {
   } catch {
     time = msp("1s").ms;
   }
-  deafen = deafen === "yes";
+  deafen = deafen === "no";
   url = url.addBrackets();
 
   let videos = {
@@ -263,7 +263,7 @@ module.exports = async (d) => {
         playing: true,
         state: "IDLE",
         vc_legacy: time,
-        deafen: deafen,
+        deafen: deafen === "no",
         pruneEnabled: false,
         leave: leaveEmpty === "yes",
         execute: async () => {
