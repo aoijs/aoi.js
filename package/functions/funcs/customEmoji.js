@@ -5,16 +5,14 @@ module.exports = async (d) => {
 
   const options = [
     emoji,
-    guildID
+    guildID="global"
   ] = inside.splits
 
   var find;
 
-  if (guildID) {
+  if (guildID !== "global") {
     let guild = d.client.guilds.cache.get(guildID)
-
     if (!guild) return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``)
-
     find = guild.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
 
    // if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
@@ -24,12 +22,12 @@ module.exports = async (d) => {
     //if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
   }
 
-  if (!find) return d.error(`\`CustomEmojiError: Failed to find custom emoji\``);
+  //if (!find) return d.error(`\`CustomEmojiError: Failed to find custom emoji\``);
 
   return {
     code: code.replaceLast(
       `$customEmoji${inside}`,
-      find.toString() || ""
+      (find? find.toString(): "") || ""
     ),
   };
 };
