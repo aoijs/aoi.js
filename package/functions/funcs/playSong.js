@@ -18,7 +18,7 @@ module.exports = async (d) => {
   let [
     url,
     time = "1s",
-    deafen = true,
+    deafen = "yes",
     leaveEmpty = "no",
     error = `\`${d.func}: Error while making the request\``,
   ] = inside.splits;
@@ -27,7 +27,7 @@ module.exports = async (d) => {
   } catch {
     time = msp("1s").ms;
   }
-  deafen = deafen === "yes";
+  deafen = deafen === "no";
   url = url.addBrackets();
 
   let videos = {
@@ -177,7 +177,7 @@ module.exports = async (d) => {
       } catch (err) {
         console.log(err);
 
-        return d.error(`\`$${d.func}: Error while making the request\``);
+        return d.error(`\`${d.func}: ${err}\``);
       }
     }
   }
@@ -185,7 +185,7 @@ module.exports = async (d) => {
   const video = videos.videos[0];
 
   if (!video) {
-    return d.error(`\`$${d.func}: Error while making the request\``);
+    return d.error(`\`${d.func}: Error while making the request\``);
   }
 
   const info = {
@@ -244,12 +244,12 @@ module.exports = async (d) => {
   if (!server) {
     const vc = d.message.member.voice.channel;
 
-    if (!vc) return d.error(`\`$${d.func}: Error while making the request\``);
+    if (!vc) return d.error(`\`${d.func}: Error while making the request ${err}\``);
     (async () => {
       const connection = vc.join().catch((err) => {
         console.error(err);
 
-        d.error(`\`$${d.func}: Error while making the request\``);
+        d.error(`\`${d.func}: Error while making the request ${err}\``);
       });
 
       const constructor = {
@@ -263,7 +263,7 @@ module.exports = async (d) => {
         playing: true,
         state: "IDLE",
         vc_legacy: time,
-        deafen: deafen,
+        deafen: deafen === "no",
         pruneEnabled: false,
         leave: leaveEmpty === "yes",
         execute: async () => {
@@ -285,7 +285,7 @@ module.exports = async (d) => {
       } catch (err) {
         console.error(err);
 
-        d.error(`\`$${d.func}: Error while making the request\``);
+        d.error(`\`${d.func}: Error while making the request\``);
       }
     })();
   } else {
@@ -295,7 +295,7 @@ module.exports = async (d) => {
       execute(d, true, error).catch((err) => {
         console.error(err);
 
-        d.error(`\`$${d.func}: Error while making the request\``);
+        d.error(`\`${d.func}: Error while making the request\``);
       });
     }
 

@@ -12,7 +12,7 @@ class Await extends EventEmitter {
         this.uses = uses
         this.error = errorMsg
         this.tries = 0
-        
+        this.client = client
     }
     async await (msgid, user, customID, data) {
         
@@ -27,7 +27,7 @@ class Await extends EventEmitter {
         
         if (this.user !== user && this.uses > this.tries) {
             if (this.error.length !== 0) {
-                this.client.api.intereactions(data.id, data.token).callback.post({
+                this.client.api.interactions(data.id, data.token).callback.post({
                     data: {
                         type,
                         data: {
