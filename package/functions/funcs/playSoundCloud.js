@@ -38,7 +38,7 @@ module.exports = async d => {
 	let json = response.json
 	if (json.statusText === "NOT OK") {
 		console.log(json.message + " - StatusCode: " + json.status)
-		return d.error(`\`$${d.func}: Error while making the request\``);
+		return d.error(`\`${d.func}: Error while making the request `+ json.status`\``);
 	}
 	video = json.songInfo
 	const info = {
@@ -95,7 +95,7 @@ module.exports = async d => {
 	if (!server) {
 		const vc =  d.message.member.voice.channel
 
-		if (!vc) return d.error(`\`$${d.func}: Error while making the request\``);
+		if (!vc) return d.error(`\`${d.func}: Error while making the request\``);
 
 		;(async () => {
 			const connection = vc.join().catch(err => {
@@ -130,7 +130,7 @@ module.exports = async d => {
 			} catch (err) {
 				console.log(err)
 
-				return d.error(`\`$${d.func}: Error while making the request\``);
+				return d.error(`\`${d.func}: Error while making the request\``);
 			}
 		})()
 
@@ -142,7 +142,7 @@ module.exports = async d => {
 			execute(d, true, error).catch(err => {
 				console.error(err)
 
-				d.error(`\`$${d.func}: Error while making the request\``);
+				d.error(`\`${d.func}: Error while making the request\``);
 			})
 		}
 	}
