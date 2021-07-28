@@ -1,7 +1,7 @@
 {
     "installed_version": "4.3.0-pre",
     "name": "aoi.js",
-    "version": "4.3.0",
+    "version": "4.3.0-dev",
     "description": "Aoi.JS - A package that simplifies coding for Developing Discord Bots with built-in functions.",
     "main": "package/index.js",
     "typings": "package/index.d.ts",
