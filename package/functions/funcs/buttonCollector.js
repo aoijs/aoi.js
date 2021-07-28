@@ -58,7 +58,8 @@ module.exports = async d => {
                 , undefined
                 , undefined
                 , undefined, {
-                    interaction: data
+                    interaction: data[0],
+                    mainData: data 
                 }
             )
         })
