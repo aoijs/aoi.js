@@ -15,7 +15,7 @@ module.exports = async (d) => {
     find = d.client.emojis.cache.find((e) => e.name.toLowerCase() === emoji.toLowerCase())
     //if (!find) return d.error(`:x: Invalid emoji name in \`$customEmoji${inside}\``)
   }
-  //if (!find) return d.error(`\`CustomEmojiError: Failed to find custom emoji\``);
+  if (!find) return d.error(`\`CustomEmojiError: Failed to find custom emoji\``);
   return {
     code: code.replaceLast(
       `$customEmoji${inside}`,
