@@ -9,9 +9,12 @@ module.exports = async d => {
     if (err) return d.error(err)
     //----------------------------------------//
     let [messageID, filter, customIDs, cmds, errorMsg = "", uses = 1] = inside.splits
+    if(errorMsg === "" || !errorMsg) errorMsg = [] 
+    else {
     errorMsg = errorMsg.split(",")
     errorMsg[1] = await ErrorParser(errorMsg[1]||"")
     errorMsg[2] = errorMsg[2]||0
+        }
     cmds = cmds.split(",")
     cmds.forEach(x => {
         if (d.client.awaited_commands.find(y => y.name === x)) {} else {
