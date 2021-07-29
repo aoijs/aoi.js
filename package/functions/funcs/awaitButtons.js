@@ -1,6 +1,6 @@
 const Interpreter = require("../../interpreter.js")
 const Await = require("../customHandler/await.js")
-
+const ErrorParser = require('../../handlers/errorParser.js')
 
 module.exports = async d => {
     const code = d.command.code
@@ -9,7 +9,9 @@ module.exports = async d => {
     if (err) return d.error(err)
     //----------------------------------------//
     let [messageID, filter, customIDs, cmds, errorMsg = "", uses = 1] = inside.splits
-    
+    errorMsg = errorMsg.split(",")
+    errorMsg[1] = await ErrorParser(errorMsg[1]||"")
+    errorMsg[2] = errorMsg[2]||0
     cmds = cmds.split(",")
     cmds.forEach(x => {
         if (d.client.awaited_commands.find(y => y.name === x)) {} else {
@@ -19,7 +21,7 @@ module.exports = async d => {
     customIDs = customIDs.split(",")
     //---------------------------------------//
     // console.log("messageid:"+messageID)
-    const button = new Await(messageID, filter, customIDs, cmds, errorMsg.split(","), uses, d.client)
+    const button = new Await(messageID, filter, customIDs, cmds, errorMsg, uses, d.client)
     
     //---------------------------------------//
     d.client.applications.events.on("ButtonClick", async data => {
