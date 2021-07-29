@@ -21,7 +21,7 @@ module.exports = async d => {
         
         if (m.embed) embeds.push(m.embed.toJSON())
     }
-const com = await ComponentParser (components||[])
+const com =components === "" ? [] : await ComponentParser (components||"")
    
     if (d.data.interaction) {
         const msg = await d.data.interaction.reply(m.message, embeds, com,flags,type)
