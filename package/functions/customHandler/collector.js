@@ -42,7 +42,7 @@ class CustomCollector extends EventEmitter {
                     type: 4, 
                     data: {
                         content: this.errmsg[0] || "", 
-                        embeds: (this.errmsg[1] !== "" || this.errmsg[1]) ?( Array.isArray(this.errmsg[1]) ? this.errmsg[1] : [this.errmdg[1]]): [],
+                        embeds: (this.errmsg[1] !== "" || this.errmsg[1]) ?( Array.isArray(this.errmsg[1]) ? this.errmsg[1] : [this.errmsg[1]]): [],
                         flags: this.errmsg[2] !== "" ? Number(this.errmsg[2]) : 0
                     }
                 }  
