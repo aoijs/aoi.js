@@ -12,21 +12,6 @@ const CustomEvent = require("./customEvent.js");
 const opts = require("../utils/options");
 const API = require("../handlers/boosterAPI.js");
 
-const Database = new DBDdb.Database({
-  path: "./new-database/",
-  tables: [
-    {
-      name: "main",
-    },
-  ],
-  maxFileData: 10000,
-  cacheMaxSize: 10000,
-  saveTime: 3,
-  getTime: 1,
-  allTime: 2,
-  deleteTime: 4,
-});
-
 const shardingClient = require("../handlers/shardingClient.js");
 const client = new Discord.Client({
   partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER", "REACTION"],
@@ -76,8 +61,6 @@ function toDuration(lengthSeconds) {
 
   return `${lengthSeconds} Seconds (${iso.join(":")})`;
 }
-
-client.db = Database;
 
 client.customFunctions = {};
 async () => {
@@ -272,6 +255,7 @@ class Client {
       disabledFunctions: [],
       disabledFunctionsStarting: [],
       fetchInvites: false,
+      databasePath: "./database/",
       boosterToken: null,
       applicationCache: true
     }
@@ -331,6 +315,8 @@ client.aoi = {
       require("../handlers/AutoUpdate")();
     }
 
+    if (options.databasePath) client.databasePath = options.databasePath;
+
     if (options.dbhToken) client.dbhToken = options.dbhToken;
 
     if (!options.token) throw new TypeError(`Token wasn't provided.`);
@@ -340,6 +326,24 @@ client.aoi = {
     client.prefix =
       typeof options.prefix === "string" ? [options.prefix] : options.prefix;
 
+
+      const Database = new DBDdb.Database({
+        path: options.databasePath,
+        tables: [
+          {
+            name: "main",
+          },
+        ],
+        maxFileData: 10000,
+        cacheMaxSize: 10000,
+        saveTime: 3,
+        getTime: 1,
+        allTime: 2,
+        deleteTime: 4,
+      });
+
+      client.db = Database;
+      
       // Lavalink Connections Cluster
     client.lavalink = new Discord.Collection();
 
