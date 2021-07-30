@@ -1,5 +1,4 @@
 commands
-new-database
 config.json
 index.js
 node_modules
