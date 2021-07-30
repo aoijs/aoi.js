@@ -15,7 +15,7 @@ Aoi.JS is a package with simplified and ready-to-use functions for Discord Bot D
 Aiming to be the easiest package to learn <br>
 It's swift and flexible using functions. </br>
 
- Open Source for the Community ❤️ <br>
+Open Source for the Community ❤️ <br>
  </br>
  
 ## Installation
@@ -38,11 +38,11 @@ bot.onMessage() //Allows to execute Commands
 
 bot.command({
 name: "ping", //Trigger name (command name)
-code: `Pong! $pingms` //Code
+code: `Pong! $pingms` //Code inside of string
 })
 
 bot.readyCommand({
-    channel: "", //You can use this or not
+    channel: "", //Optional channnel ID
     code: `$log[Ready on $userTag[$clientID]]` //Example Ready on Client
 })
 ```
