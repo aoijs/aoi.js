@@ -60,7 +60,7 @@ With our powerful Package, we incorporated Music with several functions.
 We allowed customization and control over what you want.
 
 
-#### Music Example
+#### Music Usage
 
 ```js
 bot.command({
