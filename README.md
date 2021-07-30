@@ -43,7 +43,7 @@ code: `Pong! $pingms` //Code inside of string
 
 bot.readyCommand({
     channel: "", //Optional channnel ID
-    code: `$log[Ready on $userTag[$clientID]]` //Example Ready on Client
+    code: `$log[Ready on $userTag[$clientID]]` //A ready on Client
 })
 ```
 
