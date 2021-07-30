@@ -81,7 +81,7 @@ msg = await mustEscape (msg)
             res.push({
                 name: name
                 , value: value
-                , incline: inline.replace("yes", true)
+                , inline: inline.replace("yes", true)
                     .replace("no", false)
             })
         })
