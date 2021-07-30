@@ -15,7 +15,7 @@ module.exports = async d => {
     if(errorMsg === "" || !errorMsg) errorMsg = [] 
     else{
     errorMsg = errorMsg.split(",")
-        errorMsg[1] = await ErrorParser(errorMsg[1]||"")
+        errorMsg[1] = errorMsg[1] === "" ? [] : await ErrorParser(errorMsg[1]||"")
         errorMsg[2] = errorMsg[2]||0
     }
     cmds = cmds.split(",")
