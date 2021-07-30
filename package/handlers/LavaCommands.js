@@ -26,13 +26,18 @@ const Available_Methods = [
     "connect",
     "disconnect",
     "destroy",
-    "volume"
+    "volume",
+    "queueLength",
+    "queue",
+    "loopqueue",
+    "loopsong"
 ]
 
 const Deprecated_Methods = [
     "join",
     "leave"
 ];
+
 // IDE is out of range in Package Folders
 // Arrange Lavalink files (all) in one directory
 // for IDE to acknowledge
@@ -134,6 +139,8 @@ async function Main(d)
             if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             if (player.isPlaying()) {
                 player.stop();
+                const skipNumber = Number(data[0]);
+                if (skipNumber) player.queue.splice(0, skipNumber)
                 // If player state was changed to Idle after Playing,
                 //  Next track will be processed,
                 // does not flaw loopSong and loopQueue system
@@ -198,7 +205,7 @@ async function Main(d)
             const constructFilter = {...player.filters};
 
             for (const input of data) {
-                let [key, value = ""] = input.split(":");
+                let [key, value = ""] = input.split("=");
                 value = JSON.stringify(`'${value}'`);
                 constructFilter[key] = value;
             };
@@ -216,6 +223,40 @@ async function Main(d)
             volume: Number(data[0])
           });
         }
+        break;
+        case "queueLength": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            response = player.queue.length;
+        }
+        break;
+        case "queue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            const mapFormat = data.join(";").addBrackets();
+            const array = []
+            for (const track of player.queue) {
+                const clone = {...track, userID: track.requesterId};
+                const res = mapFormat.replace(/{\w+}/g, (match) => {
+                    const r = track[match.replace(/{}/g, "");
+                    if (r) return r;
+                    return "";
+                    });
+                array.push(res);
+            }
+            response = array.join("\n")
+        }
+        break;
+        case "loopqueue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopQueue = !player.loopQueue;
+            response = player.loopQueue;
+        };
+        break;
+        case "loopsong": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopSong = !player.loopSong;
+            response = player.loopSong;
+        }
+        break;
     }
 
     return {

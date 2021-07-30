@@ -116,7 +116,8 @@ class LavalinkConnection extends EventEmitter {
       const results = await API.load(searchQuery, this._uri, this._pass, this._useSafe);
       /** @type {import("../index").RawTrack} */
       const track = results.tracks[0];
-
+      if (!track) return;
+      
       return this._buildTrack(track, requesterUserId);
     }
 
@@ -201,7 +202,7 @@ class LavalinkConnection extends EventEmitter {
      */
     _buildTrack(rawtrack, requesterUserId) {
       let thumbnail = `https://img.youtube.com/vi/${rawtrack.info.identifier}/maxresdefault.jpg`;
-      if (rawtrack.info.sourceName === "soundcloud") thumbnail = "";
+      if (rawtrack.info.sourceName === "soundcloud" || rawtrack.info.identifier.includes("stream/hls")) thumbnail = "";
 
       return {
         title: rawtrack.info.title,

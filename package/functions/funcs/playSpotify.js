@@ -33,7 +33,7 @@ module.exports = async d => {
 	try {
 		list = await spotify.getTracks(url.addBrackets())
 	} catch {
-		return d.error(`\`$${d.func}: Error while making the request\``);
+		return d.error(`\`${d.func}: Error while making the request\``);
 	}
 
 
@@ -42,7 +42,7 @@ module.exports = async d => {
 	if (!server) {
 		const vc = d.message.member.voice.channel
 
-		if (!vc) return d.error(`\`$${d.func}: Error while making the request\``);
+		if (!vc) return d.error(`\`${d.func}: Error while making the request\``);
 
 			const connection = vc.join().catch(err => {
 				console.error("Unable to Join, Reason: \n" + err)

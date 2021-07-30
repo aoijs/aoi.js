@@ -1,7 +1,7 @@
 {
     "installed_version": "4.3.0-pre",
     "name": "aoi.js",
-    "version": "4.3.0",
+    "version": "4.3.0-dev",
     "description": "Aoi.JS - A package that simplifies coding for Developing Discord Bots with built-in functions.",
     "main": "package/index.js",
     "typings": "package/index.d.ts",
@@ -20,7 +20,7 @@
         "soundcloud-downloader": "^1.0.0",
         "spotify-url-info": "^2.2.3",
         "yt-search": "^2.9.0",
-        "ytdl-core": "^4.8.3"
+        "ytdl-core": "^4.9.0"
     },
     "devDependencies": {
         "@discordjs/opus": "^0.5.3",

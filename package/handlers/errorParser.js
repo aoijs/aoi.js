@@ -1,20 +1,23 @@
-const ErrorParser = (msg) => {
+const Discord = require('discord.js')
+const {mustEscape} = require('../utils/mustEscape.js')
+const ErrorParser =async (msg) => {
+msg = await mustEscape (msg)
     const checker = (thingy) => msg.includes("{" + thingy + ":");
     const embed = {}
     //---------------------------------------//
     if (checker("title")) {
-        embed.title = msg.split("{title:")[1].split("}")[0]
+        embed.title = (msg.split("{title:")[1].split("}")[0]).addBrackets()
     }
     //---------------------------------------//
     if (checker("description")) {
-        embed.description = msg.split("{description:")[1].split("}")[0]
+        embed.description = (msg.split("{description:")[1].split("}")[0]).addBrackets()
     }
     //---------------------------------------//
     if (checker("footer")) {
         const footer = msg.split("{footer:")[1].split("}")[0]
         const fields = footer.split(":")
-        const footerText = fields.shift()
-        const footerURL = fields.join(":")
+        const footerText = (fields.shift()).addBrackets()
+        const footerURL = fields.join(":").addBrackets()
         embed.footer = {
             text: footerText
             , icon_url: footerURL
@@ -24,34 +27,33 @@ const ErrorParser = (msg) => {
     if (checker("author")) {
         const author = msg.split("{author:")[1].split("}")[0]
         const fields = author.split(":")
-        const authorName = fields.shift()
-        const authorURL = fields.pop()
-        const authorIcon = fields.join(":")
+        const authorName = fields.shift().addBrackets()
+        const authorURL = fields.pop().addBrackets()
+        const authorIcon = fields.join(":").addBrackets()
         embed.author = {
-            name: authorName.replace(/#COLON#/g, ":")
+            name: authorName
             , icon_url: authorIcon
-            , url: authorURL.replace(/#COLON#/g, ":")
+            , url: authorURL
         }
     }
     //---------------------------------------//
     if (checker("image")) {
         embed.image = {
-            url: msg.split("{image:")[1].split("}")[0]
+            url: msg.split("{image:")[1].split("}")[0].addBrackets()
         }
     }
     //---------------------------------------//
     if (checker("url")) {
-        embed.url = msg.split("{url:")[1].split("}")[0]
+        embed.url = msg.split("{url:")[1].split("}")[0].addBrackets()
     }
     //---------------------------------------//
     if (checker("color")) {
-        embed.color = Number(parseInt(msg.split("{color:")[1].split("}")[0].replace("#", ""), 16)
-            .toString(10))
+        embed.color =await Discord.resolveColor(msg.split("{color:")[1].split("}")[0])
     }
     //---------------------------------------//
     if (checker("thumbnail")) {
         embed.thumbnail = {
-            url: msg.split("{thumbnail:")[1].split("}")[0]
+            url: msg.split("{thumbnail:")[1].split("}")[0].addBrackets()
         }
     }
     //---------------------------------------//
@@ -71,14 +73,14 @@ const ErrorParser = (msg) => {
         fields.forEach(x => {
             const y = x.split("}")[0]
             const field = y.split(":")
-            const name = field.shift()
-            const inline = field.pop()
-            const value = field.join(":")
+            const name = field.shift().addBrackets()
+            const inline = field.pop().addBrackets()
+            const value = field.join(":").addBrackets()
             
             
             res.push({
-                name: name.replace(/#COLON#/g, ":")
-                , value: value.replace(/#COLON#/g, ":")
+                name: name
+                , value: value
                 , incline: inline.replace("yes", true)
                     .replace("no", false)
             })
