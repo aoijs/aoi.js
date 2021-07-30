@@ -43,7 +43,7 @@ module.exports = async d => {
                 , channel: data.channel
                 , guild: data.guild
                 , member: data.member,
-            client:client 
+            client:d.client 
             }
             , []
             , cmd
@@ -62,7 +62,7 @@ module.exports = async d => {
                     guild:data[0].guild,
                     author:data[0]. author,
                     member:data[0].member ,
-                client:client 
+                client:d.client 
                 }
                 , []
                 , endcmd
