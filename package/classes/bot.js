@@ -255,7 +255,7 @@ class Client {
       disabledFunctions: [],
       disabledFunctionsStarting: [],
       fetchInvites: false,
-      databasePath: "./database/",
+      databasePath: null,
       boosterToken: null,
       applicationCache: true
     }
