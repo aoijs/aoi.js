@@ -19,7 +19,7 @@ const Parser = {
   $authorID: "Returns the author's ID.",
   $serverBoostCount: "Returns the amount of boosts this server has",
   $cooldown: "Sets a server user cooldown;$cooldown[time;error message]",
-  $eval: "Evals a code;$eval[code (dbd.js);returnCode (optional) (yes/no)]",
+  $eval: "Evals a code given.;$eval[code (aoi.js);returnCode (optional) (yes/no)]",
   $truncate: "Truncates the number to 0 decimals.;$truncate[number]",
   $memberExists:
     "Checks if given user ID is in the server;$memberExists[userID;guildID (optional)]",
@@ -453,7 +453,7 @@ const Parser = {
   $commandInfo:
     "Returns a property value of a command by using its name or one of its aliases;$commandInfo[command name;property]",
   $reboot:
-    "Restarts the bot, requires the path to the main file.;$reboot[path]",
+    "Restarts the bot, requires the path to the main file.;$reboot[path (optional)]",
   $isUserDMEnabled:
     "Checks if the user has DMs open, returns true or false;$isUserDMEnabled or $isUserDMEnabled[userID]",
   $addMessageReactions:
@@ -461,7 +461,7 @@ const Parser = {
   $advancedTextSplit: `First field is the message we want to split and get indexes from\nsecond field would be the split used in the text and the next field would get the value of the index, setting this index value as the new text.\nNext fields work as splitter and new index.;$advancedTextSplit[text;split;index;split;index;...]||//in this example we will use a discord message link, we will get the message ID from this link.
   The message ID is $advancedTextSplit[https://discord.com/channels/773352845738115102/773357374328012840/793564340513931285;//;2;/;5]!
   `,
-  $packageVersion: "Returns the dbdjs version you're currently using",
+  $packageVersion: "Returns the package version you have installed.;$packageVersion",
   $isMentionable:
     "Checks whether the role is mentionable or not;$isMentionable[roleID]",
   $isHoisted:
