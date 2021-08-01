@@ -310,10 +310,10 @@ const Parser = {
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
-  $uptime: "Returns the Uptime of the Client",
+  $uptime: "Returns the Uptime of the Client;$uptime",
   $hasRole:
     "Checks if the user has the given role.;$hasRole[userID;roleID;guildID (optional)]",
-  $channelUsed: "Returns the channel ID where this callback came from",
+  $channelUsed: "Returns the channel ID where this callback came from;$channelUsed",
   $botLeave:
     "The bot is forced to leave the guild;$botLeave or $botLeave[guildID]",
   //UPDATE 0.6.0//
@@ -548,7 +548,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $findNumbers:
     "Takes every number from given string and returns them alone;$findNumbers[string]",
   $updateCommands:
-    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with Bot.loadCommands(path)",
+    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with Bot.loadCommands(path);$updatecommands",
   $findSpecialChars:
     "Takes all the non number/letter from given string and returns the alone;$findSpecialChars[string]",
   $findChars:
