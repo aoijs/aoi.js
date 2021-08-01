@@ -139,7 +139,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
 client._api = (url) =>
   `https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;
-//DBD.JS :)
+//aoi.js :)
 const fs = require("fs");
 client.cpu = 0.01313515189;
 Object.defineProperty(client,"global",{value:{}})
