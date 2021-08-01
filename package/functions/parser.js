@@ -145,6 +145,7 @@ const Parser = {
   $suppressEmbeds: "Suppresses embeds on a message.;$suppressEmbeds[channelID;messageID]",
   $removeNumbers: "Removes numbers from the provided text.;$removeNumbers[text]",
   $removeNewLines: "Removes new lines from the provided text.;$removeNewLines[text]",
+  $removeSpecialChars: "Removes special characters from the provided text.;$removeSpecialChars[text]",
   $divide: "Divides a number by X;$divide[5;2]",
   $getUserVar:
     "Gets an user variable value;$getUserVar[variable;userID (optional);guildID (optional)]",
