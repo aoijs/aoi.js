@@ -278,11 +278,11 @@ const Parser = {
   $filterMessage:
     "Removes letters or numbers from given text;$filterMessage[message;letterOrSymbols]",
   $onlyNSFW:
-    "Makes this command only executable in nsfw channels.;$onlyNSFW[error message]",
+    "Makes this command only executable in NSFW channels.;$onlyNSFW[error message]",
   $playSong:
     "Plays a song from Youtube. Support Playlist & URL;$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
   $getRoleColor: "Gets the color of given role ID;$getRoleColor[roleID]",
-  $getBotInvite: "Returns the Client invite.",
+  $getBotInvite: "Returns the Client Invite Link;$getBotInvite",
   $onlyForServers:
     "the command will only be executable in these guild IDs.;$onlyForServers[guildID;guildID;...]",
   $log: "Logs something in the console / terminal.;$log[text]",
