@@ -38,10 +38,6 @@ class Interaction {
             
             this.message = new Discord.Message(this.client, data.message, this.channel)
         }
-        
-        
-        
-        
     }
     
     reply(content, embed, components=[], flags=0, type = 4) {
@@ -92,9 +88,6 @@ class Interaction {
                             
                         }, 1000)
                     }
-                    
-                    
-                    
                     if (!check) {
                         setTimeout(async () => {
                             let d = await this.client.api.applications(this.client.user.id).commands.get()
@@ -132,13 +125,8 @@ class Interaction {
                             
                             
                         }, 2000)
-                        
                     }
-                    
-                    
                 }
-                
-                
                 const data = this.client.api.interactions(this.id, this.token).callback.post({
                     data: {
                         type, 
