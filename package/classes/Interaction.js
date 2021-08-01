@@ -83,35 +83,23 @@ class Interaction {
                             d = d.find(x => x.name.toLowerCase() == this.command.name.toLowerCase())
                             
                             if (d) {
-                                c = {
-                                    
-                                    id: d.id,
-                                    
-                                    name: d.name,
-                                    
-                                    version: d.version,
-                                    
-                                    description: d.description,
-                                    
-                                    options: d.options || [],
-                                    
-                                    application: this.client,
-                                    
-                                    guild: null,
-                                    
+                                c = {                                
+                                    id: d.id,                                
+                                    name: d.name,                           
+                                    version: d.version,                               
+                                    description: d.description,                                 
+                                    options: d.options || [],                                
+                                    application: this.client,                                  
+                                    guild: null,                               
                                     timestamp: Snowflake.deconstruct(d.id)
-                                        .timestamp,
-                                    
+                                        .timestamp,                             
                                     createdAt: Snowflake.deconstruct(d.id)
-                                        .date
-                                    
-                                }
+                                        .date                         
+                                    }
                                 this.client.applications.slash.set(c.id, c)
                             } else {
                                 c = undefined
                             }
-                            
-                            
                         }, 2000)
                     }
                 }
@@ -167,7 +155,6 @@ class Interaction {
             }
         })        
     }
-
     async deleteResponse() {
         const got = await this.client.api.webhooks(this.client.user.id, this.token).messages("@original").delete()
     }
