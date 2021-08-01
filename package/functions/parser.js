@@ -548,7 +548,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $findNumbers:
     "Takes every number from given string and returns them alone;$findNumbers[string]",
   $updateCommands:
-    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with Bot.loadCommands(path);$updatecommands",
+    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with bot.loadCommands(`./directory/`);$updatecommands",
   $findSpecialChars:
     "Takes all the non number/letter from given string and returns the alone;$findSpecialChars[string]",
   $findChars:
