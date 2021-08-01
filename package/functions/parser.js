@@ -482,12 +482,12 @@ const Parser = {
     "fetches and loops over every invite executing awaited commands;$fetchInvites[awaited command1;awaited command2;...]",
   $isValidLink:
     "Checks if given link is valid or not (might not be accurate);$isValidLink[link or url]",
-  $inviteUses: "uses this invite have",
-  $inviteChannelID: "the channel ID this invite was created for",
-  $inviteGuildID: "the ID of the guild this invite links to",
-  $inviteUserID: "the invite creator ID",
-  $inviteCode: "the code of the invite",
-  $inviteURL: "the url for this invite",
+  $inviteUses: "Returns the amount of uses this invite have.",
+  $inviteChannelID: "Returns the channel ID this invite was created for.",
+  $inviteGuildID: "Returns the ID of the guild this invite links to.",
+  $inviteUserID: "Returns the invite creator ID.",
+  $inviteCode: "Returns the code of the invite.",
+  $inviteURL: "Returns the url for this invite.",
   //$inviteTemporary: "whether if the invite is temporary or not",
   $isDeafened: "Checks if the user is self-deafened.;$isDeafened[userID",
   $playSoundCloud:
