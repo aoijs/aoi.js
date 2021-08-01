@@ -786,12 +786,7 @@ functionErrorCommand(d = {}) {
       throw new Error(
 
         `Error Command ${client.application_cmd_create_commands.size} needs a channel!`
-
       );
-
-    
-
-     
 
     d.id = Math.floor(Math.random() * 494993848489);
 
@@ -805,12 +800,7 @@ functionErrorCommand(d = {}) {
       throw new Error(
 
         `Error Command ${client.application_cmd_update_commands.size} needs a channel!`
-
       );
-
-    
-
-     
 
     d.id = Math.floor(Math.random() * 494993848489);
 
@@ -818,7 +808,6 @@ functionErrorCommand(d = {}) {
 
   }
     applicationCmdDeleteCommand(d = {}) {
-
     if (!d.channel)
 
       throw new Error(
@@ -826,10 +815,6 @@ functionErrorCommand(d = {}) {
         `Error Command ${client.application_cmd_delete_commands.size} needs a channel!`
 
       );
-
-    
-
-     
 
     d.id = Math.floor(Math.random() * 494993848489);
 
