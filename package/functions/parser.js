@@ -290,14 +290,14 @@ const Parser = {
     "Gets information on an embed.;$getEmbed[channelID;messageID;property]",
   $djsEval: "Evals a js + djs code.;$djsEval[code;output (yes/no) (optional)]",
   $messageAttachment:
-    "Returns the first attachment url of this message. (if any)",
+    "Returns the first attachment url of this message. (if any);$messageAttachment",
   $volume:
     "Returns Current Volume Number & Sets a volume for the all songs in queue.;$volume or $volume[number]",
   $onlyBotPerms:
     "Checks for bot permissions in this guild;$onlyBotPerms[perm1;perm2;...;error message]",
-  $sendDM: "Sends a dm message to given user ID.;$sendDM[userID;message]",
+  $sendDM: "Sends a DM message to given user ID.;$sendDM[userID;message]",
   $cloneChannel:
-    "Clones this channel.;$cloneChannel or $cloneChannel[channelID]",
+    "Clones a channel.;$cloneChannel or $cloneChannel[channelID]",
   $setGuildName: "Sets a new Name for this guild.;$setGuildName[name]",
   $setGuildIcon: "Sets a new Icon for this guild.;$setGuildIcon[url]",
   $deleteIn: "Deletes the bot's response after given time;$deleteIn[time]",
