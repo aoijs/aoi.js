@@ -476,8 +476,8 @@ const Parser = {
     "Checks if a webhook exists by using its ID and token;$webhookExists[webhookID;webhookToken]",
   $modifyWebhook:
     "Modifies a webhook by using its token and ID;$modifyWebhook[webhookID;webhookToken;name;avatar (optional)]",
-  $oldMessage: "The content of the message before it was updated (if any)",
-  $inviteMaxUses: "max uses for the created / deleted invite",
+  $oldMessage: "The content of the message before it was updated. (if any);$oldMessage",
+  $inviteMaxUses: "Max uses for the created / deleted invite.;$inviteMaxUses",
   $fetchInvites:
     "fetches and loops over every invite executing awaited commands;$fetchInvites[awaited command1;awaited command2;...]",
   $isValidLink:
