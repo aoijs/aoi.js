@@ -4,10 +4,9 @@ const Snowflake = Discord.SnowflakeUtil
 class Interaction {
     constructor(client, data) {
         this.client = client
-        
+
         this._resolve(data)
     }
-    
     _resolve(data) {
         this.channel = this.client.channels.cache.get(data.channel_id)
         
@@ -56,36 +55,25 @@ class Interaction {
                             d = d.find(x => x.id == this.command.id)
                             
                             if (d) {
-                                c = {
-                                    
-                                    id: d.id,
-                                    
+                                c = {                      
+                                    id: d.id,              
                                     name: d.name,
-                                    
-                                    version: d.version,
-                                    
-                                    description: d.description,
-                                    
-                                    options: d.options || [],
-                                    
-                                    application: this.client,
-                                    
-                                    guild: this.client.guilds.cache.get(d.guild_id) || null,
-                                    
+                                    version: d.version,                                 
+                                    description: d.description,                      
+                                    options: d.options || [],                           
+                                    application: this.client,        
+                                    guild: this.client.guilds.cache.get(d.guild_id) || null,              
                                     timestamp: Snowflake.deconstruct(d.id)
-                                        .timestamp,
-                                    
+                                        .timestamp,              
                                     createdAt: Snowflake.deconstruct(d.id)
                                         .date
-                                }
-                                check = "defined";
-                                this.client.applications.slash.set(c.id, c)
+                                    }
+                                 check = "defined";
+                                 this.client.applications.slash.set(c.id, c)
                             } else {
                                 c = undefined;
                                 check = undefined
-                            }
-                            
-                            
+                            } 
                         }, 1000)
                     }
                     if (!check) {

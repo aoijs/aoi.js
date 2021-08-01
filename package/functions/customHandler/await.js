@@ -19,7 +19,6 @@ class Await extends EventEmitter {
         if (this.msgID === msgid && this.user === user && this.customIDs.includes(customID) && this.uses > this.tries) {
             this.emit("AwaitButton", data)
             
-            
             this.tries += 1
         } else if (this.uses <= this.tries) {
             delete this._events.AwaitButton
