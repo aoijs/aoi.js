@@ -434,9 +434,9 @@ const Parser = {
     "Creates a webhook for this channel, bot has to have manage webhooks permission;$createWebhook[channelID;name;avatar;returnWebhookID&Token (yes/no);separator]",
   $sendWebhook:
     "Sends a message through a webhook by using its ID and token;$sendWebhook[webhookID;webhookToken;message;options...]",
-  $referenceChannelID: "The ID of the channel where this user replied in;referenceChannelID",
-  $referenceMessageID: "The ID of the message that the user replied to;referenceMessageID",
-  $referenceGuildID: "The ID of the guild where the user replied in;referenceGuildID",
+  $referenceChannelID: "The ID of the channel where this user replied in;$referenceChannelID",
+  $referenceMessageID: "The ID of the message that the user replied to;$referenceMessageID",
+  $referenceGuildID: "The ID of the guild where the user replied in;$referenceGuildID",
   //UPDATE 1.2.0
   $setChannelTopic:
     "Sets the topic of a channel with given ID;$setChannelTopic[channelID;topic]",
