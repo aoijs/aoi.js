@@ -461,7 +461,7 @@ const Parser = {
   $advancedTextSplit: `First field is the message we want to split and get indexes from\nsecond field would be the split used in the text and the next field would get the value of the index, setting this index value as the new text.\nNext fields work as splitter and new index.;$advancedTextSplit[text;split;index;split;index;...]||//in this example we will use a discord message link, we will get the message ID from this link.
   The message ID is $advancedTextSplit[https://discord.com/channels/773352845738115102/773357374328012840/793564340513931285;//;2;/;5]!
   `,
-  $packageVersion: "Returns the package version you have installed.;$packageVersion",
+  $packageVersion: "Returns the current package version you have (installed).;$packageVersion",
   $isMentionable:
     "Checks whether the role is mentionable or not;$isMentionable[roleID]",
   $isHoisted:
