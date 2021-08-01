@@ -741,7 +741,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $resolveEmojiID:
     "Resolves a full emoji / id / name into its ID.;$resolveEmojiID[emoji string/name/id]",
   $exec: "Executes a command on the powershell;$exec[command line]",
-  $shutdown: "Shuts the bot down.",
+  $shutdown: "Shuts the Client down.;$shutdown",
   $hasPermsInChannel:
     "Checks whether a user has given perms in a channel;$hasPermsInChannel[channelID;userID;perm1;perm2;...]",
   $modifyRolePerms:
