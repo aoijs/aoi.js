@@ -862,6 +862,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
   $firstMessageID: "Returns First message's ID from the current channel or in given channel;$firstMessageID or $firstMessageID[channelID]",
   $randomCase: "Generates the given text with Random cases;$randomCase[text]",
-  $reverse: "Converts the given characters into reverse order;$reverse[text or characters]"
+  $reverse: "Converts the given characters into reverse order;$reverse[text or characters]",
+  $voiceMembersCount: "Returns all members count inside all voice channels;$voiceMembersCount or $voiceMembersCount[guildID (optional)]"
 };
 module.exports = Parser;
