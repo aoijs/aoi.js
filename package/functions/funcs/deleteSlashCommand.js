@@ -66,7 +66,7 @@ module.exports = async (d) => {
 
     }
     d.client.emit("applicationCommandDelete", d.client, command)
-    const request = await d.client.api.applications(d.client.user.id).guilds(guildID).commands(command.id).delete().catch(() => null)
+    const request = guildID === "global"?await d.client.api.applications(d.client.user.id).commands(command.id).delete().catch(() => null) :await d.client.api.applications(d.client.user.id).guilds(guildID).commands(command.id).delete().catch(() => null)
 
     if (!request)
         return d.error(`\`SlashError: Failed to delete slash command ${command.name}\``);
