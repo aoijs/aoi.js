@@ -1,16 +1,9 @@
 module.exports = async (d) => {
   const code = d.command.code;
-
-  const r = code.split("$forEachGuild").length - 1;
-
-  const inside = code.split("$forEachGuild")[r].after();
+  const inside = d.unpack();
 
   for (const guild of d.client.guilds.cache.array()) {
     for (const command of inside.splits) {
-      const m = Object.assign(Object.create(d.message), d.message);
-
-      m.guild = guild;
-
       const cmd = d.client.awaited_commands.find((e) => e.name === command);
 
       if (!cmd)
@@ -18,7 +11,14 @@ module.exports = async (d) => {
           `\`${d.func}: Invalid awaited command ${command} in ${inside}\``
         );
 
-      d.interpreter(d.client, m, d.args, cmd);
+      d.interpreter(d.client,{
+     message:d.message,
+     channel: d.channel,
+     guild: guild,
+     author:d.author,
+     member:d.member,
+     client:d.client
+      }, d.args, cmd);
     }
   }
 
