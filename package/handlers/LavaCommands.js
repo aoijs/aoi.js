@@ -236,7 +236,7 @@ async function Main(d)
             for (const track of player.queue) {
                 const clone = {...track, userID: track.requesterId};
                 const res = mapFormat.replace(/{\w+}/g, (match) => {
-                    const r = track[match.replace(/{}/g, "");
+                    const r = track[match.replace(/{}/g, "")];
                     if (r) return r;
                     return "";
                     });
