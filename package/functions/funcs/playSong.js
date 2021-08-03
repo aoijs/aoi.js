@@ -27,7 +27,6 @@ module.exports = async (d) => {
   } catch {
     time = msp("1s").ms;
   }
-  deafen = deafen === "yes";
   url = url.addBrackets();
 
   let videos = {
@@ -263,7 +262,7 @@ module.exports = async (d) => {
         playing: true,
         state: "IDLE",
         vc_legacy: time,
-        deafen: deafen,
+        deafen: ["yes", "true"].includes(deafen),
         pruneEnabled: false,
         leave: leaveEmpty === "yes",
         execute: async () => {
