@@ -90,7 +90,7 @@ const execute = async (d, old, error, ffmpegArgs) => {
           d.client.emit("musicStart", server);
         else
           server.songs[0].message = await server.text
-            .send(`Now playing ${server.songs[0].title()}`)
+            .send(`Now playing ${server.songs[0].title().addBrackets()}`)
             .catch((err) => {});
       }
 
