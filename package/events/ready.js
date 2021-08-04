@@ -1,14 +1,17 @@
 const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
 const Discord = require("discord.js");
-const api = require("../handlers/api");
+const connectedBots = require("../handlers/connectedBots");
 const DanBotHosting = ("danbot-hosting")
 
 module.exports = async (client, Database) => {
   const owner = (await client.fetchApplication()).owner;
   client.ownerID = owner.members ? owner.ownerID : owner.id;
 
-  api(client.user.id);
+  if (client.connectedBots) {
+  connectedBots(client.user.id);
+  console.log("Connected to API");
+  }
 
   setTimeout(() => {
     require("../handlers/timeoutHandling")(client);
