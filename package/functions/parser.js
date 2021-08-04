@@ -141,12 +141,18 @@ const Parser = {
   $noMentionMessage:
     "User's message without mentions;$noMentionMessage or $noMentionMessage[arg number]",
   $replaceText: "Replaces A to X in TEXT;$replaceText[some text;sample;new]",
+  $unsuppressEmbeds: "Unsuppresses embeds on a message.;$unsuppressEmbeds[channelID;messageID]",
+  $suppressEmbeds: "Suppresses embeds on a message.;$suppressEmbeds[channelID;messageID]",
+  $removeNumbers: "Removes numbers from the provided text.;$removeNumbers[text]",
+  $removeNewLines: "Removes new lines from the provided text.;$removeNewLines[text]",
+  $removeSpecialChars: "Removes special characters from the provided text.;$removeSpecialChars[text]",
   $divide: "Divides a number by X;$divide[5;2]",
   $getUserVar:
     "Gets an user variable value;$getUserVar[variable;userID (optional);guildID (optional)]",
   "$color[": "Sets a embed color;$color[hex or number]",
   $guildID:
     "Returns the ID of this guild or given guild name.;$guildID[guild name]",
+  $rulesChannelID: "Returns the server's rules channel ID.;$rulesChannelID[(optional) guildID]",
   $addField:
     "Adds a field to the embed;$addField[name;value;inline (yes/no)(optional)]",
   $changeNickname:
@@ -232,9 +238,11 @@ const Parser = {
     "checks if the author has the provided permissions.;$onlyPerms[perm1;perm2;...;error message]",
   $checkCondition:
     "Checks if given condition is true or false.;$checkCondition[value(!=/==/>=/<=/>/<)value2]",
+  $removeLinks: "Removes all links from the provided text.;$removeLinks[text]",
   $serverIDs:
     "returns the ID of all the servers this bot is in;$serverIDs or $serverIDs[separator]",
   $clientID: "Returns the Bot ID",
+  $shardCount: "Returns how many shards the bot has.",
   $blackListRoleIDs:
     "Blacklist roles from using this command by using their IDs.;$blackListRoleIDs[roleID;roleID;...;error message]",
   $blackListIDs:
