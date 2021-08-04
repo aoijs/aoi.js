@@ -34,19 +34,6 @@ setTimeout(async ()=>{
   command = d.data.find(x=>x.name == name) 
 if(!command){res = "e"}
      await client.emit(res,command)
-
         },2000) 
-        
-
-         
-
-    
-
-      
-
-                    
     }
-      
     }
-
-    
