@@ -10,7 +10,7 @@ module.exports = async (client, Database) => {
 
   if (client.connectedBots) {
   connectedBots(client.user.id);
-  console.log("Connected to API");
+  console.log("Connected to API.");
   }
 
   setTimeout(() => {
