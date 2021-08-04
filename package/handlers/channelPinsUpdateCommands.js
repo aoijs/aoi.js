@@ -21,8 +21,6 @@ module.exports = async (client, pinch) => {
 
     const channel = client.channels.cache.get(id);
 
-    //if (!channel) return console.error(`channel with ID ${id} does not exist`)
-
     data.channel = channel || data.channel;
 
     await interpreter(
