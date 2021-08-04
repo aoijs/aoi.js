@@ -18,6 +18,7 @@
     prefix: string[] | string;
     mobile?: boolean;
     database?: object;
+    databasePath?: string;
     dbhToken?: boolean;
     suppressAll?: boolean;
     errorMessage?: string;
