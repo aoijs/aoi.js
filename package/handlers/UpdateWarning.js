@@ -3,7 +3,7 @@ const json = require("../../package.json");
 module.exports = async () => {
   try {
     const get = await new Promise((res) => {
-      fetch("https://api.leref.ga/package/version", { method: "GET" })
+      fetch("https://api.leref.ga/package/version", { method: "GET" }) //Requests latest version from API.
         .then(res)
         .catch(() => res({}));
 
