@@ -12,4 +12,5 @@ module.exports = {
     "prefix": "The Prefix or array of Prefixes", 
     "token": "The Token of the Client",
     "databasePath": "Add a database path instead of `database`. (string)",
+    "connectedBots": "Connect to the API (Checks how many Clients use aoi.js)"
 }
