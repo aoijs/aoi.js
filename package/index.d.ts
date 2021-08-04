@@ -19,6 +19,7 @@
     mobile?: boolean;
     database?: object;
     databasePath?: string;
+    connectedBots?: boolean;
     dbhToken?: boolean;
     suppressAll?: boolean;
     errorMessage?: string;
