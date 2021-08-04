@@ -6,11 +6,11 @@ const fs = require("fs")
 
 console.log(`Connecting to gateway with token ${token}.`)
 
-const dbd = require("../index.js")
+const aoijs = require("../index.js")
 
-const Bot = new dbd.Bot({
+const Bot = new aoijs.Bot({
     token: token,
-    prefix: "!"
+    prefix: prefix
 })
 
 const file = fs.readFileSync("./test.js", { encoding: "utf-8" })
