@@ -10,5 +10,6 @@ module.exports = {
     "disabledFunctionsStarting": "Array of strings that will disable every function starting with provided function names.", 
     "disabledFunctions": "Array of functions to disable.\nDisabling functions that you don't use will improve bot performance and speed",
     "prefix": "The Prefix or array of Prefixes", 
-    "token": "The Token of the Client"
+    "token": "The Token of the Client",
+    "databasePath": "Add a database path instead of `database`. (string)",
 }
