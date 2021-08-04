@@ -7,7 +7,7 @@ module.exports = async (client, channel) => {
         const data = {
             guild: channel.guild,
             channel: channel 
-    }
+                     }
     
     const id = await interpreter(client, data, [], {
       channel: command.channel,
@@ -15,8 +15,6 @@ module.exports = async (client, channel) => {
     }, undefined, true)
 
     const ch = client.channels.cache.get(id)
-
-    //if (!channel) return console.error(`channel with ID ${id} does not exist`)
     
     data.channel = ch || data.channel
 
