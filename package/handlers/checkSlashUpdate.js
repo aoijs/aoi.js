@@ -36,11 +36,8 @@ setTimeout(async()=>{
    let d = await axios.get(client._api(`applications/${client.user.id}/guilds/${guildID}/commands/${commandID}`),{
 
        headers:{
-
            Authorization:`Bot ${client.token}`
-
-           }
-
+               }
        })
 
    d = d.data
