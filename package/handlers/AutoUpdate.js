@@ -5,7 +5,7 @@ module.exports = async () => {
   console.log("aoi.js AutoUpdate System: \u001b[33mExecuting a contact with API...\u001b[0m")
 
   try {
-    const res = await axios.get("https://api.leref.ga/package/version")
+    const res = await axios.get("https://api.leref.ga/package/version") //Requests latest version from API.
     if (json.version !== res.data.version) {
       console.log("aoi.js AutoUpdate System: \u001b[33mAvailable version v" + res.data.version + " ready to install.\u001b[0m");
 
