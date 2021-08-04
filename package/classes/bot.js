@@ -251,6 +251,7 @@ class Client {
       suppressAll: false,
       errorMessage: null,
       mobile: false,
+      connectedBots: false,
       typingStopEvent: false,
       disabledFunctions: [],
       disabledFunctionsStarting: [],
@@ -318,6 +319,8 @@ client.aoi = {
     if (options.databasePath) client.databasePath = options.databasePath;
 
     if (options.dbhToken) client.dbhToken = options.dbhToken;
+
+    if (options.connectedBots) client.connectedBots = options.connectedBots;
 
     if (!options.token) throw new TypeError(`Token wasn't provided.`);
 
