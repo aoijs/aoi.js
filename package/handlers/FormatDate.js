@@ -29,11 +29,11 @@ module.exports = (format, date, timezone) => {
     }
     break;
     case 'MMM': {
-      format = ["Jan", "Feb", "Mar", "Apr", "Jun", "Jul", "Augt", "Sep", "Oct", "Nov", "Dec"][aNewDate.getMonth()]
+      format = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Augt", "Sep", "Oct", "Nov", "Dec"][aNewDate.getMonth()]
     }
     break;
     case 'MMMM': {
-      format = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December"][aNewDate.getMonth()]
+      format = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][aNewDate.getMonth()]
     }
     break;
     // Date of Month
@@ -169,17 +169,17 @@ module.exports = (format, date, timezone) => {
     break;
     case 'LL': {
       const clonedDate = aNewDate
-      format = `${["January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()}`
+      format = `${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()}`
     }
     break;
     case 'LLL': {
       const clonedDate = aNewDate
-      format = `${["January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()} ${clonedDate.getHours() > 12 ? clonedDate.getHours() - 12 : clonedDate.getHours()}:${clonedDate.getMinutes().toString().length === 2 ? clonedDate.getMinutes() : "0" + clonedDate.getMinutes().toString()} ${clonedDate.getHours() > 12 ? "PM" : "AM"}`
+      format = `${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()} ${clonedDate.getHours() > 12 ? clonedDate.getHours() - 12 : clonedDate.getHours()}:${clonedDate.getMinutes().toString().length === 2 ? clonedDate.getMinutes() : "0" + clonedDate.getMinutes().toString()} ${clonedDate.getHours() > 12 ? "PM" : "AM"}`
     }
     break;
     case 'LLLL': {
       const clonedDate = aNewDate
-      format = `${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][clonedDate.getDay()]}, ${["January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()} ${clonedDate.getHours() > 12 ? clonedDate.getHours() - 12 : clonedDate.getHours()}:${clonedDate.getMinutes().toString().length === 2 ? clonedDate.getMinutes() : "0" + clonedDate.getMinutes().toString()} ${clonedDate.getHours() > 12 ? "PM" : "AM"}`
+      format = `${["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][clonedDate.getDay()]}, ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][clonedDate.getMonth()]} ${clonedDate.getDate()} ${clonedDate.getFullYear()} ${clonedDate.getHours() > 12 ? clonedDate.getHours() - 12 : clonedDate.getHours()}:${clonedDate.getMinutes().toString().length === 2 ? clonedDate.getMinutes() : "0" + clonedDate.getMinutes().toString()} ${clonedDate.getHours() > 12 ? "PM" : "AM"}`
     }
     break;
     case 'LT': {
