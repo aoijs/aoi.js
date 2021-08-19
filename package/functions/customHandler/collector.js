@@ -36,7 +36,7 @@ class CustomCollector extends EventEmitter {
             delete this._events.ItemFound
         }, this._timeout)
         
-        if (this.filter !== "everyone" && this.filter !== user && this.errmsg.length !== 0 && this.endsOn > Date.now()) {
+        if (this.filter !== "everyone" && this.filter !== user && this.errmsg.length !== 0 && this.endsOn > Date.now() && this.msgid === msgid ) {
             this.client.api.interactions(data.id, data.token).callback.post({
                 data: {
                     type: 4, 
