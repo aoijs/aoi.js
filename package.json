@@ -10,7 +10,7 @@
       "prettywrite": "prettier --write \"package/**/*.js\""
     },
     "dependencies": {
-      "@discordjs/voice": "^6.0.0",
+      "@discordjs/voice": "^0.6.0",
       "dbdjs.db": "^2.0.1",
       "discord.js": "^13.1.0",
       "moment": "^2.29.1",
