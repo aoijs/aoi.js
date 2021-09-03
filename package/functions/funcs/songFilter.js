@@ -1,4 +1,4 @@
-const songFilters = require('../../utils/songFilter')
+const songFilters = require('../../util/songFilter')
 
 module.exports = async d => {
 	let code = d.command.code
