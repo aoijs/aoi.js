@@ -67,7 +67,7 @@ button.start(data.message.id,data.author.id,data.customId,data)
      )})
  }
     return {
-        code: code.replaceLast(`$buttonCollector${inside}`,"")
+        code: code.replaceLast(`$componentCollector${inside}`,"")
     }
     
 }
