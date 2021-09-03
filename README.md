@@ -20,7 +20,7 @@ Open Source for the Community ❤️ <br>
  
 ## Installation
 
-**Node.JS 12.0.0 or newer is required.**  
+**Node.JS 16.6.0 or newer is required.**  
 
 ```sh-session
 npm install aoi.js
