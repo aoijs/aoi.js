@@ -1,6 +1,4 @@
-const {SnowflakeUtil} = require('discord.js')
-const axios = require("axios");
-const parser = require("../../handlers/slashCommandOptionsParser");
+
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -22,27 +20,7 @@ let command;
 
   if (!command)
     return d.error(`${d.func}: Could not find any command with name/id ${option}`);
-   command = {
-
-       id: command.id,
-
-       name: command.name,
-
-       description:command.description,
-
-       options: command.options || [],
-
-       defaultPermission : command.default_permission ,
-
-       guild : d.client.guilds.cache.get(command.guild_id) || null,
-
-       application : d.client ,
-
-       timestamp : SnowflakeUtil.deconstruct(command.id).timestamp, 
-
-       createdAt: SnowflakeUtil.deconstruct(command.id).date
-
-       } 
+   
 const req = await d.client.application.commands.delete(command,guildID === "global" ? undefined : guildID).catch(e=>undefined)
    if(!req) return d.error(`${d.func}: Failed to delete slash command ${command.name}`);
 
