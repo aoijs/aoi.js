@@ -11,7 +11,7 @@ module.exports = async (d) => {
   if (err) return d.error(err);
 
   let [id=d?.command?.id,option] = inside.splits;
-    const channel = await d.util.getChannel(id) 
+    const channel = await d.util.getChannel(d,id) 
     if(!channel) return d.error( 
        d.aoiError.functionErrorResolve(d,"channel",{inside}) 
         )
