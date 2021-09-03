@@ -10,7 +10,7 @@ module.exports = async (d) => {
 
   const [channelID, opt = "name", separator = ", "] = inside.splits;
 
-  const channel = await d.util.getChannel(channelID) 
+  const channel = await d.util.getChannel(d,channelID) 
 if(!channel) return d.error(
 d.aoiError.functionErrorResolve(d,"channel",{inside}) 
 )
