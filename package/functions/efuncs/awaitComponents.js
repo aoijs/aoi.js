@@ -45,6 +45,6 @@ async function interact(interaction){
     Component.await(interaction.message.id,interaction.user.id,interaction.customId,interaction)
 }
     return {
-        code:code.replaceLast(`$awaitButtons${inside}`,"")
+        code:code.replaceLast(`$awaitComponents${inside}`,"")
     }
 }
