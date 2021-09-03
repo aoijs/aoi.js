@@ -91,7 +91,7 @@ module.exports = async d => {
             data.components = await ComponentParser (data.components||"") 
             data.files = await FileParser(data.files||"") 
         }
-        catch (){
+        catch (e){
             data = await ErrorHandler(d,error,true) 
         }
             d.error(data,"object")
