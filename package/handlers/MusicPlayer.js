@@ -31,7 +31,7 @@ const execute = async (d, old, error, ffmpegArgs) => {
       const axio = axios.create({
         headers: {
           "user-agent":
-            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (aoi.js; https://www.npmjs.com/package/aoi.js)",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (dbd.js; https://www.npmjs.com/package/dbd.js)",
         },
       });
       const sdl = scdl.create({
@@ -90,6 +90,8 @@ const execute = async (d, old, error, ffmpegArgs) => {
           d.client.emit("musicStart", server);
         else
           server.songs[0].message = await server.text
+            .send(`Now playing ${server.songs[0].title()}`)
+            .catch((err) => {});
       }
 
       clearTimeout(timeout);

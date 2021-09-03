@@ -30,14 +30,16 @@ const CommandHandler = async (client, message, db) => {
   
   const cmd = args.shift().toLowerCase()
   
-  const cmds = client.bot_commands.array()
+  const cmds = client.cmd.default.array()
 
-  const commands = cmds.filter(c => c.name !== "$alwaysExecute" && c.nonPrefixed !== true).filter(c => (c.name || "").toLowerCase() === cmd || (c.aliases && typeof c.aliases === "object" ? c.aliases.includes(cmd) : c.aliases === cmd))
+  const commands = cmds.filter(c => c.name !== "$alwaysExecute" && c.nonPrefixed !== true).filter(c => (c.name?.toLowerCase() === cmd.toLowerCase()) || (c.aliases ?(Array.isArray(c.aliases) ?c.aliases?.find(x=>x.toLowerCase() ===  cmd.toLowerCase()) : c.aliases?.toLowerCase() === cmd.toLowerCase()) : undefined))
   
   for (const command of commands) {
+
     if (command.asynchronous === false) interpreter(client, message, args, command, undefined) 
     else await interpreter(client, message, args, command, undefined)  
     //await interpreter(client, message, args, command, undefined)
+     
   } 
 }
 

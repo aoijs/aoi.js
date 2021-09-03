@@ -1,17 +1,14 @@
 const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
 const Discord = require("discord.js");
-const connectedBots = require("../handlers/connectedBots");
+const api = require("../handlers/api");
 const DanBotHosting = ("danbot-hosting")
 
 module.exports = async (client, Database) => {
-  const owner = (await client.fetchApplication()).owner;
-  client.ownerID = owner.members ? owner.ownerID : owner.id;
+  const owner = client.application.owner;
+  client.ownerID = owner?.ownerID || owner?.id 
 
-  if (client.connectedBots) {
-  connectedBots(client.user.id);
-  console.log("Connected to API.");
-  }
+  api(client.user.id);
 
   setTimeout(() => {
     require("../handlers/timeoutHandling")(client);
@@ -23,12 +20,12 @@ module.exports = async (client, Database) => {
 
       parallel.on("finish", async (check) => {
         if (check === client.guilds.cache.size) {
-          console.log("Fetched all Guild invites.");
+          console.log("Fetched all guild invites.");
 
           parallel.removeAllListeners();
           resolve();
         }
-      }); //Copyright © Aoi.JS
+      }); //Copyright © DBD.JS by DBD.JS Team
 
       const guilds = client.guilds.cache.array();
 
@@ -65,9 +62,9 @@ module.exports = async (client, Database) => {
       }
     });
 
-  console.log(`Initialized on aoi.js || v` + require("../../package.json").version);
+  console.log("Running Aoi.js <3");
   console.log(
-    "Visit Our Official Discord Server: https://aoi.js.org/invite"
+    "Need help? Visit our Support Server! https://discord.gg/HMUfMXDQsV"
   );
 
   if (client.statuses.size) {
@@ -108,7 +105,7 @@ module.exports = async (client, Database) => {
       y++;
     };
 
-    console.log("Running all Statuses.");
+    console.log("Running statuses.");
 
     f();
   }

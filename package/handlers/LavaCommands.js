@@ -1,10 +1,7 @@
 /*
     Copyright (c) 2021 Andrew Trims and Contributors
-
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 const Available_Methods = [
@@ -26,18 +23,13 @@ const Available_Methods = [
     "connect",
     "disconnect",
     "destroy",
-    "volume",
-    "queueLength",
-    "queue",
-    "loopqueue",
-    "loopsong"
+    "volume"
 ]
 
 const Deprecated_Methods = [
     "join",
     "leave"
 ];
-
 // IDE is out of range in Package Folders
 // Arrange Lavalink files (all) in one directory
 // for IDE to acknowledge
@@ -55,7 +47,7 @@ async function Main(d)
 
     /** @type {import("discord.js").Collection<number, import("../Lavalink/Src/LavalinkConnection")>} */
     // Contributors can continue this to add a system like Cluster, for this PR one connection will be used
-    const Collection = d.client.lavalink;
+    const Collection = d.client.lavalink.lavalink;
     // Using at least 1 connection available
     /** @type {import("../Lavalink/Src/LavalinkConnection")} */
     const connection = Collection.first();
@@ -139,8 +131,6 @@ async function Main(d)
             if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             if (player.isPlaying()) {
                 player.stop();
-                const skipNumber = Number(data[0]);
-                if (skipNumber) player.queue.splice(0, skipNumber)
                 // If player state was changed to Idle after Playing,
                 //  Next track will be processed,
                 // does not flaw loopSong and loopQueue system
@@ -205,7 +195,7 @@ async function Main(d)
             const constructFilter = {...player.filters};
 
             for (const input of data) {
-                let [key, value = ""] = input.split("=");
+                let [key, value = ""] = input.split(":");
                 value = JSON.stringify(`'${value}'`);
                 constructFilter[key] = value;
             };
@@ -223,40 +213,6 @@ async function Main(d)
             volume: Number(data[0])
           });
         }
-        break;
-        case "queueLength": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            response = player.queue.length;
-        }
-        break;
-        case "queue": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            const mapFormat = data.join(";").addBrackets();
-            const array = []
-            for (const track of player.queue) {
-                const clone = {...track, userID: track.requesterId};
-                const res = mapFormat.replace(/{\w+}/g, (match) => {
-                    const r = track[match.replace(/{}/g, "")];
-                    if (r) return r;
-                    return "";
-                    });
-                array.push(res);
-            }
-            response = array.join("\n")
-        }
-        break;
-        case "loopqueue": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.loopQueue = !player.loopQueue;
-            response = player.loopQueue;
-        };
-        break;
-        case "loopsong": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.loopSong = !player.loopSong;
-            response = player.loopSong;
-        }
-        break;
     }
 
     return {

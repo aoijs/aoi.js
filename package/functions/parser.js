@@ -1,4 +1,5 @@
 const Parser = {
+  
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -19,7 +20,7 @@ const Parser = {
   $authorID: "Returns the author's ID.",
   $serverBoostCount: "Returns the amount of boosts this server has",
   $cooldown: "Sets a server user cooldown;$cooldown[time;error message]",
-  $eval: "Evals a code given.;$eval[code (aoi.js);returnCode (optional) (yes/no)]",
+  $eval: "Evals a code;$eval[code (dbd.js);returnCode (optional) (yes/no)]",
   $truncate: "Truncates the number to 0 decimals.;$truncate[number]",
   $memberExists:
     "Checks if given user ID is in the server;$memberExists[userID;guildID (optional)]",
@@ -141,18 +142,12 @@ const Parser = {
   $noMentionMessage:
     "User's message without mentions;$noMentionMessage or $noMentionMessage[arg number]",
   $replaceText: "Replaces A to X in TEXT;$replaceText[some text;sample;new]",
-  $unsuppressEmbeds: "Unsuppresses embeds on a message.;$unsuppressEmbeds[channelID;messageID]",
-  $suppressEmbeds: "Suppresses embeds on a message.;$suppressEmbeds[channelID;messageID]",
-  $removeNumbers: "Removes numbers from the provided text.;$removeNumbers[text]",
-  $removeNewLines: "Removes new lines from the provided text.;$removeNewLines[text]",
-  $removeSpecialChars: "Removes special characters from the provided text.;$removeSpecialChars[text]",
   $divide: "Divides a number by X;$divide[5;2]",
   $getUserVar:
     "Gets an user variable value;$getUserVar[variable;userID (optional);guildID (optional)]",
   "$color[": "Sets a embed color;$color[hex or number]",
   $guildID:
     "Returns the ID of this guild or given guild name.;$guildID[guild name]",
-  $rulesChannelID: "Returns the server's rules channel ID.;$rulesChannelID[(optional) guildID]",
   $addField:
     "Adds a field to the embed;$addField[name;value;inline (yes/no)(optional)]",
   $changeNickname:
@@ -238,11 +233,9 @@ const Parser = {
     "checks if the author has the provided permissions.;$onlyPerms[perm1;perm2;...;error message]",
   $checkCondition:
     "Checks if given condition is true or false.;$checkCondition[value(!=/==/>=/<=/>/<)value2]",
-  $removeLinks: "Removes all links from the provided text.;$removeLinks[text]",
   $serverIDs:
     "returns the ID of all the servers this bot is in;$serverIDs or $serverIDs[separator]",
   $clientID: "Returns the Bot ID",
-  $shardCount: "Returns how many shards the Client has;$shardCount",
   $blackListRoleIDs:
     "Blacklist roles from using this command by using their IDs.;$blackListRoleIDs[roleID;roleID;...;error message]",
   $blackListIDs:
@@ -281,16 +274,16 @@ const Parser = {
   $setMessageVar:
     "Sets a message variable value;$setMessageVar[variable;value;messageID (optional)]",
   $suppressErrors:
-    "Suppress any given errors and sends a custom one. {error} will contain the error that was thrown.;$suppressErrors or $suppressErrors[message]",
+    "Suppress all the errors and sends a custom one. {error} will contain the error that was thrown.;$suppressErrors or $suppressErrors[message]",
   $serverChannelExists: "$serverChannelExists;$serverChannelExists[channelID]",
   $filterMessage:
     "Removes letters or numbers from given text;$filterMessage[message;letterOrSymbols]",
   $onlyNSFW:
-    "Makes this command only executable in NSFW channels.;$onlyNSFW[error message]",
+    "Makes this command only executable in nsfw channels.;$onlyNSFW[error message]",
   $playSong:
-    "Plays a song from Youtube. Support Playlist & URL;$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
+    "Plays a song from youtube. Support Playlist & URL;$playSong[song;leave vc time;defean (yes or no);leave when vc empty (yes/no);error]",
   $getRoleColor: "Gets the color of given role ID;$getRoleColor[roleID]",
-  $getBotInvite: "Returns the Client Invite Link;$getBotInvite",
+  $getBotInvite: "Returns the bot's invite.",
   $onlyForServers:
     "the command will only be executable in these guild IDs.;$onlyForServers[guildID;guildID;...]",
   $log: "Logs something in the console / terminal.;$log[text]",
@@ -298,14 +291,14 @@ const Parser = {
     "Gets information on an embed.;$getEmbed[channelID;messageID;property]",
   $djsEval: "Evals a js + djs code.;$djsEval[code;output (yes/no) (optional)]",
   $messageAttachment:
-    "Returns the first attachment url of this message. (if any);$messageAttachment",
+    "Returns the first attachment url of this message. (if any)",
   $volume:
-    "Returns Current Volume Number & Sets a volume for the all songs in queue.;$volume or $volume[number]",
+    "Returns Current Volume Number & Set a volume for the Songs;$volume or $volume[number]",
   $onlyBotPerms:
     "Checks for bot permissions in this guild;$onlyBotPerms[perm1;perm2;...;error message]",
-  $sendDM: "Sends a DM message to given user ID.;$sendDM[userID;message]",
+  $sendDM: "Sends a dm message to given user ID.;$sendDM[userID;message]",
   $cloneChannel:
-    "Clones a channel.;$cloneChannel or $cloneChannel[channelID]",
+    "Clones this channel.;$cloneChannel or $cloneChannel[channelID]",
   $setGuildName: "Sets a new Name for this guild.;$setGuildName[name]",
   $setGuildIcon: "Sets a new Icon for this guild.;$setGuildIcon[url]",
   $deleteIn: "Deletes the bot's response after given time;$deleteIn[time]",
@@ -318,10 +311,10 @@ const Parser = {
   $onlyForRoles:
     "The command will be only executed if the user has any of these role IDs / Names.;$onlyForRoles[roleID/Name;roleID/Name;...;error message]",
   $botTyping: "Shows that the bot is currently typing;$botTyping[duration]",
-  $uptime: "Returns the Uptime of the Client;$uptime",
+  $uptime: "Uptime of the bot",
   $hasRole:
     "Checks if the user has the given role.;$hasRole[userID;roleID;guildID (optional)]",
-  $channelUsed: "Returns the channel ID where this callback came from;$channelUsed",
+  $channelUsed: "Returns the channel ID where this callback came from",
   $botLeave:
     "The bot is forced to leave the guild;$botLeave or $botLeave[guildID]",
   //UPDATE 0.6.0//
@@ -442,9 +435,9 @@ const Parser = {
     "Creates a webhook for this channel, bot has to have manage webhooks permission;$createWebhook[channelID;name;avatar;returnWebhookID&Token (yes/no);separator]",
   $sendWebhook:
     "Sends a message through a webhook by using its ID and token;$sendWebhook[webhookID;webhookToken;message;options...]",
-  $referenceChannelID: "The ID of the channel where this user replied in;$referenceChannelID",
-  $referenceMessageID: "The ID of the message that the user replied to;$referenceMessageID",
-  $referenceGuildID: "The ID of the guild where the user replied in;$referenceGuildID",
+  $referenceChannelID: "The ID of the channel where this user replied in",
+  $referenceMessageID: "The ID of the message that the user replied to",
+  $referenceGuildID: "The ID of the guild where the user replied in",
   //UPDATE 1.2.0
   $setChannelTopic:
     "Sets the topic of a channel with given ID;$setChannelTopic[channelID;topic]",
@@ -461,7 +454,7 @@ const Parser = {
   $commandInfo:
     "Returns a property value of a command by using its name or one of its aliases;$commandInfo[command name;property]",
   $reboot:
-    "Restarts the bot, requires the path to the main file.;$reboot[path (optional)]",
+    "Restarts the bot, requires the path to the main file.;$reboot[path]",
   $isUserDMEnabled:
     "Checks if the user has DMs open, returns true or false;$isUserDMEnabled or $isUserDMEnabled[userID]",
   $addMessageReactions:
@@ -469,7 +462,7 @@ const Parser = {
   $advancedTextSplit: `First field is the message we want to split and get indexes from\nsecond field would be the split used in the text and the next field would get the value of the index, setting this index value as the new text.\nNext fields work as splitter and new index.;$advancedTextSplit[text;split;index;split;index;...]||//in this example we will use a discord message link, we will get the message ID from this link.
   The message ID is $advancedTextSplit[https://discord.com/channels/773352845738115102/773357374328012840/793564340513931285;//;2;/;5]!
   `,
-  $packageVersion: "Returns the current package version you have (installed).;$packageVersion",
+  $packageVersion: "Returns the dbdjs version you're currently using",
   $isMentionable:
     "Checks whether the role is mentionable or not;$isMentionable[roleID]",
   $isHoisted:
@@ -484,18 +477,18 @@ const Parser = {
     "Checks if a webhook exists by using its ID and token;$webhookExists[webhookID;webhookToken]",
   $modifyWebhook:
     "Modifies a webhook by using its token and ID;$modifyWebhook[webhookID;webhookToken;name;avatar (optional)]",
-  $oldMessage: "The content of the message before it was updated. (if any);$oldMessage",
-  $inviteMaxUses: "Max uses for the created / deleted invite.;$inviteMaxUses",
+  $oldMessage: "The content of the message before it was updated (if any)",
+  $inviteMaxUses: "max uses for the created / deleted invite",
   $fetchInvites:
     "fetches and loops over every invite executing awaited commands;$fetchInvites[awaited command1;awaited command2;...]",
   $isValidLink:
     "Checks if given link is valid or not (might not be accurate);$isValidLink[link or url]",
-  $inviteUses: "Returns the amount of uses this invite have.;$inviteUses",
-  $inviteChannelID: "Returns the channel ID this invite was created for.;$inviteChannelID",
-  $inviteGuildID: "Returns the ID of the guild this invite links to.;$inviteGuildID",
-  $inviteUserID: "Returns the invite creator ID.;$inviteUserID",
-  $inviteCode: "Returns the code of the invite.;$inviteCode",
-  $inviteURL: "Returns the url for this invite.;$inviteURL",
+  $inviteUses: "uses this invite have",
+  $inviteChannelID: "the channel ID this invite was created for",
+  $inviteGuildID: "the ID of the guild this invite links to",
+  $inviteUserID: "the invite creator ID",
+  $inviteCode: "the code of the invite",
+  $inviteURL: "the url for this invite",
   //$inviteTemporary: "whether if the invite is temporary or not",
   $isDeafened: "Checks if the user is self-deafened.;$isDeafened[userID",
   $playSoundCloud:
@@ -556,7 +549,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $findNumbers:
     "Takes every number from given string and returns them alone;$findNumbers[string]",
   $updateCommands:
-    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with bot.loadCommands(`./directory/`);$updatecommands",
+    "Updates all the commands of your command handler\nThis function won't be usable if you haven't used our built-in command handler with Bot.loadCommands(path)",
   $findSpecialChars:
     "Takes all the non number/letter from given string and returns the alone;$findSpecialChars[string]",
   $findChars:
@@ -749,7 +742,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $resolveEmojiID:
     "Resolves a full emoji / id / name into its ID.;$resolveEmojiID[emoji string/name/id]",
   $exec: "Executes a command on the powershell;$exec[command line]",
-  $shutdown: "Shuts the Client down.;$shutdown",
+  $shutdown: "Shuts the bot down.",
   $hasPermsInChannel:
     "Checks whether a user has given perms in a channel;$hasPermsInChannel[channelID;userID;perm1;perm2;...]",
   $modifyRolePerms:
@@ -827,6 +820,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $killClient: "Destroy the client gateway connection.;$killClient",
   $clientToken: "Return the client token;$clientToken",
   $uri: "Decodes or Encodes a url Example when you encode a url 'hello world' = 'hello%20world';$uri[decode/encode;text]",
+  $lerefImages: "Return a random images of Leref;$lerefImages",
   $variablesCount: "Returns amount of bot variables the bot has.;$variablesCount",
   $isEveryoneMentioned: "Returns true/false if @everyone was mentioned in the command.;$isEveryoneMentioned",
   $mentionedRolesCount: "Returns amount of mentioned roles in the command's message.;$mentionedRolesCount",
@@ -847,7 +841,8 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
   $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
-  $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
+//v3
+$fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
   $getAttachments: "Gets attachment info of the provided Message; $getAttachments[channelID;messageID;position;property] \n property: name , id , size , height , width , url",
   $sendTTS: "send a tts message in the current channel (optional);$sendTTS[text] or $sendTTS[text;channelID]" ,
   $writeFile: "writes a text in the provided file. If file doesn't exist , it will create it.;$writeFile[file location;text; encoding (optional)]",
@@ -855,22 +850,43 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $renameFile: "renames the provided file;$renameFile[oldname;newname]",
   $serverLeaderboard: "returns a learderboard of servers of the provided variable;$serverLeaderboard[variable;asc/desc(optional);{top}. {servername}. {value} (optional);list(optional);page(optional)]",
   $vcSize : "returns the size of the provided type in Provided guild or global;$vcSize[channels/users/songs;guildID/global (optional)]",
-  $handleError: "function that is used in onFunctionError callback;$handleError[option]",
+  $handleError: "function that is used in onFunctionError callback;$handleError[functionError option]",
   $oldVariable: "gets the data from variable Callbacks (update and delete one);$oldVariable[variable options]",
   $newVariable: "gets the data from variable Callbacks (Update and Create one);$newVariable[variable options]",
   $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
   $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
   $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]",
-  $apiMessage: "sends a message using Discord api;$apiMessage[channelID;content;embed (optional); components (optional); reference _message_id:mention the replied user(default false); Return id (optional default no)]",
-  $awaitButtons: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
-  $buttonCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
-  $interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
-  $interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
-  $firstMessageID: "Returns First message's ID from the current channel or in given channel;$firstMessageID or $firstMessageID[channelID]",
-  $randomCase: "Generates the given text with Random cases;$randomCase[text]",
-  $reverse: "Converts the given characters into reverse order;$reverse[text or characters]",
-  $voiceMembersCount: "Returns all members count inside all voice channels;$voiceMembersCount or $voiceMembersCount[guildID (optional)]",
-  $packageName: "Returns the current package name.;$packageName"
+//3.0.5 
+$apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optional), components (optional), reference _message_id:mention the replied user(default false); Return id (optional default no)]",
+$awaitComponents: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
+$componentCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
+$interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
+$interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
+$interactionDefer:"",
+$interactionUpdate:"",
+
+$eventData:"gets the data emitted by the event;$eventData[data]",
+$eventEmit:"emits the event and datas;$eventEmit[eventName;data;data;...]",
+$awaitComponentsUntil:"",
+$endif:"",
+$addButton:"",
+$addSelectMenu:"",
+$blacklist:"",
+$blacklistError:"",
+$nonBlacklistCommands:"",
+$createSticker:"",
+$deleteSticker:"",
+$createStageInstance:"",
+$awaitComponentsUntil:"",
+$createThread:"",
+$deleteThread:"",
+$joinThread:"",
+$leaveThread:"",
+$addThreadMember:"",
+$removeThreadMember:"",
+$fetchActiveThreads:"",
+$fetchArchivedThreads:""
+   
 };
 module.exports = Parser;

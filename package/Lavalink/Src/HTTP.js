@@ -1,13 +1,11 @@
 /*
     Copyright (c) 2021 Andrew Trims and Contributors
-
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+const http = require("http");
 const url = require("url");
 const SearchTypes = {
   soundcloud: "scsearch",
@@ -26,18 +24,16 @@ class LavalinkHTTP {
     }
   }
 
-  getURL(origin, https) {
-    if (https) return new url.URL("https://" + origin);
+  getURL(origin) {
     return new url.URL("http://" + origin);
-    
   }
   /**
    * 
    * @param {string} SearchQuery 
    * @returns 
    */
-  load(SearchQuery, origin, password, useHTTPS = false) {
-    const url = this.getURL(origin, useHTTPS);
+  load(SearchQuery, origin, password) {
+    const url = this.getURL(origin);
     const src = SearchQuery.split(":").shift();
     if (
       !(
@@ -55,9 +51,6 @@ class LavalinkHTTP {
   do(method, url, authorization) {
     const headers = {...this.requestHeaders};
     headers.Authorization = authorization;
-    
-    let http = require("http");
-    if (url.protocol === "https:") http = require("https");
 
     return new Promise((resolve) => {
       const ClientRequest = http.request(

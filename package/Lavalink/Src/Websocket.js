@@ -1,10 +1,7 @@
 /*
   Copyright (c) 2021 Andrew Trims and Contributors
-
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 const WebSocket = require("ws");
@@ -19,8 +16,8 @@ class LavalinkWebsocket {
     options
   ) {
     options.resumeKey = options.resumeKey || "TGF2YVdyYXA=@1-b";
-    if (isNaN(options.timeout)) options.timeout = 60;
-    if (isNaN(options.shardCount)) options.shardCount = 1;
+    options.timeout = isNaN(Number(options.timeout)) ? 60 : Number(options.timeout);
+    options.shardCount = isNaN(Number(options.shardCount)) ? 1 : Number(options.shardCount);
 
     this.options = options;
     this.reconnectDelay = options.reconnectDelay || 3000;
@@ -42,9 +39,6 @@ class LavalinkWebsocket {
   connect(options) {
     if (options) options = Object.assign(options, this.options);
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
-    const useSecure = (options.useSafeProtocol === true) || false;
-    let protocol = "ws://";
-    if (useSecure) protocol = "wss://"
     const headers = {
       "Client-Name":
         options.userAgent || "NodeJS; https://nodejs.org/en/",
@@ -54,7 +48,7 @@ class LavalinkWebsocket {
     };
     if (this.resumeKey) headers["Resume-Key"] = this.resumeKey;
     this._debug("Connecting", options);
-    this.ws = new WebSocket(protocol + options.url, { headers });
+    this.ws = new WebSocket("ws://" + options.url, { headers });
     this.triedReconnecting += 1;
     this.ws.once("open", () => this._open(options));
     this.ws.once("upgrade", (...args) => this._upgrade(options, ...args));
@@ -174,7 +168,7 @@ class LavalinkWebsocket {
   }
 
   _error(options, ...args) {
-    this.mgr.emit("error", ...args)
+    this.mgr.emit("error", ...args);
     this._debug("Error", options);
     this._close(options, ...args);
   }

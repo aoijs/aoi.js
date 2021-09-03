@@ -1,10 +1,7 @@
 /*
     Copyright (c) 2021 Andrew Trims and Contributors
-
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
     The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 const API = require("./HTTP");
@@ -42,12 +39,10 @@ class LavalinkConnection extends EventEmitter {
           shardCount: ShardAmount,
           ...WebsocketOptions
         });
-        this._useSafe = WebsocketOptions.useSafeProtocol;
         this.userId = UserId;
         /** @type {import("../index").LavalinkStatusMessage} */
         this.hostStatus = {};
-        this._uri = LavalinkURL;
-        this._pass = LavalinkAuthorizationPassword;
+        this.apiInformation = [LavalinkURL, LavalinkAuthorizationPassword];
         /** @type {Map<`${bigint}`, import("../index").LavalinkPacketVoiceState>} */
         this.voiceStates = new Map();
     }
@@ -61,7 +56,7 @@ class LavalinkConnection extends EventEmitter {
       let player = this._players.get(guild.id);
 
       if (!player) {
-        const opt = [this._uri, this._pass];
+        const opt = [...this.apiInformation];
         opt.push(this);
         player = new Player(...opt);
         this._players.set(guild.id, player);
@@ -112,18 +107,16 @@ class LavalinkConnection extends EventEmitter {
     }
 
     async search(searchQuery, requesterUserId) {
-
-      const results = await API.load(searchQuery, this._uri, this._pass, this._useSafe);
-      /** @type {import("../index").RawTrack} */
+      const results = await API.load(searchQuery, ...this.apiInformation);
+      /** @type {import("./index").RawTrack} */
       const track = results.tracks[0];
-      if (!track) return;
-      
+
       return this._buildTrack(track, requesterUserId);
     }
 
     /**
      * 
-     * @param {import("../index").LavalinkIncomingMesssage} d 
+     * @param {import("./index").LavalinkIncomingMesssage} d 
      */
     handleMessage(d) {
       if (d.op === LavalinkIncomingMessageType.event) 
@@ -144,7 +137,7 @@ class LavalinkConnection extends EventEmitter {
 
     /**
      * 
-     * @param {import("../index").LavalinkIncomingMesssage} d 
+     * @param {import("./index").LavalinkIncomingMesssage} d 
      */
     handleEvent(d) {
       const Player = this._players.get(d.guildId);
@@ -197,12 +190,12 @@ class LavalinkConnection extends EventEmitter {
 
     /**
      * 
-     * @param {import("../index").RawTrack} rawtrack 
-     * @returns {import("../index").Track}
+     * @param {import("./index").RawTrack} rawtrack 
+     * @returns {import("./index").Track}
      */
     _buildTrack(rawtrack, requesterUserId) {
       let thumbnail = `https://img.youtube.com/vi/${rawtrack.info.identifier}/maxresdefault.jpg`;
-      if (rawtrack.info.sourceName === "soundcloud" || rawtrack.info.identifier.includes("stream/hls")) thumbnail = "";
+      if (rawtrack.info.sourceName === "soundcloud") thumbnail = "";
 
       return {
         title: rawtrack.info.title,
