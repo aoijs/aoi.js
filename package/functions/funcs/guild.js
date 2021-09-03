@@ -26,7 +26,7 @@ let data = {}
  delete data.voiceStates 
  delete data.stageInstances 
  data.invites = data.invites.size 
- data.systemChannelFlags = (data.systemChannelFlags.toArray.join(" ") ==== "" ? "none" : data.systemChannelFlags.toArray.join(" ") ) 
+ data.systemChannelFlags = (data.systemChannelFlags.toArray.join(" ") === "" ? "none" : data.systemChannelFlags.toArray.join(" ") ) 
 data.owner = server.members.cache.get(data.ownerId).username 
 delete data.shard 
 delete data.afkChannel 
