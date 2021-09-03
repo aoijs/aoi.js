@@ -45,7 +45,7 @@ class FunctionManager {
      for(const func of this.functions){
          try{
          const ogname = func.replace("$","").replace("[","") 
-        this.cache.set(ogname, new Function(require('../functions/efuncs/'+ogname+'.js'),func))
+        this.cache.set(ogname, new Function(require('../functions/funcs/'+ogname+'.js'),func))
         }
          catch(e){
              console.error(e)
