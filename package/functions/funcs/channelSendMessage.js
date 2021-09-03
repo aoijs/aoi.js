@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
   let [channelID, content,Embed="", components="",files="", allowMentions="", reply="",stickers="", returnID = "no"] = fields;
 
-  const channel = await d.util.getChannel(channelID);
+  const channel = await d.util.getChannel(d,channelID);
 
   if (!channel)
     return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
