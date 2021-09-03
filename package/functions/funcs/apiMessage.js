@@ -1,4 +1,5 @@
 const axios = require('axios')
+const {DataResolver} = require('discord.js')
 const {EmbedParser, ComponentParser,FileParser} = require('../../Handler/parsers.js')
 module.exports = async d=>{
     try{
@@ -11,7 +12,9 @@ module.exports = async d=>{
    const e =embed !== "" ? await EmbedParser(embed||"") : []
    const c = (components==="") ? [] : await ComponentParser(components,d.client) 
    const f = (attachments === "" ) ? [] : await FileParser(attachments);
-       f.file = f.attachment 
+       for(const FF of f){
+FF.file = await DataResolver.resolveFile(FF.attachment)
+}
 if(!d?.client?.channels?.cache?.get(channel)) return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}))  
 const data = {  content: content||" " ,
      embeds: e,
