@@ -26,13 +26,15 @@ Open Source for the Community ❤️ <br>
 npm install aoi.js
 ```
 
-### Example
+### Setting up
+
 ```js
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
-token: "TOKEN", //Discord Bot Token
-prefix: "PREFIX" //Discord Bot Prefix
+token: "TOKEN",
+prefix: "PREFIX",
+intents: "all"
 })
 bot.onMessage() //Allows to execute Commands
 
@@ -43,7 +45,7 @@ code: `Pong! $pingms` //Code inside of string
 
 bot.readyCommand({
     channel: "", //Optional channnel ID
-    code: `$log[Ready on $userTag[$clientID]]` //A ready on Client
+    code: `$log[Ready on $userTag[$clientID]]`
 })
 ```
 
@@ -53,21 +55,6 @@ bot.readyCommand({
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
 - [danbot-hosting](https://www.npmjs.com/package/danbot-hosting) for posting stats to their API (`npm install danbot-hosting`)
 
-
-#### Music Integration
-
-With our powerful Package, we incorporated Music with several functions.
-We allowed customization and control over what you want.
-
-
-#### Music Usage
-
-```js
-bot.command({
-name: "play",
-code: `$playSong[Music Name;Something went wrong!]`
-})
-```
 
 More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 
