@@ -65,4 +65,4 @@ More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 - [Documentation](https://aoi.leref.ga)
 
 ## Contributing
-Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)
+Please read [Contributing](https://github.com/aoijs/aoi.js/blob/main/.github/CONTRIBUTING.md)
