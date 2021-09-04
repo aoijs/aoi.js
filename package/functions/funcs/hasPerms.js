@@ -1,4 +1,4 @@
-const permissions = require("../../utils/permissions.js")
+const permissions = require("../../util/permissions.js")
 
 module.exports = async d => {
     const code = d.command.code
