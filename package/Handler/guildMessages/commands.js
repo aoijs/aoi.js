@@ -21,7 +21,8 @@ for(const prefix of prefixes){
     const msg = message.content.slice(prefix.length).trim()
     //finding command 
   const cmd = cmds.filter(x=> msg.toLowerCase().startsWith( x.name.toLowerCase())  &&  msg.split(" ").slice(0, x.name.split(" ").length ).join(" ").toLowerCase()  ===  x.name.toLowerCase()  ||  ( Array.isArray(x.aliases) ? x.aliases.find(y=> msg.toLowerCase().startsWith( y.toLowerCase() )  &&  msg.split(" ").slice(0, y.split(" ").length ).join(" ").toLowerCase()  ===  y.toLowerCase() ): msg?.toLowerCase().startsWith( x.aliases?.toLowerCase() )  &&  msg.split(" ").slice(0, x.aliases?.split(" ").length ).join(" ")?.toLowerCase()  ===  x.aliases?.toLowerCase() ) )?.sort((a,b)=> a.name.length - b.name.length ).reverse()[0]
-  console.log(cmd)
+//if command doesn't exist , then break the loop 
+  if(!cmd) break; 
                        //args
   const args = msg.slice(cmd?.name.length||"").split(" ").slice(1)
   //chrck if blacklisted 
@@ -60,8 +61,7 @@ for(const prefix of prefixes){
   }
 }
  }
-  //if command doesn't exist , then break the loop 
-  if(!cmd) break; 
+  
     if(cmd.dmOnly && message.channel.type === Util.channelTypes.Dm) break;
     //if cmd.async is true 
     if(cmd.async){
