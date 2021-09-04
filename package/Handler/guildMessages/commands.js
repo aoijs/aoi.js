@@ -12,7 +12,8 @@ module.exports = async(message,client,db)=>{
     //array of cmds 
  let cmds = client.cmd.default.allValues()
  //getting arrays of prefixes
- const prefixes = Array.isArray(client.prefix)?client.prefix.map(async x=>x.includes("$")? await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true) :x):[client.prefix]
+ const prefixes = []
+Array.isArray(client.prefix)?client.prefix.forEach(async x=>prefixes.push(x.includes("$")? await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true) :x)):prefixes.push(client.prefix)
  //for loop of prefix array 
 for(const prefix of prefixes){
     if(!message.content.toLowerCase().startsWith(prefix.toLowerCase())) continue;
