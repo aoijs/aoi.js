@@ -11,16 +11,16 @@ module.exports = async d=> {
   
   const fields = inside.splits
   
-  if (fields.length < 1) return d.error(`❌ Invalid fields in \`$sendMessage${inside}\``)
+  if (fields.length < 1) return d.error(`${d.func}: Invalid arguments provided in ${after}`)
   
   const returnID = fields.pop()
   
   const msg = fields.join(";")
   
   const m = await ErrorHandler(d,msg,"object")
-  if (!m) return d.error(`:x: Could not send message in \`$sendMessage${inside}\``)
+  if (!m) return d.error(`${d.func}: Failed to send message!`)
   
   return {
     code: code.replaceLast(`$sendMessage${inside}`, returnID === "yes" ? m.id : "") 
   } 
-} 
+}
