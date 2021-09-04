@@ -1,4 +1,4 @@
-const channelPinsOptions = require("../../utils/channelPinsOptions");
+const channelPinsOptions = require("../../util/channelPinsOptions");
 
 module.exports = async (d) => {
   const code = d.command.code;
