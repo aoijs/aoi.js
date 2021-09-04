@@ -1,4 +1,4 @@
-const webhookUpdateOptions = require("../../utils/webhookUpdateOptions");
+const webhookUpdateOptions = require("../../util/webhookUpdateOptions");
 
 module.exports = async (d) => {
   const code = d.command.code;
