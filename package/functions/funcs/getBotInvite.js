@@ -1,5 +1,5 @@
-const permissions = require("../../utils/permissions")
-const permissionsBitField = require("../../utils/permissionsBitField")
+const permissions = require("../../util/permissions")
+const permissionsBitField = require("../../util/permissionsBitField")
 
 module.exports = async d => {
     const code = d.command.code 
