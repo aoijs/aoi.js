@@ -1,5 +1,5 @@
-# Contributing in Aoi.js
-### Let's build Aoi.js together!
+# Contributing to aoi.js
+### Let's build aoi.js together!
 
 You might have the creativity to make useful functions for developers to use, well now you can.
 
@@ -10,7 +10,7 @@ Your pull request will be flagged as "Accepted" or "Declined".
 Template can be found in the Respository.
 
 ## Reporting bugs
-Have you encountered Issues when using Aoi.js?
+Have you encountered Issues when using aoi.js?
 Make an Issue of the problem for further Support, if you have the answer to solve it, Add the code in your Issue ( can be Link or Text, not File ).
 
 Template can be found in the Respository.
@@ -19,6 +19,6 @@ Template can be found in the Respository.
 Contributing for Aoi.js will grant you the Contributor Role.
 
 Achieving the role will require you to do/be:
-- A member of the Server over 3 Months
-- Contributed Aoi.js 5+ times
-- Knowledge of NodeJS Basics
+- A member of the Server over three Months / been active sufficiently.
+- Contributed to aoi.js at least five or greater.
+- Knowledge of NodeJS Basics (NodeJS 16.6+)
