@@ -1,5 +1,5 @@
-const keyPerms = require("../../utils/permissions")
-const embed = require("../../handlers/errors.js")
+const keyPerms = require("../../util/permissions")
+const {ErrorHandler} = require("../../Handler/parsers.js")
 
 module.exports = async d => {
     const code = d.command.code
@@ -23,7 +23,7 @@ module.exports = async d => {
         else perms.push(perm)
     }
 
-    if (!d.message.member.hasPermission(perms)) return embed(d, errorMsg)
+    if (!d.message.member.hasPermission(perms)) return ErrorHandler(d, errorMsg)
 
     return {
         code: code.replaceLast(`$onlyPerms${inside}`, "")
