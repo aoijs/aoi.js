@@ -151,7 +151,7 @@ buttonPart.push(d)
         const value = opt.shift()
         const desc = opt.shift()
         const def = opt.shift()?.replace("true",true)?.replace("false",false)?.replace("yes",true)?.replace("no", false)||false 
-        const emoji = opt.length ? (opt||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===opt.join(":")) : {name:opt.split(",")[0],id:opt.split(",")[1]||0, animated:opt.split(",")[2]||false} : undefined  
+        const emoji = opt.length ? (opt||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===opt.join(":")) : {name:opt.join(":").split(",")[0],id:opt.join(":").split(",")[1]||0, animated:opt.join(":").split(",")[2]||false} : undefined  
    const ind = {
        label:label,
        value:value,
