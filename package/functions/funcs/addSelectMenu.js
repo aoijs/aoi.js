@@ -28,7 +28,7 @@ module.exports = async d =>{
            const description = option.shift().addBrackets() 
            const value = option.shift().addBrackets()
            const def = option.shift()?.addBrackets().replace("yes",true).replace("no",false).replace("true",true).replace("false",false) || false 
-           const emoji = option.shift()?.addBrackets() 
+           const emoji = option.join(":")?.addBrackets() 
           components.addOptions({label, description,value,default:def,emoji})
        }
     d.components[index].components.push(components)
