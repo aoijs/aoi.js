@@ -11,10 +11,10 @@ const image = d => {
   if(isNaN(index) || index <1) return d.error(`${d.func}:Invalid Index in ${inside}`)
   url = url.addBrackets() 
   if(!d.embeds[index-1]) d.embeds[index-1] = new Discord.MessageEmbed()
-
+d.embeds[index-1].setImage(url)
   return {
     code: d.command.code.replaceLast(`$image${inside}`, ""),
-    embeds: d.embeds[index-1].setImage(url) 
+    embeds: d.embeds
   }
 }
 
