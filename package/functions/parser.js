@@ -868,7 +868,7 @@ $interactionUpdate:"",
 $eventData:"gets the data emitted by the event;$eventData[data]",
 $eventEmit:"emits the event and datas;$eventEmit[eventName;data;data;...]",
 $awaitComponentsUntil:"",
-$endif:"no",
+$endif:"Ends the if statement.",
 $addButton:"adds the button to the bot message;$addButton[index;label;style;customId/url;disabled?;emoji?]",
 $addSelectMenu:"adds a select menu to bot message;$addselectMenu[index;customId; placeholder;minValue;maxValue;disabled;name:description:value:default:emoji;...]",
 $blacklist:"blacklist the ids on startup (for user type first id is guildId);$blacklist[type;ids;ids;..]",
@@ -885,7 +885,6 @@ $leaveThread:"leaves the thread;$leaveThread[channelid;threadid]",
 $addThreadMember:"adds a user to thread;$addThreadMember[channelid;threadid;userid;reason?]",
 $removeThreadMember:"removes the user from thread;$removeThreadMember[channelid;threadid;userid;reason",
 $fetchActiveThreads:"fetch active threads:$fetchActiveThreads[channelid; cache?; option?]",
-$fetchArchivedThreads:"fetch archived threads:$fetchArchivedThreads[channelid; cache?; option?]"
-   
+$fetchArchivedThreads:"fetch archived threads:$fetchArchivedThreads[channelid; cache?; option?]"  
 };
 module.exports = Parser;
