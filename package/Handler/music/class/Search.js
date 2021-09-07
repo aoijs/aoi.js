@@ -19,8 +19,8 @@ class Youtube {
             else return [track.split("/").pop()] 
         }
        else{
-          const vid = (await ytsr.search(track,options))[(options?.limit||1)-1]
-         return [vid.id]
+          const vid = (await ytsr.search(track,options)) 
+         return vid.map(x=>x.id) 
        }
     }
    async getData(url,yt){
