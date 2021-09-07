@@ -8,7 +8,7 @@ module.exports = async d => {
   embeds = embeds.addBrackets()
   embeds = await EmbedParser(embeds)
   components =await ComponentParser(components)
-    d.data.interaction?.reply({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components, ephemeral: ephemeral.replace("yes",true).replace("no",false).replace("true",true).replace("false",false)})
+    d.data.interaction?.reply({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components, ephemeral: ephemeral === "yes" || ephemeral === "true"})
     return {
         code: code.replaceLast(`$interactionReply${inside}`, "")
     }
