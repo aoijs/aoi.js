@@ -6,7 +6,7 @@ class Youtube {
     get baseYtUrl(){
         return ["https://youtube.com","www.youtube.com","https://m.youtube.com","https://youtu.be/"]
     }
-   async search(track,limit=1){
+   async search(track,options={limit:1}){
         if(this.baseYtUrl.some(x=>track.startsWith(x))){
             if(track.includes("playlist?list=")){
                 console.log("playlist worked")
@@ -19,7 +19,7 @@ class Youtube {
             else return [track.split("/").pop()] 
         }
        else{
-          const vid = (await ytsr.search(track,limit))[0]
+          const vid = (await ytsr.search(track,options))[(options?.limit||1)-1]
          return [vid.id]
        }
     }
