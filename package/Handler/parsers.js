@@ -137,6 +137,7 @@ buttonPart.push(d)
          const placeholder = inside.shift()
          const minVal = inside[0] ==="" ?0: Number(inside.shift())
          const maxVal = inside[0] ==="" ?1: Number (inside.shift())
+         const disabled = inside.shift()?.addBrackets() === "yes" || false 
          const options = inside.join(":").trim()
  
          let optArray = []
@@ -168,7 +169,7 @@ ind.emoji = {name:en,id:eid,animated:ea}
 optArray.push(ind)        
     }
      }
-           buttonPart.push({type:3,custom_id: customID,placeholder: placeholder,min_values:minVal,max_values:maxVal,options:optArray})
+           buttonPart.push({type:3,custom_id: customID,placeholder: placeholder,min_values:minVal,max_values:maxVal,disabled,options:optArray})
         }
  actionRows.push({type:1, components:buttonPart})   
 
