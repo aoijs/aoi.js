@@ -9,16 +9,16 @@ module.exports = async (d) => {
   const operator = ["<", ">",'>=','<='].find((e) => condition.startsWith(e));
   let pass = true;
   const n = Number(condition.replace(operator || "", ""));
-  if(operator='<'){
+  if(operator==='<'){
       if(d.args.length >= n) pass = false  
   }
-  else if(operator='>'){
+  else if(operator==='>'){
       if(d.args.length <= n) pass = false  
   }  
-  else if(operator='<='){
+  else if(operator==='<='){
       if(d.args.length > n) pass = false  
   }
-  else if(operator='>='){
+  else if(operator==='>='){
       if(d.args.length < n) pass = false  
   }  
   else return d.error("$argsCheck:Invalid Operator in "+inside.total)  
