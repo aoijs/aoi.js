@@ -4,11 +4,11 @@ module.exports = async d => {
     const inside = d.unpack()
 	const err = d.inside(inside)
 	if (err) return d.error(err)
-    let [content,embeds=[], components=[],files=[]] = inside.splits
+    let [content,embeds="", components="",files=""] = inside.splits
   embeds = await EmbedParser(embeds)
   components =await ComponentParser(components)
   files = await FileParser(files)
-    d.data.interaction?.update({content:content,embeds:embeds,components: components, files:files})
+    d.data.interaction?.update({content:content===""?" ": content.addBrackets(),embeds:embeds,components: components, files:files})
     return {
         code: code.replaceLast(`$interactionUpdate${inside}`, "")
     }
