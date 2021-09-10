@@ -2,10 +2,11 @@ const modulo = async d => {
 
     const code = d.command.code
 
+      
     const inside = d.unpack()
-	const err = d.inside(err)
+    const err = d.inside(inside)
 
-	if (err) return d.error(err)
+    if (err) return d.error(err)
 
     const fields = inside.splits
 
