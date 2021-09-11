@@ -22,7 +22,7 @@ const Interpreter =async (client,message,args,command,db,returnCode = false, cha
   let FuncData;
   let msgobj;
   let returnData = {}
-  const funcs = [...command.functions]
+  const funcs = command.functions?.length ? command.functions : client.functionManager.findFunctions(command.code)
   //debug system 
     if(client?.aoiOptions?.debugs?.interpreter){
     console.log("|------------------------------------------|")
