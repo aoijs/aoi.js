@@ -281,7 +281,7 @@ message.channel.send(typeof err === "object" ? err : err?.addBrackets())
 }
          }
    FuncData = await FuncData 
-  if(FuncData?.code){code = FuncData.code}
+  code = FuncData.code ?? code 
   if(FuncData?.randoms){randoms = FuncData.randoms}
   if (FuncData?.data){ data = FuncData.data 
            array =  FuncData.data?.array || array 
