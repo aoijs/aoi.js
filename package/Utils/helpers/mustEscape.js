@@ -11,5 +11,7 @@ return msg.split("\\[").join("#RIGHT#")
     .replace(/\\{/g, "#RIGHT_BRACKET#")
     .replace(/\\}/g, "#LEFT_BRACKET#")
     .replace(/\\,/g,"#COMMA#")
+    .replaceAll("\\&&","#AND#")
+    .replaceAll("\\||","#OR#")
 }
     }
