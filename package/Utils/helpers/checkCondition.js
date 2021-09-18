@@ -86,7 +86,7 @@ part = part.split(")")[0]
     static solveOr(msg) {
         const parts = msg.split("||");
         const final = [];
-        for(const part of parts) {
+        for(let part of parts) {
             const has = part.includes(")") ? ")" : ""  
             part = part.split(")")[0] 
             if(this.hasEqual(part)) final.push(this.solveEqual(part)+has)
