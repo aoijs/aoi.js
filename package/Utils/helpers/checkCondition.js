@@ -96,7 +96,7 @@ part = part.split(")")[0]
 
            else if(this.hasGE(part)) final.push(this.solveGE(part)+has)
             else if(this.hasLE(part)) final.push(this.solveLE(part)+has)
-            else if(part.trim() === "") final.push(part+"||") 
+            else if(part.trim() === "") final.push(part) 
         }
         return final.join("||") 
     }
