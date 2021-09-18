@@ -33,7 +33,7 @@ module.exports = async d => {
     "channelmention",
     "nomentioncontent",
     "content",
-    "iscrosspostable"
+    "iscrosspostable",
     "created",
     "editedat",
     "editedtimestamp",
