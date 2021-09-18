@@ -9,10 +9,9 @@
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
 
 ## About
-aoi.js is a package with simplified and ready-to-use functions for Discord Bot Developers to develop their own Discord Bots.
+aoi.js is a package with customization and ready-to-use functions for Discord Bot Developers to develop their own Discord Bots.
 
-Aiming to be the easiest package to learn <br>
-It's swift and flexible using functions. </br>
+The successor of [dbd.js](https://www.npmjs.com/package/dbd.js) 
 
 Open Source for the Community ❤️ <br>
  </br>
@@ -25,7 +24,7 @@ Open Source for the Community ❤️ <br>
 npm install aoi.js
 ```
 
-### Example
+### Setup
 ```js
 const aoijs = require("aoi.js")
 
@@ -47,28 +46,9 @@ bot.readyCommand({
 ```
 
 ### Optional packages
-
 - [@discordjs/opus](https://www.npmjs.com/package/@discordjs/opus) for encoding, primarily used for Music (`npm install @discordjs/opus`)
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
 - [danbot-hosting](https://www.npmjs.com/package/danbot-hosting) for posting stats to their API (`npm install danbot-hosting`)
-
-
-#### Music Integration
-
-With our powerful Package, we incorporated Music with several functions.
-We allowed customization and control over what you want.
-
-
-#### Music Usage
-
-```js
-bot.command({
-name: "play",
-code: `$playSong[Music Name;Something went wrong!]`
-})
-```
-
-More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 
 ## Links
 - [Website](https://aoi.js.org)
@@ -76,5 +56,8 @@ More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 - [Discord Server](https://aoi.js.org/invite)
 - [Documentation](https://aoi.leref.ga)
 
-## Contributing
+## Open Source
+
+aoi.js is available and open source for the community to explore and contribute for future updates.
+
 Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)
