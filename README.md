@@ -51,6 +51,13 @@ bot.readyCommand({
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
 - [danbot-hosting](https://www.npmjs.com/package/danbot-hosting) for posting stats to their API (`npm install danbot-hosting`)
 
+## Akarui Development
+
+aoi.js is made possible by Akarui Development. <br>
+A team of Developers that create packages.
+
+Owned by [Leref](https://leref.ga/) </br>
+
 ## Links
 - [Website](https://aoi.js.org)
 - [Github](https://github.com/aoijs/aoi.js)
