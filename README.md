@@ -9,13 +9,14 @@
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
 
 ## About
-aoi.js is a package with simplified and ready-to-use functions for Discord Bot Developers to develop their own Discord Bots.
+aoi.js is a package with customization and ready-to-use functions to make Discord Bots with ease.
 
-Aiming to be the easiest package to learn <br>
-It's swift and flexible using functions. </br>
+- Interaction Commands Support
+- Optimized and customizable 
+- 500+ functions available  
 
-Open Source for the Community ❤️ <br>
- </br>
+The successor of [dbd.js](https://www.npmjs.com/package/dbd.js)
+
  
 ## Installation
 
