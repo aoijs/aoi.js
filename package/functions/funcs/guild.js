@@ -28,6 +28,11 @@ module.exports = async d => {
     "created",
     "region",
     "membercount",
+    "ownerid",
+    "nsfwlevel",
+    "joinedtimestamp",
+    "joinedat",
+    "afktimeout",
     "boostcount",
     "boostlevel",
     "updateschannel",
@@ -91,6 +96,20 @@ switch(result) {
         }
         break;
     case "region": result = server.region;
+        break;
+    case "ownerid": result = server.ownerID;
+        break;
+    case "nsfwlevel": result = server.nsfwLevel;
+        break;
+    case "joinedtimestamp": result = server.joinedTimestamp;
+        break;
+    case "joinedat":
+        result = Object.entries(ms(Date.now() - server.joinedTimestamp)).map((x,y)=> {
+            if (x[1] > 0 && y < 4) return `${x[1]} ${x[0]}`
+        }).filter(x => x).join(", ")
+        if(!result) result = undefined
+        break;
+    case "afktimeout": result = server.afkTimeout;
         break;
     case "membercount": result = server.memberCount;
         break;
