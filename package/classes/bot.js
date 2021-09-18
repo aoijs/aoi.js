@@ -62,7 +62,6 @@ function toDuration(lengthSeconds) {
   return `${lengthSeconds} Seconds (${iso.join(":")})`;
 }
 
-client.customFunctions = {};
 async () => {
   const previousDate = Date.now();
   const previousUsage = process.cpuUsage();
