@@ -411,53 +411,32 @@ for(i=0;d.length >i ;i++){
                })
         client.ws.on("APPLICATION_COMMAND_CREATE",(application) =>{
             const data = {
-
-    id : application.id,
-
-    version: application.version ,
-
+    id: application.id,
+    version: application.version,
     application: client,
-
-    defaultPermission : application.default_permission ,
-
+    defaultPermission : application.default_permission,
     name: application.name,
-
-    description: application.description ,
-
-    options: application.options ,
-
-    guild: client.guilds.cache.get(application.guild_id)|| null ,
-
-    timestamp :application.timestamp || Date.now() ,
-
+    description: application.description,
+    options: application.options,
+    guild: client.guilds.cache.get(application.guild_id)|| null,
+    timestamp :application.timestamp || Date.now(),
     createdAt: application.createdAt || new Date()
-
     }
             client.applications.slash.set(data.id,data)
             })
  client.ws.on("APPLICATION_COMMAND_UPDATE",(d,olda)=>{
-    
-     
+        
      let newData = {
 
        id: d.id,
-
        name: d.name,
-
-       description:d.description,
-
+       description: d.description,
        options: d.options || [],
-
-       defaultPermission : d.default_permission ,
-
-       guild : null ,
-
-       application : client ,
-
-       timestamp : Snowflake.deconstruct(d.id).timestamp,
-
+       defaultPermission : d.default_permission,
+       guild: null,
+       application: client,
+       timestamp: Snowflake.deconstruct(d.id).timestamp,
        createdAt: Snowflake.deconstruct(d.id).date
-
        } 
      client.applications.slash.set(d.id,newData)
      });
@@ -465,13 +444,13 @@ for(i=0;d.length >i ;i++){
             client.ws.on("APPLICATION_COMMAND_DELETE",(data) =>{
           client.applications.slash.delete(data.id)
                 })
-            }else{}
+            }
+       else{}
 
-        client.on("checkGlobalSlashCreate",(type,name,client) =>{ CheckGlobalSlashCreate(type,name,client) 
+     client.on("checkGlobalSlashCreate",(type,name,client) =>{ CheckGlobalSlashCreate(type,name,client) 
                                 })                                 
      client.on("checkSlashUpdate",(client,commandID,guildID,oldData) =>{ CheckSlashUpdate(client,commandID,guildID,oldData)
-                                               })
-        
+                                })     
     client.login(options.token).catch((err) => TypeError(`Invalid token`));
   }
 
