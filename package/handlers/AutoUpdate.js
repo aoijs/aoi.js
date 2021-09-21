@@ -29,10 +29,10 @@ module.exports = async () => {
         console.log(chunk.toString());
       });
     } else {
-      console.log("aoi.JS AutoUpdate System: \u001b[32mVersion is up-to-date.\u001b[0m")
+      console.log("aoi.js AutoUpdate System: \u001b[32mVersion is up-to-date.\u001b[0m")
     }
   } catch (error) {
-     console.warn("aoi.JS AutoUpdate System: \u001b[31mUnexpected error when trying to reach API.\u001b[0m");
+     console.warn("aoi.js AutoUpdate System: \u001b[31mUnexpected error when trying to reach API.\u001b[0m");
   }
 };
 
@@ -47,6 +47,6 @@ function Reboot() {
     });
     process.exit();
   } catch (e) {
-    console.error(`aoi.JS AutoUpdate System: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`);
+    console.error(`aoi.js AutoUpdate System: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`);
   }
 }
