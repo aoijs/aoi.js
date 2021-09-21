@@ -28,7 +28,7 @@ module.exports = async (client, Database) => {
           parallel.removeAllListeners();
           resolve();
         }
-      }); //Copyright © Aoi.JS
+      }); //Copyright © aoi.js
 
       const guilds = client.guilds.cache.array();
 
@@ -67,7 +67,7 @@ module.exports = async (client, Database) => {
 
   console.log(`Initialized on aoi.js || v` + require("../../package.json").version);
   console.log(
-    "Visit Our Official Discord Server: https://aoi.js.org/invite"
+    "Our Official Discord Server: https://aoi.js.org/invite"
   );
 
   if (client.statuses.size) {
