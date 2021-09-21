@@ -10,8 +10,6 @@ const interpreter = require("../interpreter.js");
 const Interaction = require("./Interaction");
 const CustomEvent = require("./customEvent.js");
 const opts = require("../utils/options");
-const API = require("../handlers/boosterAPI.js");
-
 const shardingClient = require("../handlers/shardingClient.js");
 const client = new Discord.Client({
   partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER", "REACTION"],
@@ -256,7 +254,6 @@ class Client {
       disabledFunctionsStarting: [],
       fetchInvites: false,
       databasePath: null,
-      boosterToken: null,
       applicationCache: true
     }
   ) {
@@ -277,10 +274,6 @@ client.aoi = {
     client.options.suppressAll = options.suppressAll;
     client.options.errorMessage = options.errorMessage;
     client.options.fetchInvites = options.fetchInvites;
-
-    if (options.boosterToken) {
-      API(options.boosterToken);
-    }
 
     if (
       Array.isArray(options.disabledFunctions) &&
@@ -327,7 +320,6 @@ client.aoi = {
 
     client.prefix =
       typeof options.prefix === "string" ? [options.prefix] : options.prefix;
-
 
       const Database = new DBDdb.Database({
         path: options.databasePath,
