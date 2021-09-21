@@ -8,18 +8,12 @@ class Interaction {
         this._resolve(data)
     }
     _resolve(data) {
-        this.channel = this.client.channels.cache.get(data.channel_id)
-        
+        this.channel = this.client.channels.cache.get(data.channel_id)      
         this.guild = this.client.guilds.cache.get(data.guild_id)
-        
         this.member = new Discord.GuildMember(this.client, data.member, this.guild)
-        
         this.author = new Discord.User(this.client, this.member.user)
-        
         this.token = data.token
-        
         this.id = data.id
-        
         this.type = data.type
         if (this.type === 2) {
             this.command = {
