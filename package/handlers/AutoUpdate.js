@@ -2,7 +2,7 @@ const { exec } = require("child_process");
 const axios = require("axios").default;
 const json = require("../../package.json");
 module.exports = async () => {
-  console.log("aoi.js autoupdate: \u001b[33mExecuting a contact with API...\u001b[0m")
+  console.log("aoi.js autoupdate: \u001b[33mExecuting a connection with API...\u001b[0m")
 
   try {
     const res = await axios.get("https://api.leref.ga/package/version") //Requests latest version from API.
@@ -12,7 +12,7 @@ module.exports = async () => {
       // Install initiate 
       console.log("aoi.js autoupdate: \u001b[33m Installing version...\u001b[0m")
       const Process = exec("npm i aoi.js@latest", (error, stdout, stderr) => {
-        if (error) return console.error("aoi.js AutoUpdate System: \u001b[31mERR!\u001b[0m " + error.message);
+        if (error) return console.error("aoi.js autoupdate: \u001b[31mERR!\u001b[0m " + error.message);
 
         console.log("aoi.js autoupdate: \u001b[32mSuccessfully Installed aoi.js v" + res.data.version + ".\u001b[0m")
         console.log("aoi.js autoupdate: Commencing 'RESTART' in 3 Seconds...");
