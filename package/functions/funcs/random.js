@@ -8,7 +8,7 @@ const random = async d => {
 
     const [ n1, n2, allow = "no",random="no"] = inside.splits
 
-    if (inside.splits.length > 3) return d.error(`\`${d.func}: Too many fields in ${inside}\``)
+    if (inside.splits.length > 4) return d.error(`\`${d.func}: Too many fields in ${inside}\``)
     if (isNaN(Number(n1)) || isNaN(Number(n2)) || Number(n1) >= Number(n2)) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
     let n = allow === "yes" ? Math.random() * (Number(n2) - Number(n1)) + Number(n1): Math.round(Math.random() * (Number(n2) - Number(n1))) + Number(n1)
