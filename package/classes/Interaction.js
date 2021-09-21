@@ -4,7 +4,6 @@ const Snowflake = Discord.SnowflakeUtil
 class Interaction {
     constructor(client, data) {
         this.client = client
-
         this._resolve(data)
     }
     _resolve(data) {
