@@ -31,7 +31,6 @@
     typingStopEvent?: boolean;
     disabledFunctions?: string[];
     disabledFunctionsStarting?: string[];
-    boosterToken?:string;
   }
 
   interface Path {
