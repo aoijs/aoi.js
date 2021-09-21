@@ -389,43 +389,26 @@ for(i=0;d.length >i ;i++){
                 if(d){
 
                 data = {
-
                 id: d[i].id,
-
                 name: d[i].name,
-
                 defaultPermission: d[i]. default_permission,
-
-                application : client,
-
-                guild : null, 
-
-                version : d[i].version ,
-
+                application: client,
+                guild: null, 
+                version: d[i].version,
                 description: d[i]. description,
-
                 options: d[i].options || [],
-                    timestamp: snowflake.deconstruct(d[i].id).timestamp ,
-                    createdAt :snowflake.deconstruct(d[i].id).date
-
+                timestamp: snowflake.deconstruct(d[i].id).timestamp,
+                createdAt: snowflake.deconstruct(d[i].id).date
                    }
-
                 }
-
                 else {
-
                     data = {
-
                         id:""
-
                         }
-
                     }
-
                     client.applications.slash.set(data.id,data)}
-    })
-
-    })
+                  })
+               })
         client.ws.on("APPLICATION_COMMAND_CREATE",(application) =>{
             const data = {
 
