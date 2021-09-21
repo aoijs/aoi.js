@@ -2,20 +2,20 @@ const { exec } = require("child_process");
 const axios = require("axios").default;
 const json = require("../../package.json");
 module.exports = async () => {
-  console.log("aoi.js AutoUpdate System: \u001b[33mExecuting a contact with API...\u001b[0m")
+  console.log("aoi.js autoupdate: \u001b[33mExecuting a contact with API...\u001b[0m")
 
   try {
     const res = await axios.get("https://api.leref.ga/package/version") //Requests latest version from API.
     if (json.version !== res.data.version) {
-      console.log("aoi.js AutoUpdate System: \u001b[33mAvailable version v" + res.data.version + " ready to install.\u001b[0m");
+      console.log("aoi.js autoupdate: \u001b[33mAvailable version v" + res.data.version + " ready to install.\u001b[0m");
 
       // Install initiate 
-      console.log("aoi.js AutoUpdate System: \u001b[33m Installing version...\u001b[0m")
+      console.log("aoi.js autoupdate: \u001b[33m Installing version...\u001b[0m")
       const Process = exec("npm i aoi.js@latest", (error, stdout, stderr) => {
         if (error) return console.error("aoi.js AutoUpdate System: \u001b[31mERR!\u001b[0m " + error.message);
 
-        console.log("aoi.js AutoUpdate System: \u001b[32mSuccessfully Installed aoi.js v" + res.data.version + ".\u001b[0m")
-        console.log("aoi.js AutoUpdate System: Commencing 'RESTART' in 3 Seconds...");
+        console.log("aoi.js autoupdate: \u001b[32mSuccessfully Installed aoi.js v" + res.data.version + ".\u001b[0m")
+        console.log("aoi.js autoupdate: Commencing 'RESTART' in 3 Seconds...");
 
         setTimeout(Reboot, 3000)
       })
@@ -29,10 +29,10 @@ module.exports = async () => {
         console.log(chunk.toString());
       });
     } else {
-      console.log("aoi.js AutoUpdate System: \u001b[32mVersion is up-to-date.\u001b[0m")
+      console.log("aoi.js autoupdate: \u001b[32mVersion is up-to-date.\u001b[0m")
     }
   } catch (error) {
-     console.warn("aoi.js AutoUpdate System: \u001b[31mUnexpected error when trying to reach API.\u001b[0m");
+     console.warn("aoi.js autoupdate: \u001b[31mUnexpected error when trying to reach API.\u001b[0m");
   }
 };
 
@@ -47,6 +47,6 @@ function Reboot() {
     });
     process.exit();
   } catch (e) {
-    console.error(`aoi.js AutoUpdate System: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`);
+    console.error(`aoi.js autoupdate: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`);
   }
 }
