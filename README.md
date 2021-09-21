@@ -30,19 +30,19 @@ npm install aoi.js
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
-token: "TOKEN", //Discord Bot Token
+token: "Discord Bot Token",
 prefix: "PREFIX" //Discord Bot Prefix
 })
-bot.onMessage() //Allows to execute Commands
+bot.onMessage() //An event that allows to read/execute commands.
 
 bot.command({
-name: "ping", //Trigger name (command name)
-code: `Pong! $pingms` //Code inside of string
+name: "ping", //(command name)
+code: `Pong! $pingms` //insert functions or text in string
 })
 
 bot.readyCommand({
     channel: "", //Optional channnel ID
-    code: `$log[Ready on $userTag[$clientID]]` //A ready on Client
+    code: `$log[Ready on $userTag[$clientID]]`
 })
 ```
 
