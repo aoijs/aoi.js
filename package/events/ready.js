@@ -108,7 +108,7 @@ module.exports = async (client, Database) => {
       y++;
     };
 
-    console.log("Running all Statuses.");
+    console.log("Enabling all Statuses.");
 
     f();
   }
