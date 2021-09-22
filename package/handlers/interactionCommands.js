@@ -8,7 +8,7 @@ if(interaction.type === 3){
   commands = client.slash_commands
     .array()
     .filter(
-      (c) =>interaction.type===2 ?c.name.toLowerCase() === interaction.command.name.toLowerCase() : (c.prototype ===  "button" && Array.isArray(c.name) ? c.name.find(x=> x === interaction.button.customID) : c.name === interaction.button.customID)
+      (c) =>interaction.type===2 ? (Array.isArray(c.name) ? c.name.map(x=>x.toLowerCase()).includes(interaction.command.name.toLowerCase()) : c.name.toLowerCase() === interaction.command.name.toLowerCase()): (c.prototype ===  "button" && Array.isArray(c.name) ? c.name.find(x=> x === interaction.button.customID) : c.name === interaction.button.customID)
     );
   if (!commands.length) return;
 
