@@ -147,7 +147,6 @@ const Parser = {
   $removeNewLines: "Removes new lines from the provided text.;$removeNewLines[text]",
   $removeSpecialChars: "Removes special characters from the provided text.;$removeSpecialChars[text]",
   $isChannelManageable: "Returns whether the bot can manage the provided channel.;$isChannelManageable[channelID]",
-  $removeAttachments: "Removes attachments from the message.;$removeAttachments[channelID;messageID]",
   $isVideoOn: "Whether or not this user's video is on.;$isVideoOn[userID]",
   $isSelfMuted: "Whether or not this user is self-muted.;$isSelfMuted[userID]",
   $isSelfDeafened: "Whether or not this user is self-deafened.;$isSelfDeafened[userID]",
