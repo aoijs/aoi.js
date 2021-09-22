@@ -31,7 +31,7 @@ const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
 token: "Discord Bot Token",
-prefix: "PREFIX" //Discord Bot Prefix
+prefix: "Discord Bot Prefix"
 })
 bot.onMessage() //An event that allows to read/execute commands.
 
