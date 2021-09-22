@@ -150,7 +150,7 @@ const execute = async (d, old, error, ffmpegArgs) => {
             d.client.emit("musicEnd", server);
           else
             server.text
-              .send("Queue ended, leaving voice channel!")
+              .send(`\`Queue ended, leaving voice channel\``)
               .catch((err) => {});
 
           return d.client.servers.delete(d.message.guild.id);
