@@ -110,7 +110,6 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       const server = newState.client.servers.get(oldChannel.guild.id);
 
       if (newChannel && server)
-        client.emit("musicEnd", server), newChannel.leave();
 
       return client.servers.delete(oldChannel.guild.id);
     }
@@ -121,18 +120,13 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
       server &&
       server.leave &&
       oldChannel.id === oldChannel.guild.me.voice.channelID
-    ) {
-      if (
+    ) {  
         !client.channels.cache
           .get(oldChannel.id)
           .members.filter((m) => !m.user.bot).size
-      ) {
-        server.connection.dispatcher.end();
-        server.songs = [];
       }
     }
-  }
-});
+  });
 
 client._api = (url) =>
   `https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;
