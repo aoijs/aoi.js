@@ -1,4 +1,4 @@
-const { CheckCondition } = require('../../../Utils/helpers/checkCondition.js') 
+const { CheckCondition } = require('../../Utils/helpers/checkCondition.js') 
 const { mustEscape } = require('../../../Utils/helpers/mustEscape.js')
 module.exports = async d => {
 const { code } = d.command;
