@@ -24,7 +24,7 @@ class Await extends EventEmitter {
             delete this._events.AwaitButton
         }
         
-        if (this.user !== user && this.uses > this.tries) {
+        if (this.user !== user && this.uses > this.tries && this.msgID === msgid) {
             if (this.error.length !== 0) {
                 this.client.api.interactions(data.id, data.token).callback.post({
                     data: {
