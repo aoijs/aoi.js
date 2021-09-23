@@ -26,7 +26,7 @@ module.exports = async (d) => {
   };
 
 function getMemberFromMention(mention) {
-    const matches = mention.match(/^<@!?(\d+)>$/);
+    const matches = mention.addBrackets().match(/^<@!?(\d+)>$/);
     if (!matches) return {id: "undefined"};
 	const id = matches[1];
 	return {id: d.message.guild.members.cache.get(id)};
