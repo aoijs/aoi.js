@@ -1189,18 +1189,12 @@ functionErrorCommand(d = {}) {
     onApplicationCmdDelete(){
 
         client.on("applicationCommandDelete", (client,application) => {
-
-            
-
-            AppCmdDelete(client, application)
-
-            
-
+          
+            AppCmdDelete(client, application)          
         })
 
                   }
     
-
   variables(op = {}) {
     Object.assign(client.variables, op);
   }
