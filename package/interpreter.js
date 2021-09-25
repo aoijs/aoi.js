@@ -257,9 +257,7 @@ client.emit("CUSTOM_ERROR",client,err.addBrackets(),db,command.name,message)
     if(client.aoi.options.suppressAll){
       if(client.aoi.options.errorMessage&& !waitPls){
          embedE(
-
                 {
-
                   message: message,
                   interpreter: interpreter,
                   channel,
