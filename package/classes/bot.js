@@ -869,7 +869,7 @@ functionErrorCommand(d = {}) {
 
       if (!Array.isArray(cmds)) cmds = [cmds];
 
-      debugs.push(`| \x1b[32mWalking in ${name}`);
+      debugs.push(`| \x1b[32mWalking in \x1b[33m${name}`);
 
       for (const cmd of cmds) {
         if (!isObject(cmd)) {
