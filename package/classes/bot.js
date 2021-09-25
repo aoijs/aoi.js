@@ -856,13 +856,13 @@ functionErrorCommand(d = {}) {
       try {
         cmds = require(name);
       } catch {
-        debugs.push(`| \x1b[31mFailed to walk in ${name}`);
+        debugs.push(`| \x1b[31mFailed to walk in \x1b[33m${name}`);
 
         continue;
       }
 
       if (cmds == null) {
-        debugs.push(`| \x1b[31mNo data provided in ${name}`);
+        debugs.push(`| \x1b[31mNo data provided in \x1b[33m${name}`);
 
         continue;
       }
@@ -884,7 +884,7 @@ functionErrorCommand(d = {}) {
 
         if (!valid) {
           debugs.push(
-            `| \x1b[31mInvalid command type '${cmd.type}' at ${cmd.name || cmd.channel}`
+            `| \x1b[31mInvalid command type \x1b[33m'${cmd.type}' at ${cmd.name || cmd.channel}`
           );
 
           continue;
@@ -896,13 +896,13 @@ functionErrorCommand(d = {}) {
           this[cmd.type](cmd);
         } catch {
           debugs.push(
-            `| \x1b[31mFailed to load '${cmd.name || cmd.channel}' (${cmd.type})`
+            `| \x1b[31mFailed to load \x1b[33m'${cmd.name || cmd.channel}' (${cmd.type})`
           );
 
           continue;
         }
 
-        debugs.push(`| \x1b[32mLoaded '${cmd.name || cmd.channel}' (${cmd.type})`);
+        debugs.push(`| \x1b[32mLoaded \x1b[33m'${cmd.name || cmd.channel}' (${cmd.type})`);
       }
     }
 
