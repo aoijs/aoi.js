@@ -828,7 +828,7 @@ functionErrorCommand(d = {}) {
       if (await fs.promises.stat(path).then((f) => !f.isDirectory()))
         throw new Error("e");
     } catch {
-      throw new TypeError("Path is not a valid directory!");
+      throw new TypeError("Path is not a valid directory");
     }
 
     const index = this.paths.findIndex((d) => d.path === path);
@@ -856,24 +856,24 @@ functionErrorCommand(d = {}) {
       try {
         cmds = require(name);
       } catch {
-        debugs.push(`| Failed to walk in ${name}`);
+        debugs.push(`| \x1b[31mFailed to walk in ${name}`);
 
         continue;
       }
 
       if (cmds == null) {
-        debugs.push(`| No data provided in ${name}`);
+        debugs.push(`| \x1b[31mNo data provided in ${name}`);
 
         continue;
       }
 
       if (!Array.isArray(cmds)) cmds = [cmds];
 
-      debugs.push(`| Walking in ${name}`);
+      debugs.push(`| \x1b[32mWalking in ${name}`);
 
       for (const cmd of cmds) {
         if (!isObject(cmd)) {
-          debugs.push(`| Provided data is not an object`);
+          debugs.push(`| \x1b[31mProvided data is not an object`);
 
           continue;
         }
@@ -884,7 +884,7 @@ functionErrorCommand(d = {}) {
 
         if (!valid) {
           debugs.push(
-            `| Invalid command type '${cmd.type}' at ${cmd.name || cmd.channel}`
+            `| \x1b[31mInvalid command type '${cmd.type}' at ${cmd.name || cmd.channel}`
           );
 
           continue;
@@ -896,13 +896,13 @@ functionErrorCommand(d = {}) {
           this[cmd.type](cmd);
         } catch {
           debugs.push(
-            `| Failed to load '${cmd.name || cmd.channel}' (${cmd.type})`
+            `| \x1b[31mFailed to load '${cmd.name || cmd.channel}' (${cmd.type})`
           );
 
           continue;
         }
 
-        debugs.push(`| Loaded '${cmd.name || cmd.channel}' (${cmd.type})`);
+        debugs.push(`| \x1b[32mLoaded '${cmd.name || cmd.channel}' (${cmd.type})`);
       }
     }
 
