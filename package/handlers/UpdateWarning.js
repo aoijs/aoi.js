@@ -12,7 +12,7 @@ module.exports = async () => {
     const response = get.json;
     if (response && json.version !== response.version) {
       console.warn(
-        "\x1b[33maoi.js warning: \x1b[0m" +
+        "\x1b[31maoi.js warning: \x1b[0m" +
           response.version +
           " is available for installation. ( Installed " +
           json.version +

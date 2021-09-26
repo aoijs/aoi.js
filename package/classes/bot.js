@@ -856,24 +856,24 @@ functionErrorCommand(d = {}) {
       try {
         cmds = require(name);
       } catch {
-        debugs.push(`| \x1b[31mFailed to walk in \x1b[33m${name}`);
+        debugs.push(`| \x1b[31mFailed to walk in \x1b[33m${name}\x1b[0m`);
 
         continue;
       }
 
       if (cmds == null) {
-        debugs.push(`| \x1b[31mNo data provided in \x1b[33m${name}`);
+        debugs.push(`| \x1b[31mNo data provided in \x1b[33m${name}\x1b[0m`);
 
         continue;
       }
 
       if (!Array.isArray(cmds)) cmds = [cmds];
 
-      debugs.push(`| \x1b[32mWalking in \x1b[33m${name}`);
+      debugs.push(`| \x1b[35mWalking in \x1b[33m${name}\x1b[0m`);
 
       for (const cmd of cmds) {
         if (!isObject(cmd)) {
-          debugs.push(`| \x1b[31mProvided data is not an object`);
+          debugs.push(`| \x1b[31mProvided data is not an object\x1b[0m`);
 
           continue;
         }
@@ -884,7 +884,7 @@ functionErrorCommand(d = {}) {
 
         if (!valid) {
           debugs.push(
-            `| \x1b[31mInvalid command type \x1b[33m'${cmd.type}' at ${cmd.name || cmd.channel}`
+            `| \x1b[31mInvalid command type \x1b[34m'${cmd.type}'\x1b[35m in \x1b[33m${cmd.name || cmd.channel}\x1b[0m`
           );
 
           continue;
@@ -896,13 +896,13 @@ functionErrorCommand(d = {}) {
           this[cmd.type](cmd);
         } catch {
           debugs.push(
-            `| \x1b[31mFailed to load \x1b[33m'${cmd.name || cmd.channel}' (${cmd.type})`
+            `| \x1b[31mFailed to load \x1b[33m'${cmd.name || cmd.channel}' \x1b[34m(${cmd.type})\x1b[0m`
           );
 
           continue;
         }
 
-        debugs.push(`| \x1b[32mLoaded \x1b[33m'${cmd.name || cmd.channel}' (${cmd.type})`);
+        debugs.push(`| \x1b[32mLoaded \x1b[33m'${cmd.name || cmd.channel}' \x1b[34m(${cmd.type})\x1b[0m`);
       }
     }
 
