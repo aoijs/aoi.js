@@ -10,7 +10,7 @@
         "prettywrite": "prettier --write \"package/**/*.js\""
     },
     "dependencies": {
-        "dbdjs.db": "^2.0.1",
+        "dbdjs.db": "^2.0.2",
         "discord.js": "^12.5.3",
         "moment": "^2.29.1",
         "ms": "^2.1.3",
