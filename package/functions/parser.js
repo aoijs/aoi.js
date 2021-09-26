@@ -129,7 +129,7 @@ const Parser = {
   $roleExists: "Checks if given role ID exists;$roleExists[roleID]",
   $channelExists: "Checks if given channel ID exists;$channelExists[channelID]",
   "$random[":
-    "Returns a random number from X to Y;$random[min;max;allowDecimals (yes/no)]",
+    "Returns a random number from X to Y;$random[min;max;allowDecimals (yes/no);random (yes/no)]",
   $userExists: "Checks if the given user ID exists;$userExists[userID]",
   $multi: "Multiplicates X by Y;$multi[1;4;...]",
   $unban:
