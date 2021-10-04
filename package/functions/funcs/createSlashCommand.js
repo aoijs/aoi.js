@@ -1,11 +1,5 @@
 const axios = require("axios");
-const parser = require("../../Handler/slashCommandOptionsParser");
-const {SlashOptionsParser} = require('../../Handler/parsers.js')
-let typer ={
-    slash:"CHAT_INPUT",
-    user:"USER",
-    message:"MESSAGE"
-}
+const parser = require("../../handlers/slashCommandOptionsParser");
 module.exports = async (d) => {
   const code = d.command.code;
 
@@ -13,54 +7,82 @@ module.exports = async (d) => {
 
   const inside = code.split("$createSlashCommand")[r].after();
 
-  let [guildID, name, description, defaultPermission="yes",type="CHAT_INPUT",...opts] = inside.splits;
-  let options ;
-    if (opts.length) {
+  let [guildID, name, description, ...opts] = inside.splits;
 
-      try{
+  let options;
 
-          if(opts.length === 1 && typeof JSON.parse(opts) === "object"){
+  if (opts.length) {
+    options = parser(opts);
+  }
 
-          options = [JSON.parse(opts)]
+  try {
+      if(guildID == "global"){
+          d.client.emit("checkGlobalSlashCreate",guildID,name,d.client)
+          let request = await axios
 
+      .post(
 
-              }
+         d.client._api(`/applications/${d.client.user.id}/commands`),
 
-          }
+        {
 
-      catch(e){
+          name: name,
 
+          description: description,
 
+          options: options,
 
-          if(!opts.join(" ").startsWith("{")){
+        },
 
-              options = await parser(opts)
+        {
 
-              }
+          headers: {
 
-          else{
+            Authorization: `Bot ${d.client.token}`,
 
-              options = []
+          },
 
-              for(let opt of opts){
+            
 
-   options=  options.concat((await SlashOptionsParser(opt||"")))
+        }
 
-                  }
+          
 
-              }
+      )
 
+    
 
-              
+      .catch((err) => null);
+      }
+      else{
+          d.client.emit("checkGlobalSlashCreate",guildID,name,d.client)
+    let request = await axios
+      .post(
+        d.client._api(`/applications/${d.client.user.id}/guilds/${guildID}/commands`),
+        {
+          name: name,
+          description: description,
+          options: options,
+        },
+        {
+          headers: {
+            Authorization: `Bot ${d.client.token}`,
+          },
+            
+        }
+          
+      )
+    
+      .catch((err) => null);
 
-          }
+    if (!request) return d.error(`❌ Failed to create slash command`);
 
-          }
-    d.client.application.commands.create({
-        name, description, defaultPermission,type, options
-    }, guildID === "global"? undefined : guildID)
     return {
-        code: code.replaceLast(`${d.func}${inside}`,"")
-    }
+      code: code.replaceLast(`$createSlashCommand${inside}`, ""),
+    };
+  }
 }
-
+  catch (e) {
+    return d.error(`:x: ${e.message}`);
+  }
+};

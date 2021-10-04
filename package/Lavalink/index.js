@@ -1,5 +1,3 @@
-module.exports = {
-    LavalinkPlayer: require("./Src/Player"),
-    LavalinkConnection: require("./Src/LavalinkConnection"),
-    ...require("./Src/Util")
-}
+const ServerManager = require("./Src/ServerManager");
+
+module.exports = ServerManager;

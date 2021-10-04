@@ -1,10 +1,12 @@
 const types = [
-  "GUILD_TEXT",
-  "GUILD_VOICE",
-  "GUILD_CATEGORY",
-  "GUILD_NEWS",
-  "GUILD_STORE",
-  "GUILD_STAGE_VOICE",
+  "text",
+  "dm",
+  "voice",
+  "group",
+  "category",
+  "news",
+  "store",
+  "stage",
 ];
 
 module.exports = async (d) => {
@@ -22,21 +24,30 @@ module.exports = async (d) => {
 
   if (!types.includes(type))
     return d.error(
-      `${d.func}: Invalid channel type '${type}' in ${inside}`
+      `:x: Invalid channel type '${type}' in \`$createChannel${inside}\``
     );
 
   let channel;
 
+  if (type === "stage") {
+    channel = await d.client.api.guilds(d.message.guild.id).channels.post({
+      data: {
+        name: name.addBrackets(),
+        type: 13,
+        parent_id: parentID ? parentID : null,
+      },
+    });
+  } else {
     channel = await d.message.guild.channels
       .create(name.addBrackets(), {
         type,
         parent: parentID ? parentID : null,
       })
       .catch((err) => null);
-
+  }
 
   if (!channel)
-    return d.error(`${d.func}: Could not create channel '${name}:${type}'!`);
+    return d.error(`:x: Could not create channel '${name}:${type}'!`);
 
   return {
     code: code.replaceLast(

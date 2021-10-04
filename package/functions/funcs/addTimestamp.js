@@ -1,12 +1,26 @@
-const {MessageEmbed} = require('discord.js')
 const addTimestamp = (d) => {
   const code = d.command.code;
-  const inside = d.unpack();
-    const [index,time=null] = inside.splits;  
-   if(!d.embeds[index-1]) d.embeds[index-1] = new MessageEmbed()
+
+  const r = d.command.code.split("$addTimestamp").length - 1;
+
+  if (r >= 3)
+    return d.message.channel.send(`❌ Can't use more than one $addTimestamp `);
+
+  const after = code.split("$addTimestamp")[r].after();
+
+  if (after.inside) {
+    const anything = after.inside;
+
     return {
-      code: code.replaceLast(`$addTimestamp${inside}`, ""),
-      embeds:  d.embeds[index-1].setTimestamp(Number(time))
-    }
+      code: code.replaceLast(`$addTimestamp${after.total}`, ""),
+      embed: d.embed.setTimestamp(Number(anything) || 0),
+    };
+  } else {
+    return {
+      code: code.replaceLast(`$addTimestamp`, ""),
+      embed: d.embed.setTimestamp(),
+    };
   }
+};
+
 module.exports = addTimestamp;

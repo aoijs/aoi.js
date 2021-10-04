@@ -8,17 +8,17 @@ module.exports = async (d) => {
   if (after.inside) {
     const inside = after.inside;
 
-    const channel = await d.util.getChannel(inside) 
+    const channel = d.client.channels.cache.get(inside);
 
     if (!channel)
-      return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
+      return d.error(`:x: Invalid channel ID in \`$channelType${after}\``);
 
     return {
-      code: code.replaceLast(`$channelType${after}`, channel?.type),
+      code: code.replaceLast(`$channelType${after}`, channel.type),
     };
   } else {
     return {
-      code: code.replaceLast(`$channelType`, d.message.channel?.type),
+      code: code.replaceLast(`$channelType`, d.message.channel.type),
     };
   }
 };

@@ -1,9 +1,9 @@
 module.exports = async (d) => {
   const code = d.command.code;
 
+  const r = code.split("$deleteMessage").length - 1;
 
-
-  const inside = d.unpack() 
+  const inside = code.split("$deleteMessage")[r].after();
 
   const err = d.inside(inside);
 
@@ -15,15 +15,15 @@ module.exports = async (d) => {
 
   const channelID = fields[1] ? fields[0] : d.message.channel.id;
 
-  const channel = await d.util.getChannel(d,channelID) 
+  const channel = d.client.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
+    return d.error(`❌ Invalid channel ID in \`$deleteMessage${inside}\``);
 
-  const m = await d.util.getMessage(channel,messageID) 
+  const m = await channel.messages.fetch(messageID).catch((err) => null);
 
   if (!m)
-    return d.error(d.aoiError.functionErrorResolve(d,"message",{inside}));
+    return d.error(`❌ Invalid message ID in \`$deleteMessage${inside}\``);
 
   await m.delete().catch((err) => null);
 

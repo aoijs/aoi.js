@@ -13,11 +13,11 @@ module.exports = async (d) => {
     const EMOJI = d.message.guild.emojis.cache.get(option);
 
     if (!EMOJI)
-      return d.error(`${d.func}:Invalid emoji in ${inside}`);
+      return d.error(`❌ Invalid emoji in \`$deleteEmojis${inside}\``);
 
     const del = await EMOJI.delete().catch((err) => {});
 
-    if (!del) return d.error(`${d.func}: Failed to delete ${EMOJI.name}!`);
+    if (!del) return d.error(`❌ Failed to delete ${EMOJI.name}!`);
   }
 
   return {

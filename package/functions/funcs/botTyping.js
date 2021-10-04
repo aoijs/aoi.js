@@ -2,17 +2,19 @@ const ms = require("ms");
 
 const botTyping = (d) => {
   let code = d.command.code;
-  const inside = d.unpack() 
-  const [time] = inside.splits;
-  d.message.channel.sendTyping();
 
-  /*let timeout = splits[0] ? ms(anything.splits[0]) || 5000 : 5000;
+  const r = code.split("$botTyping").length - 1;
+  const anything = code.split("$botTyping")[r].after();
 
-  /*setTimeout(() => {
+  d.message.channel.startTyping();
+
+  let timeout = anything.splits[0] ? ms(anything.splits[0]) || 5000 : 5000;
+
+  setTimeout(() => {
     d.message.channel.stopTyping(true);
   }, timeout);
-*/
-  code = code.replaceLast(`$botTyping${inside.total}`, "");
+
+  code = code.replaceLast(`$botTyping${anything.total}`, "");
   return {
     code: code,
   };

@@ -1,32 +1,33 @@
-/*
-  Copyright (c) 2021 Andrew Trims and Contributors
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
 const WebSocket = require("ws");
-class LavalinkWebsocket {
+const { EventEmitter } = require("events");
+const ServerManager = require("./ServerManager");
+class LavalinkWebsocket extends EventEmitter {
   /**
    *
-   * @param {import("./LavalinkConnection")} ServerManager
-   * @param {import("../index").WSOptions} options
+   * @param {ServerManager} ServerManager
+   * @param {!Object} options
    */
   constructor(
     ServerManager,
-    options
+    options = {
+      reconnectDelay: 3000,
+      reconnectMaxAttempts: 5,
+      shardCount: 1,
+      password: "",
+      userID: 123,
+      url: "example.com",
+      resumeKey: "npm i dbd.js",
+      timeout: 60,
+    }
   ) {
-    options.resumeKey = options.resumeKey || "TGF2YVdyYXA=@1-b";
-    options.timeout = isNaN(Number(options.timeout)) ? 60 : Number(options.timeout);
-    options.shardCount = isNaN(Number(options.shardCount)) ? 1 : Number(options.shardCount);
-
+    super();
     this.options = options;
     this.reconnectDelay = options.reconnectDelay || 3000;
     this.reconnectMaxAttempts = options.reconnectMaxAttempts || 5;
-    this.mgr = ServerManager;
+    this.connect(this.options);
     this._queue = [];
     this.isManualClosed = false;
-    this.connect(this.options);
-
+    this.mgr = ServerManager;
   }
 
   close(code, data) {
@@ -41,7 +42,7 @@ class LavalinkWebsocket {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
     const headers = {
       "Client-Name":
-        options.userAgent || "NodeJS; https://nodejs.org/en/",
+        options.userAgent || "dbd.js; https://www.npmjs.com/package/dbd.js",
       "Num-Shards": options.shardCount || 1,
       Authorization: options.password,
       "User-Id": options.userID,
@@ -53,26 +54,26 @@ class LavalinkWebsocket {
     this.ws.once("open", () => this._open(options));
     this.ws.once("upgrade", (...args) => this._upgrade(options, ...args));
     this.ws.once("close", (...args) => this._close(options, ...args));
-    this.ws.on("error", (...args) => this._error(options, ...args));
+    this.ws.once("error", (...args) => this._error(options, ...args));
     this.ws.on("message", (...args) => this._message(options, ...args));
   }
 
   _debug(task, options, message) {
     if (task) {
-      this.mgr.emit(
+      this.emit(
         "debug",
         `[Lavalink Websocket]: TASK ${task}(${options.url}) EXECUTED ${
           message ? "WITH MESSAGE " + message : ""
         }`
       );
     } else {
-      this.mgr.emit("debug", `[Lavalink Websocket]: ${message}`);
+      this.emit("debug", `[Lavalink Websocket]: ${message}`);
     }
   }
 
   _open(options) {
     this._debug("Connected", options);
-    this.mgr.emit("open");
+    this.emit("open");
     this.triedReconnecting = 0;
     for (const Packet of this._queue) {
       this._send(Packet);
@@ -81,7 +82,7 @@ class LavalinkWebsocket {
     this.configureResuming(this.options.timeout);
   }
 
-  configureResuming(timeout = 60, key = "TGF2YVdyYXA=@1-b") {
+  configureResuming(timeout = 60, key = "npm i dbd.js") {
     this.resumeKey = key;
     return this.send({
       userAgent: "Lavalink",
@@ -92,7 +93,6 @@ class LavalinkWebsocket {
   }
 
   send(d) {
-
     return new Promise((resolve, reject) => {
       const serialized = JSON.stringify(d);
       const packet = { resolve, reject, data: serialized };
@@ -106,7 +106,7 @@ class LavalinkWebsocket {
 
   _send({ resolve, reject, data }) {
     this._debug("Sending Packet", this.options);
-    this.mgr.emit("send", resolve, reject, data);
+    this.emit("send", resolve, reject, data);
     this.ws.send(data, (error) => {
       if (error) {
         reject(error);
@@ -118,7 +118,7 @@ class LavalinkWebsocket {
 
   _close(options, ...args) {
     this._debug("Closed", options);
-    this.mgr.emit("close", ...args);
+    this.emit("close", ...args);
     this.ws.removeAllListeners();
     this._reconnect();
   }
@@ -132,7 +132,7 @@ class LavalinkWebsocket {
     } catch (err) {
       packet = d;
     }
-    this.mgr.emit("message", packet);
+    this.emit("message", packet);
     this._debug(
       "Received Message [ " +
         (packet.op === "event"
@@ -143,8 +143,9 @@ class LavalinkWebsocket {
         " ] ",
       options
     );
-
-    if (packet) this.mgr.handleMessage(packet);
+    if (packet.guildId && this.mgr.servers.has(packet.guildId)) {
+      this.mgr.handleMessage(packet)
+    }
   }
 
   _reconnect() {
@@ -157,7 +158,7 @@ class LavalinkWebsocket {
     new Promise((resolve) => {
       setTimeout(resolve, this.reconnectDelay);
     }).then(async () => {
-      this.mgr.emit("reconnect");
+      this.emit("reconnect");
       try {
         this.connect(this.options);
       } catch (error) {
@@ -168,13 +169,13 @@ class LavalinkWebsocket {
   }
 
   _error(options, ...args) {
-    this.mgr.emit("error", ...args);
+    this.emit("error", ...args);
     this._debug("Error", options);
     this._close(options, ...args);
   }
 
   _upgrade(options, ...args) {
-    this.mgr.emit("upgrade", ...args);
+    this.emit("upgrade", ...args);
     this._debug("Upgrade", options);
   }
 }

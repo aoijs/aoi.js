@@ -1,4 +1,4 @@
-const songOptions  =require("../../util/songOptions")
+const songOptions  =require("../../utils/songOptions")
 
 module.exports = async d => {
 

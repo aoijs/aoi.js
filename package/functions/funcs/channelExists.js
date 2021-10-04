@@ -1,7 +1,11 @@
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack() 
-  const channel = await d.util.getChannel(inside.inside)
+
+  const r = code.split("$channelExists").length - 1;
+
+  const inside = code.split("$channelExists")[r].after();
+
+  const channel = d.client.channels.cache.get(inside.inside);
 
   return {
     code: code.replaceLast(`$channelExists${inside}`, channel ? true : false),

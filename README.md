@@ -1,69 +1,122 @@
   <br />
     <p>
-    <a href="https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
+    <a href="https://dbd.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804505461076131840/837194632148287509/Aoi.js_6_ver._2.png" alt="aoi.js" /></a>
   </p>
 
-# aoi.js
-[![Discord Server](https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white)](https://aoi.js.org/invite)
-[![NPM Version](https://img.shields.io/npm/v/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
+# Aoi.JS
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
+[![Discord Server](https://img.shields.io/discord/773352845738115102?color=7289da&logo=discord&logoColor=white)](https://dbd.js.org/invite)
+
+## Table Of Contents
+- [About](#about)
+  - [Setup](#setup)
+  - [Variables](#variables)
+  - [Events / Callbacks](#callbacks)
+- [Additional Support](#methods)
+  - [Slash Commands](#slash-commands)
+  - [Music](#music)
+- [Links](#links)
+- [Contributing](#contributing)
+
 
 ## About
-aoi.js is a package with customization and ready-to-use functions to make Discord Bots with ease.
+Aoi.JS is a package with simplified and ready-to-use functions for Discord Bot Developers to develop their own Discord Bots.
 
-- Interaction Commands Support
-- Optimized and customizable 
-- 500+ functions available  
+Aiming to be the easiest package to learn <br>
+It's swift and flexible using functions. </br>
 
-The successor of [dbd.js](https://www.npmjs.com/package/dbd.js)
+ Open Source for the Community ❤️ <br>
+ </br>
 
- 
-## Installation
+## Examples
 
-**Node.JS 16.6.0 or newer is required.**  
-
-```sh-session
-npm install aoi.js
-```
-
-### Setting up
-
+### Setup
 ```js
-const aoijs = require("aoi.js")
+const Aoijs = require("aoi.js")
 
-const bot = new aoijs.Bot({
-token: "TOKEN",
-prefix: "PREFIX",
-intents: "all"
+const bot = new Aoijs.Bot({
+token: "TOKEN", //Discord Bot Token
+prefix: "!" //Customizable
 })
-
-bot.onMessage() //Allows to execute Commands
+bot.onMessage() //Allows to run Commands
 
 bot.command({
 name: "ping", //Trigger name (command name)
-code: `Pong! $pingms` //Code inside of string
-})
-
-bot.readyCommand({
-    channel: "", //Optional channnel ID
-    code: `$log[Ready on $userTag[$clientID]]`
+code: `$ping Pong!` //Code
 })
 ```
 
-### Optional packages
-- [tweetnacl](https://npmjs.com/tweetnacl) for music encryption (`npm install tweetnacl`)
-- [@discordjs/opus](https://www.npmjs.com/package/@discordjs/opus) for encoding, primarily used for Music (`npm install @discordjs/opus`)
-- [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
-- [danbot-hosting](https://www.npmjs.com/package/danbot-hosting) for posting stats to their API (`npm install danbot-hosting`)
+### Variables
 
+What are variables?
+
+Variables are Key-Value based data which is stored in the database, useful for Economy and Leveling system as it is allows you to save data.
+
+```js
+bot.variables({
+  VariableName1: "Value", //Returns "Value"
+  VariableName2: "Value2" //Returns "Value2"
+})
+```
+
+### Callbacks
+
+What are callbacks?
+
+It's simple and easy process, it essentially allows you to trigger events, such as user joining a Guild.
+This will trigger an event, causing commands with supported type for each callbacks to be executed such as.
+
+```js
+bot.joinCommand({
+        channel: "Channel ID", //Enter a Channel ID
+        code: `<@$authorID> just joined, welcome!` //This can be changed
+})
+bot.onJoined()
+```
+
+## Additional Support
+
+### Slash Commands
+
+With easy and simple functions, you can make Slash Commands with your Bots quick!
+
+```js
+bot.command({
+    name: "slash",
+    code: `$createSlashCommand[$guildID;version;Returns Aoi.js Version]`
+})
+bot.interactionCommand({
+    name: "version", 
+    code: `$interactionReply[$packageVersion]`
+})
+bot.onInteractionCreate()
+```
+
+More Information in our [Documentation](https://aoi.leref.ga/guide/slash-commands)
+
+#### Music
+
+With our powerful Package, we incorporated Music with several functions.
+We allowed customization and control over what you want.
+
+
+#### Music Setup Example
+
+```js
+bot.command({
+name: "play", //Trigger name (command name)
+code: `$playSong[Music Name;Something went wrong!]`
+//Code
+})
+```
 
 More Information in our [Documentation](https://aoi.leref.ga/guide/music)
 
 ## Links
+Aoi.JS was made by [Aoi.JS Team](https://discord.gg/HMUfMXDQsV)
 - [Website](https://aoi.js.org)
-- [Github](https://github.com/aoijs/aoi.js)
-- [Discord Server](https://aoi.js.org/invite)
+- [Discord Server](https://dbd.js.org/invite)
 - [Documentation](https://aoi.leref.ga)
 
 ## Contributing
-Please read [Contributing](https://github.com/aoijs/aoi.js/blob/main/.github/CONTRIBUTING.md)
+Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)

@@ -1,5 +1,4 @@
 module.exports = async (d) => {
-
   const code = d.command.code;
 
   const r = code.split("$getBanReason").length - 1;
@@ -15,23 +14,16 @@ module.exports = async (d) => {
   const guild = d.client.guilds.cache.get(guildID);
 
   if (!guild)
-
-    return d.error(`\`${d.func}: Invalid guild ID in ${inside}\``);
+    return d.error(`❌ Invalid guild ID in \`$getBanReason${inside}\``);
 
   const ban = await guild.fetchBan(userID).catch((err) => null);
 
-  if (!ban) return d.error(`\`${d.func}: Unable to find reason in ${inside}\``);
+  if (!ban) return d.error(`❌ Unknown ban in \`$getBanReason${inside}\``);
 
   return {
-
     code: code.replaceLast(
-
       `$getBanReason${inside}`,
-
       (ban.reason || "").deleteBrackets()
-
     ),
-
   };
-
-}
+};

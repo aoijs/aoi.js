@@ -11,7 +11,7 @@ const mentionedRoles = d => {
   
   if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentionedRoles${inside}\``)
   
-  const role = [...d.message.mentions.roles.values()][Number(mention) - 1]
+  const role = d.message.mentions.roles.array()[Number(mention) - 1]
   
   return {
     code: code.replaceLast(`$mentionedRoles${inside}`, role ? role.id : "") 

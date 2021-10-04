@@ -8,17 +8,17 @@ module.exports = async (d) => {
   if (after.inside) {
     const id = after.inside;
 
-    const channel =await d.util.getChannel(d,id)
+    const channel = d.message.guild.channels.cache.get(id);
 
     if (!channel)
-      return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
+      return d.error(`:x: Invalid channel ID \`$channelNSFW${after}\``);
 
     return {
-      code: code.replaceLast(`$channelNSFW${after}`, channel?.nsfw),
+      code: code.replaceLast(`$channelNSFW${after}`, channel.nsfw),
     };
   } else {
     return {
-      code: code.replaceLast(`$channelNSFW`, d.channel?.nsfw??""),
+      code: code.replaceLast(`$channelNSFW`, d.message.channel.nsfw),
     };
   }
 };

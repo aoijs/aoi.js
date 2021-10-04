@@ -11,7 +11,7 @@ const mentionedChannels = d => {
   
   if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentionedChannels${inside}\``)
   
-  const channel = [...d.message.mentions.channels.values()][Number(mention) - 1]
+  const channel = d.message.mentions.channels.array()[Number(mention) - 1]
   
   return {
     code: code.replaceLast(`$mentionedChannels${inside}`, channel ? channel.id : returnChannel === "yes" ? d.message.channel.id : "") 

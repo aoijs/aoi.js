@@ -16,12 +16,13 @@ module.exports = async d => {
     reason
   ] = inside.splits
   
-  const member = await d.util.getMember(d.guild,userID) 
-  if (!member) return d.error(`${d.func}: Invalid user ID in ${inside}`)
+  const member = await d.message.guild.members.fetch(userID).catch(err => null)
+  
+  if (!member || typeof member.kick === "undefined") return d.error(`:x: Invalid user ID in \`$kick${inside}\``)
   
   const m = await member.kick(reason).catch(err => {})
   
-  if (!m) return d.error(`${d.func}: Failed to kick ${member.user.username}!`)
+  if (!m) return d.error(`:x: Failed to kick ${member.user.username}!`)
   
   return {
     code: code.replaceLast(`$kick${inside}`, "")

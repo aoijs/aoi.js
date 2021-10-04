@@ -1,4 +1,4 @@
-const errorHandler = require("../../Handler/parsers.js").ErrorHandler ;
+const errorHandler = require("../../handlers/errors.js");
 
 const onlyIf = async (d) => {
   const code = d.command.code;

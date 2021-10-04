@@ -1,103 +1,173 @@
-const Interpreter = require('../interpreter.js')
-const { Collection} = require('discord.js')
-const {EventEmitter} = require('events')
-class Interaction extends EventEmitter {
-    constructor(client){
-        super();
+const Discord = require("discord.js") 
+const axios = require("axios") 
+const Snowflake = Discord.SnowflakeUtil 
+class Interaction {
+    constructor(client, data) {
         this.client = client 
-}
-resolve(data){
-    data.author = data.user  
-}
-}
-class Await extends Interaction {
-    constructor(options, client,varData={}) {
-        super(client);
-        this.options = options
-        this.tries = 0
-        this.data = varData 
-    }
-    async await (msgid, user, customID, data) {
-        this.resolve(data) 
-        if (this.options.msgId === msgid && this.options.filter === user && this.options.customIds.includes(customID) && this.options.uses > this.tries) {
-            this.emit("AwaitComponent", data)
-
-            this.tries += 1
-        } else if (this.options.uses <= this.tries) {
- this.removeAllListeners("AwaitComponent")
-        }
-        if (this.options.filter !== user &&this.options.filter !== "everyone" && this.options.uses > this.tries && this.options.msgId === msgid ) {
-            if (Object.keys(this.options.errorMessage).length !== 0) {
-           data.reply(JSON.parse(this.options.errorMessage))
-            }
-        }
-    }
-}
-class CustomCollector extends Interaction {
-    constructor(options, client,varData={}) {
-        super( client);
-        this.options = options 
-        this.mainData = []
-        this.timeout = setTimeout
-        this.endsOn = (Date.now() + Number(options.time));
-        this.data = varData 
-    }
-    async start(msgid, user,customID, data) {
-        this.resolve(data)
-        if (this.options.customIDs.includes(customID) && this.endsOn >= Date.now() && this.options.msgid === msgid && (this.options.filter === "everyone" || this.options.filter === user)) {
-            this.mainData.push(data)
-            this.emit("ItemFound", data)
-        }
-        this.timeout(() => {
-            this.emit("CustomCollectorOff", this.mainData);
-            delete this.options._timeout
-            delete this._events.ItemFound
-        }, this.options._timeout)
         
-        if (this.options.filter !== "everyone" && this.options.filter !== user && Object.keys(this.options.errorMessage).length !== 0 && this.endsOn > Date.now() && this.options.msgid === msgid  ) {
-            data.reply(JSON.parse(this.options.errorMessage))
+        this._resolve(data)
+    }
+    
+    _resolve(data) {
+        this.channel = this.client.channels.cache.get(data.channel_id) 
+        
+        this.guild = this.client.guilds.cache.get(data.guild_id) 
+        
+        this.member = new Discord.GuildMember(this.client, data.member, this.guild)
+        
+        this.author = new Discord.User(this.client, this.member.user)
+        
+        this.token = data.token
+        
+        this.id = data.id
+        
+        this.type = data.type 
+        
+        this.command = {
+            id: data.data.id,
+            name: data.data.name,
+            description: data.data.description
+            
+            
         }
+       
+        this.options = data.data.options
+  
+    }
+  
+    reply(content,embed,type) {
+        try {
+      var check;
+    let c;      if(this.client.aoi.options.applicationCache){
+
+   c = this.client.applications.slash.find(x=>x.id == this.command.id) 
+/*console.log("cache")
+        console.log(c)*/
+      if(!c){
+setTimeout(async()=>{
+         let d = await axios.get(this.client._api(`applications/${this.client.user.id}/guilds/${this.guild.id}/commands`),{
+
+              headers:{
+
+                  Authorization:`Bot ${this.client.token}`
+
+                  }
+
+              })
+
+        
+
+             d = d.data 
+
+             d = d.find(x=>x.id == this.command.id)
+
+             if(d){c = { 
+
+                 id: d.id,
+
+                 name: d.name,
+
+                 version: d.version,
+
+                 description: d.description ,
+
+                 options : d.options || [] ,
+
+                 application : this.client,
+
+                 guild: this.client.guilds.cache.get(d.guild_id) || null ,
+
+                 timestamp: Snowflake.deconstruct(d.id).timestamp,
+
+                 createdAt: Snowflake.deconstruct(d.id).date 
+                 }
+check  = "defined";
+                   this.client.applications.slash.set(c.id,c)
+                 }else{c = undefined ;
+                       check = undefined}
+
+                  /*console.log("guild")
+    console.log(d)*/
+},1000)
+         }
+
+      
+
+      if(!check){
+setTimeout(async()=>{
+         let d= await axios.get(this.client._api(`applications/${this.client.user.id}/commands`),{
+
+              headers:{
+
+                  Authorization:`Bot ${this.client.token}`
+
+                  }
+
+              })
+
+        
+
+             d = d.data 
+
+d = d.find(x=>x.name.toLowerCase() == this.command.name.toLowerCase())
+   // console.log(d)
+
+             if(d){c = { 
+
+                 id: d.id,
+
+                 name: d.name,
+
+                 version: d.version,
+
+                 description: d.description ,
+
+                 options : d.options || [] ,
+
+                 application : this.client,
+
+                 guild: null ,
+
+                 timestamp: Snowflake.deconstruct(d.id).timestamp,
+
+                 createdAt: Snowflake.deconstruct(d.id).date 
+
+                 }
+                   this.client.applications.slash.set(c.id,c)
+}else{c = undefined}
+                  
+
+         },2000)
+
+      }
+
+      
+        }
+
+        
+           //console.log(this.command)
+            axios.post(this.client._api(`/interactions/${this.id}/${this.token}/callback`), {
+     
+            type: 4,
+            data: {
+                content: typeof content == "string" ? content : "", 
+                embeds: embed ? Array.isArray(embed) ? embed : [embed] : [],
+                flags: type
+            }
+                
+        }) 
+            
+            
+            
+       .then(res =>"successful").catch(e => {console.log(e.message)})
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+    
+    async delete() {
+        const req = await axios.delete
     }
 }
-class InteractionManager extends Interaction {
-    constructor(client){
-        super(client);
-        this.awaitComponents = Await 
-        this.ComponentsCollector = CustomCollector 
 
-        this.buttonData = new Collection() 
-        this.slashData = new Collection()
-        this.selectMenuData = new Collection() 
-    }
-    createSlashData(d={}){
-        this.slashData.set(d.guildId?`${d.data.name}_${d.guildId}`:d.data.name,d.data)
-    }
-    createButtonData(d={}){
-        this.buttonData.set(d.customId,d)
-        }
-    createSelectMenuData(d={}){
-        this.selectMenuData.set(d.customId,d)
-    }
-    resolveSlashOption(name){
-            return JSON.stringify(this.slashData.get(name))    
-    }
-    resolveButtonData(customId){
-   const d = this.buttonData.get(customId)
-   return `{button:${d.label}:${d.style}:${d.customId}:${d.disabled}:${d.emoji}}`
-    }
-    resolveSelectMenuData(customId){
-        const d = this.selectMenuData.get(customId)
-        return `{selectMenu:${d.customId}:${d.placeholder}:${d.minValues}:${d.maxValues}:${d.disabled}:${this.resolveSelectMenuOptionData(d.options)}`
-    }
-    resolveSelectMenuOptionData(options){
-        let opt = []
-        for(const o of options){
-            opt.push(`{selectMenuOptions:${o.label}:${o.value}:${o.description}:${o.default}:${o.emoji}}`)
-        }
-        return opt.join("")
-    }
-  get buttonDataLength(){
-     return this.buttonData.size 
- }
-    }
-module.exports = InteractionManager 
+module.exports =Interaction

@@ -18,9 +18,9 @@ module.exports = async (d) => {
   const text = fields.join(";").addBrackets();
 
   const attachment = new Discord.MessageAttachment(Buffer.from(text), name);
- d.files.push(attachment)
+
   return {
     code: code.replaceLast(`$createFile${inside}`, ""),
-    files:d.files,
+    embed: d.embed.attachFiles(attachment),
   };
 };

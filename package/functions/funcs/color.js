@@ -1,16 +1,14 @@
-const {MessageEmbed} = require("discord.js") 
 const color = (d) => {
-  
-  const inside = d.unpack();
-  const err = d.inside(inside) 
-  if(err) return d.error(err) 
-  let [index=1,color] = inside.splits; 
-    if(isNaN(Number(index-1))) d.error("$color: Invalid Index")
-    if(!d.embeds[index-1]) d.embeds[index-1] = new MessageEmbed ()
-   d.embeds[index-1].setColor(color) 
+  const r = d.command.code.split("$color").length;
+
+  if (r >= 3)
+    return d.message.channel.send(`❌ Can't use more than one $color.`);
+
+  const inside = d.command.code.split("$color")[1].after();
+
   return {
     code: d.command.code.replaceLast(`$color${inside}`, ""),
-    embeds: d.embeds 
+    embed: d.embed.setColor(inside.inside),
   };
 };
 

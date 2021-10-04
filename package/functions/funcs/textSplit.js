@@ -11,7 +11,6 @@ module.exports = d => {
   
   return {
     code: code.replaceLast(`$textSplit${inside}`, ""),
-    data :{array: text.deleteBrackets().split(separator) 
+    array: text.deleteBrackets().split(separator) 
   } 
-      }
 }

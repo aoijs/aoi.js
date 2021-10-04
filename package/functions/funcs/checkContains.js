@@ -3,7 +3,7 @@ module.exports = async (d) => {
 
   const r = code.split("$checkContains").length - 1;
 
-  const inside = code.split("$checkContains")[r].after(); 
+  const inside = code.split("$checkContains")[r].after();
 
   const err = d.inside(inside);
 
@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   const fields = inside.splits;
 
-  const msg = fields.shift()?.addBrackets();
+  const msg = fields.shift().addBrackets();
 
   return {
     code: code.replaceLast(

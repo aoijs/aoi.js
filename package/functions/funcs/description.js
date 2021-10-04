@@ -1,16 +1,18 @@
-const {MessageEmbed} = require('discord.js')
 const description = (d) => {
- const {code} = d.command 
- const inside = d.unpack()
+  const r = d.command.code.split("$description").length;
+
+  if (r >= 3)
+    return d.message.channel.send(`❌ Can't use more than one $description.`);
+
+  const inside = d.command.code.split("$description")[1].after();
+
   const err = d.inside(inside);
+
   if (err) return d.error(err);
-    const [index=1,desc] = inside.splits;
-if(isNaN(index) || index ==="") return d.error(`${d.func}: Invalid Index in ${inside.total}`)
-    if(!d.embeds[index-1]) d.embeds[index-1] = new MessageEmbed()
-    d.embeds[index-1]. setDescription (desc.addBrackets())
+
   return {
-    code: code.replaceLast(`$description${inside}`, ""),
-    embeds: d.embeds
+    code: d.command.code.replaceLast(`$description${inside}`, ""),
+    embed: d.embed.setDescription(inside.inside.addBrackets()),
   };
 };
 

@@ -1,5 +1,5 @@
 const interpreter = require("../../interpreter.js")
-const {wait} = require("../../Utils/helpers/functions.js")
+
 //const db = require("quick.db")
 const loop = async d => {
 
@@ -10,20 +10,19 @@ const loop = async d => {
 
 	if (err) return d.error(err)
 
-    let [times,wait=0,data="",...commands] = inside.splits; 
- try {
-     data = JSON.parse(data)
- }
-    catch(e){
-        d.error(e)
-    }
+    const times = Number(inside.splits[0])
+
+    if (isNaN(times) || times < 1) return d.error(`:x: Invalid times number at \`$loop${inside}\``)
+
+    const commands = inside.splits.slice(1)
+
     for (let i = 0;i < times;i++) {
         for (const command of commands) {
-            const cmd = d.client.cmd.awaited.find(c => c.name === command)
+            const cmd = d.client.awaited_commands.find(c => c.name === command)
 
             if (!cmd) return d.error(`:x: Invalid awaited command '${command}' in \`$loop${inside}\``)
 
-            await interpreter(d.client, d.message, d.args, cmd, undefined, false, undefined,data)
+            await interpreter(d.client, d.message, d.args, cmd, undefined, false)
         }
     }
 

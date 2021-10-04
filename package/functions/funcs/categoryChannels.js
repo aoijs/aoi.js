@@ -1,8 +1,9 @@
 module.exports = async (d) => {
   const code = d.command.code;
 
+  const r = code.split("$categoryChannels").length - 1;
 
-  const inside = d.unpack(); 
+  const inside = code.split("$categoryChannels")[r].after();
 
   const err = d.inside(inside);
 
@@ -10,29 +11,28 @@ module.exports = async (d) => {
 
   const [channelID, opt = "name", separator = ", "] = inside.splits;
 
-  const channel = await d.util.getChannel(d,channelID) 
-if(!channel) return d.error(
-d.aoiError.functionErrorResolve(d,"channel",{inside}) 
-)
-  if (channel.type !== d.util.channelTypes.Category)
-    return d.error(
-    d.aoiError.functionErrorResolve(d,"custom",{inside},"Provided Id Isn't A Category")
-    );
+  const channel = d.client.channels.cache.get(channelID);
+
+  if (!channel)
+    return d.error(`❌ Invalid channel ID in \`$categoryChannels${inside}\``);
+
+  if (channel.type !== "category")
+    return d.error(`❌ This channel is not a category! `);
 
   return {
     code: code.replaceLast(
       `$categoryChannels${inside}`,
       opt === "count"
-        ? channel?.children.size
+        ? channel.children.size
         : opt === "mention"
-        ? channel?.children
+        ? channel.children
             .map((a) => a.toString())
             .join(separator)
             .deleteBrackets()
-        : channel?.children
+        : channel.children
             .map((c) => c[opt] || "")
             .join(separator)
-            ?.deleteBrackets()||""
+            .deleteBrackets()
     ),
   };
 };

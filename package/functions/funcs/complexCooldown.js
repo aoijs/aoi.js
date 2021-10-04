@@ -1,5 +1,5 @@
 const ms = require("ms");
-const {ErrorHandler} = require("../../handlers/errors.js");
+const error = require("../../handlers/errors.js");
 const parse = require("parse-ms");
 const toParse = require("ms-parser");
 
@@ -18,12 +18,12 @@ async function complexCooldown(d) {
 
   if (!validTypes.includes(type))
     return d.error(
-      `${d.func}: Invalid cooldown type '${type}' in ${inside}`
+      `:x: Invalid cooldown type '${type}' in \`$complexCooldown${inside}\``
     );
 
   if (!time)
     return d.error(
-      `${d.func}: Invalid time '${time}' in ${inside}`
+      `:x: Invalid time '${time}' in \`$complexCooldown${inside}\``
     );
 
   let format = `cooldown_${d.command.name}`;
@@ -48,9 +48,22 @@ async function complexCooldown(d) {
   const item = await d.client.db.get("main", format);
 
   if (item && time - (Date.now() - Number(item.value)) > 999) {
-    d.util.sendError(d, errorMessage)
+    return error(
+      d,
+      errorMessage.split("%time%").join(
+        toParse(
+          Object.entries(parse(time - (Date.now() - Number(item.value))))
+            .map((x, y) => {
+              if (x[1] > 0 && y < 4) return `${x[1]}${x[0][0]}`;
+              else return undefined;
+            })
+            .filter((e) => e)
+            .join("")
+        ).string
+      )
+    );
   } else {
-    d.client.db.set(d.client.db.tables[0], format, Date.now());
+    d.client.db.set(`main`, format, Date.now());
   }
 
   return {

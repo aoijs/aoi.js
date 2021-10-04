@@ -1,26 +1,37 @@
 const ms = require("ms");
-const {ErrorHandler} = require("../../Handler/parsers.js");
+const error = require("../../handlers/errors.js");
 const parse = require("parse-ms");
 const toParse = require("ms-parser");
 
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack(); 
+
+  const r = code.split("$channelCooldown").length - 1;
+
+  const inside = code.split("$channelCooldown")[r].after();
+
   const err = d.inside(inside);
+
   if (err) return d.error(err);
+
   const fields = inside.splits;
+
   const time = fields.shift();
+
   const errorMessage = fields.join(";");
+
   if (!ms(time))
     return d.error(
       `❌ Invalid time '${time}' in \`$channelCooldown${inside}\``
     );
+
   const item = await d.client.db.get(
-    d.client.db.tables[0], `cooldown_${d.command.name}_${d.message.channel.id}`
+    "main",
+    `cooldown_${d.command.name}_${d.message.guild.id}_${d.message.channel.id}`
   );
 
   if (item && ms(time) - (Date.now() - Number(item["value"])) > 999) {
-    return ErrorHandler(
+    return error(
       d,
       errorMessage.split("%time%").join(
         toParse(
@@ -36,8 +47,8 @@ module.exports = async (d) => {
     );
   } else {
     d.client.db.set(
-       d.client.db.tables[0],
-      `cooldown_${d.command.name}_${d.message.channel.id}`,
+      "main",
+      `cooldown_${d.command.name}_${d.message.guild.id}_${d.message.channel.id}`,
       Date.now()
     );
   }

@@ -1,4 +1,4 @@
-const {EmbedParser, ComponentParser,FileParser,StickerParser} = require("../../Handler/parsers.js");
+const embed = require("../../handlers/errors.js");
 
 module.exports = async (d) => {
   const code = d.command.code;
@@ -13,43 +13,21 @@ module.exports = async (d) => {
 
   const fields = inside.splits;
 
-  let [channelID, content,Embed="", components="",files="", allowMentions="", reply="",stickers="", returnID = "no"] = fields;
+  const [channelID, text, returnID = "no"] = fields;
 
-  const channel = await d.util.getChannel(d,channelID);
+  const channel = d.client.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
-Embed = await EmbedParser(Embed)
-components = await ComponentParser(components)    
-files = await FileParser(files) 
-    stickers = await StickerParser(stickers) 
-    if(allowMentions === "") allowMentions = {} 
-    else{
-      const a = allowMentions.split(":")
-      allowMentions = {parse:a} 
-    }
-    if(reply === "") reply = {} 
-    else{
-        reply = {
-            messageReference :reply.split(":")[0] 
-        }
-        allowMentions.repliedUser = reply.split(":")[1]?.addBrackets()||false 
-    }
-    const data ={
-        content: content === "" ? " " : content ,
-        embeds :Embed,
-        components,
-        files,
-        stickers,
-        allowMentions,
-        reply 
-    }
-    
-    const m = await channel.send(data) 
+    return d.error(
+      `:x: Invalid channel ID in \`$channelSendMessage${inside}\``
+    );
+
+  const m = await embed(d, text, "withMessage", channel);
+
   return {
     code: code.replaceLast(
       `$channelSendMessage${inside}`,
-      returnID === "yes" ? m?.id : ""
-)
+      returnID === "yes" && m ? m.id : ""
+    ),
   };
 };

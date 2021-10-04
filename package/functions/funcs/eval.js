@@ -1,14 +1,46 @@
-
+const interpreter = require("../../interpreter.js");
+const insensitiveInterpreter = require("../../insensitiveInterpreter");
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack() 
+
+  const r = code.split("$eval").length - 1;
+
+  const inside = code.split("$eval")[r].after();
+
   const err = d.inside(inside);
+
   if (err) return d.error(err);
-  const [CODE, returnCode = "no",sendMessage="no",returnMessage="no",returnExec="no",returnId="no"] = inside.splits;
-    d.message.message = d.message 
-    const c = await d.interpreter(d.client,d.message,d.args,{name:"eval",code:CODE.addBrackets(),functions:d.client.functionManager.findFunctions(CODE.addBrackets())},d.client.db,returnCode === "yes", undefined,{}, undefined,returnMessage==="yes",returnExec==="yes",returnId==="yes",sendMessage==="yes")
+
+  const [CODE, returnCode = "no", int = "new"] = inside.splits;
+
+  const c =
+    int === "insensitive"
+      ? await insensitiveInterpreter(
+          d.client,
+          d.message,
+          d.args,
+          {
+            name: "eval",
+            code: CODE.addBrackets(),
+            error: d.command.error,
+          },
+          {},
+          returnCode === "yes"
+        )
+      : await interpreter(
+          d.client,
+          d.message,
+          d.args,
+          {
+            name: "eval",
+            code: CODE.addBrackets(),
+            error: d.command.error,
+          },
+          {},
+          returnCode === "yes"
+        );
 
   return {
-    code: code.replaceLast(`$eval${inside}`, (returnCode ==="yes" && [returnMessage,returnExec,returnId].join(",")==="no,no,no"?c.code : require("util").inspect(c))|| ""),
+    code: code.replaceLast(`$eval${inside}`, c ? c : ""),
   };
 };

@@ -2,11 +2,10 @@ const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
 const Discord = require("discord.js");
 const api = require("../handlers/api");
-const DanBotHosting = ("danbot-hosting")
 
 module.exports = async (client, Database) => {
-  const owner = client.application.owner;
-  client.ownerID = owner?.ownerID || owner?.id 
+  const owner = (await client.fetchApplication()).owner;
+  client.ownerID = owner.members ? owner.ownerID : owner.id;
 
   api(client.user.id);
 
@@ -110,6 +109,7 @@ module.exports = async (client, Database) => {
     f();
   }
   readyCommands(client);
+  console.log(`Ready on client ${client.user.tag}`);
 
   if (client.dbhToken) {
     const API = new DanBotHosting.Client(client.dbhToken, client);

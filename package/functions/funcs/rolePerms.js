@@ -1,4 +1,4 @@
-const keyPerms = require("../../util/permissions.js");
+const keyPerms = require("../../utils/permissions.js");
 
 module.exports = async (d) => {
   const code = d.command.code;

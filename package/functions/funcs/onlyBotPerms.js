@@ -1,5 +1,5 @@
-const keyPerms = require("../../util/permissions")
-const embed = require("../../Handler/parsers.js"). ErrorHandler
+const keyPerms = require("../../utils/permissions")
+const embed = require("../../handlers/errors.js")
 
 module.exports = async d => {
     const code = d.command.code

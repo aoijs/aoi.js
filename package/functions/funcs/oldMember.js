@@ -1,4 +1,4 @@
-const memberOptions = require("../../util/memberOptions") 
+const memberOptions = require("../../utils/memberOptions") 
 
 module.exports = async d => {
  const code = d.command.code 

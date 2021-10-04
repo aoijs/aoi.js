@@ -1,4 +1,4 @@
-const chars = require("../../util/characters.js")
+const chars = require("../../utils/characters.js")
 
 module.exports= async d => {
     const code = d.command.code

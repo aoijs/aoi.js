@@ -1,175 +1,149 @@
-declare module "aoi.js"{
-    import {Client, Collection, ShardingManager} from "discord.js";
-    import {EventEmitter} from "events";
-//-----------Class Client----------------//
+declare module "aoi.js" {
+  import { Client } from "discord.js";
+  import { EventEmitter } from "events";
 
-    type DatabaseOptions = {
-        db? : module;
-        type: "default"|"dbdts.db"|"dbdjs.db"|"dbdjs-api"|"custom";
-        promisify?:boolean;
-        tables: Array<string>;
-        path?: string;
-    }
-    type  ClientOptions = {
-        token : string;
-        prefix : Array<string> | string;
-        database?: DatabaseOptions;
-        mobilePlatform? : boolean;
-        respondOnEdit?:{
-            alwaysExecute?:boolean;
-            command?:boolean;
-            nonPrefixed?:boolean;
-            timeLimit?: number;
-        };
-        suppressAllErrors?:boolean;
-        errorMessage?: Array<string>;
-        debugs?:{
-            interpreter:boolean;
-        };
-        events?:{
-            timeout?:boolean;
-            functionError?:boolean;
-        };
-        autoUpdate?:boolean;
-        fetchInvites?:{
-            enabled:boolean;
-            cacheInviters?:boolean;
-        };
-        dbhToken?: string;
-    }
-    class Bot {
-        options : ClientOptions 
-        constructor(options : ClientOptions);
-}
-//---------------------------------------//
-//-------------ClientShard---------------//
-type ShardOptions = {
-    totalShards? : "auto" | number;
-    shardList?: "auto" | Array<number>;
-    mode? : "process" | "worker";
-    respawn? : boolean;
-    shardArgs? : Array<string>;
-    execArgv? : string;
-    token? : string;
-}
-class ClientShard extends ShardingManager{
-file: string;
-options:ShardOptions;
-client: Bot;
-constructor(file:string,options:ShardOptions,client:Bot);
-public onShardError();
-public onShardDisconnect();
-public onShardReady();
-public onShardResume();
-public onShardReconnecting();
-public shardErrorCommand(options:{
-    name?:string;
-    code: string;
-    channel?:string;
-});
-public shardDisconnectCommand(options:{
-    name?:string;
-    code:string;
-    channel?:string;
-    });
-    public shardReadyCommand(options:{
-    name?:string;
-    code:string;
-    channel?:string;
-    });
-    public shardResumeCommand(options:{
-    name?:string;
-    code:string;
-    channel?:string;
-    });
-    public shardReconnectingCommand(options:{
-    name?:string;
-    code:string;
-    channel?:string;
-    });
-    
-}
-//---------------------------------------//
-//-------------LoadCommands--------------//
-class LoadCommands {
-    client:Bot;
-    addToClientClass?:boolean;
-    constructor(client:Bot ,addToClientClass: boolean);
-    public load(path:string,debug?:boolean);
-    public setColors(colors:{});
-    public update(debug?:boolean);
-}
-//---------------------------------------//
-//---------------Voice-------------------//
- type Ytdl = {
-     filter?:"audio"|"audioOnly";
-     quality?:"highestaudio"|"lowestaudio"|"highest"|"lowest";
-     cookie?:string;
-     proxy?:string;
-     agent?:string;
- };
- type SoundCloud = {
-     agent?:string;
-     SoundCloudID?:string;
- };
- type Cache = {
-     enabled:boolean;
-     limit?:number;
- }
-    class Voice {
-        client:Bot;
-        ytOptions?:Ytdl;
-        scOptions?: SoundCloud;
-        cacheOptions?:Cache 
-        constructor(client:Bot,ytOptions:Ytdl,scOptions: SoundCloud,cacheOptions:Cache);
-    }
-//---------------------------------------//
-//------------CustomEvents---------------//
-    class CustomEvents extends EventEmitter {
-        client:Bot;
-        constructor(client:Bot);
-        public command(d:{
-            channel?:string;
-            name:string;
-            code:string;
-            listen: string;
-        });
-    }
-//---------------------------------------//
-//---------------AoiError----------------//
-    type MessageEmbed = {
-        title?:string;
-        url?:string;
-        author?:{
-            name:string;
-            iconURL?:string;
-            url?:string;
-        };
-        thumbnail?:{
-            url:string;
-        };
-        image?:{
-            url: string|null
-        };
-        footer?:{
-            text:string;
-            iconURL:string;
-        };
-        description?: string;
-        fields:Array<{name:string;value:any,inline:boolean}>;
-        color:string|number;
-    }
-    type MessageOptions ={
-        content: string;
-        embeds:Array<MessageEmbed>;
-        files:Array<{name: string, attachment:buffer|string,file:buffer|string};
+  class CustomEvent {
+    constructor(client: Client, emitter: EventEmitter);
 
+    client: Client;
+    event: EventEmitter;
+    commands: Interfaces.Command[];
+
+    listen(name: string): void;
+    command(command: Interfaces.Command): void;
+  }
+
+  export namespace Interfaces {
+    interface Options {
+      token: string;
+      prefix: string[] | string;
+      mobile?: boolean;
+      database?: object;
+      dbhToken?: boolean;
+      sharding?: boolean;
+      autoUpdate?: boolean;
+      shardAmount?: number;
+      fetchInvites?: boolean;
+      youtubeCookie?: string;
+      typingStopEvent?: boolean;
+      disabledFunctions?: string[];
+      disabledFunctionsStarting?: string[];
+      boosterToken?:string;
     }
-    class AoiError{
-       private constructor();
-       private static CallbackError(options:{callback:string,intent:string});
-       private static CommandError(options:{command: string,type:"name"|"code",name:string,position:number});
-        public static makeMessageError(client:Bot,channelID:string,options:MessageOptions);
-        public static consoleError(name:string,error:string);
+
+    interface Path {
+      path: string;
+      debug: boolean;
     }
-//---------------------------------------//
+
+    interface Command {
+      code: string;
+      channel: string;
+    }
+
+    interface Slash {
+      name: string;
+      code: string;
+    }
+
+    interface Normal {
+      name: string;
+      code: string;
+      nonPrefixed?: boolean;
+      aliases?: string | string[];
+    }
+
+    interface Loop {
+      code: string;
+      every: number;
+      channel: string;
+      executeOnStartup?: boolean;
+    }
+
+    interface Message {
+      guildOnly: boolean;
+      respondToBots: boolean;
+    }
+
+    interface Status {
+      type: string;
+      text: string;
+      time: number;
+      url?: string;
+    }
+  }
+
+  export class Bot {
+    constructor(options: Interfaces.Options);
+
+    client: Client;
+    paths: Interfaces.Path[];
+
+    variables(variables: object): void;
+    status(status: Interfaces.Status): void;
+    createCustomEvent(emitter: EventEmitter): CustomEvent;
+    loadCommands(path: string, debug?: boolean): Promise<void>;
+    createLavalink(url: string, password: string, debug?: boolean): void;
+
+    onLeave(): void;
+    onJoined(): void;
+    onBanAdd(): void;
+    onBanRemove(): void;
+    onGuildJoin(): void;
+    onRateLimit(): void;
+    onRoleCreate(): void;
+    onRoleUpdate(): void;
+    onRoleDelete(): void;
+    onGuildLeave(): void;
+    onReactionAdd(): void;
+    onTypingStart(): void;
+    onInviteCreate(): void;
+    onInviteDelete(): void;
+    onMemberUpdate(): void;
+    onChannelCreate(): void;
+    onChannelUpdate(): void;
+    onChannelDelete(): void;
+    onMessageUpdate(): void;
+    onMessageDelete(): void;
+    onReactionRemove(): void;
+    onPresenceUpdate(): void;
+    onVoiceStateUpdate(): void;
+    onInteractionCreate(): void;
+
+    onMessage(options: Interfaces.Message): void;
+
+    command(command: Interfaces.Normal): void;
+    loopCommand(command: Interfaces.Loop): void;
+    interactionCommand(command: Interfaces.Slash): void;
+
+    joinCommand(command: Interfaces.Command): void;
+    leaveCommand(command: Interfaces.Command): void;
+    readyCommand(command: Interfaces.Command): void;
+    updateCommand(command: Interfaces.Command): void;
+    banAddCommand(command: Interfaces.Command): void;
+    deletedCommand(command: Interfaces.Command): void;
+    timeoutCommand(command: Interfaces.Command): void;
+    botJoinCommand(command: Interfaces.Command): void;
+    botLeaveCommand(command: Interfaces.Command): void;
+    musicEndCommand(command: Interfaces.Command): void;
+    rateLimitCommand(command: Interfaces.Command): void;
+    banRemoveCommand(command: Interfaces.Command): void;
+    userUpdateCommand(command: Interfaces.Command): void;
+    roleCreateCommand(command: Interfaces.Command): void;
+    roleDeleteCommand(command: Interfaces.Command): void;
+    roleUpdateCommand(command: Interfaces.Command): void;
+    musicStartCommand(command: Interfaces.Command): void;
+    reactionAddCommand(command: Interfaces.Command): void;
+    typingStartCommand(command: Interfaces.Command): void;
+    inviteDeleteComamnd(command: Interfaces.Command): void;
+    timeoutPulseCommand(command: Interfaces.Command): void;
+    inviteCreateCommand(command: Interfaces.Command): void;
+    memberUpdateCommand(command: Interfaces.Command): void;
+    channelUpdateCommand(command: Interfaces.Command): void;
+    channelDeleteCommand(command: Interfaces.Command): void;
+    channelCreateCommand(command: Interfaces.Command): void;
+    reactionRemoveCommand(command: Interfaces.Command): void;
+    presenceUpdateCommand(command: Interfaces.Command): void;
+    voiceStateUpdateCommand(command: Interfaces.Command): void;
+  }
+}

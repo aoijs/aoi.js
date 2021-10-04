@@ -11,7 +11,7 @@ const mentioned = d => {
   
   if (isNaN(mention)) return d.error(`❌ Invalid mention number in \`$mentioned${inside}\``)
   
-  const user = [...d.message.mentions.users.values()][Number(mention) - 1]
+  const user = d.message.mentions.users.array()[Number(mention) - 1]
   
   return {
     code: code.replaceLast(`$mentioned${inside}`, user ? user.id : returnUser === "yes" ? d.message.author.id : "") 

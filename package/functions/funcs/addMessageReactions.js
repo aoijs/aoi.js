@@ -1,21 +1,32 @@
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack();
-  const [channelID, messageID,...reactions] = inside.splits;
-  const channel = d.client.channels?.cache.get(channelID);
+
+  const r = code.split("$addMessageReactions").length - 1;
+
+  const inside = code.split("$addMessageReactions")[r].after();
+
+  const [channelID, messageID] = inside.splits;
+
+  const channel = d.client.channels.cache.get(channelID);
+
   if (!channel)
     return d.error(
-      d.aoiError.functionErrorResolve(d,"channel",{inside})
+      `❌ Invalid channel ID in \`$addMessageReactions${inside.total}\``
     );
+
   const msg = await channel.messages.fetch(messageID).catch((err) => null);
+
   if (!msg)
     return d.error(
-     d.aoiError.functionErrorResolve(d,"message",{inside})
+      `❌ Invalid message ID in \`$addMessageReactions${inside.total}\``
     );
-  for (const reaction of reactions) {
+
+  for (const reaction of inside.splits.slice(2)) {
     const m = await msg.react(reaction.addBrackets()).catch((err) => null);
-    if (!m) return d.error(`\`ReactionError: Failed To React With:\`'${reaction}'`);
+
+    if (!m) return d.error(`❌ Failed to react with ${reaction}`);
   }
+
   return {
     code: code.replaceLast(`$addMessageReactions${inside.total}`, ""),
   };

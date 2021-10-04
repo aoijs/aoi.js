@@ -1,4 +1,4 @@
-const keyPerms = require("../../util/permissions")
+const keyPerms = require("../../utils/permissions")
 
 module.exports = async d => {
     try {

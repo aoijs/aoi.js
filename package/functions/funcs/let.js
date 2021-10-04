@@ -17,7 +17,6 @@ let vars = d.vars
     code = code.replaceLast(`$let${inside.total}`, "")
     
     return {
-        code: code ,
-        data:{vars: vars}
+        code: code
     }
   }

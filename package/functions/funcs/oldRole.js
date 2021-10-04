@@ -1,4 +1,4 @@
-const roleOptions = require("../../util/roleOptions");
+const roleOptions = require("../../utils/roleOptions");
 
 module.exports = async (d) => {
   const code = d.command.code;

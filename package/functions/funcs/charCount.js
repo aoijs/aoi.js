@@ -9,11 +9,11 @@ module.exports = async (d) => {
     const inside = after.inside;
 
     return {
-      code: code.replaceLast(`$charCount${after}`, inside?.addBrackets()?.length),
+      code: code.replaceLast(`$charCount${after}`, inside.length),
     };
   } else {
     return {
-      code: code.replaceLast(`$charCount`, d.args.join(" ")?.addBrackets()?.length),
+      code: code.replaceLast(`$charCount`, d.args.join(" ").length),
     };
   }
 };

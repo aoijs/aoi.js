@@ -8,10 +8,10 @@ const discriminator = async (d) => {
   if (after.inside) {
     const inside = after.inside;
 
-    const user = await d.util.getUser(d,inside)
+    const user = await d.client.users.fetch(inside).catch((err) => {});
 
     if (!user)
-      return d.error(`${d.func}: Invalid user ID in $discriminator${after}`);
+      return d.error(`❌ Invalid user ID in \`$discriminator${after}\``);
 
     code = code.replaceLast(
       `$discriminator${after}`,
@@ -20,7 +20,7 @@ const discriminator = async (d) => {
   } else {
     code = code.replaceLast(
       "$discriminator",
-      d.message.author?.discriminator.deleteBrackets()
+      d.message.author.discriminator.deleteBrackets()
     );
   }
 

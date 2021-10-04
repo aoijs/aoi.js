@@ -1,14 +1,27 @@
 module.exports = async (d) => {
   const code = d.command.code;
 
+  const r = code.split("$channelCount").length - 1;
 
-  const inside = d.unpack();
-  const [type="all",opt='includes'] = inside.splits;
-let result;
-    if(type==="all") result=d.guild.channels.cache.size 
-    else result = d.guild.channels.cache.filter(x=>x.type === d.util.channelTypes[type]).size 
+  const after = code.split("$channelCount")[r].after();
+
+  if (after.inside) {
+    const inside = after.inside;
+
     return {
-      code: d.util.setCode({function:d.func,code,inside, result})
+      code: code.replaceLast(
+        `$channelCount${after}`,
+        d.message.guild.channels.cache.filter((c) =>
+          inside.split(";").includes(c.type)
+        ).size
+      ),
     };
-
+  } else {
+    return {
+      code: code.replaceLast(
+        `$channelCount`,
+        d.message.guild.channels.cache.size
+      ),
+    };
+  }
 };

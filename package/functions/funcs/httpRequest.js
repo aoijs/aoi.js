@@ -1,4 +1,4 @@
-const {EmbedError, ComponentParser,FileParser,ErrorHandler} = require('../../Handler/parsers.js')
+const errorHandler = require('../../handlers/errors')
 const methods = require('http').METHODS
 const axios = require('axios').default.create({
 	responseType: 'text',
@@ -29,16 +29,16 @@ module.exports = async d => {
 		method = 'GET',
 		body = '',
 		property = '',
-		error = '$default',
+		error = '',
 		...headers
 	] = inside.splits
 
-	if (!url) return d.error(`${d.func}: No url specified in ${inside}`)
+	if (!url) return d.error(`:x: No url specified in \`$httpRequest${inside}\``)
 
 	url = url.addBrackets()
 	method = method.toUpperCase()
 
-	if (!methods.includes(method)) return d.error(`${d.func}: Invalid method '${method}' in ${inside}`)
+	if (!methods.includes(method)) return d.error(`:x: Invalid method '${method}' in \`$httpRequest${inside}\``)
 
 	for (let head of headers) {
 		head = head.addBrackets()
@@ -67,8 +67,8 @@ module.exports = async d => {
 				property = property.addBrackets()
 
 				response = eval(`response${['[', '.'].includes(property[0]) ? property : `.${property}`}`) + ''
-			} catch (e){
-				return execError(e)
+			} catch {
+				return execError()
 			}
 		}
 	}
@@ -77,24 +77,7 @@ module.exports = async d => {
 		code: code.replaceLast(`$httpRequest${inside}`, typeof response === 'string' ? response.removeBrackets() : response)
 	}
 
-	
-    async function execError(e) {
-	
-        let data ;
-        if(error === "$default"){
-            d.error(e)
-        }
-        else{
-        try {
-            data = JSON.parse(error) 
-            data.embeds = await EmbedParser (data.embeds||"") 
-            data.components = await ComponentParser (data.components||"") 
-            data.files = await FileParser(data.files||"") 
-        }
-        catch (e){
-            data = await ErrorHandler(d,error,true) 
-        }
-            d.error(data,"object")
-            }
+	function execError() {
+		errorHandler(d, error)
 	}
 }

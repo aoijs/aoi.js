@@ -1,12 +1,14 @@
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack()
 
-  const [guildID = d.message.guild.id,showDiff = "no"] = inside.splits;
+  const r = code.split("$cacheMembers").length - 1;
+  const inside = code.split("$cacheMembers")[r].after();
+
+  const [guildID = d.message.guild.id, returnCount = "no"] = inside.splits;
   const guild = d.client.guilds.cache.get(guildID);
 
   if (!guild)
-    return d.error(d.aoiError.functionErrorResolve(d,"guild",{inside}));
+    return d.error(`:x: Invalid guildID in \`$cacheMembers${inside.total}\``);
 
   const prev = guild.members.cache.size;
 
@@ -18,7 +20,7 @@ module.exports = async (d) => {
   return {
     code: code.replaceLast(
       `$cacheMembers${inside.total}`,
-      showDiff.toLowerCase() === "yes" ? aft - prev : ""
+      returnCount.toLowerCase() === "yes" ? aft - prev : ""
     ),
   };
 };

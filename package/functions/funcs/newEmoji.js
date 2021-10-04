@@ -1,4 +1,4 @@
-const emojiOptions = require("../../util/emojiOptions");
+const emojiOptions = require("../../utils/emojiOptions");
 
 module.exports = async (d) => {
   const code = d.command.code;

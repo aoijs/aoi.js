@@ -1,7 +1,7 @@
 module.exports = d => {
  
   const code = d.command.code
-  console.log(d.array) 
+  
   const inside = d.unpack()
 	const err = d.inside(inside)
 

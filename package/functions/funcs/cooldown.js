@@ -1,7 +1,5 @@
 const ms = require("ms");
-const {ErrorHandler} = require("../../Handler/parsers.js")
-
-
+const error = require("../../handlers/errors.js");
 const parse = require("parse-ms");
 const toParse = require("ms-parser");
 
@@ -23,15 +21,15 @@ module.exports = async (d) => {
   const errorMessage = fields.join(";");
 
   if (!ms(time))
-    return d.error(`${d.func}: Invalid time '${time}' in ${inside}`);
+    return d.error(`❌ Invalid time '${time}' in \`$cooldown${inside}\``);
 
   const item = await d.client.db.get(
-    d.client.db.tables[0],
+    "main",
     `cooldown_${d.command.name}_${d.message.guild.id}_${d.message.author.id}`
   );
 
   if (item && ms(time) - (Date.now() - Number(item["value"])) > 999) {
-    return ErrorHandler(
+    return error(
       d,
       errorMessage.split("%time%").join(
         toParse(
@@ -47,7 +45,7 @@ module.exports = async (d) => {
     );
   } else {
     d.client.db.set(
-      d.client.db.tables[0],
+      `main`,
       `cooldown_${d.command.name}_${d.message.guild.id}_${d.message.author.id}`,
       Date.now()
     );

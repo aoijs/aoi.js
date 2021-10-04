@@ -1,15 +1,12 @@
 const interpreter = require("../interpreter");
 
 module.exports = async (client, interaction) => {
-   let commands;
-if(interaction.type === 2){
-    client.applications.events.emit("ButtonClick",interaction)
-}
-  commands = client.slash_commands
+  const commands = client.slash_commands
     .array()
     .filter(
-      (c) =>interaction.type===2 ?c.name.toLowerCase() === interaction.command.name.toLowerCase() : (c.prototype ===  "button" && Array.isArray(c.name) ? c.name.includes(interaction.button.customID) : c.name === interaction.button.customID)
+      (c) => c.name.toLowerCase() === interaction.command.name.toLowerCase()
     );
+
   if (!commands.length) return;
 
   const args = [];
@@ -19,9 +16,7 @@ if(interaction.type === 2){
       args.push(((option.value.toString ? option.value.toString() : option.value) || "").trim().split(/ +/g).join(" "));
     }
   }
-    //console.log(require('util').inspect(interaction,{depth:0}))
 
-//console.log(interaction)
   for (const command of commands) {
     await interpreter(
       client,
@@ -30,7 +25,6 @@ if(interaction.type === 2){
         member: interaction.member,
         guild: interaction.guild,
         channel: interaction.channel,
-        message: interaction.message 
       },
       args,
       command,

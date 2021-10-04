@@ -9,23 +9,23 @@ module.exports = async (d) => {
 
   const [userID, deaf = "yes", reason] = inside.splits;
 
-  const user = await d.util.getUser(userID)
+  const user = await d.message.guild.members.fetch(userID).catch((err) => {});
 
   if (!user)
-    return d.error(`${d.func}: Invalid userID in $deafenUser${inside.total}`);
+    return d.error(`:x: Invalid userID in \`$deafenUser${inside.total}\``);
 
   const state = d.message.guild.voiceStates.cache.get(user.id);
 
   if (!state || !state.channel)
     return d.error(
-      `${d.func}: User is not in any voice channel in ${inside.total}`
+      `:x: User is not in any voice channel in \`$deafenUser${inside.total}\``
     );
 
   try {
     await state.setDeaf(deaf.toLowerCase() === "yes", reason);
   } catch {
     return d.error(
-      `${d.func}: Failed to deafen member in ${inside.total}`
+      `:x: Failed to deafen member in \`$deafenUser${inside.total}\``
     );
   }
 

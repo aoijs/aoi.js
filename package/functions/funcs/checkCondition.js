@@ -1,23 +1,78 @@
-const { CheckCondition } = require('../../Utils/helpers/checkCondition.js') 
-const { mustEscape } = require('../../Utils/helpers/mustEscape.js')
-module.exports = async d => {
-const { code } = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if(err) d.error(err);
-    
-    const [ condition ] = inside.splits;
-    
-    if(![ "==","!=","<=",">=","||","&&","<",">" ].some( x => condition.includes(x) )) return d.aoiError.fnError(d,"custom",{ inside },"Valid Operators Not Provided In"); 
-    
-    let result = eval(CheckCondition.solve(mustEscape(condition)||""))?.toString();
-    
-    if(![ "true","false"].includes(result)) {
-        d.aoiError.fnError(d,"custom",{ inside },"Invalid Condition Provided In");
-        result = undefined;
-        }
-    
-    return {
-        code: d.util.setCode({ function : d.func,code,inside,result }) 
-    } 
-} ;
+const checkCondition = async (d) => {
+  const code = d.command.code;
+
+  const r = code.split("$checkCondition").length - 1;
+
+  const inside = code.split("$checkCondition")[r].after();
+
+  const err = d.inside(inside);
+
+  if (err) return d.error(err);
+
+  const p = inside.splits;
+
+  const condition = p.shift();
+
+  const operators = () => {
+    for (const op of ["<=", ">=", "==", "!=", "<", ">"]) {
+      if (condition.includes(op)) return op;
+    }
+  };
+
+  const op = operators();
+
+  if (!operators)
+    return d.error(`:x: No valid operator in \`$checkCondition${inside}\``);
+
+  const fields = condition.split(op);
+
+  let pass = true;
+
+  if (op === "<=") {
+    if (
+      Number(fields[0]) > Number(fields[1]) ||
+      !fields[0] ||
+      !fields[1] ||
+      Number(fields[0]) === NaN ||
+      Number(fields[1]) === NaN
+    )
+      pass = false;
+  } else if (op === ">=") {
+    if (
+      Number(fields[0]) < Number(fields[1]) ||
+      !fields[0] ||
+      !fields[1] ||
+      Number(fields[0]) === NaN ||
+      Number(fields[1]) === NaN
+    )
+      pass = false;
+  } else if (op === "==") {
+    if (fields[0].addBrackets() !== fields[1].addBrackets()) pass = false;
+  } else if (op === "<") {
+    if (
+      Number(fields[0]) >= Number(fields[1]) ||
+      !fields[0] ||
+      !fields[1] ||
+      Number(fields[0]) === NaN ||
+      Number(fields[1]) === NaN
+    )
+      pass = false;
+  } else if (op === ">") {
+    if (
+      Number(fields[0]) <= Number(fields[1]) ||
+      !fields[0] ||
+      !fields[1] ||
+      Number(fields[0]) === NaN ||
+      Number(fields[1]) === NaN
+    )
+      pass = false;
+  } else if (op === "!=") {
+    if (fields[0].addBrackets() === fields[1].addBrackets()) pass = false;
+  }
+
+  return {
+    code: code.replaceLast(`$checkCondition${inside}`, pass),
+  };
+};
+
+module.exports = checkCondition;

@@ -1,4 +1,4 @@
-const voiceStateOptions = require("../../util/voiceStateOptions") 
+const voiceStateOptions = require("../../utils/voiceStateOptions") 
 
 module.exports = async d => {
  const code = d.command.code 

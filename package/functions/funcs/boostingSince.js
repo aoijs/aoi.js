@@ -1,16 +1,29 @@
 module.exports = async (d) => {
   const code = d.command.code;
-  const data = d.unpack()
-  const [userId= d.message.author.id, option = "date",guildId=d.guild.id] = data.splits;
-  const guild = await d.util.getGuild(d,guildId)
-  const member = await d.util.getMember(guild,userId)
-  if (!member)
-    return d.error(
-      d.aoiError.functionErrorResolve(d,"member",{inside})
-    );
-let result = member.premiumSinceTimestamp ? option === "date" ? member.premiumSince:member.premiumSinceTimestamp():null ?? ""
-  return {
-    code: d.util.setCode({function:d.func,inside:data,result:result})
 
+  const r = code.split("$boostingSince").length - 1;
+
+  const data = code.split("$boostingSince")[r].after();
+
+  const [userID = d.message.author.id, option = "date"] = data.splits;
+
+  const member = await d.message.guild.members
+    .fetch(userID)
+    .catch((err) => null);
+
+  if (!userID)
+    return d.message.channel.send(
+      `❌ Invalid user ID in \`$boostingSince${data.total}\``
+    );
+
+  return {
+    code: code.replaceLast(
+      `$boostingSince${data.total}`,
+      member.premiumSinceTimestamp
+        ? option === "ms"
+          ? member.premiumSinceTimestamp
+          : new Date(member.premiumSinceTimestamp)
+        : ""
+    ),
   };
 };

@@ -8,13 +8,26 @@ module.exports = async d => {
 
 	if (err) return d.error(err)
     
-    const [messageID, mention = "yes"] = inside.splits
-    d.allowedMentions.repliedUser = mention === "yes" 
+    const [messageID, msg, mention = "yes"] = inside.splits
     
+    const m = await embed(d, msg, true) 
+    
+    await d.client.api.channels(d.message.channel.id).messages.post({
+        data: {
+            content: m.message || "", 
+            embed: m.embed, 
+            files: m.embed ? m.embed.files : undefined, 
+            message_reference: {
+                message_id: messageID 
+            }, 
+            allowed_mentions: {
+      			replied_user: mention === "yes",
+	  			parse: d.disabledMentions
+    		}
+        }
+    })
     
     return {
-        code: code.replaceLast(`$reply${inside}`, ""),
-        reply :{message:messageID,user:mention === "yes"},
-        allowedMentions:d.allowedMentions
+        code: code.replaceLast(`$reply${inside}`, "")
     }
 }

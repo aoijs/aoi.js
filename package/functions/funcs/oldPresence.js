@@ -1,4 +1,4 @@
-const presenceOptions = require("../../util/presenceOptions") 
+const presenceOptions = require("../../utils/presenceOptions") 
 
 module.exports = async d => {
     const code = d.command.code 

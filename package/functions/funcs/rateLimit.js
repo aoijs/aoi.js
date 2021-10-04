@@ -1,4 +1,4 @@
-const rateLimitOptions = require("../../util/rateLimitOptions") 
+const rateLimitOptions = require("../../utils/rateLimitOptions") 
 
 module.exports = async d => {
  const code = d.command.code 

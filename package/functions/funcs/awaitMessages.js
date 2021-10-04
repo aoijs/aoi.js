@@ -1,23 +1,27 @@
-
+const interpreter = require("../../interpreter");
 const ms = require("ms");
-const {ErrorHandler} = require("../../Handler/parsers.js");
+const embed = require("../../handlers/errors");
 
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack();
+
+  const r = code.split("$awaitMessages").length - 1;
+
+  const inside = code.split("$awaitMessages")[r].after();
+
   const err = d.inside(inside);
+
   if (err) return d.error(err);
-  let [
-    channelId=d.channel.id,
-    messageId=d.message.id,
+
+  const [
     userFilter,
     time,
     responseOrResponses,
     commandOrCommands,
     error,
-    userId,
-    data={} 
+    userID,
   ] = inside.splits;
+
   const filter = (m) => {
     return (
       (userFilter === "everyone" ? true : userFilter === m.author.id) &&
@@ -32,35 +36,31 @@ module.exports = async (d) => {
       !m.author.bot
     );
   };
+
   let channel = d.message.channel;
-  if (userId) {
-    let user = await d.client.users.cache.get(userId);
-  if(!user){
-      d.client.users.fetch(userId).catch(e=>undefined)
-  }
+
+  if (userID) {
+    const user = await d.client.users.fetch(userID).catch((err) => null);
+
     if (!user)
-      return d.error(`$awaitMessage: Invalid User in ${inside}`);
+      return d.error(`❌ Invalid user ID in \`$awaitMessages${inside}\``);
+
     channel = await user.createDM();
   }
-    try{
-data = JSON.parse(data)
-        }
-    catch (e){
-        d.error(`${d.func}: Invalid Data Provided In ${inside}`)
-    }
+
   channel
-    .awaitMessages({filter, 
+    .awaitMessages(filter, {
       max: 1,
       time: ms(time),
       errors: ["time"],
     })
-    .then(async(collected) => {
+    .then((collected) => {
       const m = collected.first();
 
       const cmd =
         responseOrResponses === "everything"
-          ? d.client.cmd.awaited.find((c) => c.name === commandOrCommands)
-          : d.client.cmd.awaited.find(
+          ? d.client.awaited_commands.find((c) => c.name === commandOrCommands)
+          : d.client.awaited_commands.find(
               (c) =>
                 c.name ===
                 commandOrCommands.split(" ").join("").split(",")[
@@ -75,13 +75,13 @@ data = JSON.parse(data)
             );
 
       if (!cmd)
-        return d.error(`$awaitMessage:Missing Await Command:${cmd} `);
+        return d.error(`❌ Awaited command ${m.content} does not exist`);
 
-    await  d.interpreter(d.client, m, m.content.split(" "), cmd,d.client.db,false, undefined,{awaitData:data});
+      interpreter(d.client, m, m.content.split(" "), cmd);
     })
     .catch((err) => {
-      if (!err || !err.message) ErrorHandler(d, error);
-      else if (err.message) return d.error(`${d.func}:${err.message}`);
+      if (!err || !err.message) embed(d, error);
+      else if (err.message) return d.error(`❌ ${err.message}`);
     });
 
   return {

@@ -1,20 +1,24 @@
 const Discord =require("discord.js") 
 const image = d => {
 
-
+  const r = d.command.code.split("$image").length
+  
+  if (r >= 3) return d.message.channel.send(`❌ Can't use more than one $image.`)
+  
   const inside = d.unpack()
 	const err = d.inside(inside)
 
 	if (err) return d.error(err)
   
-  let [index=1,url, name] = inside.splits
-  if(isNaN(index) || index <1) return d.error(`${d.func}:Invalid Index in ${inside}`)
+  let [url, name] = inside.splits
+  
   url = url.addBrackets() 
-  if(!d.embeds[index-1]) d.embeds[index-1] = new Discord.MessageEmbed()
-d.embeds[index-1].setImage(url)
+  
+  let img = url 
+  
   return {
     code: d.command.code.replaceLast(`$image${inside}`, ""),
-    embeds: d.embeds
+    embed: d.embed.setImage(img) 
   }
 }
 

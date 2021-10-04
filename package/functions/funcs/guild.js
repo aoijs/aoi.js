@@ -9,35 +9,130 @@ module.exports = async d => {
 
 	if (err) return d.error(err)
  
-    let [id, opt] = inside.splits
+    let [id, result] = inside.splits
     
     let server = (d.client.guilds.cache.get(id ? id : d.message.guild.id))
-let data = {} 
- Object.assign(data,server)   
- delete data.client 
- data.icon = server.iconURL() 
- data.features = data.features.join(" , ") 
- data.commands =data.commands.cache.size 
- delete data.members 
- data.channels = data.channels.cache.size 
- data.bans = data.bans.cache.size
- data.roles = data.roles.cache.size 
- delete data.presence 
- delete data.voiceStates 
- delete data.stageInstances 
- data.invites = data.invites.size 
- data.systemChannelFlags = (data.systemChannelFlags.toArray.join(" ") === "" ? "none" : data.systemChannelFlags.toArray.join(" ") ) 
-data.owner = server.members.cache.get(data.ownerId).username 
-delete data.shard 
-delete data.afkChannel 
-delete data.systemChannel 
-delete data.me 
-delete data.voiceAdapterCreator 
-delete data.publicUpdatesChannel 
-data.joinAt = data.joinAt.toString() 
-data.emojis = data.emojis.cache.size 
-data.stickers = data.stickers.cache.size 
+
+    if (!server && (result.toLowerCase() != "isbotremoved")) result = undefined
+
+ if(![
+    "name",
+    "id",
+    "afkchannelid",
+    "afktimeout",
+    "isavailable",
+    "isbotremoved",
+    "isverified",
+    "ispartnered",
+    "description",
+    "created",
+    "region",
+    "membercount",
+    "boostcount",
+    "boostlevel",
+    "updateschannel",
+    "ruleschannel",
+    "systemchannelid",
+    "verificationlvl",
+    "timestamp",
+    "acronym",
+    "emojicount"
+].includes(result.toLowerCase())) return d.error(`:x: Invalid option in 2nd field of \`$guild${inside}\`.`)
+
+switch(result) {
+    case "name": result = server.name;
+        break;
+    case "isavailable": result = server.available;
+        break;
+    case "isbotremoved": 
+        try {
+            result = server.deleted;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "isverified" : result = server.verified;
+        break;
+    case "ispartnered": result = server.partnered;
+        break;
+    case "id": result = server.id;
+        break;
+    case "afkchannelid": 
+        try {
+            result = server.afkChannelID;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "afktimeout": 
+        try {
+            result = server.afkTimeout;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "created": result = moment(server.createdAt).format("LLLL");
+        break;
+    case "timestamp":
+        result = Object.entries(ms(Date.now() - server.createdTimestamp)).map((x,y)=> {
+            if (x[1] > 0 && y < 4) return `${x[1]} ${x[0]}`
+        }).filter(x => x).join(", ")
+        if(!result) result = undefined
+        break;
+    case "description": 
+        try {
+            result = server.description;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "region": result = server.region;
+        break;
+    case "membercount": result = server.memberCount;
+        break;
+    case "boostcount": result = server.premiumSubscriptionCount;
+        break;
+    case "boostlevel": result = server.premiumTier;
+        break;
+    case "updateschannel": 
+        try {
+            result = server.publicUpdatesChannel;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "ruleschannel": 
+        try {
+            result = server.rulesChannelID;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "systemchannelid": 
+        try {
+            result = server.systemChannelID;
+            if(result === null) result = undefined
+        } catch {
+            result = undefined
+        }
+        break;
+    case "verificationlvl": result = server.verificationLevel;
+        break;
+    case "acronym": result = server.nameAcronym;
+        break;
+    case "emojicount": result = server.emojis.cache.size;
+        break;
+
+    default: undefined
+    };
+ 
     return {
-        code: code.replaceLast(`$guild${inside}`,data[opt]?.addBrackets()??"")
+        code: code.replaceLast(`$guild${inside}`, result)
     }
 }

@@ -1,10 +1,32 @@
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack();
-  const [id=d.channel?.id]=inside.splits;
-  const channel = await d.util.getChannel(d,id) 
-  if(!channel) return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside})) 
+
+  const r = code.split("$channelCategoryID").length - 1;
+
+  const after = code.split("$channelCategoryID")[r].after();
+
+  if (after.inside) {
+    const inside = after.inside;
+
+    const channel = d.message.guild.channels.cache.get(inside);
+
+    if (!channel)
+      return d.error(
+        `❌ Invalid channel ID in \`$channelCategoryID${inside}\``
+      );
+
     return {
-        code:d.util.setCode({function:d.func,inside,code, result: channel.parentId}) 
-    }
-}
+      code: code.replaceLast(
+        `$channelCategoryID${after}`,
+        channel.parentID || ""
+      ),
+    };
+  } else {
+    return {
+      code: code.replaceLast(
+        `$channelCategoryID`,
+        d.message.channel.parentID || ""
+      ),
+    };
+  }
+};

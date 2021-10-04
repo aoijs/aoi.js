@@ -1,4 +1,5 @@
 const Parser = {
+  
   $setServerVar:
     "Sets a server variable value;$setServerVar[variable;value;guildID (optional)]",
   $serverCount: "Displays the amount of servers your bot's in.",
@@ -516,7 +517,7 @@ $createSlashCommand[$guildID;say;I'll repeat what u said;message:the message I h
   $reactionCount: `Returns the amount of people that have given this reaction to this message;$reactionCount[channelID;messageID;emoji]`,
   $botPing: "Returns the Client Latency ms",
   $interactionReply:
-    "replies to an interaction (slash command);$interactionReply[content;embeds;components (optional);flags (optional);type (optional)]",
+    "replies to an interaction (slash command);$interactionReply[message;embeds...;type (default is 0 , 64 for ephemeral)]",
   $clearSongQueue:
     "Clear all songs in queue besides 1st song in queue;$clearSongQueue",
   $messageID: `Returns the user's message ID `,
@@ -840,10 +841,13 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $webhookUpdate: "Holds data for the channel the webhook was updated in. (webhookUpdate callback);$webhookUpdate[webhookUpdateOption]",
   $bulk: "Holds data for the bulk delete command. (messageDeleteBulk callback);$bulk[bulkOption]",
   $editGuild: "A compact function to edit different server settings.;$editGuild[option;result;guildID (optional)]",
-//v3
+//4.0.0
+
 $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileSize[file location;units] \n units: b, kb , mb , gb",
   $getAttachments: "Gets attachment info of the provided Message; $getAttachments[channelID;messageID;position;property] \n property: name , id , size , height , width , url",
   $sendTTS: "send a tts message in the current channel (optional);$sendTTS[text] or $sendTTS[text;channelID]" ,
+
+  //new functions 
   $writeFile: "writes a text in the provided file. If file doesn't exist , it will create it.;$writeFile[file location;text; encoding (optional)]",
   $readFile: "returns the data of the file;$readFile[file location]",
   $renameFile: "renames the provided file;$renameFile[oldname;newname]",
@@ -855,36 +859,6 @@ $fileSize : "Returns the size Of file in The project In the Provided Unit;$fileS
   $oldApplicationCmd: "gets the data from application Callbacks (update and delete one);$oldApplicationCmd[application options]",
   $newApplicationCmd: "gets the data from application Callbacks (update and create one);$newApplicationCmd[application options]",
   $interactionData : "gets the data when an interaction was created (onInteractionCreate); $interactionData[property]",
-  $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]",
-//3.0.5 
-$apiMessage: "sends a message using Discord api;$apiMessage[content,embed (optional), components (optional), reference _message_id:mention the replied user(default false); Return id (optional default no)]",
-$awaitComponents: "awaits buttons for given amount of uses;$awaitButtons[msgid;userfilter; customID, customID,...; awaitcommand, awaitedcommand,...; error content,Error embed,erorr flags (optional);uses (optional : default 1)]",
-$componentCollector: "creates a collector for given customIDs;$buttonCollector[messageID;everyone/userID;time;customID,customID,...;awaitedcommand,awaitedcommand,...;error msg content,error msg embed,error msg flags (64 for ephemeral) (optional); awaitedcommand (executes when collector ends)(optional)]",
-$interactionEdit:"edits the original interaction Response;$interactionEdit[content;embeds; components]",
-$interactionDelete:"deletes the original interaction Response (doesn't support ephemeral messages)",
-$interactionDefer:"",
-$interactionUpdate:"",
-
-$eventData:"gets the data emitted by the event;$eventData[data]",
-$eventEmit:"emits the event and datas;$eventEmit[eventName;data;data;...]",
-$awaitComponentsUntil:"",
-$endif:"Ends the if statement.",
-$addButton:"adds the button to the bot message;$addButton[index;label;style;customId/url;disabled?;emoji?]",
-$addSelectMenu:"adds a select menu to bot message;$addselectMenu[index;customId; placeholder;minValue;maxValue;disabled;name:description:value:default:emoji;...]",
-$blacklist:"blacklist the ids on startup (for user type first id is guildId);$blacklist[type;ids;ids;..]",
-$blacklistError:"adds blacklist error message;$blacklistError[type;error Message]",
-$nonBlacklistCommands:"cmds that can be used by blacklist users;$nonblacklistCommands[cmdname;cmdname;...]",
-$createSticker:"creates a sticker;$createSticker[guildId;url;Name;Tag?; description?;reason?]",
-$deleteSticker:"delete the sticker;$deleteSticker[guildId;name;reason?]",
-$createStageInstance:"creates a stage instance;$createStageInstance[stageid;topic;privacy?]",
-$awaitComponentsUntil:"awaits component for certain time;$awaitComponentsUntil[channelid;Message-ID;userfilter;time;customId, cudtomid,...;awaitCommand,awaitCommand,...;data?]",
-$createThread:"creates a thread channel;$createThread[name;archive?;type?;startMessage(id)?]",
-$deleteThread:"deletes a thread channel;$deleteThread[channelId; threadid]",
-$joinThread:"joins a thread;$joinThread[channelid;threadid]",
-$leaveThread:"leaves the thread;$leaveThread[channelid;threadid]",
-$addThreadMember:"adds a user to thread;$addThreadMember[channelid;threadid;userid;reason?]",
-$removeThreadMember:"removes the user from thread;$removeThreadMember[channelid;threadid;userid;reason",
-$fetchActiveThreads:"fetch active threads:$fetchActiveThreads[channelid; cache?; option?]",
-$fetchArchivedThreads:"fetch archived threads:$fetchArchivedThreads[channelid; cache?; option?]"  
+  $filterTextSplitElement : "filters the elements in textsplit with provided query and given type (types : equal, includes, starts,ends);$filterTextSplitElement[query;type (optional); separator (optional)]"
 };
 module.exports = Parser;

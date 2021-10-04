@@ -1,4 +1,4 @@
-const guildOptions = require("../../util/guildOptions");
+const guildOptions = require("../../utils/guildOptions");
 
 module.exports = async (d) => {
   const code = d.command.code;

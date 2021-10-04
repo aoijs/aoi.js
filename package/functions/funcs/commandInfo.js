@@ -12,7 +12,7 @@ module.exports = async (d) => {
   const [name, option] = inside.splits;
 
   const command =
-    d.client.cmd.default.find(
+    d.client.bot_commands.find(
       (c) =>
         c.name.toLowerCase() === name.toLowerCase() ||
         (c.aliases && typeof c.aliases === "object"

@@ -1,12 +1,10 @@
-const Command_Handler = require("../Handler/commands.js");
-const alwaysExecuteCommands = require("../Handler/alwaysExecute");
-
-
+const Command_Handler = require("../handlers/commands.js");
+const alwaysExecuteCommands = require("../handlers/alwaysExecuteCommands");
 
 const Message = async (client, message, db) => {
   await Command_Handler(client, message, db);
 
- await alwaysExecuteCommands(client, message, db);
+  alwaysExecuteCommands(client, message, db);
 
   require("../handlers/typingStopHandling")(client, message);
 };

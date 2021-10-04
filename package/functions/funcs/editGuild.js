@@ -11,9 +11,9 @@ module.exports = async d => {
     const result = fields[1];
     const guild = d.client.guilds.cache.get(fields[2]) || d.client.guilds.cache.get(d.message.guild.id);
 
-    if (!options) return d.error(`${d.func}: Missing option in ${inside}`);
-    if (!result) return d.error(`${d.func}: Invalid result in second field in ${inside}`);
-    if (!guild) return d.error(`${d.func}: Invalid guild ID in ${inside}`);
+    if (!options) return d.error(`:x: Missing option in \`$editGuild${inside}\``);
+    if (!result) return d.error(`:x: Invalid result in second field in \`$editGuild${inside}\``);
+    if (!guild) return d.error(`:x: Invalid guild ID in \`$editGuild${inside}\``);
 
     const timeoutOpts = {
         "1m": 60, // minutes with "m" in option
@@ -115,68 +115,68 @@ module.exports = async d => {
                 systemChannel: inside.splits[1].addBrackets()
             }).catch(err => {
                 const channel = d.client.channels.cache.get(result);
-                if (channel.type !== "text") return d.error(`${d.func}: System Channel must be a Text Channel in ${inside}.`)
+                if (channel.type !== "text") return d.error(`:x: System Channel must be a Text Channel in \`$editGuild${inside}\`.`)
             })
             break;
             case "updateschannel": result = await guild.edit({
                 publicUpdatesChannel: inside.splits[1].addBrackets()
             }).catch(err => {
                 const channel = d.client.channels.cache.get(result);
-                if(channel.type !== "text") return d.error(`${d.func}: The Updates Channel must be a Text Channel in ${inside}`)
+                if(channel.type !== "text") return d.error(`:x: The Updates Channel must be a Text Channel in \`$editGuild${inside}\``)
             })
             break;
             case "ruleschannel": result = await guild.edit({
                 rulesChannel: inside.splits[1].addBrackets()
             }).catch(err => {
                 const channel = d.client.channels.cache.get(result);
-                if(channel.type !== "text") return d.error(`${d.func}: The Updates Channel must be a Text Channel in ${inside}`)
+                if(channel.type !== "text") return d.error(`:x: The Updates Channel must be a Text Channel in \`$editGuild${inside}\``)
             })
             break;
             case "afkchannel": result = await guild.edit({
                 afkChannel: inside.splits[1].addBrackets()
             }).catch(err => {
                 const channel = d.client.channels.cache.get(result);
-                if (channel.type !== "voice") return d.error(`${d.func}: AFK Channel must be a Voice Channel in ${inside}`)
+                if (channel.type !== "voice") return d.error(`:x: AFK Channel must be a Voice Channel in \`$editGuild${inside}\`.`)
             })
             break;
             case "afktimeout": result = await guild.edit({
                 afkTimeout: timeoutOpts[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!timeoutOpts[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!timeoutOpts[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             case "verificationlevel": result = await guild.edit({
                 verificationLevel: verifyOpts[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!verifyOpts[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!verifyOpts[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             case "region": result = await guild.edit({
                 verificationLevel: regions[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!regions[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!regions[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             case "verificationlvl": result = await guild.edit({
                 verificationLevel: verifyOpts[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!verifyOpts[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!verifyOpts[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             case "contentfilter": result = await guild.edit({
                 explicitContentFilter: explicitOpts[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!explicitOpts[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!explicitOpts[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             case "notifications": result = await guild.edit({
                 defaultMessageNotifications: notifyOpts[inside.splits[1].addBrackets()]
             }).catch(err => {})
-            if (!notifyOpts[inside.splits[1].addBrackets()]) return d.error(`${d.func}: Invalid input in 2nd field at ${inside}.`);
+            if (!notifyOpts[inside.splits[1].addBrackets()]) return d.error(`:x: Invalid input in 2nd field at \`$editGuild${inside}\`.`);
             break;
             default:
-            return d.error(`${d.func}: Invalid option in ${inside}`)
+            return d.error(`:x: Invalid option in $editGuild${inside}`)
         };
     } catch  {
-        if (!d.message.guild) return d.error(`${d.func}:Failed to edit Guild!`)
+        if (!d.message.guild) return d.error(`Failed to edit Guild!`)
     }
 
-    if (!result) return d.error(`${d.func}: Failed to edit Guild in ${inside}`)
+    if (!result) return d.error(`:x: Failed to edit Guild in \`$editGuild${inside}\``)
 
     return {
         code: code.replaceLast(`$editGuild${inside}`, "")

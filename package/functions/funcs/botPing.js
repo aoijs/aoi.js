@@ -1,7 +1,9 @@
 module.exports = (d) => {
-   const code = d.command.code 
+  const botPing = Date.now() - d.message.createdTimestamp
   return {
-    code: code.replaceLast(`$botPing`,Date.now()-d.message.createdTimestamp)
-
+    code: d.command.code.replaceLast(
+      "$botPing",
+      `${botPing}`
+    ),
   };
 };

@@ -1,21 +1,20 @@
-const {MessageEmbed} = require('discord.js')
 module.exports = async (d) => {
   let code = d.command.code;
-  const inside = d.unpack();  
-  const [index,title, value, inline = "no"] = inside.splits;
+
+  const r = code.split("$addField").length - 1;
+
+  const inside = code.split("$addField")[r].after();
+
+  const [title, value, inline = "no"] = inside.splits;
+
   if (!value || !value.length)
-    return d.error(d.aoiErrorFunctionErrorResolve(d,"custom",{inside},"Field Value Not Provided In"));
-    if(!d.embeds[index-1]) d.embeds[index-1] = new MessageEmbed()
-  d.embeds[index-1].addField(
-   title.addBrackets(),
-      value.addBrackets(),
-      inline.replace('yes',true)
-                   .replace('true',true)
-      			   .replace('no',false)
-      			   .replace('fase',false)
-                            ) 
+    return d.error(`:x: Fields can't be empty in \`$addField${inside.total}\``);
+
+  d.embed.addField(title.addBrackets(), value.addBrackets(), inline === "yes");
+
+  code = code.replaceLast(`$addField${inside.total}`, "");
   return {
-    code: code.replaceLast(`$addField${inside.total}`, ""),
-    embeds:d.embeds
+    code: code,
+    embed: d.embed,
   };
 };

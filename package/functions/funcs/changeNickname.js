@@ -1,27 +1,31 @@
 module.exports = async (d) => {
   let code = d.command.code;
 
-  const inside = d.unpack();
+  const r = code.split("$changeNickname").length - 1;
+
+  const inside = code.split("$changeNickname")[r].after();
 
   const err = d.inside(inside);
 
   if (err) return d.error(err);
 
-  const [userId = d.message.author.id, nickname="",reason] = inside.splits;
+  const [userID = d.message.author.id, nickname] = inside.splits;
 
-
-  const member = await d.util.getMember(userId)
-
-  if (!member)
+  if (!nickname)
     return d.error(
-    d.aoiError.functionErrorResolve(d,"user",{inside})
+      `:x: Nickname can't be empty in \`$changeNickname${inside}\``
     );
 
-  const m = await member.setNickname(nickname.addBrackets(),reason?.addBrackets()).catch((err) => undefined);
+  const member = await d.message.guild.members.fetch(userID).catch((err) => {});
+
+  if (!member)
+    return d.error(`:x: Invalid user ID in \`$changeNickname${inside}\``);
+
+  const m = await member.setNickname(nickname.addBrackets()).catch((err) => {});
 
   if (!m)
     return d.error(
-     d.aoiError.functionErrorResolve(d,"custom",{},"Failed To Change Nickname Of "+member.user.username )
+      `:x: Failed to change nickname for user ${member.user.username}`
     );
 
   return {

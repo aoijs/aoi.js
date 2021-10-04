@@ -10,7 +10,7 @@ module.exports = async d => {
  
  const [reader, split, command, separator = " "] = inside.splits
  
- const cmd = d.client.cmd.awaited.find(c => c.name === command) 
+ const cmd = d.client.awaited_commands.find(c => c.name === command) 
  
  if (!cmd) return d.error(`❌ Invalid awaited command in \`$map${inside}\``)
  

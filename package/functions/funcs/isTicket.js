@@ -7,7 +7,7 @@ module.exports = async d => {
  
  if (!channel) return d.error(`❌ Invalid channel ID in \`$isTicket${anything.total}\``) 
  
- const exists = await d.client.db.get(d.client.db.tables[0], `ticket_${channel.id}`)
+ const exists = await d.client.db.get("main", `ticket_${channel.id}`)
  
  return {
  code: code.replaceLast(`$isTicket${anything.total}`, new Boolean(exists)) 

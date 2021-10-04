@@ -1,9 +1,12 @@
 module.exports = async (d) => {
   let code = d.command.code;
 
-  const inside = d.unpack()
-  const  err = d.inside(inside)
-  if(err) return d.error(err) 
+  const r = code.split("$editChannel").length - 1;
+  const inside = code.split("$editChannel")[r].after();
+
+  if (!inside.splits.length)
+    return d.error(`:x: Invalid usage in $editChannel${inside.total}`);
+
   const [
     channelID,
     categoryID = "$default",
@@ -16,10 +19,12 @@ module.exports = async (d) => {
     reason,
   ] = inside.splits;
 
-  const channel =await d.util.getChannel(d,channelID)
+  const channel = d.message.guild.channels.cache.get(channelID);
 
   if (!channel)
-    return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
+    return d.error(
+      `:x: Invalid channel given in \`$editChannel${inside.total}\``
+    );
 
   try {
     await channel.edit(
@@ -42,7 +47,7 @@ module.exports = async (d) => {
   } catch (err) {
     console.error(err);
     return d.error(
-      `${d.func}: Failed to edit channel`
+      `:x: Failed to edit channel in \`$editChannel${inside.total}\``
     );
   }
 

@@ -1,4 +1,4 @@
-const userInfo = require("../../util/userInfo");
+const userInfo = require("../../utils/userInfo");
 const defaultOpts = {
   inviter: {
     id: "",

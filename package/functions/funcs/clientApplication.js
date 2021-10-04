@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   let option = inside.inside;
 
-  let clientapp = await d.client.application 
+  let clientapp = await d.client.fetchApplication()
 
   if (!option) return d.error(`:x: Missing property in \`$clientApplication${inside}\`.`);
   if(

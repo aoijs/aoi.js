@@ -1,4 +1,4 @@
-const {ErrorHandler} = require('../../Handler/parsers.js')
+const errorHandler = require("../../handlers/errors.js")
 
 module.exports = async d=> {
  
@@ -17,7 +17,8 @@ module.exports = async d=> {
   
   const msg = fields.join(";")
   
-  const m = await ErrorHandler(d,msg,"object")
+  const m = await errorHandler(d, msg, "object") 
+  
   if (!m) return d.error(`:x: Could not send message in \`$sendMessage${inside}\``)
   
   return {

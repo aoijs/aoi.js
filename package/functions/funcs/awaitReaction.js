@@ -1,41 +1,38 @@
-const {ErrorHandler} = require("../../Handler/parsers.js");
+const embed = require("../../handlers/errors.js");
 const ms = require("ms");
+const interpreter = require("../../interpreter.js");
 module.exports = async (d) => {
   const code = d.command.code;
-  const inside = d.unpack() 
+
+  const inside = code
+    .split("$awaitReaction")
+    [code.split("$awaitReaction").length - 1].after();
+
   const err = d.inside(inside);
+
   if (err) return d.error(err);
+
   let [
-    channelId=d.chnnel.id,
-    messageId=d.message.id,
     userFilter,
     time,
+    botMsg,
     reactionOrReactions,
     commandOrCommands,
     errorMessage,
     deleteOnCollect = "no",
-    max=1,
-    data={}
   ] = inside.splits;
-try{
-    data = JSON.parse(data) 
-    }
-    catch(e){
-        d.error(`${d.func}: Invalid Data Provided In ${d.inside}`)
-    }
+
   if (!ms(time))
     return d.error(`Invalid time '${time}' in \`$awaitReaction${inside}\``);
 
- let channel = d.client.channels.get(channelId)
- if (!channel) channel = await d.client.channels.fetch(channelId).cache(err=>undefined)
-if(!channel) return d.error(`${d.func}: Invalid Channel Provided In ${inside}`) 
- let message = channel.messages.cache.get(messageId) 
- if(!message) message = await channel.messages.fetch(messageId).catch(err => undefined) 
-    if(!message) return d.error(`${d.func}:Invalid MessageId Provided In ${inside}`) 
+  const m = await embed(d, botMsg, "object");
+
   for (const reaction of reactionOrReactions.split(" ").join("").split(",")) {
-    const r = await message.react(reaction).catch((rr) => {});
+    const r = await m.react(reaction).catch((rr) => {});
+
     if (!r) return d.error(`:x: Failed to react with '${reaction}'`);
   }
+
   const filter = (reaction, user) => {
     return reactionOrReactions
       .split(" ")
@@ -49,19 +46,24 @@ if(!channel) return d.error(`${d.func}: Invalid Channel Provided In ${inside}`)
       userFilter === "everyone"
       ? true
       : user.id === userFilter;
-  }
-  const collected = await message.awaitReactions({filter,
-      max: max,
+  };
+
+  const collected = await m
+    .awaitReactions(filter, {
+      max: 1,
       time: ms(time),
       errors: ["time"],
     })
     .catch((err) => {});
-let tries = 0 
+
   if (!collected) {
-    return ErrorHandler(d, errorMessage);
+    return embed(d, errorMessage);
   }
-  if (deleteOnCollect === "yes") message.delete()
+
+  if (deleteOnCollect === "yes") m.delete();
+
   const reaction = collected.first();
+
   const command = commandOrCommands.split(" ").join("").split(",")[
     reactionOrReactions
       .split(" ")
@@ -72,11 +74,15 @@ let tries = 0
           rc.includes(reaction.emoji.name) || rc.includes(reaction.emoji.id)
       )
   ];
+
   if (!command)
     return d.error(`:x: Command '${command}' not found! (internal error)`);
-  const cmd = d.client.cmd.awaited.find((c) => c.name.toLowerCase() === command.toLowerCase());
-  if (!cmd) return d.error(`${d.func}: AwaitedCommand '${command}' not found!`);
-  await d.interpreter(
+
+  const cmd = d.client.awaited_commands.find((c) => c.name === command);
+
+  if (!cmd) return d.error(`:x: Command '${command}' not found!`);
+
+  await interpreter(
     d.client,
     {
       author: reaction.users.cache.find(

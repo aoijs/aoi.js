@@ -1,4 +1,4 @@
-const keyPerms = require("../../util/permissions");
+const keyPerms = require("../../utils/permissions");
 
 module.exports = async (d) => {
   const code = d.command.code;
@@ -27,10 +27,10 @@ module.exports = async (d) => {
         position: position,
         permissions: permissions,
       },
-    }) 
+    })
     .catch((err) => {});
 
-  if (!role) return d.error(`${d.func}: Failed to create role!`);
+  if (!role) return d.error(`:x: Failed to create role!`);
 
   return {
     code: code.replaceLast(`$createRole${inside}`, ""),

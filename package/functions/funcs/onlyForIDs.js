@@ -1,8 +1,8 @@
-const {ErrorHandler} = require("../../Handler/parsers.js")
+const errorHandler = require("../../handlers/errors.js")
 
 module.exports = async d => {
     const code = d.command.code
-let error;
+
     const inside = d.unpack()
 	const err = d.inside(inside)
 
@@ -12,11 +12,9 @@ let error;
 
     const errorMessage = IDs.pop()
 
-    if (!IDs.some(id => id === d.message.author.id)){ErrorHandler(d, errorMessage)
-error = true 
-        }
+    if (!IDs.some(id => id === d.message.author.id)) return errorHandler(d, errorMessage)
+
     return {
-        code: code.replaceLast(`$onlyForIDs${inside}`, ""),
-        error:error 
+        code: code.replaceLast(`$onlyForIDs${inside}`, "")
     }
 }
