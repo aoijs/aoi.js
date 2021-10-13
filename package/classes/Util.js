@@ -3,58 +3,58 @@ const Discord = require("discord.js")
 class Util {
    static constants = Constants 
 
-   static async getUser(d,id){
+   static getUser(d,id){
        let user = d.client.users.cache.get(id) 
        if(!user){
-           user = await this.fetchUser(d,id)
+           user = this.fetchUser(d,id)
        }
-       return user 
+       return  user 
    }
    static async fetchUser(d,id){
-       return await d.client.users.fetch(id).catch(err=>undefined)
+       return  d.client.users.fetch(id).catch(err=>undefined)
    }
    static async fetchChannel(d,id){
        return d.client.channels.fetch(id).catch(e=>undefined)
    }
-   static async getChannel(d,id){
+   static getChannel(d,id,force = false ){
        let channel = d.client.channels.cache.get(id)
-       if(!channel) channel = await this.fetchChannel(d,id) 
-       return channel 
+       if(!channel && force ) channel = this.fetchChannel(d,id) 
+       return  channel 
    }
    static async fetchMember(guild,id){
-       return await guild.members.fetch(id).catch(err=>undefined)
+       return  guild.members.fetch(id).catch(err=>undefined)
 }
    static async fetchMembers(guild,options){
-return await guild.members.fetch(options)
+return guild.members.fetch(options)
    }
-   static async getMember(guild,id){
+   static getMember(guild,id){
        let member = guild.members.cache.get(id) 
-       if(!member) member = await this.fetchMember(guild,id)
+       if(!member) member = this.fetchMember(guild,id)
        return member 
    }
-   static async getMembers(guild, force=false,options={type:"startsWith",query:""}){
+   static getMembers(guild,options={type:"startsWith",query:"", limit:10 },force=false){
        let members ;
        if(!force){
-       members = guild.members.cache.filter(x=>x.displayName?.toLowerCase()[options.type](options.query)) 
+       members = guild.members.cache.filter(x=>x.user.username.toLowerCase()[options.type](options.query) || x.displayName?.toLowerCase()[options.type](options.query)).first(options.limit);
            }
        else{
-          members = await this.fetchMembers(guild,options)
+          members = this.fetchMembers(guild,options)
        }
        return members 
    }
    static async fetchMessage(channel,id){
-       return await channel.messages.fetch(id).catch(err=>undefined)
+       return channel.messages.fetch(id).catch(err=>undefined)
 
    }
-   static async getMessage(channel,id){
+   static getMessage(channel,id){
        let message = channel.messages.cache.get(id)
-       if(!message) message = await this.fetchMessage(channel,id) 
+       if(!message) message = this.fetchMessage(channel,id) 
        return message
    }
    static  setCode(options={}){
-       return options.code.replaceLast(options.inside?`${options.function}${options.inside}`:`${options.function}`,options.result||"")
+       return options.code.replaceLast(options.inside?`${options.function}${options.inside}`:`${options.function}`,options.result??" ");
 }
-   static async getGuild(d,id){
+   static  getGuild(d,id){
        return d.client.guilds.cache.get(id)
    }
    static get channelTypes(){
@@ -73,16 +73,26 @@ return await guild.members.fetch(options)
            Unknown:"UNKNOWN"
        }
    }
-
-   static async errorParser(d,error){
+   static get threadTypes(){
+      return {
+          public:"GUILD_PUBLIC_THREAD",
+          private:"GUILD_PRIVATE_THREAD"
+   }
+}
+   static async errorParser(error,d){
        const parsers = require('../Handler/parsers.js')
        try {
            error = JSON.parse(error) 
            if(error.embeds?.includes("{newEmbed:")){
-               error.embeds = await parsers.EmbedParser(error.embeds||"") 
+               error.embeds = await  parsers.EmbedParser(error.embeds||"") 
            }
            if(error.components?.includes("{actionRow:")){
-               error.components = await parsers.ComponentParser(error.components||"") 
+               error.components = await parsers.ComponentParser(error.components||"",d.client) 
+               
+           }
+           if(typeof error.options === "string" && ["{reactions:","{edit:","{deletecommand:","{delete:"].some(x=>error.options?.includes(x))){
+               console.log("options working");
+               error.options = await parsers.OptionParser(error.options||"",d) 
            }
            if(error.embeds?.includes("{attachment:")|| error.embeds?.includes("{file:")){
                error.files = await parsers.FileParser(error.files||"") 
@@ -94,6 +104,27 @@ return await guild.members.fetch(options)
       error = await parsers.ErrorHandler(d,error,true)
        } 
        return error;
+   }
+   static openFunc(d,FieldsRequired = true ){
+       const data = {
+           code : d.command.code,
+           inside : d.unpack(),
+           function : d.func 
+       }
+       if(FieldsRequired) {
+           data.err = d.inside(data.inside) 
+       }
+       return data 
+   }
+   static getEmoji(d,Emoji){
+       return d.client.emojis.cache.find(x => x.name.toLowerCase() === Emoji.toLowerCase().addBrackets() || x.id === Emoji || x.toString() === Emoji) 
+   }
+   static getSticker(guild,Sticker){
+       return guild.stickers.cache.find( x => x.name.toLowerCase() === Sticker.toLowerCase().addBrackets() || x.id === Sticker ) 
+   }
+   static async findId(d,id){
+       const data = this.getGuild(d,id) || await this.getUser(d,id) || await this.getChannel(d,id,false) || await this.getMessage(d.channel,id) ||  this.getEmoji(d,id) || this.getSticker(d.guild,id) ||"nope"
+       return data 
    }
    }
 module.exports = Util;
