@@ -1,4 +1,5 @@
 const {ComponentParser,EmbedParser,FileParser} = require('../Handler/parsers.js')
+const Util = require('./Util.js') 
 class AoiError {
 /**
   *@params : none 
@@ -40,18 +41,41 @@ static CommandError(command,type,name,position){
   *@params (client : Bot Class) (channelID : ID of the Channel Wherr this Error Would Be sent) (options:MessageOptions (content, embeds, components, allowedMentions,files)
   *@type : (CustomError)
   */
-static async makeMessageError(client, channelID,options={}){
- if(options.embeds){
+static async makeMessageError(client, channel,options={},extraOptions={},d){
+    options.content = options.content?.trim() || ' ';
+ if(options.embeds && typeof options.embeds === "string"){
     options.embeds = await EmbedParser(options.embeds)
  }
- if(options.files){
+ if(options.files && typeof options.files === "string"){
      options.files = await FileParser(options.files)
  }
- if(options.components){
-     options.components = await ComponentParser(options.componenents)
+ if(options.components && typeof options.components === "string"){
+     options.components = await ComponentParser(options.componenents,client)
 }
+console.log({extraOptions,message: extraOptions.edits?.messages})
+const msg = await channel.send(options)
 
-client.channels.cache.get(channelID).send(options)
+    if(extraOptions.reactions?.length){
+        console.log("re working") 
+        extraOptions.reactions.forEach(x=>msg.react(x)) 
+    }
+    if(extraOptions.edits){
+        const editIn = setInterval(async ()=>{
+            if(!extraOptions.edits.messages?.length) clearInterval(editIn)
+            else { 
+  const obj = await Util.errorParser(JSON.stringify(extraOptions.edits.messages.shift()),d) 
+  console.log({obj}) 
+  msg.edit(obj)
+                }
+        },extraOptions.edits.time)
+    }
+    if(extraOptions.deleteIn){
+        setTimeout(()=>msg.delete(),extraOptions.deleteIn) 
+    }
+    if(extraOptions.deleteCommand){
+        d.message.delete()
+    }
+    return msg ;
 }
   static consoleError(name,e){
        return console.error(`${name}: ${e}`)
