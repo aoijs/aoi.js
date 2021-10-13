@@ -1,55 +1,22 @@
-const {EmbedParser, ComponentParser,FileParser,StickerParser} = require("../../Handler/parsers.js");
-
-module.exports = async (d) => {
-  const code = d.command.code;
-
-  const r = code.split("$channelSendMessage").length - 1;
-
-  const inside = code.split("$channelSendMessage")[r].after();
-
-  const err = d.inside(inside);
-
-  if (err) return d.error(err);
-
-  const fields = inside.splits;
-
-  let [channelID, content,Embed="", components="",files="", allowMentions="", reply="",stickers="", returnID = "no"] = fields;
-
-  const channel = await d.util.getChannel(d,channelID);
-
-  if (!channel)
-    return d.error(d.aoiError.functionErrorResolve(d,"channel",{inside}));
-Embed = await EmbedParser(Embed)
-components = await ComponentParser(components)    
-files = await FileParser(files) 
-    stickers = await StickerParser(stickers) 
-    if(allowMentions === "") allowMentions = {} 
-    else{
-      const a = allowMentions.split(":")
-      allowMentions = {parse:a} 
-    }
-    if(reply === "") reply = {} 
-    else{
-        reply = {
-            messageReference :reply.split(":")[0] 
-        }
-        allowMentions.repliedUser = reply.split(":")[1]?.addBrackets()||false 
-    }
-    const data ={
-        content: content === "" ? " " : content ,
-        embeds :Embed,
-        components,
-        files,
-        stickers,
-        allowMentions,
-        reply 
-    }
+module.exports = async d => {
+    const { code } = d.command;
+    const inside = d.unpack();
+    const err = d.inside(inside);
+    if(err) return d.error(err);
     
-    const m = await channel.send(data) 
-  return {
-    code: code.replaceLast(
-      `$channelSendMessage${inside}`,
-      returnID === "yes" ? m?.id : ""
-)
-  };
-};
+    let [ channelId,message,returnId = "no" ] = inside.splits;
+    
+    const channel = await d.util.getChannel(d,channelId);
+    if(!channel) return d.aoiError.fnError(d,"channel",{ inside });
+    
+    message = await d.util.errorParser(message,d);
+    
+    const msg = await d.aoiError.makeMessageError(d.client,channel, message,message.options,d); 
+
+    
+    const result = (returnId === "yes" ? msg?.id : "") || ""; 
+    
+    return {
+        code : d.util.setCode({ function : d.func,code,inside,result }) 
+    }
+}
