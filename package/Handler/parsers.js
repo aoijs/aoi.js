@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const Util = require("../classes/Util.js") 
 const interpreter = require("../interpreter.js")
 const ms = require("ms") 
 const {mustEscape} = require('../Utils/helpers/mustEscape.js')
@@ -118,7 +119,7 @@ const buttonPart = []
  style = ButtonStyleOptions[style]||style
  const cus = button.shift().addBrackets()
  const disable = button.shift()?.replace("yes",true)?.replace("no",false)?.replace("true",true)?.replace("false",false)||false
- const emoji = button.length ? (button||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===button.join(":")) : {name:button.join(":").split(",")[0],id:button.join(":").split(",")[1]||0, animated:button.join(":").split(",")[2]||false} : undefined 
+ const emoji = button.length ? (button||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===button.join(":")) : {name:button.split(",")[0],id:button.split(",")[1]||0, animated:button.split(",")[2]||false} : undefined 
  const d = Number(style) ===5 ?{label:label,type:btype,style:style,url:cus,disabled:disable} : {label:label,type:btype,style:style, custom_id:cus,disabled:disable}
  if(emoji){
 const en = emoji?.name
@@ -137,7 +138,6 @@ buttonPart.push(d)
          const placeholder = inside.shift()
          const minVal = inside[0] ==="" ?0: Number(inside.shift())
          const maxVal = inside[0] ==="" ?1: Number (inside.shift())
-         const disabled = inside.shift()?.addBrackets() === "yes" || false 
          const options = inside.join(":").trim()
  
          let optArray = []
@@ -152,7 +152,7 @@ buttonPart.push(d)
         const value = opt.shift()
         const desc = opt.shift()
         const def = opt.shift()?.replace("true",true)?.replace("false",false)?.replace("yes",true)?.replace("no", false)||false 
-        const emoji = opt.length ? (opt||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===opt.join(":")) : {name:opt.join(":").split(",")[0],id:opt.join(":").split(",")[1]||0, animated:opt.join(":").split(",")[2]||false} : undefined  
+        const emoji = opt.length ? (opt||"").join(":").trim().startsWith("<") ?  client.emojis.cache.find(x=>x.toString()===opt.join(":")) : {name:opt.split(",")[0],id:opt.split(",")[1]||0, animated:opt.split(",")[2]||false} : undefined  
    const ind = {
        label:label,
        value:value,
@@ -169,7 +169,7 @@ ind.emoji = {name:en,id:eid,animated:ea}
 optArray.push(ind)        
     }
      }
-           buttonPart.push({type:3,custom_id: customID,placeholder: placeholder,min_values:minVal,max_values:maxVal,disabled,options:optArray})
+           buttonPart.push({type:3,custom_id: customID,placeholder: placeholder,min_values:minVal,max_values:maxVal,options:optArray})
         }
  actionRows.push({type:1, components:buttonPart})   
 
@@ -209,7 +209,7 @@ if(Checker("file")){
 const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 errorMessage = errorMessage.trim()
 	const embeds= [] 
-
+    let deleteCommand = false 
 	let send = true
 	
 	let deleteAfter
@@ -219,14 +219,14 @@ errorMessage = errorMessage.trim()
 	let reactions = []
 	
 	let edits = {
-	    timeout: null, 
+	    time: null, 
 	    messages: [] 
 	    
 	}
 	if (errorMessage.includes("{edit:")) {
-	    const inside = errorMessage.split("{edit:")[1].split("}}")[0] 
+	    const inside = errorMessage.split("{edit:")[1].split("}}")[0]
 	    
-	    const duration = ms(inside.split(":")[0]) || 2500 
+	    const duration = inside.split(":")[0] || 2500 
 	    
 	    for (const msg of inside.split(":{").slice(1).join(":{").split("}:{")) {
 	        
@@ -266,7 +266,7 @@ errorMessage = errorMessage.trim()
 	
 	if (errorMessage.includes("{deletecommand")) {
 	    const inside = errorMessage.split("{deletecommand")[1].split("}")[0] 
-	    
+	    deleteCommand = true 
 	    if (d && d.message) {
 	        if (inside) {
 	            const dur = ms(inside.slice(1))
@@ -294,9 +294,9 @@ errorMessage = errorMessage.trim()
 if(errorMessage.includes("{newEmbed:")){
    const o =  errorMessage.split("{newEmbed:").slice(1)
    for(let errorMessages of o){
-       const index = (errorMessages). trim ().lastIndexOf("}")
-       errorMessages = (errorMessages).trim().slice(0,index)
-       const old = (errorMessages).trim()
+       const index = (errorMessages).lastIndexOf("}")
+       errorMessages = (errorMessages).slice(0,index)
+       const old = (errorMessages)
        console.log("e:"+old)
        const embed = new Discord.MessageEmbed() 
 	if (errorMessages.includes("{title:")) {
@@ -420,9 +420,11 @@ if(errorMessages.includes("{authorURL:")){
 		return {
 			reactions: reactions.length ? reactions : undefined, 
 			suppress, 
-			embeds: send ? embeds : undefined,
-			
-            content:errorMessage.addBrackets()
+            edits,
+			embeds: send ? embeds : [],
+            content:errorMessage.addBrackets(),
+            deleteIn:deleteAfter, 
+            deleteCommand 
 		}
 	}
 
@@ -432,8 +434,7 @@ if(!(errorMessage.length || send ||  files.length)) return
 	const ch = channel || d.channel 
 	
 
-    //console.log(errorMessage)
-    //console.log(embeds)
+    console.log({errorMessage,embeds})
 	if ((errorMessage.length || send || files.length) && d && ch && !returnMsg) {
 		const m = await ch.send({
             content:errorMessage.addBrackets(),
@@ -488,7 +489,7 @@ options = options.trim()
         if(Checker("subGroup")){
     Alloptions =  Alloptions.concat((await SlashOption.subGroup(options)))
         }
-        if(Checker("subCommand")){
+        if(Checker("subCommand") && !Checker("subGroup")){
            Alloptions =  Alloptions.concat((await SlashOption.subCommand(options)))
         }
         if(Checker("string") && !(Checker("subCommand")||Checker("subGroup"))){
@@ -522,11 +523,38 @@ options = options.trim()
 
     return Alloptions 
 }
+const OptionParser = async (options,d) => {
+    const Checker = msg => options.includes(msg) 
+    const optionData = {} 
+    if(Checker("edit")){
+        const editPart = options.split("{edit:")[1].split("}}")[0] 
+        const dur = editPart.split(":")[0] 
+        const msgs = editPart.split(":{").slice(1).join(":{").split("}:{") 
+        const messages = [] 
+        for(const msg of msgs){
+            messages.push(await Util.errorParser(msg,d)) 
+        } 
+        optionData.edit = {time:dur,messages}
+    }
+    if(Checker("reactions")){
+      const react = options.split("{reactions:")[1].split("}")[0] 
+        optionData.reactions = react.split(":") 
+       }
+    if(Checker("delete")){
+     optionData.deleteIn = ms( options.split("{delete:")[1].split("}")[0] 
+     )
+    }
+    if(Checker("deletecommand")){
+        optionData.deleteCommand = true 
+    }
+    return optionData 
+} 
 module.exports = {
     EmbedParser: EmbedParser,
     ComponentParser: ComponentParser,
     FileParser: FileParser,
     ErrorHandler : errorHandler,
-    SlashOptionsParser:SlashOptionsParser
+    SlashOptionsParser:SlashOptionsParser,
+    OptionParser 
     }
     
