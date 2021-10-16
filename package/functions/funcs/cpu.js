@@ -1,5 +1,5 @@
 module.exports = async (d) => {
   return {
-    code: d.command.code.replaceLast(`$cpu`, d.client.cpu.toFixed(2)),
-  };
-};
+    code: d.command.code.replaceLast(`$cpu`, require("os").loadavg()[0] * 100 / require("os").cpus().length)
+  }
+}
