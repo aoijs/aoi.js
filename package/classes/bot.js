@@ -306,9 +306,7 @@ client.aoi = {
       // Lavalink Connections Cluster
     client.lavalink = new Discord.Collection();
 
-    client.cookie =
-      options.youtubeCookie ||
-      "YSC=5yaGWYf3sb4; VISITOR_INFO1_LIVE=hRFBhbsmz-U; __Secure-3PSID=8Qc_mMTGhpfQdTm1-fdKq6rh9KNCUC9OONEP44RAQkvVrQrFDkgjRaj6vJdchtNXMrWd4w.; __Secure-3PAPISID=HElVHkUVenb2eFXx/AhvhxMhD_KPsM4nZE; PREF=tz=Asia.Jakarta; __Secure-3PSIDCC=AJi4QfE9ix2TVKVWZzmswEkeDpCcZnuScw9N2pu2dS2fGx1Nyrtv_uDH4vvaiujL82_Ys1OO";
+    Object.defineProperty(client, "cookie", { value: options.youtubeCookie || `YSC=5yaGWYf3sb4; VISITOR_INFO1_LIVE=hRFBhbsmz-U; __Secure-3PSID=8Qc_mMTGhpfQdTm1-fdKq6rh9KNCUC9OONEP44RAQkvVrQrFDkgjRaj6vJdchtNXMrWd4w.; __Secure-3PAPISID=HElVHkUVenb2eFXx/AhvhxMhD_KPsM4nZE; PREF=tz=Asia.Jakarta; __Secure-3PSIDCC=AJi4QfE9ix2TVKVWZzmswEkeDpCcZnuScw9N2pu2dS2fGx1Nyrtv_uDH4vvaiujL82_Ys1OO` })
 
     client.on("musicStart", (server, old) => MusicStart(client, server, old));
     client.on("musicEnd", (server, old) => MusicEnd(client, server, old));
