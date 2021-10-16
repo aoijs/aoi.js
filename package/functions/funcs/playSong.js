@@ -17,7 +17,7 @@ module.exports = async (d) => {
 
   let [
     url,
-    time = "1s",
+    time = "24h",
     deafen = "yes",
     leaveEmpty = "no",
     error = `\`${d.func}: Error while making the request\``,
@@ -25,7 +25,7 @@ module.exports = async (d) => {
   try {
     time = msp(time).ms;
   } catch {
-    time = msp("1s").ms;
+    time = msp("24h").ms;
   }
   url = url.addBrackets();
 
