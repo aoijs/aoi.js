@@ -60,34 +60,6 @@ function toDuration(lengthSeconds) {
   return `${lengthSeconds} Seconds (${iso.join(":")})`;
 }
 
-async () => {
-  const previousDate = Date.now();
-  const previousUsage = process.cpuUsage();
-
-  setTimeout(() => {
-    const usage = process.cpuUsage(previousUsage);
-    const result =
-      (100 * (usage.user + usage.system)) /
-      ((Date.now() - previousDate) * 1000);
-
-    client.cpu = result;
-  }, 5000);
-};
-
-setInterval(() => {
-  const previousDate = Date.now();
-  const previousUsage = process.cpuUsage();
-
-  setTimeout(() => {
-    const usage = process.cpuUsage(previousUsage);
-    const result =
-      (100 * (usage.user + usage.system)) /
-      ((Date.now() - previousDate) * 1000);
-
-    client.cpu = result;
-  }, 5000);
-}, 5000);
-
 const ForceDisconnect = require("../handlers/ForceDisconnect.js");
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
