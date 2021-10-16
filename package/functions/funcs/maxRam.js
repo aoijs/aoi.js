@@ -1,5 +1,4 @@
 const os = require('os')
-
 module.exports = async d => {
 	let ram = os.totalmem() / 1024 / 1024
 
