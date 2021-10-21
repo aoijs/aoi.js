@@ -11,7 +11,7 @@ let [index,label,style,cus,disabled="no",emoji]=inside.splits;
     if(!style || style > 5 || style < 1) d.aoiError.fnError(d,"custom",{inside},"Invalid Style Provided In") 
     if(!d.components[index]) d.components[index] = {type:1, components:[]}
     const button = {
-        label.addBrackets(),
+        label : label.addBrackets(),
         type:2,
         style,
         disabled,
