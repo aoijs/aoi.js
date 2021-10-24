@@ -124,7 +124,7 @@ async function Main(d)
         case "songinfo": {
             if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
 
-            const track = player.queue[0];
+            const track = player.queue[data[1] >= 0 && data[1] < player.queue.length ? data[1] : 0];
             if (!track) return d.error("`Lavalink Error: Nothing is playing!`");
 
             const p = data[0];
@@ -236,7 +236,7 @@ async function Main(d)
             for (const track of player.queue) {
                 const clone = {...track, userID: track.requesterId};
                 const res = mapFormat.replace(/{\w+}/g, (match) => {
-                    const r = track[match.replace(/{}/g, "")];
+                    const r = clone[match.replace(/[{}]/g, "")];
                     if (r) return r;
                     return "";
                     });
