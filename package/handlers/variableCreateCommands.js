@@ -23,7 +23,6 @@ const data = {}
             {
               channel: commands.channel,
               code: commands.channel,
-
             },
             undefined,
             true

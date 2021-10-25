@@ -9,31 +9,21 @@ const data = {}
      data.oldv = oldv
      data.newv = newv 
     
-      
 //channel: part 
     const id =
 
       commands.channel && commands.channel.includes("$")
 
         ? await interpreter(
-
             client,
-
             data,
-
             [],
-
             {
               channel: commands.channel,
-
               code: commands.channel,
-
             },
-
             undefined,
-
             true
-
           )
 
         : commands.channel;
@@ -42,32 +32,20 @@ const data = {}
 data.channel = ch
     //if (!channel) return console.error(`channel with ID ${id} does not exist`)
      let msg = data 
-
     
 //interpreter does it's job 
     await interpreter(
-
       client,
-
       msg,
-
-    [] ,
-
+      [],
       commands,
-
       db,
-
       false,
-
       undefined,
-
       {
-newv: data.newv,
-oldv : data.oldv
+        newv: data.newv,
+        oldv : data.oldv
       }
-
-    );
-
-  
-}
+     );
+  }
 };

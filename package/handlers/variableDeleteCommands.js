@@ -38,7 +38,7 @@ data.channel = ch
     await interpreter(
       client,
       msg,
-     [],
+      [],
       commands,
       db,
       false,
