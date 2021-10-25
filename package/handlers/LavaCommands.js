@@ -122,7 +122,7 @@ async function Main(d)
         }
         break;
         case "songinfo": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            if (!player) return d.error("`Lavalink Error: No player is available for this guild!`");
 
             const track = player.queue[data[1] >= 0 && data[1] < player.queue.length ? data[1] : 0];
             if (!track) return d.error("`Lavalink Error: Nothing is playing!`");
