@@ -880,6 +880,7 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $randomCase: "Generates the given text with Random cases;$randomCase[text]",
   $reverse: "Converts the given characters into reverse order;$reverse[text or characters]",
   $voiceMembersCount: "Returns all members count inside all voice channels;$voiceMembersCount or $voiceMembersCount[guildID (optional)]",
-  $packageName: "Returns the current package name.;$packageName"
+  $packageName: "Returns the current package name.;$packageName",
+  $cpuInfo: "Returns a specific cpu info based on the option;$cpuInfo[usage/model/clock/arch/endian]"
 };
 module.exports = Parser;
