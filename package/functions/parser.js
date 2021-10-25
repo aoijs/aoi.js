@@ -882,6 +882,6 @@ $spliceTextJoin[$userRoles;,  ; | ;\n;3]
   $voiceMembersCount: "Returns all members count inside all voice channels;$voiceMembersCount or $voiceMembersCount[guildID (optional)]",
   $packageName: "Returns the current package name.;$packageName",
   $cpuInfo: "Returns a specific cpu info based on the option;$cpuInfo[usage/model/clock/arch/endian]",
-  $ramUsage: "Returns a specific ram usage info based on the option;$cpuInfo[os/jsalloc/jsused/c++/buffer]"
+  $ramUsage: "Returns a specific ram usage info based on the option;$ramUsage[os/jsalloc/jsused/c++/buffer]"
 };
 module.exports = Parser;
