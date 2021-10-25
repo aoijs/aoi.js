@@ -17,58 +17,35 @@ const data = {}
       commands.channel && commands.channel.includes("$")
 
         ? await interpreter(
-
             client,
-
             data,
-
             [],
-
             {
               channel: commands.channel,
-
               code: commands.channel,
 
             },
-
             undefined,
-
             true
-
           )
-
         : commands.channel;
 //verify if its exist 
     const ch = client.channels.cache.get(id);
 data.channel = ch
     //if (!channel) return console.error(`channel with ID ${id} does not exist`)
      let msg = data 
-
     
 //interpreter does it's job 
     await interpreter(
-
       client,
-
       msg,
-
      [],
-
       commands,
-
       db,
-
       false,
-
       undefined,
-
-      {
-newv: data,
-oldv :{variable:[],key:[],value:[],type:[], timestamp:""}
+      {newv: data, oldv :{variable:[],key:[],value:[],type:[], timestamp:""}
       }
-
     );
-
   }
-
 };
