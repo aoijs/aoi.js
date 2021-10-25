@@ -10,7 +10,7 @@ module.exports = async d => {
 
     const [ channelId = d.channel.id, content, embed = "", components = "", msgReply = "", returnID = "no" ] = inside.splits
 
-    if (!content && embed === "") return d.error(`\`Provide Either A Content Or A Embed Structure\``)
+    if (!content && embed === "") return d.error(`\`Provide either a content or an embed structure\``)
 
     const e = embed !== "" ? await ErrorParser(embed) : {}
     const c = components === "" ? [] : await ComponentParser(components)
