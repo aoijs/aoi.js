@@ -11,7 +11,7 @@ module.exports = async d => {
         separator = ','
     ] = inside.splits
 
-    if (isNaN(Number(number))) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
+    if (!number || isNaN(Number(number))) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
 	const separated = Number(number).toLocaleString("en-US").split(",")
 
