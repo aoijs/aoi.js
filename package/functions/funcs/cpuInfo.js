@@ -1,5 +1,8 @@
 const os = require("os")
 
+let u16
+let u8
+
 module.exports = async (d) => {
   const { code } = d.command
   const inside = d.unpack()
@@ -26,8 +29,11 @@ module.exports = async (d) => {
       data = os.arch()
       break
     case "endian":
-      const u16 = new Uint16Array([0xbbdd])
-      const u8 = new Uint8Array(u16.buffer, u16.byteOffset, u16.byteLength)
+      if (!u16) {
+        u16 = new Uint16Array([0xbbdd])
+        u8 = new Uint8Array(u16.buffer, u16.byteOffset, u16.byteLength)
+      }
+
       data = u8[0] === 0xdd && u8[1] === 0xbb ? "LE" : "BE"
       break
     default:
