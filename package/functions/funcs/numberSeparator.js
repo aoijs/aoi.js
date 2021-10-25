@@ -13,22 +13,9 @@ module.exports = async d => {
 
     if (isNaN(Number(number))) return d.error(`\`${d.func}: Invalid number in ${inside}\``)
 
-	let separated = splitArray(number.split('').reverse(), 3)
-	separated = separated.reverse().map(num => num.reverse().join(''))
+	const separated = Number(number).toLocaleString("en-US").split(",")
 
     return {
         code: code.replaceLast(`$numberSeparator${inside}`, separated.join(separator))
     }
-}
-
-function splitArray(array, pages = 2) {
-	if (!array.length) return []
-
-	const chunks = []
-
-	for (let i = 0; i < array.length;) {
-		chunks.push(array.slice(i, i += pages))
-	}
-
-	return chunks
 }
