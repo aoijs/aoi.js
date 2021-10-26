@@ -441,11 +441,11 @@ for(i=0;d.length >i ;i++){
         connection.on("debug", (message) => console.log(message)); 
       // Music things
       connection.on("trackFinished", (player) => {
-        this.client.emit("musicStart", player, null);
+        this.client.emit("musicEnd", player, null);
       });
 
       connection.on("trackPlaying", (player) => {
-        this.client.emit("musicEnd", player, null);
+        this.client.emit("musicStart", player, null);
       });
     });
   }

@@ -3,8 +3,6 @@ const interpreter = require("../interpreter");
 module.exports = async (client, server, old) => {
   for (const command of client.music_start_commands.array()) {
     const data = {
-      author: undefined,
-      member: undefined,
       channel: server.text,
       guild: server.text.guild,
     }; //support
