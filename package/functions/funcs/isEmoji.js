@@ -10,7 +10,6 @@ module.exports = async d => {
 
         let error = undefined
 
-        
         let result;
         if (!text) result = false
         if (!/[a-zA-Z1234567890]/g.test(text) && /\p{Extended_Pictographic}/u.test(text) && text.length == 2) result = true;
