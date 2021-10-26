@@ -45,10 +45,8 @@ class LavalinkPlayer extends EventEmitter {
 
         // Using state property to handle queue and events
         this.on("stateChange", (oldState, newState) => {
-
             if (newState === PlayerStates.TRACK_CHANGE) {
                 this.play(this.queue[0]);
-
             } else if (
                 newState === PlayerStates.PLAYING
             ) {
@@ -57,13 +55,10 @@ class LavalinkPlayer extends EventEmitter {
             } else if (
                 oldState === PlayerStates.PLAYING && newState === PlayerStates.IDLE
             ) {
-                
-                this.manager.emit("trackFinished", this);
                 this.timeState = 0;
 
                 if (this.loopSong) { this.next(); }
                 else if (this.loopQueue) {
-
                     if (this.queue.length < 2) return; 
                     const shifted = this.queue.shift();
                     
@@ -75,6 +70,10 @@ class LavalinkPlayer extends EventEmitter {
                     this.queue.shift();
 
                     this.next();
+                }
+
+                if (this.queue.length < 1) {
+                    this.manager.emit("trackFinished", this);
                 }
             }
         });
