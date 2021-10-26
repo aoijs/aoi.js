@@ -4,8 +4,6 @@ const msp = require("ms-parser");
 const pms = require("parse-ms");
 const playlistPattern = /playlist\?list=(.+)/;
 
-let timeout;
-
 module.exports = async (d) => {
   const code = d.command.code;
   const search = d.client.ytSearch;
@@ -17,7 +15,7 @@ module.exports = async (d) => {
 
   let [
     url,
-    time = "24h",
+    time = "1s",
     deafen = "yes",
     leaveEmpty = "no",
     error = `\`${d.func}: Error while making the request\``,
@@ -25,7 +23,7 @@ module.exports = async (d) => {
   try {
     time = msp(time).ms;
   } catch {
-    time = msp("24h").ms;
+    time = msp("1s").ms;
   }
   url = url.addBrackets();
 
@@ -87,51 +85,38 @@ module.exports = async (d) => {
           server.songs.push({
             title: () => songInfo.title.removeBrackets(),
             description: () => songInfo.description,
-            duration: () =>
-              songInfo.duration.toString().split("seconds").join("Seconds"),
+            duration: () =>  songInfo.duration.toString().split("Seconds").join(""),
             duration_left: (server) => {
               if (!server) return;
-              const ms = msp(songInfo.duration.toString().split(" ")[0] + "s")
-                .ms;
+              const ms = msp(info.duration().split(" ")[0] + "s").ms;
               const time = Math.floor(
                 ms -
-                  (server.connection.dispatcher.streamTime + (server.seek || 0))
+                  (server.connection.dispatcher.streamTime +
+                    (d.client.servers.get(d.message.guild.id).seek || 0))
               );
-              const ISO = new Date(time)
-                .toISOString()
-                .substr(11, 11)
-                .split(":");
-
+              const ISO = new Date(time).toISOString().substr(11, 11).split(":");
+        
               if (ISO[0] === "00") {
                 ISO.shift();
                 ISO[1] = Math.floor(parseInt(ISO[1]));
-
-                if (ISO[1].toString().length === 1)
-                  ISO[1] = "0" + ISO[1].toString();
+        
+                if (ISO[1].toString().length === 1) ISO[1] = "0" + ISO[1].toString();
               } else {
                 ISO[2] = Math.floor(parseInt(ISO[2]));
-
-                if (ISO[2].toString().length === 1)
-                  ISO[2] = "0" + ISO[2].toString();
+        
+                if (ISO[2].toString().length === 1) ISO[2] = "0" + ISO[2].toString();
               }
-
+        
               return `${Math.floor(time / 1000)} Seconds (${ISO.join(":")})`;
             },
             current_duration: (server) => {
               if (!server) return;
-
+              
               const ms =
                 server.connection.dispatcher.streamTime + (server.seek || 0);
-              const time = pms(ms);
+               pms(ms);
 
-              const secs = `0${time.seconds % 60}`.substr(-2);
-              const mins = `0${time.minutes % 60}`.substr(-2);
-              const hours = `0${time.hours % 60}`.substr(-2);
-              const iso = [hours, mins, secs];
-
-              if (time.days) iso.unshift(time.days);
-
-              return `${Math.floor(ms / 1000)} Seconds (${iso.join(":")})`;
+              return `${Math.floor(ms / 1000)} Seconds`;
             },
             thumbnail: () => songInfo.thumbnail,
             publisher: () => video.author.name,
@@ -190,7 +175,7 @@ module.exports = async (d) => {
   const info = {
     title: () => video.title.removeBrackets(),
     description: () => video.description,
-    duration: () => video.duration.toString().split("seconds").join("Seconds"),
+    duration: () =>  video.duration.toString().split("Seconds").join(""),
     thumbnail: () => video.thumbnail,
     duration_left: (server) => {
       if (!server) return;
@@ -219,16 +204,9 @@ module.exports = async (d) => {
       if (!server) return;
 
       const ms = server.connection.dispatcher.streamTime + (server.seek || 0);
-      const time = pms(ms);
+      pms(ms);
 
-      const secs = `0${time.seconds % 60}`.substr(-2);
-      const mins = `0${time.minutes % 60}`.substr(-2);
-      const hours = `0${time.hours % 60}`.substr(-2);
-      const iso = [hours, mins, secs];
-
-      if (time.days) iso.unshift(time.days);
-
-      return `${Math.floor(ms / 1000)} Seconds (${iso.join(":")})`;
+      return `${Math.floor(ms / 1000)} Seconds`;
     },
     publisher: () => video.author.name,
     publisher_url: () => video.author.url,
