@@ -6,11 +6,9 @@ const snowflake = Discord.SnowflakeUtil
 const WorkerPool = require("../handlers/workerPool");
 const searchIndexes = require("../handlers/KMP");
 const Lavalink = require("./Lavalink.js");
-const interpreter = require("../interpreter.js");
 const Interaction = require("./Interaction");
 const CustomEvent = require("./customEvent.js");
 const opts = require("../utils/options");
-const shardingClient = require("../handlers/shardingClient.js");
 const client = new Discord.Client({
   partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER", "REACTION"],
 });
@@ -57,7 +55,7 @@ function toDuration(lengthSeconds) {
 
   if (time.days) iso.unshift(time.days);
 
-  return `${lengthSeconds} Seconds (${iso.join(":")})`;
+  return `${lengthSeconds} Seconds`;
 }
 
 const ForceDisconnect = require("../handlers/ForceDisconnect.js");
