@@ -8,8 +8,8 @@ module.exports = async (client, server) => {
         } //support 
 
         const id = await interpreter(client, data, [], {
-            channel:command.channel,
-            code:command.channel
+            channel: command.channel,
+            code: command.channel
         }, undefined, true)
 
         const channel = client.channels.cache.get(`${id}`)
