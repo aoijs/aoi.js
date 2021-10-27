@@ -18,7 +18,7 @@ module.exports = async (d) => {
     time = "1s",
     deafen = "yes",
     leaveEmpty = "no",
-    error = `\`${d.func}: Error while making the request\``,
+    error = `\`Error while making the request\``,
   ] = inside.splits;
   try {
     time = msp(time).ms;
@@ -169,7 +169,7 @@ module.exports = async (d) => {
   const video = videos.videos[0];
 
   if (!video) {
-    return d.error(`\`${d.func}: Error while making the request\``);
+    return d.error(`\`${d.func}: ${error}\``);
   }
 
   const info = {
@@ -221,12 +221,12 @@ module.exports = async (d) => {
   if (!server) {
     const vc = d.message.member.voice.channel;
 
-    if (!vc) return d.error(`\`${d.func}: Error while making the request ${err}\``);
+    if (!vc) return d.error(`\`${d.func}: ${error} ${err}\``);
     (async () => {
       const connection = vc.join().catch((err) => {
         console.error(err);
 
-        d.error(`\`${d.func}: Error while making the request ${err}\``);
+        d.error(`\`${d.func}: ${error} ${err}\``);
       });
 
       const constructor = {
@@ -262,7 +262,7 @@ module.exports = async (d) => {
       } catch (err) {
         console.error(err);
 
-        d.error(`\`${d.func}: Error while making the request\``);
+        d.error(`\`${d.func}: ${error}}\``);
       }
     })();
   } else {
@@ -272,7 +272,7 @@ module.exports = async (d) => {
       execute(d, true, error).catch((err) => {
         console.error(err);
 
-        d.error(`\`${d.func}: Error while making the request\``);
+        d.error(`\`${d.func}: ${error}\``);
       });
     }
 
