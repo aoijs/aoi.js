@@ -71,6 +71,3 @@ data.channel = ch
     );
   }
 };
-          
-          
-         
