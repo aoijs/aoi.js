@@ -2,7 +2,6 @@ const readyCommands = require("../handlers/readyCommands.js");
 const interpreter = require("../interpreter");
 const Discord = require("discord.js");
 const connectedBots = require("../handlers/connectedBots");
-const DanBotHosting = ("danbot-hosting")
 
 module.exports = async (client, Database) => {
   const owner = (await client.fetchApplication()).owner;
@@ -113,24 +112,4 @@ module.exports = async (client, Database) => {
     f();
   }
   readyCommands(client);
-
-  if (client.dbhToken) {
-    const API = new DanBotHosting.Client(client.dbhToken, client);
-    let DBHError = await API.autopost();
-    if (DBHError) {
-      console.error(
-        "\x1b[31mDANBOT-HOSTING API: \x1b[0mFailed to Connect, " +
-          DBHError +
-          `.
-    How to get API Key?
-    1. Join our Partner Hosting Discord Server (https://discord.gg/dbh)
-    2. Go to bot commands and say 'DBH!ApiKey'
-    3. Receive the Token from Bot DM and change the dbhToken in your main file to the new Token`
-      );
-    } else {
-      console.log(
-        "\x1b[32mDANBOT-HOSTING API: \x1b[0mSuccessful Connection has been made to API"
-      );
-    }
-  }
 };
