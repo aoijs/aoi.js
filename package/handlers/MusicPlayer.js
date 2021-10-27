@@ -1,4 +1,3 @@
-const embed = require("./errors.js");
 const tube = require("./tube");
 const scdl = require("soundcloud-downloader");
 const ytdl = require("ytdl-core");
@@ -88,8 +87,6 @@ const execute = async (d, old, error, ffmpegArgs) => {
       if (!ffmpegArgs) {
         if (d.client.music_start_commands.size)
           d.client.emit("musicStart", server);
-        else
-          server.songs[0].message = await server.text
       }
 
       clearTimeout(timeout);
