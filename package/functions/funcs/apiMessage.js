@@ -15,7 +15,7 @@ module.exports = async d => {
     const e = embed !== "" ? await ErrorParser(embed) : {}
     const c = components === "" ? [] : await ComponentParser(components)
     const data = {
-        content: content,
+        content: content.addBrackets(),
         embed: e,
         components: c,
         allowed_mentions: {
