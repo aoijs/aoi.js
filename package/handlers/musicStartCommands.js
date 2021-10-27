@@ -1,6 +1,6 @@
 const interpreter = require("../interpreter");
 
-module.exports = async (client, server, old) => {
+module.exports = async (client, server) => {
   for (const command of client.music_start_commands.array()) {
     const data = {
       channel: server.text,
