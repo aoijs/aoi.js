@@ -20,27 +20,16 @@ const data = {
       client.applications.slash.set(data.id,data)
       }
 const olddata = {
-
     id : "",
-
     version: "" ,
-
     application: "",
-
     defaultPermission : "",
-
     name: "",
-
     description:"" ,
-
     options:"",
-
     guild: {id:""} ,
-
     timestamp :"",
-
     createdAt: ""
-
     }
     
       //gets the  info of application that was created 
@@ -51,26 +40,16 @@ const olddata = {
       commands.channel && commands.channel.includes("$")
 
         ? await interpreter(
-
             client,
-
             data,
-
             [],
-
             {
               channel: commands.channel,
-
               code: commands.channel,
-
             },
-
             undefined,
-
             true
-
           )
-
         : commands.channel;
 //verify if its exist 
     const ch = client.channels.cache.get(id);
@@ -78,31 +57,19 @@ data.channel = ch
     //if (!channel) return console.error(`channel with ID ${id} does not exist`)
      let msg = data 
 
-    
 //interpreter does it's job 
     await interpreter(
-
       client,
-
       msg,
-
-     [],
-
+      [],
       commands,
-
      undefined,
-
       false,
-
       undefined,
-
       {
-newData: data ,
-oldData: olddata
+        newData: data ,
+        oldData: olddata
       }
-
     );
-
   }
-
 };
