@@ -13,8 +13,6 @@ module.exports = async d => {
         }
     }
 
-if (server.songs[0] && server.songs[0].message && server.songs[0].message.delete) server.songs[0].message.delete().catch(err => { })
-
 delete server.songs[0].info
 delete server.songs[0].media
 
