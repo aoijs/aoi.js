@@ -1,21 +1,17 @@
-const embed = require("../../handlers/errors.js")
 module.exports = async d => {
-    const code = d.command.code
     const server = d.client.servers.get(d.message.guild.id)
 
     if(!server || !server.connection.dispatcher) return d.error(`\`songError: Nothing is being played\``)
-
-    var songs = server.songs
     
     const inside = d.unpack()
     const n = new Number(inside.inside || 0)
         if (inside.inside) {
             if(isNaN(n)) return d.error(`\`${d.func}: Argument is not a number in ${inside.inside}\``)
-if(n < 2) { server.connection.dispatcher.end()
-return {
-code: d.command.code.replaceLast(`$skipTo${inside.total ? inside.total : ""}`, "")
-  }
-}
+        if(n < 2) { server.connection.dispatcher.end()
+    return {
+            code: d.command.code.replaceLast(`$skipTo${inside.total ? inside.total : ""}`, "")
+        }
+    }
 
 if (server.songs[0] && server.songs[0].message && server.songs[0].message.delete) server.songs[0].message.delete().catch(err => { })
 
@@ -32,7 +28,6 @@ if (server.loopQueue == true) server.songs.push(...spliced)
     
             return {code: d.command.code.replaceLast(`$skipTo${inside.total ? inside.total : ""}`, "")}
         } else {
-            return d.error(`\`Command name $skipTo is invalid\``)
+            return d.error(`\`${d.func} command is invalid\``)
         }
-    
 }
