@@ -3,9 +3,6 @@ const axios = require('axios')
 module.exports = async (client, application) => {
 //gets the commands from the collection array
   for (const commands of client.application_cmd_delete_commands.array()) {
-    
-      
-
         
 const data = {
     id : application.id,
@@ -21,27 +18,16 @@ const data = {
     }
   
 const newdata = {
-
     id : "",
-
     version: "" ,
-
     application: "",
-
     defaultPermission : "",
-
     name: "",
-
-    description:"" ,
-
+    description:"",
     options:"",
-
-    guild: {id:""} ,
-
+    guild: {id:""},
     timestamp :"",
-
     createdAt: ""
-
     }
    if(client.aoi.options.applicationCache){
 client.applications.slash.delete(application.id)}
@@ -49,30 +35,18 @@ client.applications.slash.delete(application.id)}
   
 //channel: part 
     const id =
-
       commands.channel && commands.channel.includes("$")
-
         ? await interpreter(
-
             client,
-
             data,
-
             [],
-
             {
               channel: commands.channel,
-
               code: commands.channel,
-
             },
-
             undefined,
-
             true
-
           )
-
         : commands.channel;
 //verify if its exist 
     const ch = client.channels.cache.get(id);
@@ -80,35 +54,22 @@ data.channel = ch
     //if (!channel) return console.error(`channel with ID ${id} does not exist`)
      let msg = data 
 
-    
 //interpreter does it's job 
     await interpreter(
-
       client,
-
       msg,
-
-     [],
-
+      [],
       commands,
-
      undefined,
-
       false,
-
       undefined,
-
       {
-oldData: data ,
-newData: newdata
-        
+        oldData: data,
+        newData: newdata 
 
       }
-
     );
-
   }
-
 };
           
           
