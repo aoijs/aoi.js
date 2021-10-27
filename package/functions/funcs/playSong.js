@@ -85,7 +85,7 @@ module.exports = async (d) => {
           server.songs.push({
             title: () => songInfo.title.removeBrackets(),
             description: () => songInfo.description,
-            duration: () =>  songInfo.duration.toString().split("Seconds").join(""),
+            duration: () =>  songInfo.duration.toString(),
             duration_left: (server) => {
               if (!server) return;
               const ms = msp(info.duration().split(" ")[0] + "s").ms;
@@ -107,7 +107,7 @@ module.exports = async (d) => {
                 if (ISO[2].toString().length === 1) ISO[2] = "0" + ISO[2].toString();
               }
         
-              return `${Math.floor(time / 1000)} Seconds (${ISO.join(":")})`;
+              return `${Math.floor(time / 1000)} Seconds`;
             },
             current_duration: (server) => {
               if (!server) return;
@@ -175,7 +175,7 @@ module.exports = async (d) => {
   const info = {
     title: () => video.title.removeBrackets(),
     description: () => video.description,
-    duration: () =>  video.duration.toString().split("Seconds").join(""),
+    duration: () =>  video.duration.toString(),
     thumbnail: () => video.thumbnail,
     duration_left: (server) => {
       if (!server) return;
@@ -198,7 +198,7 @@ module.exports = async (d) => {
         if (ISO[2].toString().length === 1) ISO[2] = "0" + ISO[2].toString();
       }
 
-      return `${Math.floor(time / 1000)} Seconds (${ISO.join(":")})`;
+      return `${Math.floor(time / 1000)} Seconds`;
     },
     current_duration: (server) => {
       if (!server) return;
