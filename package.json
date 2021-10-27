@@ -24,7 +24,6 @@
     "devDependencies": {
         "@discordjs/opus": "^0.5.3",
         "axios": "^0.21.1",
-        "danbot-hosting": "^0.1.6",
         "ffmpeg-static": "^4.3.0",
         "node-fetch": "^2.6.1",
         "prettier": "~2.2.1",
