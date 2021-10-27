@@ -440,7 +440,7 @@ const Parser = {
   $serverBoostLevel: "Return the Level of Server Count:$serverBoostLevel",
   $playSpotify:
     "Play a Spotify playlist;$playSpotify[url;leave vc time; deafen;leave when vc empty (yes/no); useFilter (yes/no, default is yes);error]",
-  "$skipTo[": "Skip to a certain number in the queue;$skipTo[number]",
+  $skipTo: "Skip to a certain number in the queue;$skipTo[number]",
   $newTicket:
     "Creates a ticket with given options;$newTicket[ticket name;ticket message;categoryID;return ticket ID;error message]",
   $closeTicket:
