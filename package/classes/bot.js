@@ -275,8 +275,6 @@ client.aoi = {
 
     if (options.databasePath) client.databasePath = options.databasePath;
 
-    if (options.dbhToken) client.dbhToken = options.dbhToken;
-
     if (options.connectedBots) client.connectedBots = options.connectedBots;
 
     if (!options.token) throw new TypeError(`Token wasn't provided.`);
@@ -838,7 +836,7 @@ functionErrorCommand(d = {}) {
 
       if (!Array.isArray(cmds)) cmds = [cmds];
 
-      debugs.push(`| \x1b[35mWalking in \x1b[33m${name}\x1b[0m`);
+      debugs.push(`| \x1b[38mWalking in \x1b[33m${name}\x1b[0m`);
 
       for (const cmd of cmds) {
         if (!isObject(cmd)) {
@@ -853,7 +851,7 @@ functionErrorCommand(d = {}) {
 
         if (!valid) {
           debugs.push(
-            `| \x1b[31mInvalid command type \x1b[34m'${cmd.type}'\x1b[35m in \x1b[33m${cmd.name || cmd.channel}\x1b[0m`
+            `| \x1b[31mInvalid command type \x1b[34m'${cmd.type}'\x1b[38m in \x1b[33m${cmd.name || cmd.channel}\x1b[0m`
           );
 
           continue;
