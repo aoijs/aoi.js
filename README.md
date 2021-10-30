@@ -1,6 +1,6 @@
   <br />
     <p>
-    <a href="https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
+    <a href="https://aoi.leref.ga"><img src="https://cdn.discordapp.com/attachments/804813961190572093/904143573287583814/aoijsv4.6.png" alt="aoi.js" /></a>
   </p>
 
 # aoi.js
