@@ -3,7 +3,7 @@ const error = require("../../handlers/errors.js");
 const parse = require("parse-ms");
 const toParse = require("ms-parser");
 
-const validTypes = ["globalUser", "channel", "server", "user", "all"];
+const validTypes = ["globaluser", "channel", "server", "user", "all"];
 
 async function complexCooldown(d) {
   const code = d.command.code;
