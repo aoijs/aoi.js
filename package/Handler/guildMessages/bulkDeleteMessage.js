@@ -1,7 +1,9 @@
 const Interpreter = require("../../interpreter.js")
 module.exports = async (dmsg,client) =>{
     const d = {
-
+  guild:dmsg.guild,
+  channel:dmsg.channel,
+  client:dmsg.client 
     }
 let chan;
 for(const cmd of client.cmd.messageDelete.allValues()){

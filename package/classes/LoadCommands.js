@@ -124,10 +124,10 @@ class LoadCommands {
                 client.createCommand(cmd) 
             }
             else {
-if(cmd.type === "interaction"){
+/*if(cmd.type === "interaction"){
           client[cmd.type][cmd.prototype].set(client[cmd.type][cmd.prototype].size,cmd);
 }
-            else client[cmd.type].set(client[cmd.type].size,cmd)
+            else */client[cmd.type].set(client[cmd.type].size,cmd)
                 }
         } catch(e) {
             console.log(e)
@@ -139,7 +139,7 @@ if(cmd.type === "interaction"){
           continue;
         }
 
-        debugs.push(`|${this.colors.loaded?.command||""}'${cmd.name || cmd.channel}' |${this.colors.loaded?.type||""}${cmd.type} ${this.allColors.reset}|${this.colors.loaded?.text}Loaded${this.allColors.reset}|
+        debugs.push(`|${this.colors.loaded?.command||""}'${cmd.name || cmd.channel}' |${this.colors.loaded?.type||""}${cmd.type} ${this.allColors.reset||""}|${this.colors.loaded?.text||""}Loaded${this.allColors.reset||""}|
 |------------------------------------------|`);
       }
     }
@@ -231,6 +231,55 @@ if(cmd.type === "interaction"){
 
 };
   }
+  get themes() {
+      return {
+          default : {
+    walking:["blink","dim","fgWhite"],
+    failedWalking:{
+        name:["bright","fgYellow","underline"],
+
+        text:["bright","fgRed"]
+    },
+    typeError:{
+        command:["bright","fgYellow"],
+        type:["fgYellow"],
+        text:["bright","fgRed"]
+    },
+    failLoad:{
+        command:["bright","fgMagenta"],
+        type:["fgRed"],
+        text:["bright","fgRed"],
+        },
+    loaded:{
+           command:["bright","fgCyan"],
+           type:["bright","fgBlue"],
+           text:["bright","fgGreen"]
+           },
+    },
+          diff:{
+              walking : [ 'fgGreen' ],
+              failedWalking : {
+                  text : [ 'fgRed' ] ,
+                  name : [  'bright' , 'fgRed' ] 
+              },
+              typeError : {
+                  command : [  'bright' , 'fgRed' ],
+                  type : [ 'fgRed' ],
+                  text : [ 'dim' , 'fgRed' ],
+              },
+              failLoad : {
+                  command : [ 'bright' , 'fgRed' ],
+                  type : [ 'fgRed' ],
+                  text : [  'dim' , 'fgRed' ],
+              },
+              loaded : {
+                  command : [  'bright' , 'fgCyan' ],
+                  type : [ 'fgCyan' ],
+                  text : [  'dim' , 'fgCyan' ],
+              }
+          }
+      } 
+  } 
   }
 
 

@@ -1,0 +1,18 @@
+module.exports = d => {
+    const data = d.util.openFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [channelId, threadId] = data.inside.splits;
+
+    const channel = d.util.getChannel(d, channelId);
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
+
+    const thread = channel.threads.cache.get(threadId);
+    if (!thread) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid ThreadId Provided In");
+
+    thread.join()
+
+    return {
+        code: d.util.setCode(data)
+    }
+}

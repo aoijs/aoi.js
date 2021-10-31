@@ -68,7 +68,7 @@ class CheckCondition {
         const final = [];
         for(let part of parts) {
             const has = part.includes(")") ? ")" : ""  
-part = part.split(")")[0] 
+part =  part.split(")")[0] 
             if(this.hasOr(part)) final.push(this.solveOr(part)+has ) 
             else if(this.hasEqual(part)) final.push(this.solveEqual(part)+has )
             else if(this.hasNotEqual(part)) final.push(this.solveNotEqual(part)+has )
@@ -78,8 +78,8 @@ part = part.split(")")[0]
             else if(this.hasLE(part)) final.push(this.solveLE(part)+has )
             else if(part.trim() === "") final.push(part);
         }
-        //console.log("andArray:"+final)
-      //  console.log("andpart:"+final.join("&&"))
+        console.log("andArray:"+final)
+        console.log("andpart:"+final.join("&&"))
         return final.join("&&") 
         
     }
@@ -103,17 +103,18 @@ part = part.split(")")[0]
     static solve(msg) {
         const parts = msg.split("(") 
         const final = [] 
-        //console.log(parts)
+        console.log(parts)
         for(const part of parts) {
             if(part.trim() === "") {
                 final.push("") 
                 continue;
             }
             let solve = this.solveAnd(part) 
-           // console.log("solve:"+solve)
+            console.log("solve:"+solve)
 
             final.push(solve)
         }
+        console.log({final})
       let result =  final.join("(")
       if(result.split("(").length !== result.split(")").length ) result = result +")".repeat(result.split("(").length - result.split(")").length ) 
         return result 

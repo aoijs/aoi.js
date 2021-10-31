@@ -1,64 +1,77 @@
-const Group = require('../CacheHandler/index.js').cache 
+const Group = require('../CacheHandler/index.js').cache
 class Variable {
-    constructor(data={}){
-        this.name = data.name 
-        this.type = data.type 
-        this.default = data.value 
+    constructor(data = {}) {
+        this.name = data.name
+        this.type = data.type
+        this.default = data.value
 
     }
-    setType(type){
-        if(this.types.includes(type)) this.type = type 
-        else return console.error("VariableTypeError: Invalid Type : "+type) 
+    object() {
+        let x = {}
+        Object.assign(x, this)
+        return x
     }
- object(){
-     let x ={}
-      Object.assign(x,this) 
-     return x 
- }
+    toJSON() {
+        return JSON.stringify(this.object(), null, 2)
+    }
+    entries() {
+        return Object.entries(this)
+    }
+    get toArray() {
+        return Object.values(this)
+    }
 }
 class VariableManager {
-    constructor(client){
-        this.client = client 
-        this.cache = new Group() 
+    constructor(client) {
+        this.client = client
+        this.cache = new Group()
     }
-    findType(value){
- let res;
-        switch(typeof value){
-                case "string":
-                res="TEXT"
+    findType(value) {
+        let res;
+        switch (typeof value) {
+            case "string":
+                res = "TEXT"
                 break;
-                case "number":
-                if(Number.isInteger(value)) res = "INTEGER" 
-                else res = "NUMERIC" 
-                break; 
-                case "object":
-                res = "JSON" 
-                break; 
+            case "number":
+                if (Number.isInteger(value)) res = "INTEGER"
+                else res = "NUMERIC"
+                break;
+            case "object":
+                res = "JSON"
+                break;
         }
-        return res 
+        return res
     }
-    get size (){
-       return this.cache.size 
+    get size() {
+        return this.cache.size
     }
-    get values(){
-        return this.cache.allValues().map(x=>x.value)
+    get values() {
+        return this.cache.allValues().map(x => x.value)
     }
-    get vars(){
-        this.cache.allKeys() 
+    get vars() {
+        return this.cache.allKeys()
     }
-    add(data){
-        data.type = this.findType(data.value) 
-        this.cache.set(data.name,new Variable(data))
+    add(data) {
+        data.type = this.findType(data.value)
+        this.cache.set(data.name, new Variable(data))
     }
-    delete(name){
-        this.cache.delete(name) 
+    delete(name) {
+        this.cache.delete(name)
     }
-    get(name){
-        return this.cache.get(name) 
+    get(name) {
+        return this.cache.get(name)
     }
-
-} 
+    has(name) {
+        return this.cache.has(name);
+    }
+    toJSON() {
+        const keys = this.cache.allKeys();
+        const values = this.cache.allValues();
+        const json = keys.map(x => this.cache.get(x).toJSON())
+        return "{\n" + keys.map((x, y) => `"${x}" : ${json[y]} `).join(",\n") + "\n}"
+    }
+}
 module.exports = {
-Variable,
-VariableManager 
+    Variable,
+    VariableManager
 }

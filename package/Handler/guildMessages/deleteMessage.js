@@ -4,7 +4,7 @@ module.exports = async (dmsg,client) =>{
     Object.assign(data,dmsg) 
 let chan ;
 
-if(!data.partial && client.user.id === data?.author.id) return ;
+if(!data.partial && client.user.id === data?.author?.id) return ;
 for(const cmd of client.cmd.messageDelete.allValues()){
     if(cmd.channel?.includes("$")){
     const id = await Interpreter(client,data,[],{command:"channelParser",code:cmd.channel}, client.db, true)

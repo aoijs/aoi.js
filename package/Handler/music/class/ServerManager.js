@@ -48,16 +48,17 @@ class ServerManager {
            for(const url of urls){
                try {
                const sc = await this.search.SoundCloud.getData(url,this.voice.scdl)
-        const stream =await this.ffmpeg.transformStream(sc.stream)//sc.stream
+        const stream =/*await this.ffmpeg.transformStream(sc.stream)*/sc.stream
         const resource = this.resource(stream,{inlineVolume:true}) 
         this.queue.push(new Track(sc.info,stream, resource,type,member))
                if(this.queue.length === 1){
                    this._playTrack() 
                }
-                   await wait(5000)
+                   //await wait(5000)
            }
 
            catch(e){
+               console.error(e)
                continue;
            }
                }

@@ -3,6 +3,8 @@ const Interpreter = require('../../interpreter.js')
 module.exports = async (reaction,user,client)=>{
 const cmds = client.cmd.reactionAdd.allValues()
 const data = {
+    message: reaction.message,
+    channel: reaction.message.channel,
     client:client,
     guild:reaction.emoji.guild,
     author:user
@@ -13,6 +15,6 @@ for(const cmd of cmds){
         const id = await Interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel},client.db,true)
         chan = client.channels?.cache.get(id)
     }
-    await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{},chan)
+    await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{ reactionData:reaction },chan)
 }
 }
