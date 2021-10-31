@@ -1,6 +1,6 @@
   <br />
     <p>
-    <a href="https://aoi.leref.ga"><img src="https://cdn.discordapp.com/attachments/804813961190572093/904143573287583814/aoijsv4.6.png" alt="aoi.js" /></a>
+    <a href="https://aoi.leref.ga"><img src="https://cdn.discordapp.com/attachments/804813961190572093/904449090547503104/aoijsv5.png" alt="aoi.js" /></a>
   </p>
 
 # aoi.js
@@ -33,7 +33,7 @@ const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
 token: "TOKEN", //Discord Bot Token
-prefix: "PREFIX" //Discord Bot Prefix
+prefix: "PREFIX", //Discord Bot Prefix
 intents: "all" //Discord Intents
 })
 
