@@ -1,4 +1,4 @@
-const searchIndexes = require("../../handlers/KMP");
+const searchIndexes = require("../../Handler/KMP");
 String.prototype.replaceLast = function (find, replace) {
   var index = this.lastIndexOf(find);
 
