@@ -1,4 +1,5 @@
-const ms = require("ms") 
+const { Time } = require('../../../Utils/helpers/customParser.js');
+
 module.exports = async d => {
 const {code} = d.command 
 const inside = d.unpack() 
@@ -15,7 +16,7 @@ if(err) return d.error(err)
   }) 
 
    filter = (r,u) =>( filter === "everyone" ? true : u.id === filter ) && ( reactions.includes(r.emoji.toString()) || reactions.includes(r.emoji.name) || reactions.includes(r.emoji.id) )
-   time =  await ms(time)
+   time =  Time.parse(time)?.ms;
     if(!time) d.aoiError.fnError(d,"custom",{inside},"Invalid Time Provided In") 
 
    commands = commands.split(",") 
