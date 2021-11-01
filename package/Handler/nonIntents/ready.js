@@ -18,5 +18,4 @@ await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{},chan)
     console.log(
         "Our Official Discord Server: https://aoi.js.org/invite"
     );
-
 }
