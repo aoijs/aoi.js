@@ -28,12 +28,12 @@ class AoiError {
       */
     static CommandError(command, type, name, position) {
         if (type === "name") {
-            const error = new Error(`"name" property is missing in "${command}" (position: ${position})`)
+            const error = new Error(`"Name" property is missing in "${command}" (position: ${position})`)
             error.name = "CommandNameError"
             throw error
         }
         else if (type === "code") {
-            const error = new Error(`"code" is not provided in "${name || "the Command"}" : ${command} (position: ${position})`)
+            const error = new Error(`"Code" is not provided in "${name || "the Command"}" : ${command} (position: ${position})`)
             error.name = "CommandCodeError"
             throw error
         }
@@ -91,28 +91,28 @@ class AoiError {
         let ans;
         switch (type) {
             case "message":
-                ans = `\`${d.func}:Invalid MessageId Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid MessageId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "channel":
-                ans = `\`${d.func}:Invalid ChannelId Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid ChannelId Provided In ${data.inside || ""} (line : ${d.funcLine}\`)`
                 break;
             case "user":
-                ans = `\`${d.func}: Invalid UserId Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid UserId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "role":
-                ans = `\`${d.func}:Invalid Role Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid Role Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "guild":
-                ans = `\`${d.func}:Invalid GuildId Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid GuildId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "emoji":
-                ans = `\`${d.func}:Invalid EmojiId Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid EmojiId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "option":
-                ans = `\`${d.func}:Invalid Option Provided In ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}: Invalid Option Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "custom":
-                ans = `\`${d.func}:${message} ${data.inside || ""}\` (line : ${d.funcLine})`
+                ans = `\`${d.func}:${message} ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
         }
         return ans
