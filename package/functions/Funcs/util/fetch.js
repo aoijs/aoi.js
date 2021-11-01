@@ -43,7 +43,7 @@ module.exports = async d => {
             break;
             
             case "premiumStickerPacks" :
-            data.result = await d.client.fetchPremiumSticketPacks()
+            data.result = await d.client.fetchPremiumStickerPacks()
             break ;
             
             case "sticker" :

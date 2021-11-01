@@ -20,17 +20,19 @@ class LavalinkHTTP {
         "Content-Type": "application/json",
         Accept: "application/json",
         "User-Agent":
-            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) (NodeJS; https://nodejs.org/en/)",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +https://www.google.com/bot.html) (NodeJS; https://nodejs.org/en/)",
     }
   }
 
   getURL(origin) {
-    return new url.URL("http://" + origin);
+    return new url.URL("https://" + origin);
   }
   /**
-   * 
-   * @param {string} SearchQuery 
-   * @returns 
+   *
+   * @param {string} SearchQuery
+   * @param origin
+   * @param password
+   * @returns
    */
   load(SearchQuery, origin, password) {
     const url = this.getURL(origin);
