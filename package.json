@@ -1,8 +1,7 @@
 {
-  "installed_version": "5.0.0-pre",
   "name": "aoi.js",
   "version": "5.0.0",
-  "description": "Aoi.JS - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
+  "description": "aoi.js - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
   "scripts": {
@@ -51,6 +50,7 @@
     "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
   },
   "keywords": [
+    "aoi.js",
     "aoi.js",
     "aoi",
     "api",

@@ -9,9 +9,9 @@ class CustomEvent extends EventEmitter {
       this.client.customEvents = this 
     }
  command(d = {}){
-     if(!d.listen){throw new TypeError(`listen is not provided in ${d.name}`)
+     if(!d.listen){throw new TypeError(`Listen is not provided in ${d.name}`)
                    }
-     if(!d.code){throw new TypeError(`code is not provided in ${d.name}`)
+     if(!d.code){throw new TypeError(`Code is not provided in ${d.name}`)
 }
                    
     this.commands.set(d.name,d)
