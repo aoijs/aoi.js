@@ -8,6 +8,6 @@ let chan;
      const id = await Interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel},client.db,true)
   chan = client.channels.cache.get(id)
      }
-   await Interpreter(client,data,[],cmd,client.db,false,cmd.channel,{membersChuck:{members:mem,guild:guild,chunk:chunk}},chan)
+   await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{membersChuck:{members:mem,guild:guild,chunk:chunk}},chan)
   }
 }

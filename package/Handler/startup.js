@@ -11,4 +11,8 @@ module.exports = async client => {
     
     require('./custom/timeout.js')({client,interpreter :Interpreter},undefined,undefined,undefined,true);
     require('./custom/timeoutPulse.js')({client,interpreter :Interpreter},undefined,undefined,undefined,undefined,true);
+
+    if(client.cmd.loop.size){
+        require('./custom/loop.js')(client);
+    }
 }

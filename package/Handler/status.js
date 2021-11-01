@@ -16,7 +16,7 @@ module.exports = (statuses,client) =>{
 
         y++
      f()
- //  console.log("after y++:"+y)
+
      },(status[y]?.time||12)*1000)
     
     }

@@ -53,7 +53,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             //more debug 
             debug[func] = { regex, func }
 
-            funcLine = command.codeLines.length - (command.codeLines?.reverse().findIndex( x => x.toLowerCase().split(' ').includes(func.toLowerCase()) )) ;
+            funcLine = command.codeLines.length - (command.codeLines?.reverse().findIndex(x => x.toLowerCase().split(' ').includes(func.toLowerCase())));
 
             try {
                 const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""))
@@ -80,7 +80,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                                 error: command.error,
                                 async: command.async || false,
                                 functions: command.functions,
-                                codeLines : command.codeLines
+                                codeLines: command.codeLines
                             },
                             args: args,
                             aoiError: require('./classes/AoiError.js'),

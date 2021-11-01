@@ -21,7 +21,7 @@ String.prototype.deleteBrackets = function () {
     .replace(/=/g, "#EQUAL#")
     .replace(/{/g, "#RIGHT_BRACKET#")
     .replace(/}/g, "#LEFT_BRACKET#")
-    .replace(/\,/g,"#COMMA#")
+    .replace(/\,/g, "#COMMA#")
 };
 
 String.prototype.removeBrackets = String.prototype.deleteBrackets;
@@ -139,7 +139,7 @@ String.prototype.addBrackets = function () {
     .replace(/#EQUAL#/g, "=")
     .replace(/#RIGHT_BRACKET#/g, "{")
     .replace(/#LEFT_BRACKET#/g, "}")
-    .replace(/#COMMA#/g,",")
+    .replace(/#COMMA#/g, ",")
 };
 
 Array.prototype.goof = function (sep = "_") {
@@ -154,34 +154,34 @@ Array.prototype.goof = function (sep = "_") {
 };
 async function walk(path) {
 
-      const something = await fs.promises
+  const something = await fs.promises
 
-        .readdir(path, { withFileTypes: true })
+    .readdir(path, { withFileTypes: true })
 
-        .then((f) => {
+    .then((f) => {
 
-          return f.map((d) => {
+      return f.map((d) => {
 
-            d.name = `${path}/${d.name}`;
+        d.name = `${path}/${d.name}`;
 
-            return d;
+        return d;
 
-          });
+      });
 
-        });
+    });
 
-      const files = something.filter((d) => d.isFile());
+  const files = something.filter((d) => d.isFile());
 
-      const dirs = something.filter((d) => d.isDirectory());
+  const dirs = something.filter((d) => d.isDirectory());
 
-      for (const d of dirs) {
+  for (const d of dirs) {
 
-        const items = await walk(d.name);
+    const items = await walk(d.name);
 
-        files.push(...items);
+    files.push(...items);
 
-      }
+  }
 
-      return files;
+  return files;
 
-    }
+}

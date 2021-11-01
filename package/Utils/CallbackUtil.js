@@ -38,13 +38,13 @@ const RateLimitOptions = [
     "path",// "The path to the api endpoint that triggered the rate limit;.path",
     "route",// "The route that triggered this event;.route",
 ];
-const WebhookUpdateOptions =  [
+const WebhookUpdateOptions = [
     'id', //"id",
     'name',// "name.deleteBrackets()",
     'type',// "The type of the channel where the pins were updated;.type",
     'guildid'// "The guild's ID of the channel where the webhook was updated;.guild.id",
 ];
-  
+
 module.exports = {
     BulkData,
     PinData,

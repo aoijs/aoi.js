@@ -140,12 +140,12 @@ module.exports = {
         data.afkChannel = guild.afkChannel?.name;
         data.bannerURL = guild.bannerURL();
     },
-    Webhook(webhook){
-        const data = Object.assign(Object.create(webhook),webhook);
+    Webhook(webhook) {
+        const data = Object.assign(Object.create(webhook), webhook);
 
-        data.send= undefined;
+        data.send = undefined;
         data.sendSlackMessage = undefined;
-        data.avatarURL = webhook.avatarURL({dynamic:true,size:4096});
+        data.avatarURL = webhook.avatarURL({ dynamic: true, size: 4096 });
         data.sourceChannel = undefined;
         data.sourceGuild = undefined;
         data.owner = webhook.owner?.id;
@@ -297,19 +297,19 @@ module.exports = {
         let i = format.length - 1;
 
     },
-    Timeout(d,name,duration,timeoutData,pulse) {
+    Timeout(d, name, duration, timeoutData, pulse) {
         timeoutData.__duration__ = Date.now() + duration;
         timeoutData.__timeoutName__ = name;
         timeoutData.__pulseEvery__ = pulse;
-        timeoutData.__id__ = Math.floor(Math.random()*999999);
+        timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
-        d.client.db.set( d.client.db.tables[0],'setTimeout',timeoutData.__id__,timeoutData );
+        d.client.db.set(d.client.db.tables[0], 'setTimeout', timeoutData.__id__, timeoutData);
 
-        if( !pulse ){
-            require('../../Handler/custom/timeout.js')(d,name,duration,timeoutData,false)
+        if (!pulse) {
+            require('../../Handler/custom/timeout.js')(d, name, duration, timeoutData, false)
         }
         else {
-            require('../../Handler/custom/timeoutPulse.js')(d,name,duration,pulse,timeoutData,false)
+            require('../../Handler/custom/timeoutPulse.js')(d, name, duration, pulse, timeoutData, false)
         }
     }
 }
