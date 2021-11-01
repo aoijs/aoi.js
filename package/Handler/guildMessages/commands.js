@@ -24,7 +24,7 @@ for(const prefix of prefixes){
     const cmdName = (msg.toLowerCase().startsWith(cmd.name.toLowerCase()) && msg.toLowerCase().split(" ").slice(0,cmd.name.split(" ").length).join(" ") === cmd.name.toLowerCase()) ? cmd.name : (Array.isArray(cmd.aliases) ? cmd.aliases.find(x=>msg.toLowerCase().startsWith(x.toLowerCase()) && msg.toLowerCase().split(" ").slice(0,x.split(" ").length).join(" ") === x.toLowerCase()) :  msg.toLowerCase().split(" ").slice(0,cmd.aliases.split(" ").length).join(" ") === cmd.aliases.toLowerCase()) ? cmd.aliases : undefined
     //args
   const args = msg.slice(cmdName?.length||"").split(" ").slice(1)
-    //chrck if blacklisted
+    //check if blacklisted
  const bl = client.blacklist 
  if(!bl.commands.includes(cmd.name?.toLowerCase())){
  if(!cmd.whitelist){
@@ -71,7 +71,6 @@ for(const prefix of prefixes){
     //non async execution
     else{
         Interpreter(client,message,args,cmd,client.db)
+        }
     }
-    
-}
 }
