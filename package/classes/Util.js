@@ -110,7 +110,6 @@ class Util {
             }
         }
         catch (e) {
-            console.error(e)
             error = await parsers.ErrorHandler(d, error, true)
         }
         return error;
