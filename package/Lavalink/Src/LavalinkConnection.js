@@ -22,10 +22,12 @@ const apiBody = {
 
 class LavalinkConnection extends EventEmitter {
   /**
-   * 
-   * @param {"example.com"} LavalinkURL 
-   * @param {string} LavalinkAuthorizationPassword 
+   *
+   * @param {"example.com"} LavalinkURL
+   * @param {string} LavalinkAuthorizationPassword
    * @param {`${bigint}`} UserId
+   * @param ShardAmount
+   * @param WebsocketOptions
    */
     constructor(LavalinkURL, LavalinkAuthorizationPassword, UserId, ShardAmount = 1, WebsocketOptions = {}) {
         super();
@@ -159,9 +161,11 @@ class LavalinkConnection extends EventEmitter {
       }
     }
     /**
-     * 
-     * @param {import("discord.js").Guild} guild 
+     *
+     * @param {import("discord.js").Guild} guild
      * @param {import("discord.js").VoiceChannel} channel
+     * @param selfDeaf
+     * @param selfMute
      */
     joinVoiceChannel(guild, channel, selfDeaf = false, selfMute = false) {
       if (guild.shard.status !== 0) return;
@@ -189,8 +193,9 @@ class LavalinkConnection extends EventEmitter {
     }
 
     /**
-     * 
-     * @param {import("./index").RawTrack} rawtrack 
+     *
+     * @param {import("./index").RawTrack} rawtrack
+     * @param requesterUserId
      * @returns {import("./index").Track}
      */
     _buildTrack(rawtrack, requesterUserId) {

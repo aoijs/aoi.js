@@ -1,0 +1,1 @@
+module.exports = require("../../../Handler/LavaCommands.js") // the hardest line in whole Aoi.js

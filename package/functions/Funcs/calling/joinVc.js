@@ -1,0 +1,21 @@
+module.exports = d => {
+    const data = d.util.openFunc( d );
+
+    const [ voiceId = d.member.voice?.channel?.id ] = data.inside.splits;
+
+    const vc = d.util.getChannel( d,voiceId );
+    if( ![ d.util.channelTypes.voice,d.util.channelTypes.stage ].includes( vc.type ) ) return d.aoiError.fnError( d,'custom',{ inside : data.inside },'Provided ChannelId Is Not Voice/Stage Channel In' )
+
+    if( !d.client.voiceManager ) return d.aoiError.fnError( d,'custom',{},'Voice Class Is Not Initialised.' );
+
+    try {
+    d.client.voiceManager.joinVc( vc,d.channel );
+    }
+    catch( e ) {
+        d.aoiError.fnError( d,'custom',{},'Failed To Join Vc With Reason: '+e );
+    }
+
+    return {
+        code : d.util.setCode( data )
+    }
+}

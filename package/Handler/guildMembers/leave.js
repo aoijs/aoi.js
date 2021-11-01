@@ -11,6 +11,6 @@ module.exports = async (mem,client) =>{
      const id = await Interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel},client.db,true)
   chan = client.channels.cache.get(id)
      }
-   await Interpreter(client,data,[],cmd,client.db,false,cmd?.channel,{newm:mem},chan)
+   await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{newm:mem},chan)
   }
 }

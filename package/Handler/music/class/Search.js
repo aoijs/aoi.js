@@ -19,7 +19,7 @@ class Youtube {
             else return [track.split("/").pop()] 
         }
        else{
-          const vid = (await ytsr.search(track,options)) 
+          const vid = (await ytsr.search(track,options))
          return vid.map(x=>x.id) 
        }
     }
@@ -66,9 +66,9 @@ return set.tracks.map(x=>x.permalink_url)
         return {info,stream} 
     }
     async transcodStream(link,sc){
-        const sx = require('soundcloud-downloader/dist/download-media'). default
+       /* const sx = require('soundcloud-downloader/dist/download-media'). default
         const media = await sx(link,sc?.clientId||"",require("axios"))
-      return media 
+      return media */
     }
 }
 class Search {

@@ -8,7 +8,13 @@ const MessageComponentTypes = {
     BUTTON:"button",
     SELECT_MENU:"selectMenu"
 }
+const SlashTypes = {
+    slash : "CHAT_INPUT",
+    user : "USER",
+    message : "MESSAGE" 
+} 
 module.exports = {
 InteractionTypes: InteractionTypes ,
-MessageComponentTypes:MessageComponentTypes 
+MessageComponentTypes:MessageComponentTypes ,
+SlashTypes 
 }

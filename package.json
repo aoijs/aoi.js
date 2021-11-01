@@ -1,70 +1,66 @@
 {
-    "name": "aoi.js",
-    "version": "5.0.0-dev",
-    "description": "aoi.js - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
-    "main": "package/index.js",
-    "typings": "package/index.d.ts",
-    "scripts": {
-        "start": "node test.js",
-        "prettycheck": "prettier --check \"package/**/*.js\"",
-        "prettywrite": "prettier --write \"package/**/*.js\""
-    },
-    "dependencies": {
-        "@discordjs/voice": "^0.6.0",
-        "dbdjs.db": "^2.0.2",
-        "discord.js": "13.1.0",
-        "moment": "^2.29.1",
-        "ms": "^2.1.3",
-        "ms-parser": "^1.0.5",
-        "parse-ms": "2.0.0",
-        "soundcloud-downloader": "^1.0.0",
-        "spotify-url-info": "^2.2.0",
-        "youtube-sr": "^4.1.7",
-        "ytdl-core-discord": "^1.3.1"
-    },
-    "devDependencies": {
-        "@discordjs/opus": "^0.5.0",
-        "axios": "^0.21.1",
-        "danbot-hosting": "^0.1.6",
-        "ffmpeg-static": "^4.3.0",
-        "node-fetch": "^2.6.1",
-        "prettier": "~2.2.1",
-        "prism-media": "^1.2.7",
-        "segfault-handler": "^1.3.0",
-        "tweetnacl": "^1.0.3",
-        "workerpool": "^6.1.0",
-        "ws": "^7.4.6",
-        "ytdl-core": "^4.9.0"
-    },
-    "engines": {
-        "node": ">=16.6"
-    },
-    "files": [
-        "package"
-    ],
-    "license": "Apache-2.0",
-    "licenses": [
-        {
-            "type": "Apache-2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0"
-        }
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
-    },
-    "keywords": [
-        "aoi.js",
-        "aoi",
-        "api",
-        "dbd.js",
-        "dbd",
-        "bot",
-        "buttons",
-        "music",
-        "bdfd",
-        "Bot Designer for Discord",
-        "discord",
-        "discordbot"
-    ]
+  "name": "aoi.js",
+  "version": "5.0.0",
+  "description": "aoi.js - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
+  "main": "package/index.js",
+  "typings": "package/index.d.ts",
+  "scripts": {
+    "start": "node test.js",
+    "prettycheck": "prettier --check \"package/**/*.js\"",
+    "prettywrite": "prettier --write \"package/**/*.js\""
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.5.0",
+    "@discordjs/voice": "^0.5.6",
+    "dbdjs.db": "^2.0.1",
+    "discord.js": "13.2.0",
+    "m3u8stream": "^0.8.4",
+    "soundcloud-downloader": "^1.0.0",
+    "spotify-url-info": "^2.2.0",
+    "youtube-sr": "^4.1.7",
+    "ytdl-core-discord": "^1.3.1"
+  },
+  "devDependencies": {
+    "axios": "^0.21.1",
+    "ffmpeg-static": "^4.3.0",
+    "node-fetch": "^2.6.1",
+    "tweetnacl": "^1.0.3",
+    "prettier": "~2.2.1",
+    "prism-media": "^1.2.7",
+    "segfault-handler": "^1.3.0",
+    "workerpool": "^6.1.0",
+    "ws": "^7.4.6",
+    "ytdl-core": "^4.9.0"
+  },
+  "engines": {
+    "node": ">=16.6"
+  },
+  "files": [
+    "package"
+  ],
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
+  },
+  "keywords": [
+    "aoi.js",
+    "aoi.js",
+    "aoi",
+    "api",
+    "dbd.js",
+    "dbd",
+    "bot",
+    "music",
+    "bdfd",
+    "Bot Designer for Discord",
+    "discord",
+    "discordbot"
+  ]
 }

@@ -2,27 +2,28 @@ class SlashOption {
 static choice(option){
     const Choice = [] 
     option = option.split("{choice:").slice(1) 
-    //console.log(option)
+    console.log(option)
     for(let opt of option){
 
         opt = opt.split("}")[0].split(":")
-        //console.log(opt)
+        console.log(opt)
         const name = opt.shift()?. addBrackets()
         const value = opt.shift()?.addBrackets() 
         Choice.push({name, value}) 
     }
+    console.log(Choice)
     return Choice;
 }
 static async string(option){
     option = option.split("{string:").slice(1)
     const stringOptions = [] 
     for(let opt of option){
-        opt = opt.split("}")[0].split(":")
+        opt = opt.split(":"); 
     const name = opt.shift()?.addBrackets()
     const description = opt.shift()?.addBrackets() 
-    const required = opt?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true 
+    const required = opt?.shift()?.addBrackets() === "yes" || true 
     const choice = opt.join(":") 
-    //console.log(choice)
+    console.log(choice)
     let choices;
     if(choice.trim().length){
         choices = await this.choice(choice)
@@ -30,16 +31,17 @@ static async string(option){
     else choices = [] 
     stringOptions.push({type:3,name, description, required,choices})
     }
+    console.log(stringOptions)
     return stringOptions 
 }
 static async integer (options){
     options = options.split("{integer:").slice(1)
     const integerOptions = [] 
 for(let option of options){
-    option = option.split("}")[0].split(":")
+    option = option.split(":")
     const name = option.shift()?.addBrackets()
     const description = option.shift()?.addBrackets() 
-    const required = option?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true 
+    const required = option?.shift()?.addBrackets() === "yes" || true 
     const choice = option.join(":") 
     let choices;
     if(choice.trim().length){
@@ -63,7 +65,7 @@ static async number (options){
         choices = await this.choice(choice)
     } 
     else choices = [] 
-    numberOptions({type:10,name, description, required,choices})
+    numberOptions.push({type:10,name, description, required,choices})
     }
     return numberOptions ;
 }
@@ -85,7 +87,7 @@ static async user(options){
     const name = option.shift()?.addBrackets()
     const description = option.shift()?.addBrackets() 
     const required = option?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true
-    userOptions({type:6,name, description, required})
+    userOptions.push({type:6,name, description, required})
     }
     return userOptions;
 }
@@ -96,7 +98,7 @@ static async channel(options){
     const name = option.shift()?.addBrackets()
     const description = option.shift()?.addBrackets() 
   const required = option?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true
-    channelOptions({type:7,name, description, required})
+    channelOptions.push({type:7,name, description, required})
     }
     return channelOptions ;
 }
@@ -161,9 +163,11 @@ static async subGroup(options){
         const description = option.shift()?.addBrackets()
         let Option = []
         const opts = option.join(":")
-        for(let opt of opts){
-         Option =Option.concat((await this.subCommand(opt)))
-        }
+        console.log({opts});
+
+
+         Option =Option.concat((await this.subCommand(opts)))
+
         GroupOptions.push({name, description,type:2,options:Option})
     }
     return GroupOptions ;

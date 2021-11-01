@@ -1,0 +1,9 @@
+module.exports = async d => {
+    let { code, result } = d.util.openFunc(d);
+
+    result = d.data.oldm?.content;
+
+    return {
+        code: d.data.setCode({ function: d.func, code, result })
+    }
+}
