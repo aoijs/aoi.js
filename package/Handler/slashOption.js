@@ -65,7 +65,7 @@ static async number (options){
         choices = await this.choice(choice)
     } 
     else choices = [] 
-    numberOptions({type:10,name, description, required,choices})
+    numberOptions.push({type:10,name, description, required,choices})
     }
     return numberOptions ;
 }
@@ -87,7 +87,7 @@ static async user(options){
     const name = option.shift()?.addBrackets()
     const description = option.shift()?.addBrackets() 
     const required = option?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true
-    userOptions({type:6,name, description, required})
+    userOptions.push({type:6,name, description, required})
     }
     return userOptions;
 }
@@ -98,7 +98,7 @@ static async channel(options){
     const name = option.shift()?.addBrackets()
     const description = option.shift()?.addBrackets() 
   const required = option?.shift()?.addBrackets()?.replace("yes",true)?.replace("no",false) || true
-    channelOptions({type:7,name, description, required})
+    channelOptions.push({type:7,name, description, required})
     }
     return channelOptions ;
 }
