@@ -1,6 +1,5 @@
 commands
 config.json
-/index.js
 node_modules
 database
 /test.js
