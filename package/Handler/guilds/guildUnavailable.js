@@ -13,6 +13,6 @@ for(const cmd of cmds){
         const channel = client.channels.cache.get(cmd.channel)
     chan = channel 
          }
-    await Interpreter(client,data,[],cmd,client.db,false, chan?.,{},chan)
+    await Interpreter(client,data,[],cmd,client.db,false, chan?.id,{},chan)
 }
 }
