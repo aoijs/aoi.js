@@ -40,7 +40,7 @@ module.exports = async d => {
 
         const index = reactions.indexOf(r.emoji.id) === -1 ? reactions.indexOf(r.emoji.toString()) : reactions.indexOf(r.emoji.id);
 
-        const cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() = awaits[index].toLowerCase());
+        const cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() === awaits[index].toLowerCase());
         if (!cmd) return;
 
         d.interpreter(d.client, d.message, [msg.id], cmd, d.client.db, false, undefined, { awaitData });

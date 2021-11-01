@@ -1,16 +1,16 @@
 const { Perms } = require('../../../Utils/helpers/functions.js')
 
-module.exports = d => {
+module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
     const [roruId, channelId, guildId, ...perms] = data.inside.splits;
 
     const channel = d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
+    if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     let objPerms = {};
 
@@ -20,7 +20,7 @@ module.exports = d => {
     }
 
     channel.permissionOverwrites.edit(roruId, objPerms).catch(e => {
-        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Failed To Modify Channel Perms With Reason: ' + e);
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Perms With Reason: ' + e);
     });
 
     return {
