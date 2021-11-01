@@ -1,5 +1,5 @@
 module.exports = d => {
-    const { code, result } = d.util.openFunc(d);
+    let { code, result } = d.util.openFunc(d);
 
     result = new Date(new Date().toLocaleString('en-us', { timeZone: d.timezone })).getHours();
 

@@ -8,7 +8,7 @@ if(err) return d.error(err)
     if(isNaN(index) || index <0) d.aoiError.fnError(d,"custom",{inside},"Invalid Index Provided In")
     let data = []
     for(const field of fields){
-        let [ name,value,inline="no" ] = field.split(":") 
+        let [ name,value,inline="no" ] = field.split(":")
     name = name.addBrackets() 
     value = value.addBrackets() 
     inline = inline === "yes" || inline === "true" 
