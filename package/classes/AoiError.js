@@ -39,7 +39,7 @@ class AoiError {
         }
     }
     /**
-      *@params (client : Bot Class) (channelID : ID of the Channel Wherr this Error Would Be sent) (options:MessageOptions (content, embeds, components, allowedMentions,files)
+      *@params (client : Bot Class) (channelID : ID of the Channel Where this Error Would Be sent) (options:MessageOptions (content, embeds, components, allowedMentions,files)
       *@type : (CustomError)
       */
     static async makeMessageError(client, channel, options = {}, extraOptions = {}, d) {
