@@ -8,7 +8,7 @@ module.exports = async (event,client,commands,...data) =>{
         if(cmd.channel){
             const id =cmd.channel.includes("$") ? await Interpreter (client,{author: undefined, channel: undefined,message: undefined},[],{name:"channelParser",code:cmd.channel},client.db,true) : cmd.channel 
     const channel = client.channels.cache.get(id) 
-    if(!channel) return console.error("channel doesn't exist") 
+    if(!channel) return console.error("Channel doesn't exist")
           
           msg = {channel:channel,author:undefined,content:"",guild:channel.guild,member: undefined}
             }
