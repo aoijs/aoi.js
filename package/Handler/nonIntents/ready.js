@@ -14,5 +14,9 @@ let chan;
         }
 await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{},chan)
     }
+    console.log('Initialized on \x1b[36maoi.js \x1b[0m|| \x1b[32mv' + require("../../../package.json").version + '\x1b[0m');
+    console.log(
+        "Our Official Discord Server: https://aoi.js.org/invite"
+    );
 
 }
