@@ -7,8 +7,8 @@ const Parser = {
   $findChannel:
     "Finds a channel in this server. If last field is set to no, and the function couldn't find any channel, it'll return undefined.;$findChannel[ID/mention/name;returnCurrentChannel (yes/no) (optional)]",
   $ping: "Returns the Client Websocket ping ms",
-  $findUser:
-    "Returns an user's ID, or the author's ID if last field is set to 'yes' (defaults to yes), or else it'll return undefined;$findUser[ID/name/name#discriminator/mention;returnCurrentUser (yes/no) (optional)]",
+  $findUser: "Returns an user's ID, or the author's ID if last field is set to 'yes' (defaults to yes), or else it'll return undefined;$findUser[ID/name/name#discriminator/mention;returnCurrentUser (yes/no) (optional)]",
+  $allRoleCount: "Returns total role count.",
   $globalCooldown:
     "Sets a Global Cooldown to this user;$globalCooldown[time;error message]",
   $getUserBadges:
