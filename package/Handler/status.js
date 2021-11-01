@@ -1,5 +1,4 @@
 module.exports = (statuses,client) =>{
-    console.log(statuses)
     if(statuses.size !==0){
       let y = 0
     
