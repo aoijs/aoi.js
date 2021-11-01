@@ -1,9 +1,4 @@
-const fs = require('fs');
-
-const parser = fs.readdirSync("./package/functions/Funcs/").map(x => fs.readdirSync("./package/functions/Funcs" + x)).map(x => x.join(",")).join(",").split(",").map(x => "$" + x.split(".js")[0]);
-console.log(parser);
-const maps = {};
-require('fs').readdirSync("./package/functions/Funcs/").map(x => maps[x] = fs.readdirSync("./package/functions/Funcs/" + x).map(y => y.split(".js")[0]));
+const { functions : parser , maps} = require('../functions/parser.js')
 const Group = require('../CacheHandler/index.js').cache
 class Function {
     constructor(code, name) {
