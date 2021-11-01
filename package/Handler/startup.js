@@ -11,9 +11,4 @@ module.exports = async client => {
     
     require('./custom/timeout.js')({client,interpreter :Interpreter},undefined,undefined,undefined,true);
     require('./custom/timeoutPulse.js')({client,interpreter :Interpreter},undefined,undefined,undefined,undefined,true);
-    
-    if(client.aoiOptions.dbhToken){
-        const DBH = require('danbot-hosting'); 
-        const Api = new DBH.Client( client.aoiOptions.dbhToken,  client.clientShard ? client.clientShard : client ); 
-    }
 }
