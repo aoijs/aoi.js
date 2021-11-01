@@ -9,7 +9,7 @@ module.exports = d => {
     const channel = d.util.getChannel(d, channelId);
     if (!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
 
-    const guild = d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
 
     let objPerms = {};

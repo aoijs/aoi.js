@@ -7,7 +7,7 @@ if(err) return d.error(err);
     
 let [guildid,url,name,returnSticker = "no",tags, description,reason] = inside.splits; 
     
-const guild = d.client.guilds.cache.get(guildid) ;
+const guild = await d.util.getGuild(d,guildId);
 if(!guild) return d.aoiError.fnError(d,"guild",{inside});
     
 const attachment = new MessageAttachment(url);

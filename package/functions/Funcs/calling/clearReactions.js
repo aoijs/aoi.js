@@ -22,7 +22,7 @@ module.exports = async d => {
     } 
 }
     else {
-        message.reactions.cache.find( x => x.emoji.toString() = emoji || x.emoji.name.toLowerCase() === emoji.toLowerCase() || x.emoji.id === emoji )?.remove() 
+        message.reactions.cache.find( x => x.emoji.toString() === emoji || x.emoji.name.toLowerCase() === emoji.toLowerCase() || x.emoji.id === emoji )?.remove() 
     } 
     
     return {

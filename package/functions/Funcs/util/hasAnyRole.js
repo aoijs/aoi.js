@@ -6,7 +6,7 @@ module.exports = async d => {
     
     roles = roles.map( x => x.toLowerCase() );
     
-    const guild = d.util.getGuild( d,guildId );
+    const guild = await d.util.getGuild( d,guildId );
     if( !guild ) return d.aoiError.fnError( d ,"guild",{ inside : data.inside });
     
     const member = await d.util.getMember(guild,userId );

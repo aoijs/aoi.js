@@ -1,8 +1,8 @@
-module.exports =  d => {
+module.exports = async d => {
     const dat = d.util.openFunc( d );
     
     const [ id = d.guild?.id,option = 'name' ] = dat.inside.splits;
-        let server = d.util.getGuild( d,id )
+        let server =await d.util.getGuild( d,id )
 let data = {} 
  Object.assign(data,server)   
  delete data.client 

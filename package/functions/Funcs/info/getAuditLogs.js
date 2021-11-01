@@ -4,7 +4,7 @@ module.exports = async d => {
     
     let [ limit = 5, userId = d.author?.id,action = 'All',guildId = d.guild?.id, format = '{executer.username}: {target.id} - {action}' ] = data.inside.splits;
     
-    const guild = d.util.getGuild( d,guildId );
+    const guild = await d.util.getGuild( d,guildId );
     if( !guild ) return d.aoiError.fnError( d,'guild',{ inside : data.inside } );
     
     limit = Number( limit );

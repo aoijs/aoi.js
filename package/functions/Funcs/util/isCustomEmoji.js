@@ -4,7 +4,7 @@ module.exports = async d => {
     
     const [ emoji,guildId = d.guild?.id ] = data.inside.splits;
     
-    const guild = guildId === 'global' ? d.client : d.util.getGuild( d,guildId );
+    const guild = guildId === 'global' ? d.client : await d.util.getGuild( d,guildId );
     if( !guild ) return d.aoiError.fnError( d,'guild',{ inside : data.inside });
     
     let isemoji = await guild.emojis.fetch( emoji ).catch( e => undefined );

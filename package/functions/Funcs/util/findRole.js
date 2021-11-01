@@ -5,7 +5,7 @@ module.exports = async d => {
     let [ roleResolver,guildId = d.guild.id ] = data.inside.splits;
          roleResolver = roleResolver.addBrackets();
     
-    const guild = d.util.getGuild(d,guildId);
+    const guild = await d.util.getGuild(d,guildId);
     if(!guild) return d.aoiError.fnError(d,"guild",{ inside : data.inside });
     
     data.result = guild.roles.cache.find( x => x.id === roleResolver || x.name.toLowerCase() === roleResolver.toLowerCase() || x.toString()  === roleResolver )?.id;
