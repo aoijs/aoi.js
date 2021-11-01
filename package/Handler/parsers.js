@@ -1,10 +1,11 @@
 const Discord = require('discord.js')
 const Util = require("../classes/Util.js")
 const interpreter = require("../interpreter.js")
-const ms = require("ms")
+
 const { mustEscape } = require('../Utils/helpers/mustEscape.js')
 const { ButtonStyleOptions } = require('../Utils/Constants.js')
 const SlashOption = require('./slashOption.js')
+const { Time } = require('../Utils/helpers/customParser.js')
 const EmbedParser = async (msg) => {
     msg = (mustEscape(msg))
 
@@ -269,7 +270,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         deleteCommand = true
         if (d && d.message) {
             if (inside) {
-                const dur = ms(inside.slice(1))
+                const dur = Time.parse(inside.slice(1))?.ms;
                 d.message.delete({
                     timeout: dur
                 }).catch(err => null)
@@ -280,7 +281,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     }
     if (errorMessage.includes("{delete:")) {
         const duration = errorMessage.split("{delete:")[1].split("}")[0]
-        deleteAfter = ms(duration || "1s")
+        deleteAfter = Time.parse(duration || "1s")?.ms
         errorMessage = errorMessage.replace(`{delete:${duration}}`, "")
     }
 
@@ -542,8 +543,8 @@ const OptionParser = async (options, d) => {
         optionData.reactions = react.split(":")
     }
     if (Checker("delete")) {
-        optionData.deleteIn = ms(options.split("{delete:")[1].split("}")[0]
-        )
+        optionData.deleteIn = Time.parse(options.split("{delete:")[1].split("}")[0]
+        )?.ms;
     }
     if (Checker("deletecommand")) {
         optionData.deleteCommand = true

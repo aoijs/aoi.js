@@ -1,3 +1,5 @@
+const { Time } = require("../../../Utils/helpers/customParser")
+
 module.exports = async d =>{ 
     const code = d.command.code 
     const inside = d.unpack() 
@@ -5,7 +7,7 @@ module.exports = async d =>{
     if (err) return d.error(err) 
 //----------------------------------------//
     let [messageID,filter,time,customIDs,cmds,errorMsg={}, endcommand="", awaitData={}] = inside.splits 
- time = require('ms')(time) 
+ time = Time.parse(time)?.ms ;
 if(!time) return d.aoiError.fnError(d,"custom",{ inside },`Invalid Time provided In`) 
 errorMsg = await d.util.errorParser(errorMsg,d); 
 awaitData = JSON.parse(awaitData)
