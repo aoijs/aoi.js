@@ -7,7 +7,7 @@ class AoiError {
       *@note : should not be initialised using "new" 
       */
     constructor() {
-        const error = new Error(`Cannot Initialise "AoiError" Class`)
+        const error = new Error(`Cannot initialize "AoiError" Class`)
         error.name = "AoiError"
         throw error;
     }
@@ -91,22 +91,22 @@ class AoiError {
         let ans;
         switch (type) {
             case "message":
-                ans = `\`${d.func}: Invalid MessageId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
+                ans = `\`${d.func}: Invalid Message ID Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "channel":
-                ans = `\`${d.func}: Invalid ChannelId Provided In ${data.inside || ""} (line : ${d.funcLine}\`)`
+                ans = `\`${d.func}: Invalid Channel ID Provided In ${data.inside || ""} (line : ${d.funcLine}\`)`
                 break;
             case "user":
-                ans = `\`${d.func}: Invalid UserId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
+                ans = `\`${d.func}: Invalid User ID Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "role":
                 ans = `\`${d.func}: Invalid Role Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "guild":
-                ans = `\`${d.func}: Invalid GuildId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
+                ans = `\`${d.func}: Invalid Guild ID Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "emoji":
-                ans = `\`${d.func}: Invalid EmojiId Provided In ${data.inside || ""} (line : ${d.funcLine})\``
+                ans = `\`${d.func}: Invalid Emoji ID Provided In ${data.inside || ""} (line : ${d.funcLine})\``
                 break;
             case "option":
                 ans = `\`${d.func}: Invalid Option Provided In ${data.inside || ""} (line : ${d.funcLine})\``
