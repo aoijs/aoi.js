@@ -14,7 +14,7 @@ module.exports = async (client) => {
             data.channel = chan
             data.guild = chan?.guild
         }
-        setInterval(() => {
+        setInterval(async() => {
             await Interpreter(client, data, [], cmd, client.db, false, chan?.id, {}, chan);
         }, cmd.every || 60000);
 
