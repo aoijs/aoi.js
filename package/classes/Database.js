@@ -29,7 +29,7 @@ class Database {
         return Date.now() - start
     }
 }
-class DbdjsApi extends Database {
+class aoijsAPI extends Database {
     constructor(module, options = {}, db = {}, extraOptions = {}) {
         super(module, options, db.promisify);
         this.type = db.type || "default"
@@ -173,7 +173,7 @@ class Promisify extends CustomDb {
     }
 }
 module.exports = {
-    DbdjsApi,
+    aoijsAPI,
     DbdTsDb,
     CustomDb,
     Promisify
