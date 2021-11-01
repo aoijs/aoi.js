@@ -23,13 +23,18 @@ const Available_Methods = [
     "connect",
     "disconnect",
     "destroy",
-    "volume"
+    "volume",
+    "queueLength",
+    "queue",
+    "loopqueue",
+    "loopsong"
 ]
 
 const Deprecated_Methods = [
     "join",
     "leave"
 ];
+
 // IDE is out of range in Package Folders
 // Arrange Lavalink files (all) in one directory
 // for IDE to acknowledge
@@ -46,7 +51,7 @@ async function Main(d) {
 
     /** @type {import("discord.js").Collection<number, import("../Lavalink/Src/LavalinkConnection")>} */
     // Contributors can continue this to add a system like Cluster, for this PR one connection will be used
-    const Collection = d.client.lavalink.lavalink;
+    const Collection = d.client.lavalink;
     // Using at least 1 connection available
     /** @type {import("../Lavalink/Src/LavalinkConnection")} */
     const connection = Collection.first();
@@ -66,11 +71,7 @@ async function Main(d) {
     if (Deprecated_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is deprecated and will be removed in the future, further use shouldn't be continued!\``);
     if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
     // Position here to not invoke or add inefficient codes
-    const player = connection._players.get(message.guild.id);
-
-    if (player) {
-        player.text = message.channel;
-    };
+    let player = connection._players.get(message.guild.id);
 
     switch (method) {
         case "connect": {
@@ -113,9 +114,9 @@ async function Main(d) {
         }
             break;
         case "songinfo": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            if (!player) return d.error("`Lavalink Error: No player is available for this Guild!`");
 
-            const track = player.queue[0];
+            const track = player.queue[data[1] >= 0 && data[1] < player.queue.length ? data[1] : 0];
             if (!track) return d.error("`Lavalink Error: Nothing is playing!`");
 
             const p = data[0];
@@ -130,6 +131,8 @@ async function Main(d) {
             if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             if (player.isPlaying()) {
                 player.stop();
+                const skipNumber = Number(data[0]);
+                if (skipNumber) player.queue.splice(0, skipNumber)
                 // If player state was changed to Idle after Playing,
                 //  Next track will be processed,
                 // does not flaw loopSong and loopQueue system
@@ -172,10 +175,10 @@ async function Main(d) {
             if (!track) return d.error("`Lavalink Error: Unexpected Search Results length of '0<X'!`");
 
             if (!player) {
-                connection.createAudioPlayer(message.guild).push(track);
-            } else {
-                player.push(track);
+                player = connection.createAudioPlayer(message.guild);
             }
+
+            player.push(track);
         }
             break;
         case "patchFilters": {
@@ -194,7 +197,7 @@ async function Main(d) {
             const constructFilter = { ...player.filters };
 
             for (const input of data) {
-                let [key, value = ""] = input.split(":");
+                let [key, value = ""] = input.split("=");
                 value = JSON.stringify(`'${value}'`);
                 constructFilter[key] = value;
             };
@@ -212,6 +215,44 @@ async function Main(d) {
                 volume: Number(data[0])
             });
         }
+            break;
+        case "queueLength": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            response = player.queue.length;
+        }
+            break;
+        case "queue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            const mapFormat = data.join(";").addBrackets();
+            const array = []
+            for (const track of player.queue) {
+                const clone = { ...track, userID: track.requesterId };
+                const res = mapFormat.replace(/{\w+}/g, (match) => {
+                    const r = clone[match.replace(/[{}]/g, "")];
+                    if (r) return r;
+                    return "";
+                });
+                array.push(res);
+            }
+            response = array.join("\n")
+        }
+            break;
+        case "loopqueue": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopQueue = !player.loopQueue;
+            response = player.loopQueue;
+        };
+            break;
+        case "loopsong": {
+            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.loopSong = !player.loopSong;
+            response = player.loopSong;
+        }
+            break;
+    }
+
+    if (player) {
+        player.text = d.channel
     }
 
     return {
