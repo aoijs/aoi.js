@@ -24,7 +24,7 @@ function searchIndexes(pat, txt) {
 			txtIndex < txtLength &&
 			pat[patIndex] !== txt[txtIndex]
 		) {
-			if (patIndex != 0) {
+			if (patIndex !== 0) {
 				patIndex = lps[patIndex - 1]
 			} else {
 				++txtIndex
