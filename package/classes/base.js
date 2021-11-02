@@ -6,7 +6,7 @@ const Group = require('../CacheHandler/index.js').cache
 const InteractionManager = require("./Interaction.js")
 const AoiError = require('./AoiError.js')
 const { ActivityTypeAvailables, IntentOptions, SlashOptionTypes } = require('../Utils/Constants.js')
-const { aoijsAPI, DbdTsDb, CustomDB, Promisify } = require('./Database.js')
+const { AoijsAPI, DbdTsDb, CustomDB, Promisify } = require('./Database.js')
 const CacheManager = require('./CacheManager.js')
 
 class BaseClient extends Discord.Client {
@@ -43,7 +43,7 @@ class BaseClient extends Discord.Client {
         this.variableManager = new VariableManager(this)
 
         if (["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo"].includes(options?.database?.type)) {
-            this.db = new aoijsAPI(options?.database?.db || dbddb, {
+            this.db = new AoijsAPI(options?.database?.db || dbddb, {
                 path: options?.database?.path || "./database/",
                 tables: options?.database?.tables || ["main"]
             }, { type: options?.database?.type || "default", promisify: options?.database?.promisify || false }, options.database?.extraOptions || {})
@@ -62,7 +62,7 @@ class BaseClient extends Discord.Client {
         }
 
         else {
-            this.db = new aoijsAPI(options?.database?.db || dbddb,
+            this.db = new AoijsAPI(options?.database?.db || dbddb,
                 {
 
                     path: options?.database?.path || "./database/",
