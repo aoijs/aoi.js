@@ -269,10 +269,10 @@ declare module "aoi.js" {
 
     }
     //CommandManager 
-    class Command<D = Record<string, any>> {
-        [key: string]: unknown;
+    class Command {
+        [key: string]: any;
         __client__: Bot;
-        constructor(d: D, client: Bot);
+        constructor(d: object, client: Bot);
         public serializeFunctions(): string[];
         public serializeCode(): void | string[];
         public toString(): string;
