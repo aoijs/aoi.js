@@ -3,6 +3,8 @@ module.exports = d => {
     if (data.err) return d.error(data.err);
 
     const [n1, n2, allow = 'no', random = 'no'] = data.inside.splits;
+    
+    const inside = data.inside;
 
     if (data.inside.splits.length > 4) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Too Many Fields In');
 
