@@ -1,9 +1,3 @@
-/*
-    Copyright (c) 2021 Andrew Trims and Contributors
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
 const Available_Methods = [
     "play",
     "resetFilters",
@@ -30,17 +24,6 @@ const Available_Methods = [
     "loopsong"
 ]
 
-const Deprecated_Methods = [
-    "join",
-    "leave"
-];
-
-// IDE is out of range in Package Folders
-// Arrange Lavalink files (all) in one directory
-// for IDE to acknowledge
-const { PlayerStates: States, version: LavalinkWrapperVersion } = require("../Lavalink/Src/Util");
-const KeyStates = Object.entries(States).map(v => v.reverse()).reduce((obj, v) => { obj[v[0]] = v[1]; return obj }, {});
-
 async function Main(d) {
     /** @type {import("discord.js").Message} */
     const message = d.message;
@@ -48,13 +31,9 @@ async function Main(d) {
     const client = d.client;
 
     if (!message.guild) return d.error("`Lavalink Error: Unexpected Guild of 'null'!`");
-
-    /** @type {import("discord.js").Collection<number, import("../Lavalink/Src/LavalinkConnection")>} */
-    // Contributors can continue this to add a system like Cluster, for this PR one connection will be used
-    const Collection = d.client.lavalink;
-    // Using at least 1 connection available
-    /** @type {import("../Lavalink/Src/LavalinkConnection")} */
-    const connection = Collection.first();
+    // hi its me, kino, wassup
+    const lavalink = this.client.lavalink;
+    const player = lavalink.create(message.guild?.id);
 
     // If no connection can be found, return error;
     // No x unicode mark, as of Aoi.js new error system
@@ -68,7 +47,6 @@ async function Main(d) {
     let response = "";
     const [method, ...data] = inside.splits;
 
-    if (Deprecated_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is deprecated and will be removed in the future, further use shouldn't be continued!\``);
     if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
     // Position here to not invoke or add inefficient codes
     let player = connection._players.get(message.guild.id);
