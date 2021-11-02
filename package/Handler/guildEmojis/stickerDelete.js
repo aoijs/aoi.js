@@ -7,7 +7,7 @@ let chan;
 for(const cmd of cmds){
   if(cmd?.channel?.includes("$")){
       const id = await Interpreter (client,data,[],{name:"ChannelParser",code:cmd?.channel},client.db,true) 
-      const channel = client.channels.cache.get(id) 
+      const channel = client.channels.cache.get(id?.code) 
       chan = channel 
   }
     else {

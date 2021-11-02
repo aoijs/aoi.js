@@ -8,7 +8,7 @@ if(!data.partial && client.user.id === data?.author?.id) return ;
 for(const cmd of client.cmd.messageDelete.allValues()){
     if(cmd.channel?.includes("$")){
     const id = await Interpreter(client,data,[],{command:"channelParser",code:cmd.channel}, client.db, true)
-  let channel = client.channels.cache.get(id) 
+  let channel = client.channels.cache.get(id?.code) 
   if(!channel) channel = dmsg.channel
   chan = channel 
 }
