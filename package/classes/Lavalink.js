@@ -40,6 +40,7 @@ class Lavalink extends EventEmitter {
         this.lavalink = lavalink;
         this.client.lavalink = this;
         this.client.on("raw", (d) => this.lavalink.updateVoiceData(d));
+        if (this.client.readyTimestamp) this.lavalink.init(this.client.user.id);
         this.client.once("ready", () => this.lavalink.init(this.client.user.id));
     };
     
