@@ -39,7 +39,7 @@ class Lavalink extends EventEmitter {
     };
     
     get version() {
-        return LavaCoffeee.version
+        return LavaCoffee.version
     }
     /**
      * Creates a connection to Lavalink, refers as node
