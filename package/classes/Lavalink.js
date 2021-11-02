@@ -50,29 +50,6 @@ class Lavalink extends EventEmitter {
         return this.lavalink.add(options);
     }
 
-    /**
-     * 
-     * @param {import("discord.js").Guild} guild 
-     * @param {*} options 
-     */
-    join(guild, options = {
-        channelId: null,
-        selfDeaf: null,
-        selfMute: null
-    }) {
-        const body = {
-            op: 4,
-            d: {
-                guild_id: guild.id,
-                channel_id: options.channelId,
-                self_deaf: Boolean(options.selfDeaf),
-                self_mute: Boolean(options.selfMute)
-            }
-        };
-
-        guild.shard.send(body);
-    }
-
     debug(message) {
         this.emit("debug", `[\u001b[36;1mLavaCoffee\u001b[0m]:`, String(message));
     }
