@@ -9,17 +9,17 @@ module.exports = async d => {
     if( eval(CheckCondition.solve(mustEscape(condition)) ) ) {
         if( trueawait.addBrackets().includes('{execute:') ){
             const cmd = d.client.cmd.awaited.find( x => x.name.toLowerCase() === trueawait.addBrackets().split('{execute:')[1].split('}')[0].toLowerCase() );
-            if(cmd ) return ;
+            if( !cmd ) return d.aoiError.fnError(d,"custom",{},"Invalid Awaited Command: "+trueawait.addBrackets().split('{execute:')[1].split('}')[0] +" Provided")
             await d.interpreter(d.client,d.message,d.args,cmd,d.client.db);
             data.result = trueawait.addBrackets.replace(`{execute:${trueawait.addBrackets().split('{execute:')[1].split('}')[0]}`,'');
         }
     }
     else {
-        if( trueawait.addBrackets().includes('{execute:') ){
-            const cmd = d.client.cmd.awaited.find( x => x.name.toLowerCase() === trueawait.addBrackets().split('{execute:')[1].split('}')[0].toLowerCase() );
-            if(cmd ) return ;
+        if( falseawait.addBrackets().includes('{execute:') ){
+            const cmd = d.client.cmd.awaited.find( x => x.name.toLowerCase() === falseawait.addBrackets().split('{execute:')[1].split('}')[0].toLowerCase() );
+            ( !cmd ) return d.aoiError.fnError(d,"custom",{},"Invalid Awaited Command: "+falseawait.addBrackets().split('{execute:')[1].split('}')[0] +" Provided")
             await d.interpreter(d.client,d.message,d.args,cmd,d.client.db);
-            data.result = trueawait.addBrackets.replace(`{execute:${trueawait.addBrackets().split('{execute:')[1].split('}')[0]}`,'');
+            data.result = falseawait.addBrackets.replace(`{execute:${falseawait.addBrackets().split('{execute:')[1].split('}')[0]}`,'');
         }
     }
 
