@@ -36,6 +36,7 @@ class Lavalink extends EventEmitter {
         /** @type {import("lavacoffee").CoffeeLava} */
         this.lavalink = lavalink;
         this.client.lavalink = this;
+        this.client.on("raw", (d) => this.lavalink.voiceUpdateData(d))
     };
     
     get version() {
