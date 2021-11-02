@@ -139,9 +139,9 @@ async function Main(d) {
         }
             break;
         case "search": {
-            const tracks = await lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
+            const res = await lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
             const id = getRandomBytes(10);
-            Searches.set(id, tracks);
+            Searches.set(id, res.tracks.slice(10));
             response = id;
         };
             break;
