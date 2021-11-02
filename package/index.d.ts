@@ -182,6 +182,63 @@ declare module "aoi.js" {
         public variableDeleteCommand(d: EventCommand): void
         public variableUpdateCommand(d: EventCommand): void
         public functionErrorCommand(d: EventCommand): void
+        public onMessage(d?: {
+            guildOnly?: boolean,
+            respondToBot?: boolean
+        }): void
+        public onMessageDelete(): void
+        public onMessageUpdate(): void
+        public onMessageDeleteBulk(): void
+        public onGuildJoin(): void
+        public onGuildLeave(): void
+        public onGuildUpdate(): void
+        public onGuildUnavailable(): void
+        public onRoleCreate(): void
+        public onRoleUpdate(): void
+        public onRoleDelete(): void
+        public onChannelCreate(): void
+        public onChannelUpdate(): void
+        public onChannelDelete(): void
+        public onChannelPinsUpdate(): void
+        public onStageInstanceCreate(): void
+        public onStageInstanceUpdate(): void
+        public onStageInstanceDelete(): void
+        public onThreadCreate(): void
+        public onThreadUpdate(): void
+        public onThreadDelete(): void
+        public onThreadListSync(): void
+        public onThreadMemberUpdate(): void
+        public onThreadMembersUpdate(): void
+        public onJoin(): void
+        public onLeave(): void
+        public onMemberUpdate(): void
+        public onMemberAvailable(): void
+        public onMembersChunk(): void
+        public onEmojiCreate(): void
+        public onEmojiDelete(): void
+        public onEmojiUpdate(): void
+        public onStickerCreate(): void
+        public onStickerDelete(): void
+        public onStickerUpdate(): void
+        public onBanAdd(): void
+        public onBanRemove(): void
+        public onInviteCreate(): void
+        public onInviteDelete(): void
+        public onReactionAdd(): void
+        public onReactionRemove(): void
+        public onReactionRemoveAll(): void
+        public onReactionRemoveEmoji(): void
+        public onVoiceStateUpdate(): void
+        public onPresenceUpdate(): void
+        public onTypingStart(): void
+        public onInteractionCreate(): void
+        public onApplicationCmdCreate(): void
+        public onApplicationCmdDelete(): void
+        public onApplicationCmdUpdate(): void
+        public onUserUpdate(): void
+        public onVariableCreate(): void
+        public onVariableDelete(): void
+        public onVariableUpdate(): void
 
     }
     //cacheManager
@@ -212,10 +269,10 @@ declare module "aoi.js" {
 
     }
     //CommandManager 
-    class Command<D = Record<string, unknown>> {
-        [key: string]: unknown;
+    class Command {
+        [key: string]: any;
         __client__: Bot;
-        constructor(d: D, client: Bot);
+        constructor(d: object, client: Bot);
         public serializeFunctions(): string[];
         public serializeCode(): void | string[];
         public toString(): string;
@@ -270,7 +327,7 @@ declare module "aoi.js" {
     }
 
     type ApplcationOptionData = {
-        type: 'SUB_COMMAND' | 'SUB_COMMAND_GROUP' |'STRING' |"INTEGER" |'BOOLEAN' |'USER' |'CHANNEL' |'ROLE' |'MENTIONABLE' |'NUMBER' | number;
+        type: 'SUB_COMMAND' | 'SUB_COMMAND_GROUP' | 'STRING' | "INTEGER" | 'BOOLEAN' | 'USER' | 'CHANNEL' | 'ROLE' | 'MENTIONABLE' | 'NUMBER' | number;
     }
     type ApplicationData = {
         data: {
@@ -298,12 +355,12 @@ declare module "aoi.js" {
         selectMenuData: Group;
         constructor(client: Bot);
         public createApplicationData(d: ApplicationData): void
-        public createButtonData(d : object): void
-        public createSelectMenuData(d : object): void
-        public stringifyApplicationData(name : string): string;
-        public resolveButtonData(name : string): string
-        public resolveSelectMenuData(name : string): string
-        public resolveSelectMenuOptionData(options : object[]): string
+        public createButtonData(d: object): void
+        public createSelectMenuData(d: object): void
+        public stringifyApplicationData(name: string): string;
+        public resolveButtonData(name: string): string
+        public resolveSelectMenuData(name: string): string
+        public resolveSelectMenuOptionData(options: object[]): string
         public get buttonDataLength(): number
     }
 }
