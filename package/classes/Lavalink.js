@@ -8,7 +8,10 @@ class Lavalink extends EventEmitter {
          * @type {import("discord.js").Client}
          */
         this.client = client;
-        const lavalink = new LavaCoffee.CoffeeLava({});
+        const lavalink = new LavaCoffee.CoffeeLava({ send: (guildId, d) => {
+          const guild = this.client.guilds.cache.get(guildId);
+          if (guild) guild.shard.send(d);
+        }});
         lavalink.on("nodeConnect", (node) => this.debug(`Node ${node.options.url} connected`));
         lavalink.on("nodeDisconnect", (node) => this.debug(`Node ${node.options.url} disconnected`));
         lavalink.on("playerCreate", (p) => this.debug(`Player created for GUILD(${p.options.guildID})`));
@@ -38,10 +41,6 @@ class Lavalink extends EventEmitter {
         this.client.lavalink = this;
         this.client.on("raw", (d) => this.lavalink.updateVoiceData(d));
         this.client.once("ready", () => this.lavalink.init(this.client.user.id));
-        this.lavalink.send = (guildId, d) => {
-          const guild = this.client.guilds.cache.get(guildId);
-          if (guild) guild.shard.send(d);
-       }
     };
     
     get version() {
