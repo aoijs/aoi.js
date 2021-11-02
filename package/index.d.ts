@@ -182,7 +182,7 @@ declare module "aoi.js" {
         public variableDeleteCommand(d: EventCommand): void
         public variableUpdateCommand(d: EventCommand): void
         public functionErrorCommand(d: EventCommand): void
-        public onMessage(d: {
+        public onMessage(d?: {
             guildOnly?: boolean,
             respondToBot?: boolean
         }): void

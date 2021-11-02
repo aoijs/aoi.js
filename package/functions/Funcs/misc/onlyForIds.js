@@ -8,7 +8,7 @@ module.exports = async d => {
 
     if (!stuffs.includes(d.author?.id)) {
         error = true;
-        if(typeof errorMsg === 'string' && errorMsg.trim() === '') return ;
+        if(typeof errorMsg.content === 'string' && errorMsg.content.trim() === ''){}
         else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
     }
 
