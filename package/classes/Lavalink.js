@@ -8,7 +8,7 @@ class Lavalink extends EventEmitter {
          * @type {import("discord.js").Client}
          */
         this.client = client;
-        const lavalink = new LavaCoffee.CoffeeLava();
+        const lavalink = new LavaCoffee.CoffeeLava({});
         lavalink.on("nodeConnect", (node) => this.debug(`Node ${node.options.url} connected`));
         lavalink.on("nodeDisconnect", (node) => this.debug(`Node ${node.options.url} disconnected`));
         lavalink.on("playerCreate", (p) => this.debug(`Player created for GUILD(${p.options.guildID})`));
