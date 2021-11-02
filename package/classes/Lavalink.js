@@ -19,19 +19,19 @@ class Lavalink extends EventEmitter {
         // });
         lavalink.on("trackStart", (p, track) => {
             this.debug(`Player starting track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicStart", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
+            this.client.emit("musicStart", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
         });
         lavalink.on("trackEnd", (p, track) => {
             this.debug(`Player ended track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
         });
         lavalink.on("trackStuck", (p, track) => {
             this.debug(`Player sent STUCK for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
         });
         lavalink.on("trackError", (p, track) => {
             this.debug(`Player sent EXCEPTION for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
         });
         /** @type {import("lavacoffee").CoffeeLava} */
         this.lavalink = lavalink;
