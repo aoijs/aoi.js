@@ -17,21 +17,21 @@ class Lavalink extends EventEmitter {
         //     this.debug(`Player replayed for GUILD(${p.options.guildID})`);
         //     this.emit("trackReplayed", p, p.queue.current);
         // });
-        lavalink.on("trackStart", (p) => {
+        lavalink.on("trackStart", (p, track) => {
             this.debug(`Player starting track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicStart", p, track);
+            this.client.emit("musicStart", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
         });
-        lavalink.on("trackEnd", (p) => {
+        lavalink.on("trackEnd", (p, track) => {
             this.debug(`Player ended track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", p);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
         });
-        lavalink.on("trackStuck", (p, reason) => {
+        lavalink.on("trackStuck", (p, track) => {
             this.debug(`Player sent STUCK for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", p, reason);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
         });
-        lavalink.on("trackError", (p, reason) => {
+        lavalink.on("trackError", (p, track) => {
             this.debug(`Player sent EXCEPTION for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", p, reason);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text);
         });
         /** @type {import("lavacoffee").CoffeeLava} */
         this.lavalink = lavalink;
