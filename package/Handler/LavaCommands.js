@@ -46,7 +46,7 @@ async function Main(d) {
 
     if (!message.guild) return d.error("`Lavalink Error: Unexpected Guild of 'null'!`");
     // hi its me, kino, wassup
-    const lavalink = this.client.lavalink;
+    const lavalink = client.lavalink;
     const player = lavalink.create({
         guildID: message.guild.id,
         selfDeaf: true,
