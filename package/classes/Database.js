@@ -173,7 +173,7 @@ class Promisify extends CustomDb {
     }
 }
 module.exports = {
-    aoijsAPI,
+    AoijsAPI,
     DbdTsDb,
     CustomDb,
     Promisify
