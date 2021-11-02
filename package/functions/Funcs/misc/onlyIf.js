@@ -11,7 +11,8 @@ module.exports = async d => {
 
     if (!eval(CheckCondition.solve(mustEscape(condition)))) {
         error = true;
-        d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
+        if(typeof errorMsg === 'string' && errorMsg.trim() === '') return ;
+        else return d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
     }
 
     return {
