@@ -145,7 +145,9 @@ async function Main(d) {
         };
             break;
         case "getsearch": {
-            const tracks
+            const tracks = Searches.get(data[0]);
+            if (tracks) response = tracks.map(v => encodedURIComponent(v.title)).join(",")
+            else response = "";
         }
         case "addtrack": {
             const tracks = Searches.get(data[0]);
