@@ -54,7 +54,8 @@ async function Main(d) {
     });
 
     const code = d.command.code;
-    const inside = d.unpack();
+    const data = d.util.openFunc(d);
+    const inside = data.inside;
     const err = d.inside(inside);
 
     if (err) return d.error(err);
