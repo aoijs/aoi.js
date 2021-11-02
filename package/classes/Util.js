@@ -71,7 +71,7 @@ class Util {
         return {
             Text: "GUILD_TEXT",
             Dm: "DM",
-            Voice: "GROUP_VOICE",
+            Voice: "GUILD_VOICE",
             GroupDm: "GROUP_DM",
             Category: "GUILD_CATEGORY",
             News: "GUILD_NEWS",

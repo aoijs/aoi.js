@@ -7,7 +7,7 @@ module.exports = async d => {
     
     if( !d.client.variableManager.cache.has( varname ) ) return d.aoiError.fnError( d,'custom',{},`Variable "${ varname }" Not Found` );
     
-    data.result = (await d.client.db.get( table,varname, `${userId}_${guildId}` ))?.value ;
+    data.result = (await d.client.db.get( table,varname, `${userId}_${guildId}` ))?.value || d.client.variableManager.get( varname )?.value ;
     
     return {
         code : d.util.setCode( data )

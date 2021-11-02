@@ -12,9 +12,10 @@ module.exports = async(message,client,db)=>{
     //array of cmds 
     let cmds = client.cmd.default.allValues()
     //getting arrays of prefixes
- const prefixes = Array.isArray(client.prefix)?client.prefix.map(async x=>x.includes("$")? await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true) :x):[client.prefix]
+ const prefixes = Array.isArray(client.prefix)?client.prefix.map(async x=>x.includes("$")? (await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true))?.code :x):[client.prefix]
     //for loop of prefix array
-for(const prefix of prefixes){
+for(let prefix of prefixes){
+    prefix = await prefix;
     if(!message.content.toLowerCase().startsWith(prefix.toLowerCase())) continue;
     //getting message 
     const msg = message.content.slice(prefix.length).trim()
