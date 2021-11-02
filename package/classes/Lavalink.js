@@ -37,6 +37,10 @@ class Lavalink extends EventEmitter {
         this.lavalink = lavalink;
         this.client.lavalink = this;
     };
+    
+    get version() {
+        return LavaCoffeee.version;
+    }
     /**
      * Creates a connection to Lavalink, refers as node
      * @param {import("lavacoffee/dist/utils/typings").NodeOptions} options
