@@ -35,10 +35,6 @@ async function Main(d) {
     const lavalink = this.client.lavalink;
     const player = lavalink.create(message.guild?.id);
 
-    // If no connection can be found, return error;
-    // No x unicode mark, as of Aoi.js new error system
-    if (!connection) return d.error("`Lavalink Error: Connection Instance can't be found!`");
-
     const code = d.command.code;
     const inside = d.unpack();
     const err = d.inside(inside);
@@ -48,27 +44,22 @@ async function Main(d) {
     const [method, ...data] = inside.splits;
 
     if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
-    // Position here to not invoke or add inefficient codes
-    let player = connection._players.get(message.guild.id);
 
     switch (method) {
         case "connect": {
-            const memberConnection = message.member.voice;
+            const voice = message.member.voice;
             const [deaf, mute] = data
-            if (!memberConnection) return d.error("`Lavalink Error: Unexpected Member voice of 'null'!`");
-            connection.joinVoiceChannel(message.guild, memberConnection.channel, (deaf === "yes"), (mute === "yes"));
+            lavalink.join(message.guild, {
+                channelId: voice.channelId,
+                selfDeaf: deaf,
+                selfMute: mute
+            });
         }
             break;
         case "disconnect": {
-            const clientConnection = message.guild.members.cache.get(client.user.id).voice;
-
-            if (!clientConnection) return d.error("`Lavalink Error: Unexpected Client voice of 'null'!`");
-
+            const voice = message.guild.members.cache.get(client.user.id).voice;
             if (player) player.destroy();
-
-            connection.leaveVoiceChannel(message.guild);
-            // Deletes cached voice state in case if Discord changed session Id and such
-            connection.voiceStates.delete(message.guild.id);
+            lavalink.join(message.guild, {});
         }
             break;
         case "version": {
