@@ -38,7 +38,7 @@ class Lavalink extends EventEmitter {
         this.client.lavalink = this;
         this.client.on("raw", (d) => this.lavalink.updateVoiceData(d));
         this.client.once("ready", () => this.lavalink.init(this.client.user.id));
-        this.lavalink.send = (guildId, d) {
+        this.lavalink.send = (guildId, d) => {
           const guild = this.client.guilds.cache.get(guildId);
           if (guild) guild.shard.send(d);
        }
