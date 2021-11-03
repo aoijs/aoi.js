@@ -137,7 +137,7 @@ async function Main(d) {
             response = player.state;
         }
             break;
-        case "trackthumbnail": {
+        case "getthumbnail": {
             const id = data[0];
             return "https://img.youtube.com/vi/" + id + "/" + data[1];
         }
