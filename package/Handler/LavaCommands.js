@@ -139,7 +139,7 @@ async function Main(d) {
             break;
         case "getthumbnail": {
             const id = data[0];
-            return "https://img.youtube.com/vi/" + id + "/" + data[1];
+            return "https://img.youtube.com/vi/" + id + "/" + data[1] + ".jpg";
         }
         case "search": {
             const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
