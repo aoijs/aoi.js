@@ -8,7 +8,7 @@ class Lavalink extends EventEmitter {
          * @type {import("discord.js").Client}
          */
         this.client = client;
-        const lavalink = new LavaCoffee.CoffeeLava({ send: (guildId, d) => {
+        const lavalink = new LavaCoffee.CoffeeLava({ autoPlay: false, send: (guildId, d) => {
           const guild = this.client.guilds.cache.get(guildId);
           if (guild) guild.shard.send(d);
         }});
@@ -44,6 +44,17 @@ class Lavalink extends EventEmitter {
         this.client.once("ready", () => this.lavalink.init(this.client.user.id));
     };
     
+    getTime(ms) {
+        const h = Math.trunc(ms / 3600);
+        const m = Math.trunc((ms - (h * 3600)) / 60);
+        const s = Math.trunc((ms - (h * 3600 + m * 60)))
+
+        return {
+            hour: h,
+            minute: `${String(m).length<2 ? "0" : ""}${String(m)}`,
+            second: `${String(s).length<2 ? "0" : ""}${String(s)}`
+        }
+    }
     get version() {
         return LavaCoffee.version
     }
