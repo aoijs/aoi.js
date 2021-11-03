@@ -55,129 +55,119 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
 
             funcLine = command.codeLines.length - (command.codeLines?.reverse().findIndex(x => x.toLowerCase().split(' ').includes(func.toLowerCase())));
 
-            try {
-                const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""))
-                if (functionObj instanceof CustomFunction && functionObj.type === "aoi.js") {
-                    const d = {}
-                    Object.assign(d, functionObj)
-                    try {
-                        for (let p = functionObj.params.length - 1; p >= 0; p--) {
-                            d.code = d.code.replace(`{${functionObj.params[p]}}`, unpack(code, func).splits[p])
-                        }
-                        FuncData = await client.functionManager.interpreter(client, message, args, d, client.db, true)
+            const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""))
+            if (functionObj instanceof CustomFunction && functionObj.type === "aoi.js") {
+                const d = {}
+                Object.assign(d, functionObj)
 
-
-                    }
-                    catch (e) { console.error(e) }
+                for (let p = functionObj.params.length - 1; p >= 0; p--) {
+                    d.code = d.code.replace(`{${functionObj.params[p]}}`, unpack(code, func).splits[p])
                 }
-                else {
-                    try {
-                        FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
-                            randoms: randoms,
-                            command: {
-                                name: command.name,
-                                code: code,
-                                error: command.error,
-                                async: command.async || false,
-                                functions: command.functions,
-                                codeLines: command.codeLines
-                            },
-                            args: args,
-                            aoiError: require('./classes/AoiError.js'),
-                            data: data,
-                            func: func,
-                            funcLine,
-                            util: Util,
-                            allowedMentions: allowedMentions,
-                            embeds: embeds || [],
-                            components: components,
-                            files: attachments || [],
-                            timezone: timezone,
-                            channelUsed: channelUsed,
-                            vars: letVars,
-                            object: object,
-                            disableMentions: disableMentions,
-                            array: array,
-                            reactions: reactions,
-                            message: message.message || message,
-                            msg: msg.message || msg,
-                            author: author,
-                            guild: guild,
-                            channel: channel,
-                            member: member,
-                            mentions: mentions,
-                            unpack() {
-                                const last = code.split(func.replace("[", "")).length - 1;
-                                const sliced = code.split(func.replace("[", ""))[last];
+                FuncData = await client.functionManager.interpreter(client, message, args, d, client.db, true)
 
-                                return sliced.after();
-                            },
-                            inside(unpacked) {
-                                if (typeof unpacked.inside !== "string") {
-                                    if (suppressErrors) return suppressErrors
-                                    else {
-                                        const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
-                                        return e
-                                    }
-                                }
-                                else return false
-                            },
-                            noop() { },
-                            async error(err) {
-                                client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
-                                if (client.options.suppressAllErrors) {
-                                    if (client.options.errorMessage) {
-                                        const { ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
-                                        if (!message || !message.channel) {
-                                            console.error(client.options.errorMessage.addBrackets())
-                                        }
-                                        else {
-                                            let [con, em, com, fil] = [" ", "", "", ""]
-                                            let isArray = Array.isArray(client.options.errorMessage)
-                                            if (isArray) {
-                                                isArray = client.options.errorMessage
-                                                con = (isArray[0] === "" || !isArray[0]) ? " " : isArray[0]
-                                                em = isArray[1] !== "" && isArray[1] ? await EmbedParser(isArray[1] || "") : []
-                                                fil = isArray[3] !== "" && isArray[3] ? await FileParser(isArray[3] || "") : []
-                                                com = isArray[2] !== "" && isArray[2] ? await ComponentParser(isArray[2] || "") : []
-                                            }
-                                            else {
-                                                con = client.options.errorMessage.addBrackets() === "" ? " " : client.options.errorMessage.addBrackets()
+            }
+            else {
+                FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
+                    randoms: randoms,
+                    command: {
+                        name: command.name,
+                        code: code,
+                        error: command.error,
+                        async: command.async || false,
+                        functions: command.functions,
+                        codeLines: command.codeLines
+                    },
+                    args: args,
+                    aoiError: require('./classes/AoiError.js'),
+                    data: data,
+                    func: func,
+                    funcLine,
+                    util: Util,
+                    allowedMentions: allowedMentions,
+                    embeds: embeds || [],
+                    components: components,
+                    files: attachments || [],
+                    timezone: timezone,
+                    channelUsed: channelUsed,
+                    vars: letVars,
+                    object: object,
+                    disableMentions: disableMentions,
+                    array: array,
+                    reactions: reactions,
+                    message: message.message || message,
+                    msg: msg.message || msg,
+                    author: author,
+                    guild: guild,
+                    channel: channel,
+                    member: member,
+                    mentions: mentions,
+                    unpack() {
+                        const last = code.split(func.replace("[", "")).length - 1;
+                        const sliced = code.split(func.replace("[", ""))[last];
 
-                                            }
+                        return sliced.after();
+                    },
+                    inside(unpacked) {
+                        if (typeof unpacked.inside !== "string") {
+                            if (suppressErrors) return suppressErrors
+                            else {
+                                const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
+                                return e
+                            }
+                        }
+                        else return false
+                    },
+                    noop() { },
+                    async error(err) {
+                        client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
+                        if (client.options.suppressAllErrors) {
+                            if (client.options.errorMessage) {
+                                const { ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
-                                            if (!anErrorOccuredPlsWait) { message.channel?.send({ content: con, embeds: em || [], components: com || [], files: fil || [] }) }
-                                            anErrorOccuredPlsWait = true
-                                        }
-                                    }
-                                    else return;
+                                if (!message || !message.channel) {
+                                    console.error(client.options.errorMessage.addBrackets())
                                 }
                                 else {
-                                    anErrorOccuredPlsWait = true
-                                    if (!message || !message.channel) {
-                                        console.error(err.addBrackets())
-                                    }
-                                    if (suppressErrors) {
-                                        ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
+                                    let [con, em, com, fil] = [" ", "", "", ""]
+                                    let isArray = Array.isArray(client.options.errorMessage)
+                                    if (isArray) {
+                                        isArray = client.options.errorMessage
+                                        con = (isArray[0] === "" || !isArray[0]) ? " " : isArray[0]
+                                        em = isArray[1] !== "" && isArray[1] ? await EmbedParser(isArray[1] || "") : []
+                                        fil = isArray[3] !== "" && isArray[3] ? await FileParser(isArray[3] || "") : []
+                                        com = isArray[2] !== "" && isArray[2] ? await ComponentParser(isArray[2] || "") : []
                                     }
                                     else {
+                                        con = client.options.errorMessage.addBrackets() === "" ? " " : client.options.errorMessage.addBrackets()
 
-
-                                        message.channel?.send(typeof err === "object" ? err : err?.addBrackets())
                                     }
+
+                                    if (!anErrorOccuredPlsWait) { message.channel?.send({ content: con, embeds: em || [], components: com || [], files: fil || [] }) }
+                                    anErrorOccuredPlsWait = true
                                 }
-                            },
-                            interpreter: Interpreter,
-                            client: client,
-                            embed: Discord.MessageEmbed
-                        })
-                    }
-                    catch (e) { console.error(e) }
-                }
-            }
-            catch (err) {
-                console.error(err)
+                            }
+                            else return;
+                        }
+                        else {
+                            anErrorOccuredPlsWait = true
+                            if (!message || !message.channel) {
+                                console.error(err.addBrackets())
+                            }
+                            if (suppressErrors) {
+                                ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
+                            }
+                            else {
+
+
+                                message.channel?.send(typeof err === "object" ? err : err?.addBrackets())
+                            }
+                        }
+                    },
+                    interpreter: Interpreter,
+                    client: client,
+                    embed: Discord.MessageEmbed
+                })
 
             }
 
@@ -187,13 +177,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             }
             //  console.log("i:"+(i-1) )
             //  console.log("code:"+code) 
-            try {
-                code = FuncData?.code ?? code
-
-            }
-            catch (e) {
-                console.error(e)
-            }
+            code = FuncData?.code ?? code
 
             if (FuncData?.randoms) { randoms = FuncData.randoms }
             if (FuncData?.data) {

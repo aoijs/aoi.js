@@ -11,7 +11,7 @@ module.exports =async d => {
             const cmd = d.client.cmd.awaited.find(y => y.name.toLowerCase() === command.trim().toLowerCase());
             if (!cmd) continue;
             else {
-                const code = await d.interpreter(d.client, d.message, [a], cmd, d.client.db, true);
+                const code = (await d.interpreter(d.client, d.message, [a], cmd, d.client.db, true))?.code;
                 content.push(code);
             }
         }
