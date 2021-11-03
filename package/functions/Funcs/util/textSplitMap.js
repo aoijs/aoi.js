@@ -12,7 +12,7 @@ module.exports =async d => {
             if (!cmd) continue;
             else {
                 const code = await d.interpreter(d.client, d.message, [a], cmd, d.client.db, true);
-                content.push(code);
+                content.push(code.code);
             }
         }
     }
