@@ -1,30 +1,74 @@
-const Lava = require("../Lavalink/index.js");
-const {Collection} = require('discord.js');
-const {EventEmitter} = require('events')
-class Lavalink extends EventEmitter {
-    constructor(client){
-        super();
-        this.client = client 
-        this.lavalink = new Collection()
-        this.client.lavalink = this 
-    }
-    createLavalinkConnection(url, password, debug = false) {
-    const clLength = this.lavalink.size;
-    this.client.once("ready", () => {
-      const connection = new Lava.LavalinkConnection(url, password, this.client.user.id);
-      this.lavalink.set(clLength, connection);
-      this.client.on("raw", connection.trackVoiceStateUpdates());
+const LavaCoffee = require("lavacoffee");
+const { EventEmitter } = require("events");
 
-      if (debug === true)
-        connection.on("debug", (message) => console.log(message)); 
-      // Music things
-      connection.on("trackFinished", (player) => {
-        this.client.emit("musicStart", player, null);
-      });
-        connection.on("trackPlaying", (player) => {
-        this.client.emit("musicEnd", player, null);
-      });
-})
+class Lavalink extends EventEmitter {
+    constructor(client) {
+        super();
+        /**
+         * @type {import("discord.js").Client}
+         */
+        this.client = client;
+        const lavalink = new LavaCoffee.CoffeeLava({ autoPlay: false, send: (guildId, d) => {
+          const guild = this.client.guilds.cache.get(guildId);
+          if (guild) guild.shard.send(d);
+        }});
+        lavalink.on("nodeConnect", (node) => this.debug(`Node ${node.options.url} connected`));
+        lavalink.on("nodeDisconnect", (node) => this.debug(`Node ${node.options.url} disconnected`));
+        lavalink.on("playerCreate", (p) => this.debug(`Player created for GUILD(${p.options.guildID})`));
+        lavalink.on("playerDestroy", (p) => this.debug(`Player destroyed for GUILD(${p.options.guildID})`));
+        // lavalink.on("playerReplay", (p) => {
+        //     this.debug(`Player replayed for GUILD(${p.options.guildID})`);
+        //     this.emit("trackReplayed", p, p.queue.current);
+        // });
+        lavalink.on("trackStart", (p, track) => {
+            this.debug(`Player starting track for GUILD(${p.options.guildID})`);
+            this.client.emit("musicStart", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+        });
+        lavalink.on("trackEnd", (p, track) => {
+            this.debug(`Player ended track for GUILD(${p.options.guildID})`);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+        });
+        lavalink.on("trackStuck", (p, track) => {
+            this.debug(`Player sent STUCK for GUILD(${p.options.guildID})`);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+        });
+        lavalink.on("trackError", (p, track) => {
+            this.debug(`Player sent EXCEPTION for GUILD(${p.options.guildID})`);
+            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+        });
+        /** @type {import("lavacoffee").CoffeeLava} */
+        this.lavalink = lavalink;
+        this.client.lavalink = this;
+        this.client.on("raw", (d) => this.lavalink.updateVoiceData(d));
+        if (this.client.readyTimestamp) this.lavalink.init(this.client.user.id);
+        this.client.once("ready", () => this.lavalink.init(this.client.user.id));
+    };
+    
+    getTime(ms) {
+        const h = Math.trunc(ms / 3600);
+        const m = Math.trunc((ms - (h * 3600)) / 60);
+        const s = Math.trunc((ms - (h * 3600 + m * 60)))
+
+        return {
+            hour: h,
+            minute: `${String(m).length<2 ? "0" : ""}${String(m)}`,
+            second: `${String(s).length<2 ? "0" : ""}${String(s)}`
+        }
+    }
+    get version() {
+        return LavaCoffee.version
+    }
+    /**
+     * Creates a connection to Lavalink, refers as node
+     * @param {import("lavacoffee/dist/utils/typings").NodeOptions} options
+     */
+    addNode(options) {
+        return this.lavalink.add(options);
+    }
+
+    debug(message) {
+        this.emit("debug", `[\u001b[36;1mLavaCoffee\u001b[0m]:`, String(message));
     }
 }
+
 module.exports = Lavalink;
