@@ -213,6 +213,11 @@ async function Main(d) {
             player.setFilters(constructFilter);
         }
             break;
+        case "destroy": {
+            console.warn("Lavalink WARN! method(loopsong) deprecated, use method(loopmode) in");
+            player.destroy();
+        }
+            break;
         case "volume": {
             player.setVolume(Number(data[0]))
         }
