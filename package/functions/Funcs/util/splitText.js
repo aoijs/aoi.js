@@ -1,5 +1,5 @@
 module.exports = d => {
-    const data = d.util.openFunc(data);
+    const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
     const [index] = data.inside.splits;
