@@ -4,38 +4,26 @@ const Searches = new (require("discord.js")).LimitedCollection({
     sweepFilter: (require("discord.js")).LimitedCollection.filterByLifetime({ lifetime: 5000 })
 });
 const { randomBytes } = require("crypto");
-const Available_Methods = [
-    "play",
-    "resetFilters",
-    "addFilters",
-    "stop",
-    "resume",
-    "pause",
-    "state",
-    "seek",
-    "skip",
-    "isPlaying",
-    "isPaused",
-    "isIdling",
-    "songinfo",
-    "patchFilters",
-    "version",
-    "connect",
-    "disconnect",
-    "destroy",
-    "volume",
-    "queueLength",
-    "queue",
-    "loopqueue",
-    "loopsong"
-]
 
 function getRandomBytes(size) {
     return new Promise(resolve => {
         randomBytes(size, (_, buf) => {
-            resolve(buf.toString("base64"));
+            resolve(buf);
         });
     });
+}
+
+// async function error(d, data, message) {
+//     const m = await d.util.errorParser(message, d);
+//     d.aoiError.makeMessageError(d.client, d.channel, m, {},d)
+//     return {
+//         code: d.util.setCode(data),
+//         error: true
+//     };
+// }
+
+async function error(d, data, message) {
+    return d.aoiError.fnError(d, 'custom', data, message)
 }
 
 async function Main(d) {
@@ -44,28 +32,28 @@ async function Main(d) {
     /** @type {import("discord.js").Client} */
     const client = d.client;
 
-    if (!message.guild) return d.error("`Lavalink Error: Unexpected Guild of 'null'!`");
     // hi its me, kino, wassup
     /** @type {import("../classes/Lavalink")} */
     const lavalink = client.lavalink;
 
-    const code = d.command.code;
     const da = d.util.openFunc(d);
     const inside = da.inside;
+    const code = da.code;
 
-    if (da.err) return d.error(da.err);
+    if (da.err) return await error(d, da, da.err);
+    if (!message.guild) return await error(d, da, "Lavalink ERR! GUILD_MISSING");
+
     let response = "";
     let [method, ...data] = inside.splits;
     let player = lavalink.lavalink.get(message.guild.id);
     method = method.toLowerCase();
-
-    if (!Available_Methods.includes(method)) return d.error(`\`Lavalink ERR! METHOD_UNAVAILABLE\``);
-    if (method !== "connect" && !player) return d.error(`\`Lavalink ERR! PLAYER_UNAVAILABLE\``);
+    let array = d.array;
+    if (method !== "connect" && !player) return await error(d, da, "Lavalink ERR! PLAYER_UNAVAILABLE in");
 
     switch (method) {
         case "connect": {
             const voice = message.member.voice;
-            if (!voice) return d.error(`\`Lavalink ERR! MEMBER_NO_VOICE\``);
+            if (!voice) return await error(d, da, "Lavalink ERR! MEMBER_NO_VOICE in");
 
             const [deaf, mute] = data
             player = lavalink.lavalink.create({
@@ -151,8 +139,8 @@ async function Main(d) {
             break;
         case "search": {
             const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
-            const id = getRandomBytes(10);
-            Searches.set(id, res.tracks.slice(10).map(v => {
+            const id = (await getRandomBytes(10)).toString("hex");
+            Searches.set(id, res.tracks.slice(0, 10).map(v => {
                 const d = lavalink.getTime(v.duration);
                 v.duration = `${d.minute}:${d.second}`;
                 if (d.hour > 0) {
@@ -165,20 +153,38 @@ async function Main(d) {
             break;
         case "getsearch": {
             const tracks = Searches.get(data[0]);
-            if (tracks) response = tracks.map(v => encodedURIComponent(v.title)).join(",")
+            if (tracks) response = tracks.map(v => v.title.addBrackets()).join(",")
             else response = "";
+        }
+            break;
+        case "tracksplit": {
+            const tracks = Searches.get(data[0]);
+            if (tracks) {
+                response = "true";
+                array = tracks.map(v => v.title);
+            }; response = "false";
+        }
+        case "findentry": {
+            const tracks = Searches.get(data[0]);
+            if (!tracks) return await error(d, da, "Lavalink ERR! INVALID_KEYSEARCH in");
+            const query = data.slice(1).join(";")
+            const index = tracks.findIndex(v => v.title.toLowerCase().includes(query.toLowerCase()));
+
+            response = index + 1;
         }
             break;
         case "addtrack": {
             const tracks = Searches.get(data[0]);
-            if (!tracks) return d.error("`Lavalink ERR! INVALID_KEYSEARCH`")
+            if (!tracks) return await error(d, da, "Lavalink ERR! INVALID_KEYSEARCH in");
+
             const n1 = Number(data[1]);
-            const n2 = Number(data[2]);
+            const n2 = Number(data[2] || "e");
             let sel_tracks = tracks[n1 - 1];
-            if (n2) sel_tracks = tracks.slice(n1 - 1, n2 - 1);
-            
+            if (!isNaN(n2)) sel_tracks = tracks.slice(n1 - 1, n2 - 1);
+            if (!sel_tracks) return await error(d, da, "Lavalink ERR! NO_MATCHES");
+
             player.queue.add(sel_tracks);
-            response = sel_tracks.length;
+            response = Array.isArray(sel_tracks) ? sel_tracks.length : 1;
         }
             break;
         case "play": {
@@ -208,7 +214,7 @@ async function Main(d) {
         }
             break;
         case "volume": {
-            player.filters.volume = Number(data[0]) / 100;
+            player.setVolume(Number(data[0]))
         }
             break;
         case "queueLength": {
@@ -234,33 +240,41 @@ async function Main(d) {
             break;
         case "loopmode": {
             const r = Utils.LoopMode[data[0].slice(0,1).toUpperCase() + data[0].slice(1)];
-            if (!r) return d.error("LavaCommands ERR: Unknown mode `" + data[0] + "`");
+            if (!r) return await error(d, da, "Lavalink ERR! LOOPMODE_UNKNOWN in");
             player.setLoop(r);
             response = r;
         };
             break;
         case "loopqueue": {
-            console.log("LavaCommands DEPRECATE: This method (loopqueue) is deprecated, use method (loopmode) instead");
+            console.warn("Lavalink WARN! method(loopqueue) deprecated, use method(loopmode) in");
             const r = player.loop === Utils.LoopMode.Queue ? Utils.LoopMode.None : Utils.LoopMode.Queue
             player.setLoop(r);
             response = r;
         };
             break;
         case "loopsong": {
-            console.log("LavaCommands DEPRECATE: This method (loopsong) is deprecated, use method (loopmode) instead");
+            console.warn("Lavalink WARN! method(loopsong) deprecated, use method(loopmode) in");
             const r = player.loop === Utils.LoopMode.Track ? Utils.LoopMode.None : Utils.LoopMode.Track
             player.setLoop(r);
             response = r;
         }
             break;
+        default: {
+            return await error(d, da, "Lavalink ERR! METHOD_UNAVAILABLE in")
+        }
     }
 
     if (player) {
         player.text = d.channel
     }
+    da.result = String(response || "");
+    d.array = array;
+    d.data.array = d.array;
 
     return {
-        code: code.replaceLast(`$lavalinkExecute${inside}`, String(response) || ""),
+        code: d.util.setCode(da),
+        array: d.array,
+        data: d.data
     };
 }
 
