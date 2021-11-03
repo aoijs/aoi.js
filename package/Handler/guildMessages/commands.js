@@ -64,7 +64,7 @@ for(let prefix of prefixes){
  }
   //if command doesn't exist , then break the loop 
   
-    if(cmd.dmOnly && message.channel.type === Util.channelTypes.Dm) break;
+    if(cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm) break;
     //if cmd.async is true 
     if(cmd.async){
         await Interpreter(client,message,args,cmd,client.db)
