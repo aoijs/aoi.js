@@ -1,45 +1,30 @@
-/*
-    Copyright (c) 2021 Andrew Trims and Contributors
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-const Available_Methods = [
-    "play",
-    "resetFilters",
-    "addFilters",
-    "stop",
-    "resume",
-    "pause",
-    "state",
-    "seek",
-    "skip",
-    "isPlaying",
-    "isPaused",
-    "isIdling",
-    "songinfo",
-    "patchFilters",
-    "version",
-    "connect",
-    "disconnect",
-    "destroy",
-    "volume",
-    "queueLength",
-    "queue",
-    "loopqueue",
-    "loopsong"
-]
+const { Utils } = require("lavacoffee");
+const Searches = new (require("discord.js")).LimitedCollection({
+    sweepInterval: 5000,
+    sweepFilter: (require("discord.js")).LimitedCollection.filterByLifetime({ lifetime: 5000 })
+});
+const { randomBytes } = require("crypto");
 
-const Deprecated_Methods = [
-    "join",
-    "leave"
-];
+function getRandomBytes(size) {
+    return new Promise(resolve => {
+        randomBytes(size, (_, buf) => {
+            resolve(buf);
+        });
+    });
+}
 
-// IDE is out of range in Package Folders
-// Arrange Lavalink files (all) in one directory
-// for IDE to acknowledge
-const { PlayerStates: States, version: LavalinkWrapperVersion } = require("../Lavalink/Src/Util");
-const KeyStates = Object.entries(States).map(v => v.reverse()).reduce((obj, v) => { obj[v[0]] = v[1]; return obj }, {});
+// async function error(d, data, message) {
+//     const m = await d.util.errorParser(message, d);
+//     d.aoiError.makeMessageError(d.client, d.channel, m, {},d)
+//     return {
+//         code: d.util.setCode(data),
+//         error: true
+//     };
+// }
+
+async function error(d, data, message) {
+    return d.aoiError.fnError(d, 'custom', data, message)
+}
 
 async function Main(d) {
     /** @type {import("discord.js").Message} */
@@ -47,153 +32,181 @@ async function Main(d) {
     /** @type {import("discord.js").Client} */
     const client = d.client;
 
-    if (!message.guild) return d.error("`Lavalink Error: Unexpected Guild of 'null'!`");
+    // hi its me, kino, wassup
+    /** @type {import("../classes/Lavalink")} */
+    const lavalink = client.lavalink;
 
-    /** @type {import("discord.js").Collection<number, import("../Lavalink/Src/LavalinkConnection")>} */
-    // Contributors can continue this to add a system like Cluster, for this PR one connection will be used
-    const Collection = d.client.lavalink;
-    // Using at least 1 connection available
-    /** @type {import("../Lavalink/Src/LavalinkConnection")} */
-    const connection = Collection.first();
+    const da = d.util.openFunc(d);
+    const inside = da.inside;
+    const code = da.code;
 
-    // If no connection can be found, return error;
-    // No x unicode mark, as of Aoi.js new error system
-    if (!connection) return d.error("`Lavalink Error: Connection Instance can't be found!`");
+    if (da.err) return await error(d, da, da.err);
+    if (!message.guild) return await error(d, da, "Lavalink ERR! GUILD_MISSING");
 
-    const code = d.command.code;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-
-    if (err) return d.error(err);
     let response = "";
-    const [method, ...data] = inside.splits;
-
-    if (Deprecated_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is deprecated and will be removed in the future, further use shouldn't be continued!\``);
-    if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
-    // Position here to not invoke or add inefficient codes
-    let player = connection._players.get(message.guild.id);
+    let [method, ...data] = inside.splits;
+    let player = lavalink.lavalink.get(message.guild.id);
+    method = method.toLowerCase();
+    let array = d.array;
+    if (method !== "connect" && !player) return await error(d, da, "Lavalink ERR! PLAYER_UNAVAILABLE in");
 
     switch (method) {
         case "connect": {
-            const memberConnection = message.member.voice;
+            const voice = message.member.voice;
+            if (!voice) return await error(d, da, "Lavalink ERR! MEMBER_NO_VOICE in");
+
             const [deaf, mute] = data
-            if (!memberConnection) return d.error("`Lavalink Error: Unexpected Member voice of 'null'!`");
-            connection.joinVoiceChannel(message.guild, memberConnection.channel, (deaf === "yes"), (mute === "yes"));
+            player = lavalink.lavalink.create({
+                guildID: message.guildId,
+                selfDeaf: deaf,
+                selfMute: mute
+            });
+            player.options.voiceID = voice.channelId;
+            player.connect();
         }
             break;
         case "disconnect": {
-            const clientConnection = message.guild.members.cache.get(client.user.id).voice;
-
-            if (!clientConnection) return d.error("`Lavalink Error: Unexpected Client voice of 'null'!`");
-
-            if (player) player.destroy();
-
-            connection.leaveVoiceChannel(message.guild);
-            // Deletes cached voice state in case if Discord changed session Id and such
-            connection.voiceStates.delete(message.guild.id);
+            player.disconnect();
+            player.destroy();
         }
             break;
         case "version": {
-            // Official Version of Wrapper
-            response = LavalinkWrapperVersion;
+            response = lavalink.version;
         }
             break;
         case "isPlaying": {
-            if (player) response = player.isPlaying()
-            else response = "false";
+            response = Boolean(player?.state === Utils.PlayerStates.Playing);
         }
             break;
         case "isPaused": {
-            if (player) response = player.isPaused()
-            else response = "false";
+            response = Boolean(player?.state === Utils.PlayerStates.Paused)
         }
             break;
         case "isIdling": {
-            if (player) response = player.isIdling()
-            else response = "false";
+            response = Boolean(player?.state !== Utils.PlayerStates.Destroyed && !player.queue.current)
         }
             break;
         case "songinfo": {
-            if (!player) return d.error("`Lavalink Error: No player is available for this Guild!`");
-
-            const track = player.queue[data[1] >= 0 && data[1] < player.queue.length ? data[1] : 0];
-            if (!track) return d.error("`Lavalink Error: Nothing is playing!`");
+            const track = player.queue.at(Number(data[1]) - 1) || player.queue.current;
+            if (!track) return;
 
             const p = data[0];
 
-            if (["current_duration", "duration_left"].includes(p))
-                response = player.getTimestate((p === "duration_left"))
-
-            else if (track[p]) response = track[p];
+            if (p === "current_duration") {
+                const d = lavalink.getTime(Date.now() - (player.lastUpdated + player.position));
+                response = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    response = `${String(d.hour)}:${response}`;
+                }
+            } else if (p === "duration_left") {
+                const d = lavalink.getTime(player.lastUpdated + track.duration - Date.now());
+                response = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    response = `${String(d.hour)}:${response}`;
+                }
+            }
+            else if (track[p]) response = track[p]
+            else response = "";
         }
             break;
         case "skip": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            if (player.isPlaying()) {
-                player.stop();
-                const skipNumber = Number(data[0]);
-                if (skipNumber) player.queue.splice(0, skipNumber)
-                // If player state was changed to Idle after Playing,
-                //  Next track will be processed,
-                // does not flaw loopSong and loopQueue system
-                player.state = States.IDLE;
+            if (player.state === Utils.PlayerStates.Playing) {
+                player.stop(Number(data[0]));
             }
         }
             break;
         case "stop": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
+            player.queue.clear();
+            player.setLoop(Utils.LoopMode.None);
             player.stop();
         }
             break;
         case "pause": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             player.pause(true);
         }
             break;
         case "resume": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             player.pause(false);
         }
             break;
         case "seek": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             player.seek(Number(data[0]) * 1000);
         }
             break;
         case "state": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            response = KeyStates[player.state];
+            response = player.state;
         }
             break;
-        case "destroy": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.destroy();
+        case "getthumbnail": {
+            const id = data[0];
+            return "https://img.youtube.com/vi/" + id + "/" + data[1] + ".jpg";
+        }
+        case "search": {
+            const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
+            const id = (await getRandomBytes(10)).toString("hex");
+            Searches.set(id, res.tracks.slice(0, 10).map(v => {
+                const d = lavalink.getTime(v.duration);
+                v.duration = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    v.duration = `${String(d.hour)}:${v.duration}`
+                };
+                v.thumbnail = v.displayThumbnail("default");
+                return v;
+            }));
+            response = id;
+        };
+            break;
+        case "getsearch": {
+            const tracks = Searches.get(data[0]);
+            if (tracks) response = tracks.map(v => v.title.addBrackets()).join(",")
+            else response = "";
+        }
+            break;
+        case "tracksplit": {
+            const tracks = Searches.get(data[0]);
+            if (tracks) {
+                response = "true";
+                array = tracks.map(v => v.title);
+            }; response = "false";
+        }
+        case "findentry": {
+            const tracks = Searches.get(data[0]);
+            if (!tracks) return await error(d, da, "Lavalink ERR! INVALID_KEYSEARCH in");
+            const query = data.slice(1).join(";")
+            const index = tracks.findIndex(v => v.title.toLowerCase().includes(query.toLowerCase()));
+
+            response = index + 1;
+        }
+            break;
+        case "addtrack": {
+            const tracks = Searches.get(data[0]);
+            if (!tracks) return await error(d, da, "Lavalink ERR! INVALID_KEYSEARCH in");
+
+            const n1 = Number(data[1]);
+            const n2 = Number(data[2] || "e");
+            let sel_tracks = tracks[n1 - 1];
+            if (!isNaN(n2)) sel_tracks = tracks.slice(n1 - 1, n2 - 1);
+            if (!sel_tracks) return await error(d, da, "Lavalink ERR! NO_MATCHES");
+
+            player.queue.add(sel_tracks);
+            response = Array.isArray(sel_tracks) ? sel_tracks.length : 1;
         }
             break;
         case "play": {
-            const track = await connection.search(data.join(";").addBrackets(), message.author.id);
-            if (!track) return d.error("`Lavalink Error: Unexpected Search Results length of '0<X'!`");
-
-            if (!player) {
-                player = connection.createAudioPlayer(message.guild);
-            }
-
-            player.push(track);
+            player.play({});
         }
             break;
         case "patchFilters": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             player.patchFilters();
         }
             break;
         case "resetFilters": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.filters = { volume: 1.0 };
+            player.filters = {};
+            player.setFilters({ volume: 1.0 });
             player.patchFilters();
         }
             break;
         case "addFilters": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             const constructFilter = { ...player.filters };
 
             for (const input of data) {
@@ -202,31 +215,29 @@ async function Main(d) {
                 constructFilter[key] = value;
             };
 
-            player.filters = constructFilter;
+            player.setFilters(constructFilter);
+        }
+            break;
+        case "destroy": {
+            console.warn("Lavalink WARN! method(loopsong) deprecated, use method(loopmode) in");
+            player.destroy();
         }
             break;
         case "volume": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            console.warn("Lavalink Warning: Method 'volume' is deprecated and will be removed in the future, further use shouldn't be continued");
-
-            player.manager._ws.send({
-                op: "volume",
-                guildId: message.guild.id,
-                volume: Number(data[0])
-            });
+            player.setVolume(Number(data[0]))
         }
             break;
         case "queueLength": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            response = player.queue.length;
+            response = player.queue.size;
         }
             break;
         case "queue": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
             const mapFormat = data.join(";").addBrackets();
-            const array = []
-            for (const track of player.queue) {
-                const clone = { ...track, userID: track.requesterId };
+            const array = [];
+            let i;
+            for (i = 0; i < player.queue.size; i++) {
+                const track = player.queue.at(i);
+                const clone = { ...track, userID: track.requesterId, entrynumber: i + 1 };
                 const res = mapFormat.replace(/{\w+}/g, (match) => {
                     const r = clone[match.replace(/[{}]/g, "")];
                     if (r) return r;
@@ -237,26 +248,43 @@ async function Main(d) {
             response = array.join("\n")
         }
             break;
+        case "loopmode": {
+            const r = Utils.LoopMode[data[0].slice(0,1).toUpperCase() + data[0].slice(1)];
+            if (!r) return await error(d, da, "Lavalink ERR! LOOPMODE_UNKNOWN in");
+            player.setLoop(r);
+            response = r;
+        };
+            break;
         case "loopqueue": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.loopQueue = !player.loopQueue;
-            response = player.loopQueue;
+            console.warn("Lavalink WARN! method(loopqueue) deprecated, use method(loopmode) in");
+            const r = player.loop === Utils.LoopMode.Queue ? Utils.LoopMode.None : Utils.LoopMode.Queue
+            player.setLoop(r);
+            response = r;
         };
             break;
         case "loopsong": {
-            if (!player) return d.error("`Lavalink Error: No player are available for this Guild!`");
-            player.loopSong = !player.loopSong;
-            response = player.loopSong;
+            console.warn("Lavalink WARN! method(loopsong) deprecated, use method(loopmode) in");
+            const r = player.loop === Utils.LoopMode.Track ? Utils.LoopMode.None : Utils.LoopMode.Track
+            player.setLoop(r);
+            response = r;
         }
             break;
+        default: {
+            return await error(d, da, "Lavalink ERR! METHOD_UNAVAILABLE in")
+        }
     }
 
     if (player) {
         player.text = d.channel
     }
+    da.result = String(response || "");
+    d.array = array;
+    d.data.array = d.array;
 
     return {
-        code: code.replaceLast(`$lavalinkExecute${inside}`, String(response) || ""),
+        code: d.util.setCode(da),
+        array: d.array,
+        data: d.data
     };
 }
 
