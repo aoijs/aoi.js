@@ -137,6 +137,10 @@ async function Main(d) {
             response = player.state;
         }
             break;
+        case "trackthumbnail": {
+            const id = data[0];
+            return "https://img.youtube.com/vi/" + id + "/" + data[1];
+        }
         case "search": {
             const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
             const id = (await getRandomBytes(10)).toString("hex");
@@ -146,6 +150,7 @@ async function Main(d) {
                 if (d.hour > 0) {
                     v.duration = `${String(d.hour)}:${v.duration}`
                 };
+                v.thumbnail = v.displayThumbnail("default");
                 return v;
             }));
             response = id;
