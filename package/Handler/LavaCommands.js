@@ -1,6 +1,6 @@
-const { Utils, version } = require("lavacoffee");
+const { Utils } = require("lavacoffee");
 const Searches = new (require("discord.js")).LimitedCollection({
-    sweepInterval: 30000,
+    sweepInterval: 5000,
     sweepFilter: (require("discord.js")).LimitedCollection.filterByLifetime({ lifetime: 5000 })
 });
 const { randomBytes } = require("crypto");
@@ -46,36 +46,40 @@ async function Main(d) {
 
     if (!message.guild) return d.error("`Lavalink Error: Unexpected Guild of 'null'!`");
     // hi its me, kino, wassup
+    /** @type {import("../classes/Lavalink")} */
     const lavalink = client.lavalink;
-    const player = lavalink.lavalink.create({
-        guildID: message.guild.id,
-        selfDeaf: true,
-        selfMute: false
-    });
 
     const code = d.command.code;
     const da = d.util.openFunc(d);
     const inside = da.inside;
-    const err = d.inside(inside);
 
-    if (err) return d.error(err);
+    if (da.err) return d.error(da.err);
     let response = "";
-    const [method, ...data] = inside.splits;
+    let [method, ...data] = inside.splits;
+    let player = lavalink.lavalink.get(message.guild.id);
+    method = method.toLowerCase();
 
-    if (!Available_Methods.includes(method)) return d.error(`\`Lavalink Error: Method value '${method}' is not available!\``);
+    if (!Available_Methods.includes(method)) return d.error(`\`Lavalink ERR! METHOD_UNAVAILABLE\``);
+    if (method !== "connect" && !player) return d.error(`\`Lavalink ERR! PLAYER_UNAVAILABLE\``);
 
     switch (method) {
         case "connect": {
             const voice = message.member.voice;
+            if (!voice) return d.error(`\`Lavalink ERR! MEMBER_NO_VOICE\``);
+
             const [deaf, mute] = data
-            player.voiceID = voice.channelId;
+            player = lavalink.lavalink.create({
+                guildID: message.guildId,
+                selfDeaf: deaf,
+                selfMute: mute
+            });
+            player.options.voiceID = voice.channelId;
             player.connect();
         }
             break;
         case "disconnect": {
-            if (player) player.destroy();
-            player.voiceID = null;
-            player.connect();
+            player.disconnect();
+            player.destroy();
         }
             break;
         case "version": {
@@ -100,9 +104,19 @@ async function Main(d) {
 
             const p = data[0];
 
-            if (["current_duration", "duration_left"].includes(p))
-                response = player.getTimestate((p === "duration_left"))
-
+            if (p === "current_duration") {
+                const d = lavalink.getTime(Date.now() - (player.lastUpdated + player.position));
+                response = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    response = `${String(d.hour)}:${response}`;
+                }
+            } else if (p === "duration_left") {
+                const d = lavalink.getTime(player.lastUpdated + track.duration - Date.now());
+                response = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    response = `${String(d.hour)}:${response}`;
+                }
+            }
             else if (track[p]) response = track[p]
             else response = "";
         }
@@ -135,14 +149,17 @@ async function Main(d) {
             response = player.state;
         }
             break;
-        case "destroy": {
-            player.destroy();
-        }
-            break;
         case "search": {
-            const res = await lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
+            const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
             const id = getRandomBytes(10);
-            Searches.set(id, res.tracks.slice(10));
+            Searches.set(id, res.tracks.slice(10).map(v => {
+                const d = lavalink.getTime(v.duration);
+                v.duration = `${d.minute}:${d.second}`;
+                if (d.hour > 0) {
+                    v.duration = `${String(d.hour)}:${v.duration}`
+                };
+                return v;
+            }));
             response = id;
         };
             break;
@@ -151,9 +168,10 @@ async function Main(d) {
             if (tracks) response = tracks.map(v => encodedURIComponent(v.title)).join(",")
             else response = "";
         }
+            break;
         case "addtrack": {
             const tracks = Searches.get(data[0]);
-            if (!tracks) return d.error("Lavalink error: No search with encoded")
+            if (!tracks) return d.error("`Lavalink ERR! INVALID_KEYSEARCH`")
             const n1 = Number(data[1]);
             const n2 = Number(data[2]);
             let sel_tracks = tracks[n1 - 1];
@@ -162,8 +180,9 @@ async function Main(d) {
             player.queue.add(sel_tracks);
             response = sel_tracks.length;
         }
+            break;
         case "play": {
-            player.play();
+            player.play({});
         }
             break;
         case "patchFilters": {
