@@ -12,7 +12,7 @@ module.exports = async(message,client,db)=>{
     //array of cmds 
     let cmds = client.cmd.default.allValues()
     //getting arrays of prefixes
- const prefixes = Array.isArray(client.prefix)?client.prefix.map(async x=>x.includes("$")? (await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true))?.code :x):[client.prefix]
+ const prefixes = Array.isArray(client.prefix)?client.prefix.map(async x=>x.includes("$")? (await Interpreter(client,message,message.content.split(" "),{name:"PrefixParser",code:x},client.db,true))?.code?.addBrackets() :x): client.prefix.includes("$") ? [(await Interpreter(client,message,message.content.split(" "),{code : client.prefix },client.db,true))?.code?.addBrackets()] : [client.prefix]
     //for loop of prefix array
 for(let prefix of prefixes){
     prefix = await prefix;
