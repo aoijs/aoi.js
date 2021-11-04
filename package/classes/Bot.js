@@ -494,9 +494,9 @@ class Client extends BaseClient {
         if (!d.code) { throw new TypeError(`code is not provided in ${d?.name || "unknown name"}: variableUpdateCommand. position: ${this.cmd.variableUpdate.size}`) }
         this.cmd.variableUpdate?.set(this.cmd.variableUpdate.size, d)
     }
-    functionErrorCommand(d = {}) {
-        if (!d.code) { throw new TypeError(`code is not provided in ${d?.name || "unknown name"}: functionErrorCommand. position: ${this.cmd.functionError.size}`) }
-        this.cmd.functionError?.set(this.cmd.functionError.size, d)
+    readyCommand(d = {}) {
+        if (!d.code) { throw new TypeError(`code is not provided in ${d?.name || "unknown name"}: readyCommand. position: ${this.cmd.ready.size}`) }
+        this.cmd.ready?.set(this.cmd.ready.size, d)
     }
 }
 require('../Utils/helpers/prototypes.js')
