@@ -1,4 +1,4 @@
-const { Time } = require('../../../Utils/helpers/customParser.js');
+const { Time } = require('../../Utils/helpers/customParser.js');
 
 module.exports = async d => {
 const {code} = d.command 
