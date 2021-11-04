@@ -6,7 +6,7 @@ module.exports = async d => {
  
    let result = await d.interpreter(d.client,d.message,d.args,{ name : "Eval",code : Code.addBrackets() },d.client.db,returnCode === "yes",undefined,{},undefined,undefined,returnExecution === "yes",returnId === "yes",sendMessage === "yes") 
    
-   data.result = returnCode === "yes" && [ returnId,returnExecution ].join(",") === "no,no" ? result.code : require('util').inspect(result) 
+   data.result = returnCode === "yes" ? ([ returnId,returnExecution ].join(",") === "no,no" ? result.code : require('util').inspect(result)) : undefined
    
    return {
        code : d.util.setCode( data ) 
