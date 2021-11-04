@@ -1,13 +1,13 @@
 import Group from "./CacheHandler/group";
 import LimitGroup from "./CacheHandler/limitGroup";
 import SuperSet from "./CacheHandler/superSet";
+import { Client, Collection, ShardingManager } from "discord.js";
 
 declare module "aoi.js" {
-    import { Client, Collection, ShardingManager } from "discord.js";
 
     import { EventEmitter } from "events";
 
-    type ErrorMsg = string | Record<string, string | boolean | object | Array>
+    type ErrorMsg = string | Record<string, string | boolean | object | any[]>
     //AoiError
     class AoiError {
         constructor();
@@ -60,7 +60,7 @@ declare module "aoi.js" {
         token: string;
         prefix: string | Array<string>;
         intents: IntentOptions;
-        database?: DatabaseOption;
+        database?: DatabaseOption<any>;
         respondOnEdit?: RespondOnEditOptions;
         cache: CacheOptions;
         mobilePlatform?: boolean;
@@ -90,7 +90,6 @@ declare module "aoi.js" {
         whitelist?: boolean;
         nonPrefixed?: boolean;
         error?: string;
-        [key: string]: any;
     }
     interface AwaitCommand extends BaseCommand {
         name: string;
@@ -116,11 +115,11 @@ declare module "aoi.js" {
         aoiOptions: Record<string, any>;
         interactionManager: InteractionManager;
         cacheManager: CacheManager;
-        variableManager: VariableManager;
+        variableManager: any /*VariableManager*/;
         blacklist: Blacklist;
         _api: string;
         prefix: string | string[];
-        db: DbdjsApi | DbdTsDb | CustomDb | Promisify;
+        db: any /*DbdjsApi | DbdTsDb | CustomDb | Promisify*/;
         statuses: Group;
         constructor(options: ClientOptions);
         public status(d: StatusOption[]): void;
@@ -283,15 +282,12 @@ declare module "aoi.js" {
     }
     class CommandManager {
         client: Bot;
-        formCommand?: boolean;
         customCmds?: Array<string>;
         constructor(client: Bot, formCommand?: boolean, customCmds?: string[]);
         public get types(): string[];
-        public createCommand(d = {}): void;
+        public createCommand(d: any): void;
         public formCommand(): void;
         public formCustomCommand(customCmds: string[]): void;
-
-
     }
     //FunctionManager 
     class FunctionManager {
@@ -348,8 +344,8 @@ declare module "aoi.js" {
     }
     class InteractionManager extends Interaction {
         client: Bot;
-        awaitComponents: Await;
-        componentCollector: CustomCollector;
+        awaitComponents: unknown /*Await*/;
+        componentCollector: unknown /*CustomCollector*/;
         buttonData: Group;
         applicationData: Group;
         selectMenuData: Group;
