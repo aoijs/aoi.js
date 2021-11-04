@@ -1,10 +1,10 @@
 const Discord = require("discord.js");
 const dbddb = require('dbdjs.db')
+
 const { VariableManager } = require('./Variables.js')
 const Blacklist = require('./Blacklist.js')
 const Group = require('../CacheHandler/index.js').cache
 const InteractionManager = require("./Interaction.js")
-const AoiError = require('./AoiError.js')
 const { ActivityTypeAvailables, IntentOptions, SlashOptionTypes } = require('../Utils/Constants.js')
 const { AoijsAPI, DbdTsDb, CustomDB, Promisify } = require('./Database.js')
 const CacheManager = require('./CacheManager.js')
@@ -79,7 +79,7 @@ class BaseClient extends Discord.Client {
         if (options?.events?.functionError) {
             this.on("functionError", async (data, client) => { await require('../Handler/custom/functionError.js')(data, client) })
         }
-        
+
         this.prefix = options.prefix
         Object.defineProperty(this, "statuses", { value: new Group() })
         if (options.mobilePlatform === true) {

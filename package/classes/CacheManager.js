@@ -22,12 +22,14 @@ class CacheManager {
         return this.types.includes(type)
     }
     createCache(type, name, options) {
-        if (!this._validType(type)) return AoiError.consoleError("CacheManagerError", "Wrong Cache Type Provided")
+        if (!this._validType(type)) return AoiError.consoleError("CacheManagerError", "Wrong Cache Type Provided");
+
         this.caches[type][name] = new Cachers[type](options)
         return this.caches[type][name]
     }
     deleteCache(type, name) {
-        if (!this.validType(type)) return AoiError.consoleError("CacheManagerError", "Wrong Cache Type Provided")
+        if (!this.validType(type)) return AoiError.consoleError("CacheManagerError", "Wrong Cache Type Provided");
+        
         delete this.cache[type][name]
     }
     static _setDjsCacheManagers(cache) {
