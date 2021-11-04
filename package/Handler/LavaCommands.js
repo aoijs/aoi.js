@@ -64,6 +64,7 @@ async function Main(d) {
                 });
                 player.options.voiceID = voice.channelId;
                 player.connect();
+                player.text = d.channel;
             }
                 break;
             case "disconnect": {
@@ -75,30 +76,30 @@ async function Main(d) {
                 response = lavalink.version;
             }
                 break;
-            case "isPlaying": {
+            case "isplaying": {
                 response = Boolean(player?.state === Utils.PlayerStates.Playing);
             }
                 break;
-            case "isPaused": {
-                response = Boolean(player?.state === Utils.PlayerStates.Paused)
+            case "ispaused": {
+                response = Boolean(player?.state === Utils.PlayerStates.Paused && player.queue.current)
             }
                 break;
-            case "isIdling": {
-                response = Boolean(player?.state !== Utils.PlayerStates.Destroyed && !player.queue.current)
+            case "isidling": {
+                response = Boolean(player?.state === Utils.PlayerStates.Paused && !player.queue.current);
             }
                 break;
             case "songinfo": {
-                const track = player.queue.at(Number(data[1]) - 1) || player.queue.current;
+                const track = player.queue.at(Number(data[1]) - 1) || player.queue.current || player.queue.previous;
                 if (track) {
                     const p = data[0];
                     if (p === "current_duration") {
-                        const d = lavalink.getTime((player.position + (Date.now() - player.lastUpdated)) / 1000);
+                        const d = lavalink.getCurrent(player)
                         response = `${d.minute}:${d.second}`;
                         if (d.hour > 0) {
                             response = `${String(d.hour)}:${response}`;
                         }
                     } else if (p === "duration_left") {
-                        const d = lavalink.getTime((track.length - (player.position + (Date.now() - player.lastUpdated))) / 1000 + 1);
+                        const d = lavalink.getLeft(player, track)
                         response = `${d.minute}:${d.second}`;
                         if (d.hour > 0) {
                             response = `${String(d.hour)}:${response}`;
@@ -110,7 +111,7 @@ async function Main(d) {
             }
                 break;
             case "skip": {
-                if (player.queue.current && player.queue.previous) {
+                if (player.state !== Utils.PlayerStates.Destroyed && player.queue.current) {
                     player.stop(Number(data[0]));
                 }
             }
@@ -130,11 +131,14 @@ async function Main(d) {
             }
                 break;
             case "seek": {
-                player.seek(Number(data[0]) * 1000);
+                const n = (Number(data[0]) * 1000) ?? 0;
+                player.position = n;
+                player.lastUpdated = Date.now();
+                player.seek(n);
             }
                 break;
             case "state": {
-                response = player.state;
+                response = Utils.PlayerStates[player.state];
             }
                 break;
             case "getthumbnail": {
@@ -142,7 +146,7 @@ async function Main(d) {
             }
                 break;
             case "search": {
-                const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.author.id);
+                const res = await lavalink.lavalink.search({query: data[0], source: data[1] || "yt"}, message.member);
                 const id = (await getRandomBytes(10)).toString("hex");
                 Searches.set(id, res.tracks.slice(0, 10).map(v => {
                     const d = lavalink.getTime(v.duration / 1000);
@@ -197,26 +201,25 @@ async function Main(d) {
                 player.play({});
             }
                 break;
-            case "patchFilters": {
-                player.patchFilters();
-            }
-                break;
-            case "resetFilters": {
+            case "resetfilters": {
                 player.filters = {};
                 player.setFilters({ volume: 1.0 });
                 player.patchFilters();
             }
                 break;
-            case "addFilters": {
+            case "addfilters": {
                 const constructFilter = { ...player.filters };
     
                 for (const input of data) {
                     let [key, value = ""] = input.split("=");
-                    value = JSON.stringify(`'${value}'`);
+                    try {
+                        value = JSON.parse(value);
+                    } catch {}
                     constructFilter[key] = value;
                 };
     
                 player.setFilters(constructFilter);
+                player.patchFilters();
             }
                 break;
             case "destroy": {
@@ -229,17 +232,22 @@ async function Main(d) {
                 else player.setVolume(Number(data[0]));
             }
                 break;
-            case "queueLength": {
-                response = player.queue.size;
+            case "queuelength": {
+                const type = data[0] || "total";
+                if (type === "total") {
+                    response = player.queue.size
+                } else if (type === "duration") {
+                    response = player.queue.duration
+                };
             }
                 break;
             case "queue": {
-                const mapFormat = data.join(";").addBrackets();
+                const mapFormat = data.join(";").addBrackets() || "{entrynumber}. [{title}]({url}) by {userTag}";
                 const array = [];
                 let i;
                 for (i = 0; i < player.queue.size; i++) {
                     const track = player.queue.at(i);
-                    const clone = { ...track, userID: track.requesterId, entrynumber: i + 1 };
+                    const clone = { ...track, userID: track.requester.id, userTag: track.requester.user.tag, entrynumber: i + 1 };
                     const res = mapFormat.replace(/{\w+}/g, (match) => {
                         const r = clone[match.replace(/[{}]/g, "")];
                         if (r) return r;
@@ -251,10 +259,15 @@ async function Main(d) {
             }
                 break;
             case "loopmode": {
-                const r = Utils.LoopMode[data[0].slice(0,1).toUpperCase() + data[0].slice(1)];
-                if (!r) return await error(d, da, "Lavalink ERR! LOOPMODE_UNKNOWN in");
-                player.setLoop(r);
-                response = r;
+                const mode = data[0];
+                if (!mode) {
+                    response = Utils.LoopMode[String(player.loop)];
+                } else {
+                    const r = Utils.LoopMode[data[0].slice(0,1).toUpperCase() + data[0].slice(1)];
+                    if (!r) return await error(d, da, "Lavalink ERR! LOOPMODE_UNKNOWN in");
+                    player.setLoop(r);
+                    response = r;
+                }
             };
                 break;
             case "loopqueue": {
@@ -279,10 +292,7 @@ async function Main(d) {
         return await error(d, da, `Lavalink INTERNAL_ERR! ${err.message}`);
     }
 
-    if (player) {
-        player.text = d.channel
-    }
-    da.result = String(response || "");
+    da.result = String(response ?? "");
     d.array = array;
     d.data.array = d.array;
 

@@ -1,5 +1,6 @@
 const LavaCoffee = require("lavacoffee");
 const { EventEmitter } = require("events");
+const emit = require("../Handler/lavalink/trackEvent");
 
 class Lavalink extends EventEmitter {
     constructor(client) {
@@ -8,7 +9,13 @@ class Lavalink extends EventEmitter {
          * @type {import("discord.js").Client}
          */
         this.client = client;
-        const lavalink = new LavaCoffee.CoffeeLava({ autoPlay: false, send: (guildId, d) => {
+        /**
+         * @type {{name: string, code: string, channel: string}[]}
+         */
+        this.start_commands = [];
+        /** @type {{name: string, code: string, channel: string}[]} */
+        this.end_commands = [];
+        const lavalink = new LavaCoffee.CoffeeLava({ send: (guildId, d) => {
           const guild = this.client.guilds.cache.get(guildId);
           if (guild) guild.shard.send(d);
         }});
@@ -22,19 +29,21 @@ class Lavalink extends EventEmitter {
         // });
         lavalink.on("trackStart", (p, track) => {
             this.debug(`Player starting track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicStart", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+            this.handleEvent('start', p, track);
         });
-        lavalink.on("trackEnd", (p, track) => {
+        lavalink.on("trackEnd", (p, track, reason) => {
             this.debug(`Player ended track for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+            this.handleEvent("end", p, track, reason);
         });
-        lavalink.on("trackStuck", (p, track) => {
+        lavalink.on("trackStuck", (p, track, reason) => {
             this.debug(`Player sent STUCK for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+            p.queue.current = undefined;
+            this.handleEvent("end", p, track, reason);
         });
-        lavalink.on("trackError", (p, track) => {
+        lavalink.on("trackError", (p, track, reason) => {
             this.debug(`Player sent EXCEPTION for GUILD(${p.options.guildID})`);
-            this.client.emit("musicEnd", track, {channel: {guild: this.client.guilds.cache.get(p.options.guildID)}, textChannel: p.text});
+            p.queue.current = undefined;
+            this.handleEvent("end", p, track, reason);
         });
         /** @type {import("lavacoffee").CoffeeLava} */
         this.lavalink = lavalink;
@@ -43,6 +52,81 @@ class Lavalink extends EventEmitter {
         if (this.client.readyTimestamp) this.lavalink.init(this.client.user.id);
         this.client.once("ready", () => this.lavalink.init(this.client.user.id));
     };
+
+    _validate(command) {
+        if (!command.channel) return new Error("Channel is required");
+        if (!command.code) return new Error("Code is required");
+    }
+    /**
+     * 
+     * @param {LavaCoffee.CoffeePlayer} player 
+     * @param {LavaCoffee.CoffeeTrack} track
+     */
+    getLeft(player, track) {
+        // const rate = player.filters.timescale?.rate ?? 1;
+        // const speed = player.filters.timescale?.speed ?? 1;
+
+        const length = track.length;
+        let sub = Date.now() - player.lastUpdated;
+        if (player.queue.current && player.state === LavaCoffee.Utils.PlayerStates.Paused)
+            sub = 0;
+        const res = length - (player.position + Math.round(sub) /* *rate */)
+        return this.getTime(res /* /speed */ / 1000);
+    }
+    /**
+     * 
+     * @param {LavaCoffee.CoffeePlayer} player 
+     */
+    getCurrent(player) {
+        // const rate = (player.filters.timescale?.rate ?? 1);
+        // const speed = player.filters.timescale?.speed ?? 1;
+
+        let sub = Date.now() - player.lastUpdated;
+        if (player.queue.current && player.state === LavaCoffee.Utils.PlayerStates.Paused)
+            sub = 0;
+        //(player.position + (Date.now() - player.lastUpdated)) / 1000)
+        const res = player.position + Math.round(sub) /* *rate */;
+        return this.getTime(Math.round(res /* *speed */ / 1000));
+    }
+    /**
+     * 
+     * @param {{name: string, code: string, channel: string}} command 
+     */
+    trackStartCommand(command) {
+        const c = this._validate(command);
+        if (c) throw c;
+
+        this.start_commands.push(command)
+    }
+
+    /**
+     * 
+     * @param {{name: string, code: string, channel: string}} command 
+     */
+    trackEndCommand(command) {
+        const c = this._validate(command);
+        if (c) throw c;
+
+        this.end_commands.push(command)
+    }
+
+    /**
+     * 
+     * @param {"start" | "end"} event 
+     * @param {LavaCoffee.CoffeePlayer} player 
+     * @param {LavaCoffee.CoffeeTrack} track 
+     * @param {string?} [reason]
+     */
+    handleEvent(event, player, track, reason) {
+        if (event === "start") {
+            // Hardest to implement because of v5 compatibility
+            emit(this.start_commands, track, player, this);
+        } else if (event === "end") {
+            // hi weird system, here's a counter
+            player.state = LavaCoffee.Utils.PlayerStates.Paused;
+            emit(this.end_commands, track, player, this, reason);
+        }
+    }
     
     getTime(ms) {
         const h = Math.trunc(ms / 3600);
