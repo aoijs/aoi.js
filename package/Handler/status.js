@@ -1,4 +1,5 @@
 module.exports = (statuses, client) => {
+  console.log("Enabled Status")
   if (statuses.size !== 0) {
     let y = 0
 
@@ -19,7 +20,6 @@ module.exports = (statuses, client) => {
         f()
 
       }, (status[y]?.time || 12) * 1000)
-
     }
     f()
   }
