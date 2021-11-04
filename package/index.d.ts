@@ -180,6 +180,7 @@ declare module "aoi.js" {
         public variableCreateCommand(d: EventCommand): void
         public variableDeleteCommand(d: EventCommand): void
         public variableUpdateCommand(d: EventCommand): void
+        public readyCommand(d: EventCommand): void
         public functionErrorCommand(d: EventCommand): void
         public onMessage(d?: {
             guildOnly?: boolean,
