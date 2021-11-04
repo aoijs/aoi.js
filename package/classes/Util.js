@@ -17,11 +17,11 @@ class Util {
         return d.client.channels.fetch(id).catch(e => undefined)
     }
     static getChannel(d, id, force = false) {
-        if( d.channel?.id === id ) return d.channel;
+        if (d.channel?.id === id) return d.channel;
         else {
-        let channel = d.client.channels.cache.get(id)
-        if (!channel && force) channel = this.fetchChannel(d, id)
-        return channel
+            let channel = d.client.channels.cache.get(id)
+            if (!channel && force) channel = this.fetchChannel(d, id)
+            return channel
         }
     }
     static async fetchMember(guild, id) {
@@ -54,18 +54,18 @@ class Util {
         if (!message) message = this.fetchMessage(channel, id)
         return message
     }
-    static setCode(options = {},esacpe = true) {
-        return options.code.replaceLast(options.inside ? `${options.function}${options.inside}` : `${options.function}`, (esacpe ? options.result?.toString()?.deleteBrackets()  : options.result.toString() )?? " ");
+    static setCode(options = {}, esacpe = true) {
+        return options.code.replaceLast(options.inside ? `${options.function}${options.inside}` : `${options.function}`, (esacpe ? options.result?.toString()?.deleteBrackets() : options.result.toString()) ?? " ");
     }
     static async getGuild(d, id) {
-        if( d.guild?.id === id  && d.guild?.id) return d.guild;
+        if (d.guild?.id === id && d.guild?.id) return d.guild;
         else {
-        if(!d.client.clientShard) return d.client.guilds.cache.get(id);
-        else {
-            const arr = await d.client.clientShard.broadcastEval(client => client.guilds.cache.get(id));
-            return arr.find( x => x);
+            if (!d.client.clientShard) return d.client.guilds.cache.get(id);
+            else {
+                const arr = await d.client.clientShard.broadcastEval(client => client.guilds.cache.get(id));
+                return arr.find(x => x);
+            }
         }
-    }
     }
     static get channelTypes() {
         return {

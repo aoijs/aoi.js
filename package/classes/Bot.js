@@ -3,7 +3,8 @@ const AoiError = require('./AoiError.js')
 const BaseClient = require('./base.js')
 const { FunctionManager } = require('./Functions.js')
 const { CommandManager, Command } = require('./Commands.js')
-const Collection = require('../CacheHandler/index.js').cache
+const Collection = require('../CacheHandler/index.js').cache;
+
 class Client extends BaseClient {
     constructor(options) {
         super(options);
