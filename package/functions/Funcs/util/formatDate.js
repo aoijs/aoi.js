@@ -1,17 +1,34 @@
-const { FormatDate } = require('../../../Utils/helpers/functions.js');
+const formatDate = require("../../handlers/FormatDate");
 
-module.exports = async d => {
-    const data = d.util.openFunc(d);
-    
-    const [ date = Date.now() , format = "dddd,DD MMMM YYYY" ] = data.inside.splits;
-    
-    const RawDate = new Date(Number(date));
-    
-    if(!RawDate.getTime()) return d.aoiError.fnError(d,"custom",{ inside : data.inside },"Invalid Date Provided In");
-    
-    data.result = FormatDate(date,format);
-    
-    return {
-        code : d.util.setCode( data ) 
-    } 
-} 
+module.exports = (d) => {
+  const code = d.command.code,
+    r = code.split("$formatDate").length - 1,
+    inside = code.split("$formatDate")[r].after();
+
+  const err = d.inside(inside);
+
+  if (err) return d.error(err);
+
+  let [
+    date = Date.now().toLocaleString("en-us", { timeZone: d.timezone }),
+    format = "dddd, DD MMMM YYYY",
+  ] = inside.splits;
+  const checkIsValid = new Date(
+    isNaN(new Number(date)) ? date : new Number(date)
+  );
+
+  if (isNaN(checkIsValid.getTime())) {
+    return d.error(
+      `\`${d.func}: Invalid date in ${inside}\``
+    );
+  }
+
+  return {
+    code: code.replaceLast(
+      `$formatDate${inside}`,
+      format.replace(/\w+/g, (value) =>
+        formatDate(value, checkIsValid, d.timezone)
+      )
+    ),
+  };
+};
