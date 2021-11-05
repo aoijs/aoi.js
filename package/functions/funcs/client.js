@@ -50,7 +50,10 @@ module.exports = async (d) => {
       "mfaenabled",
       "ownerid",
       "teamid",
-      "ispublic"
+      "ispublic",
+      "channelcount",
+      "membercount",
+      "rolecount"
     ].includes(option)
   )
     return d.error(`\`${d.func}: Invalid property in \``);
@@ -127,6 +130,19 @@ module.exports = async (d) => {
       break;
     case "token":
       option = d.client.token;
+      break;
+    case "channelcount":
+      option = d.client.channels.cache.size;
+      break;
+    case "membercount":
+      option = d.client.guilds.cache
+        .map((g) => g.memberCount || 0)
+        .reduce((x, y) => x + y, 0);
+      break;
+    case "rolecount":
+      option = d.client.guilds.cache
+          .map((g) => g.roles.cache.size || 0)
+          .reduce((x, y) => x + y, 0);
       break;
     default:
       undefined;
