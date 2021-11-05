@@ -10,7 +10,7 @@ module.exports = d => {
 
     data.result = sepNumber(splits[0], sep, 3);
     if (splits[1]) {
-        data.result = data.result + splits[1];
+        data.result = data.result +'.'+ splits[1];
     }
 
     return {
