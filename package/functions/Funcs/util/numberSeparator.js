@@ -37,5 +37,5 @@ function sepNumber(number, sep) {
             length--
         }
     }
-    return num.join('');
+    return num.revers().join('');
 }
