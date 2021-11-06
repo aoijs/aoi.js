@@ -5,7 +5,7 @@ module.exports = d => {
     const guild = d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', { inside });
 
-    result = guild.roles.cache.radom()?.id;
+    result = guild.roles.cache.random()?.id;
     if (!d.randoms[`randomRole_${guild.id}`]) {
         d.randoms[`randomRole_${guild.id}`] = result
     }

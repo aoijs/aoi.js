@@ -1,7 +1,7 @@
 module.exports = d => {
     let { code, result } = d.util.openFunc(d);
 
-    result = d.client.emojis.cache.radom()?.id;
+    result = d.client.emojis.cache.random()?.id;
     if (!d.randoms.randomEmoji) {
         d.randoms.randomEmoji = result
     }

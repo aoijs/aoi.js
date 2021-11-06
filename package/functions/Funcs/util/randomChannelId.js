@@ -1,7 +1,7 @@
 module.exports = d => {
     let { code, result } = d.util.openFunc(d);
 
-    result = d.client.channels.cache.radom()?.id;
+    result = d.client.channels.cache.random()?.id;
     if (!d.randoms.randomChannelId) {
         d.randoms.randomChannelId = result
     }
