@@ -73,4 +73,4 @@ Owned by [Leref](https://leref.ga/) </br>
 
 aoi.js is available and open source for the community to explore and contribute for future updates.
 
-Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)
+Please read [Contributing](https://github.com/aoijs/aoi.js/blob/main/.github/CONTRIBUTING.md)
