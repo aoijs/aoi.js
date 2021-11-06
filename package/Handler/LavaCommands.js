@@ -23,7 +23,7 @@ function getRandomBytes(size) {
 // }
 
 async function error(d, data, message) {
-    return d.aoiError.fnError(d, 'custom', data, message)
+    return d.aoiError.fnError(d, "custom", data, message)
 }
 
 async function Main(d) {
@@ -31,8 +31,7 @@ async function Main(d) {
     const message = d.message;
     /** @type {import("discord.js").Client} */
     const client = d.client;
-
-    // hi its me, kino, wassup
+    
     /** @type {import("../classes/Lavalink")} */
     const lavalink = client.lavalink;
 
