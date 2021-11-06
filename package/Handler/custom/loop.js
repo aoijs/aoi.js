@@ -4,8 +4,8 @@ module.exports = async (client) => {
     let chan;
     let data = {
         client: client,
-        channel,
-        guild,
+        channel : undefined,
+        guild : undefined,
     }
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
