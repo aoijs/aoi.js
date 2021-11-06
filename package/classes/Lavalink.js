@@ -1,4 +1,4 @@
-const LavaCoffee = require("lavacoffee");
+const lerefLavalink = require("leref.ts");
 const { EventEmitter } = require("events");
 const emit = require("../Handler/lavalink/trackEvent");
 
@@ -15,7 +15,7 @@ class Lavalink extends EventEmitter {
         this.start_commands = [];
         /** @type {{name: string, code: string, channel: string}[]} */
         this.end_commands = [];
-        const lavalink = new LavaCoffee.CoffeeLava({ send: (guildId, d) => {
+        const lavalink = new lerefLavalink.CoffeeLava({ send: (guildId, d) => {
           const guild = this.client.guilds.cache.get(guildId);
           if (guild) guild.shard.send(d);
         }});
@@ -45,7 +45,7 @@ class Lavalink extends EventEmitter {
             p.queue.current = undefined;
             this.handleEvent("end", p, track, reason);
         });
-        /** @type {import("lavacoffee").CoffeeLava} */
+        /** @type {import("leref.ts").lerefLavalink} */
         this.lavalink = lavalink;
         this.client.lavalink = this;
         this.client.on("raw", (d) => this.lavalink.updateVoiceData(d));
@@ -59,8 +59,8 @@ class Lavalink extends EventEmitter {
     }
     /**
      * 
-     * @param {LavaCoffee.CoffeePlayer} player 
-     * @param {LavaCoffee.CoffeeTrack} track
+     * @param {leref.ts.lerefPlayer} player
+     * @param {leref.ts.lerefTracking} track
      */
     getLeft(player, track) {
         // const rate = player.filters.timescale?.rate ?? 1;
@@ -68,21 +68,21 @@ class Lavalink extends EventEmitter {
 
         const length = track.length;
         let sub = Date.now() - player.lastUpdated;
-        if (player.queue.current && player.state === LavaCoffee.Utils.PlayerStates.Paused)
+        if (player.queue.current && player.state === lerefLavalink.Utils.PlayerStates.Paused)
             sub = 0;
         const res = length - (player.position + Math.round(sub) /* *rate */)
         return this.getTime(res /* /speed */ / 1000);
     }
     /**
      * 
-     * @param {LavaCoffee.CoffeePlayer} player 
+     * @param {leref.ts.lerefplayer} player
      */
     getCurrent(player) {
         // const rate = (player.filters.timescale?.rate ?? 1);
         // const speed = player.filters.timescale?.speed ?? 1;
 
         let sub = Date.now() - player.lastUpdated;
-        if (player.queue.current && player.state === LavaCoffee.Utils.PlayerStates.Paused)
+        if (player.queue.current && player.state === lerefLavalink.Utils.PlayerStates.Paused)
             sub = 0;
         //(player.position + (Date.now() - player.lastUpdated)) / 1000)
         const res = player.position + Math.round(sub) /* *rate */;
@@ -113,8 +113,8 @@ class Lavalink extends EventEmitter {
     /**
      * 
      * @param {"start" | "end"} event 
-     * @param {LavaCoffee.CoffeePlayer} player 
-     * @param {LavaCoffee.CoffeeTrack} track 
+     * @param {leref.ts.lerefPlayer} player
+     * @param {leref.ts.lerefTracking} track
      * @param {string?} [reason]
      */
     handleEvent(event, player, track, reason) {
@@ -123,7 +123,7 @@ class Lavalink extends EventEmitter {
             emit(this.start_commands, track, player, this);
         } else if (event === "end") {
             // hi weird system, here's a counter
-            player.state = LavaCoffee.Utils.PlayerStates.Paused;
+            player.state = lerefLavalink.Utils.PlayerStates.Paused;
             emit(this.end_commands, track, player, this, reason);
         }
     }
@@ -140,18 +140,18 @@ class Lavalink extends EventEmitter {
         }
     }
     get version() {
-        return LavaCoffee.version
+        return lerefLavalink.version
     }
     /**
      * Creates a connection to Lavalink, refers as node
-     * @param {import("lavacoffee/dist/utils/typings").NodeOptions} options
+     * @param {import("leref.ts/dist/utils/typings").NodeOptions} options
      */
     addNode(options) {
         return this.lavalink.add(options);
     }
 
     debug(message) {
-        this.emit("debug", `[\u001b[36;1mLavaCoffee\u001b[0m]:`, String(message));
+        this.emit("debug", `[\u001b[36;1mleref.ts\u001b[0m]:`, String(message));
     }
 }
 

@@ -1,4 +1,4 @@
-const { Utils } = require("lavacoffee");
+const { Utils } = require("leref.ts");
 const Searches = new (require("discord.js")).LimitedCollection({
     sweepInterval: 5000,
     sweepFilter: (require("discord.js")).LimitedCollection.filterByLifetime({ lifetime: 5000 })
