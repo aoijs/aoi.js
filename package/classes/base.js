@@ -118,7 +118,7 @@ class BaseClient extends Discord.Client {
         }
         if (this.db instanceof DbdTsDb) {
             const data = this.variableManager.cache.allValues().map(x => x.object())
-            console.log(data)
+
             this.db.addColumns(table, data)
         }
     }

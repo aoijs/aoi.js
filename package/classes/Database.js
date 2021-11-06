@@ -123,7 +123,7 @@ class CustomDb extends Database {
         if (method.length === 1) method = method[0]
         else if (method.length >= 2) method = method.find(x => x.includes("create"))
         else method = method[0]
-        console.log(method)
+
         if (!method) return AoiError.consoleError("DatabaseSupportError", "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub")
         this.tables.forEach(x => this.tableList[x] = new this.module[method](x))
     }

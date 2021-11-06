@@ -101,12 +101,12 @@ class Util {
 
             }
             if (typeof error.options === "string" && ["{reactions:", "{edit:", "{deletecommand:", "{delete:"].some(x => error.options?.includes(x))) {
-                console.log("options working");
+
                 error.options = await parsers.OptionParser(error.options || "", d)
             }
             if (error.embeds?.includes("{attachment:") || error.embeds?.includes("{file:")) {
                 error.files = await parsers.FileParser(error.files || "")
-                console.log(error)
+
             }
         }
         catch (e) {

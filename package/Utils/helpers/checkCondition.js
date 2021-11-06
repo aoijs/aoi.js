@@ -27,7 +27,7 @@ class CheckCondition {
     static solveEqual(msg) {
         let pass = true;
         const parts = msg.split("==");
-        console.log(parts)
+
         if (parts[0] !== parts[1]) pass = false;
         return pass
     }
@@ -64,7 +64,7 @@ class CheckCondition {
 
     static solveAnd(msg) {
         const parts = msg.split("&&");
-        // console.log(parts)
+
         const final = [];
         for (let part of parts) {
             const has = part.includes(")") ? ")" : ""
@@ -78,8 +78,7 @@ class CheckCondition {
             else if (this.hasLE(part)) final.push(this.solveLE(part) + has)
             else if (part.trim() === "") final.push(part);
         }
-        console.log("andArray:" + final)
-        console.log("andpart:" + final.join("&&"))
+
         return final.join("&&")
 
     }
@@ -103,18 +102,17 @@ class CheckCondition {
     static solve(msg) {
         const parts = msg.split("(")
         const final = []
-        console.log(parts)
+
         for (const part of parts) {
             if (part.trim() === "") {
                 final.push("")
                 continue;
             }
             let solve = this.solveAnd(part)
-            console.log("solve:" + solve)
 
             final.push(solve)
         }
-        console.log({ final })
+
         let result = final.join("(")
         if (result.split("(").length !== result.split(")").length) result = result + ")".repeat(result.split("(").length - result.split(")").length)
         return result

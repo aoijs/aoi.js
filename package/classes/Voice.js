@@ -33,7 +33,7 @@ class Voice extends EventEmitter {
             debug: debug,
             group: this.client.user.id
         }
-        console.log(d)
+
         const connection = joinVoiceChannel(d)
         connection.on("debug", console.log)
         connection.on('error', console.error)

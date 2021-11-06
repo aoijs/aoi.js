@@ -31,7 +31,6 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             code,
             functions: command.functions,
         }
-        //console.log(error)
 
         const start = Date.now()
         if (client?.aoiOptions?.debugs?.interpreter) {
@@ -175,8 +174,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                 debug[func].funcData = require('util').inspect(FuncData, { depth: 0 })
 
             }
-            //  console.log("i:"+(i-1) )
-            //  console.log("code:"+code) 
+
             code = FuncData?.code ?? code
 
             if (FuncData?.randoms) { randoms = FuncData.randoms }
@@ -205,7 +203,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             debug.executionTime = (Date.now() - start) + " ms"
             console.timeEnd(`interpreter-${start}`)
         }
-        // console.log(code)
+
         embeds = JSON.parse(JSON.stringify(embeds || [])?.replaceAll("$executionTime", Date.now() - start))
 
         debug.executionTime = (Date.now() - start) + " ms"
@@ -220,7 +218,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         if (returnExecution) { returnData.data = data }
         if ((code.length || embeds?.length) && !anErrorOccuredPlsWait && !error) {
             try {
-                //  console.log(components)
+
                 const send = {
                     embeds: embeds,
                     files: attachments,

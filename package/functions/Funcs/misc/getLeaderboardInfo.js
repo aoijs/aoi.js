@@ -31,8 +31,6 @@ module.exports = async (d) => {
             ? d.client.guilds.cache.get(id) || {}
             : await d.client.users.fetch(id);
 
-    //console.log(docs, res)
-
     const options = {
         top: docs.findIndex((e) => e.key === ID) + 1,
         name: type === "server" ? data.name : data.tag,

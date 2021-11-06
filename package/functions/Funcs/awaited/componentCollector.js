@@ -24,7 +24,7 @@ const endcmd = d.client.cmd.awaited.find(x=>x.name === endcommand);
 
 //---------------------------------------//
  d.client.interactionManager.on("messageComponentInteraction",async data=>{ 
-    // console.log("buttonclick event working")
+
 button.start(data.message.id,data.author.id,data.customId,data)
  }
      )

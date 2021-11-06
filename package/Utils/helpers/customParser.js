@@ -33,14 +33,14 @@ class Time {
         return data
     }
     static parse(time) {
-        console.time("parse")
+
         if (!["string", "number"].includes(typeof time)) throw TypeError("Time Must Be A String Or Number");
         if (typeof time === "number") return this.format(time).humanize()
         else {
             const Hash = new Map();
 
             time.split(" ").forEach(x => {
-                //console.log(x.split("s")[0])
+
                 if (x.endsWith("y")) Hash.set("y", { format: `${Number(x.split("y")[0])} Year(s)`, ms: Number(x.split("y")[0]) * 31536000000, order: 1 });
                 if (x.endsWith("mon") || x.endsWith("M")) Hash.set("mon", { format: `${Number(x.split("mon")[0].split("M")[0])} Month(s)`, ms: Number(x.split("mon")[0].split("M")[0]) * 2628002880, order: 2 });
                 if (x.endsWith("w")) Hash.set("w", { format: `${Number(x.split("w")[0])} Week(s)`, ms: Number(x.split("w")[0]) * 604800000, order: 3 });
@@ -51,10 +51,10 @@ class Time {
                 if (x.endsWith("ms")) Hash.set("ms", { format: `${Number(x.split("ms")[0])} Milli Seconds`, ms: Number(x.split("ms")[0]), order: 8 });
             });
             const data = [...Hash.values()].sort(compare);
-            //console.log(data.map(x=>x.ms))
+
             const ms = data.map(x => x.ms).reduce((a, b) => a + b);
             const format = data.map(x => x.format).join(" ");
-            console.timeEnd("parse")
+
             return {
                 ms,
                 format

@@ -37,7 +37,7 @@ class AoiError {
         if (options.components && typeof options.components === "string") {
             options.components = await ComponentParser(options.componenents, client)
         }
-        console.log({ extraOptions, message: extraOptions.edits?.messages })
+
         let msg;
         if (extraOptions.interaction) {
             msg = await d.data.interaction.reply(options);
@@ -47,7 +47,7 @@ class AoiError {
         }
 
         if (extraOptions.reactions?.length) {
-            console.log("re working")
+
             extraOptions.reactions.forEach(x => msg.react(x))
         }
         if (extraOptions.edits) {
@@ -55,7 +55,7 @@ class AoiError {
                 if (!extraOptions.edits.messages?.length) clearInterval(editIn)
                 else {
                     const obj = await Util.errorParser(JSON.stringify(extraOptions.edits.messages.shift()), d)
-                    console.log({ obj })
+
                     msg.edit(obj)
                 }
             }, Time.parse(extraOptions.edits.time)?.ms)

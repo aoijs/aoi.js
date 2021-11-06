@@ -35,7 +35,7 @@ module.exports = async d => {
     else {
         description = null 
     }
-    console.log(JSON.stringify(options,null,2));
+
     if(guild === "custom") {
         data = d.client.interactionManager.slashData.get(name.toLowerCase()) 
         if(!data) return d.aoiError.fnError(d,"custom",{},"No Slash Data Present With Following Keyword: "+name.toLowerCase());

@@ -15,7 +15,7 @@ const EmbedParser = async (msg) => {
     let msgs = msg.split("{newEmbed:").slice(1)
     for (let rawr of msgs) {
         rawr = rawr.slice(0, rawr.length - 1)
-        // console.log(rawr)
+
         const embed = {}
         embed.fields = []
         const Checker = (peko) => rawr.includes(`{${peko}:`)
@@ -66,7 +66,7 @@ const EmbedParser = async (msg) => {
             embed.timestamp = new Date(t)
         }
         if (Checker("field")) {
-            // console.log(typeof rawr)
+
             const fi = rawr.split("{field:").slice(1)
             for (let fo of fi) {
                 fo = fo.split("}")[0].split(":")
@@ -110,10 +110,10 @@ const ComponentParser = async (msg, client) => {
         if (Checker("button")) {
             const inside = nya.split("{button:").slice(1)
             for (let button of inside) {
-                console.log(button)
+
                 button = button?.split("}")[0]
                 button = button?.split(":")
-                console.log(button)
+
                 const label = button.shift().addBrackets()
                 const btype = 2
                 let style = isNaN(button[0]) ? button.shift() : Number(button.shift())
@@ -166,7 +166,7 @@ const ComponentParser = async (msg, client) => {
                         const ea = emoji?.animated
                         ind.emoji = { name: en, id: eid, animated: ea }
                     }
-                    console.log(ind)
+
                     optArray.push(ind)
                 }
             }
@@ -232,7 +232,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         for (const msg of inside.split(":{").slice(1).join(":{").split("}:{")) {
 
             const code = msg.split("}:{")[0]
-            console.log({ msgcode: code })
+
             edits.messages.push(code)
         }
 
@@ -298,7 +298,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
             const index = (errorMessages).lastIndexOf("}")
             errorMessages = (errorMessages).slice(0, index)
             const old = (errorMessages)
-            console.log("e:" + old)
+
             const embed = new Discord.MessageEmbed()
             if (errorMessages.includes("{title:")) {
                 const inside = errorMessages.split("{title:")[1].split("}")[0]
@@ -340,12 +340,12 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
                 for (let o of inside) {
                     o = o.split("}")[0].split(":")
                     for (let i of o) {
-                        //console.log(i)
+
                         i = i.split(",")
                         const ifn = i.shift()
                         const ifi = ["yes", "no", true, false].find(x => x == i[i.length - 1]) ? i.pop().replace("yes", true).replace("no", false) : false
                         const ifv = i.join(",")
-                        //console.log(ifv)
+
                         embed.addField(ifn, ifv, ifi)
                     }
                 }
@@ -400,9 +400,9 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
                 errorMessages = errorMessages.replace(`{image:${inside}}`, "")
             }
             errorMessage = errorMessage.replace("{newEmbed:" + old + "}", "")
-            console.log("{newEmbed:" + old + "}")
+
             embeds.push(embed)
-            //console.log(embed)
+
         }
     }
     if (errorMessage.includes("{reactions:")) {
@@ -435,7 +435,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     const ch = channel || d.channel
 
 
-    console.log({ errorMessage, embeds })
+
     if ((errorMessage.length || send || files.length) && d && ch && !returnMsg) {
         const m = await ch.send({
             content: errorMessage.addBrackets(),
@@ -479,14 +479,14 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     }
 }
 const SlashOptionsParser = async (options) => {
-    console.log("running")
+
     options = mustEscape(options)
 
 
     let Alloptions = []
     options = options.trim()
     const Checker = (msg) => options.includes("{" + msg + ":")
-    console.log(options)
+
     if (Checker("subGroup")) {
         Alloptions = Alloptions.concat((await SlashOption.subGroup(options)))
     }
@@ -494,8 +494,8 @@ const SlashOptionsParser = async (options) => {
         Alloptions = Alloptions.concat((await SlashOption.subCommand(options)))
     }
     if (Checker("string") && !(Checker("subCommand") || Checker("subGroup"))) {
-        console.log("string found")
-        console.log((await SlashOption.string(options)))
+
+
         Alloptions = Alloptions.concat((await SlashOption.string(options)))
 
     }
@@ -520,7 +520,7 @@ const SlashOptionsParser = async (options) => {
     if (Checker("number") && !(Checker("subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat((await SlashOption.number(options)))
     }
-    console.log(Alloptions)
+
 
     return Alloptions
 }
@@ -533,7 +533,7 @@ const OptionParser = async (options, d) => {
         const msgs = editPart.split(":{").slice(1).join(":{").split("}:{")
         const messages = []
         for (const msg of msgs) {
-            console.log("raw message data:" + msg.split("}:{")[0])
+
             messages.push(await Util.errorParser(msg.split("}:{")[0], d))
         }
         optionData.edits = { time: dur, messages }
