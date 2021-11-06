@@ -20,8 +20,8 @@ let data = {}
  data.systemChannelFlags = (data.systemChannelFlags.toArray.join(" ") === "" ? "none" : data.systemChannelFlags.toArray.join(" ") ) 
 data.owner = server.members.cache.get(data.ownerId).username 
 delete data.shard 
-delete data.afkChannel 
-delete data.systemChannel 
+ data.afkChannel = data.afkChannel?.id
+ data.systemChannel = data.systemChannel?.id
 delete data.me 
 delete data.voiceAdapterCreator 
 delete data.publicUpdatesChannel 
