@@ -15,7 +15,7 @@ class Lavalink extends EventEmitter {
         this.start_commands = [];
         /** @type {{name: string, code: string, channel: string}[]} */
         this.end_commands = [];
-        const lavalink = new lerefLavalink.lerefLavalink({ send: (guildId, d) => {
+        const lavalink = new lerefLavalink.LerefLava({ send: (guildId, d) => {
           const guild = this.client.guilds.cache.get(guildId);
           if (guild) guild.shard.send(d);
         }});
