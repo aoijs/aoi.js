@@ -212,7 +212,7 @@ class Client extends BaseClient {
     }
     onReactionRemoveEmoji() {
         if (!this.aoiOptions.intents.includes("GUILD_MESSAGE_REACTIONS")) AoiError.CallbackError("onReactionRemoveEmoji", "GUILD_MESSAGE_REACTIONS", 267)
-        this.on("inviteCreate", async reaction => await require('../Handler/guildMessageReactions/removeEmoji.js')(reaction, this))
+        this.on("reactionRemoveEmoji", async reaction => await require('../Handler/guildMessageReactions/removeEmoji.js')(reaction, this))
     }
     //guildVoiceStates Events     
     onVoiceStateUpdate() {
