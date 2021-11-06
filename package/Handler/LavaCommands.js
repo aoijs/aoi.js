@@ -172,7 +172,7 @@ async function Main(d) {
                 if (tracks) {
                     response = "true";
                     array = tracks.map(v => v.title);
-                }; response = "false";
+                } response = "false";
             }
             case "findentry": {
                 const tracks = Searches.get(data[0]);
