@@ -1,5 +1,6 @@
 module.exports = async d => {
   const data = d.util.openFunc(d)
+  if( data.err ) return d.error( data.err );
   const [ id ] = data.inside.splits;
   const channel = id ? d.guild?.channels?.cache?.get(id)?.id : d.channel?.id;
   if(!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
