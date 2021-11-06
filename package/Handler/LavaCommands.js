@@ -23,7 +23,7 @@ function getRandomBytes(size) {
 // }
 
 async function error(d, data, message) {
-    return d.aoiError.fnError(d, 'custom', data, message)
+    return d.aoiError.fnError(d, "custom", data, message)
 }
 
 async function Main(d) {
