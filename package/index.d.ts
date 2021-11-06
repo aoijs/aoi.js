@@ -102,7 +102,11 @@ declare module "aoi.js" {
         name: string
         listen: string
     }
-
+    interface LoopCommand extends BaseCommand {
+        every : number;
+        channel? : string;
+        executeOnStartup? : boolean;
+    }
     type StatusOption = {
         text: string;
         url?: string;
@@ -182,6 +186,7 @@ declare module "aoi.js" {
         public variableUpdateCommand(d: EventCommand): void
         public readyCommand(d: EventCommand): void
         public functionErrorCommand(d: EventCommand): void
+        public loopCommand(d: LoopCommand): void
         public onMessage(d?: {
             guildOnly?: boolean,
             respondToBot?: boolean
