@@ -6,7 +6,7 @@ module.exports = async d => {
 
     let [index, text] = inside.splits;
 
-    if (isNaN(index) || index < 1 || index > 10) return d.aoiError.fnError(d, "custom", { inside }, "Invalid Index Provided In");
+    if (isNaN(index) || index < 1 || index > 10) return d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
     index = index - 1
 
     if (!d.embeds[index]) d.embeds[index] = new d.embed();

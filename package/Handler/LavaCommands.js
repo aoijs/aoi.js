@@ -31,8 +31,7 @@ async function Main(d) {
     const message = d.message;
     /** @type {import("discord.js").Client} */
     const client = d.client;
-
-    // hi its me, kino, wassup
+    
     /** @type {import("../classes/Lavalink")} */
     const lavalink = client.lavalink;
 
