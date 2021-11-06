@@ -2,7 +2,7 @@ module.exports = async d => {
     const { code } = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
-    if(err) return d.errotr(err);
+    if(err) return d.error(err);
     
     const [ table,...vars ] = inside.splits;
     
