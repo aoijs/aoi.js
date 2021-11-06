@@ -187,6 +187,8 @@ declare module "aoi.js" {
         public readyCommand(d: EventCommand): void
         public functionErrorCommand(d: EventCommand): void
         public loopCommand(d: LoopCommand): void
+        public timeoutCommand(d: EventCommand): void
+        public pulseCommand(d: EventCommand): void
         public onMessage(d?: {
             guildOnly?: boolean,
             respondToBot?: boolean

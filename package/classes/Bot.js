@@ -502,7 +502,15 @@ class Client extends BaseClient {
         if (!d.code) { throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: functionErrorCommand. position: ${this.cmd.functionError.size}`) }
         this.cmd.functionError?.set(this.cmd.functionError.size, d)
     }
-        loopCommand(d = {}) {
+    loopCommand(d = {}) {
+        if (!d.code) { throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: loopCommand. position: ${this.cmd.loop.size}`) }
+        this.cmd.loop?.set(this.cmd.loop.size, d)
+    }
+    timeoutCommand(d = {}) {
+        if (!d.code) { throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: loopCommand. position: ${this.cmd.loop.size}`) }
+        this.cmd.loop?.set(this.cmd.loop.size, d)
+    }
+    pulseCommand(d = {}) {
         if (!d.code) { throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: loopCommand. position: ${this.cmd.loop.size}`) }
         this.cmd.loop?.set(this.cmd.loop.size, d)
     }
