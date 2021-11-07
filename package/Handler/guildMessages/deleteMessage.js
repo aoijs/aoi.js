@@ -1,7 +1,7 @@
 const Interpreter = require("../../interpreter.js")
 module.exports = async (dmsg,client) =>{
-    const data = {}
-    Object.assign(data,dmsg) 
+   
+    const data = Object.assign(Object.create({},dmsg),dmsg) 
 let chan ;
 
 if(!data.partial && client.user.id === data?.author?.id) return ;
