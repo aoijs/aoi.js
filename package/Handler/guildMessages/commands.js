@@ -7,7 +7,7 @@ module.exports = async (message, client, db) => {
 
             messageEventOptions
 
-        if ((options.respondToBots === false && (message.webhookId || message.author.bot)) || (options.guildOnly && message.channel.type === Util.channelTypes.Dm)) return;
+        if ((!options.respondToBots&& (message.webhookId || message.author.bot)) || (options.guildOnly && message.channel.type === Util.channelTypes.Dm)) return;
     }
     //array of cmds 
     let cmds = client.cmd.default.allValues()
