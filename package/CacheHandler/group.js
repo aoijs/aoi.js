@@ -103,9 +103,8 @@ class Group extends Map {
         return grp
     }
     sweep(func) {
-        const keys = this.filter(func).allKeys()
-        for (const key of keys) {
-            this.delete(key)
+        for(const [key,value] of this){
+            if(func(value,key,this)) this.delete(key);
         }
     }
 }
