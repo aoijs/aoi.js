@@ -4,7 +4,7 @@ module.exports = async (client, message, db) => {
     if (client.messageEventOptions) {
         const options = client. 
         messageEventOptions 
-        if ((options.respondToBots === false && ( message.webhookID || message.author.bot)) ||(options.guildOnly && message.channel.type === Util.channelTypes.Dm))  return; 
+        if ((!options.respondToBots && ( message.webhookId || message.author.bot)) ||(options.guildOnly && message.channel.type === Util.channelTypes.Dm))  return; 
     }
     const commands = client.cmd.default.allValues().filter(c => c.name === "$alwaysExecute")
     if(!commands.length) return ;
@@ -22,7 +22,7 @@ module.exports = async (client, message, db) => {
   else if(bl.globalUser.blacklist.has(message.author.id)){
   }
        }
-        if(command.dmOnly && message.channel.type === Util.channelTypes.Dm) return;
+        if(command.dmOnly && message.channel.type !== Util.channelTypes.Dm) return;
        await Interpreter(client, message, message.content.split(" "), command, db)
     }) 
 }
