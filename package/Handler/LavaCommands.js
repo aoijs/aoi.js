@@ -88,7 +88,8 @@ async function Main(d) {
             }
                 break;
             case "songinfo": {
-                const track = player.queue.at(Number(data[1]) - 1) || player.queue.current || player.queue.previous;
+                let track = player.queue.at(Number(data[1]) - 1) || player.queue.current;
+                if (!data[1] | Number(data[1]) - 1 < 0) track = player.queue.current;
                 if (track) {
                     const p = data[0];
                     if (p === "current_duration") {
