@@ -120,7 +120,7 @@ const ComponentParser = async (msg, client) => {
                 style = ButtonStyleOptions[style] || style
                 const cus = button.shift().addBrackets()
                 const disable = button.shift()?.replace("yes", true)?.replace("no", false)?.replace("true", true)?.replace("false", false) || false
-                const emoji = button.length ? (button || "").join(":").trim().startsWith("<") ? client.emojis.cache.find(x => x.toString() === button.join(":")) : { name: button.split(",")[0], id: button.split(",")[1] || 0, animated: button.split(",")[2] || false } : undefined
+                const emoji = button.length ? (button || []).join(":").trim().startsWith("<") ? client.emojis.cache.find(x => x.toString() === button.join(":")) : { name: button.join(':').split(",")[0], id: button.join(':').split(",")[1] || 0, animated: button.join(':').split(",")[2] || false } : undefined
                 const d = Number(style) === 5 ? { label: label, type: btype, style: style, url: cus, disabled: disable } : { label: label, type: btype, style: style, custom_id: cus, disabled: disable }
                 if (emoji) {
                     const en = emoji?.name
@@ -288,7 +288,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     if (errorMessage.includes("{execute:")) {
         const command = errorMessage.split("{execute:")[1].split("}")[0]
         errorMessage = errorMessage.replace(`{execute:${command}}`, "")
-        const cmd = d.client.awaited_commands.find(c => c.name === command)
+        const cmd = d.client.cmd.awaited.find(c => c.name === command)
         if (!cmd) return d.error(`:x: Invalid awaited command '${command}' in {execute:${command}}`)
         await d.interpreter(d.client, d.message, d.args, cmd)
     }

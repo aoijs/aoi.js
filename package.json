@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "aoi.js - An open source package allowing to create Discord Bots with simple built-in functions.",
   "main": "package/index.js",
   "typings": "package/index.d.ts",
@@ -47,9 +47,9 @@
     }
   ],
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
-  },
+      "type": "git",
+      "url": "git+https://github.com/aoijs/aoi.js.git"
+    },
   "keywords": [
     "aoi.js",
     "aoijs",

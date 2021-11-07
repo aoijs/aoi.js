@@ -4,10 +4,10 @@ module.exports = d => {
     
     let [ index,url ] = data.inside.splits;
     index = index - 1;
-    if( isNaN( index ) || index < 0 || index > 10 ) return d.aoiError.fnError( d,'custom',{ inside : data.inside },"Invalid Index Provided In" );
+    if( isNaN( index ) || index < 0 || index > 10 ) return d.aoiError.fnError( d,'custom',{ inside : data.inside }, "Invalid Index Provided In" );
     
     if( !d.embeds[ index ] ) d.embeds[ index ] = new d.embed();
-    d.embeds.setImage( url.addBrackets() );
+    d.embeds[index].setImage( url.addBrackets() );
     
     return {
         code : d.util.setCode( data )

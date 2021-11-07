@@ -10,10 +10,12 @@ module.exports = async d => {
 
     if (stuffs.some(x => !Perms[x])) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Permission(s) Provided In');
 
-    if (!d.member.permissions.toArray().every(x => stuffs.includes(x))) {
+    const memPerms = d.member.permissions.toArray();
+    
+    if (!stuffs.every(x => memPerms.includes(Perms[x.trim()]))) {
         error = true;
-        if(typeof errorMsg.content === 'string' && errorMsg.content.trim() === ''){}
-        else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
+        if (typeof errorMsg.content === 'string' && errorMsg.content.trim() === '') { }
+        else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
     }
 
     return {

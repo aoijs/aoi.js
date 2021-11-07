@@ -1,7 +1,7 @@
 module.exports = d => {
     let { code, result } = d.util.openFunc(d);
 
-    result = d.client.guilds.cache.radom()?.id;
+    result = d.client.guilds.cache.random()?.id;
     if (!d.randoms.randomGuild) {
         d.randoms.randomGuild = result
     }

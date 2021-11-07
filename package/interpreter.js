@@ -224,7 +224,9 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                     files: attachments,
                     components: components,
                     allowedMentions: { parse: disableMentions, repliedUser: reply?.user || false },
-                    referenceMessage: reply?.message || {}
+                    reply : {
+                         messageReference : reply?.message
+                    }
                 }
                 if (code.trim() !== "") { send.content = (code.addBrackets() === "" ? " " : code.addBrackets()) }
                 if (returnCode && !sendMessage) { }

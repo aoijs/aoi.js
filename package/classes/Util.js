@@ -55,7 +55,7 @@ class Util {
         return message
     }
     static setCode(options = {}, esacpe = true) {
-        return options.code.replaceLast(options.inside ? `${options.function}${options.inside}` : `${options.function}`, (esacpe ? options.result?.toString()?.deleteBrackets() : options.result.toString()) ?? " ");
+        return options.code.replaceLast(options.inside ? `${options.function}${options.inside}` : `${options.function}`, (esacpe ? options.result?.toString()?.deleteBrackets() : options.result.toString()) ?? "");
     }
     static async getGuild(d, id) {
         if (d.guild?.id === id && d.guild?.id) return d.guild;

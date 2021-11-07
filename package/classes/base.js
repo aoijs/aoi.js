@@ -42,6 +42,11 @@ class BaseClient extends Discord.Client {
 
         this.variableManager = new VariableManager(this)
 
+        if(options.autoUpdate) {
+            require('../Handler/autoUpdate.js')();
+        }
+        
+
         if (["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo"].includes(options?.database?.type)) {
             this.db = new AoijsAPI(options?.database?.db || dbddb, {
                 path: options?.database?.path || "./database/",

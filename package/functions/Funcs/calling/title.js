@@ -5,7 +5,7 @@ module.exports = async d => {
     if (err) return d.error(err)
     let [index, name, url] = inside.splits;
     index = Number(index) - 1
-    if (isNaN(index) || index < 0) d.aoiError.fnError(d, "custom", { inside }, "Invalid Index Provided In")
+    if (isNaN(index) || index < 0) d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In")
     if (!d.embeds[index]) d.embeds[index] = new d.embed()
     d.embeds[index].setTitle(name.addBrackets());
 

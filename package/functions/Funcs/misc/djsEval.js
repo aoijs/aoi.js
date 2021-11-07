@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const { client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError } = d;
+    const { client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError,args } = d;
     const data = d.util.openFunc(d);
 
     const __fields__ = data.inside.splits;

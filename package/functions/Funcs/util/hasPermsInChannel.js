@@ -8,7 +8,7 @@ module.exports = async d => {
 
     if (err) return d.error(err)
 
-    const [channelID, userID, ...perms] = inside.splits
+    const [channelID, userId, ...perms] = inside.splits
 
     const channel = await d.util.getChannel(d, channelID, true);
     if (!channel) return d.aoiError.fnError(d, "channel", { inside });
@@ -19,7 +19,7 @@ module.exports = async d => {
     const pms = perms.map(key => Perms[key])
     if (pms.includes(undefined)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, `Invalid Permissions In`);
 
-    const upms = channel.permissionsFor(userID)
+    const upms = channel.permissionsFor(userId)
 
     data.result = upms && pms.every(p => upms.has(p));
     return {

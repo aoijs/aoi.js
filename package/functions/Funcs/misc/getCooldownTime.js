@@ -6,7 +6,7 @@ module.exports = async d => {
     
     let [ time,type,cmdName,id ] = data.inside.splits;
     
-    time = Time.parsee( time )?.ms
+    time = Time.parse( time )?.ms
     if( !time ) return d.aoiError.fnError( d,'custom',{ inside : data.inside },'Invalid Time Provided In' );
     
     const types = {
