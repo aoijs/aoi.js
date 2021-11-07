@@ -27,9 +27,9 @@ module.exports = async (client, message, db) => {
       continue;
   }
         }
-        if(cmd.dmOnly && message.channel.type === Util.channelTypes.Dm) continue;
+        if(cmd.dmOnly && !message.channel.type === Util.channelTypes.Dm) continue;
         if(cmd.name.includes("$")){
-           cmd.name = await Interpreter(client, message,message.content.split(" "),{name:"NameParser",code:cmd.name},client.db,true)
+           cmd.name = (await Interpreter(client, message,message.content.split(" "),{name:"NameParser",code:cmd.name},client.db,true))?.code;
         }
         if(! message.content.toLowerCase().startsWith(cmd.name.toLowerCase()) || !(Array.isArray(cmd.aliases)?cmd.aliases.find(x=>message.content.toLowerCase().startsWith(x.toLowerCase())) : message.content.toLowerCase().startsWith(cmd.aliases))) continue;
       await Interpreter(client, message, message.content.split(" "), cmd,client.db)
