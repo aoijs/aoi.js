@@ -47,9 +47,9 @@
     }
   ],
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
-  },
+      "type": "git",
+      "url": "git+https://github.com/aoijs/aoi.js.git"
+    },
   "keywords": [
     "aoi.js",
     "aoijs",
