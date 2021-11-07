@@ -4,7 +4,7 @@ module.exports = async d => {
     
     const [ query ] = data.inside.splits; 
     
-    data.result = d.array[query] + 1;
+    data.result = d.array.indexOf(query) + 1;
     
     return {
         code : d.util.setCode( data ) 
