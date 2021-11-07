@@ -4,11 +4,11 @@ module.exports = async d => {
   const [ roleId, guildId = d.guild?.id ] = data.inside.splits;
   const guild = await d.util.getGuild(d,guildId);
   if(!guild) return d.aoiError.fnError( d,'guild',{ inside : data.inside });
-  const role = guild.roles?.cache?.get(id)?.id;
+  const role = await guild.roles.fetch(roleId);
   if(!role) return d.aoiError.fnError(d, 'role', { inside: data.inside });
   data.result = role.editable
   return {
       code : d.util.setCode( data )
    }
 }
-Usage: $isRoleEditable[role id;guild id(optional)]
+//Usage: $isRoleEditable[role id;guild id(optional)]
