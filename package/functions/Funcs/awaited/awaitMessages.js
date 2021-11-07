@@ -1,3 +1,5 @@
+const { Time } = require('../../../Utils/helpers/customParser.js');
+
 module.exports = async d => {
     const {code} = d.command 
     const inside = d.unpack() 
@@ -12,7 +14,7 @@ module.exports = async d => {
 } 
     errorMsg = await d.util.errorParser(errorMsg,d.client) 
     userFilter = userFilter === "everyone" ? userFilter : userFilter.split(",") 
-    time = ms(time) 
+    time = Time.parse(time)?.ms
     if(!time) d.aoiError.fnError(d,"custom",{inside},"Invalid Time Provided In") ;
     cmds = cmds.split(",") 
     cmds.forEach(x => {
