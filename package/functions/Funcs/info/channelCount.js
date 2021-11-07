@@ -4,7 +4,7 @@ module.exports = async d => {
     
     const [ guildId = d.guild.id,type = "all" ] = inside.splits;
     
-    const guild = d.util.getGuild(d,guildId);
+    const guild = await d.util.getGuild(d,guildId);
     if(!guild) return d.aoiError.fnError(d,"guild",{ inside });
     
     const result = type === "all" ? guild.channels.cache.size : guild.channels.cache.filter( x => x.type === d.util.channelTypes[ type ]).size 
