@@ -8,7 +8,7 @@ module.exports = async d => {
 
     if (!d.channel.nsfw) {
         error = true;
-        if(typeof errorMsg.content === 'string' && errorMsg.content.trim() === ''){}
+        if(err?.trim() === ''){}
         else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
     }
 

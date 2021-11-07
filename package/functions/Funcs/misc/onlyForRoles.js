@@ -4,11 +4,12 @@ module.exports = async d => {
     let error = false;
 
     const [...stuffs] = data.inside.splits;
-    const errorMsg = await d.util.errorParser(stuffs.pop(), d);
+    const err = stuffs.pop();
+    const errorMsg = await d.util.errorParser(err, d);
 
     if (!stuffs.some(x => d.member._roles.includes(x))) {
         error = true;
-        if(typeof errorMsg.content === 'string' && errorMsg.content.trim() === ''){}
+        if(err?.trim() === ''){}
         else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
     }
 
