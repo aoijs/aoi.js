@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.openFunc( d );
     if( data.err ) return d.error( data.err );
     
-    let [ url,method = "get",body,property,error,...header ] = data.inside.splits;
+    let [ url,method = "get",body = '',property,error = '$default',...header ] = data.inside.splits;
     error = await d.util.errorParser( error,d );
     body = body?.trim() === '' ? undefined : JSON.parse( body );
     let headers;

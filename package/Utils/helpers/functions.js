@@ -8,8 +8,8 @@ module.exports = {
         const scaled = number / scale;
         return scaled.toFixed(decimal) + suffix;
     },
-    wait(time) {
-        new Promise(res => setTimeout(() => res, time))
+    async wait(time) {
+        await new Promise(res => setTimeout(() => res, time))
     },
     categoryChannelsOption(cat) {
         cat = cat.children;
@@ -216,7 +216,7 @@ module.exports = {
 
         data.hexColor = role.hexColor;
 
-        data.members = msg.members.map(x => x.id).join(' , ');
+        data.members = role.members.map(x => x.id).join(' , ');
         data.memberCount = msg.members.size;
 
         data.position = role.position;

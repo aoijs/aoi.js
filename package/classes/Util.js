@@ -11,10 +11,10 @@ class Util {
         return user
     }
     static async fetchUser(d, id) {
-        return d.client.users.fetch(id).catch(err => undefined)
+        return d.client.users.fetch(id,{force : true}).catch(err => undefined)
     }
     static async fetchChannel(d, id) {
-        return d.client.channels.fetch(id).catch(e => undefined)
+        return d.client.channels.fetch(id,{force : true}).catch(e => undefined)
     }
     static getChannel(d, id, force = false) {
         if (d.channel?.id === id) return d.channel;
@@ -25,7 +25,7 @@ class Util {
         }
     }
     static async fetchMember(guild, id) {
-        return guild.members.fetch(id).catch(err => undefined)
+        return guild.members.fetch(id,{force : true}).catch(err => undefined)
     }
     static async fetchMembers(guild, options) {
         return guild.members.fetch(options)
@@ -46,7 +46,7 @@ class Util {
         return members
     }
     static async fetchMessage(channel, id) {
-        return channel.messages.fetch(id).catch(err => undefined)
+        return channel.messages.fetch(id,{force : true}).catch(err => undefined)
 
     }
     static getMessage(channel, id) {
