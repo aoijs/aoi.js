@@ -4,6 +4,6 @@ module.exports = async d => {
     result = d.data.oldm?.content;
 
     return {
-        code: d.data.setCode({ function: d.func, code, result })
+        code: d.util.setCode({ function: d.func, code, result })
     }
 }
