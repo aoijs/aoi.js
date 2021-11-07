@@ -21,6 +21,7 @@ class Client extends BaseClient {
         this.on("messageCreate", async data => {
             await require('../Handler/guildMessages/commands.js')(data, this, this.db)
             await require('../Handler/guildMessages/alwaysExecute.js')(this, data, this.db)
+            await require('../Handler/guildMessages/nonPrefixed.js')(this, data, this.db)
         })
     }
     onMessageDelete() {
