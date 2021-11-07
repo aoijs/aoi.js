@@ -6,7 +6,8 @@ module.exports = async d => {
     let error = false;
 
     const [...stuffs] = data.inside.splits;
-    const errorMsg = await d.util.errorParser(stuffs.pop(), d);
+    const err = stuffs.pop();
+    const errorMsg = await d.util.errorParser(err, d);
 
     if (stuffs.some(x => !Perms[x])) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Permission(s) Provided In');
 
