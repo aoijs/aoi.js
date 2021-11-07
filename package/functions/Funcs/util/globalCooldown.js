@@ -10,7 +10,7 @@ module.exports = async d => {
     
     let cooldown = await d.client.db.get(d.client.db.tables[0],"cooldown",`${d.command.name}_${d.author.id}`);
     cooldown = cooldown?.value ;
-    console.log("get from db:"+require("util").inspect(cooldown,{depth:0}));
+
     if(!cooldown){
         cooldown = Date.now() + Time.parse(time).ms 
         d.client.db.set(d.client.db.tables[0],"cooldown",`${d.command.name}_${d.author.id}`,cooldown); 
@@ -35,7 +35,6 @@ module.exports = async d => {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(d.client.db.tables[0],"cooldown",`${d.command.name}_${d.author.id}`,cooldown); 
     }
-    console.log({cooldown,time:Time.parse(time).ms})
     return {
         code : d.util.setCode({ function : d.func,code,inside }),
         error 
