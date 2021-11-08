@@ -20,7 +20,7 @@ module.exports = async (client, message, db) => {
   else if(bl.role.blacklist.find(x=>message.member._roles.includes(x))){
       continue;
   }
-  else if(bl.user.blacklist.has(`${message.author.id}_${message.guild.id}`)){
+  else if(bl.user.blacklist.has(`${message.author.id}_${message.guild?.id || 'dm'}`)){
       continue;
   }
   else if(bl.globalUser.blacklist.has(message.author.id)){

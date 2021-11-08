@@ -48,7 +48,7 @@ module.exports = async (message, client, db) => {
                     }
                     break;
                 }
-                else if (bl.user.blacklist.has(`${message.author.id}_${message.guild?.id}`)) {
+                else if (bl.user.blacklist.has(`${message.author.id}_${message.guild?.id || 'dm'}`)) {
                     if (bl.user.errorMsg) {
                         message.channel.send(bl.user.errorMsg)
                     }
