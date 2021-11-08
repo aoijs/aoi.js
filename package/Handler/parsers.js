@@ -212,7 +212,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     const embeds = []
     let deleteCommand = false
     let send = true
-
+    let interaction ;
     let deleteAfter
 
     let suppress = false
@@ -257,6 +257,13 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         suppress = inside === "yes"
 
         errorMessage = errorMessage.replace(`{suppress:${inside}}`, "")
+    }
+    if(errorMessage.includes('{interaction:')) {
+        const inside = errorMessage.split('{interaction:')[1].split('}')[0];
+
+        interaction = inside === 'yes'
+
+        errorMessage = errorMessage.replace(`{interaction:${inside}}`,'');
     }
 
     if (errorMessage.includes("{attachment:")) {
@@ -548,6 +555,9 @@ const OptionParser = async (options, d) => {
     }
     if (Checker("deletecommand")) {
         optionData.deleteCommand = true
+    }
+    if(Checker('interaction')) {
+        optionData.interaction = true;
     }
     return optionData
 }
