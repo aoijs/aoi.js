@@ -1,7 +1,7 @@
 module.exports = d => {
     let { code, result } = d.util.openFunc(d);
 
-    result = new Date(new Date().toLocaleString('en-us', { timeZone: d.timezone })).getMonth();
+    result = new Date(new Date().toLocaleString('en-us', { timeZone: d.timezone })).getMonth() + 1;
 
     return {
         code: d.util.setCode({ function: d.func, code, result })
