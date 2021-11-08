@@ -10,6 +10,7 @@ module.exports = d => {
     d.embeds[index].setImage( url.addBrackets() );
     
     return {
-        code : d.util.setCode( data )
+        code : d.util.setCode( data ),
+        embeds : d.embeds
     }
 }

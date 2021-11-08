@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { CommandManager } = require('./Commands.js')
+const PATH = require('path')
 const Group = require("../CacheHandler/group.js")
 //const Client = require("./Bot.js")
 class LoadCommands {
@@ -28,7 +29,7 @@ class LoadCommands {
         .readdir(file, { withFileTypes: true })
         .then(f => {
           return f.map(d => {
-            d.name = `${file}/${d.name}`;
+            d.name = `${file}${PATH.sep}${d.name}`;
 
             return d;
           });
@@ -51,7 +52,7 @@ class LoadCommands {
         `Expecting typeof string on 'path' parameter, get '${typeof path}' instead`
       );
 
-    if (!require("path").isAbsolute(path)) path = require("path").resolve(path);
+    if (!PATH.isAbsolute(path)) path = PATH.resolve(path);
 
     try {
       if (await fs.promises.stat(path).then(f => !f.isDirectory()))
@@ -96,7 +97,7 @@ class LoadCommands {
 
       if (!Array.isArray(cmds)) cmds = [cmds];
 
-      debugs.push(`${this.colors?.walking || ""} Walking in ${name}${this.allColors.reset || ""}`);
+      debugs.push(`|${this.colors?.walking || ""} Walking in ${name}${this.allColors.reset || ""}|`);
 
       for (const cmd of cmds) {
         if (!isObject(cmd)) {

@@ -13,6 +13,7 @@ module.exports = async d => {
             await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, { data: d.data });
             data.result = trueawait.addBrackets().replace(`{execute:${trueawait.addBrackets().split('{execute:')[1].split('}')[0]}}`, '');
         }
+        else data.result = trueawait.addBrackets();
     }
     else {
         if (falseawait.addBrackets().includes('{execute:')) {
@@ -21,6 +22,7 @@ module.exports = async d => {
             await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, { data: d.data });
             data.result = falseawait.addBrackets().replace(`{execute:${falseawait.addBrackets().split('{execute:')[1].split('}')[0]}}`, '');
         }
+        else data.result = trueawait.addBrackets();
     }
 
     return {
