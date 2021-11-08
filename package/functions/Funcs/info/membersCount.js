@@ -1,13 +1,16 @@
 module.exports = async d => {
     const data = d.util.openFunc( d );
 
-    const [ guildId = d.guild?.id ] = data.inside.splits;
+    const [ guildId = d.guild?.id,presence = '',countBot = 'yes' ] = data.inside.splits;
 
     const guild = await d.util.getGuild( d,guildId );
     if( !guild ) return d.aoiError.fnError( d,'guild',{ inside : data.inside });
+if(presence === '' && countBot === 'yes' ) data.result = guild.memberCount;
+else {
+    const mems =guild.members.cache.filter( x => x.presence?.status?.toLowerCase() === presence.toLowerCase() && countBot === 'yes' ? true : !x.user.bot  )
 
-    data.result = guild.memberCount;
-
+    data.result = mems.size;
+}
     return {
         code : d.util.setCode( data )
     }

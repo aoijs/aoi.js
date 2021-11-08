@@ -5,6 +5,6 @@ module.exports = async d => {
     const [ text = d.args.join(" ") ] = inside.splits;
     
     return {
-        code : d.util.setCode({ function : d.func,code,inside,result : text.addBrackets() }) 
+        code : d.util.setCode({ function : d.func,code,inside,result : text.addBrackets().length }) 
     } 
 }
