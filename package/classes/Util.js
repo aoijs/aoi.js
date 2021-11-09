@@ -132,7 +132,7 @@ class Util {
         return guild.stickers.cache.find(x => x.name.toLowerCase() === Sticker.toLowerCase().addBrackets() || x.id === Sticker)
     }
     static async findId(d, id) {
-        const data = this.getGuild(d, id) || await this.getUser(d, id) || await this.getChannel(d, id, false) || await this.getMessage(d.channel, id) || this.getEmoji(d, id) || this.getSticker(d.guild, id) || "nope"
+        const data = await this.getGuild(d, id) || await this.getUser(d, id) || await this.getChannel(d, id, false) || await this.getMessage(d.channel, id) || this.getEmoji(d, id) || this.getSticker(d.guild, id) || "nope"
         return data
     }
 }
