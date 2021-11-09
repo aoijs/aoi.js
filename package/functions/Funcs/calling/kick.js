@@ -10,7 +10,9 @@ module.exports = async d => {
     const member = await d.util.getMember( guild,userId );
     if( !member ) return d.aoiError.fnError( d,'member',{ inside : data.inside});
 
-    member.kick( reason?.addBrackets() );
+    member.kick( reason?.addBrackets() ).catch(e => {
+        d.aoiError.fnError( d,'custom',{},'Failed To Kick With Reason: '+e )
+    });;
 
     return {
         code : d.util.setCode( data )
