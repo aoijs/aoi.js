@@ -51,7 +51,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             code = code.replace(regex, func)
             //more debug 
             debug[func] = { regex, func }
-
+            command.codeLines?.map(x => x.replace(regex, func));
             funcLine = command.codeLines.length - (command.codeLines?.reverse().findIndex(x => x.toLowerCase().split(' ').includes(func.toLowerCase())));
 
             const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""))
@@ -224,8 +224,8 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                     files: attachments,
                     components: components,
                     allowedMentions: { parse: disableMentions, repliedUser: reply?.user || false },
-                    reply : {
-                         messageReference : reply?.message
+                    reply: {
+                        messageReference: reply?.message
                     }
                 }
                 if (code.trim() !== "") { send.content = (code.addBrackets() === "" ? " " : code.addBrackets()) }
@@ -260,7 +260,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                     const ee = setInterval(() => {
                         const m = editIn.msgs
                         msgobj.edit(m.shift())
-                        if (!m.length) { ClearInterval(ee) }
+                        if (!m.length) { clearInterval(ee) }
                     }, editIn.time)
                 }
                 if (deleteIn) {
