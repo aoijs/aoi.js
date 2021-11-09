@@ -1,8 +1,8 @@
 const Interpreter = require('../../interpreter.js')
 module.exports = async (mem,client) =>{
-    if(client.options.fetchInvites.enabled){
+    /*if(client.options.fetchInvites.enabled){
         client.inviteSystem.userLeft(mem)
-    }
+    }*/
    let chan;
   const cmds = client.cmd.leave.allValues()
   let data = {guild:mem?.guild,author:mem?.user,member:mem,client:client}

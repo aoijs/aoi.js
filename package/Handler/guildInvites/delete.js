@@ -14,7 +14,7 @@ for(const cmd of cmds){
     }
        await Interpreter(client,data,[],cmd,client.db,false,chan?.id||"",{inviteData:invite},chan||undefined)
 }
-if(client.options.fetchInvites.enabled){
+/*if(client.options.fetchInvites.enabled){
     client.inviteSystem.inviteDelete(invite)
-}
+}*/
 }

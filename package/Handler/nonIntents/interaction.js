@@ -5,11 +5,11 @@ module.exports = async (interaction, client) => {
     if (interaction.isMessageComponent()) {
         client.interactionManager.emit("messageComponentInteraction", interaction)
     }
-    console.log(require('util').inspect(interaction, { depth: 0, showHidden: true }))
+
     let cmds;
     if (InteractionTypes[interaction.type] === "component") {
         cmds = client.cmd.interaction[MessageComponentTypes[interaction.componentType]].filter(x => x.name ? (Array.isArray(x.name) ? x.name.includes(interaction.customId) : x.name === interaction.customId) : !x.name).allValues()
-        //  console.log(cmds)
+
     }
     else {
         cmds = client.cmd.interaction.slash.filter(x => x.name.toLowerCase() === interaction.commandName.toLowerCase()).allValues()
