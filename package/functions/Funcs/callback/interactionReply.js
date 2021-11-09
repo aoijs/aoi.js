@@ -9,9 +9,13 @@ module.exports = async d => {
   embeds = await EmbedParser(embeds)
   components =await ComponentParser(components,d.client)
     files = await FileParser(files);
-    d.data.interaction?.reply({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components,files, ephemeral: ephemeral === "yes" || ephemeral === "true"}).catch(e => {
-        d.aoiError.fnError( d,'custom',{},'Failed To Reply With Reason: '+e )
-    })
+    d.data.interaction?.reply({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components,files, ephemeral: ephemeral === "yes" || ephemeral === "true"})e — Today at 01:23
+    .eval $channeltype
+    Texas
+    BOT
+     — Today at 01:23
+    text
+    { code: 'text', data: {}, id: '907719482900893716' }
     return {
         code: d.util.setCode({ function : d.func,code,inside }) 
     }

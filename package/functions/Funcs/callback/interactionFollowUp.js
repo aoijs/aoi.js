@@ -9,7 +9,9 @@ module.exports = async d => {
   embeds = await EmbedParser(embeds)
   components =await ComponentParser(components,d.client)
     files = await FileParser(files);
-    d.data.interaction?.followUp({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components,files, ephemeral: ephemeral === "yes" || ephemeral === "true"})
+    d.data.interaction?.followUp({content:content.trim() === "" ? " ": content.addBrackets(),embeds:embeds,components: components,files, ephemeral: ephemeral === "yes" || ephemeral === "true"}).catch(e => {
+        d.aoiError.fnError( d,'custom',{},'Failed To Reply With Reason: '+e )
+    })
     return {
         code: d.util.setCode({ function : d.func,code,inside }) 
     }
