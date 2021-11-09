@@ -6,7 +6,7 @@ const Blacklist = require('./Blacklist.js')
 const Group = require('../CacheHandler/index.js').cache
 const InteractionManager = require("./Interaction.js")
 const { ActivityTypeAvailables, IntentOptions, SlashOptionTypes } = require('../Utils/Constants.js')
-const { AoijsAPI, DbdTsDb, CustomDB, Promisify } = require('./Database.js')
+const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require('./Database.js')
 const CacheManager = require('./CacheManager.js')
 
 class BaseClient extends Discord.Client {
@@ -60,7 +60,7 @@ class BaseClient extends Discord.Client {
         }
 
         else if (options?.database?.type === "custom" && !options?.database?.promisify) {
-            this.db = new CustomDB(options?.database?.db, { path: options.database?.path || "./database", tables: options?.database?.tables || ["main"] }, { type: "custom", promisify: true }, options.database?.extraOptions || {})
+            this.db = new CustomDb(options?.database?.db, { path: options.database?.path || "./database", tables: options?.database?.tables || ["main"] }, { type: "custom", promisify: true }, options.database?.extraOptions || {})
         }
         else if (options?.database?.type === "custom" && options?.database?.promisify) {
             this.db = new Promisify(options.database?.db, { path: options.database?.path || "./database", tables: options?.database?.tables || ["main"] }, { type: "custom", promisify: true }, options.database?.extraOptions || {})

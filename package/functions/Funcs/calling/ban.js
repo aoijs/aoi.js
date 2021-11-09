@@ -6,7 +6,7 @@ module.exports = async d => {
     let [userId, guildId = d.guild?.id, days = "7", reason] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: Data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: inside });
 
     days = Number(days)
     if (isNaN(days) || (days > 7 || days < 0)) return d.aoiError.fnError(d, "custom", { inside }, "Invalid Day Provided In");
