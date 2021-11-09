@@ -14,7 +14,7 @@ module.exports = async d => {
     
     const memRoles = member.roles.cache
     
-    data.result = memRoles.some( x => roles.includes( x.id ) || roles.includes( x.name.toLowerCase()) );
+    data.result = roles.some( x => memRoles.has( x ) || memRoles.find(y => y.name.toLowerCase() === x) );
     
     return {
         code : d.util.setCode( data )
