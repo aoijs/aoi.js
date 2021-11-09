@@ -13,6 +13,7 @@ module.exports = d => {
 
     while (i < Number(range)) {
         data.result += Characters.charAt(Math.floor(Math.random() * Characters.length));
+        i++
     }
 
     return {
