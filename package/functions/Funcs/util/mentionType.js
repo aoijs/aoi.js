@@ -4,10 +4,12 @@ module.exports = d => {
 
     let [mention] = data.inside.splits;
 
-    mention = mention.replace(/[\\<>!@&]/, "");
+    mention = mention.replace(/[\\<>#!@&]/g, "");
 
-    for (const [type, cache] of Object.entries(d.mentions)) {
-        if (cache.has(mention)) {
+    data.result = d.mentions.everyone || 'none'
+
+    for (const type of ['users','channels','members','roles','crosspostedChannels']) {
+        if (d.mentions[type].has(mention)) {
             data.result = type;
             break;
         }
