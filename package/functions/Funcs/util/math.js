@@ -9,7 +9,7 @@ module.exports = async d => {
     try {
         const operation = inside.inside.match(OPERATORS).join("")
 
-        if (data.inside.inside.replace(OPERATORS, "").length) return d.error(`❌ Invalid operation in \`$math${data.errinside.total}\``)
+        if (data.inside.inside.replace(OPERATORS, "").trim().length) return d.aoiError.fnError(d,'custom',{inside : data.inside},`Invalid operation in`);
 
         result = eval(operation)
     } catch {
