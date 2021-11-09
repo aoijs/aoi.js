@@ -225,18 +225,15 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
     }
     if (errorMessage.includes("{edit:")) {
-        const inside = errorMessage.split("{edit:")[1].split("}}")[0]
+        const editPart = options.split("{edit:")[1].split("}}")[0]
+        const dur = editPart.split(":")[0]
+        const msgs = editPart.split(":{").slice(1).join(":{").split("}:{")
+        const messages = []
+        for (const msg of msgs) {
 
-        const duration = inside.split(":")[0] || 2500
-
-        for (const msg of inside.split(":{").slice(1).join(":{").split("}:{")) {
-
-            const code = msg.split("}:{")[0]
-
-            edits.messages.push(code)
+            messages.push(await Util.errorParser(msg.split("}:{")[0], d))
         }
-
-        edits.timeout = duration
+        edits = { time: dur, messages }
 
         errorMessage = errorMessage.replace(`{edit:${inside}}}`, "")
     }
