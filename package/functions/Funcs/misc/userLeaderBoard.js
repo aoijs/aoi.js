@@ -1,13 +1,13 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
-    if (data.err) return d.error(data.err)
+    const Data = d.util.openFunc(d);
+    if (Data.err) return d.error(Data.err)
 
-    const [guildId, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = data.inside.splits;
+    const [guildId, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
 
     const all = await d.client.db.all(table, (x) => x.key.startsWith(`${variable}_`) && x.key.split("_").length === 3 && x.key.split('_')[2] === guildId)
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, "guild", { inside });
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside : Data.inside });
 
 
     let y = 0
@@ -26,9 +26,9 @@ module.exports = async d => {
             if (text.includes("{execute:")) {
                 let ins = text.split("{execute:")[1].split("}")[0]
 
-                const awaited = d.client.awaited_commands.find(c => c.name === ins)
+                const awaited = d.client.cmd.awaited.find(c => c.name === ins)
 
-                if (!awaited) return d.error(`❌ Invalid awaited command '${ins}' in \`$globalUserLeaderboard${inside}\``)
+                if (!awaited) return d.aoiError.fnError(d,'custom',{inside : Data.inside},` Invalid awaited command '${ins}' in`)
 
                 const CODE = await d.interpreter(d.client, {
                     guild: guild,
@@ -47,9 +47,9 @@ module.exports = async d => {
 
     const px = page * list - list, py = page * list
 
-    data.result = content.slice(px, py).join("\n");
+    Data.result = content.slice(px, py).join("\n");
 
     return {
-        code: d.util.setCode(data)
+        code: d.util.setCode(Data)
     }
 }
