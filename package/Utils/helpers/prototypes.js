@@ -22,8 +22,10 @@ String.prototype.deleteBrackets = function () {
     .replace(/{/g, "#RIGHT_BRACKET#")
     .replace(/}/g, "#LEFT_BRACKET#")
     .replace(/\,/g, "#COMMA#")
-    .replaceAll('(','#LB#')
-    .replaceAll(')','#RB#')
+    .replace(/\(/g, '#LB#')
+    .replace(/\)/g, '#RB#')
+    .replace(/&&/g, '#AND#')
+    .replaceAll('||', '#OR#')
 };
 
 String.prototype.removeBrackets = String.prototype.deleteBrackets;
@@ -142,8 +144,10 @@ String.prototype.addBrackets = function () {
     .replace(/#RIGHT_BRACKET#/g, "{")
     .replace(/#LEFT_BRACKET#/g, "}")
     .replace(/#COMMA#/g, ",")
-    .replaceAll('#LB#','(')
-    .replaceAll('#RB#',')')
+    .replace(/#LB#/g, '(')
+    .replace(/#RB#/g, ')')
+    .replace(/#AND#/g, '&&')
+    .replace(/#OR#/g, '||')
 };
 
 Array.prototype.goof = function (sep = "_") {
