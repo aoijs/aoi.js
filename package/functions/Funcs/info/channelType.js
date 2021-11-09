@@ -6,8 +6,9 @@ module.exports = async d => {
     
     const channel = await d.util.getChannel(d,channelId);
     if(! channel) return d.aoiError.fnError(d,"channel",{ inside });
-    
-    const result = channel.type;
+    const types = Object.entries(d.util.channelTypes);
+
+    const result = types.find(x => x[1] === channel.type)?.[0]?.toLowerCase();
     
     return {
     code : d.util.setCode({ function : d.func,code,inside,result }) 

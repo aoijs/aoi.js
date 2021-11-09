@@ -1,4 +1,5 @@
 const { SI_SYMBOL, FormatOptions } = require('../Constants.js')
+const {setTimeout} = require('timers/promises')
 module.exports = {
     abbreviate(number, decimal) {
         const tier = Math.floor(Math.log10(Math.abs(number || 1)) / 3);
@@ -9,7 +10,7 @@ module.exports = {
         return scaled.toFixed(decimal) + suffix;
     },
     async wait(time) {
-        await new Promise(res => setTimeout(() => res, time))
+        await setTimeout(time)
     },
     categoryChannelsOption(cat) {
         cat = cat.children;
