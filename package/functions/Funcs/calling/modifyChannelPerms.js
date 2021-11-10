@@ -1,4 +1,4 @@
-const { Perms } = require('../../../Utils/helpers/functions.js')
+const { Perms } = require('../../../Utils/Constants.js')
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
