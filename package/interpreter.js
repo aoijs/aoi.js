@@ -190,6 +190,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             if (FuncData?.reactions) { reactions = FuncData.reactions }
             if (FuncData?.disableMentions) { disableMentions = FuncData.disableMentions }
             if (FuncData?.editIn) { editIn = FuncData.editIn }
+            if (FuncData?.deleteIn) { editIn = FuncData.deleteIn }
             if (FuncData?.files) { attachments = FuncData.files }
             if (FuncData?.suppressErrors) { suppressErrors = FuncData?.suppressErrors }
             if (FuncData?.components) { components = FuncData.components }
