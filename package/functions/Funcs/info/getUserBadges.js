@@ -3,7 +3,7 @@ module.exports = async d  => {
     
     const [ userId = d.author?.id,sep = ' , ' ] = data.inside.splits;
     
-    const user = await d.util.getUser( d , d.userId );
+    const user = await d.util.getUser( d , userId );
     if( !user ) return d.aoiError.fnError( d,'user',{ inside : data.inside } );
     
     data.result = user.flags.toArray( sep );
