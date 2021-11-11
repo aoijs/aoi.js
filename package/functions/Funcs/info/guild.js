@@ -3,7 +3,7 @@ module.exports = async d => {
     
     const [ id = d.guild?.id,option = 'name' ] = dat.inside.splits;
         let server =await d.util.getGuild( d,id )
-let data = {} 
+ let data = {} 
  Object.assign(data,server)   
  delete data.client 
  data.icon = server.iconURL() 
@@ -18,16 +18,17 @@ let data = {}
  delete data.stageInstances 
  data.invites = data.invites.size 
  data.systemChannelFlags = (data.systemChannelFlags.toArray.join(" ") === "" ? "none" : data.systemChannelFlags.toArray.join(" ") ) 
-data.owner = server.members.cache.get(data.ownerId).username 
-delete data.shard 
- data.afkChannel = data.afkChannel?.id
- data.systemChannel = data.systemChannel?.id
-delete data.me 
-delete data.voiceAdapterCreator 
-delete data.publicUpdatesChannel 
-data.joinAt = data.joinAt.toString() 
-data.emojis = data.emojis.cache.size 
-data.stickers = data.stickers.cache.size
+ data.owner = server.members.cache.get(data.ownerId).username 
+ delete data.shard 
+ data.afkChannel = data.afkChannelId
+ data.systemChannel = data.systemChannelId
+ data.rulesChannel = data.rulesChannelId
+ delete data.me 
+ delete data.voiceAdapterCreator 
+ data.updatesChannel = data.publicUpdatesChannelId 
+ data.joinAt = data.joinAt.toString() 
+ data.emojis = data.emojis.cache.size 
+ data.stickers = data.stickers.cache.size
     
   dat.result = data[ option ];
     
