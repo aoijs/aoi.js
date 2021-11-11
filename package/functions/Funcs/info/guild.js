@@ -1,4 +1,3 @@
-module.exports = async d => {
     const dat = d.util.openFunc( d );
     
     const [ id = d.guild?.id,option = 'name' ] = dat.inside.splits;
@@ -20,11 +19,12 @@ let data = {}
  data.systemChannelFlags = (data.systemChannelFlags.toArray().join(" ") === "" ? "none" : data.systemChannelFlags.toArray().join(" ") ) 
 data.owner = server.members.cache.get(data.ownerId).username 
 delete data.shard 
-delete data.afkChannel 
-delete data.systemChannel 
+data.afkChannel = data.afkChannelId
+data.systemChannel = data.systemChannelId
+data.rulesChannel = data.rulesChannelId
 delete data.me 
 delete data.voiceAdapterCreator 
-delete data.publicUpdatesChannel 
+data.updatesChannel = data.publicUpdatesChannelId
 data.joinAt = data.joinAt.toString() 
 data.emojis = data.emojis.cache.size 
 data.stickers = data.stickers.cache.size
