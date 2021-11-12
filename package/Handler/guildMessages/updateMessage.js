@@ -6,7 +6,7 @@ for(const cmd of client.cmd.messageUpdate.allValues()){
 let channel = client.channels.cache.get(id)
 if(!channel) channel = newm.channel 
     chan = channel
-  await Interpreter(client,newm,newm?. content?.split(" "),cmd, client.db,false, undefined,{oldm:oldm},chan) 
+  await Interpreter(client,newm,newm?. content?.split(" "),cmd, client.db,false, chan?.id,{oldm:oldm},chan) 
       
     
 }

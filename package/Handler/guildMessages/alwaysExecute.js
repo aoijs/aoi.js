@@ -11,11 +11,11 @@ module.exports = async (client, message, db) => {
     commands.map(async command => {
        const bl = client.blacklist 
        if(!command.whitelist){
-  if(bl.server.blacklist.has(message.guild.id)){
+  if(bl.server.blacklist.has(message.guild?.id)){
   }
   else if(bl.channel.blacklist.has(message.channel.id)){
    }
-  else if(bl.role.blacklist.find(x=>message.member._roles.includes(x))){
+  else if(bl.role.blacklist.find(x=>message.member?._roles.includes(x))){
   }
   else if(bl.user.blacklist.has(`${message.author.id}_${message.guild?.id || 'dm'}`)){
   }

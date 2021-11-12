@@ -15,7 +15,7 @@ module.exports = async d => {
     
     if (!stuffs.every(x => memPerms.includes(Perms[x.trim()]))) {
         error = true;
-        if(err?.trim() === ''){}
+        if(err?.trim() === '' ){}
         else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
     }
 

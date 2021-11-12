@@ -74,7 +74,7 @@ class DbdTsDb extends Database {
         const { Database, Table, Column, ApiDatabase } = this.module
         if (!this.extraOptions?.dbdtsType) {
             this.db = new Database({ path: this.path.endsWith("/") ? this.path + "database.sql" : this.path + "/database.sql" })
-            this.tables.forEach(x => this.db.addTable(new Table(x, this.db, [{ name: "id", type: "TEXT", primary: false }, { name: "invite_tracker", type: "JSON", default: {} }])))
+            this.tables.forEach(x => this.db.addTable(new Table(x, this.db, [{ name: "id", type: "TEXT", primary: true }, { name: "invite_tracker", type: "JSON", default: {} },{name : 'cooldown',type : 'TEXT',default : '0'}])))
 
         }
         else if (this.extraOptions?.dbdtsType === "api") {

@@ -25,7 +25,7 @@ delete data.systemChannel
 delete data.me 
 delete data.voiceAdapterCreator 
 delete data.publicUpdatesChannel 
-data.joinAt = data.joinAt.toString() 
+data.joinAt = data.joinAt?.toString() 
 data.emojis = data.emojis.cache.size 
 data.stickers = data.stickers.cache.size
     

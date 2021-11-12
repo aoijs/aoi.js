@@ -42,7 +42,7 @@ module.exports = async (message, client, db) => {
                     }
                     break;
                 }
-                else if (bl.role.blacklist.find(x => message.member_roles?.includes(x))) {
+                else if (bl.role.blacklist.find(x => message.member?._roles?.includes(x))) {
                     if (bl.role.errorMsg) {
                         message.channel.send(bl.role.errorMsg)
                     }
@@ -73,5 +73,6 @@ module.exports = async (message, client, db) => {
         else {
             Interpreter(client, message, args, cmd, client.db)
         }
+        break;
     }
 }

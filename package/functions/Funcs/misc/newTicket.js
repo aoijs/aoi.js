@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const [name, msg = '', place = d.guild?.id, returnId = 'no', error] = data.inside.splits;
 
-    const createAt = d.util.getChannel(d, place) || d.util.getGuild(d.place);
+    const createAt = d.util.getChannel(d, place) || d.util.getGuild(d,place);
     if (!createAt) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Id Provided In');
 
     const ticketMsg = await d.util.errorParser(msg.addBrackets(), d);
@@ -31,7 +31,7 @@ module.exports = async d => {
                 d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Message In Ticket With Reason: ' + err);
             });
         };
-        d.client.db.set(d.client,db.tables[0],'ticketChannel',channel.id,channel.id);
+        d.client.db.set(d.client.db.tables[0],'ticketChannel',channel.id,channel.id);
 
         data.result = returnId === 'yes' ? channel?.id : undefined;
     }

@@ -11,13 +11,13 @@ module.exports = async (client, message, db) => {
     for(const cmd of commands){
         const bl = client.blacklist 
         if(bl.commands.includes(cmd.name.toLowerCase())){
-  if(bl.server.blacklist.has(message.guild.id)){
+  if(bl.server.blacklist.has(message.guild?.id)){
       continue;
   }
   else if(bl.channel.blacklist.has(message.channel.id)){
       continue;
    }
-  else if(bl.role.blacklist.find(x=>message.member._roles.includes(x))){
+  else if(bl.role.blacklist.find(x=>message.member?._roles.includes(x))){
       continue;
   }
   else if(bl.user.blacklist.has(`${message.author.id}_${message.guild?.id || 'dm'}`)){

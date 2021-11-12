@@ -217,14 +217,14 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         }
         if (returnCode) { returnData.code = code }
         if (returnExecution) { returnData.data = data }
-        if ((code.length || embeds?.length) && !anErrorOccuredPlsWait && !error) {
+        if ((code.length || embeds?.length,attachments?.length) && !anErrorOccuredPlsWait && !error) {
             try {
 
                 const send = {
                     embeds: embeds,
                     files: attachments,
                     components: components,
-                    allowedMentions: { parse: disableMentions, repliedUser: reply?.user || false },
+                    allowedMentions: { parse: allowedMentions, repliedUser: reply?.user || false },
                     reply: {
                         messageReference: reply?.message
                     }

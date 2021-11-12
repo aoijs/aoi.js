@@ -16,7 +16,7 @@ module.exports = async d => {
         else data.result = trueawait.addBrackets();
     }
     else {
-        if (falseawait.addBrackets().includes('{execute:')) {
+        if (falseawait?.addBrackets().includes('{execute:')) {
             const cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() === falseawait.addBrackets().split('{execute:')[1].split('}')[0].toLowerCase());
             if (!cmd) d.aoiError.fnError(d, "custom", {}, "Invalid Awaited Command: " + falseawait.addBrackets().split('{execute:')[1].split('}')[0] + " Provided");
             await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, { data: d.data });

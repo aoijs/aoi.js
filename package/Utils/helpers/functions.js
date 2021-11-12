@@ -218,7 +218,7 @@ module.exports = {
         data.hexColor = role.hexColor;
 
         data.members = role.members.map(x => x.id).join(' , ');
-        data.memberCount = msg.members.size;
+        data.memberCount = role.members.size;
 
         data.position = role.position;
 
