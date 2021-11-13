@@ -1,4 +1,4 @@
-const searchIndexes = require("../../Handler/KMP");
+const searchIndexes = require("../../Handler/searchIndexes");
 String.prototype.replaceLast = function (find, replace) {
   const index = this.lastIndexOf(find);
 
@@ -52,7 +52,6 @@ String.prototype.after = function () {
     const rightIndexes = searchIndexes("[", after);
     const leftIndexes = searchIndexes("]", after);
 
-    //no ] found
     if (leftIndexes.length === 0) {
       inside = after;
       total = `${before}[${inside}`;
@@ -64,7 +63,6 @@ String.prototype.after = function () {
 
       let leftIndex = 0;
 
-      //merge
       for (let i = 0; i < rightIndexes.length; ++i) {
         const right = rightIndexes[i];
 
@@ -78,7 +76,6 @@ String.prototype.after = function () {
 
           left = leftIndexes[++leftIndex];
         }
-
         merged.push({
           index: right,
           isLeft: false,
@@ -173,13 +170,10 @@ async function walk(path) {
         d.name = `${path}/${d.name}`;
 
         return d;
-
       });
-
     });
 
   const files = something.filter((d) => d.isFile());
-
   const dirs = something.filter((d) => d.isDirectory());
 
   for (const d of dirs) {
@@ -189,7 +183,5 @@ async function walk(path) {
     files.push(...items);
 
   }
-
   return files;
-
 }

@@ -69,11 +69,8 @@ class BaseClient extends Discord.Client {
         else {
             this.db = new AoijsAPI(options?.database?.db || dbddb,
                 {
-
                     path: options?.database?.path || "./database/",
-
                     tables: options?.database?.tables || ["main"]
-
                 },
                 {
                     type: options?.database?.type || "default", promisify: options?.database?.promisify || false
