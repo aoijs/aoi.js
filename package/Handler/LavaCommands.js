@@ -21,6 +21,7 @@ function getRandomBytes(size) {
 //         error: true
 //     };
 // }
+console.log("Connected to Lavalink")
 
 async function error(d, data, message) {
     return d.aoiError.fnError(d, "custom", data, message)
