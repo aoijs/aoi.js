@@ -1,5 +1,5 @@
 module.exports = (statuses, client) => {
-  console.log("Enabled Status")
+  console.log("\x1b[32mEnabled Client Status\x1b[0m")
   if (statuses.size !== 0) {
     let y = 0
 
