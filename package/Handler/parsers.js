@@ -23,7 +23,7 @@ const EmbedParser = async (msg) => {
             const auth = rawr.split("{author:")[1].split("}")[0].split(":")
             embed.author = {
                 name: auth.shift().addBrackets() || "",
-                iconURL: auth.join(":").addBrackets() || ""
+                icon_url: auth.join(":").addBrackets() || ""
             }
         }
         if (Checker("authorURL")) {

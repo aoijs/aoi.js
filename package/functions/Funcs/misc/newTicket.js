@@ -55,7 +55,7 @@ module.exports = async d => {
                 d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Message In Ticket With Reason: ' + err);
             });
         };
-        d.client.db.set(d.client,db.tables[0],'ticketChannel',channel.id,channel.id);
+        d.client.db.set(d.client.db.tables[0],'ticketChannel',channel.id,channel.id);
 
         data.result = returnId === 'yes' ? channel?.id : undefined;
     }

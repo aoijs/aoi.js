@@ -1,4 +1,5 @@
-const AoiError = require("../../classes/AoiError");
+const AoiError = require("../../classes/AoiError.js");
+const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require("../../classes/Database.js");
 
 module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
     let cmds = d.client.cmd.pulse.allValues();

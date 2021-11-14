@@ -162,9 +162,10 @@ class CustomDb extends Database {
             AoiError.consoleError("DatabaseSupportError", "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub")
         }
     }
-    get(table, name, id) {
+    async get(table, name, id) {
         try {
-            this.tableList[table].get(`${!id ? name : `${name}_${id}`}`)
+            const eee = await this.tableList[table].get(`${!id ? name : `${name}_${id}`}`);
+            return typeof eee === 'object' ? eee : {value : eee }
         }
         catch (e) {
             AoiError.consoleError("DatabaseSupportError", "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub")
@@ -213,8 +214,8 @@ class Promisify extends CustomDb {
     constructor(module, options = {}, db = {}, extraOptions = {}) {
         super(module, options, db, extraOptions);
     }
-    get(table, name, id, value) {
-        return new Promise(res => res(super.get(table, id ? `${name}_${id}` : name, value)))
+    async get(table, name, id, value) {
+        return new Promise(res => res(await super.get(table, id ? `${name}_${id}` : name, value)))
     }
     all(table, varname, lengthofId, funconId) {
         return new Promise(res => res(super.all(table, varname, lengthofId, funconId)))

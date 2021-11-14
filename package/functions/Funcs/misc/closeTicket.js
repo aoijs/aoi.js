@@ -6,7 +6,8 @@ module.exports = async (d) => {
 
     const exists = await d.client.db.get(
         d.client.db.tables[0],
-        `ticket_${d.channel.id}`
+        `ticket`,
+        d.channel?.id
     );
 
     if (error) error = await d.util.errorParser(error, d);
