@@ -4,7 +4,19 @@ module.exports = async d => {
     
     const [ name , type = 'global' ] = data.inside.splits;
     
-    data.result = JSON.stringify( d.client.application.commands.find( x => x.name.toLowerCase() === name.toLowerCase() && type === 'global' ? true : x.guildId === type  )?.Options,null,2 );
+    if(type === 'global') {
+        const all = await d.client.application.commands.fetch();
+        
+        data.result = JSON.stringify(all.find( x => x.name === name.addBrackets().toLowerCase())?.options,null,2);
+    }
+    else {
+        const guild = await d.util.getGuild(d,type);
+        if(!guild) return d.aoiError.fnError(d,'guild',{inside : data.inside});
+
+        const all = await guild.commands.fetch();
+
+        data.result = JSON.stringify(all.find( x => x.name === name.addBrackets().toLowerCase())?.options,null,2);
+    }
     
     return {
         code : d.util.setCode( data )
