@@ -1,8 +1,11 @@
+const AoiError = require("../../classes/AoiError");
+
 module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
     let cmds = d.client.cmd.pulse.allValues();
 
     if (onReady) {
         const datas = await d.client.db.all(d.client.db.tables[0], 'setTimeout');
+        try{
         for (const data of datas.filter(x => {
             if (d.client.db instanceof AoijsAPI) {
                 return x.data.value.__pulseEvery__;
@@ -23,7 +26,7 @@ module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
                 t = data['setTimeout'];
             }
             else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
-                t = data?.value || data['setTimeout'] || (typeof data.data === 'object' ? data.data.value : data.data );
+                t = data?.value || data['setTimeout'] || (typeof data.data === 'object' ? data.data.value : data.data);
             }
 
             cmds = cmds.filter(x => x.name === t.__timeoutName__);
@@ -43,6 +46,11 @@ module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
                 await d.client.db.delete(d.client.db.tables[0], data.key)
             }
         }
+    }
+    catch(e){
+        AoiError.consoleError('DatabaseSupportError','Database Not Supported , You Can Create An Issue In Aoi.js Github.')
+        console.log('Link : https://github.com/aoijs/aoi.js')
+    }
     }
     else {
         if (name) {
