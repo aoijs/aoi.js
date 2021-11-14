@@ -12,7 +12,7 @@ let [channelId,messageId,...reactions] = inside.splits;
 reactions = reactions.reverse() 
 for(let i =reactions.length-1;i>=0;i--){
     message.react(reactions[i]).catch(err=>d.aoiError.fnError(d,"custom",{},err.message))
-await d.util.constants.wait(time) 
+
 }
 return {
     code: d.util.setCode({function:d.func,code,inside, result:""}) 

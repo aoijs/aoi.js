@@ -212,20 +212,20 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     const embeds = []
     let deleteCommand = false
     let send = true
-    let interaction ;
-    let deleteAfter
+    let interaction;
+    let deleteAfter = 1000;
 
     let suppress = false
     let files = []
     let reactions = []
 
     let edits = {
-        time: null,
+        time: '0s',
         messages: []
 
     }
     if (errorMessage.includes("{edit:")) {
-        const editPart = options.split("{edit:")[1].split("}}")[0]
+        const editPart = errorMessage.split("{edit:")[1].split("}}")[0]
         const dur = editPart.split(":")[0]
         const msgs = editPart.split(":{").slice(1).join(":{").split("}:{")
         const messages = []
@@ -235,7 +235,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         }
         edits = { time: dur, messages }
 
-        errorMessage = errorMessage.replace(`{edit:${inside}}}`, "")
+        errorMessage = errorMessage.replace(`{edit:${editPart}}}`, "")
     }
 
     if (errorMessage.includes("{file:")) {
@@ -255,12 +255,12 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
         errorMessage = errorMessage.replace(`{suppress:${inside}}`, "")
     }
-    if(errorMessage.includes('{interaction:')) {
+    if (errorMessage.includes('{interaction:')) {
         const inside = errorMessage.split('{interaction:')[1].split('}')[0];
 
         interaction = inside === 'yes'
 
-        errorMessage = errorMessage.replace(`{interaction:${inside}}`,'');
+        errorMessage = errorMessage.replace(`{interaction:${inside}}`, '');
     }
 
     if (errorMessage.includes("{attachment:")) {
@@ -269,24 +269,16 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         }
     }
 
-    if (errorMessage.includes("{deletecommand")) {
-        const inside = errorMessage.split("{deletecommand")[1].split("}")[0]
+    if (errorMessage.includes("{deletecommand}")) {
         deleteCommand = true
-        if (d && d.message) {
-            if (inside) {
-                const dur = Time.parse(inside.slice(1))?.ms;
-                d.message.delete({
-                    timeout: dur
-                }).catch(err => null)
-            } else d.message.delete().catch(err => null)
-        }
-
-        errorMessage = errorMessage.replace(`{deletecommand${inside}}`, "")
+        errorMessage = errorMessage.replace(`{deletecommand}`, "")
     }
     if (errorMessage.includes("{delete:")) {
-        const duration = errorMessage.split("{delete:")[1].split("}")[0]
-        deleteAfter = Time.parse(duration || "1s")?.ms
-        errorMessage = errorMessage.replace(`{delete:${duration}}`, "")
+        const inside = errorMessage.split("{delete:")[1].split("}")[0];
+
+        deleteAfter = Time.parse(inside)?.ms;
+    
+        errorMessage = errorMessage.replace(`{delete:${inside}}`, "")
     }
 
     if (errorMessage.includes("{execute:")) {
@@ -410,11 +402,9 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         }
     }
     if (errorMessage.includes("{reactions:")) {
-        const inside = errorMessage.split("{reactions:")[1].split("}")[0]
-        for (const reaction of inside.split(" ").join("").split(",")) {
-            reactions.push(reaction.addBrackets())
-        }
-        errorMessage = errorMessage.replace(`{reactions:${inside}}`, "")
+        const react = errorMessage.split("{reactions:")[1].split("}")[0]
+        reactions = react.split(":")
+        errorMessage = errorMessage.replace(`{reactions:${react}}`, "")
     }
 
     if (!(embeds.length)) send = false
@@ -423,13 +413,15 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
     if (returnMsg === true) {
         return {
-            reactions: reactions.length ? reactions : undefined,
-            suppress,
-            edits,
             embeds: send ? embeds : [],
             content: errorMessage.addBrackets(),
-            deleteIn: deleteAfter,
-            deleteCommand
+            options: {
+                reactions: reactions.length ? reactions : undefined,
+                suppress,
+                edits,
+                deleteIn: deleteAfter,
+                deleteCommand
+            }
         }
     }
 
@@ -553,7 +545,7 @@ const OptionParser = async (options, d) => {
     if (Checker("deletecommand")) {
         optionData.deleteCommand = true
     }
-    if(Checker('interaction')) {
+    if (Checker('interaction')) {
         optionData.interaction = true;
     }
     return optionData

@@ -20,7 +20,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         let embeds;
         let deleteIn;
         let suppressErrors;
-        let editIn;
+        let editIn = undefined;
         let error;
         let attachments = []
         let components = []
@@ -310,7 +310,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
             if (FuncData?.reactions) { reactions = FuncData.reactions }
             if (FuncData?.disableMentions) { disableMentions = FuncData.disableMentions }
             if (FuncData?.editIn) { editIn = FuncData.editIn }
-            if (FuncData?.deleteIn) { editIn = FuncData.deleteIn }
+            if (FuncData?.deleteIn) { deleteIn = FuncData.deleteIn }
             if (FuncData?.files) { attachments = FuncData.files }
             if (FuncData?.suppressErrors) { suppressErrors = FuncData?.suppressErrors }
             if (FuncData?.components) { components = FuncData.components }
