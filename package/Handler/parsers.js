@@ -213,7 +213,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     let deleteCommand = false
     let send = true
     let interaction;
-    let deleteAfter = 1000;
+    let deleteAfter;
 
     let suppress = false
     let files = []
