@@ -94,7 +94,7 @@ module.exports = async d => {
         }
     }
 
-    function customarr(arr) {
+    async function customarr(arr) {
         user = (type === 'globalUser' ? await d.util.getUser(d, arr[1]) : type === 'user' ? await d.util.getMember(d.guild, arr[1]) : type === 'server' ? await d.util.getGuild(d, arr[1]) : arr[1]) ?? arr[1];
         return user;
     }
