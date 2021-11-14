@@ -61,6 +61,14 @@ class VariableManager {
         if (type === 'NUMERIC' || type === 'INTEGER') {
             if (!isNaN(value)) return Number(value);
         }
+        else if(type === 'JSON' ) {
+            try {
+                return JSON.parse(value);
+            }
+            catch(e) {
+                return ;
+            }
+        }
         else return value
     }
     get size() {

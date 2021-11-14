@@ -215,7 +215,7 @@ class Promisify extends CustomDb {
         super(module, options, db, extraOptions);
     }
     async get(table, name, id, value) {
-        return new Promise(res => res(await super.get(table, id ? `${name}_${id}` : name, value)))
+        return new Promise(res => res(super.get(table, id ? `${name}_${id}` : name, value)))
     }
     all(table, varname, lengthofId, funconId) {
         return new Promise(res => res(super.all(table, varname, lengthofId, funconId)))
