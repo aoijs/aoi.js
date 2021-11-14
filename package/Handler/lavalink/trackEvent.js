@@ -1,7 +1,7 @@
 /**
  * 
- * @param {import("lavacoffee").CoffeeTrack} track 
- * @param {import("lavacoffee").CoffeePlayer} player 
+ * @param {import("leref.ts").LerefTracking} track 
+ * @param {import("leref.ts").LerefPlayer} player 
  * @param {import("../../classes/Lavalink")} lava
  * @param {{name: string, code: string, channel: string}[]} commands
  */

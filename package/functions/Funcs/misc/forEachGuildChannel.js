@@ -5,7 +5,7 @@ module.exports = async d => {
     const data = d.util.openFunc(d);
     if(data.err) return d.error(data.err);
     
-    let [ time="",awaitData,...cmds ] = data.inside.splits;
+    let [ time="", awaitData, ...cmds ] = data.inside.splits;
     const endCmd = cmds.pop(); 
     
     try {
@@ -46,15 +46,11 @@ module.exports = async d => {
         while(u >=0) {
             const cmd = cmds[u] 
         d.interpreter(d.client,loopData,d.args,cmd,d.client.db,false,undefined,awaitData);
-            
             u--
-    };
-        
-        await wait(time);
-        
+    }
+        await wait(time);s
         i-- 
 }
-    
     return {
         code : d.util.setCode( data ) 
     }
