@@ -7,7 +7,7 @@ module.exports = async d => {
     if (!user) return d.aoiError.fnError(d, 'user', { inside: data.inside });
 
     data.result = user.displayAvatarURL({
-        size,
+        size : Number(size),
         dynamic: dynamic === 'yes',
         format
     });
