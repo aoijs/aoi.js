@@ -216,7 +216,7 @@ async function Main(d) {
                         value = JSON.parse(value);
                     } catch {}
                     constructFilter[key] = value;
-                };
+                }
     
                 player.setFilters(constructFilter);
                 player.patchFilters();
@@ -275,7 +275,7 @@ async function Main(d) {
                 const r = player.loop === Utils.LoopMode.Queue ? Utils.LoopMode.None : Utils.LoopMode.Queue
                 player.setLoop(r);
                 response = r;
-            };
+            }
                 break;
             case "loopsong": {
                 console.warn("Lavalink WARN! method(loopsong) deprecated, use method(loopmode) in");
