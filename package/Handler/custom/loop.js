@@ -4,8 +4,8 @@ module.exports = async (client) => {
     let chan;
     let data = {
         client: client,
-        channel : undefined,
-        guild : undefined,
+        channel: undefined,
+        guild: undefined,
     }
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
@@ -14,7 +14,10 @@ module.exports = async (client) => {
             data.channel = chan
             data.guild = chan?.guild
         }
-        setInterval(async() => {
+        else {
+            chan = client.channels.cache.get(cmd.channel);
+        }
+        setInterval(async () => {
             await Interpreter(client, data, [], cmd, client.db, false, chan?.id, {}, chan);
         }, cmd.every || 60000);
 

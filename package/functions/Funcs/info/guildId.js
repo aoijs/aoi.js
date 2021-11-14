@@ -3,7 +3,7 @@ module.exports = d  => {
     
     const [ name = d.guild?.name ] = data.inside.splits;
     
-    data.result = d.guild?.name === name ? d.guild?.id : d.client.guild.cache.find( x=> x.name.toLowerCase() === name.addBrackets().toLowerCase() );
+    data.result = d.guild?.name === name ? d.guild?.id : d.client.guilds.cache.find( x=> x.name.toLowerCase() === name.addBrackets().toLowerCase() );
     
     return {
         code : d.util.setCode( data )

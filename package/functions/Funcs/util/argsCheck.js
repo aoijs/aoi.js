@@ -20,6 +20,6 @@ if(err) return d.error(err)
                 }
     return {
         code:d.util.setCode({function:d.func,code,inside}),
-        error:checker 
+        error:!checker 
     }
 }

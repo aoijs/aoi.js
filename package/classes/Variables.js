@@ -20,6 +20,21 @@ class Variable {
     get toArray() {
         return Object.values(this)
     }
+    checkType(value) {
+        let res = true;
+        if (this.type === 'TEXT' && typeof value !== "string") res = false;
+        else if (this.type === 'INTEGER' && !Number.isInteger(Number(value))) res = false;
+        else if (this.type === 'NUMERIC' && isNaN(value)) res = false;
+        else if (this.type === 'JSON') {
+            try {
+                JSON.parse(value)
+            }
+            catch (E) {
+                res = false;
+            }
+        }
+        return res;
+    }
 }
 class VariableManager {
     constructor(client) {
@@ -41,6 +56,12 @@ class VariableManager {
                 break;
         }
         return res
+    }
+    parseData(value, type) {
+        if (type === 'NUMERIC' || type === 'INTEGER') {
+            if (!isNaN(value)) return Number(value);
+        }
+        else return value
     }
     get size() {
         return this.cache.size

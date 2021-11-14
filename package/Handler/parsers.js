@@ -54,7 +54,7 @@ const EmbedParser = async (msg) => {
             const f = rawr.split("{footer:")[1].split("}")[0].split(":")
             embed.footer = {
                 text: f.shift().addBrackets() || "",
-                iconURL: f.join(":").addBrackets() || ""
+                icon_url: f.join(":").addBrackets() || ""
             }
         }
         if (Checker("color")) {

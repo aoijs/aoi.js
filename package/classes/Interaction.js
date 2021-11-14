@@ -62,7 +62,7 @@ class InteractionManager extends Interaction {
     constructor(client) {
         super(client);
         this.awaitComponents = Await
-        this.ComponentsCollector = CustomCollector
+        this.ComponentCollector = CustomCollector
 
         this.buttonData = new Group()
         this.applicationData = new Group()

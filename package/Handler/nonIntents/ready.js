@@ -12,6 +12,9 @@ let chan;
             data.channel = chan 
             data.guild = chan.guild 
         }
+        else { 
+            chan = client.channels.cache.get(cmd.channel);
+        }
 await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{},chan)
     }
     console.log('Initialized on \x1b[36maoi.js \x1b[0m|| \x1b[32mv' + require("../../../package.json").version + '\x1b[0m');

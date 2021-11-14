@@ -1,7 +1,7 @@
 module.exports = d => {
     const data = d.util.openFunc(d);
 
-    let [from = 0, to] = data.inside.splits;
+    let [from = 0, to = d.args.length] = data.inside.splits;
 
     from = Number(from);
     to = Number(to);

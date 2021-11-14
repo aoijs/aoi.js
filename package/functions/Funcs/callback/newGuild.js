@@ -8,6 +8,6 @@ const { Guild } = require('../../../Utils/helpers/functions.js');
     data.result = Guild( d.data.newg )[option];
 
     return {
-        code: d.util.openFunc(data)
+        code: d.util.setCode(data)
     }
 }

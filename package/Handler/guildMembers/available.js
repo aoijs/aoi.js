@@ -1,13 +1,16 @@
 const Interpreter = require('../../interpreter.js')
-module.exports = async (mem,client) =>{
-let chan;
+module.exports = async (mem, client) => {
+  let chan;
   const cmds = client.cmd.memberAvailable.allValues()
-  let data = {guild:mem.guild,author:mem.user,member:mem,client:client}
-  for(const cmd of cmds){
-  if(cmd.channel?.includes("$")){
-     const id = await Interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel},client.db,true)
-  chan = client.channels.cache.get(id?.code)
-     }
-   await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{newm:mem},chan)
+  let data = { guild: mem.guild, author: mem.user, member: mem, client: client }
+  for (const cmd of cmds) {
+    if (cmd.channel?.includes("$")) {
+      const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true)
+      chan = client.channels.cache.get(id?.code)
+    }
+    else {
+      chan = client.channels.cache.get(cmd.channel);
+    }
+    await Interpreter(client, data, [], cmd, client.db, false, chan?.id, { newm: mem }, chan)
   }
 }

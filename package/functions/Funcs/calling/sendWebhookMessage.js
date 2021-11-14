@@ -6,12 +6,12 @@ module.exports = async d => {
 
     const [id, token, message, returnId = 'no'] = data.inside.splits;
 
-    const webhook = new WebhookClient(id, token.addBrackets());
+    const webhook = new WebhookClient({id,token : token.addBrackets()});
     const sendMessage = await d.util.errorParser(message);
 
     let msg;
     try {
-        msg = await d.aoiError.makeMessageError(d.client, webhook, sendMessage, sendMessage.options);
+        msg = await d.aoiError.makeMessageError(d.client, webhook, sendMessage, sendMessage.options,d);
     }
     catch (err) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Webhook Message With Reason: ' + err);

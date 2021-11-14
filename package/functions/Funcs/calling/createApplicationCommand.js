@@ -37,7 +37,7 @@ module.exports = async d => {
     }
 
     if(guild === "custom") {
-        data = d.client.interactionManager.slashData.get(name.toLowerCase()) 
+        data = d.client.interactionManager.applicationData.get(name.toLowerCase()) 
         if(!data) return d.aoiError.fnError(d,"custom",{},"No Slash Data Present With Following Keyword: "+name.toLowerCase());
     } 
     else {

@@ -1,13 +1,18 @@
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
-
-    const [varname, value, table = d.client.db.tables[0]] = data.inside.splits;
+    let [varname, value,table = d.client.db.tables[0]] = data.inside.splits;
 
     if (!d.client.variableManager.has(varname.addBrackets())) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Not Found!`)
 
+    const variable = d.client.variableManager.get(varname);
+
+    if (!variable.checkType(value)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, `Variable "${varname.addBrackets()}" Needs Value Of Type "${variable.type}". Provided Wrong Type In`);
+
+    value = d.client.variableManager.parseData(value,variable.type);
+    
     try {
-        d.client.db.set(table, varname.addBrackets(),undefined, value);
+        await d.client.db.set(table, varname.addBrackets(), undefined, value);
     }
     catch (e) {
         d.aoiError.fnError(d, 'custom', {}, `Failed To Set Value To The Variable: "${varname.addBrackets()}" With Reason: ${e}`);

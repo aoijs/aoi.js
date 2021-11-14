@@ -9,6 +9,6 @@ module.exports = async d => {
     data.result = eval(`d.data.newc?.${Opx}`);
 
     return {
-        code: d.util.openFunc(data)
+        code: d.util.setCode(data)
     }
 }

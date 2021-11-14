@@ -23,7 +23,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Awaited Commands Provided In')
     }
 
-    const filter = (r, u) => (userFilters === 'everyone' ? true : userFilters.includes(u.id)) && reactions.includes(r.emoji.toString() || r.emoji.id);
+    const filter = (r, u) => (userFilters === 'everyone' ? (true && u.id !== d.client.user.id) : userFilters.includes(u.id)) && reactions.includes(r.emoji.toString() || r.emoji.id);
 
     reactions.forEach(x => {
         msg.react(x).catch(err => {

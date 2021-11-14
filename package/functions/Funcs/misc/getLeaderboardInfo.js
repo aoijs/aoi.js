@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
     const res =
         type === "user"
-            ? `${id}_${d.message.guild.id}`
+            ? `${id}_${d.guild?.id || 'dm'}`
             : type === "globaluser"
                 ? id
                 : id;
@@ -21,7 +21,7 @@ module.exports = async (d) => {
     const docs = (
         await d.client.db.all("main", (x) => x.key.startsWith(variable))
     )
-        .filter((e) => e.key.startsWith(`${variable}_${res}`))
+        .filter((e) => e.key.startsWith(`${variable}_`) && (type === 'user' ? e.key.endsWith(`${d.guild?.id || 'dm'}`) : true))
         .sort((x, y) => Number(y.data.value) - Number(x.data.value));
 
     const ID = `${variable}_` + res;

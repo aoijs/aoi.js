@@ -1,7 +1,7 @@
 const { Perms } = require('../../../Utils/Constants.js');
 
 module.exports = async d => {
-const data = d.util.openFunc(data)
+const data = d.util.openFunc(d)
     if (data.err) return d.error(data.err)
 
     const [channelID, userId, ...perms] = inside.splits

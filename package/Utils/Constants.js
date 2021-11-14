@@ -146,12 +146,7 @@ const MemberOptions = {
     manageable: "manageable",
     status: "status",
     activities: "presence?.activities?.map(c => c.name).join(', ')",
-    removedRoles: `(() => {
-        const curr = d.data.newm?.roles.cache 
-        const old = d.data.oldm?.roles.cache 
-        
-        return old?.filter(r => !curr.has(r.id)).map(r => r.name).join(", ").deleteBrackets() 
-    })()`,
+    removedRoles: `roles.cache?.filter(r => ! d.data.newm?.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
     addedRoles: `roles?.cache?.filter(r => !d.data.oldm.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
     //thread 
     threadChannel: "thread?.channel?.name?.deleteBrackets()",

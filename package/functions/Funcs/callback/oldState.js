@@ -8,6 +8,6 @@ module.exports = async d => {
     data.result = VoiceState(d.data.oldVoiceState)[option];
 
     return {
-        code: d.util.openFunc(data)
+        code: d.util.setCode(data)
     }
 }

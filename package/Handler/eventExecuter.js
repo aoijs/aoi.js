@@ -6,7 +6,7 @@ module.exports = async (event,client,commands,...data) =>{
     const cmds = commands.allValues()
     for(const cmd of cmds){
         if(cmd.channel){
-            const id =cmd.channel.includes("$") ? await Interpreter (client,{author: undefined, channel: undefined,message: undefined},[],{name:"channelParser",code:cmd.channel},client.db,true) : cmd.channel 
+            const id =cmd.channel.includes("$") ? (await Interpreter (client,{author: undefined, channel: undefined,message: undefined},[],{name:"channelParser",code:cmd.channel},client.db,true))?.code : cmd.channel 
     const channel = client.channels.cache.get(id) 
     if(!channel) return console.error("Channel doesn't exist")
           

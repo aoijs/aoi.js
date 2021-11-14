@@ -10,6 +10,9 @@ let chan;
             const id = await Interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel},client.db,true)
             chan = client.channels.cache.get(id?.code)
         }
+        else { 
+            chan = client.channels.cache.get(cmd.channel);
+        }
 await Interpreter(client,data,[],cmd,client.db,false,chan?.id,{rateLimit:rl},chan)
     }
 

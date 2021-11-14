@@ -3,12 +3,18 @@ const Discord = require('discord.js');
 const { Function, CustomFunction } = require('./classes/Functions.js')
 const AoiError = require('./classes/AoiError.js')
 const Util = require('./classes/Util.js')
+
+//helpers
+const { Time } = require('./Utils/helpers/customParser.js')
+const { CheckCondition } = require('./Utils/helpers/checkCondition.js')
+const { mustEscape } = require('./Utils/helpers/mustEscape.js')
+
 const Interpreter = async (client, message, args, command, db, returnCode = false, channelUsed, data = {}, useChannel, returnMessage, returnExecution, returnID, sendMessage = false) => {
     try {
 
         //defining vars// 
         let code = command.code?.replaceAll("\\]", "#LEFT#").split("\\[").join("#RIGHT#").replaceAll("\\,", "#COMMA#").replaceAll("\\;", "#SEMI#")
-        // const oldcode = code 
+
         let [randoms, timezone, letVars, object, disableMentions, array, reactions, channel, author, guild, mentions, member, msg] = [data.randoms || {}, "UTC", data.vars || {}, data.object || {}, ["roles", "users", "everyone"], data.array || [], [], message.channel, message.author, message.guild, message.mentions, message.member, message];
         let anErrorOccuredPlsWait;
         let embeds;
@@ -25,18 +31,24 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         let funcLine;
         let returnData = {}
         command.codeLines = command.codeLines || client.functionManager.serializeCode(command.code);
-        const funcs = command.functions?.length ? command.functions : client.functionManager.findFunctions(command.code)
+        let funcs = command.functions?.length ? command.functions : client.functionManager.findFunctions(command.code)
         //debug system 
         const debug = {
             code,
             functions: command.functions,
         }
-
         const start = Date.now()
         if (client?.aoiOptions?.debugs?.interpreter) {
             console.log(`|------------------------------------------|`)
             console.time(`interpreter-${start}`)
         }
+
+        if (command['$if'] === 'v4') {
+            code = (await IF({ client, code, message, channel, args })).code
+            funcs = client.functionManager.findFunctions(code)
+            console.log({ code, funcs, args })
+        }
+
         //parsing functions (dont touch) 
         for (let i = funcs.length; i > 0; i--) {
             if (!funcs.length) break;
@@ -62,12 +74,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                 for (let p = functionObj.params.length - 1; p >= 0; p--) {
                     d.code = d.code.replace(`{${functionObj.params[p]}}`, unpack(code, func).splits[p])
                 }
-                FuncData = await client.functionManager.interpreter(client, message, args, d, client.db, true)
-
-
-            }
-            else {
-                FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
+                FuncData = await client.functionManager.interpreter(client, message, args, d, client.db, true, channelUsed, {
                     randoms: randoms,
                     command: {
                         name: command.name,
@@ -76,6 +83,11 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         async: command.async || false,
                         functions: command.functions,
                         codeLines: command.codeLines
+                    },
+                    helpers: {
+                        time: Time,
+                        checkCondition: CheckCondition,
+                        mustEscape,
                     },
                     args: args,
                     aoiError: require('./classes/AoiError.js'),
@@ -166,6 +178,114 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                     interpreter: Interpreter,
                     client: client,
                     embed: Discord.MessageEmbed
+                }, useChannel, returnMessage, returnExecution, returnID, sendMessage)
+
+
+            }
+            else {
+                FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
+                    randoms: randoms,
+                    command: {
+                        name: command.name,
+                        code: code,
+                        error: command.error,
+                        async: command.async || false,
+                        functions: command.functions,
+                        codeLines: command.codeLines
+                    },
+                    helpers: {
+                        time: Time,
+                        checkCondition: CheckCondition,
+                        mustEscape,
+                    },
+                    args: args,
+                    aoiError: require('./classes/AoiError.js'),
+                    data: data,
+                    func: func,
+                    funcLine,
+                    util: Util,
+                    allowedMentions: allowedMentions,
+                    embeds: embeds || [],
+                    components: components,
+                    files: attachments || [],
+                    timezone: timezone,
+                    channelUsed: channelUsed,
+                    vars: letVars,
+                    object: object,
+                    disableMentions: disableMentions,
+                    array: array,
+                    reactions: reactions,
+                    message: message.message || message,
+                    msg: msg.message || msg,
+                    author: author,
+                    guild: guild,
+                    channel: channel,
+                    member: member,
+                    mentions: mentions,
+                    unpack() {
+                        const last = code.split(func.replace("[", "")).length - 1;
+                        const sliced = code.split(func.replace("[", ""))[last];
+
+                        return sliced.after();
+                    },
+                    inside(unpacked) {
+                        if (typeof unpacked.inside !== "string") {
+                            if (suppressErrors) return suppressErrors
+                            else {
+                                const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
+                                return e
+                            }
+                        }
+                        else return false
+                    },
+                    noop() { },
+                    async error(err) {
+                        client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
+                        if (client.options.suppressAllErrors) {
+                            if (client.options.errorMessage) {
+                                const { ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
+
+                                if (!message || !message.channel) {
+                                    console.error(client.options.errorMessage.addBrackets())
+                                }
+                                else {
+                                    let [con, em, com, fil] = [" ", "", "", ""]
+                                    let isArray = Array.isArray(client.options.errorMessage)
+                                    if (isArray) {
+                                        isArray = client.options.errorMessage
+                                        con = (isArray[0] === "" || !isArray[0]) ? " " : isArray[0]
+                                        em = isArray[1] !== "" && isArray[1] ? await EmbedParser(isArray[1] || "") : []
+                                        fil = isArray[3] !== "" && isArray[3] ? await FileParser(isArray[3] || "") : []
+                                        com = isArray[2] !== "" && isArray[2] ? await ComponentParser(isArray[2] || "") : []
+                                    }
+                                    else {
+                                        con = client.options.errorMessage.addBrackets() === "" ? " " : client.options.errorMessage.addBrackets()
+
+                                    }
+
+                                    if (!anErrorOccuredPlsWait) { message.channel?.send({ content: con, embeds: em || [], components: com || [], files: fil || [] }) }
+                                    anErrorOccuredPlsWait = true
+                                }
+                            }
+                            else return;
+                        }
+                        else {
+                            anErrorOccuredPlsWait = true
+                            if (!message || !message.channel) {
+                                console.error(err.addBrackets())
+                            }
+                            if (suppressErrors) { 
+                                if(suppressErrors.trim() !== '') ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
+                                else ;
+                            }
+                            else {
+                                message.channel?.send(typeof err === "object" ? err : err?.addBrackets())
+                            }
+                        }
+                    },
+                    interpreter: Interpreter,
+                    client: client,
+                    embed: Discord.MessageEmbed
                 })
 
             }
@@ -217,7 +337,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         }
         if (returnCode) { returnData.code = code }
         if (returnExecution) { returnData.data = data }
-        if ((code.length || embeds?.length,attachments?.length) && !anErrorOccuredPlsWait && !error) {
+        if ((code.length || embeds?.length || attachments?.length) && !anErrorOccuredPlsWait && !error) {
             try {
 
                 const send = {

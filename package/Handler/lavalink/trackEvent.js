@@ -18,9 +18,9 @@ module.exports = async (commands, track, player, lava, reason) => {
         client
     }
     if (reason) data["array"] = [reason]
-    for (const cmd of commands){
-        const id = cmd.channel.includes("$")? await client.functionManager.interpreter(client,data,[],{name:"ChannelParser",code:cmd.channel,functions:client.functionManager.findFunctions(cmd.channel)},client.db,true) : {code : cmd.channel}
-        chan = client.channels.cache.get(id?.code);
-        await client.functionManager.interpreter(client, data,[],cmd,client.db,false,chan?.id,{ track },chan)
+    for (const cmd of commands) {
+        const id = cmd.channel.includes("$") ? (await client.functionManager.interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel, functions: client.functionManager.findFunctions(cmd.channel) }, client.db, true))?.code : cmd.channel
+        chan = client.channels.cache.get(id);
+        await client.functionManager.interpreter(client, data, [], cmd, client.db, false, chan?.id, { track }, chan)
     }
 }

@@ -3,7 +3,7 @@ module.exports = async d => {
     if(err) return d.error(err);
     
     const [ id,token ] = inside.splits;
-    const webhook = await d.client.fetchWebook(id,token).catch( e => {
+    const webhook = await d.client.fetchWebhook(id,token).catch( e => {
         d.aoiError.fnError(d,"custom",{ inside },"Invalid WebhookId Provided In");
     });
     

@@ -8,6 +8,6 @@ const { Emoji } = require('../../../Utils/helpers/functions.js');
     data.result = Emoji( d.data.newe )[option];
 
     return {
-        code: d.util.openFunc(data)
+        code: d.util.setCode(data)
     }
 }

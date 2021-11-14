@@ -2,16 +2,61 @@ module.exports = async d => {
     const Data = d.util.openFunc(d);
     if (Data.err) return d.error(Data.err)
 
-    const [variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1,table = d.client.db.tables[0]] = Data.inside.splits;
+    const [variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
 
-    const all = await d.client.db.all(table, (x) => x.key.startsWith(`${variable}_`) && x.key.split("_").length === 2)
+    const all = await d.client.db.all(table, variable.addBrackets(), 2)
 
     let y = 0
-
+    let value;
     let content = []
 
-    for (const data of all.sort((x, y) => Number(y.data.value) - Number(x.data.value))) {
-        const user = await d.client.users.fetch(data.key.split("_")[1]).catch(err => { })
+    for (const data of all.sort((x, y) => {
+        if (d.client.db instanceof AoijsAPI) {
+            return (Number(y.data.value) - Number(x.data.value))
+        }
+        else if (d.client.db instanceof DbdTsDb) {
+            return (Number(y[variable.addBrackets()]) - Number(x[variable.addBrackets()]));
+        }
+        else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
+            return (Number(y.value || y[variable.addBrackets()] || (typeof y.data === 'object' ? y.data.value : y.data)) - Number(x.value || x[variable.addBrackets()] || (typeof x.data === 'object' ? x.data.value : x.data)))
+        }
+    })) {
+        let user;
+
+        if (d.client.db instanceof AoijsAPI) {
+            value = Number(data.data.value);
+
+            user = await d.util.getUser(d, data.key.split('_')[1])
+        }
+        else if (d.client.db instanceof DbdTsDb) {
+            value = Number(data[variable.addBrackets()]);
+
+            user = await d.util.getUser(d, data.key.split('_')[0])
+        }
+        else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
+            value = Number(data.value || data[variable.addBrackets()] || (typeof data.data === 'object' ? data.data.value : data.data))
+
+            if (data.key) {
+                const arr = data.key.split('_');
+                user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
+            }
+            else if (data.id) {
+                const arr = data.id.split('_');
+                user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
+            }
+            else if (data.ID) {
+                const arr = data.ID.split('_');
+                user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
+            }
+            else if (data.Id) {
+                const arr = data.Id.split('_');
+                user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
+            }
+            else {
+                d.aoiError.fnError(d, 'custom', {}, 'Database Not Supported For LeaderBoard')
+                break;
+            }
+        }
 
         if (user) {
             y++
@@ -23,7 +68,7 @@ module.exports = async d => {
 
                 const awaited = d.client.cmd.awaited.find(c => c.name === ins)
 
-                if (!awaited) return d.aoiError.fnError(d,'custom',{inside : Data.inside},` Invalid awaited command '${ins}' in`)
+                if (!awaited) return d.aoiError.fnError(d, 'custom', { inside: Data.inside }, ` Invalid awaited command '${ins}' in`)
 
                 const CODE = await d.interpreter(d.client, {
                     guild: d.message.guild,

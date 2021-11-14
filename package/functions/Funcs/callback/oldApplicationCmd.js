@@ -6,6 +6,6 @@ module.exports = async d => {
     data.result = eval(`d.data.oldApp?.${option}`);
 
     return {
-        code: d.util.openFunc(data)
+        code: d.util.setCode(data)
     }
 }
