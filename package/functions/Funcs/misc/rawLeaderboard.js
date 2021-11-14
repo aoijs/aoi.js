@@ -83,7 +83,7 @@ module.exports = async d => {
 
             content.push(text)
         }
-        if (type === "desc") content = content.reverse()
+        if (order === "desc") content = content.reverse()
 
         const px = page * list - list, py = page * list
 
