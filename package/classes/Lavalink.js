@@ -15,10 +15,12 @@ class Lavalink extends EventEmitter {
         this.start_commands = [];
         /** @type {{name: string, code: string, channel: string}[]} */
         this.end_commands = [];
-        const lavalink = new lerefLavalink.LerefLava({ send: (guildId, d) => {
-          const guild = this.client.guilds.cache.get(guildId);
-          if (guild) guild.shard.send(d);
-        }});
+        const lavalink = new lerefLavalink.LerefLava({
+            send: (guildId, d) => {
+                const guild = this.client.guilds.cache.get(guildId);
+                if (guild) guild.shard.send(d);
+            }
+        });
         lavalink.on("nodeConnect", (node) => this.debug(`Node ${node.options.url} connected`));
         lavalink.on("nodeDisconnect", (node) => this.debug(`Node ${node.options.url} disconnected`));
         lavalink.on("playerCreate", (p) => this.debug(`Player created for GUILD(${p.options.guildID})`));
@@ -57,8 +59,9 @@ class Lavalink extends EventEmitter {
         if (!command.channel) return new Error("Channel is required");
         if (!command.code) return new Error("Code is required");
     }
+
     /**
-     * 
+     *
      * @param {leref.ts.lerefPlayer} player
      * @param {leref.ts.lerefTracking} track
      */
@@ -73,8 +76,9 @@ class Lavalink extends EventEmitter {
         const res = length - (player.position + Math.round(sub) /* *rate */)
         return this.getTime(res /* /speed */ / 1000);
     }
+
     /**
-     * 
+     *
      * @param {leref.ts.lerefplayer} player
      */
     getCurrent(player) {
@@ -88,9 +92,10 @@ class Lavalink extends EventEmitter {
         const res = player.position + Math.round(sub) /* *rate */;
         return this.getTime(Math.round(res /* *speed */ / 1000));
     }
+
     /**
-     * 
-     * @param {{name: string, code: string, channel: string}} command 
+     *
+     * @param {{name: string, code: string, channel: string}} command
      */
     trackStartCommand(command) {
         const c = this._validate(command);
@@ -100,8 +105,8 @@ class Lavalink extends EventEmitter {
     }
 
     /**
-     * 
-     * @param {{name: string, code: string, channel: string}} command 
+     *
+     * @param {{name: string, code: string, channel: string}} command
      */
     trackEndCommand(command) {
         const c = this._validate(command);
@@ -111,8 +116,8 @@ class Lavalink extends EventEmitter {
     }
 
     /**
-     * 
-     * @param {"start" | "end"} event 
+     *
+     * @param {"start" | "end"} event
      * @param {leref.ts.lerefPlayer} player
      * @param {leref.ts.lerefTracking} track
      * @param {string?} [reason]
@@ -127,7 +132,7 @@ class Lavalink extends EventEmitter {
             emit(this.end_commands, track, player, this, reason);
         }
     }
-    
+
     getTime(ms) {
         const h = Math.trunc(ms / 3600);
         const m = Math.trunc((ms - (h * 3600)) / 60);
@@ -135,13 +140,15 @@ class Lavalink extends EventEmitter {
 
         return {
             hour: h,
-            minute: `${String(m).length<2 ? "0" : ""}${String(m)}`,
-            second: `${String(s).length<2 ? "0" : ""}${String(s)}`
+            minute: `${String(m).length < 2 ? "0" : ""}${String(m)}`,
+            second: `${String(s).length < 2 ? "0" : ""}${String(s)}`
         }
     }
+
     get version() {
         return lerefLavalink.version
     }
+
     /**
      * Creates a connection to Lavalink, refers as node
      * @param {import("leref.ts/dist/utils/typings").NodeOptions} options
@@ -154,5 +161,4 @@ class Lavalink extends EventEmitter {
         this.emit("debug", `[\u001b[36;1mleref.ts\u001b[0m]:`, String(message));
     }
 }
-
 module.exports = Lavalink;

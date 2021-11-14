@@ -10,7 +10,7 @@ module.exports = async d => {
     const user = await d.util.getMember(guild,userId)
 
     if(!user) return d.aoiError.fnError( d,'member',{ inside : data.inside });
-    
+
     data.result = user.voice.selfMute
     return {
         code: d.util.setCode(data)
