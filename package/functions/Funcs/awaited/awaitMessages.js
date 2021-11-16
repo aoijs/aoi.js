@@ -23,10 +23,10 @@ module.exports = async d => {
     replies = replies.split(",")
     let channel;
     if (dm) {
-        channel = (await d.util.getUser(dm)).dmChannel
+        channel = (await d.util.getUser(d,dm)).dmChannel
     }
     else {
-        channel = await d.util.getChannel(channelId)
+        channel = await d.util.getChannel(d,channelId)
     }
     const filter = (m) => (userFilter === "everyone" ? true : userFilter.some(id => id === m.author.id)) && replies.includes(m.content.toLowerCase())
     channel.awaitMessages({ filter, time, max: 1, errors: ["time"] })
