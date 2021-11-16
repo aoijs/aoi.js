@@ -36,7 +36,7 @@ class Database {
     }
     get ping() {
         const start = Date.now();
-        this.db.db.all(this.tables[0])
+        this.db.all(this.tables[0])
         return (Date.now() - start)
     }
 }
