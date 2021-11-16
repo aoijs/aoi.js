@@ -25,7 +25,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
         let attachments = []
         let components = []
         let reply;
-        let allowedMentions = {}
+        let allowedMentions = { parse : disableMentions}
         let FuncData;
         let msgobj;
         let funcLine;
