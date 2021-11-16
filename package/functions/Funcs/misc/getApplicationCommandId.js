@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.setCode( d );
+    const data = d.util.openFunc( d );
     if( data.err ) return d.error( data.err );
     
     const [ name , type = 'global' ] = data.inside.splits;
