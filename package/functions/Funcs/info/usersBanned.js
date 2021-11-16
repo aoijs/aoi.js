@@ -3,7 +3,7 @@ module.exports = d => {
 
     const [guildId = d.guild?.id, force = 'no', option = 'name', sep = ' , '] = data.inside.splits;
 
-    const guild = d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
 
     if( force === 'yes' ) guild.bans.fetch();
