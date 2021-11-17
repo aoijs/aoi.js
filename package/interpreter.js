@@ -8,7 +8,6 @@ const Util = require('./classes/Util.js')
 const { Time } = require('./Utils/helpers/customParser.js')
 const { CheckCondition } = require('./Utils/helpers/checkCondition.js')
 const { mustEscape } = require('./Utils/helpers/mustEscape.js')
-const {ErrorHandler} = require("./Handler/parsers");
 
 const Interpreter = async (client, message, args, command, db, returnCode = false, channelUsed, data = {}, useChannel, returnMessage, returnExecution, returnID, sendMessage = false) => {
     try {
@@ -135,7 +134,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
                         if (client.options.suppressAllErrors) {
                             if (client.options.errorMessage) {
-                                const {EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
+                                const {ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
                                 if (!message || !message.channel) {
                                     console.error(client.options.errorMessage.addBrackets())
@@ -244,7 +243,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
                         if (client.options.suppressAllErrors) {
                             if (client.options.errorMessage) {
-                                const {EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
+                                const {ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
                                 if (!message || !message.channel) {
                                     console.error(client.options.errorMessage.addBrackets())
