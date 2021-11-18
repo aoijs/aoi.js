@@ -9,7 +9,7 @@ module.exports = async d => {
     const member = await d.util.getMember(guild, userId);
     if (!member) return d.aoiError.fnError(guild, 'member', { inside: data.inside });
 
-    data.result = member.presence?.status === 'offline' ? 'none' : Object.keys(member.presence?.clientStatus || { none: none });
+    data.result = member.presence?.status === 'offline' ? 'none' : Object.keys(member.presence?.clientStatus || { none: "none" });
 
     return {
         code: d.util.setCode(data)
