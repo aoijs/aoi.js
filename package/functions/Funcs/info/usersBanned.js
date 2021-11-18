@@ -8,7 +8,7 @@ module.exports = async d => {
 
     if (force === 'yes') await guild.bans.fetch();
 
-    data.result = guild.bans.cache.map(x => option === 'mention' ? x.toString() : x[option]).join(sep);
+    data.result = guild.bans.cache.map(x => option === 'mention' ? x.user.toString() : x.user[option]).join(sep);
 
     return {
         code: d.util.setCode(data)
