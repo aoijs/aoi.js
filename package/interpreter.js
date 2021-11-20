@@ -394,8 +394,6 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                 if (returnID) { returnData.id = msgobj?.id }
                 if (returnMessage) { returnData.message = msgobj }
 
-
-
             }
             catch (e) {
                 console.error(e)
@@ -417,4 +415,4 @@ function unpack(code, func) {
 
     return sliced.after();
 
-};
+}
