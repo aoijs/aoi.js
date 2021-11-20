@@ -10,7 +10,7 @@ module.exports = async d => {
         guild.roles.fetch()
     }
     
-    data.result = guild.roles.cache.map( x => type === ' mention' ? x.toString() : x[ type ] ).join( sep ).removeBrackets();
+    data.result = guild.roles.cache.map( x => type?.trim() === 'mention' ? x.toString() : x[ type ] ).join( sep ).removeBrackets();
     
     return {
         code : d.util.setCode( data )

@@ -4,7 +4,7 @@ module.exports = async d => {
     
     const [ channelId = d.channel.id ] = inside.splits;
     
-    const channel = await d.util.getChannel(channelId);
+    const channel = await d.util.getChannel(d,channelId);
     if(!channel) return d.aoiError.fnError(d,"channel",{ inside });
     
     const result = channel.parentId;

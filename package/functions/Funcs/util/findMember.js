@@ -3,7 +3,7 @@ module.exports = async d => {
     if(data.err) return d.error(data.err);
     
     let [ memberResolver,returnSelf = "yes",guildId = d.guild.id ] = data.inside.splits;
-    memberResolver = memberResolver.addBrackets().replace(/[\\<>@!]/g,"").trim();
+    memberResolver = memberResolver.addBrackets()
     
     const guild = await d.util.getGuild(d,guildId);
     if(!guild) return d.aoiError.fnError(d,"guild",{ inside : data.inside });

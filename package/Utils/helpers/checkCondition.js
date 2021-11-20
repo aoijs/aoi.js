@@ -39,25 +39,29 @@ class CheckCondition {
     }
     static solveGreater(msg) {
         let pass = true;
-        const parts = msg.split(">");
+        let parts = msg.split(">");
+        parts = parts.every(x => isNaN(x)) ? parts : parts.map(x => Number(x))
         if (parts[0] <= parts[1]) pass = false;
         return pass
     }
     static solveLesser(msg) {
         let pass = true;
-        const parts = msg.split("<");
+        let parts = msg.split("<");
+        parts = parts.every(x => isNaN(x)) ? parts : parts.map(x => Number(x))
         if (parts[0] >= parts[1]) pass = false;
         return pass
     }
     static solveLE(msg) {
         let pass = true;
-        const parts = msg.split("<=");
+        let parts = msg.split("<=");
+        parts = parts.every(x => isNaN(x)) ? parts : parts.map(x => Number(x))
         if (parts[0] > parts[1]) pass = false;
         return pass
     }
     static solveGE(msg) {
         let pass = true;
-        const parts = msg.split(">=");
+        let parts = msg.split(">=");
+        parts = parts.every(x => isNaN(x)) ? parts : parts.map(x => Number(x))
         if (parts[0] < parts[1]) pass = false;
         return pass
     }

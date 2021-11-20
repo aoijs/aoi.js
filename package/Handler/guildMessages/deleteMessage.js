@@ -13,7 +13,7 @@ for(const cmd of client.cmd.messageDelete.allValues()){
   if(!channel) channel = dmsg.channel
   chan = channel 
 }
-    else{data.channel = d.client.channels.cache.get(cmd.channel) || dmsg.channel}
+    else{data.channel = client.channels.cache.get(cmd.channel) || dmsg.channel}
     if(!data.guild) data.guild = dmsg.guild||dmsg.channel?.guild 
     await Interpreter(client,data,data?.content?.split(" "),cmd, client.db,false,dmsg.channel?.id,{},chan)
 

@@ -7,7 +7,7 @@ const data = d.util.openFunc(d)
     const [channelID, userId, ...perms] = inside.splits
 
     const channel = await d.util.getChannel(d, channelID, true);
-    if (!channel) return d.aoiError.fnError(d, "channel", { inside });
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside : data.inside });
 
     const user = await d.util.getUser(d, userId);
     if (!user) return d.aoiError.fnError(d, 'user', { inside: data.inside });

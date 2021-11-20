@@ -6,8 +6,6 @@ module.exports = async d => {
 channelResolver = channelResolver.addBrackets();
     
     data.result = d.client.channels.cache.find( x => x.id === channelResolver || x.name.toLowerCase() === channelResolver.toLowerCase() || x.toString() === channelResolver )?.id || (returnSelf === "yes" ? d.channel.id : undefined);
-    
-    
 
     return  {
         code : d.util.setCode( data ) 

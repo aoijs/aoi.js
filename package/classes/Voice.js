@@ -1,19 +1,21 @@
-const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require('@discordjs/voice')
-const { CommandManager } = require('./Commands.js')
-const Group = require('../CacheHandler/index.js').cache
-const ServerManager = require('../Handler/music/class/ServerManager.js')
-const { EventEmitter } = require('events')
-const { Events } = require('../Utils/VoiceConstants.js')
-const AoiError = require('./AoiError.js')
-class Voice extends EventEmitter {
-    constructor(client,
+const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require( '@discordjs/voice' )
+const { CommandManager } = require( './Commands.js' )
+const Group = require( '../CacheHandler/index.js' ).cache
+const ServerManager = require( '../Handler/music/class/ServerManager.js' )
+const { EventEmitter } = require( 'events' )
+const { Events } = require( '../Utils/VoiceConstants.js' )
+const AoiError = require( './AoiError.js' )
+class Voice extends EventEmitter
+{
+    constructor ( client,
         yt = {},
         sc = {},
         cache = {
             enabled: false,
             tracksPerGuild: 20
         }
-    ) {
+    )
+    {
         super();
         this.functionManager = client.functionManager
         this.client = client
@@ -23,9 +25,10 @@ class Voice extends EventEmitter {
         this.ytdl = yt
         this.scdl = sc
         this.cache = cache
-        new CommandManager(this, false, Object.values(Events))
+        new CommandManager( this, false, Object.values( Events ) )
     }
-    async joinVc(channel, textChannel, debug = false) {
+    async joinVc ( channel, textChannel, debug = false )
+    {
         const d = {
             channelId: channel.id,
             guildId: channel.guildId,
@@ -34,36 +37,44 @@ class Voice extends EventEmitter {
             group: this.client.user.id
         }
 
-        const connection = joinVoiceChannel(d)
-        connection.on("debug", console.log)
-        connection.on('error', console.error)
-        try {
-            await entersState(connection, VoiceConnectionStatus.Ready, 30000)
-            this.servers.set(channel.guild.id, new ServerManager({ connection, channel, textChannel, voice: this }))
+        const connection = joinVoiceChannel( d )
+        connection.on( "debug", console.log )
+        connection.on( 'error', console.error )
+        try
+        {
+            await entersState( connection, VoiceConnectionStatus.Ready, 30000 )
+            this.servers.set( channel.guild.id, new ServerManager( { connection, channel, textChannel, voice: this } ) )
         }
-        catch (error) {
+        catch ( error )
+        {
 
             connection.destroy()
-            AoiError.consoleError("joinVoiceChannelError", error)
+            AoiError.consoleError( "joinVoiceChannelError", error )
         }
     }
-    get serversSize() {
+    get serversSize ()
+    {
         return this.servers.size
     }
-    musicStartCommand(d = {}) {
-        this.cmd.musicStart.set(this.cmd.musicStart.size, d)
+    musicStartCommand ( d = {} )
+    {
+        this.cmd.musicStart.set( this.cmd.musicStart.size, d )
     }
-    musicErrorCommand(d = {}) {
-        this.cmd.musicError.set(this.cmd.musicError.size, d)
+    musicErrorCommand ( d = {} )
+    {
+        this.cmd.musicError.set( this.cmd.musicError.size, d )
     }
-    trackEndCommand(d = {}) {
-        this.cmd.trackEnd.set(this.cmd.trackEnd.size, d)
+    trackEndCommand ( d = {} )
+    {
+        this.cmd.trackEnd.set( this.cmd.trackEnd.size, d )
     }
-    queueEndCommand(d = {}) {
-        this.cmd.queueEnd.set(this.cmd.queueEnd.size, d)
+    queueEndCommand ( d = {} )
+    {
+        this.cmd.queueEnd.set( this.cmd.queueEnd.size, d )
     }
-    onMusicStart() {
-        this.on(Events.TRACK_START, async (track, server) => require('../Handler/music/events/musicStart.js')(track, server, this, this.client))
+    onMusicStart ()
+    {
+        this.on( Events.TRACK_START, async ( track, server ) => require( '../Handler/music/events/musicStart.js' )( track, server, this, this.client ) )
     }
 }
 module.exports = Voice;
