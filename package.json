@@ -2,18 +2,18 @@
   "name": "aoi.js",
   "version": "5.0.4",
   "description": "aoi.js - An open source package allowing to create Discord Bots with simple built-in functions.",
-  "main": "package/index.js",
-  "typings": "package/index.d.ts",
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
   "scripts": {
     "start": "node test.js",
-    "prettycheck": "prettier --check \"package/**/*.js\"",
-    "prettywrite": "prettier --write \"package/**/*.js\""
+    "prettycheck": "prettier --check \\\"src/**/*.js\\\"",
+    "prettywrite": "prettier --write \\\"src/**/*.js\\\""
   },
   "engines": {
-    "node": ">=16.6"
+    "node": ">=16.6.0"
   },
   "files": [
-    "package"
+    "src"
   ],
   "license": "Apache-2.0",
   "licenses": [
