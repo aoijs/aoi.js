@@ -123,8 +123,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         if (typeof unpacked.inside !== "string") {
                             if (suppressErrors) return suppressErrors
                             else {
-                                const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
-                                return e
+                                return client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
                             }
                         }
                         else return false
@@ -234,8 +233,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         if (typeof unpacked.inside !== "string") {
                             if (suppressErrors) return suppressErrors
                             else {
-                                const e = client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
-                                return e
+                                return client.options.suppressAllErrors ? client.options.errorMessage : ` \`${func}: Invalid Usage\` (line : ${funcLine})`
                             }
                         }
                         else return false
@@ -278,7 +276,12 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                             }
                             if (suppressErrors) {
                                 const {ErrorHandler} = require('./Handler/parsers.js')
-                                if(suppressErrors.trim() !== '') ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
+                                if(suppressErrors.trim() !== '') await ErrorHandler({
+                                    channel: channel,
+                                    message: message,
+                                    guild: guild,
+                                    author: author
+                                }, suppressErrors?.split("{error}").join(err.addBrackets()))
                                 else ;
                             }
                             else {
