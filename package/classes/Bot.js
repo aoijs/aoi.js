@@ -13,13 +13,12 @@ class Client extends BaseClient
     constructor ( options )
     {
         super( options );
-        new CommandManager( this )
         this.functionManager = new FunctionManager( this )
         if ( this.aoiOptions.respondOnEdit )
         {
             this.aoiOptions.respondOnEdit.time = this.aoiOptions.respondOnEdit.time || 60000
         }
-        this.cmd = undefined
+
     }
     //message Events 
     onMessage ( options )

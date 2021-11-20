@@ -23,9 +23,9 @@
     }
   ],
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/aoijs/aoi.js.git"
-    },
+    "type": "git",
+    "url": "git+https://github.com/aoijs/aoi.js.git"
+  },
   "keywords": [
     "aoi.js",
     "aoijs",
@@ -40,5 +40,29 @@
     "Bot Designer for Discord",
     "discord",
     "discordbot"
-  ]
+  ],
+  "dependencies": {
+    "@discordjs/voice": "^0.7.5",
+    "dbdjs.db": "^2.0.2",
+    "discord.js": "^13.3.1",
+    "leref.ts": "^1.1.0"
+  },
+  "devDependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "axios": "^0.24.0",
+    "ffmpeg-static": "^4.4.0",
+    "m3u8stream": "^0.8.4",
+    "node-fetch": "^3.1.0",
+    "prettier": "^2.4.1",
+    "prism-media": "^1.3.2",
+    "soundcloud-downloader": "^1.0.0",
+    "spotify-url-info": "^2.2.3",
+    "tweetnacl": "^1.0.3",
+    "typescript": "^4.5.2",
+    "ws": "^8.2.3",
+    "youtube-sr": "^4.1.9",
+    "ytdl-core": "^4.9.1",
+    "ytdl-core-discord": "^1.3.1"
+  },
+  "type": "commonjs"
 }
