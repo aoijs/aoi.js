@@ -3,10 +3,6 @@ const fs = require( 'fs' )
 const AoiError = require( './AoiError.js' )
 const BaseClient = require( './base.js' )
 const { FunctionManager } = require( './Functions.js' )
-// @ts-ignore
-const { CommandManager, Command } = require( './Commands.js' )
-// @ts-ignore
-const Collection = require( '../CacheHandler/index.js' ).cache;
 
 class Client extends BaseClient
 {
@@ -25,7 +21,7 @@ class Client extends BaseClient
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MESSAGES" ) ) AoiError.CallbackError( "onMessage", "GUILD_MESSAGES", 91 )
         this.messageEventOptions = options || { guildOnly: true, respondToBots: false }
-        // @ts-ignore
+
         this.on( "messageCreate", async data =>
         {
             await require( '../Handler/guildMessages/commands.js' )( data, this, this.db )

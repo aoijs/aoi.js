@@ -8,7 +8,7 @@ class Lavalink extends EventEmitter
     {
         super();
         /**
-         * @type {import("discord.js").Client}
+         * @type {import("./Bot.js")}
          */
         this.client = client;
         /**

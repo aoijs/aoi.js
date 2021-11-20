@@ -1,6 +1,8 @@
 //@ts-ignore
 import Group from "./CacheHandler/group";
+//@ts-ignore
 import LimitGroup from "./CacheHandler/limitGroup";
+//@ts-ignore
 import SuperSet from "./CacheHandler/superSet";
 import { Client, Collection, ShardingManager } from "discord.js";
 declare module "aoi.js" {
