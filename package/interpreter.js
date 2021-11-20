@@ -134,7 +134,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
                         if (client.options.suppressAllErrors) {
                             if (client.options.errorMessage) {
-                                const {ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
+                                const {EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
                                 if (!message || !message.channel) {
                                     console.error(client.options.errorMessage.addBrackets())
@@ -166,6 +166,8 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                                 console.error(err.addBrackets())
                             }
                             if (suppressErrors) {
+                                const {ErrorHandler} = require('./Handler/parsers.js')
+
                                 ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
                             }
                             else {
@@ -243,7 +245,7 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                         client.emit("functionError", { error: err?.addBrackets(), function: func, command: command.name, channel, guild }, client)
                         if (client.options.suppressAllErrors) {
                             if (client.options.errorMessage) {
-                                const {ErrorHandler, EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
+                                const {EmbedParser, FileParser, ComponentParser } = require('./Handler/parsers.js')
 
                                 if (!message || !message.channel) {
                                     console.error(client.options.errorMessage.addBrackets())
@@ -274,7 +276,8 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                             if (!message || !message.channel) {
                                 console.error(err.addBrackets())
                             }
-                            if (suppressErrors) { 
+                            if (suppressErrors) {
+                                const {ErrorHandler} = require('./Handler/parsers.js')
                                 if(suppressErrors.trim() !== '') ErrorHandler({ channel: channel, message: message, guild: guild, author: author }, suppressErrors?.split("{error}").join(err.addBrackets()))
                                 else ;
                             }
