@@ -3,7 +3,7 @@
   "version": "5.0.4",
   "description": "aoi.js - An open source package allowing to create Discord Bots with simple built-in functions.",
   "main": "src/index.js",
-  "typings": "package/index.d.ts",
+  "typings": "src/index.d.ts",
   "scripts": {
     "start": "node test.js",
     "prettycheck": "prettier --check \\\"src/**/*.js\\\"",
