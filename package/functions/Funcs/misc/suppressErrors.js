@@ -5,6 +5,6 @@ module.exports = d => {
 
     return {
         code : d.util.setCode(data),
-        supressErrors : text.addBrackets() || ''
+        suppressErrors : text.addBrackets() || ''
     }
 }

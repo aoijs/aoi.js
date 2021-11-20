@@ -53,13 +53,12 @@ class CustomCollector extends Interaction
         this.endsOn = ( Date.now() + Number( options.time ) );
         this.data = varData
     }
-    async start ( msgid, user, customID, data )
-    {
-        this.resolve( data )
-        if ( this.options.customIDs.includes( customID ) && this.endsOn >= Date.now() && this.options.msgid === msgid && ( this.options.filter === "everyone" || this.options.filter === user ) )
-        {
-            this.mainData.push( data )
-            this.emit( "ItemFound", data )
+    async start(msgid, user, customID, data) {
+        this.resolve(data)
+        if (this.options.customIDs.includes(customID) && this.endsOn >= Date.now() && this.options.msgId === msgid && (this.options.filter === "everyone" || this.options.filter === user)) {
+            this.mainData.push(data)
+            this.emit("ItemFound", data)
+
         }
         this.timeout( () =>
         {
