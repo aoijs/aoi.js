@@ -1,4 +1,4 @@
-const Group = require('../../../CacheHandler/index.js').limitedCache 
+const Group = require('../../../cachehandler/index.js').limitedCache
 const fs = require('fs') 
 class Cacher {
     constructor(limit=50){

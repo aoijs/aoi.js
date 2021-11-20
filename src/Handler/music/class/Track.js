@@ -1,4 +1,4 @@
-const {TrackType} = require('../../../Utils/VoiceConstants.js')
+const {TrackType} = require('../../../utils/VoiceConstants.js')
 class Track {
     constructor(info,stream, resource,type,member){
         this.stream = stream 

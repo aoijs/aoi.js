@@ -692,5 +692,5 @@ class Client extends BaseClient
         this.cmd.loop?.set( this.cmd.loop.size, d )
     }
 }
-require( '../Utils/helpers/prototypes.js' )
+require( '../utils/helpers/prototypes.js' )
 module.exports = Client;

@@ -1,4 +1,4 @@
-const { PinData } = require("../../../Utils/CallbackUtil.js");
+const { PinData } = require("../../../utils/CallbackUtil.js");
 module.exports = d => {
     const { code } = d.command;
     const inside = d.unpack();

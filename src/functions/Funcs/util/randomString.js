@@ -1,4 +1,4 @@
-const { Characters } = require('../../../Utils/Constants.js')
+const { Characters } = require('../../../utils/Constants.js')
 module.exports = d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);

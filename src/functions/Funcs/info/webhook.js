@@ -1,4 +1,4 @@
-const { Webhook } = require("../../../Utils/helpers/functions");
+const { Webhook } = require("../../../utils/helpers/functions");
 
 module.exports = async d => {
     const data = d.util.openFunc( d );

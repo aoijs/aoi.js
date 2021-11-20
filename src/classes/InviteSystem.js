@@ -1,4 +1,4 @@
-const Group = require( '../CacheHandler/index.js' ).cache
+const Group = require( '../cachehandler/index.js' ).cache
 const { EventEmitter } = require( 'events' );
 const timer = ms => new Promise( ( res, rej ) => setTimeout( () => res, ms ) )
 class InviteSystem extends EventEmitter

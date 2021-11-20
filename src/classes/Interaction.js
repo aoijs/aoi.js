@@ -1,4 +1,4 @@
-const { cache: Group } = require( '../CacheHandler/index.js' )
+const { cache: Group } = require( '../cachehandler/index.js' )
 const { EventEmitter } = require( 'events' )
 class Interaction extends EventEmitter
 {

@@ -1,6 +1,6 @@
 const parser = require("../../../Handler/slashCommandOptionsParser");
 const {SlashOptionsParser} = require('../../../Handler/parsers.js');
-const { SlashTypes } = require('../../../Utils/InteractionConstants.js');
+const { SlashTypes } = require('../../../utils/InteractionConstants.js');
 module.exports = async d => {
     const { code } = d.command;
     const inside = d.unpack();

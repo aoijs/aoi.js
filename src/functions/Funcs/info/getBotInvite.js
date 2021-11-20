@@ -1,4 +1,4 @@
-const { Perms } = require( '../../../Utils/Constants.js' );
+const { Perms } = require( '../../../utils/Constants.js' );
 const { Permissions } = require( 'discord.js' );
 
 module.exports = async d => {

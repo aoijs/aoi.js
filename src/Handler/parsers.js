@@ -2,10 +2,10 @@ const Discord = require('discord.js')
 const Util = require("../classes/Util.js")
 const interpreter = require("../interpreter.js")
 
-const { mustEscape } = require('../Utils/helpers/mustEscape.js')
-const { ButtonStyleOptions } = require('../Utils/Constants.js')
+const { mustEscape } = require('../utils/helpers/mustEscape.js')
+const { ButtonStyleOptions } = require('../utils/Constants.js')
 const SlashOption = require('./slashOption.js')
-const { Time } = require('../Utils/helpers/customParser.js')
+const { Time } = require('../utils/helpers/customParser.js')
 const EmbedParser = async (msg) => {
     msg = (mustEscape(msg))
 

@@ -1,4 +1,4 @@
-const { Invite } = require( '../../../Utils/helpers/functions.js' );
+const { Invite } = require( '../../../utils/helpers/functions.js' );
 
 module.exports = async d => {
     const data  = d.util.openFunc( d );

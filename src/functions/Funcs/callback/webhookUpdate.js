@@ -1,4 +1,4 @@
-const {WebhookUpdateOptions} = require("../../../Utils/CallbackUtil.js")
+const {WebhookUpdateOptions} = require("../../../utils/CallbackUtil.js")
 
 module.exports = async (d) => {
 const data = d.util.openFunc(d);

@@ -1,9 +1,9 @@
 const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require( '@discordjs/voice' )
 const { CommandManager } = require( './Commands.js' )
-const Group = require( '../CacheHandler/index.js' ).cache
+const Group = require( '../cachehandler/index.js' ).cache
 const ServerManager = require( '../Handler/music/class/ServerManager.js' )
 const { EventEmitter } = require( 'events' )
-const { Events } = require( '../Utils/VoiceConstants.js' )
+const { Events } = require( '../utils/VoiceConstants.js' )
 const AoiError = require( './AoiError.js' )
 class Voice extends EventEmitter
 {

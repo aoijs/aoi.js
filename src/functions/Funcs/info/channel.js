@@ -1,4 +1,4 @@
-const { Channel } = require('../../../Utils/helpers/functions.js');
+const { Channel } = require('../../../utils/helpers/functions.js');
 module.exports = async d => {
     const { code } = d.command;
     const inside = d.unpack();

@@ -1,4 +1,4 @@
-const { Invite } = require('../../../Utils/helpers/functions.js');
+const { Invite } = require('../../../utils/helpers/functions.js');
 
 
 module.exports = d => {

@@ -1,5 +1,5 @@
 const Interpreter = require('../../interpreter.js')
-const { InteractionTypes, MessageComponentTypes } = require('../../Utils/InteractionConstants.js')
+const { InteractionTypes, MessageComponentTypes } = require('../../utils/InteractionConstants.js')
 module.exports = async (interaction, client) => {
     client.interactionManager.resolve(interaction)
     if (interaction.isMessageComponent()) {

@@ -1,5 +1,5 @@
-const { Time } = require('../../../Utils/helpers/customParser.js');
-const { Timeout } = require('../../../Utils/helpers/functions.js')
+const { Time } = require('../../../utils/helpers/customParser.js');
+const { Timeout } = require('../../../utils/helpers/functions.js')
 
 module.exports = d => {
     const data = d.util.openFunc(d);

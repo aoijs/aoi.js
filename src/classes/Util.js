@@ -1,4 +1,4 @@
-const Constants = require( '../Utils/Constants.js' )
+const Constants = require( '../utils/Constants.js' )
 const Discord = require( "discord.js" )
 class Util
 {

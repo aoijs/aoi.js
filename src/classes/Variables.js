@@ -1,4 +1,4 @@
-const Group = require( '../CacheHandler/index.js' ).cache
+const Group = require( '../cachehandler/index.js' ).cache
 class Variable
 {
     constructor ( data = {} )

@@ -1,4 +1,4 @@
-const { BulkData } = require("../../../Utils/CallbackUtil.js");
+const { BulkData } = require("../../../utils/CallbackUtil.js");
 module.exports = d => {
     const { code } = d.command;
     const inside = d.unpack();

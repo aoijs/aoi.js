@@ -3,13 +3,13 @@ const dbddb = require("dbdjs.db");
 
 const { VariableManager } = require("./Variables.js");
 const Blacklist = require("./Blacklist.js");
-const Group = require("../CacheHandler/index.js").cache;
+const Group = require("../cachehandler/index.js").cache;
 const InteractionManager = require("./Interaction.js");
 const {
 	ActivityTypeAvailables,
 	IntentOptions,
 	SlashOptionTypes,
-} = require("../Utils/Constants.js");
+} = require("../utils/Constants.js");
 const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require( "./Commands.js" );

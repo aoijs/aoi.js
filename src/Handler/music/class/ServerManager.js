@@ -7,7 +7,7 @@ const Search = require('./Search.js')
 const FFmpeg = require('./FFmpeg.js')
 const wait = (ms)=> new Promise(res=>res(),ms)
 //const MusicPool = require('./MusicPool.js')
-const {States,Events} = require('../../../Utils/VoiceConstants.js')
+const {States,Events} = require('../../../utils/VoiceConstants.js')
 class ServerManager {
     constructor(options={}){
         this.textChannel= options.textChannel 

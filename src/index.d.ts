@@ -1,9 +1,9 @@
 //@ts-ignore
-import Group from "./CacheHandler/group";
+import Group from "./cachehandler/group";
 //@ts-ignore
-import LimitGroup from "./CacheHandler/limitGroup";
+import LimitGroup from "./cachehandler/limitGroup";
 //@ts-ignore
-import SuperSet from "./CacheHandler/superSet";
+import SuperSet from "./cachehandler/superSet";
 import { Client, Collection, ShardingManager } from "discord.js";
 declare module "aoi.js" {
 	import { EventEmitter } from "events";

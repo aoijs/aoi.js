@@ -1,4 +1,4 @@
-const {abbreviate}=require('../../../Utils/helpers/functions.js')
+const {abbreviate}=require('../../../utils/helpers/functions.js')
 module.exports = async (d) => {
   const { code } = d.command;
   const inside = d.unpack();

@@ -1,6 +1,6 @@
-const { CacheOptions } = require( '../Utils/Constants.js' )
+const { CacheOptions } = require( '../utils/Constants.js' )
 const { Options } = require( "discord.js" )
-const Cachers = require( '../CacheHandler/index.js' )
+const Cachers = require( '../cachehandler/index.js' )
 const AoiError = require( './AoiError.js' )
 class CacheManager
 {

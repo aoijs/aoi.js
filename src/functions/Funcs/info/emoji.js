@@ -1,4 +1,4 @@
-const { Emoji } = require('../../../Utils/helpers/functions.js');
+const { Emoji } = require('../../../utils/helpers/functions.js');
 module.exports = async d => {
     const { code,inside,err } = d.util.openFunc(d);
     if(err) return d.error(err);

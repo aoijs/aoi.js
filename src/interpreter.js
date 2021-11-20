@@ -1,13 +1,13 @@
-const IF = require('./Utils/helpers/if.js')
+const IF = require('./utils/helpers/if.js')
 const Discord = require('discord.js');
 const { Function, CustomFunction } = require('./classes/Functions.js')
 const AoiError = require('./classes/AoiError.js')
 const Util = require('./classes/Util.js')
 
 //helpers
-const { Time } = require('./Utils/helpers/customParser.js')
-const { CheckCondition } = require('./Utils/helpers/checkCondition.js')
-const { mustEscape } = require('./Utils/helpers/mustEscape.js')
+const { Time } = require('./utils/helpers/customParser.js')
+const { CheckCondition } = require('./utils/helpers/checkCondition.js')
+const { mustEscape } = require('./utils/helpers/mustEscape.js')
 
 const Interpreter = async (client, message, args, command, db, returnCode = false, channelUsed, data = {}, useChannel, returnMessage, returnExecution, returnID, sendMessage = false) => {
     try {

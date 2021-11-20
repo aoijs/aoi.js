@@ -1,4 +1,4 @@
-const Collection = require( '../CacheHandler/index.js' ).cache
+const Collection = require( '../cachehandler/index.js' ).cache
 const EventExecuter = require( '../Handler/eventExecuter.js' )
 const { EventEmitter } = require( 'events' )
 class CustomEvent extends EventEmitter
