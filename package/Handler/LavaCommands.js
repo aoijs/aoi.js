@@ -125,6 +125,10 @@ async function Main(d) {
                 player.setLoop(Utils.LoopMode.None);
                 player.stop();
             }
+            case "clearqueue": {
+                player.queue.clear();
+
+            }
                 break;
             case "pause": {
                 player.pause(true);
