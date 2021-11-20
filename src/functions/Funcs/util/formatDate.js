@@ -1,4 +1,4 @@
-const formatDate = require("../../../Handler/FormatDate");
+const formatDate = require("../../../handler/FormatDate");
 
 module.exports = (d) => {
   const code = d.command.code,

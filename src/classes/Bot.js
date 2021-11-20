@@ -24,9 +24,9 @@ class Client extends BaseClient
 
         this.on( "messageCreate", async data =>
         {
-            await require( '../Handler/guildMessages/commands.js' )( data, this, this.db )
-            await require( '../Handler/guildMessages/alwaysExecute.js' )( this, data, this.db )
-            await require( '../Handler/guildMessages/nonPrefixed.js' )( this, data, this.db )
+            await require( '../handler/guildMessages/commands.js' )( data, this, this.db )
+            await require( '../handler/guildMessages/alwaysExecute.js' )( this, data, this.db )
+            await require( '../handler/guildMessages/nonPrefixed.js' )( this, data, this.db )
         } )
     }
     onMessageDelete ()
@@ -36,7 +36,7 @@ class Client extends BaseClient
         // @ts-ignore
         this.on( "messageDelete", async ( data ) =>
         {
-            await require( '../Handler/guildMessages/deleteMessage.js' )( data, this )
+            await require( '../handler/guildMessages/deleteMessage.js' )( data, this )
         } )
     }
     onMessageUpdate ()
@@ -46,20 +46,20 @@ class Client extends BaseClient
         // @ts-ignore
         this.on( "messageUpdate", async ( oldm, newm ) =>
         {
-            await require( '../Handler/guildMessages/updateMessage.js' )( oldm, newm, this )
+            await require( '../handler/guildMessages/updateMessage.js' )( oldm, newm, this )
             if ( this.aoiOptions.respondOnEdit && newm.content !== oldm.content && this.aoiOptions.respondOnEdit.time > ( Date.now() - newm.createdTimestamp ) )
             {
                 if ( this.aoiOptions.respondOnEdit.commands )
                 {
-                    await require( '../Handler/guildMessages/commands.js' )( newm, this, this.db )
+                    await require( '../handler/guildMessages/commands.js' )( newm, this, this.db )
                 }
                 if ( this.aoiOptions.respondOnEdit.alwaysExecute )
                 {
-                    await require( '../Handler/guildMessages/alwaysExecute.js' )( this, newm, this.db )
+                    await require( '../handler/guildMessages/alwaysExecute.js' )( this, newm, this.db )
                 }
                 if ( this.aoiOptions.respondOnEdit.nonPrefixed )
                 {
-                    await require( '../Handler/guildMessages/nonPrefixed.js' )( this, newm, this.db )
+                    await require( '../handler/guildMessages/nonPrefixed.js' )( this, newm, this.db )
                 }
             }
         } )
@@ -71,125 +71,125 @@ class Client extends BaseClient
         // @ts-ignore
         this.on( "messageDeleteBulk", async ( data ) =>
         {
-            await require( '../Handler/guildMessages/bulkDeleteMessage.js' )( data, this )
+            await require( '../handler/guildMessages/bulkDeleteMessage.js' )( data, this )
         } )
     }
     //guild Events
     onGuildJoin ()
     {
         // @ts-ignore
-        this.on( "guildCreate", async guild => await require( '../Handler/guilds/guildJoin.js' )( guild, this ) )
+        this.on( "guildCreate", async guild => await require( '../handler/guilds/guildJoin.js' )( guild, this ) )
     }
     onGuildLeave ()
     {
         // @ts-ignore
-        this.on( 'guildDelete', async guild => await require( '../Handler/guilds/guildLeave.js' )( guild, this ) )
+        this.on( 'guildDelete', async guild => await require( '../handler/guilds/guildLeave.js' )( guild, this ) )
     }
     onGuildUpdate ()
     {
         // @ts-ignore
-        this.on( "guildUpdate", async ( oldg, newg ) => await require( '../Handler/guilds/guildUpdate.js' )( oldg, newg, this ) )
+        this.on( "guildUpdate", async ( oldg, newg ) => await require( '../handler/guilds/guildUpdate.js' )( oldg, newg, this ) )
     }
     onGuildUnavailable ()
     {
         // @ts-ignore
-        this.on( "guildUnavailable", async guild => await require( '../Handler/guilds/guildUnavailable.js' )( guild, this ) )
+        this.on( "guildUnavailable", async guild => await require( '../handler/guilds/guildUnavailable.js' )( guild, this ) )
     }
     onRoleCreate ()
     {
         // @ts-ignore
-        this.on( "roleCreate", async role => await require( '../Handler/guilds/roleCreate.js' )( role, this ) )
+        this.on( "roleCreate", async role => await require( '../handler/guilds/roleCreate.js' )( role, this ) )
     }
     onRoleUpdate ()
     {
         // @ts-ignore
-        this.on( "roleUpdate", async ( oldr, newr ) => await require( '../Handler/guilds/roleUpdate.js' )( oldr, newr, this ) )
+        this.on( "roleUpdate", async ( oldr, newr ) => await require( '../handler/guilds/roleUpdate.js' )( oldr, newr, this ) )
     }
     onRoleDelete ()
     {
         // @ts-ignore
-        this.on( "roleDelete", async role => await require( '../Handler/guilds/roleDelete.js' )( role, this ) )
+        this.on( "roleDelete", async role => await require( '../handler/guilds/roleDelete.js' )( role, this ) )
     }
     onChannelCreate ()
     {
 
-        this.on( "channelCreate", async channel => await require( '../Handler/guilds/channelCreate.js' )( channel, this ) )
+        this.on( "channelCreate", async channel => await require( '../handler/guilds/channelCreate.js' )( channel, this ) )
     }
     onChannelUpdate ()
     {
         // @ts-ignore
-        this.on( "channelUpdate", async ( oldc, newc ) => await require( '../Handler/guilds/channelUpdate.js' )( oldc, newc, this ) )
+        this.on( "channelUpdate", async ( oldc, newc ) => await require( '../handler/guilds/channelUpdate.js' )( oldc, newc, this ) )
     }
     onChannelDelete ()
     {
         // @ts-ignore
-        this.on( "channelDelete", async channel => await require( '../Handler/guilds/channelDelete.js' )( channel, this ) )
+        this.on( "channelDelete", async channel => await require( '../handler/guilds/channelDelete.js' )( channel, this ) )
     }
     onChannelPinsUpdate ()
     {
         // @ts-ignore
         this.on( "channelPinsUpdate", async ( channel, time ) =>
         {
-            await require( '../Handler/guilds/channelPinsUpdate.js' )( channel, time, this )
+            await require( '../handler/guilds/channelPinsUpdate.js' )( channel, time, this )
         } )
     }
     onStageInstanceCreate ()
     {
         // @ts-ignore
-        this.on( "stageInstanceCreate", async stageint => await require( '../Handler/guilds/stageInstanceCreate.js' )( stageint, this ) )
+        this.on( "stageInstanceCreate", async stageint => await require( '../handler/guilds/stageInstanceCreate.js' )( stageint, this ) )
     }
     onStageInstanceUpdate ()
     {
 
         // @ts-ignore
-        this.on( "stageInstanceUpdate", async ( oldstageint, newstageint ) => await require( '../Handler/guilds/stageInstanceUpdate.js' )( oldstageint, newstageint, this ) )
+        this.on( "stageInstanceUpdate", async ( oldstageint, newstageint ) => await require( '../handler/guilds/stageInstanceUpdate.js' )( oldstageint, newstageint, this ) )
 
     }
     onStageInstanceDelete ()
     {
 
         // @ts-ignore
-        this.on( "stageInstanceDelete", async stageint => await require( '../Handler/guilds/stageInstanceDelete.js' )( stageint, this ) )
+        this.on( "stageInstanceDelete", async stageint => await require( '../handler/guilds/stageInstanceDelete.js' )( stageint, this ) )
 
     }
     onThreadCreate ()
     {
         // @ts-ignore
-        this.on( "threadCreate", async thread => await require( '../Handler/guilds/threadCreate.js' )( thread, this ) )
+        this.on( "threadCreate", async thread => await require( '../handler/guilds/threadCreate.js' )( thread, this ) )
     }
     onThreadUpdate ()
     {
 
         // @ts-ignore
-        this.on( "threadUpdate", async ( oldt, newt ) => await require( '../Handler/guilds/threadUpdate.js' )( oldt, newt, this ) )
+        this.on( "threadUpdate", async ( oldt, newt ) => await require( '../handler/guilds/threadUpdate.js' )( oldt, newt, this ) )
 
     }
     onThreadDelete ()
     {
 
         // @ts-ignore
-        this.on( "threadDelete", async thread => await require( '../Handler/guilds/threadDelete.js' )( thread, this ) )
+        this.on( "threadDelete", async thread => await require( '../handler/guilds/threadDelete.js' )( thread, this ) )
 
     }
     onThreadListSync ()
     {
 
         // @ts-ignore
-        this.on( "threadListSync", async collection => await require( '../Handler/guilds/threadListSync.js' )( collection, this ) )
+        this.on( "threadListSync", async collection => await require( '../handler/guilds/threadListSync.js' )( collection, this ) )
 
     }
     onThreadMemberUpdate ()
     {
 
         // @ts-ignore
-        this.on( "threadMemberUpdate", async threadMember => await require( '../Handler/guilds/threadMemberUpdate.js' )( threadMember, this ) )
+        this.on( "threadMemberUpdate", async threadMember => await require( '../handler/guilds/threadMemberUpdate.js' )( threadMember, this ) )
 
     }
     onThreadMembersUpdate ()
     {
 
         // @ts-ignore
-        this.on( "threadMembersUpdate", async collection => await require( '../Handler/guilds/threadMembersUpdate.js' )( collection, this ) )
+        this.on( "threadMembersUpdate", async collection => await require( '../handler/guilds/threadMembersUpdate.js' )( collection, this ) )
 
     }
     //guildMembers Events
@@ -197,134 +197,134 @@ class Client extends BaseClient
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MEMBERS" ) ) AoiError.CallbackError( "onJoin", "GUILD_MEMBERS", 201 )
         // @ts-ignore
-        this.on( "guildMemberAdd", async mem => await require( '../Handler/guildMembers/join.js' )( mem, this ) )
+        this.on( "guildMemberAdd", async mem => await require( '../handler/guildMembers/join.js' )( mem, this ) )
     }
     onLeave ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MEMBERS" ) ) AoiError.CallbackError( "onLeave", "GUILD_MEMBERS", 206 )
         // @ts-ignore
-        this.on( "guildMemberRemove", async mem => await require( '../Handler/guildMembers/leave.js' )( mem, this ) )
+        this.on( "guildMemberRemove", async mem => await require( '../handler/guildMembers/leave.js' )( mem, this ) )
     }
     onMemberUpdate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MEMBERS" ) ) AoiError.CallbackError( "onMemberUpdate", "GUILD_MEMBERS", 209 )
         // @ts-ignore
-        this.on( "guildMemberUpdate", async ( oldm, newm ) => await require( '../Handler/guildMembers/update.js' )( oldm, newm, this ) )
+        this.on( "guildMemberUpdate", async ( oldm, newm ) => await require( '../handler/guildMembers/update.js' )( oldm, newm, this ) )
     }
     onMemberAvailable ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MEMBERS" ) ) AoiError.CallbackError( "onMemberAvailable", "GUILD_MEMBERS", 214 )
         // @ts-ignore
-        this.on( "guildMemberAvailable", async mem => await require( '../Handler/guildMembers/available.js' )( mem, this ) )
+        this.on( "guildMemberAvailable", async mem => await require( '../handler/guildMembers/available.js' )( mem, this ) )
     }
     onMembersChunk ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MEMBERS" ) ) AoiError.CallbackError( "onMembersChunk", "GUILD_MEMBERS", 217 )
         // @ts-ignore
-        this.on( "guildMembersChunk", async ( mems, guild, chunk ) => await require( '../Handler/guildMembers/chunk.js' )( mems, guild, chunk, this ) )
+        this.on( "guildMembersChunk", async ( mems, guild, chunk ) => await require( '../handler/guildMembers/chunk.js' )( mems, guild, chunk, this ) )
     }
     //Emoji Events 
     onEmojiCreate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onEmojiCreate", "GUILD_EMOJIS_AND_STICKERS", 222 )
         // @ts-ignore
-        this.on( "emojiCreate", async emoji => await require( '../Handler/guildEmojis/create.js' )( emoji, this ) )
+        this.on( "emojiCreate", async emoji => await require( '../handler/guildEmojis/create.js' )( emoji, this ) )
     }
     onEmojiDelete ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onEmojiDelete", "GUILD_EMOJIS_AND_STICKERS", 226 )
         // @ts-ignore
-        this.on( "emojiDelete", async emoji => await require( '../Handler/guildEmojis/delete.js' )( emoji, this ) )
+        this.on( "emojiDelete", async emoji => await require( '../handler/guildEmojis/delete.js' )( emoji, this ) )
     }
     onEmojiUpdate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onEmojiUpdate", "GUILD_EMOJIS_AND_STICKERS", 231 )
         // @ts-ignore
-        this.on( "emojiUpdate", async ( olde, newe ) => await require( '../Handler/guildEmojis/update.js' )( olde, newe, this ) )
+        this.on( "emojiUpdate", async ( olde, newe ) => await require( '../handler/guildEmojis/update.js' )( olde, newe, this ) )
     }
     onStickerCreate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onStickerCreate", "GUILD_EMOJIS_AND_STICKERS", 169 )
         // @ts-ignore
-        this.on( "stickerCreate", async sticker => await require( '../Handler/guildEmojis/stickerCreate.js' )( sticker, this ) )
+        this.on( "stickerCreate", async sticker => await require( '../handler/guildEmojis/stickerCreate.js' )( sticker, this ) )
     }
     onStickerDelete ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onStickerDelete", "GUILD_EMOJIS_AND_STICKERS", 174 )
         // @ts-ignore
-        this.on( "stickerDelete", async emoji => await require( '../Handler/guildEmojis/stickerDelete.js' )( emoji, this ) )
+        this.on( "stickerDelete", async emoji => await require( '../handler/guildEmojis/stickerDelete.js' )( emoji, this ) )
     }
     onStickerUpdate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_EMOJIS_AND_STICKERS" ) ) AoiError.CallbackError( "onStickerUpdate", "GUILD_EMOJIS_AND_STICKERS", 231 )
         // @ts-ignore
-        this.on( "stickerUpdate", async ( olde, newe ) => await require( '../Handler/guildEmojis/stickerUpdate.js' )( olde, newe, this ) )
+        this.on( "stickerUpdate", async ( olde, newe ) => await require( '../handler/guildEmojis/stickerUpdate.js' )( olde, newe, this ) )
     }
     //ban events
     onBanAdd ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_BANS" ) ) AoiError.CallbackError( "onBanAdd", "GUILD_BANS", 235 )
         // @ts-ignore
-        this.on( "guildBanAdd", async ban => await require( '../Handler/guildBans/add.js' )( ban, this ) )
+        this.on( "guildBanAdd", async ban => await require( '../handler/guildBans/add.js' )( ban, this ) )
     }
     onBanRemove ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_BANS" ) ) AoiError.CallbackError( "onBanRemove", "GUILD_BANS", 239 )
         // @ts-ignore
-        this.on( "guildBanRemove", async ban => await require( '../Handler/guildBans/remove.js' )( ban, this ) )
+        this.on( "guildBanRemove", async ban => await require( '../handler/guildBans/remove.js' )( ban, this ) )
     }
     //invite Events
     onInviteCreate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_INVITES" ) ) AoiError.CallbackError( "onInviteCreate", "GUILD_INVITES", 243 )
         // @ts-ignore
-        this.on( "inviteCreate", async invite => await require( '../Handler/guildInvites/create.js' )( invite, this ) )
+        this.on( "inviteCreate", async invite => await require( '../handler/guildInvites/create.js' )( invite, this ) )
     }
     onInviteDelete ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_INVITES" ) ) AoiError.CallbackError( "onInviteDelete", "GUILD_INVITES", 243 )
         // @ts-ignore
-        this.on( "inviteDelete", async invite => await require( '../Handler/guildInvites/delete.js' )( invite, this ) )
+        this.on( "inviteDelete", async invite => await require( '../handler/guildInvites/delete.js' )( invite, this ) )
     }
     //reactions 
     onReactionAdd ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MESSAGE_REACTIONS" ) ) AoiError.CallbackError( "onReactionAdd", "GUILD_MESSAGE_REACTIONS", 254 )
         // @ts-ignore
-        this.on( "messageReactionAdd", async ( reaction, user ) => await require( '../Handler/guildMessageReactions/add.js' )( reaction, user, this ) )
+        this.on( "messageReactionAdd", async ( reaction, user ) => await require( '../handler/guildMessageReactions/add.js' )( reaction, user, this ) )
     }
     onReactionRemove ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MESSAGE_REACTIONS" ) ) AoiError.CallbackError( "onReactionRemove", "GUILD_MESSAGE_REACTIONS", 258 )
         // @ts-ignore
-        this.on( "messageReactionRemove", async ( reaction, user ) => await require( '../Handler/guildMessageReactions/remove.js' )( reaction, user, this ) )
+        this.on( "messageReactionRemove", async ( reaction, user ) => await require( '../handler/guildMessageReactions/remove.js' )( reaction, user, this ) )
     }
     onReactionRemoveAll ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MESSAGE_REACTIONS" ) ) AoiError.CallbackError( "onReactionRemoveAll", "GUILD_MESSAGE_REACTIONS", 263 )
         // @ts-ignore
-        this.on( "messageReactionRemoveAll", async message => await require( '../Handler/guildMessageReactions/removeAll.js' )( message, this ) )
+        this.on( "messageReactionRemoveAll", async message => await require( '../handler/guildMessageReactions/removeAll.js' )( message, this ) )
 
     }
     onReactionRemoveEmoji ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_MESSAGE_REACTIONS" ) ) AoiError.CallbackError( "onReactionRemoveEmoji", "GUILD_MESSAGE_REACTIONS", 267 )
         // @ts-ignore
-        this.on( "reactionRemoveEmoji", async reaction => await require( '../Handler/guildMessageReactions/removeEmoji.js' )( reaction, this ) )
+        this.on( "reactionRemoveEmoji", async reaction => await require( '../handler/guildMessageReactions/removeEmoji.js' )( reaction, this ) )
     }
     //guildVoiceStates Events     
     onVoiceStateUpdate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_VOICE_STATES" ) ) AoiError.CallbackError( "onVoiceStateUpdate", "GUILD_VOICE_STATES", 272 )
         // @ts-ignore
-        this.on( "voiceStateUpdate", async ( oldState, newState ) => await require( '../Handler/guildVoiceStates/update.js' )( oldState, newState, this ) )
+        this.on( "voiceStateUpdate", async ( oldState, newState ) => await require( '../handler/guildVoiceStates/update.js' )( oldState, newState, this ) )
     }
     //presence events
     onPresenceUpdate ()
     {
         if ( !this.aoiOptions.intents.includes( "GUILD_PRESENCES" ) ) AoiError.CallbackError( "onPresenceUpdate", "GUILD_PRESENCES", 276 )
         // @ts-ignore
-        this.on( "presenceUpdate", async ( op, np ) => await require( '../Handler/guildPresences/update.js' )( op, np, this ) )
+        this.on( "presenceUpdate", async ( op, np ) => await require( '../handler/guildPresences/update.js' )( op, np, this ) )
     }
     //typing events 
     onTypingStart ()
@@ -334,49 +334,49 @@ class Client extends BaseClient
             AoiError.CallbackError( "onTypingStart", "GUILD_MESSAGE_TYPING or DIRECT_MESSAGE_TYPING", 229 )
         }
         // @ts-ignore
-        this.on( "typingStart", async type => await require( '../Handler/guildMessageTypings/start.js' )( type, this ) )
+        this.on( "typingStart", async type => await require( '../handler/guildMessageTypings/start.js' )( type, this ) )
     }
     //nonIntents events 
     onInteractionCreate ()
     {
         // @ts-ignore
-        this.on( "interactionCreate", async interaction => await require( '../Handler/nonIntents/interaction.js' )( interaction, this ) )
+        this.on( "interactionCreate", async interaction => await require( '../handler/nonIntents/interaction.js' )( interaction, this ) )
     }
     onApplicationCmdCreate ()
     {
         // @ts-ignore
-        this.on( "applicationCommandCreate", async app => await require( '../Handler/nonIntents/appCmdCreate.js' )( app, this ) )
+        this.on( "applicationCommandCreate", async app => await require( '../handler/nonIntents/appCmdCreate.js' )( app, this ) )
     }
     onApplicationCmdDelete ()
     {
         // @ts-ignore
-        this.on( "applicationCommandDelete", async app => await require( '../Handler/nonIntents/appCmdDelete.js' )( app, this ) )
+        this.on( "applicationCommandDelete", async app => await require( '../handler/nonIntents/appCmdDelete.js' )( app, this ) )
     }
     onApplicationCmdUpdate ()
     {
         // @ts-ignore
-        this.on( "applicationCommandUpdate", async ( oapp, napp ) => await require( '../Handler/nonIntents/appCmdUpdate.js' )( oapp, napp, this ) )
+        this.on( "applicationCommandUpdate", async ( oapp, napp ) => await require( '../handler/nonIntents/appCmdUpdate.js' )( oapp, napp, this ) )
     }
     onUserUpdate ()
     {
         // @ts-ignore
-        this.on( "userUpdate", async ( ouser, nuser ) => await require( "../Handler/nonIntents/userUpdate.js" )( ouser, nuser, this ) )
+        this.on( "userUpdate", async ( ouser, nuser ) => await require( "../handler/nonIntents/userUpdate.js" )( ouser, nuser, this ) )
     }
     //custom 
     onVariableCreate ()
     {
         // @ts-ignore
-        this.on( "variableCreate", async data => await require( '../Handler/custom/varCreate.js' )( data, this ) )
+        this.on( "variableCreate", async data => await require( '../handler/custom/varCreate.js' )( data, this ) )
     }
     onVariableDelete ()
     {
         // @ts-ignore
-        this.on( "variableDelete", async data => await require( "../Handler/custom/varDelete.js" )( data, this ) )
+        this.on( "variableDelete", async data => await require( "../handler/custom/varDelete.js" )( data, this ) )
     }
     onVariableUpdate ()
     {
         // @ts-ignore
-        this.on( "variableUpdate", async ( od, nd ) => await require( '../Handler/custom/varUpdate.js' )( od, nd, this ) )
+        this.on( "variableUpdate", async ( od, nd ) => await require( '../handler/custom/varUpdate.js' )( od, nd, this ) )
     }
     //commands 
     command ( ...args )

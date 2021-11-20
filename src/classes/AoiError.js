@@ -1,4 +1,4 @@
-const { ComponentParser, EmbedParser, FileParser } = require( '../Handler/parsers.js' )
+const { ComponentParser, EmbedParser, FileParser } = require( '../handler/parsers.js' )
 const Util = require( './Util.js' );
 const { Time } = require( '../utils/helpers/customParser.js' )
 class AoiError

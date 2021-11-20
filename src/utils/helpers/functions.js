@@ -307,10 +307,10 @@ module.exports = {
         d.client.db.set(d.client.db.tables[0], 'setTimeout', timeoutData.__id__, timeoutData);
 
         if (!pulse) {
-            require('../../Handler/custom/timeout.js')(d, name, duration, timeoutData, false)
+            require('../../handler/custom/timeout.js')(d, name, duration, timeoutData, false)
         }
         else {
-            require('../../Handler/custom/timeoutPulse.js')(d, name, duration, pulse, timeoutData, false)
+            require('../../handler/custom/timeoutPulse.js')(d, name, duration, pulse, timeoutData, false)
         }
     }
 }

@@ -1,4 +1,4 @@
-const {ComponentParser,EmbedParser,FileParser} = require('../../../Handler/parsers.js')
+const {ComponentParser,EmbedParser,FileParser} = require('../../../handler/parsers.js')
 module.exports = async d => {
     const code = d.command.code 
     const inside = d.unpack()

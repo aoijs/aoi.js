@@ -1,4 +1,4 @@
-const { SlashOptionsParser } = require('../../../Handler/parsers.js')
+const { SlashOptionsParser } = require('../../../handler/parsers.js')
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);

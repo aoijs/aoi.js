@@ -1,1 +1,1 @@
-module.exports = require("../../../Handler/LavaCommands.js")
+module.exports = require("../../../handler/LavaCommands.js")

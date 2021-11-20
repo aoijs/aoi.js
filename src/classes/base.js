@@ -69,7 +69,7 @@ class BaseClient extends Discord.Client {
 		this.variableManager = new VariableManager(this);
 
 		if (options.autoUpdate) {
-			require("../Handler/autoUpdate.js")();
+			require("../handler/autoUpdate.js")();
 		}
 
 		if (
@@ -142,7 +142,7 @@ class BaseClient extends Discord.Client {
 
 		if (options?.events?.functionError) {
 			this.on("functionError", async (data, client) => {
-				await require("../Handler/custom/functionError.js")(data, client);
+				await require("../handler/custom/functionError.js")(data, client);
 			});
 		}
 
@@ -154,12 +154,12 @@ class BaseClient extends Discord.Client {
 			this.options.ws.properties.$browser = "Discord Android";
 		}
 		this.on("ready", async () => {
-			require("../Handler/status.js")(this.statuses, this);
-			require("../Handler/startup.js")(this);
+			require("../handler/status.js")(this.statuses, this);
+			require("../handler/startup.js")(this);
 			if (options?.fetchInvites?.enabled) {
-				require("../Handler/fetchInvites.js")(this);
+				require("../handler/fetchInvites.js")(this);
 			}
-			await require("../Handler/nonIntents/ready.js")(this);
+			await require("../handler/nonIntents/ready.js")(this);
 		});
 		this._api = (url) =>
 			`https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;

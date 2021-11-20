@@ -1,4 +1,4 @@
-const searchIndexes = require("../../Handler/searchIndexes");
+const searchIndexes = require("../../handler/searchIndexes");
 String.prototype.replaceLast = function (find, replace) {
   const index = this.lastIndexOf(find);
 

@@ -1,6 +1,6 @@
 const lerefLavalink = require( "leref.ts" );
 const { EventEmitter } = require( "events" );
-const emit = require( "../Handler/lavalink/trackEvent" );
+const emit = require( "../handler/lavalink/trackEvent" );
 
 class Lavalink extends EventEmitter
 {

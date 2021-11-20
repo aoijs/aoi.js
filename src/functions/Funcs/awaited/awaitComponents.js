@@ -1,5 +1,5 @@
 
-const { EmbedParser, ComponentParser, FileParser } = require( '../../../Handler/parsers.js' );
+const { EmbedParser, ComponentParser, FileParser } = require( '../../../handler/parsers.js' );
 module.exports = async d =>
 {
     const code = d.command.code;

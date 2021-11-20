@@ -1,7 +1,7 @@
 const { joinVoiceChannel, entersState, VoiceConnectionStatus } = require( '@discordjs/voice' )
 const { CommandManager } = require( './Commands.js' )
 const Group = require( '../cachehandler/index.js' ).cache
-const ServerManager = require( '../Handler/music/class/ServerManager.js' )
+const ServerManager = require( '../handler/music/class/ServerManager.js' )
 const { EventEmitter } = require( 'events' )
 const { Events } = require( '../utils/VoiceConstants.js' )
 const AoiError = require( './AoiError.js' )
@@ -74,7 +74,7 @@ class Voice extends EventEmitter
     }
     onMusicStart ()
     {
-        this.on( Events.TRACK_START, async ( track, server ) => require( '../Handler/music/events/musicStart.js' )( track, server, this, this.client ) )
+        this.on( Events.TRACK_START, async ( track, server ) => require( '../handler/music/events/musicStart.js' )( track, server, this, this.client ) )
     }
 }
 module.exports = Voice;

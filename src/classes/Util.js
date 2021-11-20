@@ -112,7 +112,7 @@ class Util
     }
     static async errorParser ( error, d )
     {
-        const parsers = require( '../Handler/parsers.js' )
+        const parsers = require( '../handler/parsers.js' )
         try
         {
             error = JSON.parse( error )
