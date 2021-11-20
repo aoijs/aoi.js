@@ -17,7 +17,7 @@ module.exports = {
     //Bot: Client,
     Bot: Client,
     /**
-     * custom Events Class
+     * Custom Events Class
      * @example new CustomEvent(client (eg: bot))
      **/
     CustomEvent: CustomEvent,
@@ -29,9 +29,18 @@ module.exports = {
     LoadCommands: LoadCommands,
     ClientShard: ClientShard,
     Voice: Voice,
+    /**
+     * Lavalink
+     * @example new addNode({
+    url: "localhost:443",
+    password: "password",
+    name: "aoi.js",
+    secure: false,
+})
+     **/
     Lavalink: Lavalink,
     AoiError: AoiError,
     Util,
 };
 
-//Aoi.Js client
+/*Copyright © 2021 @Akarui Development*/
