@@ -276,12 +276,14 @@ const Interpreter = async (client, message, args, command, db, returnCode = fals
                             }
                             if (suppressErrors) {
                                 const {ErrorHandler} = require('./Handler/parsers.js')
-                                if(suppressErrors.trim() !== '') await ErrorHandler({
-                                    channel: channel,
-                                    message: message,
-                                    guild: guild,
-                                    author: author
-                                }, suppressErrors?.split("{error}").join(err.addBrackets()))
+                                if(suppressErrors.trim() !== '') ErrorHandler(
+                                    {
+                                        channel: channel,
+                                        message: message,
+                                        guild: guild,
+                                        author: author
+                                        },
+                                    suppressErrors?.split("{error}").join(err.addBrackets()))
                                 else ;
                             }
                             else {
