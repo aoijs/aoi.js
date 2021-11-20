@@ -240,13 +240,12 @@ async function Main(d) {
                 else player.setVolume(Number(data[0]));
             }
                 break;
-            case "queuelength": {
-                const type = data[0] || "total";
-                if (type === "total") {
-                    response = player.queue.size
-                } else if (type === "duration") {
-                    response = player.queue.duration
-                };
+            case "queuetotal": {
+                response = player.queue.size
+            }
+                break;
+            case "queueduration": {
+                response = player.queue.duration
             }
                 break;
             case "queue": {
