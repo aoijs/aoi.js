@@ -61,14 +61,18 @@ async function Main(d) {
                     selfDeaf: deaf,
                     selfMute: mute
                 });
+                const old = player.options.voiceID
                 player.options.voiceID = voice.channelId;
-                player.connect();
+                if (old !== player.options.voiceID) {
+                    player.connect();
+                }
                 player.text = d.channel;
             }
                 break;
             case "disconnect": {
                 player.disconnect();
                 player.destroy();
+                player.queue.clear()
             }
                 break;
             case "version": {
