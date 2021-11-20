@@ -10,7 +10,7 @@
     "prettywrite": "prettier --write \"package/**/*.js\""
   },
   "engines": {
-    "node": ">=16.6"
+    "node": ">=16.6.0"
   },
   "files": [
     "package"
