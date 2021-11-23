@@ -1,13 +1,19 @@
-module.exports = async d => {
-    const data = d.util.openFunc( d );
- 
-    if( !d.author?.banner ) {
-       await d.author?.fetch()
-    }
-    
-    data.result = d.author?.bannerURL();
-    
-    return {
-        code : d.util.setCode( data )
-    }
-}
+module.exports = async (d) => {
+	const data = d.util.openFunc(d);
+
+	const [size = "4096", dynamic = "yes", format = "webp"] = data.inside.splits;
+
+	if (!d.author?.banner) {
+		await d.author?.fetch();
+	}
+
+	data.result = d.author?.bannerURL({
+		size: Number(size),
+		dynamic: dynamic === "yes",
+		format,
+	});
+
+	return {
+		code: d.util.setCode(data),
+	};
+};

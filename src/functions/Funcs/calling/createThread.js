@@ -6,7 +6,7 @@ if(err) return d.error(err);
     
    let [ channelId,name,archive="MAX",type="public",startMessage,returnId = "no" ]= inside.splits; 
     
-    const channel = d.util.getChannel(d,channelId); 
+    const channel = await d.util.getChannel(d,channelId); 
     if(!channel) return d.aoiError.fnError(d,"channel",{ inside });
     
    type = d.util.threadTypes[type];

@@ -8,7 +8,6 @@ import { Client, Collection, ShardingManager } from "discord.js";
 declare module "aoi.js" {
 	import { EventEmitter } from "events";
 
-
 	type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
 	//AoiError
 	class AoiError {
@@ -227,6 +226,8 @@ declare module "aoi.js" {
 		public loopCommand(d: LoopCommand): void;
 		public timeoutCommand(d: EventCommand): void;
 		public pulseCommand(d: EventCommand): void;
+		public rateLimitCommand(d: EventCommand): void;
+		public webhookUpdateCommand(d: EventCommand): void;
 		public onMessage(d?: { guildOnly?: boolean; respondToBot?: boolean }): void;
 		public onMessageDelete(): void;
 		public onMessageUpdate(): void;
@@ -281,6 +282,8 @@ declare module "aoi.js" {
 		public onVariableCreate(): void;
 		public onVariableDelete(): void;
 		public onVariableUpdate(): void;
+		public onRateLimit(): void;
+		public onWebhookUpdate(): void;
 	}
 	//cacheManager
 	type CacheTypes = "cache" | "limitCache" | "setCache";

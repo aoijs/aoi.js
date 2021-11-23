@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.openFunc(d);
     if( data.err ) return d.error( data.err );
     
-    const [ channelId,messageId,index = 1 ,option = 'url' ] = data.inside.splits;
+    const [ channelId,messageId,index = 1,option = 'url' ] = data.inside.splits;
     
     const channel = await d.util.getChannel( d,channelId );
     if( !channel ) return d.aoiError.fnError( d,'channel',{ inside : data.inside } );

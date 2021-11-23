@@ -12,7 +12,7 @@ const {
 } = require("../utils/Constants.js");
 const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
-const { CommandManager } = require( "./Commands.js" );
+const { CommandManager } = require("./Commands.js");
 
 class BaseClient extends Discord.Client {
 	constructor(options) {
@@ -149,7 +149,7 @@ class BaseClient extends Discord.Client {
 		this.prefix = options.prefix;
 
 		Object.defineProperty(this, "statuses", { value: new Group() });
-        
+
 		if (options.mobilePlatform === true) {
 			this.options.ws.properties.$browser = "Discord Android";
 		}
@@ -165,6 +165,9 @@ class BaseClient extends Discord.Client {
 			`https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;
 		this.login(options.token);
 	}
+	/**
+	 * @param  {object[]} statuses
+	 */
 	status(...statuses) {
 		for (const status of statuses) {
 			status.type =
@@ -172,10 +175,8 @@ class BaseClient extends Discord.Client {
 				Object.values(ActivityTypeAvailables).includes(status.type)
 					? ActivityTypeAvailables[status.type] || status.type
 					: "PLAYING";
-			const option = { name: status.text, type: status.type };
-			if (status.url) {
-				option.url = status.url;
-			}
+			const option = { name: status.text, type: status.type, url: status.url };
+
 			this.statuses.set(this.statuses.size, {
 				status: status.status || "online",
 				time: isNaN(status.time || 12) ? 12 : status.time,
@@ -185,6 +186,10 @@ class BaseClient extends Discord.Client {
 			});
 		}
 	}
+	/**
+	 * @param  {Record<string,string | number | object >} d
+	 * @param  {string} table=this.db.tables[0]
+	 */
 	variables(d, table = this.db.tables[0]) {
 		for (const [name, value] of Object.entries(d)) {
 			this.variableManager.add({ name, value });

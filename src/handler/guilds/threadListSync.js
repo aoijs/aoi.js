@@ -1,18 +1,38 @@
-const Interpreter = require('../../interpreter.js')
-module.exports = async (threadCollection,client) =>{
-const cmds = client.cmd.threadListSync.allValues()
-const data = {guild:threadCollection.first().guild,channel:threadCollection.first(),client:client} 
-let chan;
-for(const cmd of cmds){
-  if(cmd?.channel?.includes("$")){
-      const id = await Interpreter (client,data,[],{name:"ChannelParser",code:cmd?.channel},client.db,true) 
-      const channel = client.channels.cache.get(id?.code) 
-      chan = channel 
-  }
-    else {
-        const channel = client.channels.cache.get(cmd.channel)
-    chan = channel 
-         }
-    await Interpreter(client,data,[],cmd,client.db, false,chan?.id,{threadListSync:threadCollection},chan)
-}
-}
+const Interpreter = require("../../interpreter.js");
+module.exports = async (threadCollection, client) => {
+	const cmds = client.cmd.threadListSync.allValues();
+	const data = {
+		guild: threadCollection.first().guild,
+		channel: threadCollection.first(),
+		client: client,
+	};
+	let chan;
+	for (const cmd of cmds) {
+		if (cmd?.channel?.includes("$")) {
+			const id = await Interpreter(
+				client,
+				data,
+				[],
+				{ name: "ChannelParser", code: cmd?.channel },
+				client.db,
+				true,
+			);
+			const channel = client.channels.cache.get(id?.code);
+			chan = channel;
+		} else {
+			const channel = client.channels.cache.get(cmd.channel);
+			chan = channel;
+		}
+		await Interpreter(
+			client,
+			data,
+			[],
+			cmd,
+			client.db,
+			false,
+			chan?.id,
+			{ threadListSync: threadCollection },
+			chan,
+		);
+	}
+};

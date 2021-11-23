@@ -6,10 +6,10 @@ module.exports = d => {
 
     const [guildId, emojiId, name, ...roles] = data.inside.splits;
 
-    const guild = d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
 
-    const emoji = d.util.getEmoji(guild, emojiId)
+    const emoji =await d.util.getEmoji(guild, emojiId)
     if (!emoji) return d.aoiError.fnError(d, 'emoji', { inside: data.inside });
 
     emoji.edit({ name: name.addBrackets(), roles: roles }).catch(e => {

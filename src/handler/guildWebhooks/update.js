@@ -1,11 +1,17 @@
+const { TextChannel, NewsChannel } = require( "discord.js" );
 const Interpreter = require("../../interpreter.js");
-module.exports = async (invite, client) => {
-	const cmds = client.cmd.inviteCreate.allValues();
+/**
+ * @param  {TextChannel | NewsChannel } channelData
+ * @param  {import('../../classes/Bot.js')} client
+ */
+module.exports = async (channelData, client) => {
+	const cmds = client.cmd.webhookUpdate.allValues();
 	for (const cmd of cmds) {
 		let chan;
 		const data = {
-			guild: invite.guild,
+			guild: channelData.guild,
 			client: client,
+			channel: channelData,
 		};
 		if (cmd.channel?.includes("$")) {
 			const id = await Interpreter(
@@ -18,6 +24,8 @@ module.exports = async (invite, client) => {
 			);
 			const channel = client.channels.cache.get(id?.code);
 			chan = channel ?? undefined;
+		} else {
+			chan = client.channels.cache.get(cmd.channel);
 		}
 		await Interpreter(
 			client,
@@ -27,11 +35,8 @@ module.exports = async (invite, client) => {
 			client.db,
 			false,
 			chan?.id || "",
-			{ inviteData: invite },
+			{ oldVoiceState: os, newVoiceState: ns },
 			chan || undefined,
 		);
 	}
-	/*if(client.options.fetchInvites.enabled){
-    client.inviteSystem.inviteCreate(invite)
-}*/
 };

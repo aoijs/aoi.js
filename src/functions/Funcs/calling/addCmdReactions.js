@@ -7,7 +7,7 @@ if(err) return d.error(err)
 let [...reactions] = inside.splits;
 reactions = reactions.reverse() 
 for(let i =reactions.length-1;i>=0;i--){
-    d.message.react(reactions[i]).catch(err=>d.aoiError.fnError(d,"custom",{},err.message))
+    await d.message.react(reactions[i]).catch(err=>d.aoiError.fnError(d,"custom",{},err.message))
 
 }
 return {

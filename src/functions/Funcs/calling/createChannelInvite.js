@@ -1,15 +1,13 @@
 module.exports = async (d) => {
 	const data = d.util.openFunc(d);
 
-	const [guildId = d.guild?.id, ...options] = data.inside.splits;
+	const [channelId = d.channel?.id, ...options] = data.inside.splits;
 
-	const guild = await d.util.getGuild(d, guildId);
-	if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
+	const channel = await d.util.getChannel(d, channelId);
+	if (!channel)
+		return d.aoiError.fnError(d, "channel", { inside: data.inside });
 
 	let object;
-	const channel = guild.channels.cache
-		.filter((x) => x.type === d.util.channelTypes.Text)
-		.random();
 
 	try {
 		object = JSON.parse(options[0]);
@@ -25,8 +23,8 @@ module.exports = async (d) => {
 		};
 	}
 
-	const invite = await guild.invites
-		.create(channel?.id, object)
+	const invite = await channel.guild.invites
+		.create(channel.id, object)
 		.catch((e) => {
 			d.aoiError.fnError(
 				d,
