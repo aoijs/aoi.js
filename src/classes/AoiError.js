@@ -78,7 +78,7 @@ class AoiError {
 			options.files = FileParser(options.files);
 		}
 		if (options.components && typeof options.components === "string") {
-			options.components = await ComponentParser(options.componenents, client);
+			options.components = await ComponentParser(options.components, client);
 		}
 
 		let msg;
