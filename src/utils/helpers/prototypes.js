@@ -12,7 +12,7 @@ String.prototype.replaceLast = function (find, replace) {
 };
 String.prototype.deleteBrackets = function () {
     return this.replace(/\[/g, "#RIGHT#")
-        .replace(/\]/g, "#LEFT#")
+        .replace(/]/g, "#LEFT#")
         .replace(/;/g, "#SEMI#")
         .replace(/:/g, "#COLON#")
         .replace(/\$/g, "#CHAR#")
@@ -21,7 +21,7 @@ String.prototype.deleteBrackets = function () {
         .replace(/=/g, "#EQUAL#")
         .replace(/{/g, "#RIGHT_BRACKET#")
         .replace(/}/g, "#LEFT_BRACKET#")
-        .replace(/\,/g, "#COMMA#")
+        .replace(/,/g, "#COMMA#")
         .replace(/\(/g, "#LB#")
         .replace(/\)/g, "#RB#")
         .replace(/&&/g, "#AND#")
