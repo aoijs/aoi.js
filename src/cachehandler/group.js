@@ -76,8 +76,7 @@ class Group extends Map {
 
     findKey(data) {
         const value = this.allValues().find(data);
-        const key = this.allKeys()[this.allValues().indexOf(value)];
-        return key;
+        return this.allKeys()[this.allValues().indexOf(value)];
     }
 
     sort(data) {
