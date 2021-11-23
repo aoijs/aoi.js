@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [number] = data.inside.splits;
 
-    if (isNaN(number) || number.trim() === '') return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Number Provided In');
+    if (isNaN(number) || number.trim() === '') return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Number Provided In');
 
     data.result = Math.round(Number(number));
 

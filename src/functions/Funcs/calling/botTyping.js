@@ -1,9 +1,9 @@
 module.exports = async (d) => {
-	const { code } = d.command;
+    const {code} = d.command;
 
-	d.channel.sendTyping();
+    d.channel.sendTyping();
 
-	return {
-		code: d.util.setCode({ function: d.func, code }),
-	};
+    return {
+        code: d.util.setCode({function: d.func, code}),
+    };
 };

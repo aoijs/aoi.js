@@ -8,7 +8,7 @@ module.exports = async d => {
     const res = [];
 
     const cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() === awaits.addBrackets().toLowerCase());
-    if (!cmd) returnd.aoiError.fnError(d, 'custom', { inside: data.inside }, `Coundn't Find AwaitedCommand: ${awaits} In`);
+    if (!cmd) returnd.aoiError.fnError(d, 'custom', {inside: data.inside}, `Coundn't Find AwaitedCommand: ${awaits} In`);
 
     arr.forEach(async x => {
         cmd.code = cmd.code.replaceAll('{value}', x);

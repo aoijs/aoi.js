@@ -1,15 +1,14 @@
 module.exports = d => {
     const data = d.util.openFunc(d);
 
-    const [timezone = d.timezone ] = data.inside.splits;
+    const [timezone = d.timezone] = data.inside.splits;
 
     try {
         new Date().toLocaleString('en-us', {
             timeZone: timezone.addBrackets(),
         });
-    }
-    catch (err) {
-        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid TimeZone Provided In');
+    } catch (err) {
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid TimeZone Provided In');
     }
 
     return {

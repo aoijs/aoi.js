@@ -7,7 +7,7 @@ module.exports = async d => {
     if (!d.client.variableManager.cache.has(varname.addBrackets())) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Doesn't Exist!`);
 
     const guild = d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const all = await d.client.db.all(table, x => x.key.split('_').length < 4 && x.key.startsWith(varname.addBrackets()) && guild.id === x.key.split('_')[2])
 

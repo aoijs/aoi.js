@@ -1,15 +1,14 @@
 module.exports = d => {
-    let { code, result } = d.util.openFunc(d);
+    let {code, result} = d.util.openFunc(d);
 
     result = d.client.emojis.cache.random()?.id;
     if (!d.randoms.randomEmoji) {
         d.randoms.randomEmoji = result
-    }
-    else {
+    } else {
         result = d.randoms.randomEmoji;
     }
 
     return {
-        code: d.util.setCode({ function: d.func, code, result })
+        code: d.util.setCode({function: d.func, code, result})
     }
 }

@@ -1,14 +1,14 @@
-const { BulkData } = require("../../../utils/CallbackUtil.js");
+const {BulkData} = require("../../../utils/CallbackUtil.js");
 module.exports = d => {
-    const { code } = d.command;
+    const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
-    if(err) return d.error(err);
-    const [ option ] = inside.splits;
+    if (err) return d.error(err);
+    const [option] = inside.splits;
 
-    const result = BulkData(d,option).deleteBrackets();
+    const result = BulkData(d, option).deleteBrackets();
 
     return {
-        code : d.util.setCode({ function : d.func,code,inside,result }) 
+        code: d.util.setCode({function: d.func, code, inside, result})
     }
 }

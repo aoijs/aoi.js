@@ -1,5 +1,5 @@
-const { CheckCondition } = require('../../../utils/helpers/checkCondition.js')
-const { mustEscape } = require('../../../utils/helpers/mustEscape.js');
+const {CheckCondition} = require('../../../utils/helpers/checkCondition.js')
+const {mustEscape} = require('../../../utils/helpers/mustEscape.js');
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
@@ -11,8 +11,8 @@ module.exports = async d => {
 
     if (!eval(CheckCondition.solve(mustEscape(condition)))) {
         error = true;
-        if(err?.trim() === ''){}
-        else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
+        if (err?.trim() === '') {
+        } else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
     }
 
     return {

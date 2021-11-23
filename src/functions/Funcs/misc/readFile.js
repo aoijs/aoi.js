@@ -1,4 +1,4 @@
-const  fs  = require('fs');
+const fs = require('fs');
 
 module.exports = d => {
     const data = d.util.openFunc(d);

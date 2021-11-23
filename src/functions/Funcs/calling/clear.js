@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const { code } = d.command;
+    const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
@@ -7,12 +7,12 @@ module.exports = async d => {
     let [amt, filter = "everyone", returnCount = "no", channelId = d.channel.id] = inside.splits;
 
     amt = Number(amt);
-    if (isNaN(amt)) return d.aoiError.fnError(d, "custom", { inside }, "Invalid Amout Provided In");
+    if (isNaN(amt)) return d.aoiError.fnError(d, "custom", {inside}, "Invalid Amout Provided In");
 
     const channel = await d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, "channel", { inside });
+    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
-    let messages = await channel.messages.fetch({ limit: amt, cache: false }).catch(err => {
+    let messages = await channel.messages.fetch({limit: amt, cache: false}).catch(err => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch Messages With Reason: " + err);
     });
 
@@ -27,6 +27,6 @@ module.exports = async d => {
     result = returnCount === "yes" ? result.size : undefined;
 
     return {
-        code: d.util.setCode({ function: d.func, code, inside, result })
+        code: d.util.setCode({function: d.func, code, inside, result})
     }
 }

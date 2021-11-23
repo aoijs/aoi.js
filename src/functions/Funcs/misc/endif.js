@@ -1,1 +1,2 @@
-module.exports = d =>{}
+module.exports = d => {
+}

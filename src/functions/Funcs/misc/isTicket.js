@@ -1,15 +1,15 @@
-const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require("../../../classes/Database");
+const {AoijsAPI, DbdTsDb, CustomDb, Promisify} = require("../../../classes/Database");
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
 
-    const [ channelId = d.channel?.id ] = data.inside.splits;
+    const [channelId = d.channel?.id] = data.inside.splits;
 
-    let isTicket = await d.client.db.get(d.client.db.tables[0],'ticket',channelId);
+    let isTicket = await d.client.db.get(d.client.db.tables[0], 'ticket', channelId);
 
-    data.result = typeof isTicket === 'object' ? isTicket?.value :  isTicket;
+    data.result = typeof isTicket === 'object' ? isTicket?.value : isTicket;
 
     return {
-        code : d.util.setCode(data)
+        code: d.util.setCode(data)
     }
 }

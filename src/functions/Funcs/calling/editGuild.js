@@ -6,19 +6,17 @@ module.exports = async d => {
     let guildData;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     if (guildDatas.length === 1) {
         try {
             guildData = JSON.parse(guildDatas[0].addBrackets());
-        }
-        catch (e) {
+        } catch (e) {
             guildData = {
                 name: guildDatas[0]?.addBrackets()
             }
         }
-    }
-    else {
+    } else {
         for (let i = 0; i < 18; i++) {
             if (!guildDatas[i]) guildDatas[i] = '$default';
             else continue;
@@ -30,11 +28,23 @@ module.exports = async d => {
             afkChannel: guildDatas[3]?.addBrackets() === '$default' ? guild.afkChannel : guildDatas[3],
             systemChannel: guildDatas[4]?.addBrackets() === '$default' ? guild.systemChannel : guildDatas[4],
             afkTimeout: guildDatas[5]?.addBrackets() === '$default' ? guild.afkTimeout : Number(guildDatas[5]),
-            icon: guildDatas[6]?.addBrackets() === '$default' ? guild.iconURL({ size: 4096, dynamic: true }) : guildDatas[6]?.addBrackets(),
+            icon: guildDatas[6]?.addBrackets() === '$default' ? guild.iconURL({
+                size: 4096,
+                dynamic: true
+            }) : guildDatas[6]?.addBrackets(),
             owner: guildDatas[7]?.addBrackets() === '$default' ? guild.ownerId || (await guild.fetchOwner())?.id : guildDatas[7],
-            splash: guildDatas[8]?.addBrackets() === '$default' ? guild.splashURL({ size: 4096, dynamic: true }) : guildDatas[8]?.addBrackets(),
-            discoverySplash: guildDatas[9]?.addBrackets() === '$default' ? guild.discoverySplashURL({ size: 4096, dynamic: true }) : guildDatas[9]?.addBrackets(),
-            banner: guildDatas[10]?.addBrackets() === '$default' ? guild.bannerURL({ size: 4096, dynamic: true }) : guildDatas[10]?.addBrackets(),
+            splash: guildDatas[8]?.addBrackets() === '$default' ? guild.splashURL({
+                size: 4096,
+                dynamic: true
+            }) : guildDatas[8]?.addBrackets(),
+            discoverySplash: guildDatas[9]?.addBrackets() === '$default' ? guild.discoverySplashURL({
+                size: 4096,
+                dynamic: true
+            }) : guildDatas[9]?.addBrackets(),
+            banner: guildDatas[10]?.addBrackets() === '$default' ? guild.bannerURL({
+                size: 4096,
+                dynamic: true
+            }) : guildDatas[10]?.addBrackets(),
             defaultMessageNotifications: guildDatas[11]?.addBrackets() === '$default' ? guild.defaultMessageNotifications : guildDatas[11]?.addBrackets(),
             systemChannelFlags: guildDatas[12]?.addBrackets() === '$default' ? guild.systemChannelFlags : guildDatas[12]?.addBrackets().split(','),
             rulesChannel: guildDatas[13]?.addBrackets() === '$default' ? guild.rulesChannel : guildDatas[13],
@@ -46,7 +56,7 @@ module.exports = async d => {
     }
 
     guild.edit(guildData).catch(e => {
-        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Failed To Edit Guild With Reason: ' + e);
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Edit Guild With Reason: ' + e);
     });
 
     return {

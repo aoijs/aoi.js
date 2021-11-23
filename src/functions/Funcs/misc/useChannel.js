@@ -5,7 +5,7 @@ module.exports = async d => {
     const channelId = data.inside.inside;
 
     const channel = await d.util.getChannel(d, channelId, true);
-    if (!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
+    if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     return {
         code: d.util.setCode(data),

@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [method, query,morequery] = data.inside.splits;
+    const [method, query, morequery] = data.inside.splits;
 
     try {
         switch (method) {
@@ -49,19 +49,17 @@ module.exports = async d => {
             case "sticker":
                 data.result = await d.client.fetchSticker(query)
                 break;
-            case 'guildCommand':
-                {
-                    const guildId = await d.util.getGuild(d,query)
-                    data.result = await guildId.commands.fetch(morequery)
-                    break;
-                }
+            case 'guildCommand': {
+                const guildId = await d.util.getGuild(d, query)
+                data.result = await guildId.commands.fetch(morequery)
+                break;
+            }
             case "default":
-                d.aoiError.fnError(d, "option", { inside: data.inside })
+                d.aoiError.fnError(d, "option", {inside: data.inside})
                 break;
         }
         data.result = JSON.stringify(data.result, null, 2);
-    }
-    catch (e) {
+    } catch (e) {
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch With Reason: " + e);
         data.result = ""
     }

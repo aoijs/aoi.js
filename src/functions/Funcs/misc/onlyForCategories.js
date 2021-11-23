@@ -1,4 +1,3 @@
-
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
@@ -10,8 +9,8 @@ module.exports = async d => {
 
     if (!stuffs.includes(d.channel.parentId)) {
         error = true;
-        if(err?.trim() === ''){}
-        else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
+        if (err?.trim() === '') {
+        } else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
     }
 
     return {

@@ -5,7 +5,7 @@ module.exports = async d => {
     const [avatar, guildId = d.guild?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     guild.setIcon(avatar.addBrackets()).catch(err => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Set Guild Icon With Reason: ' + err);

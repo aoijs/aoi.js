@@ -1,4 +1,4 @@
-const { RateLimitOptions } = require('../../../utils/CallbackUtil.js');
+const {RateLimitOptions} = require('../../../utils/CallbackUtil.js');
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const option = RateLimitOptions.find(x => x === data.inside.inside.toLowerCase());
 
-    if (!option) return d.aoiError.fnError(d, 'option', { inside: data.inside });
+    if (!option) return d.aoiError.fnError(d, 'option', {inside: data.inside});
 
     data.result = d.data.rateLimit[rateLimitOptions[option]];
 

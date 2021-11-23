@@ -1,6 +1,6 @@
-const { PinData } = require("../../../utils/CallbackUtil.js");
+const {PinData} = require("../../../utils/CallbackUtil.js");
 module.exports = d => {
-    const { code } = d.command;
+    const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
@@ -9,6 +9,6 @@ module.exports = d => {
     const result = PinData(d)[option].deleteBrackets();
 
     return {
-        code: d.util.setCode({ function: d.func, code, inside, result })
+        code: d.util.setCode({function: d.func, code, inside, result})
     }
 }

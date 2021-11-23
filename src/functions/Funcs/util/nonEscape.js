@@ -7,6 +7,6 @@ module.exports = d => {
     data.result = msg.addBrackets();
 
     return {
-        code: d.util.setCode(data,false)
+        code: d.util.setCode(data, false)
     }
 }

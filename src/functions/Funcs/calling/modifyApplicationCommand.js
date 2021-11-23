@@ -1,4 +1,4 @@
-const { SlashOptionsParser } = require('../../../handler/parsers.js')
+const {SlashOptionsParser} = require('../../../handler/parsers.js')
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
@@ -8,25 +8,22 @@ module.exports = async d => {
 
     if (guildId === 'custom') {
         const cmd = await d.client.application.commands.fetch(id).catch(e => {
-            d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Id Provided In');
+            d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Id Provided In');
         });
 
         DATA = d.client.interactionManager.applicationData.get(cmd.name);
 
         cmd.edit(DATA.data);
-    }
-    else {
+    } else {
         if (Datas.length === 1) {
             try {
                 DATA = JSON.parse(Datas[0]);
-            }
-            catch (e) {
+            } catch (e) {
                 DATA = {
                     name: Datas[0]?.addBrackets(),
                 }
             }
-        }
-        else {
+        } else {
             DATA = {
                 name: Datas[0]?.addBrackets(),
                 description: Datas[1]?.trim()?.addBrackets() || null,

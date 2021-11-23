@@ -1,11 +1,11 @@
-const { Characters } = require('../../../utils/Constants.js')
+const {Characters} = require('../../../utils/Constants.js')
 module.exports = d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
     const [range] = data.inside.splits;
 
-    if (isNaN(range)) return d.aoiError.fnError(d, 'custom', { inside: data.inside });
+    if (isNaN(range)) return d.aoiError.fnError(d, 'custom', {inside: data.inside});
 
     let i = 0;
 

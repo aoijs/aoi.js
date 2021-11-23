@@ -4,15 +4,13 @@ module.exports = d => {
 
     const [number] = data.inside.splits;
 
-    if (isNaN(number)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, "Invalid Number Provided In");
+    if (isNaN(number)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Number Provided In");
 
     if ([11, 12, 13].includes(Number(number))) {
         data.result = number + 'th'
-    }
-    else if ([1, 2, 3].some(x => number.endsWith(x.toString()))) {
+    } else if ([1, 2, 3].some(x => number.endsWith(x.toString()))) {
         data.result = number.endsWith('1') ? number + 'st' : number.endsWith('2') ? number + 'nd' : number + 'rd';
-    }
-    else {
+    } else {
         data.result = number + 'th';
     }
 

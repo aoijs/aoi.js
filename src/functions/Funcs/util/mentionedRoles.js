@@ -5,7 +5,7 @@ module.exports = d => {
     let [index] = data.inside.splits;
 
     index = Number(index) - 1;
-    if (isNaN(index)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, "Invalid Index Provided In");
+    if (isNaN(index)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Index Provided In");
 
     data.result = [...d.mentions.roles.values()][index]?.id || 'undefined';
 

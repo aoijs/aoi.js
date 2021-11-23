@@ -1,110 +1,110 @@
-const { wait } = require("../../../utils/helpers/functions.js");
-const { Time } = require("../../../utils/helpers/customParser.js");
+const {wait} = require("../../../utils/helpers/functions.js");
+const {Time} = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-	const data = d.util.openFunc(d);
-	if (data.err) return d.error(data.err);
+    const data = d.util.openFunc(d);
+    if (data.err) return d.error(data.err);
 
-	let [guildId = d.guild?.id, time = "", awaitData, ...cmds] =
-		data.inside.splits;
-	const endCmd = cmds.pop();
+    let [guildId = d.guild?.id, time = "", awaitData, ...cmds] =
+        data.inside.splits;
+    const endCmd = cmds.pop();
 
-	const guild = await d.util.getGuild(d, guildId);
-	if (!guild) return d.aoiError.fnError(d, "guild", { inside });
+    const guild = await d.util.getGuild(d, guildId);
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
-	try {
-		awaitData = JSON.parse(awaitData);
-	} catch (e) {
-		d.aoiError.fnError(
-			d,
-			"custom",
-			{ inside: data.inside },
-			"Invalid Data Provided In",
-		);
-	}
+    try {
+        awaitData = JSON.parse(awaitData);
+    } catch (e) {
+        d.aoiError.fnError(
+            d,
+            "custom",
+            {inside: data.inside},
+            "Invalid Data Provided In",
+        );
+    }
 
-	time = isNaN(time) ? Time.parse(time).ms : Number(time);
+    time = isNaN(time) ? Time.parse(time).ms : Number(time);
 
-	cmds.forEach((x) => {
-		if (
-			!d.client.cmd.awaited.find(
-				(y) => y.name.toLowerCase() === x.toLowerCase(),
-			)
-		) {
-			d.aoiError.fnError(
-				d,
-				"custom",
-				{},
-				"Awaited Command: " + x + " Not Found",
-			);
-		}
-	});
+    cmds.forEach((x) => {
+        if (
+            !d.client.cmd.awaited.find(
+                (y) => y.name.toLowerCase() === x.toLowerCase(),
+            )
+        ) {
+            d.aoiError.fnError(
+                d,
+                "custom",
+                {},
+                "Awaited Command: " + x + " Not Found",
+            );
+        }
+    });
 
-	cmds = cmds
-		.map((x) =>
-			d.client.cmd.awaited.find(
-				(y) => y.name.toLowerCase() === x.toLowerCase(),
-			),
-		)
-		.reverse();
+    cmds = cmds
+        .map((x) =>
+            d.client.cmd.awaited.find(
+                (y) => y.name.toLowerCase() === x.toLowerCase(),
+            ),
+        )
+        .reverse();
 
-	const datas = [...guild.roles.cache.values()].reverse();
+    const datas = [...guild.roles.cache.values()].reverse();
 
-	let i = datas.length - 1;
+    let i = datas.length - 1;
 
-	while (i >= 0) {
-		const member = datas[i];
+    while (i >= 0) {
+        const member = datas[i];
 
-		let u = cmds.length - 1;
+        let u = cmds.length - 1;
 
-		const loopData = {
-			channel: d.channel,
-			message: d.message,
-			guild: d.guild,
-			client: d.client,
-			author: member.user,
-			member,
-		};
+        const loopData = {
+            channel: d.channel,
+            message: d.message,
+            guild: d.guild,
+            client: d.client,
+            author: member.user,
+            member,
+        };
 
-		while (u >= 0) {
-			const cmd = cmds[u];
-			d.interpreter(
-				d.client,
-				loopData,
-				d.args,
-				cmd,
-				d.client.db,
-				false,
-				undefined,
-				awaitData,
-			);
+        while (u >= 0) {
+            const cmd = cmds[u];
+            d.interpreter(
+                d.client,
+                loopData,
+                d.args,
+                cmd,
+                d.client.db,
+                false,
+                undefined,
+                awaitData,
+            );
 
-			u--;
-		}
+            u--;
+        }
 
-		await wait(time);
+        await wait(time);
 
-		i--;
-	}
+        i--;
+    }
 
-	if (endCmd !== "") {
-		const cmd = d.client.cmd.awaited.find(
-			(x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase(),
-		);
-		if (!cmd) return;
-		d.interpreter(
-			d.client,
-			loopData,
-			d.args,
-			cmd,
-			d.client.db,
-			false,
-			undefined,
-			awaitData,
-		);
-	}
+    if (endCmd !== "") {
+        const cmd = d.client.cmd.awaited.find(
+            (x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase(),
+        );
+        if (!cmd) return;
+        d.interpreter(
+            d.client,
+            loopData,
+            d.args,
+            cmd,
+            d.client.db,
+            false,
+            undefined,
+            awaitData,
+        );
+    }
 
-	return {
-		code: d.util.setCode(data),
-	};
+    return {
+        code: d.util.setCode(data),
+    };
 };

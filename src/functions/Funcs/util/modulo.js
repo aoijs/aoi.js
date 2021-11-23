@@ -4,8 +4,8 @@ module.exports = d => {
 
     const [...numbers] = data.inside.splits;
 
-    if (numbers.some(x => isNaN(x))) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Number Provided In');
-    if (numbers.length < 2) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, `At Least 2 Numbers Are Needed. Provided ${numbers.length} Numbers In`)
+    if (numbers.some(x => isNaN(x))) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Number Provided In');
+    if (numbers.length < 2) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, `At Least 2 Numbers Are Needed. Provided ${numbers.length} Numbers In`)
 
     data.result = numbers.length === 2 ? (numbers[0] % numbers[1]) : (numbers.reduce((a, b) => Number(a) % Number(b)));
 

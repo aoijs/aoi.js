@@ -1,23 +1,23 @@
 module.exports = async d => {
 
-    const {code} = d.command 
+    const {code} = d.command
 
-    const inside = d.unpack() 
+    const inside = d.unpack()
 
     const err = d.inside(inside)
 
-    if(err) d.error(err) 
+    if (err) d.error(err)
 
-    const [type,...ids] = inside.splits; 
+    const [type, ...ids] = inside.splits;
 
-    if(!d.client.blacklist[type]) return d.error(d.aoiError.functionErrorResolve(d,"custom",{inside},"Invalid Type Provided In"))
+    if (!d.client.blacklist[type]) return d.error(d.aoiError.functionErrorResolve(d, "custom", {inside}, "Invalid Type Provided In"))
 
-    d.client.blacklist.whitelistIds(type,...ids)  
+    d.client.blacklist.whitelistIds(type, ...ids)
 
     return {
 
-      code:code.replaceLast(`$whitelist${inside}`,"") 
+        code: code.replaceLast(`$whitelist${inside}`, "")
 
-        }
+    }
 
 }

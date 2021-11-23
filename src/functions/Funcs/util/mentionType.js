@@ -8,7 +8,7 @@ module.exports = d => {
 
     data.result = d.mentions.everyone || 'none'
 
-    for (const type of ['users','channels','members','roles','crosspostedChannels']) {
+    for (const type of ['users', 'channels', 'members', 'roles', 'crosspostedChannels']) {
         if (d.mentions[type].has(mention)) {
             data.result = type;
             break;

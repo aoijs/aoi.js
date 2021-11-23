@@ -1,5 +1,5 @@
 module.exports = d => {
-    const { code } = d.util.openFunc(d);
+    const {code} = d.util.openFunc(d);
 
     try {
         process.on("exit", () => {
@@ -10,8 +10,7 @@ module.exports = d => {
             });
         });
         process.exit();
-    }
-    catch (e) {
+    } catch (e) {
         return d.aoiError.fnError(d, 'custom', {}, `Failed To Restart With Reason: ${e}`);
     }
 }

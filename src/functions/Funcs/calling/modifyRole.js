@@ -1,4 +1,4 @@
-const { ReactionUserManager } = require("discord.js");
+const {ReactionUserManager} = require("discord.js");
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
@@ -8,19 +8,17 @@ module.exports = async d => {
     let RoleData;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const role = await guild.roles.fetch(roleId).catch(e => undefined);
-    if (!role) return d.aoiError.fnError(d, 'role', { inside: data.inside });
+    if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
 
     if (roleDatas.length === 1) {
         try {
             RoleData = JSON.parse(roleDatas[0].addBrackets());
+        } catch (e) {
         }
-        catch (e) {
-        }
-    }
-    else {
+    } else {
         RoleData = {
             name: roleDatas[0]?.addBrackets(),
             color: roleDatas[1]?.addBrackets(),
@@ -33,7 +31,7 @@ module.exports = async d => {
     }
 
     role.edit(RoleData).catch(e => {
-        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Failed To Modify Role With Reason: ' + e);
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Role With Reason: ' + e);
     });
 
     return {

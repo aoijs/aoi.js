@@ -1,4 +1,4 @@
-const { Perms } = require('../../../utils/Constants.js');
+const {Perms} = require('../../../utils/Constants.js');
 
 module.exports = async d => {
     const data = d.util.openFunc(d);
@@ -6,11 +6,11 @@ module.exports = async d => {
 
     const [roleId, sep = ' , ', guildId = d.guild?.id] = data.inside.splits;
 
-    const guild =await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    const guild = await d.util.getGuild(d, guildId);
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const role = await guild.roles.fetch(roleId).catch(err => {
-        d.aoiError.fnError(d, 'role', { inside: data.inside });
+        d.aoiError.fnError(d, 'role', {inside: data.inside});
     });
 
     const PERMS = Object.entries(Perms);

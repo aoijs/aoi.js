@@ -1,4 +1,4 @@
-const { DataResolver } = require("discord.js");
+const {DataResolver} = require("discord.js");
 
 module.exports = d => {
     const data = d.util.openFunc(d);
@@ -10,8 +10,7 @@ module.exports = d => {
     const randoms = d.randoms;
     if (!randoms['randomText']) {
         randoms['randomText'] = data.result;
-    }
-    else {
+    } else {
         data.result = randoms['randomText'];
     }
 

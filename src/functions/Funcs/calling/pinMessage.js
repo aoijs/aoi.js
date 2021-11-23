@@ -4,10 +4,10 @@ module.exports = async d => {
     const [messageId = d.message?.id, channelId = d.channel?.id] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
+    if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     const message = await d.util.getMessage(channel, messageId);
-    if (!message) return d.aoiError.fnError(d, 'message', { inside: data.inside });
+    if (!message) return d.aoiError.fnError(d, 'message', {inside: data.inside});
 
     message.pin().catch(err => {
         d.aoiError.fnError(d, 'custom', {}, "Failed To Pin Message With Reason: " + err);

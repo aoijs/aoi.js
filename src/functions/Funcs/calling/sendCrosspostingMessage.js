@@ -10,7 +10,7 @@ module.exports = async d => {
         const channel = d.util.getChannel(d, x);
 
         if (channel) {
-            d.aoiError.makeMessageError(d.client, channel, msg, msg.options,d);
+            d.aoiError.makeMessageError(d.client, channel, msg, msg.options, d);
         }
     });
 
