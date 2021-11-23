@@ -4,6 +4,7 @@
  * @param {import("leref.ts").LerefPlayer} player
  * @param {import("../../classes/Lavalink")} lava
  * @param {{name: string, code: string, channel: string}[]} commands
+ * @param reason
  */
 module.exports = async (commands, track, player, lava, reason) => {
     /** @type {import("discord.js").GuildMember} */
