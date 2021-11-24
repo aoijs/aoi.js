@@ -5,7 +5,7 @@ module.exports = async d => {
     const [webhookId, name, avatar, channelId = d.channel?.id, reason] = data.inside.splits;
 
     const webhook = await d.client.fetchWebhook(webhookId).catch(e => {
-        return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Id Provided In');
+        return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Id Provided In');
     });
 
     webhook.edit({

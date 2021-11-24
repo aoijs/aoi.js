@@ -1,15 +1,14 @@
-const cld =require('child_process');
+const cld = require('child_process');
 module.exports = async d => {
     const data = d.util.openFunc(d);
-    
+
     try {
-        data.result = await cld.execSync(data.inside.inside?.addBrackets()).toString(); 
+        data.result = await cld.execSync(data.inside.inside?.addBrackets()).toString();
+    } catch (e) {
+        data.result = e
     }
-    catch(e) {
-        data.result = e 
-    }
-    
+
     return {
-        code : d.util.setCode( data ) 
-    } 
+        code: d.util.setCode(data)
+    }
 } 

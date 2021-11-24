@@ -5,10 +5,10 @@ module.exports = async d => {
     let [channelId, threadId] = inside.splits;
 
     const channel = await d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
+    if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
     const thread = channel.threads.cache.get(threadId);
-    if (!thread) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid ThreadId Provided In");
+    if (!thread) return d.aoiError.fnError(d, "custom", {inside: data.inside}, "Invalid ThreadId Provided In");
 
     thread.leave();
 

@@ -1,13 +1,13 @@
 module.exports = d => {
-    const data = d.util.openFunc( d );
-    if( data.err ) return d.error( data.err );
+    const data = d.util.openFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [ hex ] = data.inside.splits;
-    hex = hex.addBrackets().replace( '#','' );
+    let [hex] = data.inside.splits;
+    hex = hex.addBrackets().replace('#', '');
 
-    data.result = isNaN(parseInt( hex,16 )) ? false : true;
+    data.result = isNaN(parseInt(hex, 16)) ? false : true;
 
     return {
-        code : d.util.setCode( data )
+        code: d.util.setCode(data)
     }
 }

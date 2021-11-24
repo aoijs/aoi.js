@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [time, text] = data.inside.splits;
 
-    if (isNaN(time)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Number Provided In');
+    if (isNaN(time)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Number Provided In');
 
     data.result = text.repeat(Number(time));
 

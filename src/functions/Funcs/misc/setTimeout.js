@@ -1,5 +1,5 @@
-const { Time } = require('../../../utils/helpers/customParser.js');
-const { Timeout } = require('../../../utils/helpers/functions.js')
+const {Time} = require('../../../utils/helpers/customParser.js');
+const {Timeout} = require('../../../utils/helpers/functions.js')
 
 module.exports = d => {
     const data = d.util.openFunc(d);
@@ -15,12 +15,10 @@ module.exports = d => {
     if (timeoutData.addBrackets().startsWith('{')) {
         try {
             tdata = JSON.parse(timeoutData.addBrackets());
+        } catch (e) {
+            d.aoiError.fnError(d, 'custom', {inside: data.inside});
         }
-        catch (e) {
-            d.aoiError.fnError(d, 'custom', { inside: data.inside });
-        }
-    }
-    else {
+    } else {
         for (let timeData of timeoutData.split('\n')) {
             timeData = timeData.split(':');
 

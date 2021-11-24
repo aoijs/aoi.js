@@ -1,5 +1,5 @@
-const { wait } = require('../../../utils/helpers/functions.js');
-const { Time } = require('../../../utils/helpers/customParser.js');
+const {wait} = require('../../../utils/helpers/functions.js');
+const {Time} = require('../../../utils/helpers/customParser.js');
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);

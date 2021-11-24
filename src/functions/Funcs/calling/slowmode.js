@@ -1,4 +1,4 @@
-const { Time } = require('../../../utils/helpers/customParser.js');
+const {Time} = require('../../../utils/helpers/customParser.js');
 
 module.exports = d => {
     const data = d.util.openFunc(d);
@@ -7,7 +7,7 @@ module.exports = d => {
     let [time, channelId = d.channel?.id] = data.inside.splits;
 
     const channel = d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, 'channel', { inside: data.inside });
+    if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     time = isNaN(time) ? Time.parse(time)?.ms : Number(time);
 

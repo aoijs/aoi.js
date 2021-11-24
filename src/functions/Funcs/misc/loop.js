@@ -6,18 +6,18 @@ module.exports = async d => {
     try {
         awaitData = JSON.parse(awaitData);
     } catch (e) {
-        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Data Provided In');
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Data Provided In');
     }
 
     awaits.forEach(cmd => {
-        if (!d.client.cmd.awaited.find(x => x.name.toLowerCase() === cmd.addBrackets().toLowerCase())) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, "Awaited Command : " + cmd + " Not Found");
+        if (!d.client.cmd.awaited.find(x => x.name.toLowerCase() === cmd.addBrackets().toLowerCase())) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Awaited Command : " + cmd + " Not Found");
     });
 
     for (let i = 0; i < time; i++) {
         for (let cmd of awaits) {
             cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() === cmd.addBrackets().toLowerCase());
 
-            d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, { awaitData });
+            d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {awaitData});
         }
     }
 

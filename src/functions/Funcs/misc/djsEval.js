@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const { client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError,args } = d;
+    const {client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError, args} = d;
     const data = d.util.openFunc(d);
 
     const __fields__ = data.inside.splits;
@@ -11,13 +11,12 @@ module.exports = async d => {
 
     try {
         __evaled__ = await eval(__fields__.join(";").addBrackets());
-    }
-    catch (e) {
+    } catch (e) {
         d.aoiError.fnError(d, "custom", {}, e);
     }
 
     data.result = (__output__ === "yes" ? (
-        typeof __evaled__ === "object" ? require('util').inspect(__evaled__, { depth: 0 }).deleteBrackets() : (
+        typeof __evaled__ === "object" ? require('util').inspect(__evaled__, {depth: 0}).deleteBrackets() : (
             typeof __evaled__ === "string" ? __evaled__.deleteBrackets() : __evaled__
         )
     ) : "")

@@ -9,6 +9,6 @@ module.exports = d => {
 
     return {
         code: d.util.setCode(data),
-        data : d.data
+        data: d.data
     }
 }

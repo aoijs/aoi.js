@@ -4,11 +4,11 @@ module.exports = async d => {
     const [days = 7, guildId = d.guild?.id, roleIds, dry = 'no', reason, count = 'no'] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
 
     if (roleIds && roleIds?.split(',').some(x => !guild.roles.cache.get(x.trim()))) {
-        d.aoiError.fnError(d, 'role', { inside: data.inside });
+        d.aoiError.fnError(d, 'role', {inside: data.inside});
     }
 
     data.result = await guild.members.prune({

@@ -1,8 +1,8 @@
 module.exports = async d => {
-    let { code, result, inside } = d.util.openFunc(d);
+    let {code, result, inside} = d.util.openFunc(d);
 
     const [def = '#ffffff'] = inside.splits;
-    
+
     if (!d.author?.accentColor) {
         await d.author?.fetch()
     }
@@ -10,6 +10,6 @@ module.exports = async d => {
     result = d.author?.hexAccentColor ?? def;
 
     return {
-        code: d.util.setCode({ function: d.func, code, result })
+        code: d.util.setCode({function: d.func, code, result})
     }
 }

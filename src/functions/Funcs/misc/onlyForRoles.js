@@ -9,8 +9,8 @@ module.exports = async d => {
 
     if (!stuffs.some(x => d.member._roles.includes(x))) {
         error = true;
-        if(err?.trim() === ''){}
-        else  d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options,d);
+        if (err?.trim() === '') {
+        } else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
     }
 
     return {

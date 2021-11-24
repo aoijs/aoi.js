@@ -1,9 +1,9 @@
 module.exports = async d => {
-    const data = d.util.openFunc( d );
-    
-    const [ ticketId ] = data.inside.splits;
-    data.result = (await d.client.db.get( d.client.db.tables[0],'ticket',ticketId )) ? true : false
+    const data = d.util.openFunc(d);
+
+    const [ticketId] = data.inside.splits;
+    data.result = (await d.client.db.get(d.client.db.tables[0], 'ticket', ticketId)) ? true : false
     return {
-        code : d.util.setCode( data )
+        code: d.util.setCode(data)
     }
 }

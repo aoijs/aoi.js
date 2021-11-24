@@ -1,7 +1,7 @@
 module.exports = async d => {
-    const { code } = d.util.openFunc(d);
-    
+    const {code} = d.util.openFunc(d);
+
     return {
-        code : d.util.setCode({ function : d.func,code,result :new Date().getDate() }) 
-    } 
+        code: d.util.setCode({function: d.func, code, result: new Date().getDate()})
+    }
 }

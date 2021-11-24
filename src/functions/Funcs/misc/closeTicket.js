@@ -1,4 +1,3 @@
-
 module.exports = async (d) => {
     const data = d.util.openFunc(d);
 

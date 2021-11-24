@@ -5,10 +5,10 @@ module.exports = async d => {
     const [roleId, guildId = d.guild?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const role = await guild.roles.fetch(roleId).catch(err => {
-        d.aoiError.fnError(d, 'role', { inside: data.inside })
+        d.aoiError.fnError(d, 'role', {inside: data.inside})
     });
 
     data.result = role.members.size

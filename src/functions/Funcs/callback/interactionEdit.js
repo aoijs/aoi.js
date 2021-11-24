@@ -1,35 +1,35 @@
-const { ComponentParser,EmbedParser,FileParser } = require('../../../handler/parsers.js');
+const {ComponentParser, EmbedParser, FileParser} = require('../../../handler/parsers.js');
 
 module.exports = async d => {
     const code = d.command.code;
     const inside = d.unpack();
-	const err = d.inside(inside);
-	if (err) return d.error(err);
-    
-    let [content="",embeds="", components="",files = "", allowedMentions ] = inside.splits;
-    
-  embeds = await EmbedParser(embeds);
-    
-  components =await ComponentParser(components,d.client);
-    
+    const err = d.inside(inside);
+    if (err) return d.error(err);
+
+    let [content = "", embeds = "", components = "", files = "", allowedMentions] = inside.splits;
+
+    embeds = await EmbedParser(embeds);
+
+    components = await ComponentParser(components, d.client);
+
     files = await FileParser(files);
-    
-    allowedMentions = allowedMentions === "all" ? [ "everyone","users","roles" ] : allowedMentions?.split(",") || [];
-    
-    d.data.interaction?.editReply({ 
-        content:content.trim() === "" ? " ": content.addBrackets(),
-        embeds:embeds,
-        components: components,
-        files,
-        allowedMentions : {
-            parse : allowedMentions
+
+    allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
+
+    d.data.interaction?.editReply({
+            content: content.trim() === "" ? " " : content.addBrackets(),
+            embeds: embeds,
+            components: components,
+            files,
+            allowedMentions: {
+                parse: allowedMentions
             }
-       } 
-     ).catch(e => {
-        d.aoiError.fnError( d,'custom',{},'Failed To Reply With Reason: '+e )
+        }
+    ).catch(e => {
+        d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     });
-    
+
     return {
-        code: d.util.setCode({ function : d.func,code,inside }) 
+        code: d.util.setCode({function: d.func, code, inside})
     }
 }

@@ -5,10 +5,10 @@ module.exports = async d => {
     const [guildId, userId, mute = 'yes', reason] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const member = await d.util.getMember(guild, userId);
-    if (!member) return d.aoiError.fnError(d, 'member', { inside: data.inside });
+    if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
     const state = guild.voiceStates.cache.get(member.id);
     if (!state?.channel) return d.aoiError.fnError(d, 'custom', {}, 'User Is Not In Any Voice/Stage Channel.');

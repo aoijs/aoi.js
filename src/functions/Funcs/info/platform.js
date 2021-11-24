@@ -4,12 +4,12 @@ module.exports = async d => {
     const [userId = d.author?.id, guildId = d.guild?.id, sep = ' , '] = data.inside.splits;
 
     const guild = d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const member = await d.util.getMember(guild, userId);
-    if (!member) return d.aoiError.fnError(guild, 'member', { inside: data.inside });
+    if (!member) return d.aoiError.fnError(guild, 'member', {inside: data.inside});
 
-    data.result = member.presence?.status === 'offline' ? 'none' : Object.keys(member.presence?.clientStatus || { none: "none" });
+    data.result = member.presence?.status === 'offline' ? 'none' : Object.keys(member.presence?.clientStatus || {none: "none"});
 
     return {
         code: d.util.setCode(data)

@@ -1,10 +1,10 @@
-module.exports =async d => {
+module.exports = async d => {
     const data = d.util.openFunc(d);
 
     let commands = data.inside.splits;
     const content = [];
 
-    if (commands.some(x => !d.client.cmd.awaited.find(y => y.name.toLowerCase() === x.trim().toLowerCase()))) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Awaited Command In');
+    if (commands.some(x => !d.client.cmd.awaited.find(y => y.name.toLowerCase() === x.trim().toLowerCase()))) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Awaited Command In');
 
     for (const a of d.array) {
         for (const command of commands) {

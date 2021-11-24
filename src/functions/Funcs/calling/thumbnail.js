@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const { code } = d.command;
+    const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
@@ -13,7 +13,7 @@ module.exports = async d => {
     d.embeds[index].setThumbnail(text.addBrackets());
 
     return {
-        code: d.util.setCode({ function: d.func, code, inside }),
+        code: d.util.setCode({function: d.func, code, inside}),
         embeds: d.embeds
     }
 }

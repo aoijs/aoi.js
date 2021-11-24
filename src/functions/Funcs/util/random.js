@@ -3,12 +3,12 @@ module.exports = d => {
     if (data.err) return d.error(data.err);
 
     const [n1, n2, allow = 'no', random = 'no'] = data.inside.splits;
-    
+
     const inside = data.inside;
 
-    if (data.inside.splits.length > 4) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Too Many Fields In');
+    if (data.inside.splits.length > 4) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Too Many Fields In');
 
-    if (isNaN(Number(n1)) || isNaN(Number(n2)) || Number(n1) >= Number(n2)) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Number In');
+    if (isNaN(Number(n1)) || isNaN(Number(n2)) || Number(n1) >= Number(n2)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Number In');
 
     let n = allow === "yes" ? Math.random() * (Number(n2) - Number(n1)) + Number(n1) : Math.round(Math.random() * (Number(n2) - Number(n1))) + Number(n1)
 

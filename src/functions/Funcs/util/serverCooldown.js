@@ -1,7 +1,7 @@
-const { Time } = require('../../../utils/helpers/customParser.js');
+const {Time} = require('../../../utils/helpers/customParser.js');
 
 module.exports = async d => {
-    const { code } = d.command;
+    const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
@@ -14,9 +14,8 @@ module.exports = async d => {
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms
         d.client.db.set(d.client.db.tables[0], "cooldown", `${d.command.name}_${d.guild?.id || 'dm'}`, cooldown);
-    }
-    else if (Date.now() > cooldown) {
-        const { object, humanize, toString } = Time.format((Date.now() - cooldown))
+    } else if (Date.now() > cooldown) {
+        const {object, humanize, toString} = Time.format((Date.now() - cooldown))
         errorObject = errorObject.replaceAll("%time%", humanize()).replaceAll("%year%", object.years)
             .replaceAll("%month%", object.months)
             .replaceAll("%week%", object.weeks)
@@ -30,14 +29,13 @@ module.exports = async d => {
         errorObject = await d.util.errorParser(errorObject);
         d.aoiError.makeMessageError(d.client, d.channel, errorObject, errorObject.options);
         error = true
-    }
-    else {
+    } else {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(d.client.db.tables[0], "cooldown", `${d.command.name}_${d.guild?.id || 'dm'}`, cooldown);
     }
 
     return {
-        code: d.util.setCode({ function: d.func, code, inside }),
+        code: d.util.setCode({function: d.func, code, inside}),
         error
     }
 }

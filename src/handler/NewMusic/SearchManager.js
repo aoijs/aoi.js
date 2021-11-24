@@ -9,46 +9,53 @@ const fs = require('fs');
 //Attachment class 
 class Attachment {
     static async getStream(url) {
-        const { data } = await axios.get(url);
+        const {data} = await axios.get(url);
         return data;
-    } 
+    }
+
     static getInfo(url, description = "An Track Taken From The Attachment") {
         const data = {
-            title : url.split("/").pop(),
+            title: url.split("/").pop(),
             description,
-            url 
-        } 
-        
-        return data; 
-    } 
+            url
+        }
+
+        return data;
+    }
+
     static async getData(url) {
         return {
-            stream : await this.getStream(url) , 
-            info : this.getInfo(url) 
-               } 
+            stream: await this.getStream(url),
+            info: this.getInfo(url)
+        }
     }
-} 
+}
+
 //fs class 
 class Fs {
     static getStream(path) {
-        const stream = fs.createReadStream(process.cwd()+`/${path}`);
+        const stream = fs.createReadStream(process.cwd() + `/${path}`);
         return stream;
     }
+
     static getInfo(path) {
         const data = {
-            title : path ,
-            description : "A File In The Project",
-            url : process.cwd()+`/${path}` 
-        } 
-        return data ; 
-    } 
+            title: path,
+            description: "A File In The Project",
+            url: process.cwd() + `/${path}`
+        }
+        return data;
+    }
+
     static getData(path) {
         return {
-            stream : this.getStream(path),
-            info : this.getInfo(path)
-        } 
-    } 
+            stream: this.getStream(path),
+            info: this.getInfo(path)
+        }
+    }
 }
+
 class Scdl {
-    static async search(track) {} 
+    static async search(track) {
+    }
 }

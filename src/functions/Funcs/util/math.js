@@ -1,29 +1,29 @@
 module.exports = async (d) => {
-	const data = d.util.openFunc(d);
-	if (data.err) return d.error(data.err);
+    const data = d.util.openFunc(d);
+    if (data.err) return d.error(data.err);
 
-	let result;
+    let result;
 
-	const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.)/g;
+    const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.)/g;
 
-	try {
-		const operation = data.inside.inside.match(OPERATORS).join("");
+    try {
+        const operation = data.inside.inside.match(OPERATORS).join("");
 
-		if (operation.replace(OPERATORS, "").trim().length)
-			return d.aoiError.fnError(
-				d,
-				"custom",
-				{ inside: data.inside },
-				`Invalid operation in`,
-			);
+        if (operation.replace(OPERATORS, "").trim().length)
+            return d.aoiError.fnError(
+                d,
+                "custom",
+                {inside: data.inside},
+                `Invalid operation in`,
+            );
 
-		result = eval(operation);
-	} catch(e) {
+        result = eval(operation);
+    } catch (e) {
         console.log(e)
-		return d.aoiError.fnError(d, "custom", {}, `Failed to calculate in`);
-	}
+        return d.aoiError.fnError(d, "custom", {}, `Failed to calculate in`);
+    }
 
-	return {
-		code: d.command.code.replaceLast(`$math${data.inside.total}`, result),
-	};
+    return {
+        code: d.command.code.replaceLast(`$math${data.inside.total}`, result),
+    };
 };

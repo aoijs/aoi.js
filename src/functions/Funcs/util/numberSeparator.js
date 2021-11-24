@@ -8,9 +8,9 @@ module.exports = d => {
 
     const splits = number.split('.');
 
-    data.result = Number(splits[0]).toLocaleString().replaceAll(",",sep.addBrackets())
+    data.result = Number(splits[0]).toLocaleString().replaceAll(",", sep.addBrackets())
     if (splits[1]) {
-        data.result = data.result +'.'+ splits[1];
+        data.result = data.result + '.' + splits[1];
     }
 
     return {

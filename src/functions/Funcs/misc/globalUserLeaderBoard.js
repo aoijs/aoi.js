@@ -1,4 +1,4 @@
-const { AoijsAPI, DbdTsDb, Promisify, CustomDb } = require("../../../classes/Database.js");
+const {AoijsAPI, DbdTsDb, Promisify, CustomDb} = require("../../../classes/Database.js");
 
 module.exports = async d => {
     const Data = d.util.openFunc(d);
@@ -15,11 +15,9 @@ module.exports = async d => {
     for (const data of all.sort((x, y) => {
         if (d.client.db instanceof AoijsAPI) {
             return (Number(y.data.value) - Number(x.data.value))
-        }
-        else if (d.client.db instanceof DbdTsDb) {
+        } else if (d.client.db instanceof DbdTsDb) {
             return (Number(y[variable.addBrackets()]) - Number(x[variable.addBrackets()]));
-        }
-        else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
+        } else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
             return (Number(y.value || y[variable.addBrackets()] || (typeof y.data === 'object' ? y.data.value : y.data)) - Number(x.value || x[variable.addBrackets()] || (typeof x.data === 'object' ? x.data.value : x.data)))
         }
     })) {
@@ -29,32 +27,26 @@ module.exports = async d => {
             value = Number(data.data.value);
 
             user = await d.util.getUser(d, data.key.split('_')[1])
-        }
-        else if (d.client.db instanceof DbdTsDb) {
+        } else if (d.client.db instanceof DbdTsDb) {
             value = Number(data[variable.addBrackets()]);
 
             user = await d.util.getUser(d, data.key.split('_')[0])
-        }
-        else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
+        } else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
             value = Number(data.value || data[variable.addBrackets()] || (typeof data.data === 'object' ? data.data.value : data.data))
 
             if (data.key) {
                 const arr = data.key.split('_');
                 user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
-            }
-            else if (data.id) {
+            } else if (data.id) {
                 const arr = data.id.split('_');
                 user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
-            }
-            else if (data.ID) {
+            } else if (data.ID) {
                 const arr = data.ID.split('_');
                 user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
-            }
-            else if (data.Id) {
+            } else if (data.Id) {
                 const arr = data.Id.split('_');
                 user = await d.util.getUser(d, arr.length === 2 ? arr[1] : arr[0])
-            }
-            else {
+            } else {
                 d.aoiError.fnError(d, 'custom', {}, 'Database Not Supported For LeaderBoard')
                 break;
             }
@@ -70,7 +62,7 @@ module.exports = async d => {
 
                 const awaited = d.client.cmd.awaited.find(c => c.name === ins)
 
-                if (!awaited) return d.aoiError.fnError(d, 'custom', { inside: Data.inside }, ` Invalid awaited command '${ins}' in`)
+                if (!awaited) return d.aoiError.fnError(d, 'custom', {inside: Data.inside}, ` Invalid awaited command '${ins}' in`)
 
                 const CODE = await d.interpreter(d.client, {
                     guild: d.message.guild,
