@@ -1,4 +1,7 @@
 const Interpreter = require("../../interpreter.js");
+/**
+ * @param  {import('../../classes/Bot.js')} client
+ */
 module.exports = async (client) => {
     const cmds = client.cmd.loop.allValues();
     let chan;
@@ -22,6 +25,8 @@ module.exports = async (client) => {
             data.guild = chan?.guild;
         } else {
             chan = client.channels.cache.get(cmd.channel);
+            data.channel = chan;
+            data.guild = chan.guild;
         }
         setInterval(async () => {
             await Interpreter(

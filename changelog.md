@@ -6,6 +6,7 @@ v5.0.4
 +index.js to .gitignore
 !fixed allowedMentions in Intepreter
 !changed default content from '' to ' ' , now u can use {newEmbed:} directly in functions like $editIn etc
+!added missing guild Data in messageDelete Event
 
 # Bot Class Changes
 +rateLimitCommand()
@@ -45,3 +46,8 @@ v5.0.4
 +endAwaitCmd for all FOrEach function
 
 !fixed $randomText returning only value of one randomText even if fields are different
+-$randomString[range]
++$randomString[range;diffExec?]
+
++$awaitData[option]
+
