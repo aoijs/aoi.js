@@ -39,3 +39,9 @@ v5.0.4
 
 -$modifyCHannelPErms[roleId/userId;channelId;guildId;perms;perm;perm;...]
 +$modifyCHannelPErms[roleId/userId;channelId;perms;perm;perm;...]
+
+!fixed $moveUser
+
++endAwaitCmd for all FOrEach function
+
+!fixed $randomText returning only value of one randomText even if fields are different
