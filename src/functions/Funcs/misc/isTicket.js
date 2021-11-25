@@ -5,7 +5,7 @@ module.exports = async d => {
 
     const [channelId = d.channel?.id] = data.inside.splits;
 
-    let isTicket = await d.client.db.get(d.client.db.tables[0], 'ticket', channelId);
+    let isTicket = await d.client.db.get(d.client.db.tables[0], 'ticketChannel', channelId);
 
     data.result = typeof isTicket === 'object' ? isTicket?.value : isTicket;
 
