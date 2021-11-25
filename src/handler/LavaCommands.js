@@ -103,7 +103,7 @@ async function Main(d) {
             case "songinfo": {
                 let track =
                     player.queue.at(Number(data[1]) - 1) || player.queue.current;
-                if (!data[1] | (Number(data[1]) - 1 < 0))
+                if (!data[1] || (Number(data[1]) - 1 < 0))
                     track = player.queue.current;
                 if (track) {
                     const p = data[0];
@@ -273,6 +273,10 @@ async function Main(d) {
                 break;
             case "queuetotal": {
                 response = player.queue.totalSize;
+            }
+                break;
+            case "shuffle": {
+                response = player.queue.shuffle;
             }
                 break;
             case "queueduration": {
