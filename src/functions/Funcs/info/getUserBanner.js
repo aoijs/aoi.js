@@ -8,9 +8,7 @@ module.exports = async (d) => {
     const user = await d.util.getUser(d, userId);
     if (!user) return d.aoiError.fnError(d, "user", {inside: data.inside});
 
-    if (!user.banner) {
-        user.fetch();
-    }
+    await user.fetch()
 
     data.result = user.bannerURL({
         size: Number(size),
