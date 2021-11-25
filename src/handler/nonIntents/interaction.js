@@ -40,7 +40,7 @@ module.exports = async (interaction, client) => {
             )
             .allValues();
     }
-    console.log({cmds});
+
     if (!cmds.length) return;
     const data = {
         client: client,

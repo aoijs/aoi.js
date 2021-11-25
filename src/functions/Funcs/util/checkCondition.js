@@ -11,7 +11,7 @@ module.exports = async d => {
     if (!["==", "!=", "<=", ">=", "||", "&&", "<", ">"].some(x => condition.includes(x))) return d.aoiError.fnError(d, "custom", {inside}, "Valid Operators Not Provided In");
 
     let result = CheckCondition.solve(mustEscape(condition) || "")
-    console.log({result})
+
     result = eval(result)?.toString()
 
     if (!["true", "false"].includes(result)) {

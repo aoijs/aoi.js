@@ -13,7 +13,7 @@ module.exports = async d => {
     else if (format === "time-full" || format === "time") result = Time.format((Date.now() - Id.createdTimestamp)).toString()
     else if (format === "time-humanize") result = Time.format((Date.now() - (Id.createdTimestamp) || 0)).humanize()
     else result = Id.createdTimestamp;
-    console.log({Id, result})
+
     return {
         code: d.util.setCode({function: d.func, code, inside, result})
     }
