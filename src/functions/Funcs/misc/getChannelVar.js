@@ -9,6 +9,8 @@ module.exports = async d => {
 
     data.result = (await d.client.db.get(table, varname, channelId))?.value || d.client.variableManager.get(varname)?.default;
 
+    data.result = typeof data.result === 'object' ? JSON.stringify(data.result) : data.result;
+    
     return {
         code: d.util.setCode(data)
     }

@@ -19,7 +19,7 @@ module.exports = async (d) => {
                 : id;
 
     const docs = (
-        await d.client.db.all("main", (x) => x.key.startsWith(variable))
+        await d.client.db.all("main", variable)
     )
         .filter((e) => e.key.startsWith(`${variable}_`) && (type === 'user' ? e.key.endsWith(`${d.guild?.id || 'dm'}`) : true))
         .sort((x, y) => Number(y.data.value) - Number(x.data.value));
