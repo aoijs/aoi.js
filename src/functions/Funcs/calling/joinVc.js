@@ -1,4 +1,4 @@
-module.exports = d => {
+module.exports = async d => {
     const data = d.util.openFunc(d);
 
     const [voiceId = d.member.voice?.channel?.id] = data.inside.splits;
@@ -9,7 +9,7 @@ module.exports = d => {
     if (!d.client.voiceManager) return d.aoiError.fnError(d, 'custom', {}, 'Voice Class Is Not Initialised.');
 
     try {
-        d.client.voiceManager.joinVc(vc, d.channel);
+        await d.client.voiceManager.joinVc(vc, d.channel);
     } catch (e) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Join Vc With Reason: ' + e);
     }
