@@ -173,7 +173,7 @@ class AoiError {
                 } (line : ${d.funcLine})\``;
                 break;
             case "custom":
-                ans = `\`${d.func}:${message} ${data.inside || ""} (line : ${
+                ans = `\`${d.func}: ${message} ${data.inside || ""} (line : ${
                     d.funcLine
                 })\``;
                 break;
