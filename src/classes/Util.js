@@ -186,15 +186,13 @@ class Util {
     }
 
     static async findId(d, id) {
-        const data =
-            (await this.getGuild(d, id)) ||
+        return (await this.getGuild(d, id)) ||
             (await this.getUser(d, id)) ||
             (await this.getChannel(d, id, false)) ||
             (await this.getMessage(d.channel, id)) ||
             this.getEmoji(d, id) ||
             this.getSticker(d.guild, id) ||
             "nope";
-        return data;
     }
 }
 
