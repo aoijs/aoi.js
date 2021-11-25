@@ -272,7 +272,7 @@ async function Main(d) {
             }
                 break;
             case "queuetotal": {
-                response = player.queue.size;
+                response = player.queue.totalSize;
             }
                 break;
             case "queueduration": {
