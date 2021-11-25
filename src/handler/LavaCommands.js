@@ -267,7 +267,7 @@ async function Main(d) {
             }
                 break;
             case "volume": {
-                if (!data[0]) response = player.filters.volume || 100;
+                if (!data[0]) response = player.options.volume;
                 else player.setVolume(Number(data[0]));
             }
                 break;
