@@ -517,7 +517,7 @@ const Interpreter = async (
                 useChannel = FuncData.useChannel;
             }
             if (FuncData?.returnID) {
-                returnID = FuncData?.returnID;
+                returnID = FuncData.returnID;
             }
             if (FuncData?.error) {
                 error = FuncData?.error;
