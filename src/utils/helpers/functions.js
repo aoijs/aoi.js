@@ -76,7 +76,7 @@ module.exports = {
         data.user.flags = client.user.flags?.toArray().length
             ? client.user.flags?.toArray().join(" , ")
             : "none";
-        data.presence = client.presence?.status;
+        data.presence = client.status;
         delete data.user.dmChannel;
         delete data.user.client;
         //application data modification
@@ -110,13 +110,13 @@ module.exports = {
     EmbedData(embed, embeds) {
         const data = {
             authorname: embed.author?.name,
-            authoricon: embed.author?.iconUrl,
+            authoricon: embed.author?.iconURL,
             authorurl: embed.author?.url,
             image: embed.image?.url,
             thumbnail: embed.thumbnail?.url,
             color: embed.color,
             footertext: embed.footer?.text,
-            footericon: embed.footer?.iconUrl,
+            footericon: embed.footer?.iconURL,
             description: embed.description,
             title: embed.title,
             url: embed?.url,
