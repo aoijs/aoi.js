@@ -204,6 +204,7 @@ async function Main(d) {
                 }
                 response = "false";
             }
+                break;
             case "findentry": {
                 const tracks = Searches.get(data[0]);
                 if (!tracks)
