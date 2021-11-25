@@ -696,7 +696,7 @@ class Client extends BaseClient {
         }
         if (!d.name) {
             throw new Error(
-                `Name is not probided to cmd at position ${this.cmd.awaited.size}`,
+                `Name is not provided to command at position ${this.cmd.awaited.size}`,
             );
         }
 
