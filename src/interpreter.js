@@ -272,7 +272,7 @@ const Interpreter = async (
                                         }
 
                                         if (!anErrorOccuredPlsWait) {
-                                            message.channel?.send({
+                                            message.channel.send({
                                                 content: con,
                                                 embeds: em || [],
                                                 components: com || [],
@@ -300,7 +300,7 @@ const Interpreter = async (
                                         suppressErrors?.split("{error}").join(err.addBrackets()),
                                     );
                                 } else {
-                                    message.channel?.send(
+                                    message.channel.send(
                                         typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
@@ -424,7 +424,7 @@ const Interpreter = async (
                                         }
 
                                         if (!anErrorOccuredPlsWait) {
-                                            message.channel?.send({
+                                            message.channel.send({
                                                 content: con,
                                                 embeds: em || [],
                                                 components: com || [],
@@ -453,7 +453,7 @@ const Interpreter = async (
                                         );
                                     else ;
                                 } else {
-                                    message.channel?.send(
+                                    message.channel.send(
                                         typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
@@ -576,9 +576,9 @@ const Interpreter = async (
                 if (returnCode && !sendMessage) {
                 } else {
                     if (!useChannel) {
-                        msgobj = await message.channel?.send(send);
+                        msgobj = await message.channel.send(send);
                     } else {
-                        msgobj = await useChannel?.send(send);
+                        msgobj = await useChannel.send(send);
                     }
                 }
                 if (client?.aoiOptions?.debugs?.interpreter) {
