@@ -74,7 +74,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
         } catch (e) {
             AoiError.consoleError(
                 "DatabaseSupportError",
-                "Database Not Supported , You Can Create An Issue At Aoi.js Github.",
+                "Database Not Supported , You Can Create An Issue At aoi.js Github.",
             );
             console.log("Link : https://github.com/aoijs/aoi.js");
         }

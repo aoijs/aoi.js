@@ -9,10 +9,10 @@ class Cacher {
 
     cache(id, stream, guildId) {
         if (this.cache.size < this.limit) {
-            if (!fs.existSync(process.cwd() + '/music')) {
+            if (!fs.existsSync(process.cwd() + '/music')) {
                 fs.mkdirSync(process.cwd() + '/music')
             }
-            if (!fs.existSync(process.cwd() + '/music/' + guildId)) {
+            if (!fs.existsSync(process.cwd() + '/music/' + guildId)) {
                 fs.mkdirSync(process.cwd() + '/music/' + guildId)
             }
             const path = process.cwd() + `/music/${guildId}/${id}`
