@@ -6,13 +6,13 @@ module.exports = async d => {
 
     msg = await d.util.errorParser(msg, d);
 
-    channelIds.forEach(x => {
+    for (const x of channelIds) {
         const channel = await d.util.getChannel(d, x);
 
         if (channel) {
-            d.aoiError.makeMessageError(d.client, channel, msg, msg.options, d);
+            await d.aoiError.makeMessageError(d.client, channel, msg, msg.options, d);
         }
-    });
+    }
 
     return {
         code: d.util.setCode(data)
