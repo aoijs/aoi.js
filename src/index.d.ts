@@ -1,8 +1,8 @@
-//@ts-ignore
+
 import Group from "./cachehandler/group";
-//@ts-ignore
+
 import LimitGroup from "./cachehandler/limitGroup";
-//@ts-ignore
+
 import SuperSet from "./cachehandler/superSet";
 import {Client, ShardingManager} from "discord.js";
 
