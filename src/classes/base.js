@@ -20,7 +20,7 @@ class BaseClient extends Discord.Client {
             options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
         }
 
-        if (options.presence?.activites?.length) {
+        if (options.presence?.activities?.length) {
             if (
                 Object.keys(ActivityTypeAvailables).includes(
                     options.presence?.activities[0].type,
