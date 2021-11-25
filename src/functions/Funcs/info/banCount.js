@@ -1,7 +1,7 @@
 module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();
-    const [guildId = d.guild.id, user] = inside.splits;
+    const [guildId = d.guild.id] = inside.splits;
     const guild = await d.util.getGuild(d, guildId)
     let result;
     result = await guild.bans.fetch().catch(err => {
