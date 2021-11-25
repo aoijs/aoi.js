@@ -4,7 +4,7 @@ module.exports = d => {
 
     const guildId = data.inside.inside;
 
-    data.result = d.util.getGuild(d, guildId) ? true : false;
+    data.result = await d.util.getGuild(d, guildId) ? true : false;
 
     return {
         code: d.util.setCode(data)

@@ -7,7 +7,7 @@ module.exports = async d => {
     msg = await d.util.errorParser(msg, d);
 
     channelIds.forEach(x => {
-        const channel = d.util.getChannel(d, x);
+        const channel = await d.util.getChannel(d, x);
 
         if (channel) {
             d.aoiError.makeMessageError(d.client, channel, msg, msg.options, d);

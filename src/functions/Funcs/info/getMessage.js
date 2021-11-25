@@ -4,7 +4,7 @@ module.exports = async d => {
 
     let [channelId = d.channel?.id, messageId = d.message?.id, option = 'content'] = data.inside.splits;
 
-    const channel = d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelId);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     const message = await d.util.getMessage(channel, messageId);

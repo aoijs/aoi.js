@@ -5,7 +5,7 @@ module.exports = async d => {
     let [channelResolver, returnSelf = "yes", guildId = d.guild.id] = data.inside.splits;
     channelResolver = channelResolver.addBrackets();
 
-    const guild = d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
     data.result = guild.channels.cache.find(x => x.id === channelResolver || x.name.toLowerCase() === channelResolver.toLowerCase() || x.toString() === channelResolver)?.id || returnSelf === "yes" ? d.channel.id : undefined;
