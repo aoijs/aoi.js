@@ -5,7 +5,7 @@ module.exports = async d => {
 
     const [option = 'name'] = data.inside.splits;
 
-    const Opx = ChannelOptions[option];
+    const Opx = MemberOptions[option];
     data.result = eval(`d.data.oldm?.${Opx}`);
 
     return {
