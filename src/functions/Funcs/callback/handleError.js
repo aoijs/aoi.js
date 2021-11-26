@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [option] = data.inside.splits;
 
-    data.result = d.data?.error[option].deleteBrackets();
+    data.result = d.data?.errorData[option].deleteBrackets();
 
     return {
         code: d.util.setCode(data)
