@@ -10,7 +10,16 @@ module.exports = async d => {
     if (!stuffs.includes(d.guild?.id)) {
         error = true;
         if (err?.trim() === '') {
-        } else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
+        } else {
+			const errorMsg = await d.util.errorParser(err, d);
+			d.aoiError.makeMessageError(
+				d.client,
+				d.channel,
+				errorMsg,
+				errorMsg.options,
+				d,
+			);
+		}
     }
 
     return {

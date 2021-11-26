@@ -28,7 +28,7 @@ class Blacklist {
         if (!this.types.includes(type))
             AoiError.consoleError("BlacklistTypeError", "Invalid Type Provided");
         ids.forEach((x) => {
-            this[type].blacklist.remove(x);
+            this[type].blacklist.delete(x);
         });
     }
 

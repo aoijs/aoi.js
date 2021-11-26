@@ -16,7 +16,16 @@ module.exports = async d => {
     if (!stuffs.every(x => memPerms.includes(Perms[x.trim()]))) {
         error = true;
         if (err?.trim() === '') {
-        } else d.aoiError.makeMessageError(d.client, d.channel, errorMsg, errorMsg.options, d);
+        } else {
+			const errorMsg = await d.util.errorParser(err, d);
+			d.aoiError.makeMessageError(
+				d.client,
+				d.channel,
+				errorMsg,
+				errorMsg.options,
+				d,
+			);
+		}
     }
 
     return {

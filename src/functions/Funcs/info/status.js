@@ -9,7 +9,7 @@ module.exports = async d => {
     const member = await d.util.getMember(guild, userId);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
-    data.result = member.presence?.status;
+    data.result = member.presence?.status || 'offline';
 
     return {
         code: d.util.setCode(data)
