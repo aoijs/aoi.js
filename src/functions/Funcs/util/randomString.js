@@ -9,7 +9,7 @@ module.exports = (d) => {
         return d.aoiError.fnError(d, "custom", {inside: data.inside});
 
     let i = 0;
-
+    data.result = '';
     const randoms = d.randoms;
 
     if (randoms[`randomString${data.inside}`])
