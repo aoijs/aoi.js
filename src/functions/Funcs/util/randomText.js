@@ -9,7 +9,7 @@ module.exports = (d) => {
     if (!randoms[`randomText${data.inside}`]) {
         randoms[`randomText${data.inside}`] = data.result;
     } else {
-        data.result = randoms["randomText"];
+        data.result = randoms[`randomText${data.inside}`];
     }
 
     return {
