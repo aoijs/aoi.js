@@ -25,7 +25,7 @@ module.exports = async d => {
         headers,
         body,
         responseType: 'text'
-    }).catch(e => {
+    }).catch(async e => {
         if (error === "$default" || !error) {
             return d.aoiError.makeMessageError(d.client, d.channel, e, {}, d)
         } else {
