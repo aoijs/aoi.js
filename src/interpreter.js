@@ -505,7 +505,7 @@ const Interpreter = async (
                 attachments = FuncData.files;
             }
             if (FuncData?.suppressErrors) {
-                suppressErrors = FuncData?.suppressErrors;
+                suppressErrors = FuncData.suppressErrors;
             }
             if (FuncData?.components) {
                 components = FuncData.components;
