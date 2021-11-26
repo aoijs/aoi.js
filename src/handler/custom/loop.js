@@ -26,7 +26,7 @@ module.exports = async (client) => {
         } else {
             chan = client.channels.cache.get(cmd.channel);
             data.channel = chan;
-            data.guild = chan.guild;
+            data.guild = chan?.guild;
         }
         setInterval(async () => {
             await Interpreter(
