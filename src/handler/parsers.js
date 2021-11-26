@@ -620,7 +620,7 @@ const SlashOptionsParser = async (options) => {
 const OptionParser = async (options, d) => {
     const Checker = (msg) => options.includes(msg);
     const optionData = {};
-    if (Checker("edit")) {
+    if (Checker("{edit:")) {
         const editPart = options.split("{edit:")[1].split("}}")[0];
         const dur = editPart.split(":")[0];
         const msgs = editPart.split(":{").slice(1).join(":{").split("}:{");
@@ -630,11 +630,11 @@ const OptionParser = async (options, d) => {
         }
         optionData.edits = {time: dur, messages};
     }
-    if (Checker("reactions")) {
+    if (Checker("{reactions:")) {
         const react = options.split("{reactions:")[1].split("}")[0];
         optionData.reactions = react.split(":");
     }
-    if (Checker("delete")) {
+    if (Checker("{delete:")) {
         optionData.deleteIn = Time.parse(
             options.split("{delete:")[1].split("}")[0],
         )?.ms;

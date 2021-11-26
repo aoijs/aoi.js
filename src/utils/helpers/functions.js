@@ -194,8 +194,8 @@ module.exports = {
     },
     Message(msg) {
         const data = Object.assign({}, msg);
-        data.activityPartyId = msg.activity.partyId;
-        data.activityType = msg.activity.type;
+        data.activityPartyId = msg.activity?.partyId;
+        data.activityType = msg.activity?.type;
         data.activity = undefined;
 
         data.attachments = msg.attachments.map((x) => x.url);
