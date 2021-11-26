@@ -204,9 +204,9 @@ const ComponentParser = async (msg, client) => {
                         ? (opt || "").join(":").trim().startsWith("<")
                             ? client.emojis.cache.find((x) => x.toString() === opt.join(":"))
                             : {
-                                name: opt.split(",")[0],
-                                id: opt.split(",")[1] || 0,
-                                animated: opt.split(",")[2] || false,
+                                name: opt.join(":").split(",")[0],
+                                id: opt.join(":").split(",")[1] || 0,
+                                animated: opt.join(":").split(",")[2] || false,
                             }
                         : undefined;
                     const ind = {

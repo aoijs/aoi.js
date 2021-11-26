@@ -5,7 +5,7 @@ module.exports = async d => {
     if (data.err) return d.error(data.err);
 
     let [url, method = "get", body = '', property, error = '$default', ...header] = data.inside.splits;
-    error = await d.util.errorParser(error, d);
+
     body = body?.trim() === '' ? undefined : JSON.parse(body);
     let headers;
     if (header.length === 1) {
@@ -29,6 +29,7 @@ module.exports = async d => {
         if (error === "$default" || !error) {
             return d.aoiError.makeMessageError(d.client, d.channel, e, {}, d)
         } else {
+            error = await d.util.errorParser(error, d);
             return d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d)
         }
     });
