@@ -9,7 +9,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch Bans");
     })
     result = isNaN(result) ? result.size : result;
-    
+
     return {
         code: d.util.setCode({code, inside, function: d.func, result})
     }

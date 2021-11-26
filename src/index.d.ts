@@ -1,4 +1,3 @@
-
 import Group from "./cachehandler/group";
 
 import LimitGroup from "./cachehandler/limitGroup";
@@ -7,9 +6,9 @@ import SuperSet from "./cachehandler/superSet";
 import {Client, ShardingManager} from "discord.js";
 
 declare module "aoi.js" {
-	import {EventEmitter} from "events";
+    import {EventEmitter} from "events";
 
-	type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
+    type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
 
     //AoiError
     class AoiError {
