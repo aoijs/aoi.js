@@ -101,10 +101,12 @@ async function Main(d) {
             }
                 break;
             case "songinfo": {
+                let abc;
                 let track =
                     player.queue.at(Number(data[1]) - 1) || player.queue.current;
                 if (!data[1] || (Number(data[1]) - 1 < 0))
-                    track = player.queue.current;
+                for (abc = 0; abc < player.queue.size; abc++) {
+                    track = player.queue.at(abc)}
                 if (track) {
                     const p = data[0];
                     if (p === "current_duration") {
