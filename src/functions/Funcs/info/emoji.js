@@ -9,7 +9,6 @@ module.exports = async d => {
     if (!emoji) return d.aoiError.fnError(d, "emoji", {inside});
     let result = Emoji(emoji)[option];
 
-    console.log({result, emoji: Emoji(emoji).name, option, inside: inside.splits})
     return {
         code: d.util.setCode({function: d.func, code, inside, result})
     }
