@@ -17,15 +17,15 @@ module.exports = async d => {
         error = true;
         if (err?.trim() === '') {
         } else {
-			const errorMsg = await d.util.errorParser(err, d);
-			d.aoiError.makeMessageError(
-				d.client,
-				d.channel,
-				errorMsg,
-				errorMsg.options,
-				d,
-			);
-		}
+            const errorMsg = await d.util.errorParser(err, d);
+            d.aoiError.makeMessageError(
+                d.client,
+                d.channel,
+                errorMsg,
+                errorMsg.options,
+                d,
+            );
+        }
     }
 
     return {

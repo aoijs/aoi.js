@@ -15,7 +15,7 @@ module.exports = async (d) => {
         errorMsg = "",
         data = "",
     ] = inside.splits;
-    let chan = await d.util.getChannel(d,channelId);
+    let chan = await d.util.getChannel(d, channelId);
     if (!chan) return d.aoiError.fnError(d, "channel", {inside});
     const msg = await d.util.getMessage(chan, messageId);
     if (!msg) return d.aoiError.fnError(d, "message", {inside});
