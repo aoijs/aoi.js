@@ -8,6 +8,6 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode({function: d.func, code, inside}),
-        useChannel: dm?.dmChannel
+        useChannel: dm
     }
 } 
