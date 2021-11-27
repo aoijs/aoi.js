@@ -278,7 +278,7 @@ async function Main(d) {
             }
                 break;
             case "shuffle": {
-                response = player.queue.shuffle;
+                response = player.queue.shuffle();
             }
                 break;
             case "queueduration": {
