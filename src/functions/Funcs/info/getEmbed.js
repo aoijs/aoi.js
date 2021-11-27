@@ -3,7 +3,6 @@ const {EmbedData} = require('../../../utils/helpers/functions.js');
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
-    console.log({data})
     let [channelId = d.channel?.id, messageId = d.message?.id, index = 1, option = 'description'] = data.inside.splits;
     index = index - 1;
     const channel = await d.util.getChannel(d, channelId);
@@ -13,7 +12,6 @@ module.exports = async d => {
     if (!message) return d.aoiError.fnError(d, 'message', {inside: data.inside});
 
     const embedData = EmbedData(message.embeds[index], message.embeds)
-    console.log({embedData})
     try {
         data.result = eval(`embedData?.${option}`);
 
