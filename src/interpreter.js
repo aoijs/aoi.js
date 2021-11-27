@@ -197,6 +197,7 @@ const Interpreter = async (
                         vars: letVars,
                         object: object,
                         disableMentions: disableMentions,
+                        returnID: returnID,
                         array: array,
                         reactions: reactions,
                         message: message.message || message,
