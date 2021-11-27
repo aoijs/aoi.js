@@ -40,7 +40,6 @@ module.exports = async (d) => {
             );
     });
     replies = replies.split(",");
-    console.log({replies});
     let channel;
     if (dm) {
         channel = (await d.util.getUser(d, dm)).dmChannel;
