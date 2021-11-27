@@ -94,7 +94,7 @@ module.exports = async (d) => {
         if (!cmd) return;
         d.interpreter(
             d.client,
-            loopData,
+            d.message,
             d.args,
             cmd,
             d.client.db,
