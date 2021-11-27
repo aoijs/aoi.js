@@ -28,7 +28,6 @@ module.exports = d => {
                 slice = replacedTo.addBrackets() + arr.slice(Number(times)).join(replacedTo.addBrackets());
             }
             data.result = (sliceTo + slice).deleteBrackets()
-            console.log({result: data.result, sliceTo, slice})
         }
     }
 
