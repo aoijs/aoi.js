@@ -9,7 +9,7 @@ module.exports = async d => {
     reactionData.userIds = d.data.reactionData.users.cache.map(y => y.id).join(" , ");
     reactionData.tags = d.data.reactionData.users.cache.map(y => y.tag.deleteBrackets()).join(" , ");
 
-    data.result = reactionData[option].deleteBrackets();
+    data.result = reactionData?.[option].deleteBrackets();
 
     return {
         code: d.util.setCode(data)

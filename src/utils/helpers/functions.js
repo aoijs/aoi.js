@@ -101,7 +101,7 @@ module.exports = {
 
         data.string = emoji.toString();
         data.json = JSON.stringify(data, null, 2);
-        data.guild = emoji.guild.id;
+        data.guild = emoji.guild?.id;
         data.roles = emoji.roles.map((x) => x.id).join(" , ");
 
         data.toJSON = undefined;
