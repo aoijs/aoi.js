@@ -122,7 +122,7 @@ module.exports = async (message, client, db) => {
                     break;
                 } else if (bl.channel.blacklist.has(message.channel.id)) {
                     if (bl.channel.errorMsg) {
-                        console.log("Blacklist sent");
+
                         message.channel.send(bl.channel.errorMsg);
                     }
                     break;
