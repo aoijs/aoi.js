@@ -8,7 +8,7 @@ module.exports = d => {
 
     if (isNaN(time)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Time Provided In");
 
-    data.result = Time.parse(time).humanize();
+    data.result = Time.parse(Number(time)).humanize();
 
     return {
         code: d.util.setCode(data)

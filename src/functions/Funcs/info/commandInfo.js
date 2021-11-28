@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const [name, option] = inside.splits;
 
-    const cmd = d.client.cmd.default.find(x => x.name.toLowerCase() === name.toLowerCase() || Array.isArray(x.aliases) ? x.aliases?.includes(name.toLowerCase()) : x.aliases?.toLowerCase() === name.toLowerCase());
+    const cmd = d.client.cmd.default.find(x => (x.name.toLowerCase() === name.toLowerCase()) || (Array.isArray(x.aliases) ? x.aliases?.includes(name.toLowerCase()) : (x.aliases?.toLowerCase() === name.toLowerCase())));
 
     let result;
     try {
