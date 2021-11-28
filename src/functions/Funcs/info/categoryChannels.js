@@ -1,4 +1,4 @@
-const {categoryChannelOption} = require('../../../utils/helpers/functions.js');
+const {categoryChannelsOption} = require('../../../utils/helpers/functions.js');
 module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();
@@ -9,7 +9,7 @@ module.exports = async d => {
     const category = await d.util.getChannel(d, id);
     if (category.type !== d.util.channelTypes.Category) return d.aoiError.fnError(d, "custom", {inside}, "Provided Channel Is Not A Category");
 
-    let result = categoryChannelOption(category)[option];
+    let result = categoryChannelsOption(category)[option];
     result = Array.isArray(result) ? result.join(sep) : result;
 
     return {
