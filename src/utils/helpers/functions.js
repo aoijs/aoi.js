@@ -1,6 +1,6 @@
 const {SI_SYMBOL, FormatOptions} = require("../Constants.js");
 const {setTimeout} = require("timers/promises");
-const {Invite, CategoryChannel, Emoji, GuildEmoji} = require("discord.js");
+const {Invite, CategoryChannel, Emoji, GuildEmoji, ReactionEmoji} = require("discord.js");
 module.exports = {
     /**
      * @param  {number} number
@@ -88,7 +88,7 @@ module.exports = {
         return data;
     },
     /**
-     * @param  {GuildEmoji} emoji
+     * @param  {GuildEmoji | ReactionEmoji } emoji
      */
     Emoji(emoji) {
         const data = Object.assign({}, emoji);
@@ -102,7 +102,7 @@ module.exports = {
         data.string = emoji.toString();
         data.json = JSON.stringify(data, null, 2);
         data.guild = emoji.guild?.id;
-        data.roles = emoji.roles.map((x) => x.id).join(" , ");
+        data.roles = emoji.roles?.cache.map((x) => x.id).join(" , ");
 
         data.toJSON = undefined;
         return data;
