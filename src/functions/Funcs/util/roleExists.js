@@ -7,7 +7,7 @@ module.exports = async d => {
     const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-    const role = await guild.roles.fetch(roleId).catch(err => undefined);
+    const role = roleId.trim() === '' ? false : await guild.roles.fetch(roleId).catch(err => undefined);
 
     data.result = role ? true : false;
 
