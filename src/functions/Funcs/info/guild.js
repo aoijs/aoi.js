@@ -2,7 +2,7 @@ module.exports = async d => {
     const dat = d.util.openFunc(d);
 
     const [id = d.guild?.id, option = 'name'] = dat.inside.splits;
-    let server = await d.util.getGuild(d, id)
+    let server = await d.util.getGuild(d,id)
 
     let data = {}
     Object.assign(data, server)
@@ -14,6 +14,9 @@ module.exports = async d => {
     data.channels = data.channels.cache.size
     data.bans = data.bans.cache.size
     data.roles = data.roles.cache.size
+    data.createdAt = server.createdAt;
+    data.createdTimestamp = server.createdTimestamp;
+
     delete data.presence
     delete data.voiceStates
     delete data.stageInstances
@@ -32,7 +35,7 @@ module.exports = async d => {
 
     data.emojis = data.emojis.cache.size
     data.stickers = data.stickers.cache.size
-
+    data.json = JSON.stringify(data,null,2)
     dat.result = data[option];
 
     return {
