@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.openFunc(d)
     if (data.err) return d.error(data.err)
 
-    const [channelID, userId, ...perms] = inside.splits
+    const [channelID, userId, ...perms] = data.inside.splits
 
     const channel = await d.util.getChannel(d, channelID, true);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
