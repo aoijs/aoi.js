@@ -8,7 +8,7 @@ module.exports = async d => {
 
     if (!option) return d.aoiError.fnError(d, 'option', {inside: data.inside});
 
-    data.result = d.data.rateLimit[rateLimitOptions[option]];
+    data.result = d.data.rateLimit[RateLimitOptions[option]];
 
     return {
         code: d.util.setCode(data)
