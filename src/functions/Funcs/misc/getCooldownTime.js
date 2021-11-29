@@ -21,7 +21,7 @@ module.exports = async d => {
 
     const timeEnd = await d.client.db.get(d.client.db.tables[0], 'cooldown', cmdName + "_" + types[type]);
 
-    data.result = timeEnd.value - Date.now();
+    data.result = (timeEnd?.value || 0) - Date.now();
 
     return {
         code: d.util.setCode(data)
