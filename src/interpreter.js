@@ -117,7 +117,6 @@ const Interpreter = async (
         if (command["$if"] === "v4") {
             code = (await IF({client, code, message, channel, args})).code;
             funcs = client.functionManager.findFunctions(code);
-            console.log({code, funcs, args});
         }
 
         //parsing functions (dont touch)
@@ -577,7 +576,7 @@ const Interpreter = async (
                 if (returnCode && !sendMessage) {
                 } else {
                     if (!useChannel) {
-                        msgobj = await message.channel.send(send);
+                        msgobj = await message.channel?.send(send);
                     } else {
                         msgobj = await useChannel.send(send);
                     }

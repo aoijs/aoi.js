@@ -19,7 +19,6 @@ module.exports = async (d) => {
 
         result = eval(operation);
     } catch (e) {
-        console.log(e)
         return d.aoiError.fnError(d, "custom", {}, `Failed to calculate in`);
     }
 
