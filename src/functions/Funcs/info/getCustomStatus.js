@@ -10,7 +10,7 @@ module.exports = async d => {
     if (!user) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
     const status = user.presence?.activities?.find(x => x.type === 'CUSTOM');
-    data.result = status?.[type];
+    data.result = status?.[type] || "none";
 
     return {
         code: d.util.setCode(data)
