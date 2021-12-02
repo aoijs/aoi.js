@@ -4,7 +4,9 @@ module.exports = d => {
 
     const [username] = data.inside.splits;
 
-    d.client.user.setAvatar(username.addBrackets()).catch(err => {
+    d.client.user.setUsername(username.addBrackets())
+    
+    .catch(err => {
         d.aoiError.fnError(d, 'custom', {}, `Failed To Set Bot Username To "${username.addBrackets()}" With Reason: ${err}`);
     });
 
