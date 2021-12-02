@@ -1,14 +1,16 @@
-module.exports = async d => {
-    const data = d.util.openFunc(d);
+module.exports = async (d) => {
+	const data = d.util.openFunc(d);
 
-    const [userId = d.author.id] = data.inside.splits;
+	const [userId = d.author.id] = data.inside.splits;
 
-    const user = await d.util.getUser(d, userId);
-    if (!user) return d.util.aoiError.fnError(d, 'user', {inside: data.inside});
+	const user = await d.util.getUser(d, userId);
+	if (!user) return d.util.aoiError.fnError(d, "user", { inside: data.inside });
 
-    data.result = user.dmChannel ? true : false;
+	data.result = user.createDM().catch((_) => undefined);
 
-    return {
-        code: d.util.setCode(data)
-    }
-}
+	data.result = !!data.result;
+
+	return {
+		code: d.util.setCode(data),
+	};
+};

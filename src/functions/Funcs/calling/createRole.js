@@ -31,7 +31,7 @@ module.exports = async d => {
     });
     if (wrongPerms.length) d.aoiError.fnError(d, "custom", {inside}, "Invalid Permissions: " + wrongPerms.join(" , ") + " Provided In");
 
-    guild.roles.create({name, color, hoist, permissions, position, mentionable}).catch(e => {
+    await guild.roles.create({name, color, hoist, permissions, position, mentionable}).catch(e => {
         d.aoiError.fnError(d, "custom", {inside}, "Failed To Create Role With Reason: " + e);
     });
 
