@@ -14,7 +14,7 @@ module.exports = async (d) => {
 		"cooldown",
 		`${d.command.name}_${d.guild?.id || "dm"}`,
 	);
-
+	console.log({ cooldown });
 	if (!cooldown) {
 		cooldown = Date.now() + Time.parse(time).ms;
 		d.client.db.set(
@@ -23,10 +23,10 @@ module.exports = async (d) => {
 			`${d.command.name}_${d.guild?.id || "dm"}`,
 			cooldown,
 		);
-	} else if (Date.now() > cooldown) {
+	} else if (Date.now() < cooldown.value) {
 		if (errorObject.trim() === "") {
 		} else {
-			const { object, humanize, toString } = Time.format(cooldown - Date.now());
+			const { object, humanize, toString } = Time.format( cooldown.value-Date.now() );
 			errorObject = errorObject
 				.replaceAll("%time%", humanize())
 				.replaceAll("%year%", object.years)
