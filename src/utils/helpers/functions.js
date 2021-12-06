@@ -1,6 +1,6 @@
 const {SI_SYMBOL, FormatOptions} = require("../Constants.js");
 const {setTimeout} = require("timers/promises");
-const {Invite, CategoryChannel, Emoji, GuildEmoji, ReactionEmoji} = require("discord.js");
+const {Invite, CategoryChannel, Emoji, GuildEmoji, ReactionEmoji, VoiceState} = require("discord.js");
 module.exports = {
     /**
      * @param  {number} number
@@ -259,6 +259,10 @@ module.exports = {
 
         return data;
     },
+    
+    /**
+     * @param  {VoiceState} state
+     */
     VoiceState(state) {
         const data = Object.assign({}, state);
 

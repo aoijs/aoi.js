@@ -7,7 +7,7 @@ module.exports = async d => {
 
     let [guildid, url, name, returnSticker = "no", tags, description, reason] = inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildid);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     const attachment = new MessageAttachment(url);
