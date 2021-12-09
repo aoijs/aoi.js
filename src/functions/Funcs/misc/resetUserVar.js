@@ -13,15 +13,14 @@ module.exports = async (d) => {
 			`Variable ${varname.addBrackets()} Doesn't Exist!`,
 		);
 
-	const guild = d.util.getGuild(d, guildId);
+	const guild = await d.util.getGuild(d, guildId);
 	if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-	const all = await d.client.db.all(table, varname.addBrackets(), 3, [
+	const all = await d.client.db.all(table, varname.addBrackets(), 2, [
 		1,
 		guildId,
 	]);
-
-	await Promise.all(all.forEach((x) => d.client.db.delete(table, x.key)));
+all.forEach(async (x) => await d.client.db.delete(table, x.key));
 
 	return {
 		code: d.util.setCode(data),

@@ -16,7 +16,7 @@ module.exports = async (d) => {
 		0,
 		guildId,
 	]);
-	await Promise.all(all.forEach((x) => d.client.db.delete(table, x.key)));
+	all.forEach( async (x) => await d.client.db.delete(table, x.key));
 
 	return {
 		code: d.util.setCode(data),
