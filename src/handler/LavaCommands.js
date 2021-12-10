@@ -105,8 +105,9 @@ async function Main(d) {
                 let track =
                     player.queue.at(Number(data[1]) - 1) || player.queue.current;
                 if (!data[1] || (Number(data[1]) - 1 < 0))
-                for (abc = 0; abc < player.queue.size; abc++) {
-                    track = player.queue.at(abc)}
+                    for (abc = 0; abc < player.queue.size; abc++) {
+                        track = player.queue.at(abc)
+                    }
                 if (track) {
                     const p = data[0];
                     if (p === "current_duration") {

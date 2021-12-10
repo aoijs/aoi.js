@@ -259,7 +259,7 @@ module.exports = {
 
         return data;
     },
-    
+
     /**
      * @param  {VoiceState} state
      */
