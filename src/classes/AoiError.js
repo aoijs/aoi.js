@@ -180,7 +180,7 @@ class AoiError {
         }
         return ans;
     }
-
+//aoi.js system
     /**
      * @param  {object} d
      * @param  {"message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
