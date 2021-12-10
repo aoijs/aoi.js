@@ -26,7 +26,7 @@ class SlashOption {
 
             let choices;
             if (choice.trim().length) {
-                choices = await this.choice(choice);
+                choices = this.choice(choice);
             } else choices = [];
             stringOptions.push({type: 3, name, description, required, choices});
         }
@@ -45,7 +45,7 @@ class SlashOption {
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
-                choices = await this.choice(choice);
+                choices = this.choice(choice);
             } else choices = [];
             integerOptions.push({type: 4, name, description, required, choices});
         }
@@ -67,7 +67,7 @@ class SlashOption {
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
-                choices = await this.choice(choice);
+                choices = this.choice(choice);
             } else choices = [];
             numberOptions.push({type: 10, name, description, required, choices});
         }

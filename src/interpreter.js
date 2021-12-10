@@ -4,7 +4,7 @@ const { CustomFunction } = require("./classes/Functions.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 
-//helpers
+//helpers of aoijs
 const { Time } = require("./utils/helpers/customParser.js");
 const { CheckCondition } = require("./utils/helpers/checkCondition.js");
 const { mustEscape } = require("./utils/helpers/mustEscape.js");
