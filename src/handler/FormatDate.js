@@ -135,8 +135,7 @@ module.exports = (format, date, timezone) => {
                 60 *
                 1000;
 
-            const dayOfYear = Math.floor(difference / aDay);
-            format = dayOfYear;
+            format = Math.floor(difference / aDay);
         }
             break;
         case "DDDD": {
@@ -156,8 +155,7 @@ module.exports = (format, date, timezone) => {
                 60 *
                 1000;
 
-            const dayOfYear = Math.floor(difference / aDay);
-            format = dayOfYear;
+            format = Math.floor(difference / aDay);
         }
             break;
         // Unix Timestamp
@@ -331,7 +329,7 @@ module.exports = (format, date, timezone) => {
             break;
         case "LT": {
             const clonedDate = aNewDate;
-            const isPM = clonedDate.getHours() > 12 ? true : false;
+            const isPM = clonedDate.getHours() > 12;
             format = `${
                 isPM ? clonedDate.getHours() - 12 : clonedDate.getHours()
             }:${
@@ -343,7 +341,7 @@ module.exports = (format, date, timezone) => {
             break;
         case "LTS": {
             const clonedDate = aNewDate;
-            const isPM = clonedDate.getHours() > 12 ? true : false;
+            const isPM = clonedDate.getHours() > 12;
             format = `${
                 isPM ? clonedDate.getHours() - 12 : clonedDate.getHours()
             }:${
