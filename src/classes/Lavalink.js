@@ -70,8 +70,8 @@ class Lavalink extends EventEmitter {
 
     /**
      *
-     * @param {leref.ts.lerefPlayer} player
-     * @param {leref.ts.lerefTracking} track
+     * @param {import("leref.ts").LerefPlayer} player
+     * @param {import("leref.ts").LerefTracking} track
      */
     getLeft(player, track) {
         // const rate = player.filters.timescale?.rate ?? 1;
@@ -90,7 +90,7 @@ class Lavalink extends EventEmitter {
 
     /**
      *
-     * @param {leref.ts.lerefplayer} player
+     * @param {import("leref.ts").LerefPlayer} player
      */
     getCurrent(player) {
         // const rate = (player.filters.timescale?.rate ?? 1);
@@ -132,8 +132,8 @@ class Lavalink extends EventEmitter {
     /**
      *
      * @param {"start" | "end"} event
-     * @param {leref.ts.lerefPlayer} player
-     * @param {leref.ts.lerefTracking} track
+     * @param {import("leref.ts").LerefPlayer} player
+     * @param {import("leref.ts").LerefTracking} track
      * @param {string?} [reason]
      */
     handleEvent(event, player, track, reason) {

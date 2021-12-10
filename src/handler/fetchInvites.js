@@ -4,8 +4,8 @@ module.exports = async (client) => {
         client,
         client.options.fetchInvites?.cacheInviters || false,
     );
-    client.inviteSystem.fetchAll();
+    await client.inviteSystem.fetchAll();
     if (client.options.fetchInvites?.cacheInviters) {
-        client.inviteSystem.fetchInviters();
+        await client.inviteSystem.fetchInviters();
     }
 };
