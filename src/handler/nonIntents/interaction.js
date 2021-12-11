@@ -28,7 +28,7 @@ module.exports = async (interaction, client) => {
             .filter((x) =>
                 x.name
                     ? Array.isArray(x.name)
-                        ? x.name.includes(interaction.customId)
+                        ? x.name?.includes(interaction.customId)
                         : x.name === interaction.customId
                     : !x.name,
             )
@@ -51,7 +51,7 @@ module.exports = async (interaction, client) => {
         member: interaction.member,
     };
     for (const cmd of cmds) {
-        if (cmd.name.includes("$")) {
+        if (cmd.name?.includes("$")) {
             cmd.name = (
                 await Interpreter(
                     client,
