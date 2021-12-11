@@ -36,6 +36,7 @@ const Interpreter = async (
     message,
     args,
     command,
+    _db,
     returnCode = false,
     channelUsed,
     data = {},
