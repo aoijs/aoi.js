@@ -288,7 +288,7 @@ const Interpreter = async (
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
                                 }
-                                if (suppressErrors) {
+                                if (suppressErrors && anErrorOccuredPlsWait) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
 
                                     ErrorHandler(
