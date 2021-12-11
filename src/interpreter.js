@@ -447,7 +447,7 @@ const Interpreter = async (
                                 if (suppressErrors) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
                                    if (suppressErrors.trim() !== "")
-                                        ErrorHandler(
+                                        await ErrorHandler(
                                             {
                                                 channel: channel,
                                                 message: message,
