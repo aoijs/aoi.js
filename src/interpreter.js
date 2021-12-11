@@ -20,6 +20,7 @@ const {Command} = require("./classes/Commands.js");
  * mentions?:Discord.MessageMentions }} message
  * @param  {string[]} args
  * @param  {Command | object } command
+ * @param {} _db db to be used (deprecated param)
  * @param  {boolean} returnCode=false
  * @param  {string | void} channelUsed
  * @param  {object} data={}
