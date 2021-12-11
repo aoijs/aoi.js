@@ -1,3 +1,4 @@
+const Interpreter = require( "../../../interpreter.js" );
 const {CheckCondition} = require("../../../utils/helpers/checkCondition.js");
 const {mustEscape} = require("../../../utils/helpers/mustEscape.js");
 module.exports = async (d) => {
@@ -27,7 +28,7 @@ module.exports = async (d) => {
                 {},
                 `Invalid Awaited Command: '${data.result.addBrackets().split("{execute:")[1].split("}")[0]}' Provided`,
             );
-        await d.interpreter(
+        await Interpreter(
             d.client,
             d.message,
             d.args,
@@ -35,7 +36,7 @@ module.exports = async (d) => {
             d.client.db,
             false,
             undefined,
-            {data: d.data},
+            d.data,
         );
         data.result = data.result
             .addBrackets()
