@@ -66,7 +66,7 @@ module.exports = async (interaction, client) => {
         await Interpreter(
             client,
             data,
-            interaction.values || interaction.options._hoistedOptions?.map((x) => x.value),
+            interaction.values || interaction.options?._hoistedOptions?.map((x) => x.value) || [],
             cmd,
             client.db,
             false,
