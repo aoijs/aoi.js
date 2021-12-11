@@ -284,11 +284,10 @@ const Interpreter = async (
                                     }
                                 } else;
                             } else {
-                                anErrorOccuredPlsWait = true;
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
                                 }
-                                if (suppressErrors && anErrorOccuredPlsWait) {
+                                if (suppressErrors && !anErrorOccuredPlsWait) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
 
                                     ErrorHandler(
@@ -305,6 +304,7 @@ const Interpreter = async (
                                         typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
+                                anErrorOccuredPlsWait = true;
                             }
                         },
                         interpreter: Interpreter,
