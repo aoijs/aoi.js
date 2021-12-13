@@ -95,15 +95,16 @@ module.exports = async (d) => {
 						"Failed To Update Ticket Permissions With Reason: " + err,
 					);
 				});
-
-			channel?.send(ticketMsg).catch((err) => {
-				d.aoiError.fnError(
-					d,
-					"custom",
-					{},
-					"Failed To Send Message In Ticket With Reason: " + err,
-				);
-			});
+			if (msg?.trim() !== "") {
+				channel?.send(ticketMsg).catch((err) => {
+					d.aoiError.fnError(
+						d,
+						"custom",
+						{},
+						"Failed To Send Message In Ticket With Reason: " + err,
+					);
+				});
+			}
 		}
 		d.client.db.set(
 			d.client.db.tables[0],
