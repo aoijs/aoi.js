@@ -35,6 +35,7 @@ module.exports = async (d) => {
                 d.channel,
                 errorObject,
                 errorObject.options,
+                d
             );
         }
         error = true;
