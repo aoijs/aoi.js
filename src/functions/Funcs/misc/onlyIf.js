@@ -6,7 +6,7 @@ module.exports = async (d) => {
     if (data.err) return d.error(data.err);
     let error = false;
 
-    const [condition, err] = data.inside.splits;
+    const [condition, err = ''] = data.inside.splits;
 
     if (!eval(CheckCondition.solve(mustEscape(condition)))) {
         error = true;
