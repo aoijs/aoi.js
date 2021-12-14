@@ -27,7 +27,7 @@ module.exports = async (dmsg, client) => {
         await Interpreter(
             client,
             data,
-            data?.content?.split(" "),
+            data?.content?.split(" ") || [],
             cmd,
             client.db,
             false,
