@@ -12,6 +12,7 @@ class CustomFunction {
     constructor(d = {}, client) {
         this.client = client;
         this.name = d.name;
+        this['$if'] = d['$if'];
         this.code = d.code;
         this.type = d.type;
         this.params = d.params;
