@@ -3,6 +3,7 @@ module.exports = async (dmsg, client) => {
     const data = Object.assign({}, dmsg);
     data.channel = dmsg.channel;
     data.guild = dmsg.guild;
+    data.content = dmsg.content;
     let chan;
 
     if (!data.partial && client.user.id === data?.author?.id) return;
@@ -31,7 +32,7 @@ module.exports = async (dmsg, client) => {
             client.db,
             false,
             dmsg.channel?.id,
-            {},
+            {oldm : dmsg},
             chan,
         );
     }
