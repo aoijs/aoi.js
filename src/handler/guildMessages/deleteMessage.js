@@ -32,7 +32,7 @@ module.exports = async (dmsg, client) => {
             client.db,
             false,
             dmsg.channel?.id,
-            {oldm : dmsg},
+            {oldm: dmsg},
             chan,
         );
     }

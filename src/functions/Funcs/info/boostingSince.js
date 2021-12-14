@@ -3,7 +3,7 @@ module.exports = async d => {
     const inside = d.unpack();
     let [guildId = d.guild?.id, userId = d.author.id, format = "ms"] = inside.splits;
 
-    const guild = await d.util.getGuild(d,guildId)
+    const guild = await d.util.getGuild(d, guildId)
     if (d.channel.type !== d.util.channelTypes.Dm && !guild) return d.aoiError.fnError(d, "guild", {inside});
 
     const user = !guild ? true : await d.util.getMember(guild, userId);

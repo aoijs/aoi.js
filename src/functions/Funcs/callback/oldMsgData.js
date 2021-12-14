@@ -1,12 +1,12 @@
-const { Message } = require("../../../utils/helpers/functions.js");
+const {Message} = require("../../../utils/helpers/functions.js");
 
 module.exports = async (d) => {
-	const data = d.util.openFunc(d);
+    const data = d.util.openFunc(d);
 
-	const [option = "cleanContent"] = data.inside.splits;
-	data.result = eval(`Message( d.data.oldm )?.${option}`);
+    const [option = "cleanContent"] = data.inside.splits;
+    data.result = eval(`Message( d.data.oldm )?.${option}`);
 
-	return {
-		code: d.util.setCode(data),
-	};
+    return {
+        code: d.util.setCode(data),
+    };
 };

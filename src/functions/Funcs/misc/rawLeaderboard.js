@@ -1,4 +1,4 @@
-const { AoijsAPI, DbdTsDb, CustomDb, Promisify } = require( "../../../classes/Database.js" );
+const {AoijsAPI, DbdTsDb, CustomDb, Promisify} = require("../../../classes/Database.js");
 
 module.exports = async d => {
     const Data = d.util.openFunc(d);
