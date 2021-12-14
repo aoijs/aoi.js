@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "5.0.6-dev",
+  "version": "5.0.6",
   "description": "aoi.js - An open source package allowing to create Discord Bots with simple built-in functions.",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
