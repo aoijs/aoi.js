@@ -248,8 +248,8 @@ const FileParser = (msg) => {
         for (let o of e) {
             o = o.split("}")[0];
             o = o.split(":");
-            const name = o.pop();
-            const url = o.join(":");
+            const name = o.pop().addBrackets();
+            const url = o.join(":").addBrackets();
             const attachment = new Discord.MessageAttachment(url, name);
             att.push(attachment);
         }
@@ -259,8 +259,8 @@ const FileParser = (msg) => {
         for (let u of i) {
             u = u.split("}")[0];
             u = u.split(":");
-            const name = u.pop();
-            const text = u.join(":");
+            const name = u.pop().addBrackets();
+            const text = u.join(":").addBrackets();
             const attachment = new Discord.MessageAttachment(
                 Buffer.from(text),
                 name || "txt.txt",

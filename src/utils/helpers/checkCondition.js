@@ -42,7 +42,7 @@ class CheckCondition {
     static solveNotEqual(msg) {
         let pass = true;
         const parts = msg.split("!=");
-        if (parts[0] === parts[1]) pass = false;
+        if (parts[0].addBrackets() === parts[1].addBrackets()) pass = false;
         return pass;
     }
 
@@ -50,7 +50,7 @@ class CheckCondition {
         let pass = true;
         let parts = msg.split(">");
         parts = parts.every((x) => isNaN(x)) ? parts : parts.map((x) => Number(x));
-        if (parts[0] <= parts[1]) pass = false;
+        if (parts[0].addBrackets() <= parts[1].addBrackets()) pass = false;
         return pass;
     }
 
