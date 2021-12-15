@@ -168,6 +168,7 @@ class Lavalink extends EventEmitter {
      * @param {import("leref.ts/dist/utils/typings").NodeOptions} options
      */
     addNode(options) {
+        console.log(" \x1b[33mConnected with Lavalink Node: " + options.name + "\x1b[0m")
         return this.lavalink.add(options);
     }
 

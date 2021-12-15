@@ -90,7 +90,7 @@ declare module "aoi.js" {
         time?: number;
     };
 
-    type CacheOptions = Record<string, number | undefined | null | number>;
+    type CacheOptions = Record<string, number | undefined | null>;
 
     type EventOptions = {
         functionError?: boolean;
@@ -164,7 +164,7 @@ declare module "aoi.js" {
         type:
             | "PLAYING"
             | "LISTENING"
-            | " WATCHING"
+            | "WATCHING"
             | "STREAMING"
             | "playing"
             | "listening"
@@ -180,7 +180,7 @@ declare module "aoi.js" {
         blacklist: Blacklist;
         _api: string;
         prefix: string | string[];
-        db: any /*DbdjsApi | DbdTsDb | CustomDb | Promisify*/;
+        db: any /*AoijsAPI | DbdTsDb | CustomDb | Promisify*/;
         statuses: Group;
 
         constructor(options: ClientOptions);

@@ -70,7 +70,6 @@ async function Main(d) {
                 if (old !== player.options.voiceID) {
                     player.connect();
                 }
-                player.text = d.channel;
             }
                 break;
             case "disconnect": {
@@ -141,6 +140,7 @@ async function Main(d) {
                 player.setLoop(Utils.LoopMode.None);
                 player.stop();
             }
+                break;
             case "clearqueue": {
                 player.queue.clear();
             }
