@@ -8,12 +8,13 @@ module.exports = async (d) => {
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
     if (presence === "" && countBot === "yes") data.result = guild.memberCount;
     else if (presence === "offline") {
-        data.result = guild.members.cache.filter(
+        const mems = guild.members.cache.filter(
             (x) =>
                 (x.presence?.status?.toLowerCase() === "offline" ||
                     !x.presence?.status) &&
                 (countBot === "yes" ? true : !x.user.bot),
         );
+        data.result = mems.size;
     } else {
         const mems = guild.members.cache.filter(
             (x) =>

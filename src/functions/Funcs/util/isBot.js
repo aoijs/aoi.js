@@ -1,14 +1,13 @@
-module.exports = async d => {
-    const data = d.util.openFunc(d);
+module.exports = async (d) => {
+	const data = d.util.openFunc(d);
 
-    const [userId = d.author?.id] = data.inside.splits;
+	const [userId = d.author?.id] = data.inside.splits;
 
-    const user = await d.util.getUser(d, userId);
-    if (!user) return d.aoiError.fnError(d, 'user', {inside: data.inside});
+	const user = await d.util.getUser(d, userId);
 
-    data.result = user.bot;
+	data.result = user?.bot ? true : false;
 
-    return {
-        code: d.util.setCode(data)
-    }
-}
+	return {
+		code: d.util.setCode(data),
+	};
+};
