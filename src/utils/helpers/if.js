@@ -35,7 +35,7 @@ const IF = async (d) => {
                         undefined,
                         true,
                     )
-                ).code === "true";
+                )?.code === "true";
 
             const elseIfAction = statement.toLowerCase().includes("$elseif");
 

@@ -1,25 +1,44 @@
-module.exports = async d => {
-    const data = d.util.openFunc(d);
+const Interpreter = require("../../../interpreter.js");
 
-    let commands = data.inside.splits;
-    const content = [];
+module.exports = async (d) => {
+	const data = d.util.openFunc(d);
 
-    if (commands.some(x => !d.client.cmd.awaited.find(y => y.name.toLowerCase() === x.trim().toLowerCase()))) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Awaited Command In');
+	let commands = data.inside.splits;
+	const content = [];
 
-    for (const a of d.array) {
-        for (const command of commands) {
-            const cmd = d.client.cmd.awaited.find(y => y.name.toLowerCase() === command.trim().toLowerCase());
-            if (!cmd) continue;
-            else {
-                const code = (await d.interpreter(d.client, d.message, [a], cmd, d.client.db, true))?.code;
-                content.push(code);
-            }
-        }
-    }
+	if (
+		commands.some(
+			(x) =>
+				!d.client.cmd.awaited.find(
+					(y) => y.name.toLowerCase() === x.trim().toLowerCase(),
+				),
+		)
+	)
+		return d.aoiError.fnError(
+			d,
+			"custom",
+			{ inside: data.inside },
+			"Invalid Awaited Command In",
+		);
 
-    data.result = content.join('\n');
+	for (const a of d.array) {
+		for (const command of commands) {
+			const cmd = d.client.cmd.awaited.find(
+				(y) => y.name.toLowerCase() === command.trim().toLowerCase(),
+			);
+			if (!cmd) continue;
+			else {
+				const code = (
+					await Interpreter(d.client, d.message, [a], cmd, d.client.db, true,undefined,{...d.data})
+				)?.code;
+				content.push(code);
+			}
+		}
+	}
 
-    return {
-        code: d.util.setCode(data)
-    }
-}
+	data.result = content.join("\n");
+
+	return {
+		code: d.util.setCode(data),
+	};
+};
