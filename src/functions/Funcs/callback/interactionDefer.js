@@ -1,7 +1,7 @@
 module.exports = d => {
     const data = d.util.openFunc(d);
-
-    d.data.interaction?.deferReply().catch(e => {
+    const [ephemeral = 'no'] = data.inside.splits;
+    d.data.interaction?.deferReply({ephemeral: ephemeral === 'yes' }).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     });
 
