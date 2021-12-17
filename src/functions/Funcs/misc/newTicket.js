@@ -60,7 +60,7 @@ module.exports = async (d) => {
         }
         d.client.db.set(
             d.client.db.tables[0],
-            "ticket",
+            "ticketChannel",
             channel.id,
             channel.id,
         );
