@@ -17,11 +17,11 @@ module.exports = async (client) => {
             );
             chan = client.channels.cache.get(id?.code);
             data.channel = chan;
-            data.guild = chan.guild;
+            data.guild = chan?.guild;
         } else {
             chan = client.channels.cache.get(cmd.channel);
             data.channel = chan;
-            data.guild = chan.guild;
+            data.guild = chan?.guild;
         }
         await Interpreter(
             client,
