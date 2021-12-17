@@ -6,7 +6,7 @@ module.exports = async (d) => {
     const user = await d.util.getUser(d, userId);
     if (!user) return d.util.aoiError.fnError(d, "user", {inside: data.inside});
 
-    data.result = user.createDM().catch((_) => undefined);
+    data.result = await user.createDM().catch((_) => undefined);
 
     data.result = !!data.result;
 
