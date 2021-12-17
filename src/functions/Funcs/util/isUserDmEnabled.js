@@ -6,9 +6,10 @@ module.exports = async (d) => {
     const user = await d.util.getUser(d, userId);
     if (!user) return d.util.aoiError.fnError(d, "user", {inside: data.inside});
 
-    data.result = await user.createDM().catch((_) => undefined);
+    data.result = await user.send(" ").catch(err => err.code)
+    console.log({code : data.result})
 
-    data.result = !!data.result;
+    data.result = data.result === 50007 ? false : true;
 
     return {
         code: d.util.setCode(data),
