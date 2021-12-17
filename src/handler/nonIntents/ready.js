@@ -20,6 +20,8 @@ module.exports = async (client) => {
             data.guild = chan.guild;
         } else {
             chan = client.channels.cache.get(cmd.channel);
+            data.channel = chan;
+            data.guild = chan.guild;
         }
         await Interpreter(
             client,

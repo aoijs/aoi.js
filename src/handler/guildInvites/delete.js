@@ -19,6 +19,11 @@ module.exports = async (invite, client) => {
             const channel = client.channels.cache.get(id?.code);
             chan = channel ?? undefined;
         }
+        else {
+            const channel = client.channels.cache.get(cmd.channel);
+            chan = channel ?? undefined;
+            data.channel = channel;
+        }
         await Interpreter(
             client,
             data,

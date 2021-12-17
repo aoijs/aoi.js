@@ -16,8 +16,10 @@ module.exports = async (rl, client) => {
                 true,
             );
             chan = client.channels.cache.get(id?.code);
+            data.channel = chan;
         } else {
             chan = client.channels.cache.get(cmd.channel);
+            data.channel = chan;
         }
         await Interpreter(
             client,

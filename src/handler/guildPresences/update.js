@@ -20,8 +20,10 @@ module.exports = async (op, np, client) => {
             );
             const channel = client.channels.cache.get(id?.code);
             chan = channel ?? undefined;
+            data.channel = chan;
         } else {
             chan = client.channels.cache.get(cmd.channel);
+            data.channel = chan;
         }
         await Interpreter(
             client,
