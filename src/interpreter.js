@@ -118,7 +118,6 @@ const Interpreter = async (
             code = (await IF({client, code, message, channel, args})).code;
             funcs = client.functionManager.findFunctions(code);
         }
-        console.log(client.functionManager.findFunctions(code))
 
         //parsing functions (dont touch)
         for (let i = funcs.length; i > 0; i--) {
