@@ -41,7 +41,7 @@ module.exports = (format, date, timezone) => {
                 "May",
                 "Jun",
                 "Jul",
-                "Augt",
+                "Aug",
                 "Sep",
                 "Oct",
                 "Nov",
