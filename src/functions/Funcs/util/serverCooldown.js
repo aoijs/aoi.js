@@ -14,7 +14,6 @@ module.exports = async (d) => {
         "cooldown",
         `${d.command.name}_${d.guild?.id || "dm"}`,
     );
-    console.log({cooldown});
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(
