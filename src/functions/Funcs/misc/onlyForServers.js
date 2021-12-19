@@ -5,7 +5,6 @@ module.exports = async d => {
 
     const [...stuffs] = data.inside.splits;
     const err = stuffs.pop();
-    const errorMsg = await d.util.errorParser(err, d);
 
     if (!stuffs.includes(d.guild?.id)) {
         error = true;

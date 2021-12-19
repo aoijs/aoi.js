@@ -84,7 +84,7 @@ module.exports = async (d) => {
             if (errorMsg !== "") {
                 const extraOptions = errorMsg.options;
                 delete errorMsg.options;
-                d.aoiError.mskeMessageError(
+                d.aoiError.makeMessageError(
                     d.client,
                     channel,
                     {options: errorMsg},
