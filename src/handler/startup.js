@@ -1,9 +1,7 @@
 const {Team} = require("discord.js");
 const Interpreter = require("../interpreter.js");
-const {default: axios} = require("axios");
 
 module.exports = async (client) => {
-    await axios.get("https://api.leref.ga/package/version");
     const app = await client.application.fetch();
     if (app.owner instanceof Team) {
         client.aoiOptions.Owner = app.owner.members.map((x) => x.id);
