@@ -12,7 +12,7 @@ module.exports = async d => {
         undefined
     });
 
-    data.result = banned ? true : false;
+    data.result = !!banned;
 
     return {
         code: d.util.setCode(data)
