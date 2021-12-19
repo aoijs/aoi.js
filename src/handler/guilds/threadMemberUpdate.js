@@ -17,11 +17,9 @@ module.exports = async (oldm, newm, client) => {
                 client.db,
                 true,
             );
-            const channel = client.channels.cache.get(id?.code);
-            chan = channel;
+            chan = client.channels.cache.get(id?.code);
         } else {
-            const channel = client.channels.cache.get(cmd.channel);
-            chan = channel;
+            chan = client.channels.cache.get(cmd.channel);
         }
         await Interpreter(
             client,
