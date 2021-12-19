@@ -49,7 +49,6 @@ module.exports = async (d) => {
                 ),
         )
     ) {
-        reactions;
         d.aoiError.fnError(
             d,
             "custom",
@@ -60,7 +59,7 @@ module.exports = async (d) => {
 
     const filter = (r, u) =>
         (userFilters === "everyone"
-            ? true && u.id !== d.client.user.id
+            ? u.id !== d.client.user.id
             : userFilters.includes(u.id)) &&
         reactions.includes(r.emoji.toString() || r.emoji.id);
 
@@ -79,7 +78,7 @@ module.exports = async (d) => {
 
     collector.on("collect", async (r, u) => {
         if (removeReaction === "yes") {
-            r.users.remove(u.id);
+            await r.users.remove(u.id);
         }
 
         const index =
