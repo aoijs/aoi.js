@@ -14,7 +14,7 @@ module.exports = (d) => {
         format = "dddd, DD MMMM YYYY",
     ] = inside.splits;
     const checkIsValid = new Date(
-        isNaN(new Number(date)) ? date : new Number(date)
+        isNaN(Number(date)) ? date : Number(date)
     );
 
     if (isNaN(checkIsValid.getTime())) {
