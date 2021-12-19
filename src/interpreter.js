@@ -219,7 +219,7 @@ const Interpreter = async (
                                 else {
                                     return client.options.suppressAllErrors
                                         ? client.options.errorMessage
-                                        : ` \`${func}: Invalid Usage\` (line : ${funcLine})`;
+                                        : ` \`${func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
                         },
@@ -291,7 +291,7 @@ const Interpreter = async (
                                 if (suppressErrors && !anErrorOccuredPlsWait) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
 
-                                    ErrorHandler(
+                                    await ErrorHandler(
                                         {
                                             channel: channel,
                                             message: message,
@@ -376,7 +376,7 @@ const Interpreter = async (
                                 else {
                                     return client.options.suppressAllErrors
                                         ? client.options.errorMessage
-                                        : ` \`${func}: Invalid Usage\` (line : ${funcLine})`;
+                                        : ` \`${func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
                         },
@@ -448,7 +448,7 @@ const Interpreter = async (
                                 if (suppressErrors && !anErrorOccuredPlsWait) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
                                     if (suppressErrors.trim() !== "")
-                                        ErrorHandler(
+                                        await ErrorHandler(
                                             {
                                                 channel: channel,
                                                 message: message,

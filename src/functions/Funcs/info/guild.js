@@ -29,7 +29,7 @@ module.exports = async d => {
     data.systemChannel = data.systemChannelId
     data.rulesChannel = data.rulesChannelId
     delete data.me
-    delete data.voiceAdapterCreator
+    delete data.voiceAdapterCreator()
     data.updatesChannel = data.publicUpdatesChannelId
     data.joinAt = data.joinAt?.toString()
 

@@ -16,9 +16,8 @@ module.exports = async d => {
 
             data.result = typeof data.result === "object" ? returnValue === "$default" ? JSON.stringify(data.result, null, 2) : eval(`data.result?.${returnValue}`) : data.result
         } else {
-            data.result = eval(`d.client.cacheManager.caches[type][name].find(x => (prop.trim() === "" ? x : x${prop})
-            ${findType}
-            value
+            data.result = eval(`d.client.cacheManager.caches[type][name].find(x => (prop.trim() === "" ? x : x${prop}
+            ${findType} ${value}
             )`);
 
 

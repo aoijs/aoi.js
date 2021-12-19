@@ -16,7 +16,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch Messages With Reason: " + err);
     });
 
-    messages = messages.filter(x => (filter === "everyone" ? true : (filter === "unPins" ? !x.pinned : filter === 'bot' ? x.author.bot :  x.author.id === filter)));
+    messages = messages.filter(x => (filter === "everyone" ? true : (filter === "unPins" ? !x.pinned : filter === 'bot' ? x.author.bot : x.author.id === filter)));
 
     let result = await channel.bulkDelete(
         messages,

@@ -40,5 +40,5 @@ module.exports = async (client) => {
         require("../../../package.json").version +
         "\x1b[0m || Akarui Development ",
     );
-    console.log("Our Official Discord Server: https://aoi.js.org/invite");
+    console.log("Official Discord Server: https://discord.gg/HMUfMXDQsV");
 };

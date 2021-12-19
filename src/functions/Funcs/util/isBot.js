@@ -1,13 +1,13 @@
 module.exports = async (d) => {
-	const data = d.util.openFunc(d);
+    const data = d.util.openFunc(d);
 
-	const [userId = d.author?.id] = data.inside.splits;
+    const [userId = d.author?.id] = data.inside.splits;
 
-	const user = await d.util.getUser(d, userId);
+    const user = await d.util.getUser(d, userId);
 
-	data.result = user?.bot ? true : false;
+    data.result = user?.bot ? true : false;
 
-	return {
-		code: d.util.setCode(data),
-	};
+    return {
+        code: d.util.setCode(data),
+    };
 };
