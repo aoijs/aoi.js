@@ -19,7 +19,8 @@ module.exports = async d => {
                 break;
 
             case "invite":
-                data.result = await d.client.fetchInvite(query);
+                data.result = await d.client.fetchInvite(query)
+                break;
 
             case "webhook":
                 data.result = await d.client.fetchWebhook(query)
