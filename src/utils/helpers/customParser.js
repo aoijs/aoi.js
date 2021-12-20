@@ -59,7 +59,7 @@ class Time {
      */
     static parse(time) {
         if (!["string", "number"].includes(typeof time))
-            throw TypeError("Time Must Be A String Or Number");
+            throw TypeError("'time' must be a string or number");
         if (typeof time === "number")
             return {
                 ms: time,
@@ -71,49 +71,48 @@ class Time {
             time.split(" ").forEach((x) => {
                 if (x.endsWith("y"))
                     Hash.set("y", {
-                        format: `${Number(x.split("y")[0])} Year(s)`,
+                        format: pluralize(Number(x.split("y")[0]), "year"),
                         ms: Number(x.split("y")[0]) * 31536000000,
                         order: 1,
                     });
                 if (x.endsWith("mon") || x.endsWith("M"))
                     Hash.set("mon", {
-                        format: `${Number(x.split("mon")[0].split("M")[0])} Month(s)`,
+                        format: pluralize(Number(x.split("mon")[0].split("M")[0]), "month"),
                         ms: Number(x.split("mon")[0].split("M")[0]) * 2628002880,
                         order: 2,
                     });
                 if (x.endsWith("w"))
                     Hash.set("w", {
-                        format: `${Number(x.split("w")[0])} Week(s)`,
+                        format: pluralize(Number(x.split("w")[0]), "week"),
                         ms: Number(x.split("w")[0]) * 604800000,
                         order: 3,
                     });
                 if (x.endsWith("d"))
                     Hash.set("d", {
-                        format: `${Number(x.split("d")[0])} Day(s)`,
+                        format: pluralize(Number(x.split("d")[0]), "day"),
                         ms: Number(x.split("d")[0]) * 86400000,
                         order: 4,
                     });
                 if (x.endsWith("h") || x.endsWith("hr"))
                     Hash.set("h", {
-                        format: `${Number(x.split("h")[0].split("hr")[0])} Hour(s)`,
+                        format: pluralize(Number(x.split("h")[0].split("hr")[0]), "hour"),
                         ms: Number(x.split("hr")[0].split("h")[0]) * 3600000,
                         order: 5,
                     });
                 if (x.endsWith("min") || x.endsWith("m"))
                     Hash.set("min", {
-                        format: `${Number(x.split("min")[0].split("m")[0])} Minute(s)`,
+                        format: pluralize(Number(x.split("min")[0].split("m")[0]), "minute"),
                         ms: Number(x.split("min")[0].split("m")[0]) * 60000,
                         order: 6,
                     });
                 if (x.endsWith("s") && !x.endsWith("ms"))
                     Hash.set("s", {
-                        format: `${Number(x.split("s")[0])} Seconds`,
+                        format: pluralize(Number(x.split("s")[0]), "second"),
                         ms: Number(x.split("s")[0]) * 1000,
                         order: 7,
                     });
                 if (x.endsWith("ms"))
                     Hash.set("ms", {
-                        format: `${Number(x.split("ms")[0])} Milli Seconds`,
                         ms: Number(x.split("ms")[0]),
                         order: 8,
                     });
@@ -121,7 +120,7 @@ class Time {
             const data = [...Hash.values()].sort(compare);
 
             const ms = data.map((x) => x.ms).reduce((a, b) => a + b);
-            const format = data.map((x) => x.format).join(" ");
+            const format = data.map((x) => x.format).slice(0, -1).join(", ");
 
             return {
                 ms,
@@ -135,7 +134,6 @@ module.exports = {
     Time,
 };
 
-//useless Functions
 function compare(a, b) {
     if (a.order < b.order) {
         return -1;
@@ -145,3 +143,5 @@ function compare(a, b) {
     }
     return 0;
 }
+
+const pluralize = (num, txt, suffix = "s") => `${num} ${txt}${num !== 1 ? suffix : ""}`
