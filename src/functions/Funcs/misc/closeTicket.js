@@ -5,13 +5,13 @@ module.exports = async (d) => {
 
     const exists = await d.client.db.get(
         d.client.db.tables[0],
-        `ticket`,
+        `ticketChannel`,
         d.channel?.id
     );
 
     if (error) error = await d.util.errorParser(error, d);
 
-    if (!exists) d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d);
+    if (!exists) return d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d);
     const channel = await d.message.channel.delete().catch((err) => {
         d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d);
     });
