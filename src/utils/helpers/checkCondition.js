@@ -50,7 +50,7 @@ class CheckCondition {
         let pass = true;
         let parts = msg.split(">");
         parts = parts.every((x) => isNaN(x)) ? parts : parts.map((x) => Number(x));
-        if (parts[0].addBrackets() <= parts[1].addBrackets()) pass = false;
+        if (parts[0] <= parts[1]) pass = false;
         return pass;
     }
 
