@@ -15,8 +15,8 @@ module.exports = async d => {
         components: components,
         files,
         allowedMentions: {
-                parse: allowedMentions
-            },
+            parse: allowedMentions
+        },
         ephemeral: ephemeral === "yes" || ephemeral === "true"
     })
 

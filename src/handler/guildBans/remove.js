@@ -16,7 +16,7 @@ module.exports = async (ban, client) => {
             );
             chan = client.channels.cache.get(id?.code);
             data.channel = chan
-            
+
         } else {
             chan = client.channels.cache.get(cmd.channel);
             data.channel = chan
