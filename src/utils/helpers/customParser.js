@@ -34,7 +34,7 @@ class Time {
 		};
 		data.humanize = () => {
 			const string = [];
-			Object.entries(data.object).forEach((x) => {
+			Object.entries(data.object).slice(0,-1).forEach((x) => {
 				if (!x[1]) {
 				} else {
 					if (["months", "ms"].includes(x[0])) {
