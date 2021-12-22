@@ -34,7 +34,7 @@ class BaseClient extends Discord.Client {
                     options.presence?.activities[0].type;
             } else {
                 throw new TypeError(
-                    `ActivityTypeAvailablesError:  Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
+                    `ActivityTypeAvailableError: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
                 );
             }
         }
@@ -155,7 +155,7 @@ class BaseClient extends Discord.Client {
         }
         this.on("ready", async () => {
             require("../handler/status.js")(this.statuses, this);
-            require("../handler/startup.js")(this);
+            await require("../handler/startup.js")(this);
             if (options?.fetchInvites?.enabled) {
                 require("../handler/fetchInvites.js")(this);
             }

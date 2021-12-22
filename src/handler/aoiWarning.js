@@ -7,9 +7,9 @@ module.exports = async () => {
         if (json.version !== res.data.version) {
 
             console.warn(
-                "\x1b[31maoi.js warning: \u001b[33mAvailable version v" +
+                "\x1b[31maoi.js warning: \u001b[33mv" +
                 res.data.version +
-                " ready to install.\u001b[0m",
+                " is available to install.\u001b[0m",
             )
         }
     } catch {
