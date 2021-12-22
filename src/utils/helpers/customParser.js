@@ -120,7 +120,7 @@ class Time {
             const data = [...Hash.values()].sort(compare);
 
             const ms = data.map((x) => x.ms).reduce((a, b) => a + b);
-            const format = data.map((x) => x.format).slice(0, -1).join(", ");
+            const format = data.map((x) => x.format).join(", ");
 
             return {
                 ms,
