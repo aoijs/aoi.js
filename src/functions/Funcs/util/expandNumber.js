@@ -1,4 +1,4 @@
-const VALID_NUMBER = /^\d+(?:\.\d+)?$/
+const VALID_NUMBER = /^-\d+(?:\.\d+)?$/
 const { SI_SYMBOL } = require("../../../utils/Constants")
 
 module.exports = async d => {
