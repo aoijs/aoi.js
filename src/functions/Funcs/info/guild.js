@@ -24,12 +24,12 @@ module.exports = async d => {
     data.systemChannelFlags = (data.systemChannelFlags.toArray().join(" ") === "" ? "none" : data.systemChannelFlags.toArray().join(" "))
     data.owner = server.members.cache.get(data.ownerId).username
 
-    delete data.shard
+    data.shard = undefined
     data.afkChannel = data.afkChannelId
     data.systemChannel = data.systemChannelId
     data.rulesChannel = data.rulesChannelId
-    delete data.me
-    delete data.voiceAdapterCreator()
+    data.me = undefined
+    data.voiceAdapterCreator = undefined
     data.updatesChannel = data.publicUpdatesChannelId
     data.joinAt = data.joinAt?.toString()
 
