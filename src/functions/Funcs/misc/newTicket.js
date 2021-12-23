@@ -20,7 +20,7 @@ module.exports = async (d) => {
 	if (createAt instanceof Guild) {
 		const channel = await createAt.channels
 			.create(name.addBrackets())
-			.catch((err) => {
+			.catch(async (err) => {
 				if (error && error?.trim() !== "") {
 					const ticketError = await d.util.errorParser(error || "", d);
 					d.aoiError.makeMessageError(
@@ -38,7 +38,7 @@ module.exports = async (d) => {
 					VIEW_CHANNEL: true,
 					READ_MESSAGE_HISTORY: true,
 				})
-				.catch((err) => {
+				.catch(async (err) => {
 					d.aoiError.fnError(
 						d,
 						"custom",
@@ -69,7 +69,7 @@ module.exports = async (d) => {
 	} else {
 		const channel = await createAt
 			.createChannel(name.addBrackets())
-			.catch((err) => {
+			.catch(async () => {
 				if (error && error?.trim() !== "") {
 					const ticketError = await d.util.errorParser(error || "", d);
 					d.aoiError.makeMessageError(
@@ -88,7 +88,7 @@ module.exports = async (d) => {
 					VIEW_CHANNEL: true,
 					READ_MESSAGE_HISTORY: true,
 				})
-				.catch((err) => {
+				.catch(async (err) => {
 					d.aoiError.fnError(
 						d,
 						"custom",
