@@ -1,3 +1,10 @@
+const {
+    AoijsAPI,
+    DbdTsDb,
+    CustomDb,
+    Promisify,
+} = require("../../../classes/Database.js");
+
 module.exports = async (d) => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
