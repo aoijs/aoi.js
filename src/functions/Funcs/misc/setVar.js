@@ -3,7 +3,7 @@ module.exports = async d => {
     if (data.err) return d.error(data.err);
     let [varname, value, table = d.client.db.tables[0]] = data.inside.splits;
 
-    if (!d.client.variableManager.has(varname.addBrackets())) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Not Found!`)
+    if (!d.client.variableManager.has(varname.addBrackets(),table)) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Not Found!`)
 
     const variable = d.client.variableManager.get(varname);
 

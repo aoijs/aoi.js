@@ -8,6 +8,7 @@ class Variable {
         this.name = data.name;
         this.type = data.type;
         this.default = data.value;
+        this.table = data.table;
     }
 
     object() {
@@ -105,8 +106,8 @@ class VariableManager {
         return this.cache.get(name);
     }
 
-    has(name) {
-        return this.cache.has(name);
+    has(name,table = this.client.db.tables[0]) {
+        return this.cache.find(x => x.name === name && x.table === table);
     }
 
     toJSON() {

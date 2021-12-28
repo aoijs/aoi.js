@@ -194,7 +194,7 @@ class BaseClient extends Discord.Client {
      */
     variables(d, table = this.db.tables[0]) {
         for (const [name, value] of Object.entries(d)) {
-            this.variableManager.add({name, value});
+            this.variableManager.add({name, value,table});
         }
         if (this.db instanceof DbdTsDb) {
             const data = this.variableManager.cache
