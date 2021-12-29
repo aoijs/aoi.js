@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aoijs/aoi.js.git"
+    "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
   },
   "keywords": [
     "aoi.js",
@@ -32,6 +32,7 @@
     "aoi",
     "api",
     "dbd.js",
+    "dbdjs",
     "dbd",
     "bot",
     "music",
