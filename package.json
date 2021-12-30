@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "5.0.7-dev",
+  "version": "5.0.7",
   "description": "aoi.js - An open source package allowing to create Discord Bots with simple built-in functions.",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aoijs/aoi.js.git"
+    "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
   },
   "keywords": [
     "aoi.js",
@@ -32,6 +32,7 @@
     "aoi",
     "api",
     "dbd.js",
+    "dbdjs",
     "dbd",
     "bot",
     "music",
