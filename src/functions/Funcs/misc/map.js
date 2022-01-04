@@ -1,3 +1,5 @@
+const Interpreter = require( "../../../interpreter.js" );
+
 module.exports = async d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
@@ -13,7 +15,7 @@ module.exports = async d => {
     arr.forEach(async x => {
         cmd.code = cmd.code.replaceAll('{value}', x);
 
-        res.push(await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, true));
+        res.push((await Interpreter(d.client, d.message, d.args, cmd, d.client.db, true))?.code);
     });
 
     data.result = res.join(sep.addBrackets()).deleteBrackets();
