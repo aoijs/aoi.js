@@ -7,7 +7,7 @@ module.exports = async (d) => {
 	if (!guild) return d.aoiError.fnError(d, "guild", { inside });
 
 	const result = type
-		? guild.emojis.cache.filter((x) => x[type]).size
+		? guild.emojis.cache.filter((x) => type === "animated" ? x.animated : type === "normal" ? !x.animated : type === "all" ? true : x[type]).size
 		: guild.emojis.cache.size;
 	return {
 		code: d.util.setCode({ function: d.func, code, inside, result }),
