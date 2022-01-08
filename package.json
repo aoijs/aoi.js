@@ -45,7 +45,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.7.5",
     "dbdjs.db": "^2.0.2",
-    "discord.js": "13.3.1",
+    "discord.js": "^13.3.1",
     "leref.ts": "^1.1.1",
     "soundcloud-downloader": "^1.0.0",
     "spotify-url-info": "^2.2.3",
