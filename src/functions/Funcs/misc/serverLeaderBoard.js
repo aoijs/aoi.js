@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const [variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
 
-    const all = await d.client.db.all(table, variable.addBrackets(), 2)
+    const all = await d.client.db.all(table, variable.addBrackets(), 1)
 
     let y = 0
     let value;
