@@ -5,7 +5,10 @@ module.exports = async d => {
 
     const channel = await d.util.getChannel(d, channelId, true);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
-    if (!['voice', 'stage'].includes(d.util.channelTypes[channel.type])) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Channel Type Is Not Voice/Stage');
+    const types = Object.entries(d.util.channelTypes);
+
+    const type = types.find(x => x[1] === channel.type)?.[0]?.toLowerCase();
+    if (!['voice', 'stage'].includes(type) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Channel Type Is Not Voice/Stage');
 
     data.result = channel.members.map(x => option === "mention" ? x.toString() : x[option]).join(sep)
 
