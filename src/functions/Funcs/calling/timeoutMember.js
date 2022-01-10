@@ -1,10 +1,11 @@
+const { Time } = require("../../../utils/helpers/customParser.js");
 module.exports = async (d) => {
   const data = d.util.openFunc(d);
 
   let [
     guildId = d.guild?.id,
     memberId = d.author?.id,
-    timeout = "60",
+    timeout = "60s",
     timeoutEndsAt = "no",
     reason,
   ] = data.inside.splits;
@@ -15,24 +16,10 @@ module.exports = async (d) => {
   const member = await d.util.getMember(guild, memberId);
   if (!member) return d.aoiError.fnError(d, "member", { inside: data.inside });
 
-  timeout = Number(timeout);
-
-  if (![0, 60, 300, 600, 3600, 86400, 7 * 86400].includes(timeout))
-    return d.aoiError.fnError(
-      d,
-      "custom",
-      { inside: data.inside },
-      "Invalid Timeout Time Provided In",
-    );
+  timeout = isNaN(timeout) ? Time.parse(timeout).ms : Number(timeout) * 1000;
 
   const mem = await member
-    .edit(
-      {
-        communicationDisabledUntil:
-          timeout === 0 ? null : Date.now() + timeout * 1000,
-      },
-      reason,
-    )
+    .timeout(timeout === 0 ? null : timeout, reason)
     .catch((err) => {
       return d.aoiError.fnError(
         d,
@@ -43,7 +30,9 @@ module.exports = async (d) => {
     });
 
   data.result =
-    timeoutEndsAt === "yes" ? Date.now() + timeout * 1000 : undefined;
+    timeoutEndsAt === "yes"
+      ? mem.communicationDisabledUntilTimestamp
+      : undefined;
 
   return {
     code: d.util.setCode(data),
