@@ -9,7 +9,7 @@ module.exports = async (d) => {
         d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
 
     if (!d.embeds[index]) d.embeds[index] = new d.embed();
-    d.embeds[index].setTimestamp(timestamp);
+    d.embeds[index].setTimestamp(Number(timestamp));
     return {
         code: d.util.setCode({function: d.func, inside, code, result: ""}),
         embeds: d.embeds,
