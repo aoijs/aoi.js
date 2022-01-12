@@ -42,7 +42,13 @@ module.exports = async (d) => {
   replies = replies.split(",");
   let channel;
   if (dm) {
-    channel = (await d.util.getUser(d, dm)).dmChannel;
+    const user = await d.util.getUser(d, dm);
+    if(!user.dmChannel) {
+      channel = await user.createDM();
+    }
+    else {
+      channel = user.dmChannel;
+    }
   } else {
     channel = await d.util.getChannel(d, channelId);
   }
