@@ -1,7 +1,7 @@
 module.exports = async d => {
     const data = d.util.openFunc(d);
 
-    d.data.interaction?.deferUpdate().catch(e => {
+    await d.data.interaction?.deferUpdate().catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     });
 

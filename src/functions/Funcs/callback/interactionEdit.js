@@ -16,7 +16,7 @@ module.exports = async d => {
 
     allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
 
-    d.data.interaction?.editReply({
+    await d.data.interaction?.editReply({
             content: content.trim() === "" ? " " : content.addBrackets(),
             embeds: embeds,
             components: components,

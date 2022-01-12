@@ -78,7 +78,7 @@ module.exports = async (d) => {
         { awaitData: data },
       );
     })
-    .catch((_) => {
+    .catch(async(_) => {
       if (errorMsg !== "") {
         errorMsg = await d.util.errorParser(errorMsg, d);
         d.aoiError.makeMessageError(

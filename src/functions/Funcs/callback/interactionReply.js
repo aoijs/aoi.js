@@ -9,7 +9,7 @@ module.exports = async d => {
     components = await ComponentParser(components, d.client)
     files = await FileParser(files);
     allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
-    d.data.interaction?.reply({
+    await d.data.interaction?.reply({
         content: content.trim() === "" ? " " : content.addBrackets(),
         embeds: embeds,
         components: components,

@@ -8,7 +8,7 @@ module.exports = async d => {
     embeds = await EmbedParser(embeds)
     components = await ComponentParser(components, d.client)
     files = await FileParser(files);
-    d.data.interaction?.followUp({
+    await d.data.interaction?.followUp({
         content: content.trim() === "" ? " " : content.addBrackets(),
         embeds: embeds,
         components: components,

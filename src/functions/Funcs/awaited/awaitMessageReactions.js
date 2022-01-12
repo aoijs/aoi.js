@@ -49,7 +49,7 @@ module.exports = async (d) => {
                 "Awaited Command: " + cmd + " Doesn't Exist",
             );
     });
-    errorMsg = await d.util.errorParser(errorMsg, d);
+
     if (data !== "") {
         try {
             data = JSON.parse(data);
@@ -60,11 +60,12 @@ module.exports = async (d) => {
     m.awaitReactions({filter, time, max: 1})
         .then(async (collected) => {
             collected = collected.first();
+            console.log({collected})
             const index = reactions.findIndex(
                 (r) =>
-                    reactions.includes(r.emoji.toString()) ||
-                    reactions.includes(r.emoji.name) ||
-                    reactions.includes(r.emoji.id),
+                    reactions.includes(collected.emoji.toString()) ||
+                    reactions.includes(collected.emoji.name) ||
+                    reactions.includes(collected.emoji.id),
             );
             const cmd = d.client.awaited.find(
                 (x) => x.name.toLowerCase() === commands[index]?.toLowerCase(),
@@ -80,8 +81,10 @@ module.exports = async (d) => {
                 awaitData: data,
             });
         })
-        .catch((err) => {
+        .catch(async(err) => {
+            console.error((err))
             if (errorMsg !== "") {
+                    errorMsg = await d.util.errorParser(errorMsg, d);
                 const extraOptions = errorMsg.options;
                 delete errorMsg.options;
                 d.aoiError.makeMessageError(
