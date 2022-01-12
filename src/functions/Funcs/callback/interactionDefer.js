@@ -1,4 +1,4 @@
-module.exports = (d) => {
+module.exports = async(d) => {
     const data = d.util.openFunc(d);
     const [ephemeral = "no"] = data.inside.splits;
     await d.data.interaction
