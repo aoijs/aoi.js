@@ -81,10 +81,10 @@ module.exports = async (d) => {
                 awaitData: data,
             });
         })
-        .catch(async(err) => {
+        .catch(async (err) => {
             console.error((err))
             if (errorMsg !== "") {
-                    errorMsg = await d.util.errorParser(errorMsg, d);
+                errorMsg = await d.util.errorParser(errorMsg, d);
                 const extraOptions = errorMsg.options;
                 delete errorMsg.options;
                 d.aoiError.makeMessageError(

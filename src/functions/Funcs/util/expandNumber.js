@@ -1,15 +1,15 @@
 const VALID_NUMBER = /^-\d+(?:\.\d+)?$/
-const { SI_SYMBOL } = require("../../../utils/Constants")
+const {SI_SYMBOL} = require("../../../utils/Constants")
 
 module.exports = async d => {
-    const { code } = d.command
+    const {code} = d.command
     const inside = d.unpack()
     const err = d.inside(inside)
 
     if (err) return d.error(err)
 
     const abbrNumber = inside.inside.toUpperCase()
-    
+
     let abbrIndex
 
     for (let i = SI_SYMBOL.length - 1; i >= 0; i--) {
@@ -26,7 +26,7 @@ module.exports = async d => {
     if (!VALID_NUMBER.test(number)) return d.aoiError.fnError(
         d,
         "custom",
-        { inside },
+        {inside},
         "Invalid number in"
     )
 

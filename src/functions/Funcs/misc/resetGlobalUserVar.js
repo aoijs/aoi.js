@@ -1,4 +1,4 @@
-const { CustomDb, Promisify, AoijsAPI, DbdTsDb } = require( "../../../classes/Database.js" );
+const {CustomDb, Promisify, AoijsAPI, DbdTsDb} = require("../../../classes/Database.js");
 
 module.exports = async (d) => {
     const data = d.util.openFunc(d);
@@ -6,7 +6,7 @@ module.exports = async (d) => {
 
     const [varname, table = d.client.db.tables[0]] = data.inside.splits;
 
-    if (!d.client.variableManager.has(varname.addBrackets(),table))
+    if (!d.client.variableManager.has(varname.addBrackets(), table))
         return d.aoiError.fnError(
             d,
             "custom",

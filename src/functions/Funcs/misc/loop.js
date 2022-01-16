@@ -17,7 +17,7 @@ module.exports = async d => {
         for (let cmd of awaits) {
             cmd = d.client.cmd.awaited.find(x => x.name.toLowerCase() === cmd.addBrackets().toLowerCase());
 
-            d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {awaitData,...d.data});
+            d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {awaitData, ...d.data});
         }
     }
 

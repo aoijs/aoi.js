@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
     const [varname, table = d.client.db.tables[0]] = data.inside.splits;
 
-    if (!d.client.variableManager.cache.has(varname.addBrackets(),table))
+    if (!d.client.variableManager.cache.has(varname.addBrackets(), table))
         return d.aoiError.fnError(
             d,
             "custom",
