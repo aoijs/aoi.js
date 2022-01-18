@@ -1,91 +1,120 @@
-const {
-    joinVoiceChannel,
-    entersState,
-    VoiceConnectionStatus,
-} = require("@discordjs/voice");
-const {CommandManager} = require("./Commands.js");
-const Group = require("../cachehandler/index.js").cache;
-const ServerManager = require("../handler/music/class/ServerManager.js");
-const {EventEmitter} = require("events");
-const {Events} = require("../utils/VoiceConstants.js");
-const AoiError = require("./AoiError.js");
+const { Manager, PlayerEvents } = require("music/lib/index");
+const { CommandManager } = require( "./Commands.js" );
 
-class Voice extends EventEmitter {
-    constructor(
-        client,
-        yt = {},
-        sc = {},
-        cache = {
-            enabled: false,
-            tracksPerGuild: 20,
-        },
-    ) {
-        super();
-        this.functionManager = client.functionManager;
-        this.client = client;
-        client.voiceManager = this;
-        this.voice = client.voice;
-        this.servers = new Group();
-        this.ytdl = yt;
-        this.scdl = sc;
-        this.cache = cache;
-        new CommandManager(this, false, Object.values(Events));
-    }
+class Voice extends Manager {
+  constructor(client, config) {
+    super(config);
+    this.functionManager = client.functionManager;
+    this.client = client;
+    client.voiceManager = this;
+    new CommandManager(this, false, Object.values(PlayerEvents));
+  }
 
-    async joinVc(channel, textChannel, debug = false) {
-        const d = {
-            channelId: channel.id,
-            guildId: channel.guildId,
-            adapterCreator: channel.guild.voiceAdapterCreator,
-            debug: debug,
-            group: this.client.user.id,
-        };
+  get playerSize() {
+    return this.players.size;
+  }
 
-        const connection = joinVoiceChannel(d);
-        connection.on("debug", console.log);
-        connection.on("error", console.error);
-        try {
-            await entersState(connection, VoiceConnectionStatus.Ready, 30000);
-            this.servers.set(
-                channel.guild.id,
-                new ServerManager({connection, channel, textChannel, voice: this}),
-            );
-        } catch (error) {
-            connection.destroy();
-            AoiError.consoleError("joinVoiceChannelError", error);
-        }
-    }
+  trackStartCommand(d = {}) {
+    this.cmd[PlayerEvents.TRACK_START].set(
+      this.cmd[PlayerEvents.TRACK_START].size,
+      d,
+    );
+  }
 
-    get serversSize() {
-        return this.servers.size;
-    }
+  queueStartCommand(d = {}) {
+    this.cmd[PlayerEvents.QUEUE_START].set(
+      this.cmd[PlayerEvents.QUEUE_START].size,
+      d,
+    );
+  }
 
-    musicStartCommand(d = {}) {
-        this.cmd.musicStart.set(this.cmd.musicStart.size, d);
-    }
+  trackEndCommand(d = {}) {
+    this.cmd[PlayerEvents.TRACK_END].set(
+      this.cmd[PlayerEvents.TRACK_END].size,
+      d,
+    );
+  }
 
-    musicErrorCommand(d = {}) {
-        this.cmd.musicError.set(this.cmd.musicError.size, d);
-    }
+  queueEndCommand(d = {}) {
+    this.cmd[PlayerEvents.QUEUE_END].set(
+      this.cmd[PlayerEvents.QUEUE_END].size,
+      d,
+    );
+  }
 
-    trackEndCommand(d = {}) {
-        this.cmd.trackEnd.set(this.cmd.trackEnd.size, d);
-    }
-
-    queueEndCommand(d = {}) {
-        this.cmd.queueEnd.set(this.cmd.queueEnd.size, d);
-    }
-
-    onMusicStart() {
-        this.on(Events.TRACK_START, async (track, server) =>
-            require("../handler/music/events/musicStart.js")(
-                track,
-                server,
-                this,
-                this.client,
-            ),
-        );
-    }
+  audioErrorCommand(d = {}) {
+    this.cmd[PlayerEvents.AUDIO_ERROR].set(
+      this.cmd[PlayerEvents.AUDIO_ERROR].size,
+      d,
+    );
+  }
+  trackResumeCommand(d = {}) {
+    this.cmd[PlayerEvents.TRACK_RESUME].set(
+      this.cmd[PlayerEvents.TRACK_RESUME].size,
+      d,
+    );
+  }
+  trackPauseCommand(d = {}) {
+    this.cmd[PlayerEvents.TRACK_PAUSE].set(
+      this.cmd[PlayerEvents.TRACK_PAUSE].size,
+      d,
+    );
+  }
+  onAudioError() {
+    this.on(PlayerEvents.AUDIO_ERROR, async (error,textChannel) =>
+      require("../handler/music/events/audioError.js")(
+        error,
+        textChannel,
+        this.client,
+      ),
+    );
+  }
+  onTrackStart() {
+    this.on(PlayerEvents.TRACK_START, async (track, textChannel) =>
+      require("../handler/music/events/trackStart.js")(
+        track,
+        textChannel,
+        this.client,
+      ),
+    );
+  }
+  onQueueStart() {
+    this.on(PlayerEvents.QUEUE_START, async (track, textChannel) =>
+      require("../handler/music/events/queueStart.js")(
+        track,
+        textChannel,
+        this.client,
+      ),
+    );
+  }
+  onTrackEnd() {
+    this.on(PlayerEvents.TRACK_END, async (track, textChannel) =>
+      require("../handler/music/events/trackEnd.js")(
+        track,
+        textChannel,
+        this.client,
+      ),
+    );
+  }
+  onQueueStart() {
+    this.on(PlayerEvents.QUEUE_END, async (track, textChannel) =>
+      require("../handler/music/events/queueEnd.js")(
+        track,
+        textChannel,
+        this.client,
+      ),
+    );
+  }
+  onTrackPause() {
+    this.on(PlayerEvents.TRACK_PAUSE, async () =>
+      require("../handler/music/events/trackPause.js")(this.client),
+    );
+  }
+  onTrackResume() {
+    this.on(PlayerEvents.TRACK_RESUME, async () =>
+      require("../handler/music/events/trackResume.js")(this.client),
+    );
+  }
 }
 
 module.exports = Voice;

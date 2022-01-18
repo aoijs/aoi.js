@@ -9,7 +9,7 @@ module.exports = async d => {
     if (!d.client.voiceManager) return d.aoiError.fnError(d, 'custom', {}, 'Voice Class Is Not Initialised.');
 
     try {
-        await d.client.voiceManager.joinVc(vc, d.channel);
+        await d.client.voiceManager.joinVc({voiceChannel:vc, textChannel:d.channel});
     } catch (e) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Join Vc With Reason: ' + e);
     }
