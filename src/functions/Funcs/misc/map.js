@@ -1,4 +1,4 @@
-const Interpreter = require( "../../../interpreter.js" );
+const Interpreter = require("../../../interpreter.js");
 
 module.exports = async d => {
     const data = d.util.openFunc(d);

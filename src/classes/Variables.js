@@ -106,7 +106,7 @@ class VariableManager {
         return this.cache.get(name);
     }
 
-    has(name,table = this.client.db.tables[0]) {
+    has(name, table = this.client.db.tables[0]) {
         return this.cache.find(x => x.name === name && x.table === table);
     }
 

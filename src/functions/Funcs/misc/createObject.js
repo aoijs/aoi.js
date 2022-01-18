@@ -11,6 +11,6 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode({function: d.func, code, inside}),
-        data: {...d.data,object:d.object}
+        data: {...d.data, object: d.object}
     }
 } 
