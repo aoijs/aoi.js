@@ -83,7 +83,7 @@ const EmbedParser = async (msg) => {
                 const foi = ["yes", "no", "true", "false"].find(
                     (x) => x === fo[Number(fo.length - 1)],
                 )
-                    ? fo.pop()?.replace("yes", true)?.replace("no", false)
+                    ? fo.pop() === "yes"
                     : false;
 
                 const fov = fo.join(":").addBrackets();
@@ -100,7 +100,7 @@ const EmbedParser = async (msg) => {
                     const oofi = ["yes", "no", "true", "false"].find(
                         (x) => x === oof[oof.length - 1],
                     )
-                        ? oof.pop().replace("yes", true).replace("no", false)
+                        ? oof.pop() === "yes"
                         : false;
                     const oofv = oof.join(",").addBrackets();
                     embed.fields.push({name: oofn, value: oofv, inline: oofi});
