@@ -13,7 +13,7 @@ module.exports = async d => {
     const attachments = [...message.attachments.values()];
     if (!attachments.length) return d.aoiError.fnError(d, 'custom', {}, "Message Doesn't Have Any Attachments");
 
-    data.result = attachments[index]?.option;
+    data.result = attachments[index-1][option];
 
     return {
         code: d.util.setCode(data)
