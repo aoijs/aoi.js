@@ -1,6 +1,5 @@
 module.exports = async (d) => {
   const data = d.util.openFunc(d);
-  if (data.err) return d.error(data.err);
 
   const [type, track] = data.inside.splits;
 
@@ -20,11 +19,9 @@ module.exports = async (d) => {
       "Not Connected To Voice/Stage",
     );
 
-  const trackid = await player
-    .search(track, type);
-  const tracklist = await player
-    .addTrack({ urls: e, type: type, member: d.member });
-    data.result = `Playing Previous Track: ${tracklist}`;
+  await player
+    .playPrevious();
+    data.result = `Playing Previous Track: ${player.queue.current.info?.title}`;
 
     return {
       code:d.util.setCode(data)
