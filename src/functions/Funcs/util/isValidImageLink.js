@@ -14,7 +14,7 @@ module.exports = async d => {
     } catch {
         response = false;
     }
-
+    data.result = response;
     return {
         code: d.util.setCode(data)
     }
