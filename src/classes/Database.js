@@ -90,6 +90,8 @@ class AoijsAPI extends Database {
         } else if (type === "dbdjs.mongo") {
             this.db = this.module.default;
             this.tables.forEach((x) => this.db.createModel(x));
+        } else if (type === "aoi.fb") {
+            this.db = this.module;
         } else if (type === "dbdjs.db-sql") {
             this.db = this.module.PromisedDatabase(
                 this.path.replace("./", "") + "/database.sql",
