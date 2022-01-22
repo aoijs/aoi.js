@@ -1,21 +1,22 @@
-const axios = require('axios');
+const axios = require("axios");
 
-module.exports = async d => {
-    const data = d.util.openFunc(d);
-    if (data.err) return d.error(data.err);
+module.exports = async (d) => {
+  const data = d.util.openFunc(d);
+  if (data.err) return d.error(data.err);
 
-    const [link] = data.inside.splits;
-    let response = false;
+  const [link] = data.inside.splits;
+  let response = false;
 
-    try {
-        response = await axios
-            .get(inside.inside.addBrackets())
-            .then((res) => res.headers["content-type"].startsWith("image"));
-    } catch {
-        response = false;
-    }
-    data.result = response;
-    return {
-        code: d.util.setCode(data)
-    }
-}
+  try {
+    response = await axios
+      .get(data.inside.inside.addBrackets())
+      .then((res) => res.headers["content-type"].startsWith("image"));
+  } catch (e) {
+    console.error(e);
+    response = false;
+  }
+  data.result = response;
+  return {
+    code: d.util.setCode(data),
+  };
+};
