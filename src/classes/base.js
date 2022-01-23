@@ -10,7 +10,7 @@ const {
     IntentOptions,
     SlashOptionTypes,
 } = require("../utils/Constants.js");
-const {AoijsAPI, DbdTsDb, CustomDb, Promisify} = require("./Database.js");
+const {AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify} = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const {CommandManager} = require("./Commands.js");
 
@@ -99,6 +99,16 @@ class BaseClient extends Discord.Client {
                 {type: "dbdts.db", promisify: false},
                 options.database?.extraOptions || {},
             );
+        } else if (options?.database?.type === "aoi.mongo") {
+            this.db = new AoiMongoDb(
+                options.database?.db,
+                {
+                    path: options.database?.path,
+                    tables: options.database?.tables || ["main"]
+                },
+                { type: "aoi.mongo", promisify: true },
+                { ...AoiMongoDb.defaultOptions, ...(options.database?.extraOptions || {}) }
+            )
         } else if (
             options?.database?.type === "custom" &&
             !options?.database?.promisify

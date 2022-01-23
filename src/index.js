@@ -2,10 +2,22 @@ const Client = require("./classes/Bot.js");
 const CustomEvent = require("./classes/NewEvent.js");
 const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
-const Voice = require("./classes/Voice.js");
 const Lavalink = require("./classes/Lavalink.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
+
+let Voice;
+
+try {
+    Voice = require("./classes/Voice.js");
+} catch (err) {
+    Voice = class {
+        constructor() {
+            throw err;
+        }
+    }
+}
+
 module.exports = {
     /**
      * * The Discord Bot Client
