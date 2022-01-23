@@ -183,6 +183,136 @@ class DbdTsDb extends Database {
     }
 }
 
+class AoiMongoDb extends Database {
+    constructor(module, options = {}, db = {}, extraOptions = {}) {
+        super(module, options, db.promisify)
+
+        this.extraOptions = extraOptions
+        this.type = db.type
+        this.setup()
+    }
+
+    setup() {
+        const { Mongo } = this.module
+        const { MongoClient } = require("mongodb")
+
+        const mongoClient = new MongoClient(this.path, this.extraOptions.clientOptions)
+        const preClient = mongoClient.connect()
+
+        this.preClient = preClient.catch(() => {})
+
+        preClient
+            .then(client => {
+                this.db = client.db(this.extraOptions.databaseName)
+                /** @type {Map<string, import("aoi.mongo").Mongo>} */
+                this.collections = new Map()
+
+                for (const collectionName of this.tables) {
+                    const mongo = new Mongo({
+                        client,
+                        dbName: this.extraOptions.databaseName,
+                        collectionName
+                    })
+
+                    this.collections.set(collectionName, mongo)
+                }
+            })
+            .catch(error => {
+                this.error = error
+                throw error
+            })
+    }
+
+    async set(table, name, id, value) {
+        await this.preClient
+        if (this.error) throw this.error
+
+        const mongo = this.collections.get(table)
+        const key = `${name}_${id}`
+
+        const res = await mongo.set(key, value)
+        return !!res.upsertedCount || !!res.modifiedCount
+    }
+
+    async get(table, name, id, value) {
+        await this.preClient
+        if (this.error) throw this.error
+
+        const mongo = this.collections.get(table)
+        const key = `${name}_${id}`
+
+        return mongo.get(key, value)
+    }
+
+    async all(table, varName, lengthOfId, funcOnId) {
+        await this.preClient
+        if (this.error) throw this.error
+
+        const mongo = this.collections.get(table)
+        let cursor
+
+        if (!varName) {
+            cursor = await mongo.all()
+        } else {
+            const regex = this.regExpOf(varName, lengthOfId, funcOnId)
+            cursor = await mongo.match(regex)
+        }
+
+        const documents = []
+        for await (const doc of cursor) {
+            documents.push(doc)
+        }
+
+        return documents
+    }
+
+    async delete(table, name, id) {
+        await this.preClient
+        if (this.error) throw this.error
+
+        const mongo = this.collections.get(table)
+        const key = `${name}${id ? `_${id}` : ""}`
+
+        const res = await mongo.delete(key)
+        return !!res.deletedCount
+    }
+
+    async roundTrip() {
+        const before = Date.now()
+        await this.db.command({ ping: 1 })
+
+        return Date.now() - before
+    }
+
+    regExpOf(varName, lengthOfId, funcOnId) {
+        const ids = []
+
+        for (let i = 0; i < lengthOfId; i++) {
+            ids.push("\\d+")
+        }
+
+        if (funcOnId) {
+            const [ index, id ] = funcOnId
+            ids[index] = this.escapeRegExp(String(id))
+        }
+
+        const name = this.escapeRegExp(varName)
+
+        return new RegExp(`^${name}${ids.length ? `_${ids.join("_")}` : ".+"}$`)
+    }
+
+    escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    static get defaultOptions() {
+        return {
+            clientOptions: { keepAlive: true },
+            databaseName: "aoijs"
+        }
+    }
+}
+
 class CustomDb extends Database {
     constructor(module, options = {}, db = {}, extraOptions = {}) {
         super(module, options, db.promisfy);
@@ -319,6 +449,7 @@ class Promisify extends CustomDb {
 module.exports = {
     AoijsAPI,
     DbdTsDb,
+    AoiMongoDb,
     CustomDb,
     Promisify,
 };
