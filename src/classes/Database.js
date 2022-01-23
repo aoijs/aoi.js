@@ -278,6 +278,9 @@ class AoiMongoDb extends Database {
     }
 
     async roundTrip() {
+        await this.preClient
+        if (this.error) throw this.error
+
         const before = Date.now()
         await this.db.command({ ping: 1 })
 
