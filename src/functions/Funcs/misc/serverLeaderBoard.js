@@ -4,7 +4,7 @@ module.exports = async d => {
     const Data = d.util.openFunc(d);
     if (Data.err) return d.error(Data.err)
 
-    const [variable, type = 'asc', custom = `{top}) {name} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
+    const [variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
 
     const all = await d.client.db.all(table, variable.addBrackets(), 1)
 
