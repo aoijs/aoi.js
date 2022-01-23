@@ -234,14 +234,14 @@ class AoiMongoDb extends Database {
         return !!res.upsertedCount || !!res.modifiedCount
     }
 
-    async get(table, name, id, value) {
+    async get(table, name, id) {
         await this.preClient
         if (this.error) throw this.error
 
         const mongo = this.collections.get(table)
         const key = `${name}_${id}`
 
-        return mongo.get(key, value)
+        return mongo.get(key)
     }
 
     async all(table, varName, lengthOfId, funcOnId) {
