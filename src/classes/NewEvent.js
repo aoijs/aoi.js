@@ -22,7 +22,7 @@ class CustomEvent extends EventEmitter {
     }
 
     listen(event) {
-        super.on(event, async (...data) => {
+        this.on(event, async (...data) => {
             const commands = this.commands.filter(
                 (x) => x.listen.toLowerCase() === event,
             );

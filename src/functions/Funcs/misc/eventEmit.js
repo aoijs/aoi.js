@@ -13,7 +13,7 @@ module.exports = async d => {
         }
     });
 
-    data.result = d.client.customEvents(name, ...datas);
+    data.result = d.client.customEvents.emit(name, ...datas);
 
     return {
         code: d.util.setCode(data)
