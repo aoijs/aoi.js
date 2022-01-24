@@ -1,7 +1,7 @@
 module.exports = async (d) => {
     const {code} = d.util.openFunc(d);
 
-    const state = d.client.voiceManager.servers.get(d.guild.id);
+    const state = d.client.voiceManager.players.get(d.guild.id);
     if (!state)
         return d.aoiError.fnError(
             d,
