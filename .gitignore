@@ -2,6 +2,6 @@ commands
 config.json
 node_modules
 database
-/test.js
+/test
 .idea
 /index.js

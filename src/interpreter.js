@@ -108,7 +108,7 @@ const Interpreter = async (
             code,
             functions: command.functions,
         };
-        const start = Date.now();
+        const start = performance.now();
         if (client?.aoiOptions?.debugs?.interpreter) {
             console.log(`|------------------------------------------|`);
             console.time(`interpreter-${start}`);
@@ -542,7 +542,7 @@ const Interpreter = async (
             ),
         );
 
-        debug.executionTime = Date.now() - start + " ms";
+        debug.executionTime = (performance.now() - start) + " ms";
         code = code?.replace(
             /\$executiontime/gi,
             debug.executionTime.split("ms")[0],
