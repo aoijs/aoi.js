@@ -23,7 +23,7 @@ module.exports = async d => {
         method,
         url,
         headers,
-        body,
+        data:body,
         responseType: 'text'
     }).catch(async e => {
         if (error === "$default" || !error) {
