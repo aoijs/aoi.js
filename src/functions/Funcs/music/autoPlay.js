@@ -16,7 +16,7 @@ module.exports = async (d) => {
     );
 
   const player = d.client.voiceManager.players.get(d.guild?.id);
-  if (player)
+  if (!player)
     return d.aoiError.fnError(
       d,
       "custom",
