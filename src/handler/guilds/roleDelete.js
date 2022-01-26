@@ -27,7 +27,7 @@ module.exports = async (role, client) => {
             client.db,
             false,
             chan?.id,
-            {oldc: role},
+            {oldr: role},
             chan,
         );
     }
