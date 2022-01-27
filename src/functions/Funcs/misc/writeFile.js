@@ -9,10 +9,10 @@ module.exports = d => {
     try {
         if (fs.existsSync(file)) {
             const og = fs.readFileSync(process.cwd() + "/" + file)
-            const write = fs.writeFileSync(file, og + "\n" + data, {encoding: encode})
+            const write = fs.writeFileSync(file, og + "\n" + text, {encoding: encode})
         } else {
             const write = fs.writeFileSync(file
-                , data, {encoding: encode})
+                , text, {encoding: encode})
         }
     } catch (e) {
         console.error(e)
