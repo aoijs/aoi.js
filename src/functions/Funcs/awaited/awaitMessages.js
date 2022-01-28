@@ -73,14 +73,14 @@ module.exports = async (d) => {
                     ];
             const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === c);
             await Interpreter(
-                d.client,
-                collected,
-                collected.content.split(" "),
-                cmd,
-                d.client.db,
-                false,
-                undefined,
-                {awaitData: data},
+              d.client,
+              collected,
+              collected.content.split(" "),
+              cmd,
+              d.client.db,
+              false,
+              undefined,
+              { awaitData: data, ...d.data },
             );
         })
         .catch(async (_) => {

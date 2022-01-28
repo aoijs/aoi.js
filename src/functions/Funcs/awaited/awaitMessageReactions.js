@@ -77,9 +77,16 @@ module.exports = async (d) => {
                     {},
                     "Invalid Await Command: " + commands[index],
                 );
-            await d.interpreter(d.client, m, [], cmd, d.client.db, false, undefined, {
-                awaitData: data,
-            });
+            await d.interpreter(
+              d.client,
+              m,
+              [],
+              cmd,
+              d.client.db,
+              false,
+              undefined,
+              { awaitData: data, ...d.data },
+            );
         })
         .catch(async (err) => {
             console.error((err))

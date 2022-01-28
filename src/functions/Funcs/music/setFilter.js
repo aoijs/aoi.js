@@ -26,7 +26,7 @@ module.exports = async (d) => {
       "Bot Is Not Connected To Voice/Stage.",
     );
 
-  data.result = await player.filterManager.addFilters(filter);
+  data.result = await player.filterManager.setFilters(filter);
 
   return {
     code: d.util.setCode(data),
