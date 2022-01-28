@@ -10,7 +10,7 @@ module.exports = async d => {
     const role = await guild.roles.fetch(roleId).catch(e => undefined);
     if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
 
-    data.result = role.hoisted;
+    data.result = role.hoist;
 
     return {
         code: d.util.setCode(data)
