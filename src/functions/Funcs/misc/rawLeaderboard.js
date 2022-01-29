@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const [variable, order = 'asc', type = 'user', custom = '{top}. {name}: {value}', list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
 
-    if (!d.client.variableManager.has(varname.addBrackets())) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Not Found!`);
+    if (!d.client.variableManager.has(variable.addBrackets())) return d.aoiError.fnError(d, 'custom', {}, `Variable ${variable.addBrackets()} Not Found!`);
 
     const idLength = type === 'user' ? 2 : 1;
     let y = 0
