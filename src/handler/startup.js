@@ -1,5 +1,6 @@
 const {Team} = require("discord.js");
 const Interpreter = require("../interpreter.js");
+/*Copyright © 2021 @Akarui Development*/
 
 module.exports = async (client) => {
     const app = await client.application.fetch();
