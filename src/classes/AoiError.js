@@ -151,42 +151,42 @@ class AoiError {
         let ans;
         switch (type) {
             case "message":
-                ans = `\`${d.func}: Invalid Message ID Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Message ID Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "channel":
-                ans = `\`${d.func}: Invalid Channel ID Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Channel ID Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine}\`)`;
                 break;
             case "user":
-                ans = `\`${d.func}: Invalid User ID Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid User ID Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "role":
-                ans = `\`${d.func}: Invalid Role Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Role Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "guild":
-                ans = `\`${d.func}: Invalid Guild ID Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Guild ID Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "emoji":
-                ans = `\`${d.func}: Invalid Emoji ID Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Emoji ID Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "option":
-                ans = `\`${d.func}: Invalid Option Provided In ${
+                ans = `\`AoiError: ${d.func}: Invalid Option Provided In ${
                     data.inside || ""
                 } (line : ${d.funcLine})\``;
                 break;
             case "custom":
-                ans = `\`${d.func}: ${message} ${data.inside || ""} (line : ${
+                ans = `\`AoiError: ${d.func}: ${message} ${data.inside || ""} (line : ${
                     d.funcLine
                 })\``;
                 break;

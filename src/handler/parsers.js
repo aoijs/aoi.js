@@ -655,3 +655,4 @@ module.exports = {
     SlashOptionsParser: SlashOptionsParser,
     OptionParser,
 };
+/*Copyright © 2021 @Akarui Development*/
