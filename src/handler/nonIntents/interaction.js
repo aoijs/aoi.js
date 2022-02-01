@@ -60,6 +60,8 @@ module.exports = async (interaction, client) => {
                     {code: cmd.name, name: "NameParser"},
                     client.db,
                     true,
+                    undefined,
+                    {interaction}
                 )
             )?.code;
         }
