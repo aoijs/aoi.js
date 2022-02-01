@@ -1,21 +1,24 @@
-# aoi.js
-
-  <br />
-    <p>
+<p align="center">
     <a href="https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
   </p>
+
+
+<h1 align="center">aoi.js</h1>
+
+<div align="center">
 
 [![Discord Server](https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white)](https://aoi.js.org/invite)
 [![NPM Version](https://img.shields.io/npm/v/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
 [![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
 
-## About
-aoi.js is a package with customization and ready-to-use functions to make Discord Bots with ease.
+</div>
+
+## Features
 
 - Built-in support of multiple interactions commands
 - Built-in support of Custom Functions Integrated
 - Optimized and customizable
-- 500+ functions available
+- 500+ built-in functions available
 
 The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 
@@ -33,15 +36,15 @@ npm install aoi.js
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
-token: "TOKEN", //Discord Bot Token
-prefix: "PREFIX", //Discord Bot Prefix
-intents: ["GUILDS", "GUILD_MESSAGES"] //Discord Intents
+token: "DISCRD BOT TOKEN",
+prefix: "DISCRD BOT PREFIX",
+intents: ["GUILDS", "GUILD_MESSAGES"]
 })
 
 //Events
 bot.onMessage()
 
-//Command Example
+//Command Example (ping)
 bot.command({
 name: "ping",
 code: `Pong! $pingms`
@@ -63,15 +66,16 @@ With the latest feature of aoi.js v5.0.0 and above, which enables Developers to 
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
-    token: "TOKEN", //Discord Bot Token
-    prefix: "PREFIX", //Discord Bot Prefix
-    intents: ["GUILDS", "GUILD_MESSAGES"] //Discord Intents
+token: "DISCRD BOT TOKEN",
+prefix: "DISCRD BOT PREFIX",
+intents: ["GUILDS", "GUILD_MESSAGES"]
 })
 
 //Events
 bot.onMessage()
 
 /*CREATING THE ACTUAL FUNCTION*/
+/*EXAMPLE OF MAKING $authorOnlyButton*/
 
 bot.functionManager.createCustomFunction({
 name : '$authorOnlyButton', //FUNCTION NAME 
@@ -92,15 +96,14 @@ $addButton[{index};{label};{style};{customId}_$authorId;{disabled};{emoji}]
 ### Optional packages
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
 
-## Akarui Development
+## Made possible by Akarui Development
 
   <br />
     <p>
     <a href="https://aoi.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804813961190572093/909447704978001931/Akarui_Development_Banner.png" alt="akarui" /></a>
   </p>
 
--  A Team managed by [Leref](https://leref.ga/) that oriented by NPM Packages Support by the Team.
-- In charge of development of aoi.js
+A team managed by [Leref](https://leref.ga/) that oriented by NPM Packages Support by the Team.
 
 ## Links
 - [Website](https://aoi.js.org)
@@ -108,9 +111,3 @@ $addButton[{index};{label};{style};{customId}_$authorId;{disabled};{emoji}]
 - [Github](https://github.com/AkaruiDevelopment/aoi.js)
 - [Discord Server](https://discord.gg/HMUfMXDQsV)
 - [Documentation](https://akarui.leref.ga/v/aoi.js/)
-
-## Open Source
-
-aoi.js is available and open source for the community to explore and contribute for future updates.
-
-Please read [Contributing](https://github.com/AkaruiDevelopment/aoi.js/blob/main/.github/CONTRIBUTING.md)
