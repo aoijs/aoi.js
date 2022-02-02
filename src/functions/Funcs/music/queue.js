@@ -10,7 +10,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Bot Isn't Connected To Voice/Stage",
+      "Client Isn't Connected To Voice/Stage",
     );
 
   data.result = player.getQueue(page, limit, response).queue.join("\n");

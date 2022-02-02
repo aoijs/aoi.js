@@ -4,7 +4,7 @@ module.exports = async d => {
     const [voiceId = d.member.voice?.channel?.id] = data.inside.splits;
 
     const vc = await d.util.getChannel(d, voiceId);
-    if (![d.util.channelTypes.Voice, d.util.channelTypes.Stage].includes(vc.type)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Provided ChannelId Is Not Voice/Stage Channel In')
+    if (![d.util.channelTypes.Voice, d.util.channelTypes.Stage].includes(vc.type)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Provided ChannelID Is Not Voice/Stage Channel In')
 
     if (!d.client.voiceManager) return d.aoiError.fnError(d, 'custom', {}, 'Voice Class Is Not Initialised.');
 

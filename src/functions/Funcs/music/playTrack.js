@@ -20,7 +20,7 @@ module.exports = async (d) => {
       d,
       "custom",
       { inside: data.inside },
-      "Not Connected To Voice/Stage",
+      "Client Is Not Connected To Voice/Stage.",
     );
 
   const trackid = await player.search(track, type);
