@@ -49,7 +49,6 @@ class DbdjsApi extends Database{
         else if(type === "dbdjs.mongo"){
       this.db = this.module.default    
 this.tables.forEach(x=>this.db.createModel(x))
-        }
         } else if (type === "aoi.fb") {
             this.db = this.module;
         }
