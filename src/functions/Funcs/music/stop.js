@@ -7,7 +7,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Bot Is Not Connected To Voice/Stage.",
+      "Client Is Not Connected To Voice/Stage.",
     );
   player.queue.list = [];
   player.skip();
