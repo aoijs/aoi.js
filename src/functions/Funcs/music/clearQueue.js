@@ -10,7 +10,7 @@ module.exports = async (d) => {
       {},
       "Client Is Not Connected To Voice/Stage.",
     );
-
+  player.reseted = true;
   player.queue.list = [];
 
   return {
