@@ -232,6 +232,7 @@ const ComponentParser = async (msg, client) => {
         placeholder: placeholder,
         min_values: minVal,
         max_values: maxVal,
+        disabled,
         options: optArray,
       });
     }
