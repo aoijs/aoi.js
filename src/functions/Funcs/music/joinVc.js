@@ -1,20 +1,36 @@
-module.exports = async d => {
-    const data = d.util.openFunc(d);
+module.exports = async (d) => {
+  const data = d.util.openFunc(d);
 
-    const [voiceId = d.member.voice?.channel?.id] = data.inside.splits;
+  const [voiceId = d.member.voice?.channelId] = data.inside.splits;
 
-    const vc = await d.util.getChannel(d, voiceId);
-    if (![d.util.channelTypes.Voice, d.util.channelTypes.Stage].includes(vc.type)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Provided ChannelId Is Not Voice/Stage Channel In')
+  const vc = await d.util.getChannel(d, voiceId);
 
-    if (!d.client.voiceManager) return d.aoiError.fnError(d, 'custom', {}, 'Voice Class Is Not Initialised.');
+  if (![d.util.channelTypes.Voice, d.util.channelTypes.Stage].includes(vc.type))
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.inside },
+      "Provided ChannelId Is Not Voice/Stage Channel In",
+    );
 
-    try {
-        await d.client.voiceManager.joinVc({voiceChannel:vc, textChannel:d.channel});
-    } catch (e) {
-        d.aoiError.fnError(d, 'custom', {}, 'Failed To Join Vc With Reason: ' + e);
-    }
+  if (!d.client.voiceManager)
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      {},
+      "Voice Class Is Not Initialised.",
+    );
 
-    return {
-        code: d.util.setCode(data)
-    }
-}
+  try {
+    await d.client.voiceManager.joinVc({
+      voiceChannel: vc,
+      textChannel: d.channel,
+    });
+  } catch (e) {
+    d.aoiError.fnError(d, "custom", {}, "Failed To Join Vc With Reason: " + e);
+  }
+
+  return {
+    code: d.util.setCode(data),
+  };
+};
