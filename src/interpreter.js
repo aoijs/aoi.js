@@ -10,7 +10,7 @@ const {CheckCondition} = require("./utils/helpers/checkCondition.js");
 const {mustEscape} = require("./utils/helpers/mustEscape.js");
 const {Command} = require("./classes/Commands.js");
 /**
- * @param  {import('./classes/Bot.js')} client
+ * @param  {import('./classes/AoiClient.js')} client
  * @param  {Discord.Message | {
  * message?:Discord.Message,
  * channel?:Discord.PartialDMChannel | Discord.DMChannel | Discord.TextChannel | Discord.NewsChannel | Discord.ThreadChannel,

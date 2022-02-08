@@ -2,7 +2,7 @@ const Interpreter = require("../../interpreter.js");
 const {Message} = require("discord.js");
 /**
  * @param  {Message} reactionMessage
- * @param  {import('../../classes/Bot.js')} client
+ * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (reactionMessage, client) => {
     const cmds = client.cmd.reactionRemoveAll.allValues();

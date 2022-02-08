@@ -56,7 +56,7 @@ class AoiError {
     }
 
     /**
-     * @param  {import('./Bot.js')} client
+     * @param  {import('./AoiClient.js')} client
      * @param  {import('discord.js').TextChannel |
      * import('discord.js').ThreadChannel |
      * import('discord.js').NewsChannel |
