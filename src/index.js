@@ -1,4 +1,4 @@
-const Client = require("./classes/Bot.js");
+const Client = require("./classes/AoiClient");
 const CustomEvent = require("./classes/NewEvent.js");
 const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
@@ -34,15 +34,15 @@ module.exports = {
      * *  Custom Events Class
      * @example new CustomEvent(client (eg: bot))
      **/
-    CustomEvent: CustomEvent,
+    CustomEvent,
     /**
      * * loadCommands
      * loads the commands of the provided file
      @example new LoadCommands(path,true/false)
      **/
-    LoadCommands: LoadCommands,
-    ClientShard: ClientShard,
-    Voice: Voice,
+    LoadCommands,
+    ClientShard,
+    Voice,
     /**
      * * Lavalink
      * @example new addNode({
@@ -52,9 +52,9 @@ module.exports = {
     secure: false,
 })
      **/
-    Lavalink: Lavalink,
+    Lavalink,
     // * AoiError Class
-    AoiError: AoiError,
+    AoiError,
     // * Util Class
     Util,
 };

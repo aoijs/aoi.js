@@ -1,9 +1,10 @@
 const fs = require("fs");
 const AoiError = require("./AoiError.js");
-const BaseClient = require("./base.js");
+const BaseClient = require("./AoiBase.js");
 const {Command} = require("./Commands.js");
 const {FunctionManager} = require("./Functions.js");
 
+//Initialize aoi.js Client
 class Client extends BaseClient {
     constructor(options) {
         super(options);
