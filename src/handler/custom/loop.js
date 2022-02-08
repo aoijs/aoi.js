@@ -1,6 +1,6 @@
 const Interpreter = require("../../interpreter.js");
 /**
- * @param  {import('../../classes/AoiClient.js')} client
+ * @param  {import('../../classes/Bot.js')} client
  */
 module.exports = async (client) => {
     const cmds = client.cmd.loop.allValues();

@@ -3,7 +3,7 @@ const Interpreter = require("../../interpreter.js");
 /**
  * @param  {MessageReaction} reaction
  * @param  {User} user
- * @param  {import('../../classes/AoiClient.js')} client
+ * @param  {import('../../classes/Bot.js')} client
  */
 module.exports = async (reaction, user, client) => {
     const cmds = client.cmd.reactionAdd.allValues();
