@@ -5,6 +5,7 @@ class ClientShard extends ShardingManager {
   constructor(file, options = {}, spawnOptions) {
     super(file, options);
     this.file = file;
+    this.spawnOptions = spawnOptions;
     this.cmd = {
       shardDisconnect: new Collection(),
       shardError: new Collection(),
@@ -12,7 +13,10 @@ class ClientShard extends ShardingManager {
       shardReconnecting: new Collection(),
       shardResume: new Collection(),
     };
-    this.spawn(spawnOptions);
+  }
+
+  startProcess() {
+    this.spawn(this.spawnOptions);
   }
 
   linkBot(client) {
