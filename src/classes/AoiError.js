@@ -40,13 +40,13 @@ class AoiError {
     static CommandError(command, type, name, position) {
         if (type === "name") {
             const error = new Error(
-                `"Name" property is missing in "${command}" (position: ${position})`,
+                `AoiError: "Name" property is missing in "${command}" (position: ${position})`,
             );
             error.name = "CommandNameError";
             throw error;
         } else if (type === "code") {
             const error = new Error(
-                `"Code" is not provided in "${
+                `AoiError: "Code" is not provided in "${
                     name || "the Command"
                 }" : ${command} (position: ${position})`,
             );
