@@ -10,7 +10,7 @@ module.exports = async (client) => {
         client.aoiOptions.Owner = [app.owner.id];
     }
 
-    await require("./aoiWarning.js")(client);
+    await require("./AoiWarning.js")(client);
 
     await require("./custom/timeout.js")(
         {client, interpreter: Interpreter},
