@@ -1,9 +1,10 @@
+
+
+
+
 <p align="center">
-    <a href="https://aoi.leref.ga"><img src="../.github/assets/aoi.png" alt="aoi.js" /></a>
+    <a href="https://aoi.leref.ga"><img src="./.github/assests/aoi.png" alt="aoi.js" /></a>
   </p>
-
-
-<h1 align="center">aoi.js</h1>
 
 <div align="center">
 
