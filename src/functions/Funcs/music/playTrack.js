@@ -23,7 +23,7 @@ module.exports = async (d) => {
       "Client Is Not Connected To Voice/Stage.",
     );
 
-  const trackid = await player.search(track, type);
+  const trackid = await player.search(track.addBrackets(), type);
   const tracklist = await player.addTrack({
     urls: trackid,
     type: type,
