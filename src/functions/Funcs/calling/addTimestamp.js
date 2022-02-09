@@ -3,7 +3,7 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [index, timestamp] = inside.splits;
+    let [index, timestamp = Date.now()] = inside.splits;
     index = Number(index) - 1;
     if (isNaN(index) || index < 0)
         d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
