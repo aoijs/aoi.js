@@ -14,6 +14,9 @@
 
 </div>
 
+## About
+Aoi.js is a package with customization and ready-to-use functions to make Discord Bots with ease.
+
 ## Features
 
 - Built-in support of multiple interactions commands
