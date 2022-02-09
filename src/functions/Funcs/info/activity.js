@@ -1,6 +1,6 @@
 module.exports = async (d) => {
     const code = d.command.code;
-    const inside = d.unpack()
+    const inside = d.unpack();
     const [id = d.author?.id, guildId = d.guild?.id] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
