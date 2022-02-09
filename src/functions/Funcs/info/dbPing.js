@@ -6,7 +6,7 @@ module.exports = async d => {
     if (d.client.db.roundTrip) {
         ping = await d.client.db.roundTrip()
     } else {
-        ping = d.client.db.ping
+        ping = d.client.db.ping;
     }
 
     return {
