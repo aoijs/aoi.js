@@ -1,6 +1,6 @@
 module.exports = async d => {
-    const {code} = d.command
-    const inside = d.unpack()
+    const {code} = d.command;
+    const inside = d.unpack();
     let [size = 4096, dynamic = "yes", format = "webp"] = inside.splits;
     return {
         code: d.util.setCode({
