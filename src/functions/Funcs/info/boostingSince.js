@@ -13,7 +13,7 @@ module.exports = async d => {
             0 :
             (format === "date" ?
                 user.premiumSince :
-                user.permiumSinceTimestamp)
+                user.premiumSinceTimestamp)
     ) ?? 0;
 
     return {
