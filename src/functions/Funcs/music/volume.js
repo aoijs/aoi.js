@@ -14,7 +14,7 @@ module.exports = async (d) => {
       {},
       "Client Is Not Connected To Voice/Stage.",
     );
-if(volume === "getVolume") player.currentStream.volume.volume * 100;
+if(volume === "getVolume") data.result = player.currentStream.volume.volume * 100;
   else player.requestManager._setVolume(Number(volume)/100);
 
   return {
