@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
+    <a href="https://aoi.leref.ga"><img src="../.github/assets/aoi.png" alt="aoi.js" /></a>
   </p>
 
 
