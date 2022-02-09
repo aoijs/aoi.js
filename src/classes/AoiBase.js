@@ -69,7 +69,7 @@ class BaseClient extends Discord.Client {
         this.variableManager = new VariableManager(this);
 
         if (options.autoUpdate) {
-            require("../handler/aoiAutoUpdate.js")();
+            require("../handler/AoiAutoUpdate.js")();
         }
 
         if (

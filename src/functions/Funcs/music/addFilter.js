@@ -13,12 +13,12 @@ const customFilters = {
   },
   nightcore(number) {
     return {
-      asubboost: `dry=0.7:wet=0.5`,
       atempo: 1 * number,
       asetrate: 48000 * number,
       aresample: 48000,
     };
   },
+  
 };
 
 module.exports = async (d) => {

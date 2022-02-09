@@ -14,14 +14,20 @@ assignees: ''
 - [ ] Handlers: \<Handler Type>
 - [ ] Others: \______
 
-Code used:
+Example code used:
 ```
-Your Code Here
+Your code here
 ```
 
-More:
-- Aoi.js version:
-- Node.js version:
+The unexpected error message or issue: 
+```
+Your error message here
+```
+
+
+Information:
+- aoi.js version:
+- node.js version:
 - Operating system:
 
 Screenshots (If any): Image or Link

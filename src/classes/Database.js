@@ -368,12 +368,12 @@ class CustomDb extends Database {
         }
     }
 
-    all(table, varname, lengthofId, funconId) {
+    async all(table, varname, lengthofId, funconId) {
         try {
             if (!varname) {
                 return this.tableList[table].all();
             } else {
-                const all = this.tableList[table].all();
+                const all = await this.tableList[table].all();
                 all.filter((x) => {
                     if (x.key) {
                         return (
@@ -410,6 +410,7 @@ class CustomDb extends Database {
                         );
                     }
                 });
+                return all;
             }
         } catch (e) {
             AoiError.consoleError(
@@ -442,7 +443,7 @@ class Promisify extends CustomDb {
         );
     }
 
-    all(table, varname, lengthofId, funconId) {
+    async all(table, varname, lengthofId, funconId) {
         return new Promise((res) =>
             res(super.all(table, varname, lengthofId, funconId)),
         );
