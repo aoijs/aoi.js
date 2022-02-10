@@ -1,5 +1,5 @@
 const { Manager, PlayerEvents } = require("music/lib/index");
-const { CommandManager } = require( "./Commands.js" );
+const { CommandManager } = require("./Commands.js");
 
 class Voice extends Manager {
   constructor(client, config) {
@@ -61,58 +61,63 @@ class Voice extends Manager {
     );
   }
   onAudioError() {
-    this.on(PlayerEvents.AUDIO_ERROR, async (error,textChannel) =>
+    this.on(PlayerEvents.AUDIO_ERROR, async (error, textChannel) =>
       require("../handler/music/events/audioError.js")(
         error,
         textChannel,
         this.client,
+        this,
       ),
     );
   }
   onTrackStart() {
     this.on(PlayerEvents.TRACK_START, async (track, textChannel) =>
-      require("../handler/music/events/trackStart.js")(
+      require("../handler/music/trackStart.js")(
         track,
         textChannel,
         this.client,
+        this,
       ),
     );
   }
   onQueueStart() {
     this.on(PlayerEvents.QUEUE_START, async (track, textChannel) =>
-      require("../handler/music/events/queueStart.js")(
+      require("../handler/music/queueStart.js")(
         track,
         textChannel,
         this.client,
+        this,
       ),
     );
   }
   onTrackEnd() {
     this.on(PlayerEvents.TRACK_END, async (track, textChannel) =>
-      require("../handler/music/events/trackEnd.js")(
+      require("../handler/music/trackEnd.js")(
         track,
         textChannel,
         this.client,
+        this,
       ),
     );
   }
   onQueueStart() {
     this.on(PlayerEvents.QUEUE_END, async (track, textChannel) =>
-      require("../handler/music/events/queueEnd.js")(
+      require("../handler/music/queueEnd.js")(
         track,
         textChannel,
         this.client,
+        this,
       ),
     );
   }
   onTrackPause() {
     this.on(PlayerEvents.TRACK_PAUSE, async () =>
-      require("../handler/music/events/trackPause.js")(this.client),
+      require("../handler/music/trackPause.js")(this.client, this),
     );
   }
   onTrackResume() {
     this.on(PlayerEvents.TRACK_RESUME, async () =>
-      require("../handler/music/events/trackResume.js")(this.client),
+      require("../handler/music/trackResume.js")(this.client, this),
     );
   }
 }
