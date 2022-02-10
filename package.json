@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "axios": "^0.24.0",
-    "music": "github:akaruidevelopment/music#main",
+    "@akarui/aoi.music": "^1.0.0",
     "prettier": "^2.4.1",
     "typescript": "^4.5.2",
     "ws": "^8.3.0"
