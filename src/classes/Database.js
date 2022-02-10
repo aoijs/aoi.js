@@ -336,7 +336,7 @@ class CustomDb extends Database {
         if (!method)
             return AoiError.consoleError(
                 "DatabaseSupportError",
-                "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                "This Database Is Not Supported, Make an issue at aoi.js Github",
             );
         this.tables.forEach(
             (x) => (this.tableList[x] = new this.module[method](x)),
@@ -349,7 +349,7 @@ class CustomDb extends Database {
         } catch (e) {
             AoiError.consoleError(
                 "DatabaseSupportError",
-                "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                "This Database Is Not Supported, Make an issue at aoi.js Github",
             );
         }
     }
@@ -363,7 +363,7 @@ class CustomDb extends Database {
         } catch (e) {
             AoiError.consoleError(
                 "DatabaseSupportError",
-                "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                "This Database Is Not Supported, Make an issue at aoi.js Github",
             );
         }
     }
@@ -406,7 +406,7 @@ class CustomDb extends Database {
                     } else {
                         AoiError.consoleError(
                             "DatabaseSupportError",
-                            "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                            "This Database Is Not Supported, Make an issue at aoi.js Github",
                         );
                     }
                 });
@@ -415,7 +415,7 @@ class CustomDb extends Database {
         } catch (e) {
             AoiError.consoleError(
                 "DatabaseSupportError",
-                "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                "This Database Is Not Supported, Make an issue at aoi.js Github",
             );
         }
     }
@@ -426,7 +426,7 @@ class CustomDb extends Database {
         } catch (e) {
             AoiError.consoleError(
                 "DatabaseSupportError",
-                "This Database Is Not Supported, You Can Make An Issue At Aoijs GitHub",
+                "This Database Is Not Supported, Make an issue at aoi.js Github",
             );
         }
     }
