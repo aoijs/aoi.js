@@ -1,4 +1,4 @@
-const { Manager, PlayerEvents } = require("music/lib/index");
+const { Manager, PlayerEvents } = require("@akarui/aoi.music/lib/index.js");
 const { CommandManager } = require("./Commands.js");
 
 class Voice extends Manager {
