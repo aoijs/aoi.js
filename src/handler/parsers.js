@@ -179,7 +179,7 @@ const ComponentParser = async (msg, client) => {
     if (Checker("selectMenu")) {
       const selectMenu = [];
       let inside = nya.split("{selectMenu:").slice(1).join("");
-      inside = inside.split(":").msp((c) => c.trim());
+      inside = inside.split(":").map((c) => c.trim());
       const customID = inside.shift();
       const placeholder = inside.shift();
       const minVal = inside[0] === "" ? 0 : Number(inside.shift());
