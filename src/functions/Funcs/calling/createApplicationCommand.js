@@ -61,7 +61,7 @@ module.exports = async (d) => {
         name: name,
         type,
         description: description?.addBrackets(),
-        defaultPermission,
+        defaultPermission: defaultPermission === "yes" || defaultPermission === "true",
         options,
       },
       guildId: guild?.id,
