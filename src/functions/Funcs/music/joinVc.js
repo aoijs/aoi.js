@@ -1,7 +1,12 @@
 module.exports = async (d) => {
   const data = d.util.openFunc(d);
 
-  const [voiceId = d.member.voice?.channelId] = data.inside.splits;
+  const [
+    voiceId = d.member.voice?.channelId,
+    selfMute = "yes",
+    selfDeaf = "yes",
+    debug = "no",
+  ] = data.inside.splits;
 
   const vc = await d.util.getChannel(d, voiceId);
 
@@ -25,6 +30,9 @@ module.exports = async (d) => {
     await d.client.voiceManager.joinVc({
       voiceChannel: vc,
       textChannel: d.channel,
+      selfMute: selfMute === "yes",
+      selfDeaf: selfDeaf === "yes",
+      debug: debug === "yes",
     });
   } catch (e) {
     d.aoiError.fnError(d, "custom", {}, "Failed To Join Vc With Reason: " + e);
