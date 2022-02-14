@@ -7,7 +7,7 @@ module.exports = async (d) => {
     userId = d.author?.id,
     action = "All",
     guildId = d.guild?.id,
-    format = "{executer.username}: {target.id} - {action}",
+    format = "{executor.username}: {target.id} - {action}",
   ] = data.inside.splits;
 
   const guild = await d.util.getGuild(d, guildId);
@@ -23,7 +23,11 @@ module.exports = async (d) => {
     );
 
   const audit = await guild
-    .fetchAuditLogs({ limit, user: userId, type: action })
+    .fetchAuditLogs({
+      limit,
+      user: userId === "" ? undefined : userId,
+      type: action,
+    })
     .catch((e) => {
       d.aoiError.fnError(
         d,
