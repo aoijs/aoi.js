@@ -1,19 +1,21 @@
 try {
-  let { Manager, PlayerEvents } = require("@akarui/aoi.music/lib/index.js");
+  const { Manager, PlayerEvents } = require("@akarui/aoi.music/lib/index.js");
 
   const { CommandManager } = require("./Commands.js");
 
-  class Voice extends Manager {
-    constructor(client, config) {
-      super(config);
+  class Voice {
+    constructor(client, config,pruneMusic) {
+      this.manager = new Manager(config);
       this.functionManager = client.functionManager;
       this.client = client;
+      this.pruneMusic = pruneMusic;
+      this.prunes = new Map();
       client.voiceManager = this;
       new CommandManager(this, false, Object.values(PlayerEvents));
     }
 
     get playerSize() {
-      return this.players.size;
+      return this.manager.players.size;
     }
 
     trackStartCommand(d = {}) {
@@ -63,7 +65,7 @@ try {
       );
     }
     onAudioError() {
-      this.on(PlayerEvents.AUDIO_ERROR, async (error, textChannel) =>
+      this.manager.on(PlayerEvents.AUDIO_ERROR, async (error, textChannel) =>
         require("../handler/music/events/audioError.js")(
           error,
           textChannel,
@@ -73,7 +75,7 @@ try {
       );
     }
     onTrackStart() {
-      this.on(PlayerEvents.TRACK_START, async (track, textChannel) =>
+      this.manager.on(PlayerEvents.TRACK_START, async (track, textChannel) =>
         require("../handler/music/trackStart.js")(
           track,
           textChannel,
@@ -83,7 +85,7 @@ try {
       );
     }
     onQueueStart() {
-      this.on(PlayerEvents.QUEUE_START, async (urls, textChannel) =>
+      this.manager.on(PlayerEvents.QUEUE_START, async (urls, textChannel) =>
         require("../handler/music/queueStart.js")(
           urls,
           textChannel,
@@ -93,7 +95,7 @@ try {
       );
     }
     onTrackEnd() {
-      this.on(PlayerEvents.TRACK_END, async (track, textChannel) =>
+      this.manager.on(PlayerEvents.TRACK_END, async (track, textChannel) =>
         require("../handler/music/trackEnd.js")(
           track,
           textChannel,
@@ -103,23 +105,28 @@ try {
       );
     }
     onQueueEnd() {
-      this.on(PlayerEvents.QUEUE_END, async (textChannel) =>
+      this.manager.on(PlayerEvents.QUEUE_END, async (textChannel) =>
         require("../handler/music/queueEnd.js")(textChannel, this.client, this),
       );
     }
     onTrackPause() {
-      this.on(PlayerEvents.TRACK_PAUSE, async () =>
+      this.manager.on(PlayerEvents.TRACK_PAUSE, async () =>
         require("../handler/music/trackPause.js")(this.client, this),
       );
     }
     onTrackResume() {
-      this.on(PlayerEvents.TRACK_RESUME, async () =>
+      this.manager.on(PlayerEvents.TRACK_RESUME, async () =>
         require("../handler/music/trackResume.js")(this.client, this),
       );
     }
   }
 
   module.exports = Voice;
-} catch (_) {
-  module.exports = {};
+} catch (e) {
+  class Voice {
+    constructor() {
+      throw new Error("install @akarui/aoi.music to use this feature");
+    }
+  }
+  module.exports = Voice;
 }

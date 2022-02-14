@@ -4,7 +4,7 @@ module.exports = async (d) => {
   if (!d.client.voiceManager)
     return d.aoiError.fnError(d, "custom", {}, "Voice Class Not Initialized");
 
-  const player = d.client.voiceManager.players.get(d.guild?.id);
+  const player = d.client.voiceManager.manager.players.get(d.guild?.id);
   if (!player)
     return d.aoiError.fnError(
       d,

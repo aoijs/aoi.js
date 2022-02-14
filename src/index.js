@@ -5,8 +5,7 @@ const ClientShard = require("./classes/ClientShard.js");
 const Lavalink = require("./classes/Lavalink.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
-
-let Voice = require("./classes/Voice.js");
+const Voice = require("./classes/Voice.js");
 
 module.exports = {
   /**
@@ -32,7 +31,7 @@ module.exports = {
      **/
   LoadCommands,
   ClientShard,
-  Voice,
+  Voice:Voice,
   /**
      * * Lavalink
      * @example new addNode({

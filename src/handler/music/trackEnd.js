@@ -1,14 +1,17 @@
 const { AoiError } = require("../../index.js");
 const Interpreter = require("../../interpreter.js");
 
-module.exports = async (track, channel, client, voice) => {
-  const cmds = voice.cmds.trackEnd.allValues();
+module.exports = async (track, Channel, client, voice) => {
+  const cmds = voice.cmd.trackEnd.allValues();
   for (const cmd of cmds) {
     const id = cmd.channel.includes("$")
       ? (
           await Interpreter(
             client,
-            {},
+            {
+              channel: Channel,
+              guild: Channel.guild,
+            },
             [],
             {
               name: "channelParser",
@@ -31,8 +34,8 @@ module.exports = async (track, channel, client, voice) => {
     await Interpreter(
       client,
       {
-        channel: channel,
-        guild: channel.guild,
+        channel: Channel,
+        guild: Channel.guild,
       },
       [],
       cmd,
@@ -44,5 +47,15 @@ module.exports = async (track, channel, client, voice) => {
       },
       channel,
     );
+  }
+
+  if (voice.pruneMusic) {
+    const msgId = voice.prunes.get(Channel.id);
+    if (!msgId) {
+    } else {
+      const msg = Channel.messages.fetch(msgId).catch((_) => undefined);
+      if (!msg) {
+      } else msg.delete();
+    }
   }
 };

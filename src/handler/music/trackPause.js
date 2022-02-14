@@ -1,14 +1,17 @@
 const { AoiError } = require("../../index.js");
 const Interpreter = require("../../interpreter.js");
 
-module.exports = async (channel, client, voice) => {
-  const cmds = voice.cmds.trackResume.allValues();
+module.exports = async (Channel, client, voice) => {
+  const cmds = voice.cmd.trackResume.allValues();
   for (const cmd of cmds) {
     const id = cmd.channel.includes("$")
       ? (
           await Interpreter(
             client,
-            {},
+            {
+              channel: Channel,
+              guild: Channel.guild,
+            },
             [],
             {
               name: "channelParser",
@@ -31,8 +34,8 @@ module.exports = async (channel, client, voice) => {
     await Interpreter(
       client,
       {
-        channel: channel,
-        guild: channel.guild,
+        channel: Channel,
+        guild: Channel.guild,
       },
       [],
       cmd,

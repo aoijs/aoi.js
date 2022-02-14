@@ -1,14 +1,26 @@
+const { Track } = require("@akarui/aoi.music/lib");
+const { TextChannel } = require("discord.js");
+const Client = require("../../classes/AoiClient.js");
+const Voice = require("../../classes/Voice.js");
 const { AoiError } = require("../../index.js");
 const Interpreter = require("../../interpreter.js");
-
-module.exports = async (track, channel, client, voice) => {
-  const cmds = voice.cmds.trackStart.allValues();
+/**
+ * @param  {Track} track
+ * @param  {TextChannel} Channel
+ * @param  {Client} client
+ * @param  {Voice} voice
+ */
+module.exports = async (track, Channel, client, voice) => {
+  const cmds = voice.cmd.trackStart.allValues();
   for (const cmd of cmds) {
     const id = cmd.channel.includes("$")
       ? (
           await Interpreter(
             client,
-            {},
+            {
+              channel: Channel,
+              guild: Channel.guild,
+            },
             [],
             {
               name: "channelParser",
@@ -28,11 +40,11 @@ module.exports = async (track, channel, client, voice) => {
         cmds.findIndex((c) => !c.channel),
       );
 
-    await Interpreter(
+    const interpreterObj = await Interpreter(
       client,
       {
-        channel: channel,
-        guild: channel.guild,
+        channel: Channel,
+        guild: Channel.guild,
       },
       [],
       cmd,
@@ -43,6 +55,12 @@ module.exports = async (track, channel, client, voice) => {
         track: track,
       },
       channel,
+      false,
+      false,
+      true,
     );
+    if (voice.pruneMusic) {
+      voice.prunes.set(Channel.id, interpreterObj?.id);
+    }
   }
 };

@@ -15,7 +15,15 @@ module.exports = async (d) => {
       "Invalid Type Provided In",
     );
 
-  const player = d.client.voiceManager.players.get(d.guild?.id);
+    if (!d.client.voiceManager)
+      return d.aoiError.fnError(
+        d,
+        "custom",
+        {},
+        "Voice Class Is Not Initialised.",
+      );
+
+  const player = d.client.voiceManager.manager.players.get(d.guild?.id);
   if (!player)
     return d.aoiError.fnError(
       d,

@@ -27,7 +27,7 @@ module.exports = async (d) => {
     );
 
   try {
-    await d.client.voiceManager.joinVc({
+    await d.client.voiceManager.manager.joinVc({
       voiceChannel: vc,
       textChannel: d.channel,
       selfMute: selfMute === "yes",
