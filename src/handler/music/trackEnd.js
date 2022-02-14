@@ -2,6 +2,17 @@ const { AoiError } = require("../../index.js");
 const Interpreter = require("../../interpreter.js");
 
 module.exports = async (track, Channel, client, voice) => {
+  if (voice.pruneMusic) {
+    const msgId = voice.prunes.get(Channel.id);
+    console.log({ msgId });
+    if (!msgId) {
+    } else {
+      const msg = await Channel.messages.fetch(msgId).catch((_) => undefined);
+      console.log({ msg });
+      if (!msg) {
+      } else msg.delete();
+    }
+  }
   const cmds = voice.cmd.trackEnd.allValues();
   for (const cmd of cmds) {
     const id = cmd.channel.includes("$")
@@ -47,15 +58,5 @@ module.exports = async (track, Channel, client, voice) => {
       },
       channel,
     );
-  }
-
-  if (voice.pruneMusic) {
-    const msgId = voice.prunes.get(Channel.id);
-    if (!msgId) {
-    } else {
-      const msg = Channel.messages.fetch(msgId).catch((_) => undefined);
-      if (!msg) {
-      } else msg.delete();
-    }
   }
 };
