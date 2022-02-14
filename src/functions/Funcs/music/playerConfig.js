@@ -4,7 +4,6 @@ module.exports = async (d) => {
   const data = d.util.openFunc(d);
 
   const [
-    leaveWhenVCEmpty = "no",
     leaveWhenDone = "no",
     leaveWhenDoneAfter = 60000,
   ] = data.inside.splits;
@@ -20,7 +19,6 @@ module.exports = async (d) => {
       {},
       "Bot Isn't Connected to Voice/Stage",
     );
-  player.options.leaveWhenVCEmpty = leaveWhenVCEmpty === "yes";
   player.options.leaveAfter = {
     enabled: leaveWhenDone === "yes",
     time: Time.parse(leaveWhenDoneAfter)?.ms,
