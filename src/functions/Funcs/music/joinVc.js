@@ -3,7 +3,7 @@ module.exports = async (d) => {
 
   const [
     voiceId = d.member.voice?.channelId,
-    selfMute = "yes",
+    selfMute = "no",
     selfDeaf = "yes",
     debug = "no",
   ] = data.inside.splits;
