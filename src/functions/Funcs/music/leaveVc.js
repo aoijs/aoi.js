@@ -1,21 +1,25 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const { code } = d.util.openFunc(d);
 
-  const [channelId = d.member?.voice?.channelId] = data.inside.splits;
+  const state = d.client.voiceManager?.manager.players.get(d.guild.id);
 
-  const player = d.client.voiceManager.manager.players.get(d.guild?.id);
-
-  if (!player)
+  if (!state)
     return d.aoiError.fnError(
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      `Bot is not in any voice channel`,
     );
-
-  player.leaveVc();
+  const msgId = d.client.voiceManager.prunes.get(state.textChannel.id);
+  if (msgId) {
+    const msg = await state.textChannel.messages
+      .fetch(msgId)
+      .catch((_) => undefined);
+    if (msg) msg.delete();
+  }
+  state.leaveVc();
 
   return {
-    code: d.util.setCode(data),
+    code: d.util.setCode({ function: d.func, code }),
   };
 };
