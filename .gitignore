@@ -6,5 +6,4 @@ database
 .idea
 /index.js
 /messages
-changelog.md
 /shard.js
