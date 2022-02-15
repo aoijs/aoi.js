@@ -6,16 +6,7 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
     //----------------------------------------//
-    let [
-        messageID,
-        filter,
-        time,
-        customIDs,
-        cmds,
-        errorMsg = {},
-        endcommand = "",
-        awaitData = "{}",
-    ] = inside.splits;
+    let [messageID,filter,time,customIDs,cmds,errorMsg = {}, endcommand = "",awaitData = "{}",] = inside.splits;
     time = Time.parse(time)?.ms;
     if (!time)
         return d.aoiError.fnError(

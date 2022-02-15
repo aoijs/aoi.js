@@ -5,16 +5,7 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [
-        channelId,
-        userFilter,
-        time,
-        replies,
-        cmds,
-        errorMsg = "",
-        data = "{}",
-        dm,
-    ] = inside.splits;
+    let [ channelId,userFilter, time,replies, cmds,errorMsg = "", data = "{}",dm,] = inside.splits;
     try {
         data = JSON.parse(data);
     } catch (e) {

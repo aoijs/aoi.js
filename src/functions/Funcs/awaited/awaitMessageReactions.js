@@ -5,16 +5,7 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [
-        channelId,
-        messageId,
-        filter,
-        time,
-        reactions,
-        commands,
-        errorMsg = "",
-        data = "",
-    ] = inside.splits;
+    let [ channelId, messageId, filter, time, reactions, commands, errorMsg = "", data = "", ] = inside.splits;
     reactions = reactions.split(",");
     const channel = await d.util.getChannel(d, channelId);
     if (!channel) d.aoiError.fnError(d, "channel", {inside});

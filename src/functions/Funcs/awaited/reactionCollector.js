@@ -4,17 +4,7 @@ module.exports = async (d) => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [
-        channelId,
-        messageId,
-        userFilters,
-        time,
-        reactions,
-        awaits,
-        removeReaction = "yes",
-        awaitData = "{}",
-        endAwait,
-    ] = data.inside.splits;
+    let [channelId,messageId,userFilters,time,reactions,awaits, removeReaction = "yes",awaitData = "{}", endAwait,] = data.inside.splits;
 
     const channel = d.util.getChannel(d, channelId);
     if (!channel)
