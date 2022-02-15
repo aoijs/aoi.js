@@ -38,7 +38,7 @@ module.exports = async (client) => {
     console.log(
         "Initialized on \x1b[36maoi.js \x1b[0m|| \x1b[32mv" +
         require("../../../package.json").version +
-        "\x1b[0m || Akarui Development ",
+        "\x1b[0m || \x1b[36maoiAkarui Development\x1b[0m",
     );
     console.log("Official Discord Server: https://discord.gg/HMUfMXDQsV");
 };

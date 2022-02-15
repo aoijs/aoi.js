@@ -15,6 +15,7 @@
 
 ## Features
 
+- Built-in support of Music Functions
 - Built-in support of multiple interactions commands
 - Built-in support of Custom Functions Integrated
 - Optimized and customizable
@@ -30,7 +31,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 npm install aoi.js
 ```
 
-## Setting up
+## Example
 
 ```js
 const aoijs = require("aoi.js")
@@ -96,14 +97,14 @@ $addButton[{index};{label};{style};{customId}_$authorId;{disabled};{emoji}]
 ### Optional packages
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
 
-## Made possible by Akarui Development
+## Akarui Development
 
   <br />
     <p>
     <a href="https://aoi.js.org/invite"><img src="https://cdn.discordapp.com/attachments/804813961190572093/909447704978001931/Akarui_Development_Banner.png" alt="akarui" /></a>
   </p>
 
-A team managed by [Leref](https://leref.ga/) that oriented by NPM Packages Support by the Team.
+Akarui Development - A Development Team with experienced Developers, created by [Leref](https://leref.ga) creating easy and simple packages
 
 ## Links
 - [Website](https://aoi.js.org)
