@@ -20,7 +20,6 @@ class Time {
     const date = (ms) => {
       const res = Math.trunc(Math.abs(time) / ms);
       time -= res * ms;
-              console.log({ time,res,ms,mul:res*ms });
       return res;
     };
     const data = {
