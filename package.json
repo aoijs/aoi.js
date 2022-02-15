@@ -46,7 +46,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "dbdjs.db": "^2.0.2",
-    "discord.js": "^13.5.1",
+    "discord.js": "^13.6.0",
     "leref.ts": "^1.1.1"
   },
   "devDependencies": {

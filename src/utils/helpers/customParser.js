@@ -128,7 +128,7 @@ class Time {
       });
       const data = [...Hash.values()].sort(compare);
 
-      const ms = data.map((x) => x.ms).reduce((a, b) => a||0 + b||0);
+      const ms = data.map((x) => x.ms).reduce((a, b) => a + b);
       const format = data
         .filter((x) => x.format)
         .map((x) => x.format)
@@ -148,12 +148,13 @@ class Time {
     let res = [];
     let i = 0;
     const a = [3600, 60, 60];
-    while (i < 3) {
+    while (i < 2) {
       const num = Math.trunc(seconds / a[i]).toString();
       res.push(num.length === 1 ? `0${num}` : num);
       seconds = seconds % a[i];
       i++;
     }
+    res.push(seconds.toString().length === 1 ? `0${seconds}` : seconds)
     return res.join(":");
   }
 }

@@ -76,6 +76,7 @@ class Util {
     }
 
     static setCode(options = {}, esacpe = true) {
+        options.result = typeof options.result === "object" ? JSON.stringify(options.result,null,2) : options.result;
         return options.code.replaceLast(
             options.inside
                 ? `${options.function}${options.inside}`
