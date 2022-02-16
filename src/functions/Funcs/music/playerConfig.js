@@ -6,6 +6,7 @@ module.exports = async (d) => {
   const [
     leaveWhenDone = "no",
     leaveWhenDoneAfter = 60000,
+    seekWhenFilter = "no",
   ] = data.inside.splits;
 
   if (!d.client.voiceManager)
@@ -19,11 +20,14 @@ module.exports = async (d) => {
       {},
       "Bot Isn't Connected to Voice/Stage",
     );
-  player.options.leaveAfter = {
+  d.client.voiceManager.manager.players.get(d.guild?.id).options.leaveAfter = {
     enabled: leaveWhenDone === "yes",
     time: Time.parse(leaveWhenDoneAfter)?.ms,
   };
-
+  d.client.voiceManager.manager.players.get(
+    d.guild?.id,
+  ).options.seekWhenFilter = seekWhenFilter === "yes";
+  
   return {
     code: d.util.setCode(data),
   };
