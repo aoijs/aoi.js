@@ -4,13 +4,13 @@ const Interpreter = require("../../interpreter.js");
 module.exports = async (track, Channel, client, voice) => {
   if (voice.pruneMusic) {
     const msgId = voice.prunes.get(Channel.id);
-    console.log({ msgId });
+    //console.log({ msgId });
     if (!msgId) {
     } else {
       const msg = await Channel.messages.fetch(msgId).catch((_) => undefined);
-      console.log({ msg });
+      //console.log({ msg });
       if (!msg) {
-      } else msg.delete();
+      } else msg.delete().catch((e) => undefined);
     }
   }
   const cmds = voice.cmd.trackEnd.allValues();
