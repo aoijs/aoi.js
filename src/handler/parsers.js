@@ -196,13 +196,7 @@ const ComponentParser = async (msg, client) => {
           const label = opt.shift();
           const value = opt.shift();
           const desc = opt.shift();
-          const def =
-            opt
-              .shift()
-              ?.replace("true", true)
-              ?.replace("false", false)
-              ?.replace("yes", true)
-              ?.replace("no", false) || false;
+          const def = opt.shift() === "yes";
           const emoji = opt.length
             ? (opt || "").join(":").trim().startsWith("<")
               ? client.emojis.cache.find((x) => x.toString() === opt.join(":"))
