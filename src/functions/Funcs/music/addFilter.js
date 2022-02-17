@@ -18,7 +18,6 @@ const customFilters = {
       aresample: 48000,
     };
   },
-  
 };
 
 module.exports = async (d) => {
@@ -64,7 +63,11 @@ module.exports = async (d) => {
       "Client Is Not Connected To Voice/Stage.",
     );
 
-  data.result = await player.filterManager.addFilters(filter);
+  data.result = JSON.stringify(
+    await player.filterManager.addFilters(filter),
+    null,
+    2,
+  );
 
   return {
     code: d.util.setCode(data),

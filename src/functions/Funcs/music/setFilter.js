@@ -34,7 +34,11 @@ module.exports = async (d) => {
       "Client Is Not Connected To Voice/Stage.",
     );
 
-  data.result = await player.filterManager.setFilters(filter);
+  data.result = JSON.stringify(
+    await player.filterManager.setFilters(filter),
+    bull,
+    2,
+  );
 
   return {
     code: d.util.setCode(data),
