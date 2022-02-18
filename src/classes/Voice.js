@@ -4,7 +4,7 @@ try {
   const { CommandManager } = require("./Commands.js");
 
   class Voice {
-    constructor(client, config,pruneMusic) {
+    constructor(client, config, pruneMusic) {
       this.manager = new Manager(config);
       this.functionManager = client.functionManager;
       this.client = client;
@@ -110,13 +110,21 @@ try {
       );
     }
     onTrackPause() {
-      this.manager.on(PlayerEvents.TRACK_PAUSE, async () =>
-        require("../handler/music/trackPause.js")(this.client, this),
+      this.manager.on(PlayerEvents.TRACK_PAUSE, async (textChannel) =>
+        require("../handler/music/trackPause.js")(
+          textChannel,
+          this.client,
+          this,
+        ),
       );
     }
     onTrackResume() {
-      this.manager.on(PlayerEvents.TRACK_RESUME, async () =>
-        require("../handler/music/trackResume.js")(this.client, this),
+      this.manager.on(PlayerEvents.TRACK_RESUME, async (textChannel) =>
+        require("../handler/music/trackResume.js")(
+          textChannel,
+          this.client,
+          this,
+        ),
       );
     }
   }
