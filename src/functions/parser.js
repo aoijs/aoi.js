@@ -17,23 +17,24 @@ fs.readdirSync(__dirname + "/Funcs").map((x) => {
   for (const file of filelist) {
     const code = fs.readFileSync(`${__dirname}/Funcs/${x}/${file}`).toString();
     const codeLines = code.split("\n");
-    const lines = codeLines[codeLines.findIndex((z) => z.includes("inside.splits"))];
+    const lines =
+      codeLines[codeLines.findIndex((z) => z.includes("inside.splits"))];
     if (lines?.includes("const") || lines?.includes("let")) {
       const res = lines.split("=");
       res.pop();
       grp.set(
-        `$${file.replace(".js", "")}`,
+        `$${file.replace(".js", "").toLowerCase()}`,
         res.join("=").replace("let", "").replace("const", "").trim(),
       );
     } else if (!lines) {
-      grp.set(`$${file.replace(".js", "")}`, "usage not found");
+      grp.set(`$${file.replace(".js", "").toLowerCase()}`, "usage not found");
     } else {
       const usagepart =
         codeLines[codeLines.findIndex((z) => z.includes("inside.splits")) - 1];
       const res = usagepart.split("=");
       res.pop();
       grp.set(
-        `$${file.replace(".js", "")}`,
+        `$${file.replace(".js", "").toLowerCase()}`,
         res.join("=").replace("let", "").replace("const", "").trim(),
       );
     }

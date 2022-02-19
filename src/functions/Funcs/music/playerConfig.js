@@ -3,11 +3,7 @@ const { Time } = require("../../../utils/helpers/customParser.js");
 module.exports = async (d) => {
   const data = d.util.openFunc(d);
 
-  const [
-    leaveWhenDone = "no",
-    leaveWhenDoneAfter = 60000,
-    seekWhenFilter = "no",
-  ] = data.inside.splits;
+  const [leaveWhenDone = "no",leaveWhenDoneAfter = 60000,seekWhenFilter = "no",] = data.inside.splits;
 
   if (!d.client.voiceManager)
     return d.aoiError.fnError(d, "custom", {}, "Voice Class Not Initialized");
