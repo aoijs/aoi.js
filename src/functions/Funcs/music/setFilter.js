@@ -36,7 +36,7 @@ module.exports = async (d) => {
 
   data.result = JSON.stringify(
     await player.filterManager.setFilters(filter),
-    bull,
+    null,
     2,
   );
 
