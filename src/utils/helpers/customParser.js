@@ -150,11 +150,14 @@ class Time {
     const a = [3600, 60, 60];
     while (i < 2) {
       const num = Math.trunc(seconds / a[i]).toString();
-      res.push(num.length === 1 ? `0${num}` : num);
+      if (num == 0 && i == 0) {
+      } else {
+        res.push(num.length === 1 ? `0${num}` : num);
+      }
       seconds = seconds % a[i];
       i++;
     }
-    res.push(seconds.toString().length === 1 ? `0${seconds}` : seconds)
+    res.push(seconds.toString().length === 1 ? `0${seconds}` : seconds);
     return res.join(":");
   }
 }

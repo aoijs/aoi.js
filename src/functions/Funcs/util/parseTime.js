@@ -4,7 +4,7 @@ module.exports = d => {
     const data = d.util.openFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [time, type = 'date'] = data.inside.splits;
+    let [time] = data.inside.splits;
 
     time = isNaN(time) ? time : Number(time);
 
