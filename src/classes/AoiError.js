@@ -82,17 +82,23 @@ class AoiError {
     extraOptions = {},
     d,
   ) {
-    options.content = options.content?.toString()?.trim() || " ";
-    if (options.embeds && typeof options.embeds === "string") {
-      options.embeds = await EmbedParser(options.embeds);
+    if (typeof options === "object") {
+      options.content = options.content?.toString()?.trim() || " ";
+      if (options.embeds && typeof options.embeds === "string") {
+        options.embeds = await EmbedParser(options.embeds);
+      }
+      if (options.files && typeof options.files === "string") {
+        options.files = FileParser(options.files);
+      }
+      if (options.components && typeof options.components === "string") {
+        options.components = await ComponentParser(options.components, client);
+      }
+    } else {
+      options = {
+        content: options?.toString()?.trim() === "" ? " " : options?.toString(),
+      };
     }
-    if (options.files && typeof options.files === "string") {
-      options.files = FileParser(options.files);
-    }
-    if (options.components && typeof options.components === "string") {
-      options.components = await ComponentParser(options.components, client);
-    }
-
+    console.log({options})
     let msg;
     if (extraOptions.interaction) {
       if (
