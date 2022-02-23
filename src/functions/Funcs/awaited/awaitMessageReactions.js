@@ -51,7 +51,7 @@ module.exports = async (d) => {
     m.awaitReactions({filter, time, max: 1})
         .then(async (collected) => {
             collected = collected.first();
-            console.log({collected})
+            //console.log({collected})
             const index = reactions.findIndex(
                 (r) =>
                     reactions.includes(collected.emoji.toString()) ||

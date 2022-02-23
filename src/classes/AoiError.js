@@ -98,7 +98,7 @@ class AoiError {
         content: options?.toString()?.trim() === "" ? " " : options?.toString(),
       };
     }
-    console.log({options})
+    //console.log({options})
     let msg;
     if (extraOptions.interaction) {
       if (
