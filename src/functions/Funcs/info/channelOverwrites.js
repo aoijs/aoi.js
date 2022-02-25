@@ -11,6 +11,6 @@ module.exports = async d => {
     const result = overwrites.map(x => response.replaceAll("{mention}", x.type === "role" ? `<@&${x.id}>` : `<@${x.id}>`).replaceAll("{type}", x.type).replaceAll("{allow}", x.allow.toArray().join(" , ")).replaceAll("{deny}", x.deny.toArray().join(" , "))).join(sep);
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result: channel.name})
+        code: d.util.setCode({function: d.func, code, inside, result})
     }
 }
