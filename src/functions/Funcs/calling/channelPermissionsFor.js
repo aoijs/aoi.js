@@ -8,7 +8,7 @@ module.exports = async (d) => {
   const channel = await d.util.getChannel(d, channelId);
   if (!channel) return d.aoiError.fnError(d, "channel", { inside });
 
-  const result = channel.permissionFor(uorrId)?.toArray().join(sep);
+  const result = channel.permissionsFor(uorrId)?.toArray().join(sep);
 
   return {
     code: d.util.setCode({ function: d.func, code, inside, result }),
