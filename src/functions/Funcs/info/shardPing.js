@@ -1,5 +1,5 @@
 module.exports = d => {
-    const data = d.util.openFunc(data);
+    const data = d.util.openFunc(d);
 
     const [shardId = 0] = data.inside.splits;
 
