@@ -1,5 +1,6 @@
 const Constants = require("../utils/Constants.js");
 const Discord = require("discord.js");
+const { FileParser } = require("../handler/parsers.js");
 
 class Util {
   static constants = Constants;
@@ -137,18 +138,18 @@ class Util {
         );
       }
       if (
+        error.files.includes("{attachment") ||
+        error.files.includes("{file")
+      ) {
+        error.files = parsers.FileParser(error.files);
+      }
+      if (
         typeof error.options === "string" &&
         ["{reactions:", "{edit:", "{deletecommand:", "{delete:"].some((x) =>
           error.options?.includes(x),
         )
       ) {
         error.options = await parsers.OptionParser(error.options || "", d);
-      }
-      if (
-        error.embeds?.includes("{attachment:") ||
-        error.embeds?.includes("{file:")
-      ) {
-        error.files = await parsers.FileParser(error.files || "");
       }
     } catch (e) {
       error = await parsers.ErrorHandler(d, error, true);
