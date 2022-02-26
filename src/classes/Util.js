@@ -124,10 +124,11 @@ class Util {
     };
   }
 
-  static async errorParser(error, d) {
+  static async errorParser(errorM, d) {
+    let error;
     const parsers = require("../handler/parsers.js");
     try {
-      error = JSON.parse(error);
+      error = JSON.parse(errorM);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
       }
@@ -152,7 +153,7 @@ class Util {
         error.options = await parsers.OptionParser(error.options || "", d);
       }
     } catch (e) {
-      error = await parsers.ErrorHandler(d, error, true);
+      error = await parsers.ErrorHandler(d, errorM, true);
     }
     return error;
   }
