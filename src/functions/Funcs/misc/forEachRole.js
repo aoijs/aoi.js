@@ -10,7 +10,7 @@ module.exports = async (d) => {
     const endCmd = cmds.pop();
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside:data.inside});
 
     try {
         awaitData = JSON.parse(awaitData);
