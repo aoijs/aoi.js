@@ -66,7 +66,7 @@ try {
     }
     onAudioError() {
       this.manager.on(PlayerEvents.AUDIO_ERROR, async (error, textChannel) =>
-        require("../handler/music/events/audioError.js")(
+        require("../handler/music/audioError.js")(
           error,
           textChannel,
           this.client,
