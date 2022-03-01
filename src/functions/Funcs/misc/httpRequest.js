@@ -21,11 +21,12 @@ module.exports = async d => {
 
     const {data: res} = await axios({
         method,
-        url,
+        url: url.addBrackets(),
         headers,
         data:body,
         responseType: 'text'
     }).catch(async e => {
+        console.error(e)
         if (error === "$default" || !error) {
             return d.aoiError.makeMessageError(d.client, d.channel, e, {}, d)
         } else {
