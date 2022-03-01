@@ -80,7 +80,6 @@ module.exports = async (message, client, db) => {
       )
       ?.sort((a, b) => a.name.length - b.name.length)
       .reverse()[0];
-    console.log({ cmd });
     if (!cmd) break;
     const cmdName =
       msg.toLowerCase().startsWith(cmd.name.toLowerCase()) &&
