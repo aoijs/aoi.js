@@ -1,6 +1,6 @@
 const Constants = require("../utils/Constants.js");
 const Discord = require("discord.js");
-const { FileParser } = require("../handler/parsers.js");
+
 
 class Util {
   static constants = Constants;
