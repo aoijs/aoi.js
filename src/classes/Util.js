@@ -139,8 +139,8 @@ class Util {
         );
       }
       if (
-        error.files.includes("{attachment") ||
-        error.files.includes("{file")
+        error.files?.includes("{attachment") ||
+        error.files?.includes("{file")
       ) {
         error.files = parsers.FileParser(error.files);
       }
