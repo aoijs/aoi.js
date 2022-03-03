@@ -7,7 +7,7 @@ module.exports = async (d) => {
     const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.)/g;
 
     try {
-        const operation = data.inside.inside.match(OPERATORS).join("");
+        const operation = data.inside.inside.addBrackets().match(OPERATORS).join("");
 
         if (operation.replace(OPERATORS, "").trim().length)
             return d.aoiError.fnError(
