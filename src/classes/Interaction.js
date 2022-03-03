@@ -9,7 +9,6 @@ class Interaction extends EventEmitter {
 
     resolve(data) {
         data.author = data.user;
-        data.createdTimestamp = Date.now();
     }
 }
 
