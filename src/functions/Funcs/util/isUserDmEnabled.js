@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const [userId = d.author.id] = data.inside.splits;
 
     const user = await d.util.getUser(d, userId);
-    if (!user) return d.util.aoiError.fnError(d, "user", {inside: data.inside});
+    if (!user) return d.aoiError.fnError(d, "user", {inside: data.inside});
 
     data.result = await user.send(" ").catch(err => err.code);
 
