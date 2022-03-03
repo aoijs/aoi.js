@@ -20,8 +20,7 @@ module.exports = async (d) => {
     );
 
   const upms = channel.permissionsFor(roleoruserId).toArray();
-
-  data.result = upms.includes(Perms.admin) ? true : upms && pms.every((p) => upms.has(p));
+  data.result = upms.includes(Perms.admin) ? true : upms && pms.every((p) => upms.includes(p));
   return {
     code: d.util.setCode(data),
   };
