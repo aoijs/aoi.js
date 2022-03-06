@@ -405,10 +405,10 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         let to = inside.join(":");
         const text = inside.shift().trim();
         const url = inside.join(":").trim();
-        embed.setAuthor(
-          text.addBrackets(),
-          typeof url === "string" ? url.addBrackets() : undefined,
-        );
+        embed.setAuthor({
+          name: text.addBrackets(),
+          iconURL: typeof url === "string" ? url.addBrackets() : undefined,
+        });
         errorMessages = errorMessages.replace(`{author:${to}}`, "");
       }
       if (errorMessages.includes("{authorURL:")) {
