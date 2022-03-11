@@ -57,8 +57,8 @@ class LoadCommands {
         try {
             if (await fs.promises.stat(path).then((f) => !f.isDirectory()))
                 throw new Error("Error!");
-        } catch {
-            throw new TypeError("Path is not a valid directory!");
+        } catch(e) {
+            throw new TypeError("Path is not a valid directory! ErrorMessage: "+e);
         }
 
         const index = this.paths.findIndex((d) => d.path === path);
