@@ -1,7 +1,6 @@
 const Constants = require("../utils/Constants.js");
 const Discord = require("discord.js");
 
-
 class Util {
   static constants = Constants;
 
@@ -128,6 +127,11 @@ class Util {
     let error;
     const parsers = require("../handler/parsers.js");
     try {
+      errorM = errorM
+        .replaceAll("\n", "\\n")
+        .replaceAll('{\\n"', '{\n"')
+        .replaceAll('"\\n}', '"\n}')
+        .replaceAll(",\\n", ",\n");
       error = JSON.parse(errorM);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
