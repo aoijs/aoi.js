@@ -65,14 +65,16 @@ module.exports = async (d) => {
         while (u >= 0) {
             const cmd = cmds[u];
             d.interpreter(
-                d.client,
-                loopData,
-                d.args,
-                cmd,
-                d.client.db,
-                false,
-                undefined,
+              d.client,
+              loopData,
+              d.args,
+              cmd,
+              d.client.db,
+              false,
+              undefined,
+              {
                 awaitData,
+              },
             );
 
             u--;
@@ -96,7 +98,9 @@ module.exports = async (d) => {
             d.client.db,
             false,
             undefined,
-            awaitData,
+            {
+                awaitData,
+            }
         );
     }
 
