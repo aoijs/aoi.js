@@ -122,7 +122,7 @@ class AoiError {
           options.content === " " &&
           (options.embeds?.length ?? 0) === 0 &&
           (options.files?.length ??0) === 0 &&
-          (optoins.stickers?.length ?? 0) === 0
+          (options.stickers?.length ?? 0) === 0
         )
           return;
         msg = await channel.send(options);
