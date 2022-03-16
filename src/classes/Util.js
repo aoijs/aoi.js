@@ -127,12 +127,12 @@ class Util {
     let error;
     const parsers = require("../handler/parsers.js");
     try {
-      errorM = errorM
+      const e = errorM
         .replaceAll("\n", "\\n")
         .replaceAll('{\\n"', '{\n"')
         .replaceAll('"\\n}', '"\n}')
         .replaceAll(",\\n", ",\n");
-      error = JSON.parse(errorM);
+      error = JSON.parse(e);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
       }
