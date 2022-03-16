@@ -5,6 +5,7 @@ module.exports = async (d) => {
     voiceId = d.member.voice?.channelId,
     selfMute = "no",
     selfDeaf = "yes",
+    speaker = "yes",
     debug = "no",
   ] = data.inside.splits;
 
@@ -34,6 +35,9 @@ module.exports = async (d) => {
       selfDeaf: selfDeaf === "yes",
       debug: debug === "yes",
     });
+    if(speaker === "yes" && vc.type === d.util.channelTypes.Stage) {
+    d.guild.me.voice.setSuppressed(false);
+    }
   } catch (e) {
     d.aoiError.fnError(d, "custom", {}, "Failed To Join Vc With Reason: " + e);
   }
