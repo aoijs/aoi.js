@@ -5,7 +5,7 @@ module.exports = async (d) => {
     if (err) return d.error(err);
     let [...reactions] = inside.splits;
 
-    reactions = reactions.reverse();
+    reactions = reactions.map(x => x.addBrackets()).reverse();
 
     return {
         code: d.util.setCode({function: d.func, code, inside, result: ""}),
