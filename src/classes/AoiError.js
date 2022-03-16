@@ -188,6 +188,11 @@ class AoiError {
           data.inside || ""
         } (line : ${d.funcLine})\``;
         break;
+      case "member":
+        ans = `\`AoiError: ${d.func}: Invalid Member ID Provided In ${
+          data.inside || ""
+        } (line : ${d.funcLine})\``;
+        break;
       case "role":
         ans = `\`AoiError: ${d.func}: Invalid Role Provided In ${
           data.inside || ""
