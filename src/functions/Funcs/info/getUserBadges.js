@@ -7,7 +7,7 @@ module.exports = async d => {
 
     if (!user) return d.aoiError.fnError(d, 'user', {inside: data.inside});
 
-    data.result = user.flags.toArray().join(sep) || 'none';
+    data.result = user.flags?.toArray().join(sep) || 'none';
 
     return {
         code: d.util.setCode(data)
