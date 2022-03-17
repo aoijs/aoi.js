@@ -39,7 +39,7 @@ class BaseClient extends Discord.Client {
      
     this.variableManager = new VariableManager(this) 
      
-     if( ["default","dbdjs.db","dbdjs.db-sql","dbdjs.mongo"].includes(options?.database?.type) ){
+     if( ["default","dbdjs.db","dbdjs.db-sql","dbdjs.mongo", "aoi.fb"].includes(options?.database?.type) ){
 this.db = new DbdjsApi(options?.database?.db||dbddb,{
 path:options?.database?.path||"./database/",
 tables: options?.database?.tables||["main"]
