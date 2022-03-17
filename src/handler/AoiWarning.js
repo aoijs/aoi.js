@@ -9,8 +9,7 @@ module.exports = async () => {
             console.warn(
                 "\x1b[31maoi.js warning: \u001b[33mv" +
                 res.data.version +
-                " is available to install.\u001b[0m",
-            )
+                " is available to install.\u001b[0m" + " (npm i aoi.js@" + res.data.version + ")")
         }
     } catch {
     }
