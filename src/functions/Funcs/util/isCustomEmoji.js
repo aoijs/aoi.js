@@ -14,7 +14,7 @@ module.exports = async (d) => {
     guildId === "global" ? d.client : await d.util.getGuild(d, guildId);
   if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-  let isemoji = await guild.emojis.fetch(emoji).catch((e) => undefined);
+  let isemoji = await guild.emojis.cache.find(x => x.toString() === emoji).catch((e) => undefined);
 
   data.result = isemoji ? true : false;
 
