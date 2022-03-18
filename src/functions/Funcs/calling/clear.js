@@ -12,9 +12,9 @@ module.exports = async d => {
     const channel = await d.util.getChannel(d, channelId);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
-    let messages = await channel.messages.fetch({limit: amt, cache: false}).catch(err => {
+    let messages = filter === "everyone" ?  await channel.messages.fetch({limit: amt, cache: false}).catch(err => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch Messages With Reason: " + err);
-    });
+    }) : channel.messages.cache;
 
     messages = messages.filter(x => (filter === "everyone" ? true : (filter === "unPins" ? !x.pinned : filter === 'bot' ? x.author.bot : x.author.id === filter)));
 
