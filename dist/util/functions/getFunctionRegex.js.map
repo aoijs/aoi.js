@@ -1,0 +1,1 @@
+{"version":3,"file":"getFunctionRegex.js","sourceRoot":"","sources":["../../../src/util/functions/getFunctionRegex.ts"],"names":[],"mappings":";;AAEA,mBAAyB,EAAgB;IACrC,IAAI,CAAC,EAAE,CAAC,QAAQ,EAAE;QACd,OAAO,MAAM,EAAE,CAAC,IAAI,GAAG,CAAA;KAC1B;SAAM;QACH,OAAO,MAAM,EAAE,CAAC,IAAI,gBAAgB,EAAE,CAAC,QAAQ,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,EAAE,EAAE,CAAA;KAC/D;AACL,CAAC;AAND,4BAMC"}

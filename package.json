@@ -1,0 +1,43 @@
+{
+  "name": "aoi.js",
+  "version": "6.0.0-dev",
+  "description": "The most powerful string package to create a simple and fast Discord Bot.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.13.0-dev.1647259738.2297c2b",
+    "aoi-compiler": "github:AkaruiDevelopment/compiler",
+    "axios": "^0.24.0",
+    "discord.js": "^14.0.0-dev.1647259751.2297c2b",
+    "ms-utility": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkaruiDevelopment/aoi.js-source.git"
+  },
+  "engines": {
+    "node": ">=16.9.0"
+  },
+  "keywords": [
+    "aoi.js",
+    "dbd.ts",
+    "aoi.js-next",
+    "dbd.ts-next",
+    "aoijs",
+    "dbdts",
+    "dbd.js",
+    "dbdjs",
+    "discord",
+    "functions"
+  ],
+  "author": "leref",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AkaruiDevelopment/aoi.js-source/issues"
+  },
+  "homepage": "https://github.com/AkaruiDevelopment/aoi.js-source#readme"
+}

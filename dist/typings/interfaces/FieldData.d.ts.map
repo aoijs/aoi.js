@@ -1,0 +1,1 @@
+{"version":3,"file":"FieldData.d.ts","sourceRoot":"","sources":["../../../src/typings/interfaces/FieldData.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,QAAQ,EAAC,MAAM,2BAA2B,CAAA;AAClD,OAAO,YAAY,MAAM,mCAAmC,CAAA;AAE5D,MAAM,WAAW,SAAS;IACtB,KAAK,EAAE,MAAM,CAAA;IACb,SAAS,EAAE,QAAQ,EAAE,CAAA;IACrB,QAAQ,EAAE,UAAU,CAAC,OAAO,YAAY,CAAC,CAAA;CAC5C"}

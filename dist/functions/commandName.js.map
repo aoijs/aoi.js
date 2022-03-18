@@ -1,0 +1,1 @@
+{"version":3,"file":"commandName.js","sourceRoot":"","sources":["../../src/functions/commandName.ts"],"names":[],"mappings":";;;;;AAAA,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,cAAc;IACpB,WAAW,EAAE,oCAAoC;IACjD,OAAO,EAAE,QAAQ;IACjB,QAAQ,EAAE,IAAI;IACd,OAAO,EAAE;QACL,OAAO,IAAI,CAAC,EAAE,CACV,IAAI,CAAC,OAAO,CAAC,eAAe,EAAE,EAAE,WAAW,CAC9C,CAAA;IACL,CAAC;CACJ,CAAC,CAAA"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"clientToken.js","sourceRoot":"","sources":["../../src/functions/clientToken.ts"],"names":[],"mappings":";;;;;AAAA,iDAA4C;AAC5C,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,cAAc;IACpB,WAAW,EAAE,2BAA2B;IACxC,OAAO,EAAE,QAAQ;IACjB,OAAO,EAAE;QACL,OAAO,eAAM,CAAC,MAAM,CAChB,IAAI,CAAC,GAAG,CAAC,MAAM,CAAC,KAAK,CACxB,CAAA;IACL,CAAC;CACJ,CAAC,CAAA"}

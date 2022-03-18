@@ -1,0 +1,1 @@
+{"version":3,"file":"AoiError.d.ts","sourceRoot":"","sources":["../../src/core/AoiError.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,aAAa,EAAC,MAAM,gCAAgC,CAAC;AAE7D,qBAAa,QAAS,SAAQ,KAAK;;gBAE3B,GAAG,EAAE,aAAa,GAAG,MAAM,OAAO,aAAa,EAC/C,GAAG,MAAM,EAAE,OAAO,EAAE;CAoB3B"}

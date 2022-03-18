@@ -1,0 +1,22 @@
+import mod from "./index.js";
+
+export default mod;
+export const AoiClient = mod.AoiClient;
+export const AoiCommandManager = mod.AoiCommandManager;
+export const AoiError = mod.AoiError;
+export const AoiEventManager = mod.AoiEventManager;
+export const AoiEvents = mod.AoiEvents;
+export const AoiStatusManager = mod.AoiStatusManager;
+export const Command = mod.Command;
+export const CommandType = mod.CommandType;
+export const Compiler = mod.Compiler;
+export const Container = mod.Container;
+export const Context = mod.Context;
+export const ErrorMessages = mod.ErrorMessages;
+export const Function = mod.Function;
+export const Regexes = mod.Regexes;
+export const Return = mod.Return;
+export const ReturnType = mod.ReturnType;
+export const RuntimeErrorType = mod.RuntimeErrorType;
+export const ThisArg = mod.ThisArg;
+export const version = mod.version;
