@@ -20,17 +20,17 @@ module.exports = async (d) => {
   if (!channel) return d.aoiError.fnError(d, "channel", { inside });
 
   let messages = await channel.messages
-          .fetch({ limit: amt, cache: false })
-          .catch((err) => {
-            d.aoiError.fnError(
-              d,
-              "custom",
-              {},
-              "Failed To Fetch Messages With Reason: " + err,
-            );
-          });
+    .fetch({ limit: 100, cache: false })
+    .catch((err) => {
+      d.aoiError.fnError(
+        d,
+        "custom",
+        {},
+        "Failed To Fetch Messages With Reason: " + err,
+      );
+    });
 
-  messages = messages.filter((x) =>
+  messages = [...messages.filter((x) =>
     filter === "everyone"
       ? true
       : filter === "unPins"
@@ -38,7 +38,7 @@ module.exports = async (d) => {
       : filter === "bot"
       ? x.author?.bot
       : x.author?.id === filter,
-  )
+  ).values()].slice(0,amt);
 
   let result = await channel.bulkDelete(messages, true).catch((err) => {
     d.aoiError.fnError(
