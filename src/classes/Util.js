@@ -158,7 +158,7 @@ class Util {
       }
       if (
         typeof error.options === "string" &&
-        ["{reactions:", "{edit:", "{deletecommand:", "{delete:"].some((x) =>
+        ["{reactions:", "{edit:", "{deletecommand:", "{delete:", "{interaction:"].some((x) =>
           error.options?.includes(x),
         )
       ) {
