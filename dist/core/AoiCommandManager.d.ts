@@ -11,7 +11,7 @@ export declare class AoiCommandManager extends Collection<CommandTypesString, Co
     directory: import("..").Option<string>;
     constructor(client: AoiClient);
     add<T extends CommandTypes>(type: T, data: CommandDataUnion<T>): this;
-    get client(): AoiClient;
+    get client(): AoiClient<unknown>;
     addMany<T extends CommandTypes>(type: T, ...data: CommandDataUnion<T>[]): this;
     addMany<T extends CommandTypes>(type: T, ...data: CommandDataUnion<T>[][]): this;
     private addUnknown;
@@ -21,7 +21,7 @@ export declare class AoiCommandManager extends Collection<CommandTypesString, Co
     get<T extends CommandTypes>(type: T): Collection<number, Command<T>> | undefined;
     getOrSet<T extends CommandTypes>(type: T): Collection<number, Command<T>>;
     private create;
-    private from;
+    private fromStatus;
     refresh(): boolean;
     load(directory: string): void;
 }

@@ -4,12 +4,13 @@ import { AoiOptions } from "../typings/interfaces/AoiOptions";
 import { AoiCommandManager } from "./AoiCommandManager";
 import { AoiEventManager } from "./AoiEventManager";
 import { AoiStatusManager } from "./AoiStatusManager";
-export declare class AoiClient {
+export declare class AoiClient<T = unknown> {
     #private;
     /**
      * The client managed by this Client.
      */
     client: Client<true>;
+    db: T;
     status: AoiStatusManager;
     /**
      * The commands for this Client.
@@ -29,6 +30,7 @@ export declare class AoiClient {
      * @param options The options to pass to Client.
      */
     constructor(options: AoiOptions);
+    isDatabase<T extends new (...args: any[]) => any>(instance: T): this is AoiClient<T>;
     get prefixes(): string[];
     get addRawEvent(): {
         (event: keyof import("discord.js").ClientEvents): AoiEventManager;
@@ -41,9 +43,9 @@ export declare class AoiClient {
         (...events: ("onMessage" | "onInteraction")[][]): AoiEventManager;
     };
     get addCommand(): {
-        <T extends import("..").CommandTypes>(data: import("..").CommandDataUnion<T>): AoiCommandManager;
-        <T_1 extends import("..").CommandTypes>(...data: import("..").CommandDataUnion<T_1>[]): AoiCommandManager;
-        <T_2 extends import("..").CommandTypes>(...data: import("..").CommandDataUnion<T_2>[][]): AoiCommandManager;
+        <T_1 extends import("..").CommandTypes>(data: import("..").CommandDataUnion<T_1>): AoiCommandManager;
+        <T_2 extends import("..").CommandTypes>(...data: import("..").CommandDataUnion<T_2>[]): AoiCommandManager;
+        <T_3 extends import("..").CommandTypes>(...data: import("..").CommandDataUnion<T_3>[][]): AoiCommandManager;
     };
     get addStatus(): {
         (status: import("..").RawStatusData): AoiStatusManager;

@@ -4,6 +4,7 @@ export declare class AoiStatusManager {
     #private;
     constructor(bot: AoiClient);
     private start;
+    load(directory: string): this;
     add(status: RawStatusData): this;
     add(status: RawStatusData[]): this;
     add(...status: RawStatusData[][]): this;

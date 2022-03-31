@@ -39,7 +39,8 @@ class AoiCommandManager extends discord_js_1.Collection {
         return this.get(this.#getStringType(type))?.size ?? 0;
     }
     #create(data, type) {
-        return new Command_1.Command(this.#validateType((0, cast_1.default)(data.type ?? type)), this, data);
+        type = (data.type ?? type);
+        return new Command_1.Command(type, this.#validateType(type), this, data);
     }
     addMany(type, ...data) {
         for (let i = 0, len = data.length; i < len; i++) {
@@ -98,11 +99,11 @@ class AoiCommandManager extends discord_js_1.Collection {
         }
         return (0, cast_1.default)(super.get(this.#getStringType(type)));
     }
-    create(id, data) {
-        return new Command_1.Command(id, this, data);
+    create(id, type, data) {
+        return new Command_1.Command(type, id, this, data);
     }
-    from(data) {
-        return new Command_1.Command(0, this, {
+    fromStatus(data) {
+        return new Command_1.Command('unknown', 0, this, {
             name: "status",
             type: 'basicCommand',
             code: data.name

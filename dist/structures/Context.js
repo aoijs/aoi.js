@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Context = void 0;
 const discord_js_1 = require("discord.js");
-const cast_1 = __importDefault(require("../util/functions/cast"));
 const option_1 = __importDefault(require("../util/functions/option"));
 /**
  * The context stores a class from discord.js.
@@ -16,6 +15,7 @@ class Context {
     #guild = (0, option_1.default)();
     #member = (0, option_1.default)();
     #channel = (0, option_1.default)();
+    #message = (0, option_1.default)();
     constructor(data) {
         this.data = data;
     }
@@ -65,20 +65,19 @@ class Context {
         return this.isAutocompleteInteraction() ? this.data : null;
     }
     setChannel(channel) {
-        this.#channel = (0, cast_1.default)(channel);
-        return this.#channel;
+        return this.#channel = channel;
+    }
+    setMessage(m) {
+        return this.#message = m;
     }
     setGuild(guild) {
-        this.#guild = guild;
-        return this.#guild;
+        return this.#guild = guild;
     }
     setUser(user) {
-        this.#user = user;
-        return this.#user;
+        return this.#user = user;
     }
     setMember(member) {
-        this.#member = member;
-        return this.#member;
+        return this.#member = member;
     }
     /**
      * Gets the context guild, this is not guaranteed.
@@ -99,6 +98,23 @@ class Context {
             return this.setGuild(this.data);
         }
         return null;
+    }
+    getMessage() {
+        if (this.#message)
+            return this.#message;
+        if (this.isMessage()) {
+            return this.setMessage(this.data);
+        }
+        else if (this.isInteraction()) {
+            return this.setMessage(this.data.message ?? null);
+        }
+        else if (this.isReactionMessage()) {
+            return this.setMessage(this.data.message);
+        }
+        return null;
+    }
+    isReactionMessage() {
+        return this.data instanceof discord_js_1.MessageReaction;
     }
     /**
      * Gets the context guild member, if any.

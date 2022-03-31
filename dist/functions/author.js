@@ -25,15 +25,20 @@ exports.default = (0, createNativeFunction_1.default)({
         {
             name: 'iconURL',
             type: 'STRING',
-            required: true,
             description: 'the author iconURL'
         },
+        {
+            name: 'link',
+            description: 'url to use for author',
+            type: 'STRING'
+        }
     ],
     execute: async function (fn) {
-        return this.manage(await fn.resolveArray(this), async ([index, name, iconURL]) => {
+        return this.manage(await fn.resolveArray(this), async ([index, name, iconURL, url]) => {
             this.embed(index).setAuthor({
                 name,
-                iconURL
+                url: url ?? undefined,
+                iconURL: iconURL ?? undefined
             });
             return Return_1.Return.string();
         });

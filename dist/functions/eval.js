@@ -35,7 +35,7 @@ exports.default = (0, createNativeFunction_1.default)({
             try {
                 const got = await (0, interpreter_1.default)({
                     ...this.reference,
-                    command: this.bot.commands["create"](0, {
+                    command: this.bot.commands["create"](0, 'unknown', {
                         name: 'eval',
                         type: 'basicCommand',
                         code

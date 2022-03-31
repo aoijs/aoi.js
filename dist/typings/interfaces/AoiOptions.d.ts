@@ -1,5 +1,6 @@
 import { ClientOptions, GatewayIntentsString } from "discord.js";
 import { TimeUnit } from "ms-utility/dist/typings/interfaces/TimeUnit";
+import { FunctionData } from "./FunctionData";
 import { PrefixOptions } from "./PrefixOptions";
 export interface AoiOptions {
     /**
@@ -12,9 +13,9 @@ export interface AoiOptions {
      */
     insensitive?: boolean;
     /**
-     * Array of folders where plugins are located.
+     * Array of folders (or a function / array of functions) where plugins are located.
      */
-    plugins?: string[];
+    plugins?: (string | FunctionData | FunctionData[])[];
     /**
      * Intents for this bot, if no intents are given, this will default to GUILD_MESSAGES and GUILDS.
      * Note that using this property will not have any effect if ClientOptions#intents is given.

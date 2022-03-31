@@ -13,14 +13,22 @@ class Command {
     data;
     compiler;
     path = (0, option_1.default)();
-    constructor(id, manager, data, compiler) {
+    type;
+    constructor(type, id, manager, data, compiler) {
         this.#manager = manager;
         this.data = data;
+        this.type = type;
         this.id = id;
-        this.compiler = compiler ?? (0, compile_1.default)(data.code, this.#manager.client.options.insensitive);
+        this.compiler = compiler ?? (0, compile_1.default)(data.code, this.#manager.client.options.insensitive, data.name);
     }
     as() {
         return (0, cast_1.default)(this);
+    }
+    isInteractionCommand() {
+        return this.is("interactionCommand");
+    }
+    is(t) {
+        return this.type === t;
     }
     setPath(str) {
         this.path = str;

@@ -6,7 +6,7 @@ function toPlural(str, amount, replacement) {
 }
 exports.toPlural = toPlural;
 function toPluralAmount(str, amount, replacement) {
-    return amount === 1 ? `${amount} str` : `${amount} ${replacement ?? `${str}s`}`;
+    return amount === 1 ? `${amount} ${str}` : `${amount} ${replacement ?? `${str}s`}`;
 }
 exports.toPluralAmount = toPluralAmount;
 //# sourceMappingURL=toPlural.js.map

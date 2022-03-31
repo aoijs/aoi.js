@@ -87,6 +87,10 @@ class ThisArg {
         }
         throw new AoiError_1.AoiError(ErrorMessages_1.ErrorMessages.UNKNOWN_RETURN, r.type);
     }
+    setReply(type) {
+        this.container.data.replyType = type;
+        return this;
+    }
     mustReturn(r) {
         return r.isAnyError() || r.isReturnKeyword();
     }

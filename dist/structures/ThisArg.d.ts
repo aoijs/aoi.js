@@ -1,4 +1,5 @@
 import { UnsafeEmbedBuilder } from "@discordjs/builders";
+import { ReplyType } from "../typings";
 import { ReturnType as RT } from "../typings/enums/ReturnType";
 import { ThisArgData } from "../typings/interfaces/ThisArgData";
 import { Environment } from "../typings/types/Environment";
@@ -14,15 +15,16 @@ export declare class ThisArg {
     setEnvironmentValue(key: string, value: unknown): this;
     getEnvironmentValue(...args: string[]): string;
     get container(): import("./Container").Container;
-    get reference(): import("..").InterpreterData<InterpreterReturnType>;
+    get reference(): import("../typings").InterpreterData<InterpreterReturnType>;
     embed(index: number): UnsafeEmbedBuilder;
     ok(data?: Parameters<typeof Return["success"]>[0]): Return<RT.Success, unknown>;
     handleError(res: Return): Promise<null>;
-    get bot(): import("..").AoiClient;
+    get bot(): import("..").AoiClient<unknown>;
     get context(): import("./Context").Context<unknown>;
-    get command(): import("./Command").Command<import("..").CommandTypes>;
+    get command(): import("./Command").Command<import("../typings").CommandTypes>;
     get<T extends keyof ThisArgData>(key: T): ThisArgData[T];
     manage<T = unknown>(r: Return<RT, unknown>, cb: (s: T) => ReturnType<FunctionExecutor>): Promise<Return<RT, unknown>>;
+    setReply(type: ReplyType): this;
     mustReturn(r: Return): boolean;
     mustReturnPlusBreak(r: Return): boolean;
 }

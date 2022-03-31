@@ -11,9 +11,6 @@ const Function_1 = require("./Function");
 class Compiler extends aoi_compiler_1.Compiler {
     parsedFunctions = [];
     executor;
-    constructor(code) {
-        super(code);
-    }
     start() {
         super.start();
         const fns = super.getFunctions();

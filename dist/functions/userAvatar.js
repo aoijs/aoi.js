@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Return_1 = require("../structures/Return");
-const ImageFormats_1 = require("../util/constants/enums/ImageFormats");
+const ImageFormats_1 = require("../typings/enums/ImageFormats");
 const createEnum_1 = __importDefault(require("../util/functions/createEnum"));
 const createNativeFunction_1 = __importDefault(require("../util/functions/createNativeFunction"));
 exports.default = (0, createNativeFunction_1.default)({
@@ -40,7 +40,7 @@ exports.default = (0, createNativeFunction_1.default)({
             return this.manage(await fn.resolveArray(this), async ([user, size, type]) => {
                 return Return_1.Return.string(user.displayAvatarURL({
                     size: size,
-                    extension: type ?? undefined
+                    extension: type !== null ? ImageFormats_1.ImageFormats[type] : undefined
                 }));
             });
         }

@@ -8,6 +8,7 @@ const discord_js_1 = require("discord.js");
 const ms_utility_1 = __importDefault(require("ms-utility"));
 const AoiWarning_1 = __importDefault(require("../handlers/AoiWarning"));
 const DefaultReadyLogger_1 = __importDefault(require("../handlers/DefaultReadyLogger"));
+const readyCommands_1 = __importDefault(require("../handlers/readyCommands"));
 const AoiDefaultOptions_1 = require("../util/constants/AoiDefaultOptions");
 const Util_1 = require("../util/Util");
 const AoiCommandManager_1 = require("./AoiCommandManager");
@@ -20,6 +21,7 @@ class AoiClient {
      * The client managed by this Client.
      */
     client;
+    db;
     status = new AoiStatusManager_1.AoiStatusManager(this);
     /**
      * The commands for this Client.
@@ -43,8 +45,11 @@ class AoiClient {
         this.#validateOptions();
         this.client = new discord_js_1.Client(options.client);
     }
+    isDatabase(instance) {
+        return this.db instanceof instance;
+    }
     #validateOptions() {
-        if (this.options.intents && !this.options.client.intents) {
+        if (this.options.intents) {
             this.options.client.intents = this.#resolveIntents();
         }
         this.parser = new ms_utility_1.default(this.options.units);
@@ -110,11 +115,15 @@ class AoiClient {
         });
     }
     #registerReadyCommand() {
-        if (this.events.has("ready")) {
-            return;
-        }
-        this.client.once("ready", AoiWarning_1.default.bind(this));
-        this.client.once("ready", DefaultReadyLogger_1.default.bind(this));
+        this.client.once("ready", _ => {
+            (0, AoiWarning_1.default)();
+            if (this.commands.has('readyCommand')) {
+                readyCommands_1.default.call(this);
+            }
+            else {
+                DefaultReadyLogger_1.default.call(this, this.client);
+            }
+        });
     }
 }
 exports.AoiClient = AoiClient;

@@ -54,6 +54,9 @@ class Container {
                 if (this.data.replyType === 'send') {
                     this.data.replyType = 'reply';
                 }
+                if (channel.isRepliable() && channel.deferred) {
+                    this.data.replyType = 'editReply';
+                }
                 data = await channel[this.data.replyType]?.(this.#createReply()).catch(noop_1.default);
             }
         }
@@ -61,7 +64,7 @@ class Container {
             data = (0, cast_1.default)(await channel.send(this.#createReply()).catch(noop_1.default));
         }
         else if (channel instanceof discord_js_1.Message) {
-            data = (0, cast_1.default)(await channel.edit(this.#createReply()).catch(noop_1.default));
+            data = (0, cast_1.default)(await channel[this.data.replyType !== 'reply' ? 'edit' : 'reply'](this.#createReply()).catch(noop_1.default));
         }
         else if (channel instanceof discord_js_1.Channel) {
             data = (0, cast_1.default)(await channel.send(this.#createReply()).catch(noop_1.default));

@@ -220,6 +220,7 @@ class Function {
                 catch (error) {
                     return reject();
                 }
+                break;
             }
             case 'USER': {
                 if (!Regexes_1.Regexes.DISCORD_ID.test(input)) {

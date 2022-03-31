@@ -19,7 +19,17 @@ class AoiFunctionManager {
             return;
         const cwd = `${process.cwd()}`;
         const loaded = [];
-        for (const folder of plugins) {
+        for (let i = 0, len = plugins.length; i < len; i++) {
+            const plugin = plugins[i];
+            if (typeof plugin !== 'string') {
+                const arr = Array.isArray(plugin) ? plugin : [plugin];
+                for (let i = 0, len = arr.length; i < len; i++) {
+                    const plugin = arr[i];
+                    this.allFunctions.set(plugin.name, plugin);
+                    loaded.push(plugin.name);
+                }
+            }
+            const folder = plugin;
             if (!(0, fs_1.existsSync)(`${cwd}/${folder}`)) {
                 process.emitWarning(`Plugin folder ${folder} does not exist`);
                 continue;

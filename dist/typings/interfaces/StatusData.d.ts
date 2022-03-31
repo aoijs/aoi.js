@@ -12,7 +12,7 @@ export interface RawStatusData {
     /**
      * The activity type.
      */
-    type?: ActivityType;
+    type?: keyof typeof ActivityType;
     /**
      * The duration for this status.
      */

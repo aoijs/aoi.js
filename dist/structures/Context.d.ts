@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, ButtonInteraction, CacheType, Channel, CommandInteraction, ContextMenuCommandInteraction, Guild, GuildMember, Message, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
+import { AutocompleteInteraction, ButtonInteraction, CacheType, Channel, CommandInteraction, ContextMenuCommandInteraction, Guild, GuildMember, Message, MessageReaction, ModalSubmitInteraction, SelectMenuInteraction, TextBasedChannel, User } from "discord.js";
 import { Option } from "../typings/types/Option";
 /**
  * The context stores a class from discord.js.
@@ -19,6 +19,7 @@ export declare class Context<T> {
     isAutocompleteInteraction<T extends CacheType = CacheType>(): this is Context<AutocompleteInteraction<T>>;
     getAutocompleteInteraction<T extends CacheType = CacheType>(): Option<AutocompleteInteraction<T>>;
     setChannel<T extends TextBasedChannel = TextBasedChannel>(channel: unknown): Option<T>;
+    setMessage(m: Option<Message>): Option<Message>;
     setGuild(guild: Option<Guild>): Option<Guild>;
     setUser(user: Option<User>): Option<User>;
     setMember(member: Option<GuildMember>): Option<GuildMember>;
@@ -26,6 +27,8 @@ export declare class Context<T> {
      * Gets the context guild, this is not guaranteed.
      */
     getGuild(): Option<Guild>;
+    getMessage(): Option<Message>;
+    isReactionMessage(): this is Context<MessageReaction>;
     /**
      * Gets the context guild member, if any.
      */
