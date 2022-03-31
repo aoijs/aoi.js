@@ -12,7 +12,7 @@
     "@discordjs/builders": "^0.13.0-dev.1647259738.2297c2b",
     "aoi-compiler": "github:AkaruiDevelopment/compiler",
     "axios": "^0.24.0",
-    "discord.js": "^14.0.0-dev.1647259751.2297c2b",
+    "discord.js": "^14.0.0-dev.1648515273-ac4bc3a",
     "ms-utility": "^3.2.0"
   },
   "repository": {
