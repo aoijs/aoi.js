@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const createNativeFunction_1 = __importDefault(require("../util/functions/createNativeFunction"));
+const Return_1 = require("../structures/Return");
 exports.default = (0, createNativeFunction_1.default)({
     name: '$isNumber',
     description: 'validates given output as number.',
@@ -13,16 +14,16 @@ exports.default = (0, createNativeFunction_1.default)({
         {
             name: 'value',
             description: 'value to check if it is a number.',
-            type: 'NUMBER',
+            type: 'STRING',
             required: true
         }
     ],
     execute: async function (fn) {
         return this.manage(await fn.resolveArray(this), ([text]) => {
             if (!text)
-                return this.ok(false);
+                return Return_1.Return.string(false);
             const n = Number(text);
-            return this.ok(n !== n ? false : true);
+            return Return_1.Return.string(n !== n ? false : true);
         });
     }
 });

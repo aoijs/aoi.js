@@ -6,27 +6,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Return_1 = require("../structures/Return");
 const createNativeFunction_1 = __importDefault(require("../util/functions/createNativeFunction"));
 exports.default = (0, createNativeFunction_1.default)({
-    name: '$isBot',
-    description: 'checks whether an user is a bot.',
-    returns: 'BOOLEAN',
+    name: '$getCustomStatus',
+    brackets: true,
     optional: true,
-    nullable: true,
     fields: [
         {
             name: 'userID',
-            description: 'the user to check for.',
-            type: 'STRING',
+            description: 'the user to get it\'s user tag.',
+            type: 'USER',
             required: true
         }
     ],
-    brackets: true,
+    description: 'Returns the user\'s tag.',
+    returns: 'STRING',
     execute: async function (fn) {
         if (fn.hasFields()) {
-            return this.manage(await fn.resolveArray(this), async (s) => {
-                return Return_1.Return.string(s[0].bot);
+            const r = await fn.resolveArray(this);
+            return this.manage(r, (s) => {
+                return Return_1.Return.string(s[2]?.presence?.activities.join(", ") || "None");
             });
         }
-        return Return_1.Return.string(this.context.getUser()?.bot);
+        return Return_1.Return.string(this.context.getGuildMember()?.presence?.activities.join(", ") || "None");
     }
 });
-//# sourceMappingURL=isBot.js.map
+//# sourceMappingURL=getCustomStatus.js.map

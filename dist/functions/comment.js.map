@@ -1,1 +1,0 @@
-{"version":3,"file":"comment.js","sourceRoot":"","sources":["../../src/functions/comment.ts"],"names":[],"mappings":";;;;;AAAA,iDAA4C;AAC5C,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,UAAU;IAChB,QAAQ,EAAE,IAAI;IACd,WAAW,EAAE,mFAAmF;IAChG,OAAO,EAAE,QAAQ;IACjB,OAAO,EAAE;QACL,OAAO,eAAM,CAAC,MAAM,EAAE,CAAA;IAC1B,CAAC;CACJ,CAAC,CAAA"}

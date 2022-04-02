@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Return_1 = require("../structures/Return");
 const createNativeFunction_1 = __importDefault(require("../util/functions/createNativeFunction"));
 exports.default = (0, createNativeFunction_1.default)({
-    name: '$comment',
-    brackets: true,
-    description: 'This will ignore the code inside the field. (Used to make a comment in your code)',
+    name: '$nodeVersion',
+    description: 'Returns the OS Node Version. (installed)',
     returns: 'STRING',
     execute: function () {
-        return Return_1.Return.string();
+        const NodeVersion = process.version;
+        return Return_1.Return.string(NodeVersion);
     }
 });
-//# sourceMappingURL=comment.js.map
+//# sourceMappingURL=nodeVersion.js.map
