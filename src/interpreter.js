@@ -364,12 +364,14 @@ const Interpreter = async (
             member: member,
             mentions: mentions,
             unpack() {
+              console.warn("Calling a deprecated method (unpack)"); 
               const last = code.split(func.replace("[", "")).length - 1;
               const sliced = code.split(func.replace("[", ""))[last];
 
               return sliced.after();
             },
             inside(unpacked) {
+              console.warn("Calling a deprecated method (inside)"); 
               if (typeof unpacked.inside !== "string") {
                 if (suppressErrors) return suppressErrors;
                 else {
