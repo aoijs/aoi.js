@@ -219,7 +219,7 @@ const Interpreter = async (
                 else {
                   return client.options.suppressAllErrors
                     ? client.options.errorMessage
-                    : ` \`${func}: Invalid Usage (line : ${funcLine})\``;
+                    : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
                 }
               } else return false;
             },
@@ -377,7 +377,7 @@ const Interpreter = async (
                 else {
                   return client.options.suppressAllErrors
                     ? client.options.errorMessage
-                    : ` \`${func}: Invalid Usage (line : ${funcLine})\``;
+                    : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
                 }
               } else return false;
             },
@@ -546,7 +546,7 @@ const Interpreter = async (
     code = code.trim();
     if (embeds?.some((x) => x === undefined)) {
       error = true;
-      return AoiError.consoleError("EmbedError", "Some Indexes Are Empty");
+      return AoiError.consoleError("EmbedError", "Input of index's are empty");
     }
     if (returnCode) {
       returnData.code = code;
