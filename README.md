@@ -18,7 +18,7 @@
 ## Features
 
 - Powerful built-in made functions with confusing usages.
-- Written in TypeScript to easily provide functional errors.
+- Written in Text to easily provide functional errors.
 - Updated with several extensions supported from [Akarui Development](https://www.youtube.com/watch?v=_3wkyerSBpw) sideloading. 
 
 ## Install
