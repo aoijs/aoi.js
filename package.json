@@ -1,38 +1,24 @@
 {
-  "name": "aoi.js",
-  "version": "6.0.0-dev",
-  "description": "The most powerful string package to create a simple and fast Discord Bot.",
+  "name": "nothing",
+  "version": "0.0.0",
+  "description": "The most powerful string package to destroy your life.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "@discordjs/builders": "^0.13.0-dev.1648515278-ac4bc3a",
-    "aoi-compiler": "github:AkaruiDevelopment/compiler",
-    "axios": "^0.24.0",
-    "discord.js": "^14.0.0-dev.1648515273-ac4bc3a",
-    "ms-utility": "^3.2.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AkaruiDevelopment/aoi.js-source.git"
   },
   "engines": {
-    "node": ">=16.9.0"
+    "node": ">=6.9.0"
   },
   "keywords": [
-    "aoi.js",
-    "dbd.ts",
-    "aoi.js-next",
-    "dbd.ts-next",
-    "aoijs",
-    "dbdts",
-    "dbd.js",
-    "dbdjs",
-    "discord",
-    "functions"
+    "rameater",
+    "deathtool",
+    "eeee"
   ],
   "author": "leref",
   "license": "MIT",
