@@ -1,5 +1,5 @@
+const { Group } = require( "structures/dist" );
 const {functions: parser, maps,grp} = require("../functions/parser.js");
-const Group = require("../cachehandler/index.js").cache;
 
 class Function {
     constructor(code, name) {

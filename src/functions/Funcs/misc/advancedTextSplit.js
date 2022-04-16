@@ -1,25 +1,19 @@
 module.exports = async (d) => {
-    const code = d.command.code;
-    const inside = d.unpack();
-    const fields = inside.splits;
-    let text = "",
-        started = false;
-    while (fields.length) {
-        if (started) {
-            let [split, index] = fields.splice(0, 2);
-            index = Number(index) - 1 || 0;
-            text = text.addBrackets().split(split.addBrackets())[index] || "";
-        } else {
-            let [m, split, index] = fields.splice(0, 3);
-            index = Number(index) - 1 || 0;
-            text = m.addBrackets().split(split.addBrackets())[index] || "";
-            started = true;
-        }
-    }
-    return {
-        code: code.replaceLast(
-            `$advancedTextSplit${inside.total}`,
-            text.deleteBrackets()
-        ),
-    };
+  const code = d.command.code;
+  const inside = d.unpack();
+  let [text, ...fields] = inside.splits;
+  let i = 0;
+  while (i < fields.length) {
+    let split = fields[i];
+    let index = fields[i + 1];
+    i += 2;
+    index = Number(index) - 1 || 0;
+    text = text.addBrackets().split(split.addBrackets())[index] || "";
+  }
+  return {
+    code: code.replaceLast(
+      `$advancedTextSplit${inside.total}`,
+      text.deleteBrackets(),
+    ),
+  };
 };

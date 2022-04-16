@@ -6,7 +6,7 @@ module.exports = d => {
 
     try {
         const evaled = eval(`d.object?.${option}`);
-        data.result = (typeof evaled === "object" ? JSON.stringify(evaled, null, 2) : evaled) || "undefined";
+        data.result = (typeof evaled === "object" ? JSON.stringify(evaled, null, 2) : evaled) ?? "undefined";
     } catch (e) {
         data.result = "undefined"
     }

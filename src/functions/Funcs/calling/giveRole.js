@@ -10,7 +10,6 @@ module.exports = async d => {
 
     const member = await d.util.getMember(guild, userId);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
-
     member.roles.add(roleId).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Give Role With Reason: ' + e);
     });

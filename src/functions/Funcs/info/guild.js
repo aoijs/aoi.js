@@ -1,44 +1,47 @@
-module.exports = async d => {
-    const dat = d.util.openFunc(d);
+module.exports = async (d) => {
+  const data = d.util.openFunc(d);
 
-    const [id = d.guild?.id, option = 'name'] = dat.inside.splits;
-    let server = await d.util.getGuild(d, id)
+  const [id = d.guild?.id, option = "name"] = data.inside.splits;
+  let server = await d.util.getGuild(d, id);
 
-    let data = {}
-    Object.assign(data, server)
-    delete data.client
-    data.icon = server.iconURL()
-    data.features = data.features.join(" , ")
-    data.commands = data.commands.cache.size
-    delete data.members
-    data.channels = data.channels.cache.size
-    data.bans = data.bans.cache.size
-    data.roles = data.roles.cache.size
-    data.createdAt = server.createdAt;
-    data.createdTimestamp = server.createdTimestamp;
+  let Data = {};
+  Object.assign(Data, server);
+  delete Data.client;
+  Data.icon = server.iconURL();
+  Data.features = Data.features.join(" , ");
+  Data.commands = Data.commands.cache.size;
+  delete Data.members;
+  Data.channels = Data.channels.cache.size;
+  Data.bans = Data.bans.cache.size;
+  Data.roles = Data.roles.cache.size;
+  Data.createdAt = server.createdAt;
+  Data.createdTimestamp = server.createdTimestamp;
 
-    delete data.presence
-    delete data.voiceStates
-    delete data.stageInstances
-    data.invites = data.invites.size
-    data.systemChannelFlags = (data.systemChannelFlags.toArray().join(" ") === "" ? "none" : data.systemChannelFlags.toArray().join(" "))
-    data.owner = server.members.cache.get(data.ownerId).username
+  delete Data.presence;
+  delete Data.voiceStates;
+  delete Data.stageInstances;
+  Data.invites = Data.invites.size;
+  Data.systemChannelFlags =
+    Data.systemChannelFlags.toArray().join(" ") === ""
+      ? "none"
+      : Data.systemChannelFlags.toArray().join(" ");
+  Data.owner = server.members.cache.get(Data.ownerId).username;
 
-    data.shard = undefined
-    data.afkChannel = data.afkChannelId
-    data.systemChannel = data.systemChannelId
-    data.rulesChannel = data.rulesChannelId
-    data.me = undefined
-    data.voiceAdapterCreator = undefined
-    data.updatesChannel = data.publicUpdatesChannelId
-    data.joinAt = data.joinAt?.toString()
+  Data.shard = undefined;
+  Data.afkChannel = Data.afkChannelId;
+  Data.systemChannel = Data.systemChannelId;
+  Data.rulesChannel = Data.rulesChannelId;
+  Data.me = undefined;
+  Data.voiceAdapterCreator = undefined;
+  Data.updatesChannel = Data.publicUpdatesChannelId;
+  Data.joinAt = Data.joinAt?.toString();
 
-    data.emojis = data.emojis.cache.size
-    data.stickers = data.stickers.cache.size
-    data.json = JSON.stringify(data, null, 2)
-    dat.result = data[option];
+  Data.emojis = Data.emojis.cache.size;
+  Data.stickers = Data.stickers.cache.size;
+  Data.json = JSON.stringify(Data, null, 2);
+  data.result = Data[option];
 
-    return {
-        code: d.util.setCode(dat)
-    }
-}
+  return {
+    code: d.util.setCode(data),
+  };
+};

@@ -3,9 +3,8 @@ module.exports = async d => {
     if (data.err) return d.error(data.err);
 
     const [func] = data.inside.splits;
-    if (!d.client.clientShard) return d.aoiError.fnError(d, 'custom', {}, 'ClientShard Class is Not Initialised');
 
-    data.result = await d.client.clientShard.fetchClientValues(func);
+    data.result = await d.client.shard.fetchClientValues(func);
 
     return  {
         code:d.util.setCode(data),

@@ -5,16 +5,15 @@ module.exports = async (d) => {
   let [emoji, guildId = d.guild?.id] = data.inside.splits;
   emoji = emoji.split(":");
   if (emoji.length > 1) {
-    emoji = emoji.pop().replace(">");
+    emoji = emoji.pop().replace(">", "");
   } else {
     emoji = emoji[0];
   }
-
   const guild =
     guildId === "global" ? d.client : await d.util.getGuild(d, guildId);
   if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-  let isemoji = await guild.emojis.cache.find(x => x.toString() === emoji).catch((e) => undefined);
+  let isemoji = emoji.trim() === "" ? undefined : guild.emojis.cache.get(emoji);
 
   data.result = isemoji ? true : false;
 

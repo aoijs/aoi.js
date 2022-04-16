@@ -1,4 +1,4 @@
-const Group = require("../cachehandler/index.js").cache;
+const { Group } = require( "structures/dist" );
 
 class Command {
   constructor(d = {}, client) {

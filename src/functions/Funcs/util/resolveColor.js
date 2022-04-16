@@ -9,7 +9,7 @@ module.exports = (d) => {
     if (returnAs === "number") {
         data.result = Util.resolveColor(datas.length === 1 ? datas[0] : datas);
     } else {
-        if (type === " decimal") {
+        if (type === "decimal") {
             if (datas.length !== 1)
                 return d.aoiError.fnError(
                     d,
@@ -18,7 +18,7 @@ module.exports = (d) => {
                     "Invalid Number Of Fields Provided In",
                 );
 
-            data.result = "#" + datas[0].toString(16);
+            data.result = "#" + Number(datas[0]).toString(16);
         } else if (type === "rgb") {
             if (!datas.every((x) => isNaN(x) === false))
                 return d.aoiError.fnError(

@@ -3,7 +3,6 @@ const dbddb = require("dbdjs.db");
 
 const { VariableManager } = require("./Variables.js");
 const Blacklist = require("./Blacklist.js");
-const Group = require("../cachehandler/index.js").cache;
 const InteractionManager = require("./Interaction.js");
 const {
   ActivityTypeAvailables,
@@ -19,6 +18,7 @@ const {
 } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
+const { Group } = require( "structures/dist" );
 
 class BaseClient extends Discord.Client {
   constructor(options) {

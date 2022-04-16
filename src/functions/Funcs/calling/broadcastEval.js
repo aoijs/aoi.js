@@ -4,15 +4,7 @@ module.exports = async (d) => {
 
     const [func] = data.inside.splits;
 
-    if (!d.client.clientShard)
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {},
-            "ClientShard Class is Not Initialised",
-        );
-
-    data.result = await d.client.clientShard.broadcastEval((client) =>
+    data.result = await d.client.shard.broadcastEval((client) =>
         eval(`client?.${func}`),
     );
 

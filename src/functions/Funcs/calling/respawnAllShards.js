@@ -1,9 +1,7 @@
-module.exports = d => {
+module.exports = async d => {
     const {code} = d.util.openFunc(d);
 
-    if (!d.client.clientShard) return d.aoiError.fnError(d, 'custom', {}, 'ClientShard Class is Not Initialised');
-
-    d.client.clientShard.respawnAll();
+    await d.client.shard.respawnAll();
 
     return {
         code: d.util.setCode({function: d.func, code})

@@ -7,7 +7,8 @@ const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 const Voice = require("./classes/Voice.js");
 
-module.exports = {
+
+const obj =  {
   /**
    * * The Discord Bot Client
    * @param {!Object} options The options to use Discord as a Bot
@@ -47,5 +48,5 @@ module.exports = {
   // * Util Class
   Util,
 };
-
+module.exports = obj;
 /*Copyright © 2021 @Akarui Development*/

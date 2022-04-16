@@ -1004,7 +1004,7 @@ class Client extends BaseClient {
             throw new TypeError(
                 `Code is not provided in ${
                     d?.name || "unknown name"
-                }: membersUpdateCommand. position: ${
+                }: MemberUpdateCommand. position: ${
                     this.cmd.memberUpdate.size
                 }`,
             );

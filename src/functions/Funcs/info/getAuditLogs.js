@@ -39,12 +39,12 @@ module.exports = async (d) => {
 
   data.result = audit.entries
     .map((logs) =>
-      format
+      format === "" ? logs  : format
         .replaceAll(`{executor.username}`, logs.executor.username)
         .replaceAll(`{executor.mention}`, logs.executor)
         .replaceAll(`{executor.id}`, logs.executor.id)
         .replaceAll(`{executor.tag}`, logs.executor.tag)
-        .replaceAll("{target.id}", logs.id)
+        .replaceAll("{target.id}", logs.target.id)
         .replaceAll("{action}", logs.action),
     )
     .join("\n");

@@ -1,6 +1,6 @@
-const Collection = require("../cachehandler/index.js").cache;
 const EventExecuter = require("../handler/eventExecuter.js");
 const {EventEmitter} = require("events");
+const { Group : Collection } = require( "structures/dist" );
 
 class CustomEvent extends EventEmitter {
     constructor(client) {

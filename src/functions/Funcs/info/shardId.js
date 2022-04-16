@@ -1,4 +1,4 @@
-module.exports = d => {
+module.exports = async d => {
     let {code, result} = d.util.openFunc(d);
 
     result = d.guild?.shardId || 0;

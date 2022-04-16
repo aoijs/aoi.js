@@ -1,7 +1,7 @@
 const fs = require("fs");
 const {CommandManager} = require("./Commands.js");
 const PATH = require("path");
-const Group = require("../cachehandler/group.js");
+const Group = require("structures/dist/index.js").Group;
 
 //const Client = require("./Bot.js")
 class LoadCommands {

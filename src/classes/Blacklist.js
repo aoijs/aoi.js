@@ -1,4 +1,4 @@
-const Group = require("../cachehandler/index.js").setCache;
+const { Group } = require( "structures/dist" );
 const AoiError = require("./AoiError.js");
 
 class Blacklist {

@@ -1,12 +1,31 @@
-module.exports = d => {
-    const data = d.util.openFunc(d);
-    if (data.err) return d.error(data.err);
+module.exports = (d) => {
+  const data = d.util.openFunc(d);
+  if (data.err) return d.error(data.err);
 
-    const [type, cacheName, cacheValue] = data.inside.splits;
+  const [type, cacheName, cacheKey, cacheValue] = data.inside.splits;
 
-    d.client.cacheManager.caches[type][cacheName.addBrackets()] = cacheValue.addBrackets();
-
-    return {
-        code: d.util.setCode(data)
+  if (!d.client.cacheManager.caches[type])
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.insde },
+      `Cache type ${type} does not exist.`,
+    );
+    let value ;
+    try {
+      value = JSON.parse(cacheValue.addBrackets());
     }
-}
+    catch {
+      value = cacheValue.addBrackets();
+    }
+
+  d.client.cacheManager.caches[type][cacheName.addBrackets()][
+    d.client.cacheManager.caches[type][cacheName.addBrackets()].set
+      ? "set"
+      : "add"
+  ](cacheKey.addBrackets(), value);
+
+  return {
+    code: d.util.setCode(data),
+  };
+};

@@ -1,5 +1,5 @@
 const { ShardingManager } = require("discord.js");
-const Collection = require("../cachehandler/index.js").cache;
+const { Group : Collection } = require( "structures/dist" );
 
 class ClientShard extends ShardingManager {
   constructor(file, options = {}, spawnOptions) {

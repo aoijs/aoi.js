@@ -1,22 +1,22 @@
 const {AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify} = require("../../../classes/Database.js");
 
 module.exports = async d => {
-    const Data = d.util.openFunc(d);
-    if (Data.err) return d.error(Data.err)
+    const data = d.util.openFunc(d);
+    if (data.err) return d.error(data.err)
 
-    const [guildId, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
+    const [guildId, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = data.inside.splits;
 
     const all = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildId])
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside: Data.inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
 
     let y = 0
     let value;
     let content = []
 
-    for (const data of all.sort((x, y) => {
+    for (const Data of all.sort((x, y) => {
         if (d.client.db instanceof AoijsAPI) {
             return (Number(y.data.value) - Number(x.data.value))
         } else if (d.client.db instanceof DbdTsDb) {
@@ -29,31 +29,31 @@ module.exports = async d => {
     })) {
         let user;
         if (d.client.db instanceof AoijsAPI) {
-            value = Number(data.data.value);
+            value = Number(Data.data.value);
 
-            user = await d.util.getMember(guild, data.key.split('_')[1])
+            user = await d.util.getMember(guild, Data.key.split('_')[1])
         } else if (d.client.db instanceof DbdTsDb) {
-            value = Number(data[variable.addBrackets()]);
+            value = Number(Data[variable.addBrackets()]);
 
-            user = await d.util.getMember(guild, data.key.split('_')[0])
+            user = await d.util.getMember(guild, Data.key.split('_')[0])
         } else if (d.client.db instanceof AoiMongoDb) {
-            value = Number(data.value)
+            value = Number(Data.value)
 
-            user = await d.util.getMember(guild, data.key.split('_')[1])
+            user = await d.util.getMember(guild, Data.key.split('_')[1])
         } else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
-            value = Number(data.value || data[variable.addBrackets()] || (typeof data.data === 'object' ? data.data.value : data.data))
+            value = Number(Data.value || Data[variable.addBrackets()] || (typeof Data.data === 'object' ? Data.data.value : Data.data))
 
-            if (data.key) {
-                const arr = data.key.split('_');
+            if (Data.key) {
+                const arr = Data.key.split('_');
                 user = await d.util.getMember(guild, arr.length === 3 ? arr[1] : arr[0])
-            } else if (data.id) {
-                const arr = data.id.split('_');
+            } else if (Data.id) {
+                const arr = Data.id.split('_');
                 user = await d.util.getMember(guild, arr.length === 3 ? arr[1] : arr[0])
-            } else if (data.ID) {
-                const arr = data.ID.split('_');
+            } else if (Data.ID) {
+                const arr = Data.ID.split('_');
                 user = await d.util.getMember(guild, arr.length === 3 ? arr[1] : arr[0])
-            } else if (data.Id) {
-                const arr = data.Id.split('_');
+            } else if (Data.Id) {
+                const arr = Data.Id.split('_');
                 user = await d.util.getMember(guild, arr.length === 3 ? arr[1] : arr[0])
             } else {
                 d.aoiError.fnError(d, 'custom', {}, 'Database Not Supported For LeaderBoard')
@@ -72,7 +72,7 @@ module.exports = async d => {
 
                 const awaited = d.client.cmd.awaited.find(c => c.name === ins)
 
-                if (!awaited) return d.aoiError.fnError(d, 'custom', {inside: Data.inside}, ` Invalid awaited command '${ins}' in`)
+                if (!awaited) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, ` Invalid awaited command '${ins}' in`)
 
                 const CODE = await d.interpreter(d.client, {
                     guild: guild,
@@ -91,9 +91,9 @@ module.exports = async d => {
 
     const px = page * list - list, py = page * list
 
-    Data.result = content.slice(px, py).join("\n");
+    data.result = content.slice(px, py).join("\n");
 
     return {
-        code: d.util.setCode(Data)
+        code: d.util.setCode(data)
     }
 }

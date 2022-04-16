@@ -9,6 +9,14 @@ const {
   VoiceState,
   Role,
 } = require("discord.js");
+
+  function PartToHex (d)  {
+    const data = d.toString(16);
+    return data.length === 1 ? "0" + data : data;
+  }
+  function RBGtoHex (r, b, g)  {
+    return "#" + PartToHex(r) + PartToHex(b) + PartToHex(g);
+  }
 module.exports = {
   /**
    * @param  {number} number
@@ -315,13 +323,7 @@ module.exports = {
 
     return data;
   },
-  RBGtoHex(r, b, g) {
-    return "#" + this.PartToHex(r) + this.PartToHex(b) + this.PartToHex(g);
-  },
-  PartToHex(d) {
-    const data = d.toString(16);
-    return data.length === 1 ? "0" + data : data;
-  },
+
   FormatDate(date, format) {
     ////Map for Storing Each Format
     const FormatMap = new Map();
@@ -376,3 +378,6 @@ module.exports = {
     }
   },
 };
+
+module.exports.RBGtoHex = RBGtoHex;
+module.exports.PartToHex = PartToHex;
