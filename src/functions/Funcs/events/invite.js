@@ -7,7 +7,7 @@ module.exports = d => {
 
     const [option] = data.inside.splits;
 
-    data.result = Invite(d.data.invite)?.[option].deleteBrackets();
+    data.result = Invite(d.data.inviteData)?.[option].deleteBrackets();
 
     return {
         code: d.util.setCode(data)
