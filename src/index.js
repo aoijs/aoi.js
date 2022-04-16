@@ -8,7 +8,7 @@ const Util = require("./classes/Util.js");
 const Voice = require("./classes/Voice.js");
 
 
-const obj =  {
+module.exports =  {
   /**
    * * The Discord Bot Client
    * @param {!Object} options The options to use Discord as a Bot
@@ -48,5 +48,4 @@ const obj =  {
   // * Util Class
   Util,
 };
-module.exports = obj;
 /*Copyright © 2021 @Akarui Development*/
