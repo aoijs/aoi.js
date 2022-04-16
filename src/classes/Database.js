@@ -98,6 +98,14 @@ class AoijsAPI extends Database {
                 this.path.replace("./", "") + "/database.sql",
                 this.extraOptions.sqlOptions || {timeout: 5000},
             );
+        } else if(type === "dbdjs.db-dev") {
+            this.db = this.module[this.extraOptions.dbType || "KeyValue"]({
+                path: this.path,
+                tables: this.tables,
+                ...this.extraOptions.dbOptions,
+            })
+            this.db.connect();
+            this.db.once("ready", () => console.log("Database has been established."))
         }
     }
 }
