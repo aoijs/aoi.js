@@ -6,7 +6,7 @@ module.exports = async (d) => {
   //----------------------------------------//
   let [messageID,userFilter,customIDs,cmds,errorMsg = "",uses = 1,data = "",] = inside.splits;
   if (errorMsg?.trim !== "" && errorMsg) {
-    errorMsg = await d.util.errorParser(errorMsg, d);
+    errorMsg = await d.util.errorParser(errorMsg,d);
   }
   if (data !== "") {
     try {
@@ -25,7 +25,6 @@ module.exports = async (d) => {
     }
   });
   customIDs = customIDs.split(",");
-  const emsg = await d.util.errorParser(errorMsg);
   //---------------------------------------//
   const Component = new d.client.interactionManager.awaitComponents(
     {

@@ -31,7 +31,7 @@ module.exports = {
      **/
   LoadCommands,
   ClientShard,
-  Voice:Voice,
+  Voice,
   /**
      * * Lavalink
      * @example new addNode({

@@ -125,13 +125,21 @@ class Util {
 
   static async errorParser(errorM, d) {
     let error;
+    if (typeof errorM === "object") return errorM;
     const parsers = require("../handler/parsers.js");
     try {
-      const e = errorM
+      let e = errorM
         .replaceAll("\n", "\\n")
-        .replaceAll('{\\n"', '{\n"')
-        .replaceAll('"\\n}', '"\n}')
-        .replaceAll(",\\n", ",\n");
+        .replace(/({)(\s*)\\n(\s*)(")/gi, '{\n"')
+        .replace(/"(\s*)\\n(\s*)}/gi, '"\n}')
+        .replace(/\[(\s*)\\n(\s*){/gi, "[\n{")
+        .replace(/](\s*)\\n(\s*)}/gi, "]\n}")
+        .replace(/](\s*)\\n(\s*)"/gi, ']\n"')
+        .replace(/}(\s*)\\n(\s*)]/gi, "}\n]")
+        .replace(/,(\s*)\\n(\s*)/gi, ",\n")
+        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}")
+        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}");
+
       error = JSON.parse(e);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
