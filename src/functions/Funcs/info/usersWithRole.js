@@ -10,7 +10,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, 'role', {inside: data.inside});
     });
 
-    data.result = role.members.map(x => option === "mention" ? x.toString() : x[option]).join(sep)
+    data.result = role.members.map(x => option === "mention" ? x.toString() : eval(`x.${option}`)).join(sep)
 
     return {
         code: d.util.setCode(data)
