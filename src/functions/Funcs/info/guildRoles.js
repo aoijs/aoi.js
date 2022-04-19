@@ -21,7 +21,7 @@ module.exports = async (d) => {
     cache = guild.roles.cache.filter((x) => !x.managed);
   else cache = guild.roles.cache;
 
-  data.result = map((x) =>
+  data.result = cache.map((x) =>
     type?.trim() === "mention" ? x.toString() : x[type],
   )
     .join(sep)
