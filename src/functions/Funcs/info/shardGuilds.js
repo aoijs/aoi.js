@@ -1,14 +1,29 @@
-module.exports = async d => {
-    const data = d.util.openFunc(d);
+module.exports = async (d) => {
+  const data = d.util.openFunc(d);
 
-    const [option = 'id', sep = ' , ', shardId] = data.inside.splits;
-    if (shardId && isNaN(shardId)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid ShardId Provided In');
+  const [option = "id", sep = " , ", shardId] = data.inside.splits;
+  if (shardId && isNaN(shardId))
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.inside },
+      "Invalid ShardId Provided In",
+    );
 
-    const arr = await d.client.shard.broadcastEval(client => client.guilds.cache.map(x => eval(`x.${option}`)).join(sep), {shard: !shardId ? undefined  : Number(shardId)});
+  function evalfunc(client, { option, sep }) {
+    return client.guilds.cache
+      .map((x) => eval(option === "" ? x : `x.${option}`))
+      .join(sep);
+  }
 
-    data.result = arr.join(sep);
+  const arr = await d.client.shard.broadcastEval( evalfunc, {
+    shard: !shardId ? undefined : Number(shardId),
+    context: { option: option, sep: sep },
+  });
 
-    return {
-        code: d.util.setCode(data)
-    }
-}
+  data.result = arr.join(sep);
+
+  return {
+    code: d.util.setCode(data),
+  };
+};

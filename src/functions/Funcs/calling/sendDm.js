@@ -14,7 +14,7 @@ module.exports = async d => {
     } catch (err) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Dm With Reason: ' + err);
     }
-    data.result = returnId === 'yes' ? data.result : undefined;
+    data.result = returnId === 'yes' ? data.result.id : undefined;
 
     return {
         code: d.util.setCode(data)
