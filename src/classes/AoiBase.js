@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const dbddb = require("dbdjs.db");
 
 const { VariableManager } = require("./Variables.js");
 const Blacklist = require("./Blacklist.js");
@@ -84,7 +83,7 @@ class BaseClient extends Discord.Client {
       )
     ) {
       this.db = new AoijsAPI(
-        options?.database?.db || dbddb,
+        options?.database?.db ,
         {
           path: options?.database?.path || "./database/",
           tables: options?.database?.tables || ["main"],
@@ -146,7 +145,7 @@ class BaseClient extends Discord.Client {
       );
     } else {
       this.db = new AoijsAPI(
-        options?.database?.db || dbddb,
+        options?.database?.db ,
         {
           path: options?.database?.path || "./database/",
           tables: options?.database?.tables || ["main"],
