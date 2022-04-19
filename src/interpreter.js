@@ -528,6 +528,7 @@ const Interpreter = async (
         error = FuncData?.error;
       }
     }
+    if(error) return ;
     const ended = (performance.now() - start).toFixed(3);
     if (client?.aoiOptions?.debugs?.interpreter) {
       debug.executionTime = ended + " ms";
