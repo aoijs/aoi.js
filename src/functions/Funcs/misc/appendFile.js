@@ -7,7 +7,7 @@ module.exports = async (d) => {
   const [file, text, encode = "utf8"] = data.inside.splits;
 
   await fs
-    .appendFile(file, data, {
+    .appendFile(file, text.addBrackets(), {
       encoding: encode,
     })
     .catch((e) => {
