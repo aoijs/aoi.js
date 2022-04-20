@@ -4,22 +4,21 @@ module.exports = (d) => {
   const data = d.util.openFunc(d);
   if (data.err) return d.error(data.err);
 
-  const [file, encoding = "utf8", flag] = data.inside.splits;
+  const [file, text, encode = "utf8"] = data.inside.splits;
 
-  data.result = await fs
-    .readFile(file.addBrackets(), {
-      encoding,
-      flag,
+  await fs
+    .appendFile(file, data, {
+      encoding: encode,
     })
     .catch((e) => {
       d.aoiError.fnError(
         d,
         "custom",
         {},
-        "Failed To Read File With Reason: " + e,
+        "Failed To Append File With Reason: " + e,
       );
     });
-  data.result = data.result.deleteBrackets();
+
   return {
     code: d.util.setCode(data),
   };
