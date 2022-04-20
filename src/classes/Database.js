@@ -99,7 +99,7 @@ class AoijsAPI extends Database {
         this.path.replace("./", "") + "/database.sql",
         this.extraOptions.sqlOptions || { timeout: 5000 },
       );
-    } else if (type === "dbdjs.db-dev") {
+    } else if (type === "aoi.db") {
       this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
         path: this.path,
         tables: this.tables,
@@ -112,7 +112,7 @@ class AoijsAPI extends Database {
     }
   }
   async set(table, name, id, value) {
-      if(this.type === "dbdjs.db-dev"){
+      if(this.type === "aoi.db"){
           await this.db.set(table, id ? `${name}_${id}` : name,{value});
       }
       else {
@@ -120,7 +120,7 @@ class AoijsAPI extends Database {
       }
   }
     async get(table, name, id) {
-        if(this.type === "dbdjs.db-dev"){
+        if(this.type === "aoi.db"){
             return await this.db.get(table, id ? `${name}_${id}` : name);
         }
         else {
@@ -128,7 +128,7 @@ class AoijsAPI extends Database {
         }
     }
     async all(table, varname, lengthofId, funconId) {
-        if(this.type === "dbdjs.db-dev"){
+        if(this.type === "aoi.db"){
             return await this.db.all(table, (x) =>
                     x.startsWith(`${varname}_`) &&
                     (lengthofId
@@ -141,7 +141,7 @@ class AoijsAPI extends Database {
         }
     }
     async delete(table, name, id) {
-        if(this.type === "dbdjs.db-dev"){
+        if(this.type === "aoi.db"){
             return await this.db.delete(table, id ? `${name}_${id}` : name);
         }
         else {

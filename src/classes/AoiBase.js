@@ -78,7 +78,7 @@ class BaseClient extends Discord.Client {
     }
 
     if (
-      ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb","dbdjs.db-dev"].includes(
+      ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb","aoi.db"].includes(
         options?.database?.type,
       )
     ) {
