@@ -88,7 +88,7 @@ fs.readdirSync(__dirname + "/Funcs").map((x) => {
     } else {
       grp.set(
         `\$${file.replace(".js", "").toLowerCase()}`,
-        "No Parameters Found",
+        null,
       );
     }
   }
