@@ -25,7 +25,7 @@ module.exports = async (d) => {
   if (volume === "getVolume")
     data.result =
       (player.requestManager.currentStream?.volume.volume || 0) * 100;
-  else player.requestManager._setVolume(Number(volume) / 100);
+  else player.volume(Number(volume) / 100);
 
   return {
     code: d.util.setCode(data),
