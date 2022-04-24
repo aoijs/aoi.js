@@ -24,7 +24,7 @@ module.exports = async (d) => {
     );
   if (volume === "getVolume")
     data.result =
-      (player.requestManager.currentStream?.volume.volume || 0) * 100;
+      (player.volume || 0);
   else player.volume(Number(volume) / 100);
 
   return {
