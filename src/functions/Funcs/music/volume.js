@@ -22,10 +22,8 @@ module.exports = async (d) => {
       {},
       "Client Is Not Connected To Voice/Stage.",
     );
-  if (volume === "getVolume")
-    data.result =
-      (player.volume || 0);
-  else player.volume(Number(volume) / 100);
+  if (volume === "getVolume") data.result = player.volume || 0;
+  else player.volume = Number(volume);
 
   return {
     code: d.util.setCode(data),
