@@ -7,7 +7,7 @@ module.exports = async d => {
     const [id, token, message, returnId = 'no'] = data.inside.splits;
 
     const webhook = new WebhookClient({id, token: token.addBrackets()});
-    const sendMessage = await d.util.errorParser(message);
+    const sendMessage = await d.util.errorParser(message,d);
 
     let msg;
     try {
