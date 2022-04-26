@@ -18,7 +18,7 @@ module.exports = async d => {
     const wrongPerms = []
     permissions = permissions.map(x => {
         if (isNaN(permissions)) {
-            if (Object.keys(Permissions).includes(x)) {
+            if (Object.values(Permissions).includes(x)) {
                 return x;
             } else if (Permissions[x]) {
                 return Permissions[x];
@@ -29,6 +29,7 @@ module.exports = async d => {
             return x
         }
     });
+    console.log({permissions, wrongPerms})
     if (wrongPerms.length) d.aoiError.fnError(d, "custom", {inside}, "Invalid Permissions: " + wrongPerms.join(" , ") + " Provided In");
 
     const role = await guild.roles.create({name, color, hoist, permissions, position, mentionable}).catch(e => {
