@@ -19,7 +19,7 @@ module.exports = async d => {
         }
     }
 
-    const {data: res} = await axios({
+    const req = await axios({
         method,
         url: url.addBrackets(),
         headers,
@@ -28,13 +28,13 @@ module.exports = async d => {
     }).catch(async e => {
         console.error(e)
         if (error === "$default" || !error) {
-            return d.aoiError.makeMessageError(d.client, d.channel, e, {}, d)
+            return d.aoiError.makeMessageError(d.client, d.channel, {content : e}, {}, d)
         } else {
             error = await d.util.errorParser(error, d);
             return d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d)
         }
     });
-
+    const res = req?.data;
     data.result = property ? eval(`res?.${property}`) : JSON.stringify(res, null, 2);
 
     return {

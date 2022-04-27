@@ -13,7 +13,8 @@ module.exports = async (message, client, db) => {
   //array of cmds
   let cmds = client.cmd.default
     .allValues()
-    .filter((x) => !x.nonPrefixed || x.name !== "$alwaysExecute");
+    .filter((x) => !x.nonPrefixed && x.name !== "$alwaysExecute");
+    //console.log({cmds })
   //getting arrays of prefixes
   const prefixes = Array.isArray(client.prefix)
     ? client.prefix.map(async (x) =>
