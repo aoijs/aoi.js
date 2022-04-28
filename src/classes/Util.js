@@ -284,5 +284,5 @@ class Util {
     );
   }
 }
-Util.searchType = ["soundcloud", "localfile", "url", "youtube"];
+Util.searchType = ["soundcloud", "localfile", "url", "youtube","spotify"];
 module.exports = Util;
