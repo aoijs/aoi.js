@@ -119,7 +119,7 @@ module.exports = {
     data.json = JSON.stringify(data, null, 2);
     data.guild = emoji.guild?.id;
     data.roles = emoji.roles?.cache.map((x) => x.id).join(" , ");
-
+    data.url = emoji.url;
     data.toJSON = undefined;
     return data;
   },
