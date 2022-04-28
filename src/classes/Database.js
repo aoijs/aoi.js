@@ -1,4 +1,4 @@
-const aoiDb = require("dbdjs.db");
+
 const AoiError = require("./AoiError.js");
 
 class Database {
@@ -75,7 +75,7 @@ class AoijsAPI extends Database {
   createTable(type) {
     if (["default", "dbdjs.db"].includes(type)) {
       const tables = this.tables.map((x) => ({ name: x }));
-      this.db = new aoiDb.Database({
+      this.db = new this.module.Database({
         path: this.path,
         tables: tables,
         maxFileData: 10000,
@@ -87,8 +87,6 @@ class AoijsAPI extends Database {
       });
       this.db.connect();
       console.log("Database has been established.");
-
-      this.module = aoiDb;
     } else if (type === "dbdjs.mongo") {
       this.db = this.module.default;
       this.tables.forEach((x) => this.db.createModel(x));
