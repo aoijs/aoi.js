@@ -110,42 +110,40 @@ class AoijsAPI extends Database {
     }
   }
   async set(table, name, id, value) {
-      if(this.type === "aoi.db"){
-          await this.db.set(table, id ? `${name}_${id}` : name,{value});
-      }
-      else {
-            await super.set(table, name, id, value);
-      }
+    if (this.type === "aoi.db") {
+      await this.db.set(table, id ? `${name}_${id}` : name, { value });
+    } else {
+      await super.set(table, name, id, value);
+    }
   }
-    async get(table, name, id) {
-        if(this.type === "aoi.db"){
-            return await this.db.get(table, id ? `${name}_${id}` : name);
-        }
-        else {
-            return await super.get(table, name, id);
-        }
+  async get(table, name, id) {
+    if (this.type === "aoi.db") {
+      return await this.db.get(table, id ? `${name}_${id}` : name);
+    } else {
+      return await super.get(table, name, id);
     }
-    async all(table, varname, lengthofId, funconId) {
-        if(this.type === "aoi.db"){
-            return await this.db.all(table, (x) =>
-                    x.startsWith(`${varname}_`) &&
-                    (lengthofId
-                        ? x.split("_").slice(1).length === lengthofId
-                        : true) &&
-                    (funconId ? this.checkConditionOnId(x, ...funconId) : true),Infinity);
-        }
-        else {
-            return await super.all(table, varname, lengthofId, funconId);
-        }
+  }
+  async all(table, varname, lengthofId, funconId) {
+    if (this.type === "aoi.db") {
+      return await this.db.all(
+        table,
+        (x) =>
+          x.startsWith(`${varname}_`) &&
+          (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
+          (funconId ? this.checkConditionOnId(x, ...funconId) : true),
+        Infinity,
+      );
+    } else {
+      return await super.all(table, varname, lengthofId, funconId);
     }
-    async delete(table, name, id) {
-        if(this.type === "aoi.db"){
-            return await this.db.delete(table, id ? `${name}_${id}` : name);
-        }
-        else {
-            return await super.delete(table, name, id);
-        }
+  }
+  async delete(table, name, id) {
+    if (this.type === "aoi.db") {
+      return await this.db.delete(table, id ? `${name}_${id}` : name);
+    } else {
+      return await super.delete(table, name, id);
     }
+  }
 }
 
 class DbdTsDb extends Database {
