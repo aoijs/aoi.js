@@ -165,7 +165,6 @@ class Util {
         error.options = await parsers.OptionParser(error.options || "", d);
       }
     } catch (e) {
-
       error = await parsers.ErrorHandler(d, errorM, true);
     }
     return error;
@@ -206,9 +205,10 @@ class Util {
       (await this.getUser(d, id)) ||
       (await this.getChannel(d, id, false)) ||
       (await this.getMessage(d.channel, id)) ||
+      this.findRole(d.guild, id) ||
       this.getEmoji(d, id) ||
       this.getSticker(d.guild, id) ||
-      "nope"
+      undefined
     );
   }
 
@@ -284,5 +284,5 @@ class Util {
     );
   }
 }
-Util.searchType = ["soundcloud", "localfile", "url", "youtube","spotify"];
+Util.searchType = ["soundcloud", "localfile", "url", "youtube", "spotify"];
 module.exports = Util;
