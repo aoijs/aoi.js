@@ -376,6 +376,7 @@ module.exports = {
         false,
       );
     }
+    return timeoutData.__id__;
   },
 };
 

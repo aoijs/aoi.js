@@ -65,7 +65,6 @@ class Database {
 
 class AoijsAPI extends Database {
   constructor(module, options = {}, db = {}, extraOptions = {}) {
-    console.log({ extraOptions });
     super(module, options, db.promisify);
     this.type = db.type || "default";
     this.extraOptions = extraOptions;

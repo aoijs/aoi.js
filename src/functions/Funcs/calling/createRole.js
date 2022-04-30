@@ -29,7 +29,6 @@ module.exports = async d => {
             return x
         }
     });
-    console.log({permissions, wrongPerms})
     if (wrongPerms.length) d.aoiError.fnError(d, "custom", {inside}, "Invalid Permissions: " + wrongPerms.join(" , ") + " Provided In");
 
     const role = await guild.roles.create({name, color, hoist, permissions, position, mentionable}).catch(e => {

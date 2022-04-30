@@ -149,7 +149,7 @@ class LoadCommands {
                         client[cmd.type].set(client[cmd.type].size, cmd);
                     }
                 } catch (e) {
-                    console.log(e);
+                    console.error(e);
                     debugs.push(
                         `|${this.colors.failLoad?.command || ""}'${
                             cmd.name || cmd.channel

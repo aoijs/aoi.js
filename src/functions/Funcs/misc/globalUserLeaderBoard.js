@@ -28,7 +28,7 @@ module.exports = async (d) => {
   for (const Data of all.sort((x, y) => {
     if (d.client.db instanceof AoijsAPI) {
       if(d.client.db.type === "aoi.db") return Number(y.value) - Number(x.value);
-      else return Number(y.Data.value) - Number(x.Data.value);
+      else return Number(y.data.value) - Number(x.data.value);
     } else if (d.client.db instanceof DbdTsDb) {
       return (
         Number(y[variable.addBrackets()]) - Number(x[variable.addBrackets()])
@@ -58,7 +58,7 @@ module.exports = async (d) => {
     if (d.client.db instanceof AoijsAPI) {
       if (d.client.db.type === "aoi.db")
         value =  Number(Data.value) 
-      else value =  umber(Data.Data.value);
+      else value =  Number(Data.data.value);
 
       user = await d.util.getUser(d, Data.key.split("_")[1]);
     } else if (d.client.db instanceof DbdTsDb) {
