@@ -14,7 +14,7 @@ module.exports = async (message, client, db) => {
   let cmds = client.cmd.default
     .allValues()
     .filter((x) => !x.nonPrefixed && x.name !== "$alwaysExecute");
-    //console.log({cmds })
+  //console.log({cmds })
   //getting arrays of prefixes
   const prefixes = Array.isArray(client.prefix)
     ? client.prefix.map(async (x) =>
@@ -150,8 +150,17 @@ module.exports = async (message, client, db) => {
       }
     }
     //if command doesn't exist , then break the loop
-
-    if (cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm) break;
+    if (!cmd.executeAt) cmd.executeAt = "guild";
+    if (
+      cmd.executeAt === "guild" &&
+      message.channel.type === Util.channelTypes.Dm
+    )
+      break;
+    else if (
+      cmd.executeAt === "dm" &&
+      message.channel.type !== Util.channelTypes.Dm
+    )
+      break;
     //if cmd.async is true
     if (cmd.async) {
       await Interpreter(client, message, args, cmd, client.db);
