@@ -27,7 +27,6 @@ class CustomFunction {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        let customFuncs = [];
         let funcs = [];
         let loadsOfFunc = Functions.filter((thatfunc) =>
             code.toLowerCase().includes(thatfunc.toLowerCase()),
@@ -104,7 +103,6 @@ class FunctionManager {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        let customFuncs = [];
         let funcs = [];
         let loadsOfFunc = Functions.filter((thatfunc) =>
             code.toLowerCase().includes(thatfunc.toLowerCase()),

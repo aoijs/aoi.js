@@ -154,7 +154,7 @@ class DbdTsDb extends Database {
   }
 
   createSetUp() {
-    const { Database, Table, Column, ApiDatabase } = this.module;
+    const { Database, Table } = this.module;
     if (!this.extraOptions?.dbdtsType) {
       this.db = new Database({
         path: this.path.endsWith("/")
@@ -171,7 +171,6 @@ class DbdTsDb extends Database {
           ]),
         ),
       );
-    } else if (this.extraOptions?.dbdtsType === "api") {
     }
   }
 

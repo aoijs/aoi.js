@@ -5,7 +5,7 @@ module.exports = async (d) => {
   const [threadId, channelId = d.channel.id, archive = "yes", reason] =
     data.inside.splits;
   const channel = await d.util.getChannel(d, channelId);
-  if (!channel) return d.aoiError.fnError(d, "channel", { inside });
+  if (!channel) return d.aoiError.fnError(d, "channel", { inside:data.inside });
 
   const thread = channel.threads.fetch(threadId).catch((e) => {
     return d.aoiError.fnError(

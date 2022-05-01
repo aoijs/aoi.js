@@ -1,6 +1,6 @@
 const {EventEmitter} = require("events");
 const { Group } = require( "structures/dist" );
-const timer = (ms) => new Promise((res, rej) => setTimeout(() => res, ms));
+const timer = (ms) => new Promise((res) => setTimeout(() => res, ms));
 
 class InviteSystem extends EventEmitter {
     constructor(client, cache = false) {

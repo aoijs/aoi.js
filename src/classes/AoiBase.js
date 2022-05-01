@@ -6,7 +6,6 @@ const InteractionManager = require("./Interaction.js");
 const {
   ActivityTypeAvailables,
   IntentOptions,
-  SlashOptionTypes,
 } = require("../utils/Constants.js");
 const {
   AoijsAPI,
