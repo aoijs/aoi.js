@@ -7,7 +7,7 @@ module.exports = async (d) => {
   const channel = await d.util.getChannel(d, channelId);
   if (!channel) return d.aoiError.fnError(d, "channel", { inside:data.inside });
 
-  const thread = channel.threads.fetch(threadId).catch((e) => {
+  const thread = await channel.threads.fetch(threadId).catch((e) => {
     return d.aoiError.fnError(
       d,
       "custom",
@@ -15,8 +15,7 @@ module.exports = async (d) => {
       `Failed To Fetch Thread With Reason : ${e.message}`,
     );
   });
-
-  thread.setArchive(archive === "yes", reason?.addBrackets()).catch((e) => {
+  thread.setArchived(archive === "yes", reason?.addBrackets()).catch((e) => {
     return d.aoiError.fnError(
       d,
       "custom",

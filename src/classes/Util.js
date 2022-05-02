@@ -128,18 +128,7 @@ class Util {
     if (typeof errorM === "object") return errorM;
     const parsers = require("../handler/parsers.js");
     try {
-      let e = errorM
-        .replaceAll("\n", "\\n")
-        .replace(/({)(\s*)\\n(\s*)(")/gi, '{\n"')
-        .replace(/"(\s*)\\n(\s*)}/gi, '"\n}')
-        .replace(/\[(\s*)\\n(\s*){/gi, "[\n{")
-        .replace(/](\s*)\\n(\s*)}/gi, "]\n}")
-        .replace(/](\s*)\\n(\s*)"/gi, ']\n"')
-        .replace(/}(\s*)\\n(\s*)]/gi, "}\n]")
-        .replace(/,(\s*)\\n(\s*)/gi, ",\n")
-        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}")
-        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}")
-        .trim();
+      let e = errorM;
       error = JSON.parse(e);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
@@ -165,6 +154,7 @@ class Util {
         error.options = await parsers.OptionParser(error.options || "", d);
       }
     } catch (e) {
+      console.error(e);
       error = await parsers.ErrorHandler(d, errorM, true);
     }
     return error;

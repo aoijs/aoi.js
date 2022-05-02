@@ -365,8 +365,8 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
   if (errorMessage.includes("{newEmbed:")) {
     const o = errorMessage.split("{newEmbed:").slice(1);
     for (let errorMessages of o) {
-      const index = errorMessages.lastIndexOf("}");
-      errorMessages = errorMessages.slice(0, index);
+      const index = errorMessages.lastIndexOf("}}");
+      errorMessages = errorMessages.slice(0, index+1);
       const old = errorMessages;
 
       const embed = new Discord.MessageEmbed();
@@ -514,6 +514,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       embeds.push(embed);
     }
   }
+
   if (errorMessage.includes("{reactions:")) {
     const react = errorMessage.split("{reactions:")[1].split("}")[0];
     reactions = react.split(":").map((x) => x.trim());
@@ -557,7 +558,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
     if (m && reactions.length) {
       for (const reaction of reactions) {
-        await m.react(reaction).catch((err) => {});
+        await m.react(reaction).catch(console.error);
       }
     }
 

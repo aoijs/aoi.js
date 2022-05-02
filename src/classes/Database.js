@@ -127,9 +127,9 @@ class AoijsAPI extends Database {
       return await this.db.all(
         table,
         (x) =>
-          x.startsWith(`${varname}_`) &&
+          x.key.startsWith(`${varname}_`) &&
           (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
-          (funconId ? this.checkConditionOnId(x, ...funconId) : true),
+          (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
         Infinity,
       );
     } else {
