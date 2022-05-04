@@ -69,7 +69,7 @@ module.exports = async (interaction, client) => {
             client,
             data,
             interaction.values ||
-            interaction.options?._hoistedOptions?.map((x) => x.value) ||
+            interaction.options?._hoistedOptions?.map((x) => x.value) || interaction.customId ||
             [],
             cmd,
             client.db,

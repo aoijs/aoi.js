@@ -4,6 +4,8 @@ module.exports = async d => {
 
     let [varname, value, channelId = d.channel.id, table = d.client.db.tables[0]] = data.inside.splits;
 
+    value = value.addBrackets();
+
     if (!d.client.variableManager.has(varname.addBrackets(), table)) return d.aoiError.fnError(d, 'custom', {}, `Variable ${varname.addBrackets()} Not Found!`)
 
     const variable = d.client.variableManager.get(varname);

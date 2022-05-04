@@ -5,12 +5,13 @@ const Interpreter = require("../../interpreter.js");
 module.exports = async (client) => {
     const cmds = client.cmd.loop.allValues();
     let chan;
-    let data = {
+    let Data = {
         client: client,
         channel: undefined,
         guild: undefined,
     };
     for (const cmd of cmds) {
+        const data = {...Data};
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
                 client,

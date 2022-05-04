@@ -365,8 +365,8 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
   if (errorMessage.includes("{newEmbed:")) {
     const o = errorMessage.split("{newEmbed:").slice(1);
     for (let errorMessages of o) {
-      const index = errorMessages.lastIndexOf("}}");
-      errorMessages = errorMessages.slice(0, index+1);
+      const index = errorMessages.lastIndexOf("}");
+      errorMessages = errorMessages.slice(0, index);
       const old = errorMessages;
 
       const embed = new Discord.MessageEmbed();
