@@ -4,9 +4,11 @@ module.exports = async (d) => {
 
     const [func] = data.inside.splits;
 
-    data.result = await d.client.shard.broadcastEval((client) =>
-        eval(`client?.${func}`),
-    );
+      function evalfunc(client, {func }) {
+        return eval(func)
+      }
+
+    data.result = await d.client.shard.broadcastEval(evalfunc,{context : {func: func}});
 
     data.result = data.result.join(" , ");
 

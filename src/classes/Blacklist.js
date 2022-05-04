@@ -1,14 +1,14 @@
-const { Group } = require( "structures/dist" );
+const { SuperSet } = require( "structures/dist" );
 const AoiError = require("./AoiError.js");
 
 class Blacklist {
     constructor(client) {
         this.client = client;
-        this.globalUser = {blacklist: new Group(), errorMsg: null};
-        this.server = {blacklist: new Group(), errorMsg: null};
-        this.channel = {blacklist: new Group(), errorMsg: null};
-        this.role = {blacklist: new Group(), errorMsg: null};
-        this.user = {blacklist: new Group(), errorMsg: null};
+        this.globalUser = {blacklist: new SuperSet(), errorMsg: null};
+        this.server = {blacklist: new SuperSet(), errorMsg: null};
+        this.channel = {blacklist: new SuperSet(), errorMsg: null};
+        this.role = {blacklist: new SuperSet(), errorMsg: null};
+        this.user = {blacklist: new SuperSet(), errorMsg: null};
         this.commands = [];
     }
 
