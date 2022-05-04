@@ -1,15 +1,15 @@
 module.exports = async d => {
-    let {code, result, inside} = d.util.openFunc(d);
+    let data = d.util.openFunc(d);
 
-    const [def = '#ffffff'] = inside.splits;
+    const [def = 'default'] = data.inside.splits;
 
     if (!d.author?.accentColor) {
-        await d.author?.fetch()
+        await d.author?.fetch({force:true})
     }
 
-    result = d.author?.hexAccentColor ?? def;
+    data.result = d.author?.hexAccentColor ?? def;
 
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }

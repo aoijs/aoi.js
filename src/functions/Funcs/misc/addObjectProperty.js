@@ -10,9 +10,11 @@ module.exports = async d => {
     } catch (e) {
         value = value
     }
-    eval(`d.object.${name} = value`)
+    const object = d.object
+    eval(`object.${name} = value`)
+    
     return {
         code: d.util.setCode({function: d.func, inside, code}),
-        object: d.object
+        object,
     }
 }
