@@ -136,6 +136,7 @@ class LoadCommands {
                 }
 
                 cmd.load = true;
+                cmd.__path__ = name.split(PATH.sep).slice(-2).join(PATH.sep);
 
                 try {
                     if (client instanceof CommandManager) {

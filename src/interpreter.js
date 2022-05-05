@@ -100,6 +100,7 @@ const Interpreter = async (
     let returnData = {};
     command.codeLines =
       command.codeLines || client.functionManager.serializeCode(command.code);
+       command.codelines = command.codeLines?.reverse();
     let funcs = command.functions?.length
       ? command.functions
       : client.functionManager.findFunctions(command.code);
@@ -137,9 +138,9 @@ const Interpreter = async (
       funcLine =
         command.codeLines.length -
         command.codeLines
-          ?.reverse()
-          .findIndex((x) =>
-            x.toLowerCase().split(" ").includes(func.toLowerCase()),
+          .findIndex((x) =>{
+            return x.toLowerCase().includes(func.toLowerCase())
+          }
           );
 
       const functionObj = client.functionManager.cache.get(
@@ -175,6 +176,7 @@ const Interpreter = async (
               error: command.error,
               async: command.async || false,
               functions: command.functions,
+              __path__ : command.__path__,
               codeLines: command.codeLines,
             },
             helpers: {
@@ -332,6 +334,7 @@ const Interpreter = async (
               error: command.error,
               async: command.async || false,
               functions: command.functions,
+              __path__ : command.__path__,
               codeLines: command.codeLines,
             },
             helpers: {
@@ -475,6 +478,7 @@ const Interpreter = async (
       }
 
       code = FuncData?.code ?? code;
+      command.codeLines = code.split("\n").reverse();
 
       if (FuncData?.randoms) {
         randoms = FuncData.randoms;
