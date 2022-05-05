@@ -26,7 +26,7 @@ module.exports = async (d) => {
 
     if (returnSticker === "yes") d.stickers.push(sticker);
     return {
-        code: d.util.setCode({function: d.func, code, inside, result}),
+        code: d.util.setCode({function: d.func, code, inside}),
         sticker: d.stickers,
     };
 };
