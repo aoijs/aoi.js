@@ -70,7 +70,19 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
           }
           d.client.db.set(d.client.db.tables[0], "setTimeout", t.__id__, t);
         } else {
-          console.log("del")
+          for(const cmd of cmds) {
+          await d.interpreter(
+            d.client,
+            {},
+            [],
+            cmd,
+            d.client.db,
+            false,
+            undefined,
+            { timeoutData: t },
+          );
+          }
+          //console.log("del")
           await d.client.db.delete(d.client.db.tables[0], data.key);
           continue;
         }

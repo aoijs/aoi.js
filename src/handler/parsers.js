@@ -530,6 +530,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       embeds: send ? embeds : [],
       content:
         errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+        files,
       options: {
         reactions: reactions.length ? reactions : undefined,
         suppress,
