@@ -6,7 +6,7 @@ module.exports = async d => {
     const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-    data.result = [...guild.roles.cache.sort((a, b) => a.position - b.position)][0]?.id;
+    data.result = [...guild.roles.cache.sort((a, b) => a.position - b.position)][1]?.[0];
 
     return {
         code: d.util.setCode(data)
