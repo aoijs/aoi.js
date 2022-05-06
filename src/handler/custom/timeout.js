@@ -34,7 +34,8 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
         let t;
 
         if (d.client.db instanceof AoijsAPI) {
-          t = data.data.value;
+          if(d.client.db.type === "aoi.db") t = data.value;
+          else t = data.data.value;
         } else if (d.client.db instanceof DbdTsDb) {
           t = data["setTimeout"];
         } else if (
@@ -69,6 +70,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
           }
           d.client.db.set(d.client.db.tables[0], "setTimeout", t.__id__, t);
         } else {
+          console.log("del")
           await d.client.db.delete(d.client.db.tables[0], data.key);
           continue;
         }
@@ -76,7 +78,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
     } catch (e) {
       AoiError.consoleError(
         "DatabaseSupportError",
-        "Database Not Supported , You Can Create An Issue At aoi.js Github.",
+        "Database Not Supported , You Can Create An Issue At aoi.js Github. \n Error : " +e,
       );
       console.log("Link : https://github.com/aoijs/aoi.js");
     }
