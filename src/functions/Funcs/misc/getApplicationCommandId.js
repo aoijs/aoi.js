@@ -14,7 +14,7 @@ module.exports = async d => {
 
         const all = await guild.commands.fetch();
 
-        data.result = all.find(x => x.name === name.addBrackets().toLowerCase())?.id;
+        data.result = all.find(x => x.name.toLowerCase() === name.addBrackets().toLowerCase())?.id;
     }
 
     return {
