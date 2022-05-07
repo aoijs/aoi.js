@@ -110,14 +110,39 @@ class AoijsAPI extends Database {
   }
   async set(table, name, id, value) {
     if (this.type === "aoi.db") {
-      await this.db.set(table, id ? `${name}_${id}` : name, { value });
+      if (this.extraOptions.dbType === "KeyValue") {
+        await this.db.set(table, id ? `${name}_${id}` : name, { value });
+      } else if (this.extraOptions.dbType === "WideColumn") {
+        return await this.db.set(
+          table,
+          { name: name, value },
+          { name: "id", value: id },
+        );
+      } else if (this.extraOptions.dbType === "Transmmiter") {
+        if(this.extraOptions.dbOptions.databaseType === "KeyValue") 
+        return await this.db.set(table, name, id);
+        else if(this.extraOptions.dbOptions.databaseType === "WideColumn")
+                return await this.db.set(
+                  table,
+                  { name: name, value },
+                  { name: "id", value: id },
+                );
+      }
     } else {
       await super.set(table, name, id, value);
     }
   }
   async get(table, name, id) {
     if (this.type === "aoi.db") {
+      if(this.extraOptions.dbType === "KeyValue"){
       return await this.db.get(table, id ? `${name}_${id}` : name);
+      }
+      else if(this.extraOptions.dbType === "WideColumn"){
+        return await this.db.get(table,name,id);
+      }
+      else if(this.extraOptions.dbType === "Transmmiter"){
+        return await this.db.get(table,name,id);
+      }
     } else {
       return await super.get(table, name, id);
     }
@@ -127,9 +152,9 @@ class AoijsAPI extends Database {
       return await this.db.all(
         table,
         (x) =>
-          x.key.startsWith(`${varname}_`) &&
+          x.startsWith(`${varname}_`) &&
           (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
-          (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
+          (funconId ? this.checkConditionOnId(x, ...funconId) : true),
         Infinity,
       );
     } else {

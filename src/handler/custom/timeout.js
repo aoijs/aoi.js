@@ -10,7 +10,6 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
   let cmds = d.client.cmd.timeout.allValues();
   if (onReady) {
     const datas = await d.client.db.all(d.client.db.tables[0], "setTimeout");
-
     try {
       for (const data of datas.filter((x) => {
         if (d.client.db instanceof AoijsAPI) {
@@ -82,7 +81,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
             { timeoutData: t },
           );
           }
-          //console.log("del")
+          console.log("del")
           await d.client.db.delete(d.client.db.tables[0], data.key);
           continue;
         }
