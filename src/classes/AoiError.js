@@ -116,7 +116,10 @@ class AoiError {
           options.files?.length === 0
         )
           return;
-        msg = await channel.reply(options);
+        msg = await channel.reply(options).catch((e) => {
+          this.consoleError("CreateMessageError", e);
+          return undefined;
+        });;
       } else {
         if (
           options.content === " " &&
@@ -125,7 +128,10 @@ class AoiError {
           (options.stickers?.length ?? 0) === 0
         )
           return;
-        msg = await channel.send(options);
+        msg = await channel.send(options).catch(e => {
+          this.consoleError("CreateMessageError", e);
+          return undefined;
+        });
       }
     }
 

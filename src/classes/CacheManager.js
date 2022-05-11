@@ -49,5 +49,4 @@ class CacheManager {
     return Options.cacheWithLimits(managers);
   }
 }
-
 module.exports = CacheManager;
