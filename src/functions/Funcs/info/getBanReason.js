@@ -5,8 +5,8 @@ module.exports = async d => {
 
     const guild = await d.util.getGuild(d, guildId);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
-    
-    let banned = guild.bans.fetch(userId).catch(e => {
+
+    let banned = await guild.bans.fetch(userId).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Get Ban Data With Reason: ' + e);
     });
 
