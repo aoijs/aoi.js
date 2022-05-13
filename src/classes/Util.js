@@ -272,6 +272,14 @@ class Util {
         x.toString() === UserResolver,
     );
   }
+  static findRoles(
+    guild,
+    options = { type: "startsWith", query: "", limit: 10 },
+  ) {
+    return guild.roles.cache.filter(x => {
+      return x.name.toLowerCase()[options.type](options.query.toLowerCase());
+    }).first(options.limit);
+  }
 }
 Util.searchType = ["soundcloud", "localfile", "url", "youtube", "spotify"];
 module.exports = Util;

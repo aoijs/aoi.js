@@ -5,6 +5,7 @@ module.exports = (d) => {
 
   from = Number(from);
   to = to ? Number(to) : undefined;
+
   if (isNaN(from) || (to && isNaN(to)))
     return d.aoiError.fnError(
       d,
@@ -13,7 +14,7 @@ module.exports = (d) => {
       "Invalid Number Provided In",
     );
 
-  data.result = text.slice(from, to);
+  data.result = text.split(" ").slice(from, to).join(" ");
 
   return {
     code: d.util.setCode(data),
