@@ -7,7 +7,9 @@ module.exports = async d => {
     if (type === 'global') {
         const all = await d.client.application.commands.fetch();
 
-        data.result = all.find(x => x.toLowerCase().name === name.addBrackets().toLowerCase())?.id;
+        data.result = all.find(
+          (x) => x.name.toLowerCase() === name.addBrackets().toLowerCase(),
+        )?.id;
     } else {
         const guild = await d.util.getGuild(d, type);
         if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
