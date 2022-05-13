@@ -67,7 +67,7 @@ module.exports = async (d) => {
       guildId: guild?.id,
     };
   }
-  d.client.application.commands.create(data.data, data.guildId).catch((e) => {
+  await d.client.application.commands.create(data.data, data.guildId).catch((e) => {
     d.aoiError.fnError(
       d,
       "custom",
