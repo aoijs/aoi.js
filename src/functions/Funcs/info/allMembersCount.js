@@ -1,6 +1,6 @@
 module.exports = async d => {
     const {code} = d.command
-    const result = d.client.guilds.cache.map(x => x.memberCount ?? 0).reduce((a, b) => a + b)
+    const result = d.client.guilds.cache.map(x => x.memberCount ?? 0).reduce((a, b) => a + b,0)
     return {
         code: d.util.setCode({function: d.func, code, result})
     }
