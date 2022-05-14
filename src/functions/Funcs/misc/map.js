@@ -13,9 +13,10 @@ module.exports = async d => {
     if (!cmd) returnd.aoiError.fnError(d, 'custom', {inside: data.inside}, `Coundn't Find AwaitedCommand: ${awaits} In`);
 
     arr.forEach(async x => {
-        cmd.code = cmd.code.replaceAll('{value}', x);
+        const code = cmd.code.replaceAll('{value}', x);
+        const command = {...cmd,code}
 
-        res.push((await Interpreter(d.client, d.message, d.args, cmd, d.client.db, true))?.code);
+        res.push((await Interpreter(d.client, d.message, d.args, command, d.client.db, true))?.code);
     });
 
     data.result = res.join(sep.addBrackets()).deleteBrackets();
