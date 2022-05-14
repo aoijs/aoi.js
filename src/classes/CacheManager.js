@@ -46,7 +46,9 @@ class CacheManager {
     for (const [key, value] of Object.entries(cache)) {
       managers[CacheOptions[key]] = value;
     }
-    return Options.cacheWithLimits(managers);
+    const factory = Options.cacheWithLimits(managers);
+    console.log({factory})
+    return factory
   }
 }
 module.exports = CacheManager;
