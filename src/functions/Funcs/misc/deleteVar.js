@@ -6,7 +6,7 @@ module.exports = async d => {
 
     const [variable, id, table = d.client.db.tables[0]] = inside.splits;
 
-    if (!d.client.variableManager.cache.find(x => x.name === variable.addBrackets() && x.table === table.addBrackets())) return d.aoiError.fnError(d, "custom", {}, `Variable: ${variable.addBrackets()} Doesn't Exist In Table: ${table}`);
+    if (!d.client.variableManager.has(variable.addBrackets(),table)) return d.aoiError.fnError(d, "custom", {}, `Variable: ${variable.addBrackets()} Doesn't Exist In Table: ${table}`);
     d.client.db.delete(table, variable, id);
 
     return {
