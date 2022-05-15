@@ -8,7 +8,15 @@ module.exports = async d => {
 
     const variable = d.client.variableManager.get(varname,table);
 
-    if (!variable.checkType(value)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, `Variable "${varname.addBrackets()}" Needs Value Of Type "${variable.type}". Provided Wrong Type In`);
+    if (!variable.checkType(value.addBrackets()))
+      return d.aoiError.fnError(
+        d,
+        "custom",
+        { inside: data.inside },
+        `Variable "${varname.addBrackets()}" Needs Value Of Type "${
+          variable.type
+        }". Provided Wrong Type In`,
+      );
 
     value = d.client.variableManager.parseData(value, variable.type);
 

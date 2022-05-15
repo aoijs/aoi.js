@@ -49,6 +49,7 @@ module.exports = async (interaction, client) => {
     channel: interaction.channel,
     author: interaction.author,
     member: interaction.member,
+    isAutocomplete: interaction.isAutocomplete(),
   };
   for (const cmd of cmds) {
     if (cmd.name?.includes("$")) {
