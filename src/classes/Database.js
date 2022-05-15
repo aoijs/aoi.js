@@ -111,6 +111,7 @@ class AoijsAPI extends Database {
   async set(table, name, id, value) {
     if (this.type === "aoi.db") {
       if (this.extraOptions.dbType === "KeyValue") {
+                console.log({a:"A",value});
         await this.db.set(table, id ? `${name}_${id}` : name, { value });
       } else if (this.extraOptions.dbType === "WideColumn") {
         return await this.db.set(
