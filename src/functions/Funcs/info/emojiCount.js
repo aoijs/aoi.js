@@ -15,7 +15,7 @@ module.exports = async (d) => {
         type === "animated"
           ? x.animated
           : type === "roles"
-          ? x.roles.size
+          ? x.roles.cache.size
           : type === "normal"
           ? !x.animated
           : type === "all"
