@@ -24,7 +24,7 @@ module.exports = async (d) => {
     );
   }
 
-  await channel.stageInstance.delete().cathc((e) => {
+  await channel.stageInstance.delete().catch((e) => {
     d.aoiError.fnError(
       d,
       "custom",
