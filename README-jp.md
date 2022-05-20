@@ -21,7 +21,7 @@
 
 [Preview](https://aoi.js.org/docs/example.md)
 
-[English](./README.md) | Japanese | [Spanish](./README-spanish.md)
+[English](./README.md) | Japanese | [Spanish](./README-spanish.md) | [Hindi](./README-hindi.md)
 
 </div>
 
