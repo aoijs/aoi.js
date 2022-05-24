@@ -51,8 +51,8 @@ yarn add aoi.js
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
-token: "DISCRD BOT TOKEN",
-prefix: "DISCRD BOT PREFIX",
+token: "DISCORD BOT TOKEN",
+prefix: "DISCORD BOT PREFIX",
 intents: ["GUILDS", "GUILD_MESSAGES"]
 })
 
@@ -74,23 +74,8 @@ bot.readyCommand({
 
 ### Optional Packages
 
-
 - [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) for Music Functions to function (`npm install @akarui/aoi.music`)
 - [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
-
-## Made Possible by Akarui Development
-
-<p align="center">
-  <a href="https://aoi.js.org/invite">
-    <img width="350" src="https://cdn.discordapp.com/attachments/804813961190572093/909447704978001931/Akarui_Development_Banner.png">
-  </a>
-</p>
-
-<div align="center">  
-
-**A Development Team with experienced Developers, created by [Leref](https://leref.ga) creating easy and simple packages**
-
-</div>
     
 ## Links
 - [Website](https://aoi.js.org)
