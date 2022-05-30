@@ -31,6 +31,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
   - [Setup](#setup)
 - [Events](#events)
 - [Database](#database)
+- [Music Integration](#music-integration)
 - [Links](#links)
 
 ## Features
@@ -114,7 +115,6 @@ const bot = new aoijs.Bot({
 token: "DISCORD BOT TOKEN",
 prefix: "DISCORD BOT PREFIX",
 intents: ["GUILDS", "GUILD_MESSAGES"],
-})
 
 //INSERT THE FOLLOWING CODE
 
@@ -124,7 +124,19 @@ intents: ["GUILDS", "GUILD_MESSAGES"],
     path: "./database/",
     tables: ["main"],
   }
+})
 ```
+
+## Music Integration
+
+Use this on your precaution, we do not endorse anything or affilated with, we only add support towards it.
+
+Do you want to make your Discord Bot different from others, possibily with the ability to play/stream music, it's simple and easy to use!
+
+```php
+$playTrack[type;name] - To play a track from the available third parties supported. 
+```
+More information in our [documentation](https://akarui.leref.ga/v/5/guide/extras/music)
 
 ### Optional Extensions
 
