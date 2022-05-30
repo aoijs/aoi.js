@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**The most advanced package to create a Discord Bot fast and powerful.**
+**The most advanced string-based package to create a Discord Bot fast and powerful.**
     
 [![NPM version][npm-image]][npm-url]
 [![AoiJS Server][aoijs-server]][aoijs-server-url]
@@ -24,6 +24,14 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 [aoijs-server-url]: https://aoi.js.org/invite
     
 </div>
+
+## Table of Content
+- [Features](#features) 
+- [Installation](#installation)
+  - [Setup](#setup)
+- [Events](#events)
+- [Database](#database)
+- [Links](#links)
 
 ## Features
 
@@ -99,6 +107,17 @@ bot.readyCommand({ //Event Command
 With aoi.js powerful integration of database support, it has allowed several custom databases to work aside with aoi.js. An example is using the default database (this isn't needed as, it's premade)
 
 ```javascript
+
+const aoijs = require("aoi.js")
+
+const bot = new aoijs.Bot({
+token: "DISCORD BOT TOKEN",
+prefix: "DISCORD BOT PREFIX",
+intents: ["GUILDS", "GUILD_MESSAGES"],
+})
+
+//INSERT THE FOLLOWING CODE
+
   database: {
     db: require("dbdjs.db"),
     type: "dbdjs.db",
