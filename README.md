@@ -27,14 +27,14 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 
 ## Features
 
-- Built-in support of Music Functions
-- Built-in support of Multiple interactions commands
-- Built-in support of Custom Functions Integrated
-- 500+ built-in functions available
+- Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurposes.
+- Built-in 500+ functions, simple and easy to learn.
+- Simple to learn, all in string based and compact.
+- Support of extensions available to be used by the community.
 
 ## Installation
 
-**Node.JS 16.6.0 or newer is required.**  
+**node.js 16.6.0 or newer is required.**  
 
 
 ```bash
@@ -45,7 +45,7 @@ npm install aoi.js
 yarn add aoi.js
 ```
 
-## Example usage
+## Setup
 
 ```js
 const aoijs = require("aoi.js")
@@ -72,14 +72,24 @@ bot.readyCommand({
 })
 ```
 
-### Optional Packages
+## Function usage Example
 
-- [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) for Music Functions to function (`npm install @akarui/aoi.music`)
-- [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
+```php
+$authorID - Return the author ID/the userID who executed the function
+```
+
+## How does it work?
+
+It fairly simple, by using `$` as a sense of a function to execute per say it's run by a command.
+By using `$` after the function name, and it's addtional fields, (if any) it'll work as intended by it function 
+
+### Optional Extensions
+
+- [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
     
 ## Links
 - [Website](https://aoi.js.org)
 - [NPM](https://www.npmjs.com/package/aoi.js)
 - [Github](https://github.com/AkaruiDevelopment/aoi.js)
-- [Discord Server](https://discord.gg/HMUfMXDQsV)
+- [Discord Support Server](https://discord.gg/HMUfMXDQsV)
 - [Documentation](https://akarui.leref.ga/v/aoi.js/)
