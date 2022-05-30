@@ -72,16 +72,27 @@ bot.readyCommand({
 })
 ```
 
-## Function usage Example
+### Function usage Example
 
 ```php
 $authorID - Return the author ID/the userID who executed the function
 ```
 
-## How does it work?
+### How does it work?
 
-It fairly simple, by using `$` as a sense of a function to execute per say it's run by a command.
+It's fairly simple, by using `$` as a sense of a function to execute per say it's run by a command.
 By using `$` after the function name, and it's addtional fields, (if any) it'll work as intended by it function 
+
+## Events
+
+Events are the most important factor in creating a Discord Bot. This helps developers create certain events to occur within their Client. There are several events within aoi.js, an example event is when the Client is ready and logged onto the API.
+
+```javascript
+bot.readyCommand({ //Event Command
+    channel: "Channel ID", //The channel where the Client will log. (optional)
+    code: `Code to execute` //This can be a message or code to execute.
+})
+```
 
 ### Optional Extensions
 
