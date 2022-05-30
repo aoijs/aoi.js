@@ -90,7 +90,7 @@ $authorID - Return the author ID/the userID who executed the function
 ### How does it work?
 
 It's fairly simple, by using `$` as a sense of a function to execute per say it's run by a command.
-By using `$` after the function name, and it's addtional fields, (if any) it'll work as intended by it function 
+By using `$` after the function name, and it's addtional fields, (if any) it'll work as intended by it function.
 
 ## Events
 
@@ -105,7 +105,7 @@ bot.readyCommand({ //Event Command
 
 ## Database
 
-With aoi.js powerful integration of database support, it has allowed several custom databases to work aside with aoi.js. An example is using the default database (this isn't needed as, it's premade)
+With aoi.js powerful integration of database support, it has allowed several custom databases to work aside with aoi.js. Below is an example using the default database, this is not needed.
 
 ```javascript
 
@@ -141,6 +141,12 @@ More information in our [documentation](https://akarui.leref.ga/v/5/guide/extras
 ### Optional Extensions
 
 - [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
+    
+## Disclaimer
+    
+aoi.js is not affilated or associated with Discord or any other services.
+
+aoi.js is managed by [Akarui Development Team](https://discord.gg/HMUfMXDQsV)   
     
 ## Links
 - [Website](https://aoi.js.org)
