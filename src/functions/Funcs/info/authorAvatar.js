@@ -1,13 +1,9 @@
 module.exports = async d => {
-    const {code} = d.command
-    const inside = d.unpack()
-    let [size = 4096, dynamic = "yes", format = "webp"] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    const [size = 4096, dynamic = "yes", format = "webp"] = data.inside.splits;
+
+    data.result = d.author?.displayAvatarURL({size: Number(size), dynamic: dynamic === 'yes', format})
     return {
-        code: d.util.setCode({
-            function: d.func,
-            code,
-            inside,
-            result: d.author?.displayAvatarURL({size: Number(size), dynamic: dynamic === 'yes', format})
-        })
+        code: d.util.setCode(data)
     }
 }

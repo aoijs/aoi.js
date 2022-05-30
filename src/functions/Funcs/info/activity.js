@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     const [id = d.author?.id, guildId = d.guild?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildId);
@@ -9,7 +9,6 @@ module.exports = async (d) => {
     if (!u) return d.aoiError.fnError(d, "member", {inside: data.inside})
 
     data.result =  u.presence?.activities?.join(", ")?.deleteBrackets() || "none"
-
     return {
         code: d.util.setCode(data)
     }

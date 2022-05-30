@@ -1,15 +1,13 @@
 module.exports = async d => {
-    let {code, result, inside} = d.util.openFunc(d);
-
-    const [def = '#ffffff'] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    const [def = '#ffffff'] = data.inside.splits;
 
     if (!d.author?.accentColor) {
         await d.author?.fetch()
     }
 
-    result = d.author?.hexAccentColor ?? def;
-
+    data.result = d.author?.hexAccentColor ?? def
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }
