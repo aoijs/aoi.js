@@ -1,14 +1,9 @@
 const { Time } = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-  const { code } = d.command;
-  const inside = d.unpack();
-
-  const err = d.inside(inside);
-  if (err) return d.error(err);
-
-  let [userfilter, time, reactions, commands, errorMsg = "", data = ""] =
-    inside.splits;
+  const data = d.util.aoiFunc(d);
+  let [userfilter, time, reactions, commands, errorMsg = "", awaitData = ""] =
+    data.inside.splits;
 
   reactions = reactions.split(",");
 
@@ -42,11 +37,11 @@ module.exports = async (d) => {
       );
   });
 
-  if (data !== "") {
+  if (awaitData !== "") {
     try {
-      data = JSON.parse(data);
+      awaitData = JSON.parse(awaitData);
     } catch (e) {
-      d.aoiError.fnError(d, "custom", { inside }, "Invalid Data Provided In");
+      d.aoiError.fnError(d, "custom", { inside: inside.data }, "Invalid Data Provided In");
     }
   }
   d.message
@@ -76,7 +71,7 @@ module.exports = async (d) => {
         d.client.db,
         false,
         undefined,
-        {  ...d.data,awaitData: data },
+        {  ...d.data,awaitData: awaitData },
       );
     })
     .catch(async (err) => {
@@ -86,6 +81,6 @@ module.exports = async (d) => {
       } else d.aoiError.consoleError("$awaitCmdReactions", err);
     });
   return {
-    code: d.util.setCode({ function: d.func, code, inside }),
+    code: d.util.setCode(data),
   };
 };

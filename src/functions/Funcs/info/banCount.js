@@ -1,16 +1,16 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const [guildId = d.guild.id] = inside.splits;
-    const guild = await d.util.getGuild(d, guildId)
+    const data = d.util.aoiFunc(d);
+    let [guildID = d.guild.id] = data.inside.splits;
+
+    const guild = await d.util.getGuild(d, guildID)
     let result;
-    result = await guild.bans.fetch().catch(err => {
+    data.result = await guild.bans.fetch().catch(err => {
         result = 0;
         d.aoiError.fnError(d, "custom", {}, "Failed To Fetch Bans");
     })
-    result = isNaN(result) ? result.size : result;
+    data.result = isNaN(data.result) ? data.result.size : data.result;
 
     return {
-        code: d.util.setCode({code, inside, function: d.func, result})
+        code: d.util.setCode(data)
     }
 }

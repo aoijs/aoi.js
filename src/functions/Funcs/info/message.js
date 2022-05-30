@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const {code, inside} = d.util.openFunc(d);
+    const {code, inside} = d.util.aoiFunc(d);
 
     const [args] = inside.splits;
 
