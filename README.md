@@ -94,6 +94,19 @@ bot.readyCommand({ //Event Command
 })
 ```
 
+## Database
+
+With aoi.js powerful integration of database support, it has allowed several custom databases to work aside with aoi.js. An example is using the default database (this isn't needed as, it's premade)
+
+```javascript
+  database: {
+    db: require("dbdjs.db"),
+    type: "dbdjs.db",
+    path: "./database/",
+    tables: ["main"],
+  }
+```
+
 ### Optional Extensions
 
 - [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
