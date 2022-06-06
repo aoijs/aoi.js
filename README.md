@@ -25,7 +25,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
     
 </div>
 
-## Table of Content
+## Table of Contents
 - [Features](#features) 
 - [Installation](#installation)
   - [Setup](#setup)
@@ -56,7 +56,7 @@ yarn add aoi.js
 
 ## Setup
 
-```js
+```javascript
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.Bot({
@@ -72,6 +72,16 @@ bot.onMessage()
 bot.command({
 name: "ping",
 code: `Pong! $pingms`
+})
+
+//Slash Interaction Command Example (ping)
+/*MUST EXECUTE FUNCTION FOR IT TO WORK
+$createApplicationCommand[$guildID;ping;Pong!;true;slash]
+*/
+bot.interactionCommand({
+  name: "ping",
+  prototype: 'slash',
+  code: `$interactionReply[Pong! $pingms]`
 })
 
 //Ready Event
