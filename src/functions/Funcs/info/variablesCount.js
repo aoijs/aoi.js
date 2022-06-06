@@ -1,9 +1,9 @@
 module.exports = d => {
-    let {code, result} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    result = d.client.variableManager.size;
+    data.result = d.client.variableManager.size;
 
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }
