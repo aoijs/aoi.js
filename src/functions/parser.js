@@ -27,7 +27,7 @@ fs.readdirSync(__dirname + "/Funcs").map((x) => {
         res.join("=").replace("let", "").replace("const", "").trim(),
       );
     } else if (!lines) {
-      grp.set(`$${file.replace(".js", "").toLowerCase()}`, "usage not found");
+      grp.set(`$${file.replace(".js", "").toLowerCase()}`, "Usage not found");
     } else {
       const usagepart =
         codeLines[codeLines.findIndex((z) => z.includes("inside.splits")) - 1];

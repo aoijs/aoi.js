@@ -1,7 +1,7 @@
 const {Webhook} = require("../../../utils/helpers/functions");
 
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [id, option = 'name'] = data.inside.splits;
