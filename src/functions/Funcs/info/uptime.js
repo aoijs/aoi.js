@@ -1,7 +1,7 @@
 const {Time} = require('../../../utils/helpers/customParser.js');
 
 module.exports = d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     const [option = 'full'] = data.inside.splits;
 
