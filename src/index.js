@@ -19,6 +19,7 @@ module.exports = {
    */
   ////Bot: Client,
   Bot: Client,
+  AoiClient: Client,
   /**
    * *  Custom Events Class
    * @example new CustomEvent(client (eg: bot))
