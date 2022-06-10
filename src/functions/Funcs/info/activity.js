@@ -1,6 +1,6 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    const [id = d.author?.id, guildID = d.guild?.id] = data.inside.splits;
+    const [guildID = d.guild?.id, id = d.author?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: DataTransfer.inside});
