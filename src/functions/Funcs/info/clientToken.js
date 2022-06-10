@@ -1,7 +1,8 @@
 module.exports = async d => {
-    const {code} = d.command;
+    const data = d.util.aoiFunc(d);
 
+    data.result = d.client.token
     return {
-        code: d.util.setCode({function: d.func, code, result: d.client.token})
+        code: d.util.setCode(data)
     }
 } 

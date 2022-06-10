@@ -1,13 +1,13 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    const [userId = d.author?.id, guildId = d.guild?.id] = data.inside.splits;
+    const [userID = d.author?.id, guildID = d.guild?.id] = data.inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-    let banned = guild.bans.cache.find(x => x.user.id = userId);
-    if (!banned) banned = guild.bans.fetch(userId).catch(e => {
+    let banned = guild.bans.cache.find(x => x.user.id = userID);
+    if (!banned) banned = guild.bans.fetch(userID).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Get Ban Data With Reason: ' + e);
     });
 

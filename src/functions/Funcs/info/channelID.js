@@ -1,12 +1,9 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
+    const data = d.util.aoiFunc(d);
+    const [name] = data.inside.splits;
 
-    const [name] = inside.splits;
-
-    const result = name ? d.client.channels.cache.find(x => x.name.toLowerCase() === name.toLowerCase().addBrackets())?.id : d.channel?.id;
-
+    data.result = name ? d.client.channels.cache.find(x => x.name.toLowerCase() === name.toLowerCase().addBrackets())?.id : d.channel?.id;
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 }

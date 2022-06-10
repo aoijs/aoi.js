@@ -1,15 +1,14 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
+    const data = d.util.aoiFunc(d);
 
-    const [channelId = d.channel.id] = inside.splits;
+    const [channelID = d.channel.id] = data.inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    const channel = await d.util.getChannel(d, channelID);
+    if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
-    const result = channel.topic?.addBrackets() ?? "none";
+    data.result = channel.topic?.addBrackets() ?? "none";
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 }

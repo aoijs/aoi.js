@@ -1,11 +1,9 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const [seperator = " , "] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    const [seperator = " , "] = data.inside.splits;
 
-    const result = d.client.aoiOptions.Owner.join(seperator);
-
+    data.result = d.client.aoiOptions.Owner.join(seperator);
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 } 
