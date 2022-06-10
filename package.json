@@ -37,7 +37,7 @@
     "bot",
     "functions",
     "music",
-    "lavalink",
+    "aoi.music",
     "bdfd",
     "Bot Designer for Discord",
     "discord",
@@ -47,8 +47,7 @@
     "aoi.db": "^0.0.1-dev",
     "axios": "^0.24.0",
     "dbdjs.db": "^2.0.2",
-    "discord.js": "^13.8.0",
-    "leref.ts": "^1.1.1"
+    "discord.js": "^13.8.0"
   },
   "devDependencies": {
     "@akarui/aoi.music": "^1.2.0",
