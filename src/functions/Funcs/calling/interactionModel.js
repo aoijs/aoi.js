@@ -1,0 +1,29 @@
+const { ComponentParser } = require("../../../handler/parsers.js");
+
+module.exports = async (d) => {
+  const data = d.util.aoiFunc(d);
+  if (data.err) return d.error(data.err);
+
+  const [title, customId, components] = data.inside.splits;
+
+  const parsedComponents = await ComponentParser(components, d.client);
+
+  await d.data.interaction
+    .showModal({
+      title: title.addBrackets(),
+      customId: customId.addBrackets(),
+      components: parsedComponents,
+    })
+    .catch((e) => {
+      d.aoiError.fnError(
+        d,
+        "custom",
+        {},
+        "Failed to render modals with reason: " + e,
+      );
+    });
+
+  return {
+    code: d.util.setCode(data),
+  };
+};
