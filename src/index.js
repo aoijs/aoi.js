@@ -2,7 +2,6 @@ const Client = require("./classes/AoiClient");
 const CustomEvent = require("./classes/NewEvent.js");
 const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
-const Lavalink = require("./classes/Lavalink.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 const Voice = require("./classes/Voice.js");
@@ -33,16 +32,6 @@ module.exports = {
   LoadCommands,
   ClientShard,
   Voice,
-  /**
-     * * Lavalink
-     * @example new addNode({
-    url: "localhost:443",
-    password: "password",
-    name: "aoi.js",
-    secure: false,
-})
-     **/
-  Lavalink,
   // * AoiError Class
   AoiError,
   // * Util Class
