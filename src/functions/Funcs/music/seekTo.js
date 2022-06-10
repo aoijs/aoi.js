@@ -1,7 +1,7 @@
 const { Time } = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   let [number] = data.inside.splits;
   number = isNaN(number) ? Time.parse(number)?.ms : Number(number);
@@ -22,7 +22,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   player.filterManager.seekTo(Math.trunc(number / 1000));

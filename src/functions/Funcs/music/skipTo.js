@@ -3,7 +3,7 @@
  * @returns {Promise<{code: string}>}
  */
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   let [number] = data.inside.splits;
   number = Number(number);
@@ -24,7 +24,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   player.skipTo(number);

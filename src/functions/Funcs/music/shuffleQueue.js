@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   if (!d.client.voiceManager)
     return d.aoiError.fnError(d, "custom", {}, "Voice Class Not Initialized");
@@ -10,7 +10,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Bot Isn't Connected to Voice/Stage",
+      "Client is not connected to Voice/Stage.",
     );
 
   player.shuffleQueue();

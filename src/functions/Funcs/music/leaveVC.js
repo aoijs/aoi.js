@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const { code } = d.util.openFunc(d);
+  const { code } = d.util.aoiFunc(d);
 
   const state = d.client.voiceManager?.manager.players.get(d.guild.id);
 
@@ -8,7 +8,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      `Bot is not in any voice channel`,
+      `Client is not connected to Voice/Stage.`,
     );
   const msgId = d.client.voiceManager.prunes.get(state.textChannel.id);
   if (msgId) {

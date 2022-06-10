@@ -1,7 +1,7 @@
 const { Time } = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   const [leaveWhenDone = "no",leaveWhenDoneAfter = 60000,seekWhenFilter = "no",] = data.inside.splits;
 
@@ -14,7 +14,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Bot Isn't Connected to Voice/Stage",
+      "Client is not connected to Voice/Stage.",
     );
   d.client.voiceManager.manager.players.get(d.guild?.id).options.leaveAfter = {
     enabled: leaveWhenDone === "yes",

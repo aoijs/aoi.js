@@ -1,7 +1,7 @@
 const Util = require("../../../classes/Util.js");
 
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
   let [type, track] = data.inside.splits;
@@ -20,7 +20,7 @@ module.exports = async (d) => {
       d,
       "custom",
       { inside: data.inside },
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   const trackid = await player.search(track.addBrackets(), type);

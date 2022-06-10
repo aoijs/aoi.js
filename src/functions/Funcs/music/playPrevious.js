@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   const [type, track] = data.inside.splits;
 
@@ -16,7 +16,7 @@ module.exports = async (d) => {
       d,
       "custom",
       { inside: data.inside },
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   await player

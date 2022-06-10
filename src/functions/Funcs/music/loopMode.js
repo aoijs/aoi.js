@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   const [mode = "queue"] = data.inside.splits;
 
@@ -25,7 +25,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   player.loop(mode);

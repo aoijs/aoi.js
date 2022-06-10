@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   const [
     voiceId = d.member.voice?.channelId,
@@ -16,7 +16,7 @@ module.exports = async (d) => {
       d,
       "custom",
       { inside: data.inside },
-      "Provided ChannelId Is Not Voice/Stage Channel In",
+      "Provided channelID is not Voice/Stage Channel In",
     );
 
   if (!d.client.voiceManager)
@@ -39,7 +39,7 @@ module.exports = async (d) => {
     d.guild.me.voice.setSuppressed(false);
     }
   } catch (e) {
-    d.aoiError.fnError(d, "custom", {}, "Failed To Join Vc With Reason: " + e);
+    d.aoiError.fnError(d, "custom", {}, "Failed To Join VC With Reason: " + e);
   }
 
   return {

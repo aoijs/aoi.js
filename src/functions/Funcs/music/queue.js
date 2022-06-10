@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   const [page = 1, limit = 10, response = "[{title}]({url}) | <@{user.id}>"] =
     data.inside.splits;

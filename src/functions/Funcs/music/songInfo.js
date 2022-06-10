@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   let [response = "title", position = "current"] = data.inside.splits;
 
@@ -18,7 +18,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
 
   if (position === "current") {

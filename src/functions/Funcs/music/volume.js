@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.openFunc(d);
+  const data = d.util.aoiFunc(d);
 
   let [volume = "getVolume"] = data.inside.splits;
   if (isNaN(volume) && volume !== "getVolume")
@@ -20,7 +20,7 @@ module.exports = async (d) => {
       d,
       "custom",
       {},
-      "Client Is Not Connected To Voice/Stage.",
+      "Client is not connected to Voice/Stage.",
     );
   if (volume === "getVolume")
     data.result =
