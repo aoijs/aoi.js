@@ -85,7 +85,7 @@ class AoijsAPI extends Database {
                 deleteTime: 4,
             });
             this.db.connect();
-            console.log("Database has been established.")
+            console.log("\x1b[32mDatabase has been established.\x1b[0m")
 
             this.module = aoiDb;
         } else if (type === "dbdjs.mongo") {
