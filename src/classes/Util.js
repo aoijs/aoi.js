@@ -128,18 +128,7 @@ class Util {
     if (typeof errorM === "object") return errorM;
     const parsers = require("../handler/parsers.js");
     try {
-      let e = errorM
-        .replaceAll("\n", "\\n")
-        .replace(/({)(\s*)\\n(\s*)(")/gi, '{\n"')
-        .replace(/"(\s*)\\n(\s*)}/gi, '"\n}')
-        .replace(/\[(\s*)\\n(\s*){/gi, "[\n{")
-        .replace(/](\s*)\\n(\s*)}/gi, "]\n}")
-        .replace(/](\s*)\\n(\s*)"/gi, ']\n"')
-        .replace(/}(\s*)\\n(\s*)]/gi, "}\n]")
-        .replace(/,(\s*)\\n(\s*)/gi, ",\n")
-        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}")
-        .replace(/((})((\s*)\\n(\s*)(})))+/g, "}\n}");
-
+      let e = errorM;
       error = JSON.parse(e);
       if (error.embeds?.includes("{newEmbed:")) {
         error.embeds = await parsers.EmbedParser(error.embeds || "");
@@ -205,9 +194,10 @@ class Util {
       (await this.getUser(d, id)) ||
       (await this.getChannel(d, id, false)) ||
       (await this.getMessage(d.channel, id)) ||
+      this.findRole(d.guild, id) ||
       this.getEmoji(d, id) ||
       this.getSticker(d.guild, id) ||
-      "nope"
+      undefined
     );
   }
 
@@ -282,6 +272,63 @@ class Util {
         x.toString() === UserResolver,
     );
   }
+  static findRoles(
+    guild,
+    options = { type: "startsWith", query: "", limit: 10 },
+  ) {
+    return guild.roles.cache
+      .filter((x) => {
+        return x.name.toLowerCase()[options.type](options.query.toLowerCase());
+      })
+      .first(options.limit);
+  }
 }
-Util.searchType = ["soundcloud", "localfile", "url", "youtube"];
+Util.searchType = ["soundcloud", "localfile", "url", "youtube", "spotify"];
+Util.audioFilters = {
+  nightcore: (value) => {
+    return {
+      asetrate: 48000 * value,
+      aresample: 48000,
+    };
+  },
+  bassboost: (value) => {
+    return {
+      bass: `g=${value}`,
+    };
+  },
+  "8d": () => {
+    return {
+      extrastereo: "",
+      aecho: "1:1:40:0.5",
+      apulsator: "hz=0.125",
+      stereowiden: "",
+    };
+  },
+  pitch: (value) => {
+    return {
+      asetrate: 48000 * value,
+      atempo: 1 - Number(`${value}`.split(".")[1]),
+      aresample: 48000,
+    };
+  },
+  karaoke: (value) => {
+    return {
+      stereotools: `mlev=${0.015625 * value}`,
+    };
+  },
+  slowed: (value) => {
+    return {
+      asetrate: 48000 * Math.abs(Math.ceil(value) - value),
+      aresample: 48000,
+    };
+  },
+  deep: (value) => {
+    return {
+      asetrate: 48000 * Math.abs(Math.ceil(value) - value),
+      atempo: 2 - Math.abs(Math.ceil(value) - value),
+      aresample: 48000,
+    };
+  },
+};
+
 module.exports = Util;

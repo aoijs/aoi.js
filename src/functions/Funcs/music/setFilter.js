@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
+  const data = d.util.openFunc(d);
   if (data.err) return d.error(data.err);
 
   let [filter] = data.inside.splits;
@@ -15,6 +15,16 @@ module.exports = async (d) => {
       },
       "Invalid Filter Provided In",
     );
+  }
+
+  const filters = filter;
+
+  for (const f of Object.keys(filter)) {
+    if (d.util.audioFilters[f]) {
+      const fi = d.util.audioFilters[f](filter[f]);
+      filter = { ...filter, ...fi };
+      delete filter[f];
+    }
   }
 
   if (!d.client.voiceManager)
@@ -33,12 +43,9 @@ module.exports = async (d) => {
       {},
       "Client is not connected to Voice/Stage.",
     );
+  await player.filterManager.setFilters(filter);
 
-  data.result = JSON.stringify(
-    await player.filterManager.setFilters(filter),
-    null,
-    2,
-  );
+  data.result = JSON.stringify(filters, null, 2);
 
   return {
     code: d.util.setCode(data),

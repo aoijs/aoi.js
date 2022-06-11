@@ -1,25 +1,3 @@
-const customFilters = {
-  pitch(number) {
-    return {
-      atempo: 1.0,
-      asetrate: 48000 * number,
-      aresample: 48000 * number,
-    };
-  },
-  volume(number = 100) {
-    return {
-      volume: number / 100,
-    };
-  },
-  nightcore(number) {
-    return {
-      atempo: 1 * number,
-      asetrate: 48000 * number,
-      aresample: 48000,
-    };
-  },
-};
-
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
@@ -38,10 +16,11 @@ module.exports = async (d) => {
       "Invalid Filter Provided In",
     );
   }
-
+  const filters = filter;
   for (const f of Object.keys(filter)) {
-    if (customFilters[f]) {
-      filter = { ...filter, ...customFilters[f](filter[f]) };
+    if (d.util.audioFilters[f]) {
+      const fi = d.util.audioFilters[f](filter[f]);
+      filter = { ...filter, ...fi };
       delete filter[f];
     }
   }
@@ -62,12 +41,9 @@ module.exports = async (d) => {
       {},
       "Client is not connected to Voice/Stage.",
     );
+  await player.filterManager.addFilters(filter);
 
-  data.result = JSON.stringify(
-    await player.filterManager.addFilters(filter),
-    null,
-    2,
-  );
+  data.result = JSON.stringify(filters, null, 2);
 
   return {
     code: d.util.setCode(data),
