@@ -21,7 +21,7 @@ function getQuarterOfMonth(dateMSOrString) {
 // Now Making a Pain Generator, i feel pain, i wanna die
 
 module.exports = (format, date, timezone) => {
-    const aNewDate = new Date(date);
+    const aNewDate = new Date(new Date(date).toLocaleString('en-us',{timeZone: timezone}));
     switch (format) {
         // Months of Year
         case "M": {

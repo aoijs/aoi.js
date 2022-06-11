@@ -2,7 +2,7 @@ const { AoiError } = require("../../index.js");
 const Interpreter = require("../../interpreter.js");
 
 module.exports = async (Channel, client, voice) => {
-  const cmds = voice.cmd.trackResume.allValues();
+  const cmds = voice.cmd.trackPause.allValues();
   for (const cmd of cmds) {
     const id = cmd.channel.includes("$")
       ? (

@@ -232,6 +232,43 @@ const ComponentParser = async (msg, client) => {
         options: optArray,
       });
     }
+    if (Checker("textInput")) {
+      let inside = nya.split("{textInput:").slice(1);
+      for (let textInput of inside) {
+        textInput = textInput.split("}")[0].split(":");
+        const label = textInput.shift().addBrackets().trim();
+        let style = textInput.shift().addBrackets().trim();
+        style = isNaN(style) ? style : Number(style);
+        const custom_id = textInput.shift().addBrackets().trim();
+        const required = textInput.shift()?.addBrackets().trim() === "yes";
+        const placeholder = textInput.shift()?.addBrackets().trim();
+        const min_length = textInput.shift()?.addBrackets().trim();
+        const max_length = textInput.shift()?.addBrackets().trim();
+        const value = textInput.shift()?.addBrackets().trim();
+        // console.log({
+        //   type: 4,
+        //   label,
+        //   style,
+        //   custom_id,
+        //   required,
+        //   placeholder,
+        //   min_length,
+        //   max_length,
+        //   value,
+        // });
+        buttonPart.push({
+          type: 4,
+          label,
+          style,
+          custom_id,
+          required,
+          placeholder,
+          min_length,
+          max_length,
+          value,
+        });
+      }
+    }
     actionRows.push({ type: 1, components: buttonPart });
   }
   return actionRows;
@@ -514,6 +551,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       embeds.push(embed);
     }
   }
+
   if (errorMessage.includes("{reactions:")) {
     const react = errorMessage.split("{reactions:")[1].split("}")[0];
     reactions = react.split(":").map((x) => x.trim());
@@ -529,6 +567,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       embeds: send ? embeds : [],
       content:
         errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      files,
       options: {
         reactions: reactions.length ? reactions : undefined,
         suppress,
@@ -557,7 +596,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
     if (m && reactions.length) {
       for (const reaction of reactions) {
-        await m.react(reaction).catch((err) => {});
+        await m.react(reaction).catch(console.error);
       }
     }
 
@@ -667,4 +706,4 @@ module.exports = {
   SlashOptionsParser: SlashOptionsParser,
   OptionParser,
 };
-/*Copyright © 2021 @Akarui Development*/
+/*Copyright © 2021 - 2022 @Akarui Development*/

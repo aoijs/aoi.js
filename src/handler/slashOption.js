@@ -21,7 +21,7 @@ class SlashOption {
             opt = opt.split(":");
             const name = opt.shift()?.addBrackets();
             const description = opt.shift()?.addBrackets();
-            const required = opt?.shift()?.addBrackets() === "yes" || true;
+            const required = opt?.shift()?.addBrackets() === "yes" || false;
             const choice = opt.join(":");
 
             let choices;
@@ -41,7 +41,7 @@ class SlashOption {
             option = option.split(":");
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required = option?.shift()?.addBrackets() === "yes" || true;
+            const required = opt?.shift()?.addBrackets() === "yes" || false;
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
