@@ -9,6 +9,14 @@ const {
   VoiceState,
   Role,
 } = require("discord.js");
+
+  function PartToHex (d)  {
+    const data = d.toString(16);
+    return data.length === 1 ? "0" + data : data;
+  }
+  function RBGtoHex (r, b, g)  {
+    return "#" + PartToHex(r) + PartToHex(b) + PartToHex(g);
+  }
 module.exports = {
   /**
    * @param  {number} number
@@ -111,7 +119,7 @@ module.exports = {
     data.json = JSON.stringify(data, null, 2);
     data.guild = emoji.guild?.id;
     data.roles = emoji.roles?.cache.map((x) => x.id).join(" , ");
-
+    data.url = emoji.url;
     data.toJSON = undefined;
     return data;
   },
@@ -261,7 +269,7 @@ module.exports = {
 
     data.members = role.members.map((x) => x.id).join(" , ");
     data.memberCount = role.members.size;
-
+    data.managed = role.managed;
     data.position = role.position;
     data.permissions = role.permissions.toArray().join(" , ");
     data.tagsbotid = role.tags?.botId;
@@ -315,13 +323,7 @@ module.exports = {
 
     return data;
   },
-  RBGtoHex(r, b, g) {
-    return "#" + this.PartToHex(r) + this.PartToHex(b) + this.PartToHex(g);
-  },
-  PartToHex(d) {
-    const data = d.toString(16);
-    return data.length === 1 ? "0" + data : data;
-  },
+
   FormatDate(date, format) {
     ////Map for Storing Each Format
     const FormatMap = new Map();
@@ -374,5 +376,9 @@ module.exports = {
         false,
       );
     }
+    return timeoutData.__id__;
   },
 };
+
+module.exports.RBGtoHex = RBGtoHex;
+module.exports.PartToHex = PartToHex;
