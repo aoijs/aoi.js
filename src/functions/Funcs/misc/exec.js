@@ -1,6 +1,6 @@
 const cld = require('child_process');
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     try {
         data.result = await cld.execSync(data.inside.inside?.addBrackets()).toString();

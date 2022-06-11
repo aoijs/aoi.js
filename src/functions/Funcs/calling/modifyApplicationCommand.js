@@ -1,6 +1,6 @@
 const {SlashOptionsParser} = require('../../../handler/parsers.js')
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [guildId, id, ...Datas] = data.inside.splits;

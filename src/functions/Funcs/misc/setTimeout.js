@@ -2,7 +2,7 @@ const {Time} = require('../../../utils/helpers/customParser.js');
 const {Timeout} = require('../../../utils/helpers/functions.js')
 
 module.exports = d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [name, duration, timeoutData, pulse] = data.inside.splits;

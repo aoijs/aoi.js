@@ -3,7 +3,7 @@ const defaultNotif = {
     ALL_MESSAGES: "All Messages"
 }
 module.exports = async d => {
-    const {code, inside} = d.util.openFunc(d);
+    const {code, inside} = d.util.aoiFunc(d);
 
     const [guildId = d.guild?.id] = inside.splits;
 

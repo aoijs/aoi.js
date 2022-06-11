@@ -1,7 +1,7 @@
 const {WebhookUpdateOptions} = require("../../../utils/CallbackUtil.js")
 
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const option = WebhookUpdateOptions.includes(data.inside.inside);

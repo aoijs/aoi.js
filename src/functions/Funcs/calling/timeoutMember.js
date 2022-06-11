@@ -1,6 +1,6 @@
 const {Time} = require("../../../utils/helpers/customParser.js");
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     let [
         guildId = d.guild?.id,

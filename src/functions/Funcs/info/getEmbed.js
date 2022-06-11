@@ -1,7 +1,7 @@
 const {EmbedData} = require('../../../utils/helpers/functions.js');
 
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
     let [channelId = d.channel?.id, messageId = d.message?.id, index = 1, option = 'description'] = data.inside.splits;
     index = index - 1;

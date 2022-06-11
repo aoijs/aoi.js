@@ -2,7 +2,7 @@ const {Perms} = require('../../../utils/Constants.js');
 const {Permissions} = require('discord.js');
 
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     let [...perms] = data.inside.splits;
 
     if (perms.some(perm => !Perms[perm] && !Permissions.FLAGS[perm] && isNaN(perm))) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Perm(s) Provided In');

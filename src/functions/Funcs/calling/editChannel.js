@@ -1,6 +1,6 @@
 const {Time} = require('../../../utils/helpers/customParser.js');
 module.exports = async d => {
-    const {code, inside, err} = d.util.openFunc(d);
+    const {code, inside, err} = d.util.aoiFunc(d);
     if (err) return d.error(err);
 
     let [channelId, name = "$default", type = "$default", position = "$default", topic = "$default", nsfw = "$default", bitrate = "$default", userLimit = "$default", parent = "$default", lockPermissions = "$default", permissionOverwrites = "$default", rateLimitPerUser = "$default", defaultAutoArchiveDuration = "$default", rtcRegion = "$default", reason] = inside.splits;

@@ -1,7 +1,7 @@
 const {CustomDb, Promisify, AoijsAPI, DbdTsDb} = require("../../../classes/Database.js");
 
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [varname, table = d.client.db.tables[0]] = data.inside.splits;

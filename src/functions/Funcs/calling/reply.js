@@ -1,5 +1,5 @@
 module.exports = d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     const [messageId = d.message?.id, mentionUser = 'yes'] = data.inside.splits;
 

@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     const [messageId = d.message?.id, channelId = d.channel?.id] = data.inside.splits;
 

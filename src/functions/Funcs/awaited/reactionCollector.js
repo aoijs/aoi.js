@@ -1,7 +1,7 @@
 const {Time} = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     let [channelId,messageId,userFilters,time,reactions,awaits, removeReaction = "yes",awaitData = "{}", endAwait,] = data.inside.splits;

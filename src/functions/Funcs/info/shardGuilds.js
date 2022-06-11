@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     const [option = 'id', sep = ' , ', shardId = 0] = data.inside.splits;
     if (!d.client.clientShard) return d.aoiError.fnError(d, 'custom', {}, 'ClientShard Class is Not Initialised')

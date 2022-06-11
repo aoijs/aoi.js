@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.openFunc(d);
+    const {code, inside, err} = d.util.aoiFunc(d);
     if (err) return d.error(err);
 
     const [...emojis] = inside.splits;

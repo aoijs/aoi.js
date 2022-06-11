@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     try {
         data.result = await eval(`d.data.eventData${data.inside.inside}`)

@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (err) return d.error(err)
 
     let [channelId, threadId] = inside.splits;

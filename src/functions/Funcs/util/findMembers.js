@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     let [query, limit = 10, type = "startsWith", force = "no", res = "{position}) {username}: {id}"] = data.inside.splits;

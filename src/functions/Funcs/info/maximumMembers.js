@@ -1,5 +1,5 @@
 module.exports = async d => {
-    let data = d.util.openFunc(d);
+    let data = d.util.aoiFunc(d);
 
     const [guildId = d.guild?.id] = data.inside.splits;
 

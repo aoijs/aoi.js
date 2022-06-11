@@ -1,5 +1,5 @@
 module.exports = d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     let [from = 0, to = d.args.length] = data.inside.splits;
 

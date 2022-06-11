@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const {code} = d.util.openFunc(d);
+    const {code} = d.util.aoiFunc(d);
 
     let ping
 

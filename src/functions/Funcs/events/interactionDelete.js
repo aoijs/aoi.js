@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     await d.data.interaction?.deleteReply().catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)

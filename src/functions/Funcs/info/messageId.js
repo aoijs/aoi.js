@@ -1,5 +1,5 @@
 module.exports = d => {
-    let {code, result} = d.util.openFunc(d);
+    let {code, result} = d.util.aoiFunc(d);
 
     result = d.message?.id;
 

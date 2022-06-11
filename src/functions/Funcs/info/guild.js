@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const dat = d.util.openFunc(d);
+    const dat = d.util.aoiFunc(d);
 
     const [id = d.guild?.id, option = 'name'] = dat.inside.splits;
     let server = await d.util.getGuild(d, id)

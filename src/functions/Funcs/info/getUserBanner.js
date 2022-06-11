@@ -1,5 +1,5 @@
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [userId, size = "4096", dynamic = "yes", format = "webp"] =

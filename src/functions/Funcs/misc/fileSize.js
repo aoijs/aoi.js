@@ -14,7 +14,7 @@ const units = {
 
 const {statSync} = require('fs');
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [path, unit = "b"] = data.inside.splits;

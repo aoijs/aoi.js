@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     const [userId = d.author?.id, guildId = d.guild?.id, type = 'state'] = data.inside.splits;
 

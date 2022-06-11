@@ -1,7 +1,7 @@
 const {Util} = require("discord.js");
 const {RBGtoHex} = require("../../../utils/helpers/functions.js");
 module.exports = (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [type, returnAs = "number", ...datas] = data.inside.splits;

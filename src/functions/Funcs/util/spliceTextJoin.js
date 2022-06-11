@@ -1,5 +1,5 @@
 module.exports = d => {
-    const datas = d.util.openFunc(d);
+    const datas = d.util.aoiFunc(d);
     if (datas.err) return d.error(datas.err);
 
     const [text, splitter, sep1 = ' , ', sep2 = '\n'] = datas.inside.splits;

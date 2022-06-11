@@ -1,5 +1,5 @@
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
     let [text = d.args.join(" "), sep = " , "] = data.inside.splits;
     text = text.split(" ");

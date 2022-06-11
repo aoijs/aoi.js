@@ -1,5 +1,5 @@
 module.exports = d => {
-    const {code} = d.util.openFunc(d);
+    const {code} = d.util.aoiFunc(d);
 
     if (!d.client.clientShard) return d.aoiError.fnError(d, 'custom', {}, 'ClientShard Class is Not Initialised');
 

@@ -1,5 +1,5 @@
 module.exports = d => {
-    let {code, result, inside} = d.util.openFunc(d);
+    let {code, result, inside} = d.util.aoiFunc(d);
 
     const sep = inside.inside || ' , ';
 

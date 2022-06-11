@@ -1,6 +1,6 @@
 const {Emoji} = require('../../../utils/helpers/functions.js');
 module.exports = async d => {
-    const {code, inside, err} = d.util.openFunc(d);
+    const {code, inside, err} = d.util.aoiFunc(d);
     if (err) return d.error(err);
 
     let [emoji, option] = inside.splits;
