@@ -1,8 +1,7 @@
-const fs = require("fs");
 const AoiError = require("./AoiError.js");
 const BaseClient = require("./AoiBase.js");
-const {Command} = require("./Commands.js");
-const {FunctionManager} = require("./Functions.js");
+const { Command } = require("./Commands.js");
+const { FunctionManager } = require("./Functions.js");
 
 //Initialize aoi.js Client
 class Client extends BaseClient {
@@ -12,6 +11,10 @@ class Client extends BaseClient {
         if (this.aoiOptions.respondOnEdit) {
             this.aoiOptions.respondOnEdit.time =
                 this.aoiOptions.respondOnEdit.time || 60000;
+        }
+        const [major] = process.version.replace("v", "").split(".")
+        if (isNaN(Number(major)) || Number(major) < 16) {
+            throw new Error(`node.js version must be v16.6.0 or above.`)
         }
     }
 
@@ -707,8 +710,7 @@ class Client extends BaseClient {
     deletedCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: deletedCommand. position: ${this.cmd.messageDelete.size}`,
             );
         }
@@ -721,8 +723,7 @@ class Client extends BaseClient {
     updateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: updateCommand. position: ${this.cmd.messageUpdate.size}`,
             );
         }
@@ -736,8 +737,7 @@ class Client extends BaseClient {
     bulkDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: bulkDeletedCommand. position: ${this.cmd.messageDeleteBulk.size}`,
             );
         }
@@ -752,8 +752,7 @@ class Client extends BaseClient {
     guildJoinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: guildJoinCommand. position: ${this.cmd.guildJoin.size}`,
             );
         }
@@ -764,8 +763,7 @@ class Client extends BaseClient {
     guildLeaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: guildLeaveCommand. position: ${this.cmd.guildLeave.size}`,
             );
         }
@@ -776,8 +774,7 @@ class Client extends BaseClient {
     guildUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: guildUpdateCommand. position: ${this.cmd.guildUpdate.size}`,
             );
         }
@@ -788,10 +785,8 @@ class Client extends BaseClient {
     guildUnavailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: guildUnavailableCommand. position: ${
-                    this.cmd.guildUnavailable.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: guildUnavailableCommand. position: ${this.cmd.guildUnavailable.size
                 }`,
             );
         }
@@ -804,8 +799,7 @@ class Client extends BaseClient {
     roleCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: roleCreateCommand. position: ${this.cmd.roleCreate.size}`,
             );
         }
@@ -815,8 +809,7 @@ class Client extends BaseClient {
     roleUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: roleUpdateCommand. position: ${this.cmd.roleUpdate.size}`,
             );
         }
@@ -826,8 +819,7 @@ class Client extends BaseClient {
     roleDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: roleDeleteCommand. position: ${this.cmd.roleDelete.size}`,
             );
         }
@@ -837,8 +829,7 @@ class Client extends BaseClient {
     channelCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: channelCreateCommand. position: ${this.cmd.channelCreate.size}`,
             );
         }
@@ -848,8 +839,7 @@ class Client extends BaseClient {
     channelUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: channelUpdateCommand. position: ${this.cmd.channelUpdate.size}`,
             );
         }
@@ -859,8 +849,7 @@ class Client extends BaseClient {
     channelDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: channelDeleteCommand. position: ${this.cmd.channelDelete.size}`,
             );
         }
@@ -870,10 +859,8 @@ class Client extends BaseClient {
     channelPinsUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: channelPinsUpdateCommand. position: ${
-                    this.cmd.channelPinsUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: channelPinsUpdateCommand. position: ${this.cmd.channelPinsUpdate.size
                 }`,
             );
         }
@@ -883,10 +870,8 @@ class Client extends BaseClient {
     stageInstanceCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: stageInstanceCreateCommand. position: ${
-                    this.cmd.stageInstanceCreate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: stageInstanceCreateCommand. position: ${this.cmd.stageInstanceCreate.size
                 }`,
             );
         }
@@ -896,10 +881,8 @@ class Client extends BaseClient {
     stageInstanceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: stageInstanceUpdateCommand. position: ${
-                    this.cmd.stageInstanceUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: stageInstanceUpdateCommand. position: ${this.cmd.stageInstanceUpdate.size
                 }`,
             );
         }
@@ -909,10 +892,8 @@ class Client extends BaseClient {
     stageInstanceDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: stageInstanceDeleteCommand. position: ${
-                    this.cmd.stageInstanceDelete.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: stageInstanceDeleteCommand. position: ${this.cmd.stageInstanceDelete.size
                 }`,
             );
         }
@@ -922,8 +903,7 @@ class Client extends BaseClient {
     threadCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: threadCreateCommand. position: ${this.cmd.threadCreate.size}`,
             );
         }
@@ -933,8 +913,7 @@ class Client extends BaseClient {
     threadUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: threadUpdateCommand. position: ${this.cmd.threadUpdate.size}`,
             );
         }
@@ -944,8 +923,7 @@ class Client extends BaseClient {
     threadDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: threadDeleteCommand. position: ${this.cmd.threadDelete.size}`,
             );
         }
@@ -955,8 +933,7 @@ class Client extends BaseClient {
     threadListSyncCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: threadListSyncCommand. position: ${this.cmd.threadListSync.size}`,
             );
         }
@@ -966,10 +943,8 @@ class Client extends BaseClient {
     threadMemberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: threadMemberUpdateCommand. position: ${
-                    this.cmd.threadMemberUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: threadMemberUpdateCommand. position: ${this.cmd.threadMemberUpdate.size
                 }`,
             );
         }
@@ -980,8 +955,7 @@ class Client extends BaseClient {
     joinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: joinCommand. position: ${this.cmd.join.size}`,
             );
         }
@@ -991,8 +965,7 @@ class Client extends BaseClient {
     leaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: leaveCommand. position: ${this.cmd.leave.size}`,
             );
         }
@@ -1002,10 +975,8 @@ class Client extends BaseClient {
     memberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: threadMembersUpdateCommand. position: ${
-                    this.cmd.threadMembersUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: threadMembersUpdateCommand. position: ${this.cmd.threadMembersUpdate.size
                 }`,
             );
         }
@@ -1015,8 +986,7 @@ class Client extends BaseClient {
     threadMembersUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: membersUpdateCommand. position: ${this.cmd.membersUpdate.size}`,
             );
         }
@@ -1026,8 +996,7 @@ class Client extends BaseClient {
     memberAvailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: memberAvailableCommand. position: ${this.cmd.memberAvailable.size}`,
             );
         }
@@ -1037,8 +1006,7 @@ class Client extends BaseClient {
     membersChunkCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: membersChunkCommand. position: ${this.cmd.membersChunk.size}`,
             );
         }
@@ -1049,8 +1017,7 @@ class Client extends BaseClient {
     emojiCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: emojiCreateCommand. position: ${this.cmd.emojiCreate.size}`,
             );
         }
@@ -1060,8 +1027,7 @@ class Client extends BaseClient {
     emojiDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: emojiDeleteCommand. position: ${this.cmd.emojiDelete.size}`,
             );
         }
@@ -1071,8 +1037,7 @@ class Client extends BaseClient {
     emojiUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: emojiUpdateCommand. position: ${this.cmd.emojiUpdate.size}`,
             );
         }
@@ -1083,8 +1048,7 @@ class Client extends BaseClient {
     banAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: banAddCommand. position: ${this.cmd.banAdd.size}`,
             );
         }
@@ -1094,8 +1058,7 @@ class Client extends BaseClient {
     banRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: banRemoveCommand. position: ${this.cmd.banRemove.size}`,
             );
         }
@@ -1106,8 +1069,7 @@ class Client extends BaseClient {
     inviteCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: inviteCreateCommand. position: ${this.cmd.inviteCreate.size}`,
             );
         }
@@ -1117,8 +1079,7 @@ class Client extends BaseClient {
     inviteDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: inviteDeleteCommand. position: ${this.cmd.inviteDelete.size}`,
             );
         }
@@ -1129,8 +1090,7 @@ class Client extends BaseClient {
     reactionAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: reactionAddCommand. position: ${this.cmd.reactionAdd.size}`,
             );
         }
@@ -1140,8 +1100,7 @@ class Client extends BaseClient {
     reactionRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: reactionRemoveCommand. position: ${this.cmd.reactionRemove.size}`,
             );
         }
@@ -1151,10 +1110,8 @@ class Client extends BaseClient {
     reactionRemoveAllCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: reactionRemoveAllCommand. position: ${
-                    this.cmd.reactionRemoveAll.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: reactionRemoveAllCommand. position: ${this.cmd.reactionRemoveAll.size
                 }`,
             );
         }
@@ -1164,10 +1121,8 @@ class Client extends BaseClient {
     reactionRemoveEmojiCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: reactionRemoveEmojiCommand. position: ${
-                    this.cmd.reactionRemoveEmoji.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: reactionRemoveEmojiCommand. position: ${this.cmd.reactionRemoveEmoji.size
                 }`,
             );
         }
@@ -1178,8 +1133,7 @@ class Client extends BaseClient {
     presenceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: presenceUpdateCommand. position: ${this.cmd.presenceUpdate.size}`,
             );
         }
@@ -1190,10 +1144,8 @@ class Client extends BaseClient {
     voiceStateUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: voiceStateUpdateCommand. position: ${
-                    this.cmd.voiceStateUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: voiceStateUpdateCommand. position: ${this.cmd.voiceStateUpdate.size
                 }`,
             );
         }
@@ -1204,17 +1156,14 @@ class Client extends BaseClient {
     interactionCommand(d = {}) {
         if (!d.prototype) {
             throw new TypeError(
-                `Prototype is not provided in ${
-                    d.name || "unknown name"
+                `Prototype is not provided in ${d.name || "unknown name"
                 }: interactionCommand.`,
             );
         }
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: interactionCommand. position: ${
-                    this.cmd.interaction[d.prototype]?.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: interactionCommand. position: ${this.cmd.interaction[d.prototype]?.size
                 }`,
             );
         }
@@ -1227,10 +1176,8 @@ class Client extends BaseClient {
     applicationCmdCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: ApplicationCmdCreateCommand. position: ${
-                    this.cmd.applicationCmdCreate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: ApplicationCmdCreateCommand. position: ${this.cmd.applicationCmdCreate.size
                 }`,
             );
         }
@@ -1240,10 +1187,8 @@ class Client extends BaseClient {
     applicationCmdDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: ApplicationCmdDeleteCommand. position: ${
-                    this.cmd.applicationCmdDelete.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: ApplicationCmdDeleteCommand. position: ${this.cmd.applicationCmdDelete.size
                 }`,
             );
         }
@@ -1253,10 +1198,8 @@ class Client extends BaseClient {
     applicationCmdUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
-                }: ApplicationCmdUpdateCommand. position: ${
-                    this.cmd.onApplicationCmdUpdate.size
+                `Code is not provided in ${d?.name || "unknown name"
+                }: ApplicationCmdUpdateCommand. position: ${this.cmd.onApplicationCmdUpdate.size
                 }`,
             );
         }
@@ -1269,8 +1212,7 @@ class Client extends BaseClient {
     userUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: userUpdateCommand. position: ${this.cmd.userUpdate.size}`,
             );
         }
@@ -1280,8 +1222,7 @@ class Client extends BaseClient {
     variableCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: variableCreateCommand. position: ${this.cmd.variableCreate.size}`,
             );
         }
@@ -1291,8 +1232,7 @@ class Client extends BaseClient {
     variableDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: variableDeleteCommand. position: ${this.cmd.variableDelete.size}`,
             );
         }
@@ -1302,8 +1242,7 @@ class Client extends BaseClient {
     variableUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: variableUpdateCommand. position: ${this.cmd.variableUpdate.size}`,
             );
         }
@@ -1313,8 +1252,7 @@ class Client extends BaseClient {
     readyCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: readyCommand. position: ${this.cmd.ready.size}`,
             );
         }
@@ -1324,8 +1262,7 @@ class Client extends BaseClient {
     functionErrorCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: functionErrorCommand. position: ${this.cmd.functionError.size}`,
             );
         }
@@ -1335,8 +1272,7 @@ class Client extends BaseClient {
     loopCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: loopCommand. position: ${this.cmd.loop.size}`,
             );
         }
@@ -1346,8 +1282,7 @@ class Client extends BaseClient {
     timeoutCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: timeoutCommand. position: ${this.cmd.timeout.size}`,
             );
         }
@@ -1357,8 +1292,7 @@ class Client extends BaseClient {
     pulseCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: pulseCommand. position: ${this.cmd.pulse.size}`,
             );
         }
@@ -1368,8 +1302,7 @@ class Client extends BaseClient {
     rateLimitCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: rateLimitCommand. position: ${this.cmd.rateLimit.size}`,
             );
         }
@@ -1379,8 +1312,7 @@ class Client extends BaseClient {
     webhookUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${
-                    d?.name || "unknown name"
+                `Code is not provided in ${d?.name || "unknown name"
                 }: webhookUpdateCommand. position: ${this.cmd.webhookUpdate.size}`,
             );
         }
