@@ -4,14 +4,14 @@ module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
-  const [title, customId, components] = data.inside.splits;
+  const [title, customID, components] = data.inside.splits;
 
   const parsedComponents = await ComponentParser(components, d.client);
 
   await d.data.interaction
     .showModal({
       title: title.addBrackets(),
-      customId: customId.addBrackets(),
+      customId: customID.addBrackets(),
       components: parsedComponents,
     })
     .catch((e) => {
