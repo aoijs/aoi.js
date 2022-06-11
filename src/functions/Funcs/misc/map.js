@@ -1,7 +1,7 @@
 const Interpreter = require("../../../interpreter.js");
 
 module.exports = async d => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [text, split, awaits, sep = ' , '] = data.inside.splits;

@@ -1,9 +1,8 @@
 module.exports = d => {
-    let {code, result} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    result = process.version;
-
+    data.result = process.version;
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }

@@ -1,15 +1,10 @@
 module.exports = d => {
-    const {code, inside} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
+    const [format = "yes"] = data.inside.splits;
 
-    const [format = "yes"] = inside.splits;
-
+    data.result = JSON.stringify(d.object, null, format === "yes" ? 2 : 0)
     return {
-        code: d.util.setCode({
-            function: d.func,
-            code,
-            inside,
-            result: JSON.stringify(d.object, null, format === "yes" ? 2 : 0)
-        })
+        code: d.util.setCode(data)
     }
 
 }

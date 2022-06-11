@@ -1,9 +1,9 @@
 module.exports = d => {
-    const {code} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    d.client.destroy();
+    data.result = d.client.destroy();
 
     return {
-        code: d.util.setCode({function: d.func, code})
+        code: d.util.setCode(data)
     }
 }

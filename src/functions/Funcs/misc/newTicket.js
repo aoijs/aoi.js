@@ -1,7 +1,7 @@
 const {Guild} = require("discord.js");
 
 module.exports = async (d) => {
-    const data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
     const [name, msg = "", place = d.guild?.id, returnId = "no", error] =

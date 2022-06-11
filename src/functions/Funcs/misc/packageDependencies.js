@@ -1,9 +1,8 @@
 module.exports = d => {
-    let {code, result} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    result = Object.keys(require("../../../../package.json").dependencies).join(", ")
-
+    data.result = Object.keys(require("../../../../package.json").dependencies).join(", ")
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }

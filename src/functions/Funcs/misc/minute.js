@@ -1,9 +1,8 @@
 module.exports = d => {
-    let {code, result} = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    result = new Date(new Date().toLocaleString('en-us', {timeZone: d.timezone})).getMinutes();
-
+    data.result = new Date(new Date().toLocaleString('en-us', {timeZone: d.timezone})).getMinutes();
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }

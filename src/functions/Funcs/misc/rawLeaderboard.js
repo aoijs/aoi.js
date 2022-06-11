@@ -1,7 +1,7 @@
 const {AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify} = require("../../../classes/Database.js");
 
 module.exports = async d => {
-    const Data = d.util.openFunc(d);
+    const data = d.util.aoiFunc(d);
     if (Data.err) return d.error(Data.err);
 
     const [variable, order = 'asc', type = 'user', custom = '{top}. {name}: {value}', list = 10, page = 1, table = d.client.db.tables[0]] = Data.inside.splits;
