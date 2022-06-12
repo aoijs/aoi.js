@@ -1,5 +1,5 @@
 module.exports = (d) => {
-    let data = d.util.openFunc(d);
+    let data = d.util.aoiFunc(d);
   
     const [guildId = "global", type = "all"] = data.inside.splits;
   

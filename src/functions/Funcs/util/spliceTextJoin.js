@@ -1,14 +1,14 @@
 module.exports = d => {
-    const datas = d.util.aoiFunc(d);
-    if (datas.err) return d.error(datas.err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [text, splitter, sep1 = ' , ', sep2 = '\n'] = datas.inside.splits;
+    const [text, splitter, sep1 = ' , ', sep2 = '\n'] = data.inside.splits;
 
-    const data = text.addBrackets()?.split(splitter.addBrackets());
+    const Data = text.addBrackets()?.split(splitter.addBrackets());
 
-    datas.result = data.map(_ => data.splice(0, Number(every))).filter(e => e).map(d => d.join(separator1.addBrackets())).join(separator2.addBrackets()).deleteBrackets();
+    data.result = Data.map(_ => Data.splice(0, Number(every))).filter(e => e).map(d => d.join(separator1.addBrackets())).join(separator2.addBrackets()).deleteBrackets();
 
     return {
-        code: d.util.setCode(datas)
+        code: d.util.setCode(data)
     }
 }

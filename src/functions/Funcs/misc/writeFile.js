@@ -1,26 +1,23 @@
-const fs = require("fs");
+const fs = require("fs/promises");
 
-module.exports = (d) => {
+module.exports = async(d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
   const [file, text, encode = "utf8"] = data.inside.splits;
 
-  try {
-    if (fs.existsSync(file)) {
-      const og = fs.readFileSync(process.cwd() + "/" + file);
-      const write = fs.writeFileSync(file, og + "\n" + text, {
-        encoding: encode,
-      });
-    } else {
-      const write = fs.writeFileSync(file.addBrackets(), text.addBrackets(), {
-        encoding: encode,
-      });
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
+  await fs
+    .writeFile(file, text.addBrackets(), {
+      encoding: encode,
+    })
+    .catch((e) => {
+      d.aoiError.fnError(
+        d,
+        "custom",
+        {},
+        "Failed To Write File With Reason: " + e,
+      );
+    });
   return {
     code: d.util.setCode(data),
   };

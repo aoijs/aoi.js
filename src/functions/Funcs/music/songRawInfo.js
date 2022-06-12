@@ -27,10 +27,10 @@ module.exports = async (d) => {
     response = response.replace(
       response,
       response.startsWith("user.")
-        ? trackData.requestUser.user[response.split("user.")[1]]
+        ? trackData?.requestUser.user[response.split("user.")[1]]
         : response.startsWith("member.")
-        ? trackData.requestUser[response.split("member.")[1]]
-        : eval(`trackData.rawInfo.${response}`),
+        ? trackData?.requestUser[response.split("member.")[1]]
+        : eval(`trackData?.rawInfo.${response}`),
     );
     data.result = response;
   } else if (position === "previous") {

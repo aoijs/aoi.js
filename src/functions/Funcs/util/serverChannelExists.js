@@ -1,4 +1,3 @@
-const {Data} = require("dbdjs.db");
 
 module.exports = async d => {
     const {code} = d.command;
