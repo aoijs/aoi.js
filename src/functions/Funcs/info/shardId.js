@@ -1,9 +1,9 @@
-module.exports = d => {
-    let {code, result} = d.util.aoiFunc(d);
+module.exports = async d => {
+    const data = d.util.aoiFunc(d);
 
-    result = d.guild?.shardId || 0;
+    data.result = d.guild?.shardId || 0;
 
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }
