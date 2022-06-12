@@ -1,14 +1,29 @@
-module.exports = d => {
-    let {code, result} = d.util.aoiFunc(d);
-
-    result = d.client.channels.cache.random()?.id;
-    if (!d.randoms.randomChannelId) {
-        d.randoms.randomChannelId = result
+module.exports = (d) => {
+    let data = d.util.openFunc(d);
+  
+    const [guildId = "global", type = "all"] = data.inside.splits;
+  
+    data.result =
+      guildId === "global"
+        ? type === "all"
+          ? d.client.channels.cache.random()?.id
+          : d.client.channels.cache
+              .filter((x) => x.type === d.util.channelTypes[type])
+              .random()?.id
+        : d.client.guilds.cache
+            .get(guildId)
+            ?.channels.cache.filter((x) =>
+              type === "all" ? true : x.type === d.util.channelTypes[type],
+            )
+            .random()?.id;
+  
+    if (!d.randoms[`randomChannelId${data.inside.splits}`]) {
+      d.randoms[`randomChannelId${data.inside.splits}`] = data.result;
     } else {
-        result = d.randoms.randomChannelId;
+      data.result = d.randoms[`randomChannelId${data.inside.splits}`];
     }
-
+  
     return {
-        code: d.util.setCode({function: d.func, code, result})
-    }
-}
+      code: d.util.setCode(data),
+    };
+  };
