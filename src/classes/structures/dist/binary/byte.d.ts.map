@@ -1,0 +1,1 @@
+{"version":3,"file":"byte.d.ts","sourceRoot":"","sources":["../../src/binary/byte.ts"],"names":[],"mappings":"AAAA,qBAAa,IAAI;IAChB,IAAI,EAAE,MAAM,CAAC;IACb,IAAI,EAAE,MAAM,CAAC;IACb,IAAI,EAAE,KAAK,CAAC,MAAM,CAAC,CAAC;IACpB,IAAI,EAAE,QAAQ,GAAG,QAAQ,CAAC;gBACd,IAAI,EAAE,MAAM,EAAE,IAAI,EAAE,QAAQ,GAAG,QAAQ,EAAE,IAAI,EAAE,MAAM;CAMjE"}

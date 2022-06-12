@@ -1,0 +1,24 @@
+{
+  "name": "structures",
+  "author": {
+    "name": "USERSATOSH"
+  },
+  "version": "0.0.1",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/USERSATOSHI/Structures"
+  },
+  "readme": "./README.md",
+  "bugs": {
+    "url": "https://github.com/USERSATOSHI/Structures/issues"
+  },
+  "module": "commonjs",
+  "type": "commonjs",
+  "main": "index.js",
+  "description": "Abstract Data Structures That Make Storing data Much easy.",
+  "license": "MIT",
+  "devDependencies": {
+    "typedoc": "^0.22.15",
+    "typescript": "^4.6.3"
+  }
+}
