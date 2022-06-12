@@ -18,7 +18,7 @@ module.exports = async d => {
     const wrongPerms = []
     permissions = permissions.map(x => {
         if (isNaN(permissions)) {
-            if (Object.keys(Permissions).includes(x)) {
+            if (Object.values(Permissions).includes(x)) {
                 return x;
             } else if (Permissions[x]) {
                 return Permissions[x];

@@ -8,7 +8,7 @@ module.exports = async (d) => {
     let u = await d.util.getMember(guild, id)
     if (!u) return d.aoiError.fnError(d, "member", {inside: data.inside})
 
-    data.result =  u.presence?.activities?.join(", ")?.deleteBrackets() || "none"
+    data.result = u.presence?.activities?.join(", ")?.deleteBrackets() || "none"
     return {
         code: d.util.setCode(data)
     }

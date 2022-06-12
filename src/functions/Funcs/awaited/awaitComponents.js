@@ -4,9 +4,17 @@ module.exports = async (d) => {
   const err = d.inside(inside);
   if (err) return d.error(err);
   //----------------------------------------//
-  let [messageID,userFilter,customIDs,cmds,errorMsg = "",uses = 1,data = "",] = inside.splits;
+  let [
+    messageID,
+    userFilter,
+    customIDs,
+    cmds,
+    errorMsg = "",
+    uses = 1,
+    data = "",
+  ] = inside.splits;
   if (errorMsg?.trim !== "" && errorMsg) {
-    errorMsg = await d.util.errorParser(errorMsg,d);
+    errorMsg = await d.util.errorParser(errorMsg, d);
   }
   if (data !== "") {
     try {
@@ -32,7 +40,7 @@ module.exports = async (d) => {
       filter: userFilter,
       customIds: customIDs,
       cmds: cmds,
-      errorMessage: emsg,
+      errorMessage: errorMsg,
       uses: uses,
     },
     d.client,

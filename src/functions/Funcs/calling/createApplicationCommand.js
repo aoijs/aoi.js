@@ -1,7 +1,6 @@
 const parser = require("../../../handler/slashCommandOptionsParser");
 const { SlashOptionsParser } = require("../../../handler/parsers.js");
 const { SlashTypes } = require("../../../utils/InteractionConstants.js");
-
 module.exports = async (d) => {
   const { code } = d.command;
   const inside = d.unpack();
@@ -68,7 +67,7 @@ module.exports = async (d) => {
       guildId: guild?.id,
     };
   }
-  d.client.application.commands.create(data.data, data.guildId).catch((e) => {
+  await d.client.application.commands.create(data.data, data.guildId).catch((e) => {
     d.aoiError.fnError(
       d,
       "custom",

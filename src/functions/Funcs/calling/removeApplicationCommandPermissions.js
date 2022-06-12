@@ -18,7 +18,6 @@ module.exports = async (d) => {
       permissions[`${e[1].toLowerCase()}s`] || [];
     permissions[`${e[1].toLowerCase()}s`].push(e[0]);
   }
-  console.log({ permissions });
   if (guildId == "global") {
     d.client.application.commands.permissions.remove({
       command: id,

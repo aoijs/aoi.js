@@ -1,5 +1,5 @@
 const fs = require("fs");
-const Group = require("../cachehandler/group.js");
+const { Group } = require( "structures/dist" );
 const maps = {};
 const grp = new Group();
 const functions = fs
@@ -16,26 +16,79 @@ fs.readdirSync(__dirname + "/Funcs").map((x) => {
 
   for (const file of filelist) {
     const code = fs.readFileSync(`${__dirname}/Funcs/${x}/${file}`).toString();
-    const codeLines = code.split("\n");
-    const lines =
-      codeLines[codeLines.findIndex((z) => z.includes("inside.splits"))];
-    if (lines?.includes("const") || lines?.includes("let")) {
-      const res = lines.split("=");
-      res.pop();
-      grp.set(
-        `$${file.replace(".js", "").toLowerCase()}`,
-        res.join("=").replace("let", "").replace("const", "").trim(),
-      );
-    } else if (!lines) {
-      grp.set(`$${file.replace(".js", "").toLowerCase()}`, "Usage not found");
+    if (code.includes("data.inside.splits")) {
+      const beforePart = code.split("data.inside.splits")[0];
+      beforePart;
+      let usage = beforePart.split(/let |const /g);
+      const usagebefore = usage;
+      usage = usage.filter(
+        (x) => x.trim().startsWith("[") && x.trim().endsWith("="),
+      )[0];
+      let parsedUsage = usage?.split("=").slice(0, -1).join("=");
+      parsedUsage = parsedUsage
+        ? "[" +
+          parsedUsage
+            .split("[")
+            .slice(1)
+            .join("")
+            .split("]")
+            .slice(0, -1)
+            .join("")
+            .split(",")
+            .map((x) =>
+              x.includes("=") ? x.split("=")[0].trim() + "?" : x.trim(),
+            )
+            .join(";") +
+          "]"
+        : "Usage Not Found";
+      grp.set(`\$${file.replace(".js", "").toLowerCase()}`, parsedUsage);
+    } else if (code.includes("inside.splits")) {
+      const beforePart = code.split("inside.splits")[0];
+      beforePart;
+      let usage = beforePart.split(/let|const/g);
+      const usagebefore = usage;
+      usage = usage.filter(
+        (x) => x.trim().startsWith("[") && x.trim().endsWith("="),
+      )[0];
+      let parsedUsage = usage?.split("=").slice(0, -1).join("=");
+      parsedUsage = parsedUsage
+        ? "[" +
+          parsedUsage
+            .split("[")
+            .slice(1)
+            .join("")
+            .split("]")
+            .slice(0, -1)
+            .join("")
+            .split(",")
+            .filter((x) => x.trim() !== "")
+            .map((x) =>
+              x.includes("=") ? x.split("=")[0].trim() + "?" : x.trim(),
+            )
+            .join(";") +
+          "]"
+        : "Usage Not Found";
+      grp.set(`\$${file.replace(".js", "").toLowerCase()}`, parsedUsage);
+    } else if (code.includes("data.inside.inside")) {
+      const usage = code
+        .split("\n")
+        .find((x) => x.includes("data.inside.inside"));
+      usage;
+      let parsedUsage = usage.split("=").slice(0, -1).join("=");
+      parsedUsage;
+      parsedUsage = "[" + parsedUsage.replace(/let|const/g, "").trim() + "]";
+      grp.set(`\$${file.replace(".js", "").toLowerCase()}`, parsedUsage);
+    } else if (code.includes("inside.inside")) {
+      const usage = code.split("\n").find((x) => x.includes("inside.inside"));
+      usage;
+      let parsedUsage = usage.split("=").slice(0, -1).join("=");
+      parsedUsage;
+      parsedUsage = "[" + parsedUsage.replace(/let|const/g, "").trim() + "]";
+      grp.set(`\$${file.replace(".js", "").toLowerCase()}`, parsedUsage);
     } else {
-      const usagepart =
-        codeLines[codeLines.findIndex((z) => z.includes("inside.splits")) - 1];
-      const res = usagepart.split("=");
-      res.pop();
       grp.set(
-        `$${file.replace(".js", "").toLowerCase()}`,
-        res.join("=").replace("let", "").replace("const", "").trim(),
+        `\$${file.replace(".js", "").toLowerCase()}`,
+        null,
       );
     }
   }

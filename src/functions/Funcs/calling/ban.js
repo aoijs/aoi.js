@@ -17,7 +17,7 @@ module.exports = async (d) => {
             "Invalid Day Provided In",
         );
 
-    guild.members.ban(userId, {days, reason:reason.addBrackets()}).catch((error) => {
+    guild.members.ban(userId, {days, reason:reason?.addBrackets()}).catch((error) => {
         d.aoiError.fnError(
             d,
             "custom",

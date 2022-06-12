@@ -20,6 +20,7 @@ module.exports = async (d) => {
     cmds = cmds.split(",");
     cmds.forEach((x) => {
         if (d.client.cmd.awaited.find((y) => y.name === x)) {
+            undefined;
         } else {
             d.aoiError.fnError(d, "custom", {}, `Could not find awaitedCommand ${x}`);
         }
