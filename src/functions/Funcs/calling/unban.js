@@ -3,17 +3,17 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [userId, guildId = d.guild?.id] = inside.splits;
+    let [guildID = d.guild?.id, userID] = inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: inside});
 
-    guild.members.unban(userId).catch((err) => {
+    guild.members.unban(userID).catch((err) => {
         d.aoiError.fnError(
             d,
             "custom",
             {},
-            `Failed To Unban ${userId} With Reason: ` + err,
+            `Failed To Unban ${userID} With Reason: ` + err,
         );
     });
 
