@@ -1,5 +1,5 @@
-const {cache: Group} = require("../cachehandler/index.js");
 const {EventEmitter} = require("events");
+const { Group } = require( "./structures/dist" );
 
 class Interaction extends EventEmitter {
     constructor(client) {

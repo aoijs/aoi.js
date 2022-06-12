@@ -159,7 +159,7 @@ class Util {
     return error;
   }
 
-  static aoiFunc(d, FieldsRequired = true) {
+  static openFunc(d, FieldsRequired = true) {
     const data = {
       code: d.command.code,
       inside: d.unpack(),

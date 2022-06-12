@@ -1,14 +1,11 @@
 const Discord = require("discord.js");
-const dbddb = require("dbdjs.db");
 
 const { VariableManager } = require("./Variables.js");
 const Blacklist = require("./Blacklist.js");
-const Group = require("../cachehandler/index.js").cache;
 const InteractionManager = require("./Interaction.js");
 const {
   ActivityTypeAvailables,
   IntentOptions,
-  SlashOptionTypes,
 } = require("../utils/Constants.js");
 const {
   AoijsAPI,
@@ -19,6 +16,7 @@ const {
 } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
+const { Group } = require( "./structures/dist" );
 
 class BaseClient extends Discord.Client {
   constructor(options) {
@@ -79,12 +77,12 @@ class BaseClient extends Discord.Client {
     }
 
     if (
-      ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb"].includes(
+      ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb","aoi.db"].includes(
         options?.database?.type,
       )
     ) {
       this.db = new AoijsAPI(
-        options?.database?.db || dbddb,
+        options?.database?.db ,
         {
           path: options?.database?.path || "./database/",
           tables: options?.database?.tables || ["main"],
@@ -146,7 +144,7 @@ class BaseClient extends Discord.Client {
       );
     } else {
       this.db = new AoijsAPI(
-        options?.database?.db || dbddb,
+        options?.database?.db || require("dbdjs.db") ,
         {
           path: options?.database?.path || "./database/",
           tables: options?.database?.tables || ["main"],

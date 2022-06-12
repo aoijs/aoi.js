@@ -1,5 +1,5 @@
+const { Group } = require( "./structures/dist" );
 const {functions: parser, maps,grp} = require("../functions/parser.js");
-const Group = require("../cachehandler/index.js").cache;
 
 class Function {
     constructor(code, name) {
@@ -27,7 +27,6 @@ class CustomFunction {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        let customFuncs = [];
         let funcs = [];
         let loadsOfFunc = Functions.filter((thatfunc) =>
             code.toLowerCase().includes(thatfunc.toLowerCase()),
@@ -104,7 +103,6 @@ class FunctionManager {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        let customFuncs = [];
         let funcs = [];
         let loadsOfFunc = Functions.filter((thatfunc) =>
             code.toLowerCase().includes(thatfunc.toLowerCase()),

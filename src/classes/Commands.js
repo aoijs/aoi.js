@@ -1,4 +1,4 @@
-const Group = require("../cachehandler/index.js").cache;
+const { Group } = require( "./structures/dist" );
 
 class Command {
   constructor(d = {}, client) {
@@ -15,7 +15,6 @@ class Command {
       .split("\\[")
       .join("#RIGHT#")
       .replace("\\,", "#COMMA#");
-    let customFuncs = [];
     let funcs = [];
     let loadsOfFunc = Functions.filter((thatfunc) =>
       code.toLowerCase().includes(thatfunc.toLowerCase()),
@@ -151,6 +150,7 @@ class CommandManager {
       selectMenu: new Group(),
       button: new Group(),
       slash: new Group(),
+      modal : new Group(),
     };
   }
 

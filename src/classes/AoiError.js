@@ -116,16 +116,22 @@ class AoiError {
           options.files?.length === 0
         )
           return;
-        msg = await channel.reply(options);
+        msg = await channel.reply(options).catch((e) => {
+          this.consoleError("CreateMessageError", e);
+          return undefined;
+        });;
       } else {
         if (
           options.content === " " &&
           (options.embeds?.length ?? 0) === 0 &&
-          (options.files?.length ??0) === 0 &&
+          (options.files?.length ?? 0) === 0 &&
           (options.stickers?.length ?? 0) === 0
         )
           return;
-        msg = await channel.send(options);
+        msg = await channel.send(options).catch(e => {
+          this.consoleError("CreateMessageError", e);
+          return undefined;
+        });
       }
     }
 
@@ -174,49 +180,67 @@ class AoiError {
     let ans;
     switch (type) {
       case "message":
-        ans = `\`AoiError: ${d.func}: Invalid Message ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Message ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "channel":
-        ans = `\`AoiError: ${d.func}: Invalid Channel ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Channel ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine}\`)`;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "user":
-        ans = `\`AoiError: ${d.func}: Invalid User ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid User ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "member":
-        ans = `\`AoiError: ${d.func}: Invalid Member ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Member ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "role":
-        ans = `\`AoiError: ${d.func}: Invalid Role Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Role ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "guild":
-        ans = `\`AoiError: ${d.func}: Invalid Guild ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Guild ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "emoji":
-        ans = `\`AoiError: ${d.func}: Invalid Emoji ID Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Emoji ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "option":
-        ans = `\`AoiError: ${d.func}: Invalid Option Provided In ${
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Option ID Provided In ${
           data.inside || ""
-        } (line : ${d.funcLine})\``;
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
       case "custom":
-        ans = `\`AoiError: ${d.func}: ${message} ${data.inside || ""} (line : ${
-          d.funcLine
-        })\``;
+        ans = `\`\`\`js\nAoiError: ${d.func}: ${message} ${
+          data.inside || ""
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
         break;
     }
     return ans;
