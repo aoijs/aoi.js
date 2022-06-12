@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Group } = require( "structures/dist" );
+const { Group } = require( "../classes/structures/dist" );
 const maps = {};
 const grp = new Group();
 const functions = fs
