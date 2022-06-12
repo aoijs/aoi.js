@@ -1,10 +1,6 @@
 commands
 config.json
 node_modules
-database
-/test
+/database
 .idea
 /index.js
-/messages
-/shard.js
-/voice
