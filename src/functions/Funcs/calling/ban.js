@@ -3,9 +3,9 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [userId, guildId = d.guild?.id, days = "7", reason] = inside.splits;
+    let [guildID = d.guild?.id, userID, days = "7", reason] = inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: inside});
 
     days = Number(days);
@@ -17,12 +17,12 @@ module.exports = async (d) => {
             "Invalid Day Provided In",
         );
 
-    guild.members.ban(userId, {days, reason:reason?.addBrackets()}).catch((error) => {
+    guild.members.ban(userID, {days, reason:reason?.addBrackets()}).catch((error) => {
         d.aoiError.fnError(
             d,
             "custom",
             {},
-            "Failed To Ban The User With Id: " + userId + " ,Reason: " + error,
+            "Failed To Ban The User With Id: " + userID + " ,Reason: " + error,
         );
     });
     return {
