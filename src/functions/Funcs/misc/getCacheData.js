@@ -2,9 +2,9 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [type, name, option = "$default"] = data.inside.splits;
+    const [type, name,key, option = "$default"] = data.inside.splits;
 
-    data.result = d.client.cacheManager.caches[type]?.[name]
+    data.result = d.client.cacheManager.caches[type]?.[name].get(key);
     data.result = option === '$default' ? data.result : eval(`data.result?.${option}`);
 
     return {
