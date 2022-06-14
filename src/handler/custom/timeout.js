@@ -81,7 +81,6 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
             { timeoutData: t },
           );
           }
-          console.log("del")
           await d.client.db.delete(d.client.db.tables[0], data.key);
           continue;
         }
