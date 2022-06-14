@@ -8,11 +8,11 @@
 
 <div align="center">
 
-**The most powerful string package to create a simple and fast Discord Bot.**
+**Самый мощный пакет для просто и быстрого создания мощного Discord бота**
 
-[![NPM version][npm-image]][npm-url]
-[![AoiJS Server][aoijs-server]][aoijs-server-url]
-[![NPM downloads][download-image]][download-url]
+[![NPM версия][npm-image]][npm-url]
+[![AoiJS сервер][aoijs-server]][aoijs-server-url]
+[![NPM загрузки][download-image]][download-url]
 
 
 [npm-image]: http://img.shields.io/npm/v/aoi.js.svg?style=flat-square
@@ -22,19 +22,19 @@
 [aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
 [aoijs-server-url]: https://aoi.js.org/invite
 
-[Preview](https://aoi.js.org/docs/example.md)
+[Превью](https://aoi.js.org/docs/example.md)
 
-English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md)
+[English](./README.md) | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md) | Русский
 
 </div>
 
-## Features
+## Преимущества
 
-- Powerful built-in made functions with simple usages.
-- Written in TypeScript to easily provide functional errors.
-- Updated with several extensions supported from [Akarui Development](https://github.com/AkaruiDevelopment/) sideloading. 
+- Мощные встроенные функции с лёгким использование.
+- Написан на TypeScript позволяющий легко искать ошибки в функциях.
+- Обновлено с использованием множества дополнений от [Akarui Development](https://github.com/AkaruiDevelopment/). 
 
-## Install
+## Установка
 
 ```bash
 npm install aoi.js
@@ -44,22 +44,22 @@ npm install aoi.js
 yarn add aoi.js
 ```
 
-## Example 
+## Пример 
 
 ```javascript
 const { AoiClient } = require("aoi.js");
 
 const bot = new AoiClient({
-    token: "DISCORD BOT TOKEN",
+    token: "DISCORD БОТ ТОКЕН",
     intents: ["Guilds", "GuildMessages", "MessageContent"],
-    prefix: "DISCORD BOT PREFIX"
+    prefix: "DISCORD БОТ ПРЕФИКС"
 })
 
 bot.addEvent("onMessage")
 
 bot.commands.add("basicCommand", {
     name: "ping",
-    code: `Pong! $pingms`
+    code: `Понг! $pingms`
 })
 
 bot.start()
