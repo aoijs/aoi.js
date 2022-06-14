@@ -24,7 +24,7 @@
 
 [Preview](https://aoi.js.org/docs/example.md)
 
-English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md)
+English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md) | [Русский](./README-ru.md)
 
 </div>
 
