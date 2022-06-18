@@ -83,12 +83,6 @@ bot.interactionCommand({
   prototype: 'slash',
   code: `$interactionReply[Pong! $pingms]`
 })
-
-//Ready Event
-bot.readyCommand({
-    channel: "",
-    code: `$log[Ready on $userTag[$clientID]]`
-})
 ```
 
 ### Function usage Example
@@ -121,7 +115,7 @@ With aoi.js powerful integration of database support, it has allowed several cus
 
 const aoijs = require("aoi.js")
 
-const bot = new aoijs.Bot({
+const bot = new aoijs.AoiClient({
 token: "DISCORD BOT TOKEN",
 prefix: "DISCORD BOT PREFIX",
 intents: ["GUILDS", "GUILD_MESSAGES"],
