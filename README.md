@@ -38,7 +38,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 
 - Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurposes.
 - Built-in 500+ functions, simple and easy to learn.
-- Simple to learn, all in string based and compact.
+- Simple to learn, all in string-based and compact.
 - Support of extensions available to be used by the community.
 
 ## Installation
@@ -157,4 +157,4 @@ aoi.js is managed by [Akarui Development Team](https://discord.gg/HMUfMXDQsV)
 - [NPM](https://www.npmjs.com/package/aoi.js)
 - [Github](https://github.com/AkaruiDevelopment/aoi.js)
 - [Discord Support Server](https://discord.gg/HMUfMXDQsV)
-- [Documentation](https://akarui.leref.ga/v/aoi.js/)
+- [Documentation](https://akarui.leref.ga/v/5/)
