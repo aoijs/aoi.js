@@ -6,6 +6,6 @@ module.exports = async d => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code})
+        code: d.util.setCode(data)
     }
 }
