@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   roles.forEach((x) => {
     if (
-      !d.guild.roles.cache.find(
+      !guild.roles.cache.find(
         (y) =>
           y.name.toLowerCase() === x.toLowerCase().addBrackets() || y.id === x,
       )
