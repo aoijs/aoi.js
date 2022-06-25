@@ -1,4 +1,3 @@
-
 module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();

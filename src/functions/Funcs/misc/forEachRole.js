@@ -10,7 +10,7 @@ module.exports = async (d) => {
     const endCmd = cmds.pop();
 
     const guild = await d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside:data.inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
     try {
         awaitData = JSON.parse(awaitData);
@@ -69,16 +69,16 @@ module.exports = async (d) => {
         while (u >= 0) {
             const cmd = cmds[u];
             d.interpreter(
-              d.client,
-              loopData,
-              d.args,
-              cmd,
-              d.client.db,
-              false,
-              undefined,
-              {
-                awaitData,
-              },
+                d.client,
+                loopData,
+                d.args,
+                cmd,
+                d.client.db,
+                false,
+                undefined,
+                {
+                    awaitData,
+                },
             );
 
             u--;
@@ -95,16 +95,16 @@ module.exports = async (d) => {
         );
         if (!cmd) return;
         d.interpreter(
-          d.client,
-          d.message,
-          d.args,
-          cmd,
-          d.client.db,
-          false,
-          undefined,
-          {
-            awaitData,
-          },
+            d.client,
+            d.message,
+            d.args,
+            cmd,
+            d.client.db,
+            false,
+            undefined,
+            {
+                awaitData,
+            },
         );
     }
 

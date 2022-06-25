@@ -7,7 +7,7 @@ module.exports = async d => {
 
     data.result = await d.client.clientShard.fetchClientValues(func);
 
-    return  {
-        code:d.util.setCode(data),
+    return {
+        code: d.util.setCode(data),
     }
 }

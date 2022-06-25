@@ -1,19 +1,19 @@
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
-  const [id = d.guild?.id] = data.inside.splits;
+    const [id = d.guild?.id] = data.inside.splits;
 
-  if (!d.client.voiceManager)
-    return d.aoiError.fnError(
-      d,
-      "custom",
-      {},
-      "Voice Class Is Not Initialised.",
-    );
+    if (!d.client.voiceManager)
+        return d.aoiError.fnError(
+            d,
+            "custom",
+            {},
+            "Voice Class Is Not Initialised.",
+        );
 
-  data.result = d.client.voiceManager.manager.players.has(id);
+    data.result = d.client.voiceManager.manager.players.has(id);
 
-  return {
-    code: d.util.setCode(data),
-  };
+    return {
+        code: d.util.setCode(data),
+    };
 };

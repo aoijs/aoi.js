@@ -8,8 +8,8 @@ module.exports = async d => {
     if (!d.client.variableManager.has(varname, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${varname}" Not Found`);
 
     data.result =
-      (await d.client.db.get(table, varname, guildId))?.value ||
-      d.client.variableManager.get(varname, table)?.default;
+        (await d.client.db.get(table, varname, guildId))?.value ||
+        d.client.variableManager.get(varname, table)?.default;
 
     data.result = typeof data.result === 'object' ? JSON.stringify(data.result) : data.result;
 

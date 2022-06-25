@@ -4,7 +4,7 @@ module.exports = async d => {
     const [def = 'default'] = data.inside.splits;
 
     if (!d.author?.accentColor) {
-        await d.author?.fetch({force:true})
+        await d.author?.fetch({force: true})
     }
 
     data.result = d.author?.hexAccentColor ?? def;

@@ -14,7 +14,7 @@ module.exports = async d => {
 
     arr.forEach(async x => {
         const code = cmd.code.replaceAll('{value}', x);
-        const command = {...cmd,code}
+        const command = {...cmd, code}
 
         res.push((await Interpreter(d.client, d.message, d.args, command, d.client.db, true))?.code);
     });

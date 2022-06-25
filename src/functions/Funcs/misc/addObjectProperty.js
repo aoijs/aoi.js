@@ -12,7 +12,7 @@ module.exports = async d => {
     }
     const object = d.object
     eval(`object.${name} = value`)
-    
+
     return {
         code: d.util.setCode({function: d.func, inside, code}),
         object,
