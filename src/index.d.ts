@@ -1,9 +1,7 @@
-import Group from "./cachehandler/group";
-
-import LimitGroup from "./cachehandler/limitGroup";
-
-import SuperSet from "./cachehandler/superSet";
 import {Client, ShardingManager} from "discord.js";
+import {Group} from "./classes/structures/dist/group/group";
+import {LimitGroup} from "./classes/structures/dist/group/limitGroup";
+import {SuperSet} from "./classes/structures/dist/sets/superset";
 
 declare module "aoi.js" {
     import {EventEmitter} from "events";
@@ -548,7 +546,7 @@ declare module "aoi.js" {
         listen(event: string): void;
     }
 
-    type ApplcationOptionData = {
+    type ApplicationOptionData = {
         type:
             | "SUB_COMMAND"
             | "SUB_COMMAND_GROUP"
