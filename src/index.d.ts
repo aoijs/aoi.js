@@ -176,7 +176,6 @@ declare module "aoi.js" {
         cacheManager: CacheManager;
         variableManager: any /*VariableManager*/;
         blacklist: Blacklist;
-        _api: string;
         prefix: string | string[];
         db: any /*AoijsAPI | DbdTsDb | CustomDb | Promisify*/;
         statuses: Group;
