@@ -12,10 +12,6 @@ class Client extends BaseClient {
             this.aoiOptions.respondOnEdit.time =
                 this.aoiOptions.respondOnEdit.time || 60000;
         }
-        const [major] = process.version.replace("v", "").split(".")
-        if (isNaN(Number(major)) || Number(major) < 16) {
-            throw new Error(`node.js version must be v16.6.0 or above.`)
-        }
     }
 
     //message Events
@@ -679,6 +675,60 @@ class Client extends BaseClient {
     onWebhookUpdate() {
         this.on("webhookUpdate", async (channel) => {
             await require("../handler/guildWebhooks/update.js")(channel, this);
+        });
+    }
+
+    onShardDisconnect() {
+        this.client.on("shardDisconnect", async (event, id) => {
+            await require("../shardhandler/shardDisconnect.js")(
+                event,
+                id,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardError() {
+        this.on("shardError", async (error, shardID) => {
+            await require("../shardhandler/shardError.js")(
+                error,
+                shardID,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardReady() {
+        this.on("shardReady", async (shardID, guilds) => {
+            await require("../shardhandler/shardReady.js")(
+                shardID,
+                guilds,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardReconnecting() {
+        this.on("shardReconnecting", async (shardID) => {
+            await require("../shardhandler/shardReconnecting.js")(
+                shardID,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardResume() {
+        this.on("shardResume", async (shardID, events) => {
+            await require("../shardhandler/shardError.js")(
+                shardID,
+                events,
+                this.client,
+                this.cmd,
+            );
         });
     }
 

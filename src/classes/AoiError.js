@@ -119,7 +119,7 @@ class AoiError {
         msg = await channel.reply(options).catch((e) => {
           this.consoleError("CreateMessageError", e);
           return undefined;
-        });;
+        });
       } else {
         if (
           options.content === " " &&

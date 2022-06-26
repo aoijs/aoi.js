@@ -133,7 +133,7 @@ try {
 } catch (e) {
   class Voice {
     constructor() {
-      throw new Error("install @akarui/aoi.music to use this feature");
+      throw new Error("Install @akarui/aoi.music to use this feature");
     }
   }
   module.exports = Voice;
