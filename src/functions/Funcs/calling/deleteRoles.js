@@ -19,13 +19,12 @@ module.exports = async (d) => {
             wrongRoles.push(x);
         else
             ros.push(
-                d.guild.roles.cache.find(
+                guild.roles.cache.find(
                     (y) =>
                         y.name.toLowerCase() === x.toLowerCase().addBrackets() ||
                         y.id === x,
                 ),
-            );
-    });
+            );    });
     if (wrongRoles.length)
         return d.aoiError.fnError(
             d,

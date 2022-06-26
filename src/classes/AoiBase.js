@@ -26,19 +26,19 @@ class BaseClient extends Discord.Client {
 
     if (options.presence?.activities?.length) {
       if (
-        Object.keys(ActivityTypeAvailables).includes(
-          options.presence?.activities[0].type,
-        ) ||
-        Object.values(ActivityTypeAvailables).includes(
-          options.presence?.activities[0].type,
-        )
+          Object.keys(ActivityTypeAvailables).includes(
+              options.presence?.activities[0].type,
+          ) ||
+          Object.values(ActivityTypeAvailables).includes(
+              options.presence?.activities[0].type,
+          )
       ) {
         options.presence.activities[0].type =
-          ActivityTypeAvailables[options.presence?.activities[0].type] ||
-          options.presence?.activities[0].type;
+            ActivityTypeAvailables[options.presence?.activities[0].type] ||
+            options.presence?.activities[0].type;
       } else {
         throw new TypeError(
-          `ActivityTypeAvailableError: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
+            `Activity Type Error: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
         );
       }
     }
@@ -52,10 +52,10 @@ class BaseClient extends Discord.Client {
     ];
 
     options.intents = !Array.isArray(options.intents)
-      ? options.intents?.toLowerCase() === "all"
-        ? IntentOptions.all
-        : undefined
-      : options.intents.map((x) => IntentOptions[x] || x);
+        ? options.intents?.toLowerCase() === "all"
+            ? IntentOptions.all
+            : undefined
+        : options.intents.map((x) => IntentOptions[x] || x);
 
     const aoiOptions = Object.assign({}, options);
 
@@ -77,83 +77,83 @@ class BaseClient extends Discord.Client {
     }
 
     if (
-      ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb","aoi.db"].includes(
-        options?.database?.type,
-      )
+        ["default", "dbdjs.db", "dbdjs.db-sql", "dbdjs.mongo", "aoi.fb", "aoi.db"].includes(
+            options?.database?.type,
+        )
     ) {
       this.db = new AoijsAPI(
-        options?.database?.db ,
-        {
-          path: options?.database?.path || "./database/",
-          tables: options?.database?.tables || ["main"],
-        },
-        {
-          type: options?.database?.type || "default",
-          promisify: options?.database?.promisify || false,
-        },
-        options.database?.extraOptions || {},
+          options?.database?.db,
+          {
+            path: options?.database?.path || "./database/",
+            tables: options?.database?.tables || ["main"],
+          },
+          {
+            type: options?.database?.type || "default",
+            promisify: options?.database?.promisify || false,
+          },
+          options.database?.extraOptions || {},
       );
     } else if (options?.database?.type === "dbdts.db") {
       this.db = new DbdTsDb(
-        options.database?.db,
-        {
-          path: options.database?.path || "./database",
-          tables: options?.database?.tables || ["main"],
-        },
-        { type: "dbdts.db", promisify: false },
-        options.database?.extraOptions || {},
+          options.database?.db,
+          {
+            path: options.database?.path || "./database",
+            tables: options?.database?.tables || ["main"],
+          },
+          {type: "dbdts.db", promisify: false},
+          options.database?.extraOptions || {},
       );
     } else if (options?.database?.type === "aoi.mongo") {
       this.db = new AoiMongoDb(
-        options.database?.db,
-        {
-          path: options.database?.path,
-          tables: options.database?.tables || ["main"],
-        },
-        { type: "aoi.mongo", promisify: true },
-        {
-          ...AoiMongoDb.defaultOptions,
-          ...(options.database?.extraOptions || {}),
-        },
+          options.database?.db,
+          {
+            path: options.database?.path,
+            tables: options.database?.tables || ["main"],
+          },
+          {type: "aoi.mongo", promisify: true},
+          {
+            ...AoiMongoDb.defaultOptions,
+            ...(options.database?.extraOptions || {}),
+          },
       );
     } else if (
-      options?.database?.type === "custom" &&
-      !options?.database?.promisify
+        options?.database?.type === "custom" &&
+        !options?.database?.promisify
     ) {
       this.db = new CustomDb(
-        options?.database?.db,
-        {
-          path: options.database?.path || "./database",
-          tables: options?.database?.tables || ["main"],
-        },
-        { type: "custom", promisify: true },
-        options.database?.extraOptions || {},
+          options?.database?.db,
+          {
+            path: options.database?.path || "./database",
+            tables: options?.database?.tables || ["main"],
+          },
+          {type: "custom", promisify: true},
+          options.database?.extraOptions || {},
       );
     } else if (
-      options?.database?.type === "custom" &&
-      options?.database?.promisify
+        options?.database?.type === "custom" &&
+        options?.database?.promisify
     ) {
       this.db = new Promisify(
-        options.database?.db,
-        {
-          path: options.database?.path || "./database",
-          tables: options?.database?.tables || ["main"],
-        },
-        { type: "custom", promisify: true },
-        options.database?.extraOptions || {},
+          options.database?.db,
+          {
+            path: options.database?.path || "./database",
+            tables: options?.database?.tables || ["main"],
+          },
+          {type: "custom", promisify: true},
+          options.database?.extraOptions || {},
       );
     } else {
       this.db = new AoijsAPI(
-        options?.database?.db || require("dbdjs.db") ,
-        {
-          path: options?.database?.path || "./database/",
-          tables: options?.database?.tables || ["main"],
-        },
-        {
-          type: options?.database?.type || "default",
-          promisify: options?.database?.promisify || false,
-        },
-        options.database?.extraOptions || {},
+          options?.database?.db || require("dbdjs.db"),
+          {
+            path: options?.database?.path || "./database/",
+            tables: options?.database?.tables || ["main"],
+          },
+          {
+            type: options?.database?.type || "default",
+            promisify: options?.database?.promisify || false,
+          },
+          options.database?.extraOptions || {},
       );
     }
 
@@ -165,21 +165,25 @@ class BaseClient extends Discord.Client {
 
     this.prefix = options.prefix;
 
-    Object.defineProperty(this, "statuses", { value: new Group() });
+    Object.defineProperty(this, "statuses", {value: new Group()});
 
     if (options.mobilePlatform === true) {
       this.options.ws.properties.$browser = "Discord Android";
     }
+
+    const [major] = process.version.replace("v", "").split(".")
+    if (isNaN(Number(major)) || Number(major) < 16) {
+      throw new Error(`node.js version must be v16.6.0 or above.`)
+    }
+
     this.on("ready", async () => {
       require("../handler/status.js")(this.statuses, this);
       await require("../handler/startup.js")(this);
       if (options?.fetchInvites?.enabled) {
-        require("../handler/fetchInvites.js")(this);
+        await require("../handler/fetchInvites.js")(this);
       }
       await require("../handler/nonIntents/ready.js")(this);
     });
-    this._api = (url) =>
-      `https://discord.com/api/v9/${url.startsWith("/") ? url.slice(1) : url}`;
     this.login(options.token);
   }
 
@@ -189,11 +193,11 @@ class BaseClient extends Discord.Client {
   status(...statuses) {
     for (const status of statuses) {
       status.type =
-        Object.keys(ActivityTypeAvailables).includes(status.type) ||
-        Object.values(ActivityTypeAvailables).includes(status.type)
-          ? ActivityTypeAvailables[status.type] || status.type
-          : "PLAYING";
-      const option = { name: status.text, type: status.type, url: status.url };
+          Object.keys(ActivityTypeAvailables).includes(status.type) ||
+          Object.values(ActivityTypeAvailables).includes(status.type)
+              ? ActivityTypeAvailables[status.type] || status.type
+              : "PLAYING";
+      const option = {name: status.text, type: status.type, url: status.url};
 
       this.statuses.set(this.statuses.size, {
         status: status.status || "online",
@@ -211,12 +215,12 @@ class BaseClient extends Discord.Client {
    */
   variables(d, table = this.db.tables[0]) {
     for (const [name, value] of Object.entries(d)) {
-      this.variableManager.add({ name, value, table });
+      this.variableManager.add({name, value, table});
     }
     if (this.db instanceof DbdTsDb) {
       const data = this.variableManager.cache
-        .allValues()
-        .map((x) => x.object());
+          .allValues()
+          .map((x) => x.object());
 
       this.db.addColumns(table, data);
     }
@@ -224,60 +228,6 @@ class BaseClient extends Discord.Client {
 
   async _createCacheFactory(options) {
     options.makeCache = await CacheManager._setDjsCacheManagers(options.cache);
-  }
-
-  onShardDisconnect() {
-    this.client.on("shardDisconnect", async (event, id) => {
-      await require("../shardhandler/shardDisconnect.js")(
-        event,
-        id,
-        this.client,
-        this.cmd,
-      );
-    });
-  }
-
-  onShardError() {
-    this.on("shardError", async (error, shardID) => {
-      await require("../shardhandler/shardError.js")(
-        error,
-        shardID,
-        this.client,
-        this.cmd,
-      );
-    });
-  }
-
-  onShardReady() {
-    this.on("shardReady", async (shardID, guilds) => {
-      await require("../shardhandler/shardReady.js")(
-        shardID,
-        guilds,
-        this.client,
-        this.cmd,
-      );
-    });
-  }
-
-  onShardReconnecting() {
-    this.on("shardReconnecting", async (shardID) => {
-      await require("../shardhandler/shardReconnecting.js")(
-        shardID,
-        this.client,
-        this.cmd,
-      );
-    });
-  }
-
-  onShardResume() {
-    this.on("shardResume", async (shardID, events) => {
-      await require("../shardhandler/shardError.js")(
-        shardID,
-        events,
-        this.client,
-        this.cmd,
-      );
-    });
   }
 }
 

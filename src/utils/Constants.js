@@ -202,7 +202,7 @@ const ChannelOptions = {
   full: "full",
   joinable: "joinable",
   rtcRegion: "rtcRegion",
-  userLimit: "useeLimit",
+  userLimit: "userLimit",
   speakable: "speakable",
   //threads
   archived: "archived",
