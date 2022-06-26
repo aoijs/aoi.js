@@ -29,7 +29,6 @@ const { Command } = require("./classes/Commands.js");
  * @param  {boolean} returnExecution
  * @param  {boolean} returnID
  * @param  {boolean} sendMessage=false
- * @returns {Promise<void | {code?: string ,message?:string,data?:object,id?:string}}
  */
 const Interpreter = async (
   client,
@@ -142,7 +141,7 @@ const Interpreter = async (
             aoiError: require("./classes/AoiError.js"),
             data: data,
             func: undefined,
-            funcLine,
+            funcLine: undefined,
             util: Util,
             allowedMentions: allowedMentions,
             embeds: embeds || [],
