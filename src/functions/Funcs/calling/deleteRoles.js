@@ -24,8 +24,7 @@ module.exports = async (d) => {
                         y.name.toLowerCase() === x.toLowerCase().addBrackets() ||
                         y.id === x,
                 ),
-            );
-    });
+            );    });
     if (wrongRoles.length)
         return d.aoiError.fnError(
             d,
