@@ -3,7 +3,7 @@ module.exports = async (d) => {
   if (data.err) return d.error(data.err);
 
   const [name, query, queryType = "==", separator = ","] = data.inside.splits;
-  if (!data.arrays[name]) {
+  if (!d.data.arrays[name]) {
     return d.aoiError.fnError(
       d,
       "custom",
@@ -15,7 +15,7 @@ module.exports = async (d) => {
   data.result = d.arrays[name]
     .filter((x) =>
       ["==", "!=", "<=", ">=", "<", ">"].includes(queryType)
-        ? d.util.checkCondition.solve(`x${queryType}${query}`)
+        ? eval(d.helpers.checkCondition.solve(`${x}${queryType}${query}`))
         : x[queryType](query),
     )
     .join(separator);
