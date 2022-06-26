@@ -20,7 +20,7 @@ const { Command } = require("./classes/Commands.js");
  * mentions?:Discord.MessageMentions }} message
  * @param  {string[]} args
  * @param  {Command | object } command
- * @param {} _db db to be used (deprecated param)
+ * @param  {string} _db db to be used (deprecated param)
  * @param  {boolean} returnCode=false
  * @param  {string | void} channelUsed
  * @param  {object} data={}
@@ -29,7 +29,6 @@ const { Command } = require("./classes/Commands.js");
  * @param  {boolean} returnExecution
  * @param  {boolean} returnID
  * @param  {boolean} sendMessage=false
- * @returns {Promise<void | {code?: string ,message?:string,data?:object,id?:string}}
  */
 const Interpreter = async (
   client,
@@ -77,7 +76,7 @@ const Interpreter = async (
       data.object || {},
       ["roles", "users", "everyone"],
       data.array || [],
-      data.arrays || {},
+      data.arrays || [],
       [],
       message.channel,
       message.author,
@@ -86,7 +85,7 @@ const Interpreter = async (
       message.member,
       message,
     ];
-    let anErrorOccuredPlsWait;
+    let errorOccurred;
     let embeds;
     let deleteIn;
     let suppressErrors;
@@ -144,7 +143,7 @@ const Interpreter = async (
             aoiError: require("./classes/AoiError.js"),
             data: data,
             func: undefined,
-            funcLine,
+            funcLine: undefined,
             util: Util,
             allowedMentions: allowedMentions,
             embeds: embeds || [],
@@ -167,8 +166,8 @@ const Interpreter = async (
             member: member,
             mentions: mentions,
             unpack() {
-              const last = code.split(func.replace("[", "")).length - 1;
-              const sliced = code.split(func.replace("[", ""))[last];
+              const last = code.split(this.func.replace("[", "")).length - 1;
+              const sliced = code.split(this.func.replace("[", ""))[last];
 
               return sliced.after();
             },
@@ -178,94 +177,11 @@ const Interpreter = async (
                 else {
                   return client.options.suppressAllErrors
                     ? client.options.errorMessage
-                    : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
+                    : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
                 }
               } else return false;
             },
             noop() {},
-            async error(err) {
-              error = true;
-              client.emit(
-                "functionError",
-                {
-                  error: err?.addBrackets(),
-                  function: func,
-                  command: command.name,
-                  channel,
-                  guild,
-                },
-                client,
-              );
-              if (client.options.suppressAllErrors) {
-                if (client.options.errorMessage) {
-                  const {
-                    EmbedParser,
-                    FileParser,
-                    ComponentParser,
-                  } = require("./handler/parsers.js");
-
-                  if (!message || !message.channel) {
-                    console.error(client.options.errorMessage.addBrackets());
-                  } else {
-                    let [con, em, com, fil] = [" ", "", "", ""];
-                    let isArray = Array.isArray(client.options.errorMessage);
-                    if (isArray) {
-                      isArray = client.options.errorMessage;
-                      con = isArray[0] === "" || !isArray[0] ? " " : isArray[0];
-                      em =
-                        isArray[1] !== "" && isArray[1]
-                          ? await EmbedParser(isArray[1] || "")
-                          : [];
-                      fil =
-                        isArray[3] !== "" && isArray[3]
-                          ? await FileParser(isArray[3] || "")
-                          : [];
-                      com =
-                        isArray[2] !== "" && isArray[2]
-                          ? await ComponentParser(isArray[2] || "")
-                          : [];
-                    } else {
-                      con =
-                        client.options.errorMessage.addBrackets() === ""
-                          ? " "
-                          : client.options.errorMessage.addBrackets();
-                    }
-
-                    if (!anErrorOccuredPlsWait) {
-                      message.channel.send({
-                        content: con,
-                        embeds: em || [],
-                        components: com || [],
-                        files: fil || [],
-                      });
-                    }
-                    anErrorOccuredPlsWait = true;
-                  }
-                } else;
-              } else {
-                if (!message || !message.channel) {
-                  console.error(err.addBrackets());
-                }
-                if (suppressErrors && !anErrorOccuredPlsWait) {
-                  const { ErrorHandler } = require("./handler/parsers.js");
-
-                  await ErrorHandler(
-                    {
-                      channel: channel,
-                      message: message,
-                      guild: guild,
-                      author: author,
-                    },
-                    suppressErrors?.split("{error}").join(err.addBrackets()),
-                  );
-                } else {
-                  message.channel.send(
-                    typeof err === "object" ? err : err?.addBrackets(),
-                  );
-                }
-                anErrorOccuredPlsWait = true;
-              }
-            },
             interpreter: Interpreter,
             client: client,
             embed: Discord.MessageEmbed,
@@ -381,89 +297,6 @@ const Interpreter = async (
               } else return false;
             },
             noop() {},
-            async error(err) {
-              error = true;
-              client.emit(
-                "functionError",
-                {
-                  error: err?.addBrackets(),
-                  function: func,
-                  command: command.name,
-                  channel,
-                  guild,
-                },
-                client,
-              );
-              if (client.options.suppressAllErrors) {
-                if (client.options.errorMessage) {
-                  const {
-                    EmbedParser,
-                    FileParser,
-                    ComponentParser,
-                  } = require("./handler/parsers.js");
-
-                  if (!message || !message.channel) {
-                    console.error(client.options.errorMessage.addBrackets());
-                  } else {
-                    let [con, em, com, fil] = [" ", "", "", ""];
-                    let isArray = Array.isArray(client.options.errorMessage);
-                    if (isArray) {
-                      isArray = client.options.errorMessage;
-                      con = isArray[0] === "" || !isArray[0] ? " " : isArray[0];
-                      em =
-                        isArray[1] !== "" && isArray[1]
-                          ? await EmbedParser(isArray[1] || "")
-                          : [];
-                      fil =
-                        isArray[3] !== "" && isArray[3]
-                          ? await FileParser(isArray[3] || "")
-                          : [];
-                      com =
-                        isArray[2] !== "" && isArray[2]
-                          ? await ComponentParser(isArray[2] || "")
-                          : [];
-                    } else {
-                      con =
-                        client.options.errorMessage.addBrackets() === ""
-                          ? " "
-                          : client.options.errorMessage.addBrackets();
-                    }
-
-                    if (!anErrorOccuredPlsWait) {
-                      message.channel.send({
-                        content: con,
-                        embeds: em || [],
-                        components: com || [],
-                        files: fil || [],
-                      });
-                    }
-                    anErrorOccuredPlsWait = true;
-                  }
-                } else;
-              } else {
-                if (!message || !message.channel) {
-                  console.error(err.addBrackets());
-                }
-                if (suppressErrors && !anErrorOccuredPlsWait) {
-                  const { ErrorHandler } = require("./handler/parsers.js");
-
-                  await ErrorHandler(
-                    {
-                      channel: channel,
-                      message: message,
-                      guild: guild,
-                      author: author,
-                    },
-                    suppressErrors?.split("{error}").join(err.addBrackets()),
-                  );
-                } else {
-                  message.channel.send(
-                    typeof err === "object" ? err : err?.addBrackets(),
-                  );
-                }
-                anErrorOccuredPlsWait = true;
-              }
-            },
             interpreter: Interpreter,
             client: client,
             embed: Discord.MessageEmbed,
@@ -573,7 +406,7 @@ const Interpreter = async (
                           : [];
                       fil =
                         isArray[3] !== "" && isArray[3]
-                          ? await FileParser(isArray[3] || "")
+                          ? FileParser(isArray[3] || "")
                           : [];
                       com =
                         isArray[2] !== "" && isArray[2]
@@ -586,7 +419,7 @@ const Interpreter = async (
                           : client.options.errorMessage.addBrackets();
                     }
 
-                    if (!anErrorOccuredPlsWait) {
+                    if (!errorOccurred) {
                       message.channel.send({
                         content: con,
                         embeds: em || [],
@@ -594,14 +427,14 @@ const Interpreter = async (
                         files: fil || [],
                       });
                     }
-                    anErrorOccuredPlsWait = true;
+                    errorOccurred = true;
                   }
                 } else;
               } else {
                 if (!message || !message.channel) {
                   console.error(err.addBrackets());
                 }
-                if (suppressErrors && !anErrorOccuredPlsWait) {
+                if (suppressErrors && !errorOccurred) {
                   const { ErrorHandler } = require("./handler/parsers.js");
                   if (suppressErrors.trim() !== "")
                     await ErrorHandler(
@@ -619,7 +452,7 @@ const Interpreter = async (
                     typeof err === "object" ? err : err?.addBrackets(),
                   );
                 }
-                anErrorOccuredPlsWait = true;
+                errorOccurred = true;
               }
             },
             interpreter: Interpreter,
@@ -716,7 +549,7 @@ const Interpreter = async (
     }
     if (
       (code.length || embeds?.length || attachments?.length) &&
-      !anErrorOccuredPlsWait &&
+      !errorOccurred &&
       !error
     ) {
       try {
@@ -789,8 +622,6 @@ module.exports = Interpreter;
 
 function unpack(code, func) {
   const last = code.split(func.replace("[", "")).length - 1;
-
   const sliced = code.split(func.replace("[", ""))[last];
-
   return sliced.after();
 }
