@@ -682,6 +682,60 @@ class Client extends BaseClient {
         });
     }
 
+    onShardDisconnect() {
+        this.client.on("shardDisconnect", async (event, id) => {
+            await require("../shardhandler/shardDisconnect.js")(
+                event,
+                id,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardError() {
+        this.on("shardError", async (error, shardID) => {
+            await require("../shardhandler/shardError.js")(
+                error,
+                shardID,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardReady() {
+        this.on("shardReady", async (shardID, guilds) => {
+            await require("../shardhandler/shardReady.js")(
+                shardID,
+                guilds,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardReconnecting() {
+        this.on("shardReconnecting", async (shardID) => {
+            await require("../shardhandler/shardReconnecting.js")(
+                shardID,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
+    onShardResume() {
+        this.on("shardResume", async (shardID, events) => {
+            await require("../shardhandler/shardError.js")(
+                shardID,
+                events,
+                this.client,
+                this.cmd,
+            );
+        });
+    }
+
     //commands
     command(...args) {
         for (const d of args) {
