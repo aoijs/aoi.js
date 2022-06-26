@@ -37,7 +37,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 ## Features
 
 - Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurposes.
-- Built-in 500+ functions, simple and easy to learn.
+- Built-in 600+ functions, simple and easy to learn.
 - Simple to learn, all in string-based and compact.
 - Support of extensions available to be used by the community.
 
