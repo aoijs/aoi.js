@@ -62,6 +62,7 @@ const Interpreter = async (
       object,
       disableMentions,
       array,
+      arrays,
       reactions,
       channel,
       author,
@@ -76,6 +77,7 @@ const Interpreter = async (
       data.object || {},
       ["roles", "users", "everyone"],
       data.array || [],
+      data.arrays || [],
       [],
       message.channel,
       message.author,
@@ -155,6 +157,7 @@ const Interpreter = async (
             disableMentions: disableMentions,
             returnID: returnID,
             array: array,
+            arrays,
             reactions: reactions,
             message: message.message || message,
             msg: msg.message || msg,
@@ -354,6 +357,7 @@ const Interpreter = async (
             disableMentions: disableMentions,
             returnID: returnID,
             array: array,
+            arrays,
             reactions: reactions,
             message: message.message || message,
             msg: msg.message || msg,
@@ -510,6 +514,7 @@ const Interpreter = async (
             object: object,
             disableMentions: disableMentions,
             array: array,
+            arrays,
             reactions: reactions,
             message: message.message || message,
             msg: msg.message || msg,
@@ -637,6 +642,7 @@ const Interpreter = async (
       if (FuncData?.data) {
         data = FuncData.data;
         array = FuncData.data?.array ?? array;
+        arrays = FuncData.data?.arrays ?? arrays;
         object = FuncData?.data?.object ?? object;
         letVars = FuncData?.data?.vars ?? letVars;
       }
@@ -681,6 +687,9 @@ const Interpreter = async (
       }
       if (FuncData?.error) {
         error = FuncData?.error;
+      }
+      if(FuncData?.arrays) {
+        arrays = FuncData?.arrays;
       }
     }
     const ended = (performance.now() - start).toFixed(3);
