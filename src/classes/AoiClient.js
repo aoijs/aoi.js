@@ -12,10 +12,6 @@ class Client extends BaseClient {
             this.aoiOptions.respondOnEdit.time =
                 this.aoiOptions.respondOnEdit.time || 60000;
         }
-        const [major] = process.version.replace("v", "").split(".")
-        if (isNaN(Number(major)) || Number(major) < 16) {
-            throw new Error(`node.js version must be v16.6.0 or above.`)
-        }
     }
 
     //message Events

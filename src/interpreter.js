@@ -20,7 +20,7 @@ const {Command} = require("./classes/Commands.js");
  * mentions?:Discord.MessageMentions }} message
  * @param  {string[]} args
  * @param  {Command | object } command
- * @param {string} _db db to be used (deprecated param)
+ * @param  {string} _db db to be used (deprecated param)
  * @param  {boolean} returnCode=false
  * @param  {string | void} channelUsed
  * @param  {object} data={}
@@ -83,7 +83,7 @@ const Interpreter = async (
             message.member,
             message,
         ];
-        let anErrorOccuredPlsWait;
+        let errorOccurred;
         let embeds;
         let deleteIn;
         let suppressErrors;
@@ -417,7 +417,7 @@ const Interpreter = async (
                                                     : client.options.errorMessage.addBrackets();
                                         }
 
-                                        if (!anErrorOccuredPlsWait) {
+                                        if (!errorOccurred) {
                                             message.channel.send({
                                                 content: con,
                                                 embeds: em || [],
@@ -425,14 +425,14 @@ const Interpreter = async (
                                                 files: fil || [],
                                             });
                                         }
-                                        anErrorOccuredPlsWait = true;
+                                        errorOccurred = true;
                                     }
                                 } else ;
                             } else {
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
                                 }
-                                if (suppressErrors && !anErrorOccuredPlsWait) {
+                                if (suppressErrors && !errorOccurred) {
                                     const {ErrorHandler} = require("./handler/parsers.js");
                                     if (suppressErrors.trim() !== "")
                                         await ErrorHandler(
@@ -450,7 +450,7 @@ const Interpreter = async (
                                         typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
-                                anErrorOccuredPlsWait = true;
+                                errorOccurred = true;
                             }
                         },
                         interpreter: Interpreter,
@@ -543,7 +543,7 @@ const Interpreter = async (
         }
         if (
             (code.length || embeds?.length || attachments?.length) &&
-            !anErrorOccuredPlsWait &&
+            !errorOccurred &&
             !error
         ) {
             try {
