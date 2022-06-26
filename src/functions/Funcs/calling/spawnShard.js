@@ -5,7 +5,7 @@ module.exports = async d => {
     const shardId = data.inside.inside;
 
     await d.client.shard.broadcastEval(c => {
- if (c.shard.ids.includes(Number(shardId))) c.spawn();
+        if (c.shard.ids.includes(Number(shardId))) c.spawn();
     });
 
     return {

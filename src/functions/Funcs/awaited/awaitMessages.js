@@ -5,7 +5,7 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [ channelId,userFilter, time,replies, cmds,errorMsg = "", data = "{}",dm,] = inside.splits;
+    let [channelId, userFilter, time, replies, cmds, errorMsg = "", data = "{}", dm,] = inside.splits;
     try {
         data = JSON.parse(data);
     } catch (e) {
@@ -64,14 +64,14 @@ module.exports = async (d) => {
                     ];
             const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === c);
             await Interpreter(
-              d.client,
-              collected,
-              collected.content.split(" "),
-              cmd,
-              d.client.db,
-              false,
-              undefined,
-              { ...d.data ,awaitData: data },
+                d.client,
+                collected,
+                collected.content.split(" "),
+                cmd,
+                d.client.db,
+                false,
+                undefined,
+                {...d.data, awaitData: data},
             );
         })
         .catch(async (_) => {

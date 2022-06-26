@@ -6,7 +6,7 @@ module.exports = async d => {
     const wrongChannels = []
     const chans = []
     await channels.forEach(async x => {
-        const c = await d.util.getChannel(d,x);
+        const c = await d.util.getChannel(d, x);
         if (!c) wrongChannels.push(x);
         else chans.push(c);
     });

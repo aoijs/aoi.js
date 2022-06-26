@@ -23,12 +23,12 @@ module.exports = async d => {
         method,
         url: url.addBrackets(),
         headers,
-        data:body,
+        data: body,
         responseType: 'text'
     }).catch(async e => {
         console.error(e)
         if (error === "$default" || !error) {
-            return d.aoiError.makeMessageError(d.client, d.channel, {content : e}, {}, d)
+            return d.aoiError.makeMessageError(d.client, d.channel, {content: e}, {}, d)
         } else {
             error = await d.util.errorParser(error, d);
             return d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d)

@@ -2,7 +2,7 @@ module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();
 
-    const data  = inside.inside;
+    const data = inside.inside;
     try {
         d.object = JSON.parse(data.addBrackets());
     } catch (e) {

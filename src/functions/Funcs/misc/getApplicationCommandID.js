@@ -8,7 +8,7 @@ module.exports = async d => {
         const all = await d.client.application.commands.fetch();
 
         data.result = all.find(
-          (x) => x.name.toLowerCase() === name.addBrackets().toLowerCase(),
+            (x) => x.name.toLowerCase() === name.addBrackets().toLowerCase(),
         )?.id;
     } else {
         const guild = await d.util.getGuild(d, type);

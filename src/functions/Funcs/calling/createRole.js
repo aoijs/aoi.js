@@ -5,7 +5,7 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) d.error(err);
 
-    let [guildId,returnId ="no", name, color, hoist = "no", position, mentionable = "no", ...permissions] = inside.splits;
+    let [guildId, returnId = "no", name, color, hoist = "no", position, mentionable = "no", ...permissions] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildId === "" ? d.guild.id : guildId)
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
@@ -38,6 +38,6 @@ module.exports = async d => {
     const result = returnId === "yes" ? role?.id : undefined
 
     return {
-        code: d.util.setCode({function: d.func, code, inside,result})
+        code: d.util.setCode({function: d.func, code, inside, result})
     }
 } 

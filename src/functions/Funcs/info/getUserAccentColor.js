@@ -8,7 +8,7 @@ module.exports = async d => {
     if (!user) return d.aoiError.fnError(d, 'user', {inside: data.inside});
 
     if (!user.accentColor) {
-        user.fetch({force:true})
+        user.fetch({force: true})
     }
 
     data.result = user.hexAccentColor;

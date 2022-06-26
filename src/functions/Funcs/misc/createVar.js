@@ -9,12 +9,12 @@ module.exports = async d => {
     vars.forEach(x => {
         const [name, value] = x.split(":");
         d.client.variableManager.add(
-          {
-            name: name.addBrackets(),
-            value: value.addBrackets(),
-            table: table === "" ? d.client.db.tables[0] : table.addBrackets(),
-          },
-          table === "" ? d.client.db.tables[0] : table,
+            {
+                name: name.addBrackets(),
+                value: value.addBrackets(),
+                table: table === "" ? d.client.db.tables[0] : table.addBrackets(),
+            },
+            table === "" ? d.client.db.tables[0] : table,
         );
     });
 

@@ -22,51 +22,51 @@ module.exports = async (d) => {
 
     const all = await d.client.db.all(table, varname.addBrackets(), 1);
     if (d.client.db instanceof AoijsAPI) {
-      all
-        .filter(async (x) => await d.util.getGuild(d, x.key.split("_")[1]))
-        .forEach(async (x) => await d.client.db.delete(table, x.key));
+        all
+            .filter(async (x) => await d.util.getGuild(d, x.key.split("_")[1]))
+            .forEach(async (x) => await d.client.db.delete(table, x.key));
     } else if (d.client.db instanceof DbdTsDb) {
-      all
-        .filter(async (x) => await d.util.getGuild(d, x.id))
-        .forEach(
-          async (x) =>
-            await d.client.db.delete(table, x[varname.addBrackets()]),
-        );
-    } else if (
-      d.client.db instanceof CustomDb ||
-      d.client.db instanceof Promisify
-    ) {
-      all
-        .filter(async (x) => {
-          if (data.key) {
-            const arr = data.key.split("_");
-            return await d.util.getGuild(d, arr[1]);
-          } else if (data.id) {
-            const arr = data.id.split("_");
-            return await d.util.getGuild(d, arr[1]);
-          } else if (data.ID) {
-            const arr = data.ID.split("_");
-            return await d.util.getGuild(d, arr[1]);
-          } else if (data.Id) {
-            const arr = data.Id.split("_");
-            return await d.util.getGuild(d, arr[1]);
-          } else {
-            d.aoiError.fnError(
-              d,
-              "custom",
-              {},
-              "Database Not Supported For LeaderBoard",
+        all
+            .filter(async (x) => await d.util.getGuild(d, x.id))
+            .forEach(
+                async (x) =>
+                    await d.client.db.delete(table, x[varname.addBrackets()]),
             );
-          }
-        })
-        .forEach(
-          async (x) =>
-            await d.client.db.delete(table, x.key || x.id || x.ID || x.Id),
-        );
+    } else if (
+        d.client.db instanceof CustomDb ||
+        d.client.db instanceof Promisify
+    ) {
+        all
+            .filter(async (x) => {
+                if (data.key) {
+                    const arr = data.key.split("_");
+                    return await d.util.getGuild(d, arr[1]);
+                } else if (data.id) {
+                    const arr = data.id.split("_");
+                    return await d.util.getGuild(d, arr[1]);
+                } else if (data.ID) {
+                    const arr = data.ID.split("_");
+                    return await d.util.getGuild(d, arr[1]);
+                } else if (data.Id) {
+                    const arr = data.Id.split("_");
+                    return await d.util.getGuild(d, arr[1]);
+                } else {
+                    d.aoiError.fnError(
+                        d,
+                        "custom",
+                        {},
+                        "Database Not Supported For LeaderBoard",
+                    );
+                }
+            })
+            .forEach(
+                async (x) =>
+                    await d.client.db.delete(table, x.key || x.id || x.ID || x.Id),
+            );
     } else if (d.client.db instanceof AoiMongoDb) {
-      all
-        .filter(async (x) => await d.util.getUser(d, x.key.split("_")[1]))
-        .forEach(async (x) => await d.client.db.delete(table, x.key));
+        all
+            .filter(async (x) => await d.util.getUser(d, x.key.split("_")[1]))
+            .forEach(async (x) => await d.client.db.delete(table, x.key));
     }
 
     return {
