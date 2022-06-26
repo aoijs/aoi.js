@@ -8,7 +8,7 @@ module.exports = async d => {
 
     data.result = categoryChannelsOption(category)[option];
 
-      ? data.result.join(sep)
+    data.result = Array.isArray(data.result) ? data.result.join(sep)
       : data.result;
 
     return {
