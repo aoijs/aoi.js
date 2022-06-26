@@ -164,8 +164,8 @@ const Interpreter = async (
             member: member,
             mentions: mentions,
             unpack() {
-              const last = code.split(func.replace("[", "")).length - 1;
-              const sliced = code.split(func.replace("[", ""))[last];
+              const last = code.split(this.func.replace("[", "")).length - 1;
+              const sliced = code.split(this.func.replace("[", ""))[last];
 
               return sliced.after();
             },
@@ -175,93 +175,11 @@ const Interpreter = async (
                 else {
                   return client.options.suppressAllErrors
                     ? client.options.errorMessage
-                    : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
+                    : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
                 }
               } else return false;
             },
             noop() {},
-            async error(err) {
-              error = true;
-              client.emit(
-                "functionError",
-                {
-                  error: err?.addBrackets(),
-                  function: func,
-                  command: command.name,
-                  channel,
-                  guild,
-                },
-                client,
-              );
-              if (client.options.suppressAllErrors || client.options.errorMessage) {
-                  const {
-                    EmbedParser,
-                    FileParser,
-                    ComponentParser,
-                  } = require("./handler/parsers.js");
-
-                  if (!message || !message.channel) {
-                    console.error(client.options.errorMessage.addBrackets());
-                  } else {
-                    let [con, em, com, fil] = [" ", "", "", ""];
-                    let isArray = Array.isArray(client.options.errorMessage);
-                    if (isArray) {
-                      isArray = client.options.errorMessage;
-                      con = isArray[0] === "" || !isArray[0] ? " " : isArray[0];
-                      em =
-                        isArray[1] !== "" && isArray[1]
-                          ? await EmbedParser(isArray[1] || "")
-                          : [];
-                      fil =
-                        isArray[3] !== "" && isArray[3]
-                          ? await FileParser(isArray[3] || "")
-                          : [];
-                      com =
-                        isArray[2] !== "" && isArray[2]
-                          ? await ComponentParser(isArray[2] || "")
-                          : [];
-                    } else {
-                      con =
-                        client.options.errorMessage.addBrackets() === ""
-                          ? " "
-                          : client.options.errorMessage.addBrackets();
-                    }
-
-                    if (!anErrorOccuredPlsWait) {
-                      message.channel.send({
-                        content: con,
-                        embeds: em || [],
-                        components: com || [],
-                        files: fil || [],
-                      });
-                    }
-                    anErrorOccuredPlsWait = true;
-                  }
-                } else;
-               {
-                if (!message || !message.channel) {
-                  console.error(err.addBrackets());
-                }
-                if (suppressErrors && !anErrorOccuredPlsWait) {
-                  const { ErrorHandler } = require("./handler/parsers.js");
-
-                  await ErrorHandler(
-                    {
-                      channel: channel,
-                      message: message,
-                      guild: guild,
-                      author: author,
-                    },
-                    suppressErrors?.split("{error}").join(err.addBrackets()),
-                  );
-                } else {
-                  message.channel.send(
-                    typeof err === "object" ? err : err?.addBrackets(),
-                  );
-                }
-                anErrorOccuredPlsWait = true;
-              }
-            },
               interpreter: Interpreter,
               client: client,
               embed: Discord.MessageEmbed,
@@ -486,7 +404,7 @@ const Interpreter = async (
                           : [];
                       fil =
                         isArray[3] !== "" && isArray[3]
-                          ? await FileParser(isArray[3] || "")
+                          ? FileParser(isArray[3] || "")
                           : [];
                       com =
                         isArray[2] !== "" && isArray[2]
