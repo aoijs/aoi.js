@@ -621,7 +621,7 @@ const Interpreter = async (
 module.exports = Interpreter;
 
 function unpack(code, func) {
-  const last = code.split(func.replace("[", "")).length - 1;
-  const sliced = code.split(func.replace("[", ""))[last];
-  return sliced.after();
+    const last = code.split(func.replace("[", "")).length - 1;
+    const sliced = code.split(func.replace("[", ""))[last];
+    return sliced.after();
 }
