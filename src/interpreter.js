@@ -438,17 +438,31 @@ const Interpreter = async (
                                     console.error(err.addBrackets());
                                 }
                                 if (suppressErrors && !errorOccurred) {
-                                    const {ErrorHandler} = require("./handler/parsers.js");
-                                    if (suppressErrors.trim() !== "")
-                                        await ErrorHandler(
-                                            {
-                                                channel: channel,
-                                                message: message,
-                                                guild: guild,
-                                                author: author,
-                                            },
-                                            suppressErrors?.split("{error}").join(err.addBrackets()),
-                                        );
+                                    if (suppressErrors.trim() !== "") {
+                                      const { makeMessageError } = require("./classes/AoiError.js")
+                                      const msg  = 
+                                        await Util.errorParser(
+                                          suppressErrors?.split("{error}").join(err.addBrackets()), 
+                                          {
+                                            channel: channel,
+                                            message: message,
+                                            guild: guild,
+                                            author: author,
+                                          });
+                                      makeMessageError(
+                                        client, 
+                                        channel, 
+                                        msg, 
+                                        msg.options,
+                                         {
+                                          channel: channel,
+                                          message: message,
+                                          guild: guild,
+                                          author: author,
+                                          data:data
+                                        }
+                                      )
+                                    }
                                     else ;
                                 } else {
                                     message.channel.send(
