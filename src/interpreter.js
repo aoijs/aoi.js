@@ -449,18 +449,18 @@ const Interpreter = async (
                                             guild: guild,
                                             author: author,
                                           });
-                                      makeMessageError(
-                                        client, 
-                                        channel, 
-                                        msg, 
-                                        msg.options,
-                                         {
-                                          channel: channel,
-                                          message: message,
-                                          guild: guild,
-                                          author: author,
-                                          data:data
-                                        }
+                                      await makeMessageError(
+                                          client,
+                                          channel,
+                                          msg,
+                                          msg.options,
+                                          {
+                                              channel: channel,
+                                              message: message,
+                                              guild: guild,
+                                              author: author,
+                                              data: data
+                                          }
                                       )
                                     }
                                     else ;
