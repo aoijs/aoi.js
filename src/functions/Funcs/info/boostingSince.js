@@ -9,7 +9,7 @@ module.exports = async d => {
     const user = !guild ? true : await d.util.getMember(guild, userID);
     if (!user) return d.aoiError.fnError(d, "user", {inside: data.inside});
 
-     data.result = (user === true ?
+    data.result = (user === true ?
             0 :
             (format === "date" ?
                 user.premiumSince :

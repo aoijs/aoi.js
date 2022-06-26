@@ -1,16 +1,16 @@
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
-  if (!d.client.voiceManager)
-    d.aoiError.fnError(d, "custom", {}, "Voice class is not Initialized");
+    if (!d.client.voiceManager)
+        d.aoiError.fnError(d, "custom", {}, "Voice class is not Initialized");
 
-  const player = d.client.voiceManager.manager.players.get(d.guild?.id);
-  if (!player)
-    return d.aoiError.fnError(d, "custom", {}, "Client is not connected to Voice/Stage.");
+    const player = d.client.voiceManager.manager.players.get(d.guild?.id);
+    if (!player)
+        return d.aoiError.fnError(d, "custom", {}, "Client is not connected to Voice/Stage.");
 
-  data.result = player.options.mode;
+    data.result = player.options.mode;
 
-  return {
-    code: d.util.setCode(data),
-  };
+    return {
+        code: d.util.setCode(data),
+    };
 };

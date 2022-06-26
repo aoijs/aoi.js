@@ -3,7 +3,7 @@ module.exports = async (d) => {
     const [guildID = d.guild?.id, id = d.author?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: DataTransfer.inside});
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     let u = await d.util.getMember(guild, id)
     if (!u) return d.aoiError.fnError(d, "member", {inside: data.inside})

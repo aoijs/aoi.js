@@ -1,11 +1,11 @@
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
-  const [option] = data.inside.splits;
+    const [option] = data.inside.splits;
 
-  data.result = eval(`d.data.shard.${option}`);
+    data.result = eval(`d.data.shard.${option}`);
 
-  return {
-    code: d.util.setCode(d),
-  };
+    return {
+        code: d.util.setCode(d),
+    };
 };

@@ -11,7 +11,7 @@ module.exports = async d => {
     const message = await d.util.getMessage(channel, messageId);
     if (!message) return d.aoiError.fnError(d, 'message', {inside: data.inside});
 
-    data.result = eval(`Message( message )?.${option}`);
+    data.result = eval(`Message(message)?.${option}`);
 
     return {
         code: d.util.setCode(data)
