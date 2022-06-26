@@ -46,7 +46,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "dbdjs.db": "^2.0.2",
-    "discord.js": "^13.8.0"
+    "discord.js": "^13.8.1"
   },
   "devDependencies": {
     "@akarui/aoi.music": "github:akaruidevelopment/music#main",
