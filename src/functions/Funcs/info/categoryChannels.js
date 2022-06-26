@@ -7,9 +7,8 @@ module.exports = async d => {
     if (category.type !== d.util.channelTypes.Category) return d.aoiError.fnError(d, "custom", {inside}, "Provided Channel Is Not A Category");
 
     data.result = categoryChannelsOption(category)[option];
-
-      ? data.result.join(sep)
-      : data.result;
+    ? data.result.join(sep)
+        : data.result;
 
     return {
         code: d.util.setCode(data)
