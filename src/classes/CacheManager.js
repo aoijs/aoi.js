@@ -32,13 +32,13 @@ class CacheManager {
   }
 
   deleteCache(type, name) {
-    if (!this.validType(type))
+    if (!this._validType(type))
       return AoiError.consoleError(
         "CacheManagerError",
         "Wrong Cache Type Provided",
       );
 
-    delete this.cache[type][name];
+    delete this.caches[type][name];
   }
 
   static _setDjsCacheManagers(cache) {
