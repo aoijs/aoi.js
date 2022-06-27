@@ -1,15 +1,7 @@
-const {Team} = require("discord.js");
 const Interpreter = require("../interpreter.js");
 /*Copyright © 2021 @Akarui Development*/
 
 module.exports = async (client) => {
-    const app = await client.application.fetch();
-    if (app.owner instanceof Team) {
-        client.aoiOptions.Owner = app.owner.members.map((x) => x.id);
-    } else {
-        client.aoiOptions.Owner = [app.owner.id];
-    }
-
     await require("./AoiWarning.js")(client);
 
     await require("./custom/timeout.js")(
