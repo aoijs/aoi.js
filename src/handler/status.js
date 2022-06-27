@@ -35,7 +35,7 @@ module.exports = (statuses, client) => {
         });
 
         y++;
-        f();
+        await f();
       }, (status[y]?.time || 12) * 1000);
     };
     f();

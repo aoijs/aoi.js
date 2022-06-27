@@ -18,8 +18,6 @@ function getQuarterOfMonth(dateMSOrString) {
     return Math.trunc((date.getMonth() + 1) / 4);
 }
 
-// Now Making a Pain Generator, i feel pain, i wanna die
-
 module.exports = (format, date, timezone) => {
     const aNewDate = new Date(new Date(date).toLocaleString('en-us',{timeZone: timezone}));
     switch (format) {
@@ -207,7 +205,6 @@ module.exports = (format, date, timezone) => {
             format = aNewDate.getDay();
         }
             break;
-        //ISO (idk whats the difference)
         case "GG": {
             format = new Date(aNewDate.toISOString())
                 .getFullYear()

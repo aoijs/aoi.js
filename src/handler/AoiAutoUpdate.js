@@ -19,7 +19,7 @@ module.exports = async () => {
             console.log(
                 "aoi.js AutoUpdate: \u001b[33m Installing version...\u001b[0m",
             );
-            const Process = exec("npm i aoi.js@latest", (error, stdout, stderr) => {
+            const Process = exec("npm i aoi.js@latest", (error) => {
                 if (error)
                     return console.error(
                         "aoi.js AutoUpdate: \u001b[31mERR!\u001b[0m " +
