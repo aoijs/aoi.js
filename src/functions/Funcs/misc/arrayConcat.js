@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
   const [separator, ...name] = data.inside.splits;
 
-  if (!data.arrays[name]) {
+  if (!d.data.arrays[name]) {
     return d.aoiError.fnError(
       d,
       "custom",

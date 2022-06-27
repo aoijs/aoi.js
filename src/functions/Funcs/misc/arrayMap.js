@@ -6,7 +6,7 @@ module.exports = async d =>
 
     const [ name, awaitedCmd, separator = ',', awaitData = '{}' ] = data.inside.splits;
 
-    if ( !data.arrays[ name ] )
+    if ( !d.data.arrays[ name ] )
     {
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array With Name '" + name + "' Does Not Exist." );
     }
