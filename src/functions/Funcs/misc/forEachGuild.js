@@ -64,7 +64,7 @@ module.exports = async (d) => {
 
         while (u >= 0) {
             const cmd = cmds[u];
-            d.interpreter(
+            await d.interpreter(
                 d.client,
                 loopData,
                 d.args,
@@ -90,7 +90,7 @@ module.exports = async (d) => {
             (x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase(),
         );
         if (!cmd) return;
-        d.interpreter(
+        await d.interpreter(
             d.client,
             d.message,
             d.args,
