@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 const Util = require("../classes/Util.js");
-const interpreter = require("../interpreter.js");
-
 const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
 const SlashOption = require("./slashOption.js");
@@ -395,7 +393,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
     const cmd = d.client.cmd.awaited.find((c) => c.name === command);
     if (!cmd)
       return d.error(
-        `:x: Invalid awaited command '${command}' in {execute:${command}}`,
+          `:x: Invalid awaited command '${command}' in {execute:${command}}`,
       );
     await d.interpreter(d.client, d.message, d.args, cmd);
   }
