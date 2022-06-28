@@ -1,16 +1,21 @@
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err)
+    if (data.err) return d.error(data.err);
 
-    let [index, url] = data.inside.splits;
-    index = index - 1;
-    if (isNaN(index) || index < 0 || index > 10) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Index Provided In");
+    let fields = inside.splits;
+    let i = 0;
 
-    if (!d.embeds[index]) d.embeds[index] = new d.embed();
-    d.embeds[index].setImage(url.addBrackets());
+    if (isNaN(fields[0]) || fields[0] < 1 || fields[0] > 10) i = -1;
+
+    const index = Number(fields[i] ?? 1) - 1;
+    const url = fields[ i + 1 ]?.addBrackets();
+    
+    if ( !d.embeds[ index ] ) d.embeds[ index ] = new d.embed();
+    
+    d.embeds[index].setImage(url);
 
     return {
         code: d.util.setCode(data),
-        embeds: d.embeds
-    }
-}
+        embeds: d.embeds,
+    };
+};
