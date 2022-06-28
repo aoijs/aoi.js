@@ -81,7 +81,7 @@ module.exports = async (d) => {
         );
         if (!cmd) return;
 
-        d.interpreter(
+        await d.interpreter(
             d.client,
             d.message,
             [msg.id],
@@ -94,13 +94,13 @@ module.exports = async (d) => {
     });
 
     if (endAwait) {
-        collector.on("finish", (r) => {
+        collector.on("finish", async (r) => {
             const endCmd = d.client.cmd.awaited.find(
                 (x) =>
                     x.name.toLowerCase() === endAwait.trim().addBrackets().toLowerCase(),
             );
             if (!endCmd) return;
-            d.interpreter(
+            await d.interpreter(
                 d.client,
                 d.message,
                 [msg.id],
