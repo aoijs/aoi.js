@@ -4,6 +4,8 @@ const IF = async (d) => {
     let message = d.message;
     let client = d.client;
     let args = d.args;
+    const data = d.data;
+
     if (code.toLowerCase().includes("$if[")) {
         for (let statement of code
             .split(/\$if\[/gi)
@@ -12,7 +14,9 @@ const IF = async (d) => {
             const r = code.toLowerCase().split("$if[").length - 1;
 
             if (!code.toLowerCase().includes("$endif"))
-                return message.channel.send(`\`AoiError: $if: Invalid Usage: missing $endif\``);
+                return message.channel.send(
+                    `\`AoiError: $if: Invalid Usage: missing $endif\``,
+                );
 
             const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -34,6 +38,8 @@ const IF = async (d) => {
                         },
                         undefined,
                         true,
+                        undefined,
+                        data,
                     )
                 )?.code === "true";
 
@@ -61,7 +67,10 @@ const IF = async (d) => {
                     }
 
                     statement = statement.replace(
-                        new RegExp(`\\$elseif\\[${escapeRegExp(inside)}\\$endelseif`, "mi"),
+                        new RegExp(
+                            `\\$elseif\\[${escapeRegExp(inside)}\\$endelseif`,
+                            "mi",
+                        ),
                         "",
                     );
                 }
@@ -71,15 +80,15 @@ const IF = async (d) => {
 
             const ifCode = elseAction
                 ? statement
-                    .split("\n")
-                    .slice(1)
-                    .join("\n")
-                    .split(/\$else/gi)[0]
+                      .split("\n")
+                      .slice(1)
+                      .join("\n")
+                      .split(/\$else/gi)[0]
                 : statement
-                    .split("\n")
-                    .slice(1)
-                    .join("\n")
-                    .split(/\$endif/gi)[0];
+                      .split("\n")
+                      .slice(1)
+                      .join("\n")
+                      .split(/\$endif/gi)[0];
 
             const elseCode = elseAction
                 ? statement.split(/\$else/gi)[1].split(/\$endif/gi)[0]
@@ -104,6 +113,8 @@ const IF = async (d) => {
                                     },
                                     undefined,
                                     true,
+                                    undefined,
+                                    data,
                                 )
                             )?.code === "true";
 
@@ -115,13 +126,15 @@ const IF = async (d) => {
                 }
             }
 
-            code = code.replace(/\$if\[/gi, "$if[").replace(/\$endif/gi, "$endif");
+            code = code
+                .replace(/\$if\[/gi, "$if[")
+                .replace(/\$endif/gi, "$endif");
             code = code.replaceLast(
                 `$if[${everything}$endif`,
                 pass ? ifCode : passes ? lastCode : elseCode,
             );
         }
     }
-    return {code};
+    return { code };
 };
 module.exports = IF;

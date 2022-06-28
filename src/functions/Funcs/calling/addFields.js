@@ -1,25 +1,31 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
-    let [index, ...fields] = inside.splits;
-    index = Number(index) - 1;
-    if (isNaN(index) || index < 0)
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
-    let data = [];
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [...fields] = data.inside.splits;
+    let index = 0;
+
+    if (!isNaN(fields[0]) || !(Number(fields[0]) < 0))
+        index = Number(fields.shift());
+
+    let datas = [];
+
     for (const field of fields) {
         let [name, value, inline = "no"] = field.split(":");
+
         name = name.addBrackets();
         value = value.addBrackets();
         inline = inline === "yes" || inline === "true";
-        data.push({name, value, inline});
+
+        datas.push({ name, value, inline });
     }
+
     if (!d.embeds[index]) d.embeds[index] = new d.embed();
-    d.embeds[index].addFields(data);
+
+    d.embeds[index].addFields(datas);
 
     return {
-        code: d.util.setCode({function: d.func, inside, code, result: ""}),
+        code: d.util.setCode(data),
         embeds: d.embeds,
     };
 };
