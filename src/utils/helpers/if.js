@@ -12,7 +12,7 @@ const IF = async (d) => {
             const r = code.toLowerCase().split("$if[").length - 1;
 
             if (!code.toLowerCase().includes("$endif"))
-                return message.channel.send(`\`$if: Invalid Usage: missing $endif\``);
+                return message.channel.send(`\`AoiError: $if: Invalid Usage: missing $endif\``);
 
             const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -45,7 +45,7 @@ const IF = async (d) => {
                 for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
                     if (!data.toLowerCase().includes("$endelseif"))
                         return message.channel.send(
-                            `\`$elseIf: Invalid Usage: missing $endelseIf!\``,
+                            `\`AoiError: $elseIf: Invalid Usage: missing $endelseIf\``,
                         );
 
                     const inside = data.split(/\$endelseIf/gi)[0];
@@ -54,9 +54,7 @@ const IF = async (d) => {
 
                     CONDITION = CONDITION.slice(0, CONDITION.length - 1);
 
-                    const CODE = inside.split("\n").slice(1).join("\n");
-
-                    elseIfs[CONDITION] = CODE;
+                    elseIfs[CONDITION] = inside.split("\n").slice(1).join("\n");
 
                     function escapeRegExp(string) {
                         return string.replace(/[.*+?^${}()|[\]\\\n]/g, "\\$&");
@@ -107,7 +105,7 @@ const IF = async (d) => {
                                     undefined,
                                     true,
                                 )
-                            ).code === "true";
+                            )?.code === "true";
 
                         if (response) {
                             passes = true;
