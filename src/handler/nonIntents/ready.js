@@ -36,7 +36,7 @@ module.exports = async (client) => {
         );
     }
     console.log(
-        "\x1b[31mAoiClient: " + "\x1b[33mInitialized on \x1b[36maoi.js \x1b[35mv" + require("../../../package.json").version + `\x1b[0m || \x1b[32m${client.user.tag}` + "\x1b[0m || \x1b[36mAkarui Development Team\x1b[0m",
+        "\x1b[31mAoiClient: " + "\x1b[33mInitialized on \x1b[36maoi.js \x1b[34mv" + require("../../../package.json").version + `\x1b[0m || \x1b[32m${client.user.tag}` + "\x1b[0m || \x1b[36mAkarui Development Team\x1b[0m",
     );
     console.log("\x1b[33mOfficial Discord Support Server: https://discord.gg/HMUfMXDQsV\x1b[0m");
 };

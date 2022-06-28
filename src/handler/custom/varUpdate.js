@@ -1,4 +1,4 @@
-const Interpreter = require("./interpreter.js");
+const Interpreter = require("../../interpreter.js");
 module.exports = async (olddata, newdata, client) => {
     let chan;
     const d = {
