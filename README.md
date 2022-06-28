@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://aoi.js.org">
-    <img width="400" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-new.png?raw=true">
+    <img width="400" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-new.png?raw=true" alt="aoijs">
   </a>
 </p>
 
@@ -36,7 +36,7 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 
 ## Features
 
-- Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurposes.
+- Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurpose.
 - Built-in 600+ functions, simple and easy to learn.
 - Simple to learn, all in string-based and compact.
 - Support of extensions available to be used by the community.
@@ -93,8 +93,8 @@ $authorID - Return the author ID/the userID who executed the function
 
 ### How does it work?
 
-It's fairly simple, by using `$` as a sense of a function to execute per say it's run by a command.
-By using `$` after the function name, and it's addtional fields, (if any) it'll work as intended by it function.
+It's fairly simple, by using `$` as a sense of a function to execute, it's run by a command.
+By using `$` after the function name, and its additional fields, (if any) it'll work as intended by it function.
 
 ## Events
 
@@ -133,9 +133,9 @@ intents: ["GUILDS", "GUILD_MESSAGES"],
 
 ## Music Integration
 
-Use this on your precaution, we do not endorse anything or affilated with, we only add support towards it.
+Use this on your precaution, we do not endorse anything or affiliated with, we only add support towards it.
 
-Do you want to make your Discord Bot different from others, possibily with the ability to play/stream music, it's simple and easy to use!
+Do you want to make your Discord Bot different from others, possibly with the ability to play/stream music, it's simple and easy to use!
 
 ```php
 $playTrack[type;name] - To play a track from the available third parties supported. 
@@ -148,7 +148,7 @@ More information in our [documentation](https://akarui.leref.ga/v/5/guide/extras
     
 ## Disclaimer
     
-aoi.js is not affilated or associated with Discord or any other services.
+aoi.js is not affiliated or associated with Discord or any other services.
 
 aoi.js is managed by [Akarui Development Team](https://discord.gg/HMUfMXDQsV)   
     
