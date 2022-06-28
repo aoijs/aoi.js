@@ -1,9 +1,8 @@
 module.exports = d => {
-    let {code, result} = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    result = new Date(new Date().toLocaleString('en-us', {timeZone: d.timezone})).getFullYear();
-
+    data.result = new Date(new Date().toLocaleString('en-us', {timeZone: d.timezone})).getFullYear();
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }
