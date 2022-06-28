@@ -1,6 +1,5 @@
-module.exports = async d =>
-{
-    const data = d.util.aoiFunc( d );
+module.exports = async d => {
+    const data = d.util.aoiFunc(d);
     if ( data.err ) return d.error( data.err );
 
     const [ name,index ] = data.inside.splits;
@@ -12,6 +11,6 @@ module.exports = async d =>
     data.result = d.arrays[ name ].at(index-1);
 
     return {
-        code: d.util.setCode( data ),
+        code: d.util.setCode(data),
     };
 };
