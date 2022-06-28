@@ -168,7 +168,7 @@ class BaseClient extends Discord.Client {
     Object.defineProperty(this, "statuses", {value: new Group()});
 
     if (options.mobilePlatform === true) {
-      this.options.ws.properties.$browser = "Discord Android";
+      this.options.ws.properties.browser = "Discord Android";
     }
 
     const [major] = process.version.replace("v", "").split(".")
