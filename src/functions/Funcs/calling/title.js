@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let fields = inside.splits;
+    let fields = data.inside.splits;
     let i = 0;
 
     if (isNaN(fields[0]) || fields[0] < 1 || fields[0] > 10) i = -1;
@@ -18,7 +18,7 @@ module.exports = async (d) => {
     if (url && url.trim() !== "") d.embeds[index].setURL(url);
 
     return {
-        code: d.util.setCode({ function: d.func, code, inside }),
+        code: d.util.setCode(data),
         embeds: d.embeds,
     };
 };

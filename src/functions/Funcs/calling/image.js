@@ -2,7 +2,7 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let fields = inside.splits;
+    let fields = data.inside.splits;
     let i = 0;
 
     if (isNaN(fields[0]) || fields[0] < 1 || fields[0] > 10) i = -1;
