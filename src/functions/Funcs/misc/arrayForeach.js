@@ -30,12 +30,11 @@ module.exports = async d =>
     {
         const c = { ...cmd };
         c.code = c.code.replaceAll("{value}", el);
-        cmd.code = cmd.code.replaceAll( '{value}', el );
         const result = await Interpreter(
             d.client,
             d.message,
             d.args,
-            cmd,
+            c,
             d.client.db,
             true,
             undefined,

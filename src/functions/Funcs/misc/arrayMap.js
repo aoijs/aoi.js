@@ -34,7 +34,7 @@ module.exports = async d =>
             d.client,
             d.message,
             d.args,
-            cmd,
+            c,
             d.client.db,
             true,
             undefined,
