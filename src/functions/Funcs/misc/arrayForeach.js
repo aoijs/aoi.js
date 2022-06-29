@@ -11,12 +11,13 @@ module.exports = async d =>
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array With Name '" + name + "' Does Not Exist." );
     }
 
-    const cmd = d.client.cmd.awaited.find( c => c.name.toLowerCase() === awaitedCmd.toLowerCase() );
+    let cmd = d.client.cmd.awaited.find( c => c.name.toLowerCase() === awaitedCmd.toLowerCase() );
 
     if ( !cmd )
     {
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Awaited Command With Name '" + awaitedCmd + "' Does Not Exist." );
     }
+    cmd = { ...cmd };
     let parsedData;
     try
     {
