@@ -1,5 +1,5 @@
-const {wait} = require("../../../utils/helpers/functions.js");
-const {Time} = require("../../../utils/helpers/customParser.js");
+const { wait } = require("../../../utils/helpers/functions.js");
+const { Time } = require("../../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -14,7 +14,7 @@ module.exports = async (d) => {
         d.aoiError.fnError(
             d,
             "custom",
-            {inside: data.inside},
+            { inside: data.inside },
             "Invalid Data Provided In",
         );
     }
@@ -64,7 +64,7 @@ module.exports = async (d) => {
 
         while (u >= 0) {
             const cmd = cmds[u];
-            d.interpreter(
+            await d.interpreter(
                 d.client,
                 loopData,
                 d.args,
@@ -90,7 +90,7 @@ module.exports = async (d) => {
             (x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase(),
         );
         if (!cmd) return;
-        d.interpreter(
+        await d.interpreter(
             d.client,
             d.message,
             d.args,

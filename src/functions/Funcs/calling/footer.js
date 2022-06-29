@@ -1,20 +1,25 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
-    let [index, name, iconUrl] = inside.splits;
-    index = Number(index) - 1;
-    if (isNaN(index) || index < 0)
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
-    if (!d.embeds[index]) d.embeds[index] = new d.embed();
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let fields = data.inside.splits;
+    let i = 0;
+
+    if (isNaN(fields[0]) || fields[0] < 1 || fields[0] > 10) i = -1;
+
+    const index = Number(fields[i] ?? 1) - 1;
+    const text = fields[i + 1].addBrackets();
+    const iconURL = fields[i + 2]?.addBrackets();
+
+    if ( !d.embeds[ index ] ) d.embeds[ index ] = new d.embed();
+    
     d.embeds[index].setFooter({
-        text: name.addBrackets(),
-        iconURL: iconUrl?.addBrackets(),
+        text,
+        iconURL,
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         embeds: d.embeds,
     };
 };
