@@ -17,7 +17,6 @@ module.exports = async d =>
     {
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Awaited Command With Name '" + awaitedCmd + "' Does Not Exist." );
     }
-    cmd = { ...cmd };
     let parsedData;
     try
     {
@@ -29,6 +28,8 @@ module.exports = async d =>
 
     for ( const el of d.arrays[ name ] )
     {
+        const c = { ...cmd };
+        c.code = c.code.replaceAll("{value}", el);
         cmd.code = cmd.code.replaceAll( '{value}', el );
         const result = await Interpreter(
             d.client,
