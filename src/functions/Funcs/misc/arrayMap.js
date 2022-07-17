@@ -11,7 +11,7 @@ module.exports = async d =>
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array With Name '" + name + "' Does Not Exist." );
     }
 
-    const cmd = d.client.cmd.awaited.find( c => c.name.toLowerCase() === awaitedCmd.toLowerCase() );
+    let cmd = d.client.cmd.awaited.find( c => c.name.toLowerCase() === awaitedCmd.toLowerCase() );
 
     if ( !cmd )
     {
@@ -28,12 +28,13 @@ module.exports = async d =>
     const res = [];
     for ( const el of d.arrays[ name ] )
     {
-        cmd.code = cmd.code.replaceAll( '{value}', el );
+        const c = { ...cmd };
+        c.code = c.code.replaceAll( '{value}', el );
         const result = await Interpreter(
             d.client,
             d.message,
             d.args,
-            cmd,
+            c,
             d.client.db,
             true,
             undefined,
