@@ -29,36 +29,36 @@ module.exports = async (d) => {
             response.startsWith("user.")
                 ? trackData?.requestUser.user[response.split("user.")[1]]
                 : response.startsWith("member.")
-                    ? trackData?.requestUser[response.split("member.")[1]]
-                    : trackData?.info[response],
+                ? trackData?.requestUser[response.split("member.")[1]]
+                : trackData?.info[response],
         );
         data.result = response;
     } else if (position === "previous") {
         const trackData = player.queue.previous;
-        if (!trackData) return;
-        else {
+        if (trackData) {
             response = response.replace(
                 response,
                 response.startsWith("user.")
                     ? trackData?.requestUser.user[response.split("user.")[1]]
                     : response.startsWith("member.")
-                        ? trackData?.requestUser[response.split("member.")[1]]
-                        : trackData?.info[response],
+                    ? trackData?.requestUser[response.split("member.")[1]]
+                    : trackData?.info[response],
             );
             data.result = response;
         }
     } else {
         const trackData = player.queue.list[position];
-        if (!trackData) return;
-        response = response.replace(
-            response,
-            response.startsWith("user.")
-                ? trackData.requestUser.user[response.split("user.")[1]]
-                : response.startsWith("member.")
+        if (trackData) {
+            response = response.replace(
+                response,
+                response.startsWith("user.")
+                    ? trackData.requestUser.user[response.split("user.")[1]]
+                    : response.startsWith("member.")
                     ? trackData.requestUser[response.split("member.")[1]]
                     : trackData.info[response],
-        );
-        data.result = response;
+            );
+            data.result = response;
+        }
     }
 
     return {
