@@ -3,10 +3,10 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildId, id, ...Datas] = data.inside.splits;
+    const [guildID, id, ...Datas] = data.inside.splits;
     let DATA;
 
-    if (guildId === 'custom') {
+    if (guildID === 'custom') {
         const cmd = await d.client.application.commands.fetch(id).catch(e => {
             d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Id Provided In');
         });
@@ -32,7 +32,7 @@ module.exports = async d => {
                 defaultPermission: Datas[4] === 'yes'
             }
         }
-        d.client.application.commands.edit(id, DATA, guildId === 'global' ? undefined : guildId).catch(e => {
+        d.client.application.commands.edit(id, DATA, guildID === 'global' ? undefined : guildID).catch(e => {
             d.aoiError.fnError(d, 'custom', {}, 'Failed To Edit Application Command With Reason: ' + e);
         });
     }

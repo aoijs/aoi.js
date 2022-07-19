@@ -5,9 +5,9 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) d.error(err);
 
-    let [guildId, returnId = "no", name, color, hoist = "no", position, mentionable = "no", ...permissions] = inside.splits;
+    let [guildID, returnId = "no", name, color, hoist = "no", position, mentionable = "no", ...permissions] = inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId === "" ? d.guild.id : guildId)
+    const guild = await d.util.getGuild(d, guildID === "" ? d.guild.id : guildID)
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     name = name.addBrackets();

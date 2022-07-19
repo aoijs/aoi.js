@@ -8,7 +8,7 @@ module.exports = async (d) => {
     if (err) return d.error(err);
 
     let [
-        guildId,
+        guildID,
         name,
         description,
         defaultPermission = "yes",
@@ -19,12 +19,12 @@ module.exports = async (d) => {
     let options;
     let data;
     const guild =
-        guildId === "global"
+        guildID === "global"
             ? undefined
-            : guildId === "custom"
+            : guildID === "custom"
                 ? "custom"
-                : await d.util.getGuild(d, guildId);
-    if (!guild && !["global", "custom"].includes(guildId))
+                : await d.util.getGuild(d, guildID);
+    if (!guild && !["global", "custom"].includes(guildID))
         return d.aoiError.fnError(d, "guild", {inside});
     type = SlashTypes[type] || type;
     if (type === "CHAT_INPUT") {
@@ -64,10 +64,10 @@ module.exports = async (d) => {
                 defaultPermission: defaultPermission === "yes" || defaultPermission === "true",
                 options,
             },
-            guildId: guild?.id,
+            guildID: guild?.id,
         };
     }
-    await d.client.application.commands.create(data.data, data.guildId).catch((e) => {
+    await d.client.application.commands.create(data.data, data.guildID).catch((e) => {
         d.aoiError.fnError(
             d,
             "custom",

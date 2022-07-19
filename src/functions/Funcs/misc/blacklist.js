@@ -6,9 +6,9 @@ module.exports = async d => {
     const [type, ...ids] = inside.splits;
     if (!d.client.blacklist[type]) return d.aoiError.fnError(d, "custom", {inside}, "Invalid Type Provided In");
     if (type === "user") {
-        const guildId = ids.shift();
+        const guildID = ids.shift();
         ids.forEach(id => {
-            d.client.blacklist[type].blacklist.add(`${id}_${guildId}`)
+            d.client.blacklist[type].blacklist.add(`${id}_${guildID}`)
         })
     } else {
         d.client.blacklist[type].blacklist.squash(...ids)

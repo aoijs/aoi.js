@@ -1,10 +1,10 @@
 module.exports = async (d) => {
     const {code} = d.command;
     const inside = d.unpack();
-    const [guildId = d.guild.Id, returnCount = "no"] = inside.splits;
+    const [guildID = d.guild.Id, returnCount = "no"] = inside.splits;
     let result;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     if (guild.memberCount > guild.members.cache.size) {

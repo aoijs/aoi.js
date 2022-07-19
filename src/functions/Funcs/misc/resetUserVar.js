@@ -10,7 +10,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [varname, guildId = d.guild?.id, table = d.client.db.tables[0]] =
+    const [varname, guildID = d.guild?.id, table = d.client.db.tables[0]] =
         data.inside.splits;
 
     if (!d.client.variableManager.has(varname.addBrackets(), table))
@@ -23,7 +23,7 @@ module.exports = async (d) => {
 
     const all = await d.client.db.all(table, varname.addBrackets(), 2, [
         1,
-        guildId,
+        guildID,
     ]);
     if (d.client.db instanceof AoijsAPI) {
         all

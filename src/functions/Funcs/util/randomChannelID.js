@@ -1,17 +1,17 @@
 module.exports = (d) => {
     let data = d.util.aoiFunc(d);
 
-    const [guildId = "global", type = "all"] = data.inside.splits;
+    const [guildID = "global", type = "all"] = data.inside.splits;
 
     data.result =
-        guildId === "global"
+        guildID === "global"
             ? type === "all"
                 ? d.client.channels.cache.random()?.id
                 : d.client.channels.cache
                     .filter((x) => x.type === d.util.channelTypes[type])
                     .random()?.id
             : d.client.guilds.cache
-                .get(guildId)
+                .get(guildID)
                 ?.channels.cache.filter((x) =>
                     type === "all" ? true : x.type === d.util.channelTypes[type],
                 )
