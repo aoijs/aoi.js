@@ -1,8 +1,8 @@
 module.exports = d => {
     let {code, result, inside} = d.util.aoiFunc(d);
-    const [guildId = d.guild?.id] = inside.splits;
+    const [guildID = d.guild?.id] = inside.splits;
 
-    const guild = d.util.getGuild(d, guildId);
+    const guild = d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside});
 
     result = guild.roles.cache.random()?.id;

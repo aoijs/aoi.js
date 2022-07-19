@@ -6,7 +6,7 @@ module.exports = async d => {
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-    data.result = guild.splashURL({size: 4096, dynamic: true});
+    data.result = guild.partnered;
 
     return {
         code: d.util.setCode(data)

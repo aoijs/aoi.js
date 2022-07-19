@@ -6,11 +6,11 @@ module.exports = async (d) => {
         limit = 5,
         userId = d.author?.id,
         action = "All",
-        guildId = d.guild?.id,
+        guildID = d.guild?.id,
         format = "{executor.username}: {target.id} - {action}",
     ] = data.inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
     limit = Number(limit);

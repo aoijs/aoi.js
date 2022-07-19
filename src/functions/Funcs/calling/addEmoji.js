@@ -3,9 +3,9 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    const [guildId, url, name, returnEmoji = "no", reason, ...roles] =
+    const [guildID, url, name, returnEmoji = "no", reason, ...roles] =
         inside.splits;
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
     const emoji = await guild.emojis
         .create(url.addBrackets(), name.addBrackets(), {

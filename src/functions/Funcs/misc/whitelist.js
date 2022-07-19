@@ -19,8 +19,8 @@ module.exports = async (d) => {
             ),
         );
     if (type === "user") {
-        const guildId = ids.shift();
-        ids = ids.map((x) => `${x}_${guildId}`);
+        const guildID = ids.shift();
+        ids = ids.map((x) => `${x}_${guildID}`);
     }
     d.client.blacklist.whitelistIds(type, ...ids);
 

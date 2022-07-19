@@ -1,11 +1,11 @@
 module.exports = async (d) => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [guildId, ...roles] = inside.splits;
+    const [guildID, ...roles] = data.inside.splits;
 
-    const guild = d.util.getGuild(d, guildId);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    const guild = await d.util.getGuild(d, guildID);
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
     const wrongRoles = [];
     const ros = [];
 
@@ -45,6 +45,6 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };
