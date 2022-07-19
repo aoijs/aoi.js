@@ -4,7 +4,7 @@ const IF = async (d) => {
     let message = d.message;
     let client = d.client;
     let args = d.args;
-    const data = d.data.data;
+    const Data = d.data.data;
 
     if (code.toLowerCase().includes("$if[")) {
         for (let statement of code
@@ -39,7 +39,7 @@ const IF = async (d) => {
                         undefined,
                         true,
                         undefined,
-                        data,
+                        Data,
                     )
                 )?.code === "true";
 
@@ -114,7 +114,7 @@ const IF = async (d) => {
                                     undefined,
                                     true,
                                     undefined,
-                                    data,
+                                    Data,
                                 )
                             )?.code === "true";
 
