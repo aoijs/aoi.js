@@ -1,10 +1,10 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [guildId = d.guild?.id, presence = "", countBot = "yes"] =
+    const [guildID = d.guild?.id, presence = "", countBot = "yes"] =
         data.inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
     if (presence === "" && countBot === "yes") data.result = guild.memberCount;
     else if (presence === "offline") {

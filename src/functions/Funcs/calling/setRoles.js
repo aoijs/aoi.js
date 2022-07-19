@@ -2,9 +2,9 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildId, memberId, ...roleIds] = data.inside.splits;
+    const [guildID, memberId, ...roleIds] = data.inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const member = await d.util.getMember(guild, memberId);

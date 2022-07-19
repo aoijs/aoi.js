@@ -2,8 +2,8 @@ module.exports = async d => {
     const {code, inside, err} = d.util.aoiFunc(d);
     if (err) return d.error(err);
 
-    let [guildId, sticker] = inside.splits;
-    const guild = await d.util.getGuild(d, guildId);
+    let [guildID, sticker] = inside.splits;
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     sticker = await d.util.getSticker(d.guild, sticker);

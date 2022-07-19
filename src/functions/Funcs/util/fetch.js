@@ -51,8 +51,8 @@ module.exports = async d => {
                 data.result = await d.client.fetchSticker(query)
                 break;
             case 'guildCommand': {
-                const guildId = await d.util.getGuild(d, query)
-                data.result = await guildId.commands.fetch(morequery)
+                const guildID = await d.util.getGuild(d, query)
+                data.result = await guildID.commands.fetch(morequery)
                 break;
             }
             case "default":

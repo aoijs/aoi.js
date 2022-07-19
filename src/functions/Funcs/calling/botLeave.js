@@ -1,9 +1,9 @@
 module.exports = async (d) => {
     const {code} = d.command;
     const inside = d.unpack();
-    const [guildId = d.guild?.id] = inside.splits;
+    const [guildID = d.guild?.id] = inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     guild.leave().catch((_err) => {

@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildId = "global", id, ...perms] = data.inside.splits;
+    const [guildID = "global", id, ...perms] = data.inside.splits;
 
     let permissions = [];
     if (perms.length === 1) {
@@ -25,14 +25,14 @@ module.exports = async (d) => {
         });
     }
 
-    if (guildId == "global") {
+    if (guildID == "global") {
         d.client.application.commands.permissions.set({
             command: id,
             permissions,
         });
     } else {
         d.client.application.commands.permissions.set({
-            guild: guildId,
+            guild: guildID,
             command: id,
             permissions,
         });

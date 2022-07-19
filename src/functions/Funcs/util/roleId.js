@@ -2,9 +2,9 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [roleResolver, guildId = d.guild?.id] = data.inside.splits;
+    const [roleResolver, guildID = d.guild?.id] = data.inside.splits;
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
     const role = guild.roles.cache.find(x => x.id === roleResolver || x.name.toLowerCase() === roleResolver.addBrackets().toLowerCase());

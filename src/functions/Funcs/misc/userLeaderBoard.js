@@ -4,11 +4,11 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err)
 
-    const [guildId, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = data.inside.splits;
+    const [guildID, variable, type = 'asc', custom = `{top}) {username} : {value}`, list = 10, page = 1, table = d.client.db.tables[0]] = data.inside.splits;
 
-    const all = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildId])
+    const all = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildID])
 
-    const guild = await d.util.getGuild(d, guildId);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
 
