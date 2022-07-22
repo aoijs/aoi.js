@@ -2,7 +2,9 @@ module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
-  const [separator, ...name] = data.inside.splits;
+  const [separator, ...names] = data.inside.splits;
+  
+  const name = names.shift();
 
   if (!d.data.arrays[name]) {
     return d.aoiError.fnError(
@@ -14,7 +16,7 @@ module.exports = async (d) => {
   }
 
   data.result = d.arrays[name]
-    .concat(...name.map((x) => d.arrays[x]))
+    .concat(...names.map((x) => d.arrays[x]))
     .join(separator);
   return {
     code: d.util.setCode(data),
