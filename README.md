@@ -140,7 +140,7 @@ Do you want to make your Discord Bot different from others, possibly with the ab
 ```php
 $playTrack[type;name] - To play a track from the available third parties supported. 
 ```
-More information in our [documentation](https://akarui.leref.ga/v/5/guide/extras/music)
+More information in our [documentation](https://aoi.js.org/docs/advanced-guides/aoimusic/)
 
 ### Optional Extensions
 
