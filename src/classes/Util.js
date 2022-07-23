@@ -155,8 +155,6 @@ class Util {
       }
     } catch ( e )
     {
-      console.log( errorM );
-      console.error(e);
       error = await parsers.ErrorHandler(d, errorM, true);
     }
     return error;
