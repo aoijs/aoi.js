@@ -2,7 +2,7 @@ const {default: axios} = require("axios");
 const json = require("../../package.json");
 module.exports = async () => {
     try {
-        const res = await axios.get("https://api.leref.ga/package/version");
+        const res = await axios.get("https://api.leref.repl.co/package/version"); //This will change in v6 to be native.
 
         if (json.version !== res.data.version) {
 
