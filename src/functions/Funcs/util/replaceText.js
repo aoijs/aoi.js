@@ -2,7 +2,7 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [text, replacer, replacedTo, times = "all"] = data.inside.splits;
+    const [ text, replacer, replacedTo, times = "all" ] = data.inside.splits;
 
     if (times === "all") {
         data.result = text

@@ -153,7 +153,10 @@ class Util {
       ) {
         error.options = await parsers.OptionParser(error.options || "", d);
       }
-    } catch (e) {
+    } catch ( e )
+    {
+      console.log( errorM );
+      console.error(e);
       error = await parsers.ErrorHandler(d, errorM, true);
     }
     return error;
