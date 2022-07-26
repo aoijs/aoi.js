@@ -31,7 +31,8 @@ body:
       placeholder: $cooldown[10s;Doesn't work.]
     validations:
       required: true
-      render: shell
+      render: js
+
   - type: dropdown
     id: aoijs-version
     attributes:
