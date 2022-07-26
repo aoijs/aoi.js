@@ -6,7 +6,6 @@ assignees:
   - bug
 body:
   - type: markdown
-    name: Bug Reporting 
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report! Fill in the blanks by following the steps. 🙌
@@ -32,7 +31,6 @@ body:
       placeholder: $cooldown[10s;Doesn't work.]
     validations:
       required: true
-    render: javascript
       
   - type: dropdown
     id: aoijs-version
