@@ -26,12 +26,13 @@ body:
   - type: textarea
     id: code
     attributes:
-      label: Bugged function 
+      label: Bugged function
+      render: js 
       description: Please type usage of your code 
       placeholder: $cooldown[10s;Doesn't work.]
     validations:
       required: true
-      render: js
+   
 
   - type: dropdown
     id: aoijs-version
