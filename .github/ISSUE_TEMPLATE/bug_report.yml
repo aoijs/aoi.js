@@ -23,7 +23,7 @@ body:
     validations:
       required: true
       
-  - type: input
+  - type: textarea
     id: code
     attributes:
       label: Bugged function 
@@ -31,7 +31,7 @@ body:
       placeholder: $cooldown[10s;Doesn't work.]
     validations:
       required: true
-      render: php
+      render: javascript
 
   - type: dropdown
     id: aoijs-version
