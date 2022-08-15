@@ -8,10 +8,10 @@
 
 <div align="center">
 
-**The most powerful string package to create a simple and fast Discord Bot.**
+**La librería más poderosa para crear un Discord Bot de forma simple y rápida.**
 
-[![NPM version][npm-image]][npm-url]
-[![NPM downloads][download-image]][download-url]
+[![Versión (NPM)][npm-image]][npm-url]
+[![Descarga (NPM)][download-image]][download-url]
 
 
 [npm-image]: http://img.shields.io/npm/v/aoi.js.svg?style=flat-square
@@ -21,16 +21,16 @@
 
 [Preview](https://aoi.js.org/docs/example.md)
 
-[English](./README.md) | [Japanese](./README-jp.md) | Spanish
+[English](./README.md) | [Japanese](./README-jp.md) | Spanish(./README-spanish.md)
 </div>
 
-## Features
+## Funcionalidades
 
-- Powerful built-in made functions with simple usages.
-- Writen in TypeScript to easily provide functional errors.
-- Updated with several extensions supported from [Akarui Development](https://github.com/AkaruiDevelopment/) sideloading. 
+- Potentes funciones integradas con usos simples.
+- Escrito en TypeScript para proporcionar fácilmente errores funcionales.
+- Actualizado con varias extensiones compatibles con [Akarui Development](https://github.com/AkaruiDevelopment/). 
 
-## Install
+## Instalación
 
 ```bash
 npm install aoi.js
@@ -40,15 +40,15 @@ npm install aoi.js
 yarn add aoi.js
 ```
 
-## Example 
+## Ejemplos: 
 
 ```javascript
 const { AoiClient } = require("aoi.js");
 
 const bot = new AoiClient({
-    token: "DISCORD BOT TOKEN",
+    token: "TOKEN DEL BOT DE DISCORD",
     intents: ["Guilds", "GuildMessages", "MessageContent"],
-    prefix: "DISCORD BOT PREFIX"
+    prefix: "PREFIX DEL BOT DE DISCORD"
 })
 
 bot.addEvent("onMessage")
