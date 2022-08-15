@@ -87,7 +87,7 @@ bot.interactionCommand({
 
 ### Function usage Example
 
-```php
+```
 $authorID - Return the author ID/the userID who executed the function
 ```
 
@@ -137,7 +137,7 @@ Use this on your precaution, we do not endorse anything or affiliated with, we o
 
 Do you want to make your Discord Bot different from others, possibly with the ability to play/stream music, it's simple and easy to use!
 
-```php
+```
 $playTrack[type;name] - To play a track from the available third parties supported. 
 ```
 More information in our [documentation](https://aoi.js.org/docs/advanced-guides/aoimusic/)
