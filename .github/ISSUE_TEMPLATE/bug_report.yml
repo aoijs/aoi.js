@@ -1,0 +1,86 @@
+name: Bug Report
+description: Report us the issue, and leave it to us! 🤗
+title: "Bug: "
+labels: "bug"
+assignees:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Fill in the blanks by following the steps. 🙌
+      
+  - type: dropdown
+    id: type
+    attributes:
+      label: Bug Type
+      description: Please select a type of bug you want to report.
+      options:
+        - Function 
+        - Callback 
+        - Handler 
+        - Extensions 
+    validations:
+      required: true
+      
+  - type: textarea
+    id: code
+    attributes:
+      label: Bugged function
+      render: js 
+      description: Please type usage of your code 
+      placeholder: $cooldown[10s;Doesn't work.]
+    validations:
+      required: true
+   
+
+  - type: dropdown
+    id: aoijs-version
+    attributes:
+      label: Version of aoi.js
+      description: What version of aoi.js are you using?
+      options:
+        - v5.0.0 
+        - v5.1.0
+        - v5.1.1
+        - v5.1.2
+        - v5.2.0
+        - v5.5.0
+        - v5.5.5 (Default)
+        - v6.0.0 (Unstable Version)
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: node-version
+    attributes:
+      label: Version of Node.js
+      description: Also, what version of Node.js are you using? 
+      options:
+        - v16.6.0 
+        - v16.16.0 (LTS)
+        - v18.6.0+ (Latest)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: excepted
+    attributes:
+      label: Excepted Output
+      description: Please describe your expectations the code you have tried.
+      
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/AkaruiDevelopment/aoi.js/blob/v5/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct 
+          required: true
