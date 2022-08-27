@@ -1,0 +1,1 @@
+{"version":3,"file":"createDiscordEventHandler.d.ts","sourceRoot":"","sources":["../../../src/util/functions/createDiscordEventHandler.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,YAAY,EAAC,MAAM,YAAY,CAAC;AACxC,OAAO,EAAC,YAAY,EAAC,MAAM,eAAe,CAAC;AAE3C,wBAAgB,yBAAyB,CAAC,CAAC,SAAS,MAAM,YAAY,EAAE,KAAK,EAAE,CAAC,EAAE,OAAO,EAAE,YAAY,CAAC,CAAC,CAAC,GAAG,YAAY,CAAC,CAAC,CAAC,CAE3H"}

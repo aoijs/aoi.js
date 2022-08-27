@@ -4,7 +4,12 @@ node_modules
 ## Other ignores
 .idea
 .vscode
-dist
-##docs
 config.json
 AoiEngine
+__tests__
+
+## Dev
+
+commands
+database
+index.js

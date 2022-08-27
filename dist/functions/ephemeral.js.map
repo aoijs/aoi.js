@@ -1,0 +1,1 @@
+{"version":3,"file":"ephemeral.js","sourceRoot":"","sources":["../../src/functions/ephemeral.ts"],"names":[],"mappings":";;;;;AAAA,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,YAAY;IAClB,WAAW,EAAE,6BAA6B;IAC1C,OAAO,EAAE;QACL,IAAI,CAAC,SAAS,CAAC,IAAI,CAAC,SAAS,GAAG,IAAI,CAAA;QACpC,OAAO,IAAI,CAAC,EAAE,EAAE,CAAA;IACpB,CAAC;CACJ,CAAC,CAAA"}

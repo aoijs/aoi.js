@@ -1,0 +1,1 @@
+{"version":3,"file":"uptime.js","sourceRoot":"","sources":["../../src/functions/uptime.ts"],"names":[],"mappings":";;;;;AAAA,iDAA4C;AAC5C,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,SAAS;IACf,WAAW,EAAE,iCAAiC;IAC9C,OAAO,EAAE,QAAQ;IACjB,OAAO,EAAE;QACL,OAAO,eAAM,CAAC,MAAM,CAChB,IAAI,CAAC,GAAG,CAAC,MAAM,CAAC,MAAM,CACzB,CAAA;IACL,CAAC;CACJ,CAAC,CAAA"}

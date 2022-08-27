@@ -1,0 +1,1 @@
+{"version":3,"file":"break.js","sourceRoot":"","sources":["../../src/functions/break.ts"],"names":[],"mappings":";;;;;AAAA,iDAA8C;AAC9C,4DAAyD;AACzD,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,QAAQ;IACd,WAAW,EAAE,mBAAmB;IAChC,OAAO,EAAE,KAAK,WAAU,CAAC;QACrB,OAAO,IAAI,eAAM,CAAC,uBAAU,CAAC,KAAK,EAAE,IAAI,CAAC,CAAA;IAC7C,CAAC;CACJ,CAAC,CAAA"}

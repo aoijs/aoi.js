@@ -1,0 +1,1 @@
+{"version":3,"file":"killClient.js","sourceRoot":"","sources":["../../src/functions/killClient.ts"],"names":[],"mappings":";;;;;AAAA,iDAA4C;AAC5C,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,aAAa;IACnB,WAAW,EAAE,4BAA4B;IACzC,OAAO,EAAE,QAAQ;IACjB,OAAO,EAAE;QACL,OAAO,eAAM,CAAC,MAAM,CAChB,IAAI,CAAC,GAAG,CAAC,MAAM,CAAC,OAAO,EAAE,CAC5B,CAAA;IACL,CAAC;CACJ,CAAC,CAAA"}

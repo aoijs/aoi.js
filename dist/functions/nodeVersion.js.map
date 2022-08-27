@@ -1,0 +1,1 @@
+{"version":3,"file":"nodeVersion.js","sourceRoot":"","sources":["../../src/functions/nodeVersion.ts"],"names":[],"mappings":";;;;;AAAA,iDAA4C;AAC5C,kGAA0E;AAE1E,kBAAe,IAAA,8BAAoB,EAAC;IAChC,IAAI,EAAE,cAAc;IACpB,WAAW,EAAE,0CAA0C;IACvD,OAAO,EAAE,QAAQ;IACjB,OAAO,EAAE;QACL,MAAM,WAAW,GAAG,OAAO,CAAC,OAAO,CAAA;QAEnC,OAAO,eAAM,CAAC,MAAM,CAChB,WAAW,CACd,CAAA;IACL,CAAC;CACJ,CAAC,CAAA"}
