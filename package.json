@@ -9,10 +9,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@discordjs/builders": "^0.13.0-dev.1648515278-ac4bc3a",
+    "@discordjs/builders": "^1.0.0",
     "aoi-compiler": "github:AkaruiDevelopment/compiler",
-    "axios": "^0.24.0",
-    "discord.js": "^14.0.0-dev.1648515273-ac4bc3a",
+    "axios": "^0.27.2",
+    "discord-api-types": "^0.36.3-next.907d88a.1657972624",
+    "discord.js": "^14.3.0",
     "ms-utility": "^3.2.0"
   },
   "repository": {

@@ -1,3 +1,10 @@
+## Ignore node modules folder
 node_modules
+
+## Other ignores
+.idea
+.vscode
+dist
+##docs
 config.json
-__tests__
+AoiEngine
