@@ -7,3 +7,8 @@ node_modules
 config.json
 AoiEngine
 __tests__
+
+## Dev
+/commands
+/database
+/index.js
