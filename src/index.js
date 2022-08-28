@@ -5,6 +5,8 @@ const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 const Voice = require("./classes/Voice.js");
+const Panel = require("./classes/Panel.js");
+
 
 module.exports = {
   /**
@@ -32,6 +34,7 @@ module.exports = {
   LoadCommands,
   ClientShard,
   Voice,
+  Panel,
   // * AoiError Class
   AoiError,
   // * Util Class
