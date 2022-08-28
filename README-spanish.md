@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**The most powerful string package to create a simple and fast Discord Bot.**
+**El paquete npm más poderoso de texto para crear un bot de Discord simple y rápidamente.**
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][download-image]][download-url]
@@ -24,13 +24,13 @@
 [English](./README.md) | [Japanese](./README-jp.md) | Spanish
 </div>
 
-## Features
+## Características 
 
-- Powerful built-in made functions with simple usages.
-- Writen in TypeScript to easily provide functional errors.
-- Updated with several extensions supported from [Akarui Development](https://github.com/AkaruiDevelopment/) sideloading. 
+- Funciones pre-programadas de poderoso pero simple uso.
+- Escrito en TypeScript para avisar de posibles errores.
+- Actualizado con extensiones entregadas por [Akarui Development](https://github.com/AkaruiDevelopment/). 
 
-## Install
+## Instalación 
 
 ```bash
 npm install aoi.js
@@ -40,15 +40,15 @@ npm install aoi.js
 yarn add aoi.js
 ```
 
-## Example 
+## Ejemplo
 
 ```javascript
 const { AoiClient } = require("aoi.js");
 
 const bot = new AoiClient({
-    token: "DISCORD BOT TOKEN",
+    token: "TOKEN DEL BOT DE DISCORD",
     intents: ["Guilds", "GuildMessages", "MessageContent"],
-    prefix: "DISCORD BOT PREFIX"
+    prefix: "PREFIJO DEL BOT"
 })
 
 bot.addEvent("onMessage")
