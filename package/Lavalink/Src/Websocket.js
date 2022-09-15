@@ -67,12 +67,12 @@ class LavalinkWebsocket {
     if (task) {
       this.mgr.emit(
         "debug",
-        `[Lavalink Websocket]: TASK ${task}(${options.url}) EXECUTED ${
+        `[ Lavalink Debug ] :: TASK ${task}(${options.url}) EXECUTED ${
           message ? "WITH MESSAGE " + message : ""
         }`
       );
     } else {
-      this.mgr.emit("debug", `[Lavalink Websocket]: ${message}`);
+      this.mgr.emit("debug", `[ Lavalink Debug ] :: ${message}`);
     }
   }
 
