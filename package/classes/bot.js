@@ -295,6 +295,7 @@ client.aoi = {
         getTime: 1,
         allTime: 2,
         deleteTime: 4,
+        debug: true,
       });
 
       client.db = Database;
@@ -322,7 +323,7 @@ client.aoi = {
       client.db = options.database;
     } else {
       Database.once("ready", () => {
-        console.log(`Database has been established.`);
+        console.log(`Database is ready.`);
       });
 
       Database.connect();
@@ -425,7 +426,7 @@ for(i=0;d.length >i ;i++){
     const clLength = this.client.lavalink.size;
     this.client.once("ready", () => {
       const shard = this.client.shard;
-      let shardCount = 1;
+      let shardCount = 10;
       if (shard) shardCount = shard.count;
       
       const connection = new Lavalink.LavalinkConnection(url, password, this.client.user.id, shardCount, {useSafeProtocol: useSecureProtocol});
@@ -873,9 +874,9 @@ functionErrorCommand(d = {}) {
 
     if (debug) {
       console.log(
-        "|------------------------------------------|\n" +
+        "/------------------------------------------\\n" +
           debugs.join("\n") +
-          "\n|------------------------------------------|"
+          "\n/------------------------------------------\"
       );
     }
 
