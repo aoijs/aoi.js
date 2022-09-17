@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://aoi.js.org">
-    <img width="400" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-new.png?raw=true" alt="aoijs">
+    <img width="300" src="https://cdn.discordapp.com/attachments/804813961190572093/1013150967379808296/aoijs-v6.png" alt="aoijs">
   </a>
 </p>
 
@@ -8,13 +8,11 @@
 
 <div align="center">
 
-**The most advanced string-based package to create a Discord Bot fast and powerful.**
-    
+**The most powerful string package to create a simple and fast Discord Bot.**
+
 [![NPM version][npm-image]][npm-url]
 [![AoiJS Server][aoijs-server]][aoijs-server-url]
 [![NPM downloads][download-image]][download-url]
-
-The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 
 [npm-image]: http://img.shields.io/npm/v/aoi.js.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/aoi.js
@@ -22,7 +20,11 @@ The replacement of [dbd.js](https://www.npmjs.com/package/dbd.js)
 [download-url]: https://npmjs.org/package/aoi.js
 [aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
 [aoijs-server-url]: https://aoi.js.org/invite
-    
+
+[Preview](https://aoi.js.org/docs/6.0.0/guides/setup)
+
+English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md)
+
 </div>
 
 ## Table of Contents
@@ -62,7 +64,7 @@ const aoijs = require("aoi.js")
 const bot = new aoijs.AoiClient({
 token: "DISCORD BOT TOKEN",
 prefix: "DISCORD BOT PREFIX",
-intents: ["GUILDS", "GUILD_MESSAGES"]
+intents: ["Guilds", "GuildsMessages"]
 })
 
 //Events
