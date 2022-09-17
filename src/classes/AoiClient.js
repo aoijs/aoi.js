@@ -3,6 +3,11 @@ const BaseClient = require("./AoiBase.js");
 const { Command } = require("./Commands.js");
 const { FunctionManager } = require("./Functions.js");
 
+const [major] = process.version.replace("v", "").split(".")
+if (isNaN(Number(major)) || Number(major) < 16) {
+    throw new Error(`node.js version must be v16.6.0 or above.`)
+}
+
 //Initialize aoi.js Client
 class Client extends BaseClient {
     constructor(options) {

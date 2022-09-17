@@ -335,8 +335,6 @@ const Perms = {
   requesttospeak: "REQUEST_TO_SPEAK",
   manageevents : "MANAGE_EVENTS",
   managethreads: "MANAGE_THREADS",
-  usepublicthreads: "USE_PUBLIC_THREADS",
-  useprivatethreads: "USE_PRIVATE_THREADS",
   createpublicthreads: "CREATE_PUBLIC_THREADS",
   createprivatethreads: "CREATE_PRIVATE_THREADS",
   externalstickers: "USE_EXTERNAL_STICKERS", // (use stickers from different guilds)

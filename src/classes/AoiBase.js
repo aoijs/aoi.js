@@ -171,11 +171,6 @@ class BaseClient extends Discord.Client {
       this.options.ws.properties.browser = "Discord Android";
     }
 
-    const [major] = process.version.replace("v", "").split(".")
-    if (isNaN(Number(major)) || Number(major) < 16) {
-      throw new Error(`node.js version must be v16.6.0 or above.`)
-    }
-
     this.on("ready", async () => {
       require("../handler/status.js")(this.statuses, this);
       await require("../handler/startup.js")(this);

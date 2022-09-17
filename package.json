@@ -44,6 +44,7 @@
     "discordbot"
   ],
   "dependencies": {
+    "aoi.db": "^1.0.0",
     "axios": "^0.24.0",
     "dbdjs.db": "^2.0.2",
     "discord.js": "^14.3.0"
