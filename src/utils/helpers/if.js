@@ -80,15 +80,15 @@ const IF = async (d) => {
 
             const ifCode = elseAction
                 ? statement
-                      .split("\n")
-                      .slice(1)
-                      .join("\n")
-                      .split(/\$else/gi)[0]
+                    .split("\n")
+                    .slice(1)
+                    .join("\n")
+                    .split(/\$else/gi)[0]
                 : statement
-                      .split("\n")
-                      .slice(1)
-                      .join("\n")
-                      .split(/\$endif/gi)[0];
+                    .split("\n")
+                    .slice(1)
+                    .join("\n")
+                    .split(/\$endif/gi)[0];
 
             const elseCode = elseAction
                 ? statement.split(/\$else/gi)[1].split(/\$endif/gi)[0]
@@ -135,6 +135,6 @@ const IF = async (d) => {
             );
         }
     }
-    return { code };
+    return {code};
 };
 module.exports = IF;

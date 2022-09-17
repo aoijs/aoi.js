@@ -438,31 +438,30 @@ const Interpreter = async (
                                 }
                                 if (suppressErrors && !errorOccurred) {
                                     if (suppressErrors.trim() !== "") {
-                                      const { makeMessageError } = require("./classes/AoiError.js")
-                                      const msg  = 
-                                        await Util.errorParser(
-                                          suppressErrors?.split("{error}").join(err.addBrackets()), 
-                                          {
-                                            channel: channel,
-                                            message: message,
-                                            guild: guild,
-                                            author: author,
-                                          });
-                                      await makeMessageError(
-                                          client,
-                                          channel,
-                                          msg,
-                                          msg.options,
-                                          {
-                                              channel: channel,
-                                              message: message,
-                                              guild: guild,
-                                              author: author,
-                                              data: data
-                                          }
-                                      )
-                                    }
-                                    else ;
+                                        const {makeMessageError} = require("./classes/AoiError.js")
+                                        const msg =
+                                            await Util.errorParser(
+                                                suppressErrors?.split("{error}").join(err.addBrackets()),
+                                                {
+                                                    channel: channel,
+                                                    message: message,
+                                                    guild: guild,
+                                                    author: author,
+                                                });
+                                        await makeMessageError(
+                                            client,
+                                            channel,
+                                            msg,
+                                            msg.options,
+                                            {
+                                                channel: channel,
+                                                message: message,
+                                                guild: guild,
+                                                author: author,
+                                                data: data
+                                            }
+                                        )
+                                    } else ;
                                 } else {
                                     message.channel.send(
                                         typeof err === "object" ? err : err?.addBrackets(),
