@@ -114,8 +114,6 @@ const Interpreter = async (
             console.log(`|------------------------------------------|`);
             console.time(`interpreter-${start}`);
         }
-        //
-        //
         if (command["$if"] === "v4") {
             code = (
                 await IF({
@@ -233,8 +231,6 @@ const Interpreter = async (
                     );
                     param.push(functionObj.params[p]);
                 }
-                //
-                //
                 FuncData = await client.functionManager.interpreter(
                     client,
                     message,

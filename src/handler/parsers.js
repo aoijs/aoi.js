@@ -64,7 +64,7 @@ const EmbedParser = async (msg) => {
       };
     }
     if (Checker("color")) {
-      embed.color = Discord.Util.resolveColor(
+      embed.color = Discord.resolveColor(
         rawr.split("{color:")[1].split("}")[0].addBrackets().trim(),
       );
     }
