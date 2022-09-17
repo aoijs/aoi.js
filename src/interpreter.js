@@ -114,7 +114,8 @@ const Interpreter = async (
             console.log(`|------------------------------------------|`);
             console.time(`interpreter-${start}`);
         }
-
+        //
+        //
         if (command["$if"] === "v4") {
             code = (
                 await IF({
@@ -175,8 +176,8 @@ const Interpreter = async (
                             if (typeof unpacked.inside !== "string") {
                                 if (suppressErrors) return suppressErrors;
                                 else {
-                                    return client.options.suppressAllErrors
-                                        ? client.options.errorMessage
+                                    return client.aoiOptions.suppressAllErrors
+                                        ? client.aoiOptions.errorMessage
                                         : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
@@ -185,7 +186,7 @@ const Interpreter = async (
                         },
                         interpreter: Interpreter,
                         client: client,
-                        embed: Discord.MessageEmbed,
+                        embed: Discord.EmbedBuilder,
                     },
                 })
             ).code;
@@ -232,6 +233,8 @@ const Interpreter = async (
                     );
                     param.push(functionObj.params[p]);
                 }
+                //
+                //
                 FuncData = await client.functionManager.interpreter(
                     client,
                     message,
@@ -291,8 +294,8 @@ const Interpreter = async (
                             if (typeof unpacked.inside !== "string") {
                                 if (suppressErrors) return suppressErrors;
                                 else {
-                                    return client.options.suppressAllErrors
-                                        ? client.options.errorMessage
+                                    return client.aoiOptions.suppressAllErrors
+                                        ? client.aoiOptions.errorMessage
                                         : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
@@ -301,7 +304,7 @@ const Interpreter = async (
                         },
                         interpreter: Interpreter,
                         client: client,
-                        embed: Discord.MessageEmbed,
+                        embed: Discord.EmbedBuilder,
                     },
                     useChannel,
                     returnMessage,

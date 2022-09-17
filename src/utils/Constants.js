@@ -6,9 +6,9 @@ const IntentOptions = {
   guildBans: "GuildBans",
   guildEmojisAndStickers: "GuildEmojisAndStickers",
   guildIntegrations: "GuildIntegrations",
-  guildWebhooks: "GuidlWebhooks",
+  guildWebhooks: "GuildWebhooks",
   guildInvites: "GuildInvites",
-  guildVoiceStates: "GuidlVoiceStates",
+  guildVoiceStates: "GuildVoiceStates",
   guildPresences: "GuildPresences",
   guildMessages: "GuildMessages",
   guildMessageReactions: "GuildMessageReactions",
@@ -44,6 +44,7 @@ const fetchInvitesOptions = {
 };
 
 //---------------Abbreviation------------//
+
 const SI_SYMBOL = [
   "",
   "K",
@@ -150,7 +151,9 @@ const SI_SYMBOL = [
   "C",
   "UC",
 ];
-//---------------Callbacks---------------//
+
+//---------------Events---------------//
+
 const ApplicationCmdOptions = {
   id: "id of the slash cmd;.id",
   name: "name of the slash cmd;.name",
@@ -253,7 +256,9 @@ const MemberOptions = {
   threadChannel: "thread?.channel?.name?.deleteBrackets()",
   threadFlags: "flags?.toArray()",
 };
+
 //---------------Interactions------------//
+
 const ButtonStyleOptions = {
   primary: 1,
   secondary: 2,
@@ -342,9 +347,7 @@ const Perms = {
   startembeddedactivities: "START_EMBEDDED_ACTIVITIES",
   moderatemembers: "MODERATE_MEMBERS",
 };
-const FormatOptions = (date, timeZone) => {
-  ////defining
-  // months
+const FormatOptions = (date) => {
   const months = [
     "January",
     "February",
@@ -423,6 +426,9 @@ const Characters = [
 module.exports = {
   // ClientOptions:ClientOptions,
   IntentOptions: IntentOptions,
+  formatOptions: FormatOptions,
+  fetchInvitesOptions: fetchInvitesOptions,
+  ApplicationCmdOptions: ApplicationCmdOptions,
   //ClientPresenceOptions:ClientPresenceOptions,
   //PresenceActivityOptions:PresenceActivityOptions,
   ActivityTypeAvailables: ActivityTypeAvailables,
