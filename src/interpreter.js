@@ -9,7 +9,6 @@ const {Time} = require("./utils/helpers/customParser.js");
 const {CheckCondition} = require("./utils/helpers/checkCondition.js");
 const {mustEscape} = require("./utils/helpers/mustEscape.js");
 const {Command} = require("./classes/Commands.js");
-const {TextChannel} = require("discord.js");
 /**
  * @param  {import('./classes/AoiClient.js')} client
  * @param  {Discord.Message | {

@@ -151,7 +151,7 @@ class Time {
         const a = [3600, 60, 60];
         while (i < 2) {
             const num = Math.trunc(seconds / a[i]).toString();
-            if (num == 0 && i == 0) {
+            if (num === 0 && i === 0) {
             } else {
                 res.push(num.length === 1 ? `0${num}` : num);
             }
