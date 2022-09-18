@@ -4,7 +4,6 @@ const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
-const Voice = require("./classes/Voice.js");
 
 module.exports = {
   /**
@@ -31,7 +30,6 @@ module.exports = {
      **/
   LoadCommands,
   ClientShard,
-  Voice,
   // * AoiError Class
   AoiError,
   // * Util Class
