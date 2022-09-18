@@ -9,6 +9,7 @@ const {Time} = require("./utils/helpers/customParser.js");
 const {CheckCondition} = require("./utils/helpers/checkCondition.js");
 const {mustEscape} = require("./utils/helpers/mustEscape.js");
 const {Command} = require("./classes/Commands.js");
+const {TextChannel} = require("discord.js");
 /**
  * @param  {import('./classes/AoiClient.js')} client
  * @param  {Discord.Message | {
@@ -24,7 +25,7 @@ const {Command} = require("./classes/Commands.js");
  * @param  {boolean} returnCode=false
  * @param  {string | void} channelUsed
  * @param  {object} data={}
- * @param  {Discord.GuildChannel} useChannel
+ * @param  {Discord.TextChannel} useChannel
  * @param  {boolean} returnMessage
  * @param  {boolean} returnExecution
  * @param  {boolean} returnID
@@ -365,8 +366,8 @@ const Interpreter = async (
                             if (typeof unpacked.inside !== "string") {
                                 if (suppressErrors) return suppressErrors;
                                 else {
-                                    return client.options.suppressAllErrors
-                                        ? client.options.errorMessage
+                                    return client.aoiOptions.suppressAllErrors
+                                        ? client.aoiOptions.errorMessage
                                         : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
@@ -386,8 +387,8 @@ const Interpreter = async (
                                 },
                                 client,
                             );
-                            if (client.options.suppressAllErrors) {
-                                if (client.options.errorMessage) {
+                            if (client.aoiOptions.suppressAllErrors) {
+                                if (client.aoiOptions.errorMessage) {
                                     const {
                                         EmbedParser,
                                         FileParser,
@@ -395,12 +396,12 @@ const Interpreter = async (
                                     } = require("./handler/parsers.js");
 
                                     if (!message || !message.channel) {
-                                        console.error(client.options.errorMessage.addBrackets());
+                                        console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
                                         let [con, em, com, fil] = [" ", "", "", ""];
-                                        let isArray = Array.isArray(client.options.errorMessage);
+                                        let isArray = Array.isArray(client.aoiOptions.errorMessage);
                                         if (isArray) {
-                                            isArray = client.options.errorMessage;
+                                            isArray = client.aoiOptions.errorMessage;
                                             con = isArray[0] === "" || !isArray[0] ? " " : isArray[0];
                                             em =
                                                 isArray[1] !== "" && isArray[1]
@@ -416,9 +417,9 @@ const Interpreter = async (
                                                     : [];
                                         } else {
                                             con =
-                                                client.options.errorMessage.addBrackets() === ""
+                                                client.aoiOptions.errorMessage.addBrackets() === ""
                                                     ? " "
-                                                    : client.options.errorMessage.addBrackets();
+                                                    : client.aoiOptions.errorMessage.addBrackets();
                                         }
 
                                         if (!errorOccurred) {
@@ -452,7 +453,7 @@ const Interpreter = async (
                                             client,
                                             channel,
                                             msg,
-                                            msg.options,
+                                            msg.aoiOptions,
                                             {
                                                 channel: channel,
                                                 message: message,

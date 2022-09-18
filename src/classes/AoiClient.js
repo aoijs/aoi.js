@@ -1170,7 +1170,7 @@ class Client extends BaseClient {
                 }`,
             );
         }
-        this.cmd.reactiomRemoveAll.set(this.cmd.reactionRemoveAll.size, d);
+        this.cmd.reactionRemoveAll.set(this.cmd.reactionRemoveAll.size, d);
     }
 
     reactionRemoveEmojiCommand(d = {}) {

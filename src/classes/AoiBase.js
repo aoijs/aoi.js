@@ -174,9 +174,6 @@ class BaseClient extends Discord.Client {
     this.on("ready", async () => {
       require("../handler/status.js")(this.statuses, this);
       await require("../handler/startup.js")(this);
-      if (options?.fetchInvites?.enabled) {
-        await require("../handler/fetchInvites.js")(this);
-      }
       await require("../handler/nonIntents/ready.js")(this);
     });
     this.login(options.token);
