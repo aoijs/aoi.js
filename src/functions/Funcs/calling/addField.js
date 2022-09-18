@@ -14,7 +14,11 @@ module.exports = async (d) => {
 
     if (!d.embeds[index]) d.embeds[index] = new d.embed();
 
-    d.embeds[index].addField(name, value, inline);
+    d.embeds[index].setFields({
+        name,
+        value,
+        inline,
+    });
 
     return {
         code: d.util.setCode(data),
