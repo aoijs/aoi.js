@@ -472,7 +472,7 @@ const Interpreter = async (
                         },
                         interpreter: Interpreter,
                         client: client,
-                        embed: Discord.MessageEmbed,
+                        embed: Discord.EmbedBuilder,
                     });
             }
 
