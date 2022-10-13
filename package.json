@@ -19,7 +19,10 @@
         "soundcloud-downloader": "^1.0.0",
         "spotify-url-info": "^2.2.3",
         "yt-search": "^2.10.2",
-        "ytdl-core": "^4.9.1"
+        "ytdl-core": "^4.9.1",
+            "chalk": "^4.1.2",
+            "node-datetime": "^2.1.2"
+
     },
     "devDependencies": {
         "@discordjs/opus": "^0.5.3",
