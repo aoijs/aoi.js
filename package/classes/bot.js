@@ -12,6 +12,7 @@ const opts = require("../utils/options");
 const client = new Discord.Client({
   partials: ["CHANNEL", "GUILD_MEMBER", "MESSAGE", "USER", "REACTION"],
 });
+const log = require('./logger.js')
 
 client.ytSearch = new WorkerPool(
   0,
@@ -323,7 +324,7 @@ client.aoi = {
       client.db = options.database;
     } else {
       Database.once("ready", () => {
-        console.log(`Database is ready.`);
+log.debug('Database ready')
       });
 
       Database.connect();
