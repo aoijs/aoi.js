@@ -7,7 +7,7 @@ module.exports = async d => {
     const webhook = await d.client.fetchWebhook(id).catch(err => {
     });
 
-    data.result = !!webhook;
+    data.result = webhook ? true : false;
 
     return {
         code: d.util.setCode(data)

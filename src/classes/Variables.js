@@ -1,6 +1,9 @@
 const { Group } = require("./structures/dist");
 
 class Variable {
+  /**
+   * TODO: define types on constructor data and methods
+   */
   constructor(data = {}) {
     this.name = data.name;
     this.type = data.type;

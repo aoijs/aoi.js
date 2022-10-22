@@ -64,7 +64,7 @@ const EmbedParser = async (msg) => {
       };
     }
     if (Checker("color")) {
-      embed.color = Discord.resolveColor(
+      embed.color = Discord.Util.resolveColor(
         rawr.split("{color:")[1].split("}")[0].addBrackets().trim(),
       );
     }
@@ -462,7 +462,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
             i = i.split(",");
             const ifn = i.shift().trim();
             const ifi = ["yes", "no", true, false].find(
-              (x) => x === i[i.length - 1].trim(),
+              (x) => x == i[i.length - 1].trim(),
             )
               ? i.pop().trim() === "yes"
               : false;

@@ -59,63 +59,6 @@ class Command {
 }
 
 class CommandManager {
-  awaited;
-  messageDelete;
-  messageUpdate;
-  messageDeleteBulk;
-  guildJoin;
-  guildLeave;
-  guildUpdate;
-  guildUnavailable;
-  roleCreate;
-  roleUpdate;
-  roleDelete;
-  channelCreate;
-  channelUpdate;
-  channelDelete;
-  channelPinsUpdate;
-  stageInstanceCreate;
-  stageInstanceUpdate;
-  stageInstanceDelete;
-  threadCreate;
-  threadUpdate;
-  threadDelete;
-  threadListSync;
-  threadMemberUpdate;
-  join;
-  leave;
-  memberUpdate;
-  membersUpdate;
-  memberAvailable;
-  membersChunk;
-  emojiCreate;
-  emojiDelete;
-  emojiUpdate;
-  banAdd;
-  banRemove;
-  inviteCreate;
-  inviteDelete;
-  reactionAdd;
-  reactionRemove;
-  reactionRemoveAll;
-  reactionRemoveEmoji;
-  presenceUpdate;
-  voiceStateUpdate;
-  applicationCmdCreate;
-  applicationCmdDelete;
-  onApplicationCmdUpdate;
-  userUpdate;
-  variableCreate;
-  variableDelete;
-  variableUpdate;
-  ready;
-  functionError;
-  loop;
-  timeout;
-  pulse;
-  rateLimit;
-  webhookUpdate;
-
   constructor(client, formCommand = true, customCmds = []) {
     client.cmd = this;
     this.client = client;

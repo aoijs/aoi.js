@@ -98,6 +98,7 @@ class AoiError {
         content: options?.toString()?.trim() === "" ? " " : options?.toString(),
       };
     }
+    //console.log({options})
     let msg;
     if (extraOptions.interaction) {
       if (
@@ -170,7 +171,7 @@ class AoiError {
 
   /**
    * @param  {object} d
-   * @param  {"member" | "message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
+   * @param  {"message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
    * @param  {object} data
    * @param  {string | void} message
    * @returns {string}
@@ -178,13 +179,6 @@ class AoiError {
   static functionErrorResolve(d, type, data, message) {
     let ans;
     switch (type) {
-      case "member":
-        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Member ID Provided In ${
-            data.inside || ""
-        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-            d.command.codeLines[d.funcLine - 1]
-        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
-        break;
       case "message":
         ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Message ID Provided In ${
           data.inside || ""
@@ -201,6 +195,13 @@ class AoiError {
         break;
       case "user":
         ans = `\`\`\`js\nAoiError: ${d.func}: Invalid User ID Provided In ${
+          data.inside || ""
+        } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
+          d.command.codeLines[d.funcLine - 1]
+        }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+        break;
+      case "member":
+        ans = `\`\`\`js\nAoiError: ${d.func}: Invalid Member ID Provided In ${
           data.inside || ""
         } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
           d.command.codeLines[d.funcLine - 1]
@@ -248,7 +249,7 @@ class AoiError {
   //aoi.js system
   /**
    * @param  {object} d
-   * @param  {"member" | "message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
+   * @param  {"message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
    * @param  {object} data
    * @param  {string | void} message
    * @returns {void}
