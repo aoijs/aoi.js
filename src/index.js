@@ -15,7 +15,6 @@ module.exports = {
    * 				intents : ['GUILDS','GUILD_MESSAGES']
    * 			})
    */
-  ////Bot: Client,
   Bot: Client,
   AoiClient: Client,
   /**

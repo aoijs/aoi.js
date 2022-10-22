@@ -1,4 +1,3 @@
-const IF = require("./utils/helpers/if.js");
 const Discord = require("discord.js");
 const {CustomFunction} = require("./classes/Functions.js");
 const AoiError = require("./classes/AoiError.js");
@@ -109,88 +108,6 @@ const Interpreter = async (
             code,
             functions: command.functions,
         };
-        const start = performance.now();
-        if (client?.aoiOptions?.debugs?.interpreter) {
-            console.log(`|------------------------------------------|`);
-            console.time(`interpreter-${start}`);
-        }
-        if (command["$if"] === "v4") {
-            code = (
-                await IF({
-                    client,
-                    code,
-                    message,
-                    channel,
-                    args,
-                    data: {
-                        randoms: randoms,
-                        command: {
-                            name: command.name,
-                            code: code,
-                            error: command.error,
-                            async: command.async || false,
-                            functions: command.functions,
-                            __path__: command.__path__,
-                            codeLines: command.codeLines,
-                        },
-                        helpers: {
-                            time: Time,
-                            checkCondition: CheckCondition,
-                            mustEscape,
-                        },
-                        args: args,
-                        aoiError: require("./classes/AoiError.js"),
-                        data: data,
-                        func: undefined,
-                        funcLine: undefined,
-                        util: Util,
-                        allowedMentions: allowedMentions,
-                        embeds: embeds || [],
-                        components: components,
-                        files: attachments || [],
-                        timezone: timezone,
-                        channelUsed: channelUsed,
-                        vars: letVars,
-                        object: object,
-                        disableMentions: disableMentions,
-                        returnID: returnID,
-                        array: array,
-                        arrays,
-                        reactions: reactions,
-                        message: message.message || message,
-                        msg: msg.message || msg,
-                        author: author,
-                        guild: guild,
-                        channel: channel,
-                        member: member,
-                        mentions: mentions,
-                        unpack() {
-                            const last = code.split(this.func.replace("[", "")).length - 1;
-                            const sliced = code.split(this.func.replace("[", ""))[last];
-
-                            return sliced.after();
-                        },
-                        inside(unpacked) {
-                            if (typeof unpacked.inside !== "string") {
-                                if (suppressErrors) return suppressErrors;
-                                else {
-                                    return client.aoiOptions.suppressAllErrors
-                                        ? client.aoiOptions.errorMessage
-                                        : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
-                                }
-                            } else return false;
-                        },
-                        noop() {
-                        },
-                        interpreter: Interpreter,
-                        client: client,
-                        embed: Discord.EmbedBuilder,
-                    },
-                })
-            ).code;
-            funcs = client.functionManager.findFunctions(code);
-        }
-
         //parsing functions (dont touch)
         for (let i = funcs.length; i > 0; i--) {
             if (!funcs.length) break;
@@ -476,10 +393,6 @@ const Interpreter = async (
                     });
             }
 
-            if (client?.aoiOptions?.debugs?.interpreter) {
-                debug[func].funcData = require("util").inspect(FuncData, {depth: 0});
-            }
-
             code = FuncData?.code ?? code;
 
             if (FuncData?.randoms) {
@@ -538,12 +451,8 @@ const Interpreter = async (
                 arrays = FuncData?.arrays;
             }
         }
+        const start = performance.now();
         const ended = (performance.now() - start).toFixed(3);
-        if (client?.aoiOptions?.debugs?.interpreter) {
-            debug.executionTime = ended + " ms";
-            console.timeEnd(`interpreter-${start}`);
-        }
-
         embeds = JSON.parse(
             JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended),
         );
@@ -554,7 +463,7 @@ const Interpreter = async (
         code = code.trim();
         if (embeds?.some((x) => x === undefined)) {
             error = true;
-            return AoiError.consoleError("EmbedError", "Input of index's are empty");
+            return AoiError.consoleError("EmbedError", "Index are not defined.");
         }
         if (returnCode) {
             returnData.code = code;
@@ -590,11 +499,6 @@ const Interpreter = async (
                     } else {
                         msgobj = await useChannel.send(send);
                     }
-                }
-                if (client?.aoiOptions?.debugs?.interpreter) {
-                    console.log(debug);
-
-                    console.log(`|------------------------------------------|`);
                 }
                 if (reactions?.length) {
                     const react = setInterval(() => {
