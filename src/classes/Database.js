@@ -1,4 +1,3 @@
-
 const AoiError = require("./AoiError.js");
 
 class Database {
@@ -85,7 +84,6 @@ class AoijsAPI extends Database {
         deleteTime: 4,
       });
       this.db.connect();
-      console.log("\x1b[32mDatabase has been established.\x1b[0m")
     } else if (type === "dbdjs.mongo") {
       this.db = this.module.default;
       this.tables.forEach((x) => this.db.createModel(x));
@@ -103,9 +101,6 @@ class AoijsAPI extends Database {
         ...(this.extraOptions?.dbOptions ?? {}),
       });
       this.db.connect();
-      this.db.once("ready", () =>
-        console.log("Database has been established."),
-      );
     }
   }
   async set(table, name, id, value) {

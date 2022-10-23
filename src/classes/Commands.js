@@ -93,8 +93,6 @@ class CommandManager {
   emojiUpdate;
   banAdd;
   banRemove;
-  inviteCreate;
-  inviteDelete;
   reactionAdd;
   reactionRemove;
   reactionRemoveAll;
@@ -170,8 +168,6 @@ class CommandManager {
       "banAdd",
       "banRemove",
       "webhookUpdate",
-      "inviteCreate",
-      "inviteDelete",
       "voiceStateUpdate",
       "presenceUpdate",
       "reactionAdd",

@@ -451,30 +451,6 @@ class Client extends BaseClient {
             async (ban) => await require("../handler/guildBans/remove.js")(ban, this),
         );
     }
-
-    //invite Events
-    onInviteCreate() {
-        if (!this.aoiOptions.intents.includes("GuildInvites"))
-            AoiError.CallbackError("onInviteCreate", "GuildInvites", 243);
-
-        this.on(
-            "inviteCreate",
-            async (invite) =>
-                await require("../handler/guildInvites/create.js")(invite, this),
-        );
-    }
-
-    onInviteDelete() {
-        if (!this.aoiOptions.intents.includes("GuildInvites"))
-            AoiError.CallbackError("onInviteDelete", "GuildInvites", 243);
-
-        this.on(
-            "inviteDelete",
-            async (invite) =>
-                await require("../handler/guildInvites/delete.js")(invite, this),
-        );
-    }
-
     //reactions
     onReactionAdd() {
         if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
@@ -1118,27 +1094,6 @@ class Client extends BaseClient {
             );
         }
         this.cmd.banRemove.set(this.cmd.banRemove.size, d);
-    }
-
-    //---------------------------------//
-    inviteCreateCommand(d = {}) {
-        if (!d.code) {
-            throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: inviteCreateCommand. position: ${this.cmd.inviteCreate.size}`,
-            );
-        }
-        this.cmd.inviteCreate.set(this.cmd.inviteCreate.size, d);
-    }
-
-    inviteDeleteCommand(d = {}) {
-        if (!d.code) {
-            throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: inviteDeleteCommand. position: ${this.cmd.inviteDelete.size}`,
-            );
-        }
-        this.cmd.inviteDelete.set(this.cmd.inviteDelete.size, d);
     }
 
     //---------------------------------//

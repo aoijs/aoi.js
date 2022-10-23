@@ -45,25 +45,6 @@ declare module "aoi.js" {
         ): void;
     }
 
-    //Blacklist
-    type BlacklistTypes = "globalUser" | "server" | "channel" | "role" | "user";
-
-    class Blacklist {
-        constructor(client: Bot);
-
-        public setBlacklist(type: BlacklistTypes, errorMsg: ErrorMsg): void;
-
-        public blacklistIds(type: BlacklistTypes, ids: string[]): void;
-
-        public whitelistIds(type: BlacklistTypes, ids: string[]): void;
-
-        public get types(): BlacklistTypes;
-
-        public getBlacklistTable(
-            type: "all" | "globalUser" | "server" | "channel" | "role" | "user",
-        ): string;
-    }
-
     type IntentOptions = "all" | string[];
 
     type DatabaseOption<Database> = {
@@ -105,10 +86,7 @@ declare module "aoi.js" {
         respondOnEdit?: RespondOnEditOptions;
         cache: CacheOptions;
         mobilePlatform?: boolean;
-        fetchInvites?: {
-            enabled: boolean;
-            cacheInviters?: boolean;
-        };
+        disableLogs?: boolean;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: EventOptions;
@@ -177,7 +155,6 @@ declare module "aoi.js" {
         interactionManager: InteractionManager;
         cacheManager: CacheManager;
         variableManager: any /*VariableManager*/;
-        blacklist: Blacklist;
         prefix: string | string[];
         db: any /*AoijsAPI | DbdTsDb | CustomDb | Promisify*/;
         statuses: Group;
@@ -264,10 +241,6 @@ declare module "aoi.js" {
         public banAddCommand(d: EventCommand): void;
 
         public banRemoveCommand(d: EventCommand): void;
-
-        public inviteCreateCommand(d: EventCommand): void;
-
-        public inviteDeleteCommand(d: EventCommand): void;
 
         public reactionAddCommand(d: EventCommand): void;
 
@@ -384,10 +357,6 @@ declare module "aoi.js" {
         public onBanAdd(): void;
 
         public onBanRemove(): void;
-
-        public onInviteCreate(): void;
-
-        public onInviteDelete(): void;
 
         public onReactionAdd(): void;
 

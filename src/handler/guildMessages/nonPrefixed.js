@@ -12,26 +12,6 @@ module.exports = async (client, message, db) => {
     const commands = client.cmd.default.allValues().filter((c) => c.nonPrefixed);
     if (!commands.length) return;
     for (const cmd of commands) {
-        const bl = client.blacklist;
-        if (bl.commands.includes(cmd.name.toLowerCase())) {
-            if (bl.server.blacklist.has(message.guild?.id)) {
-                continue;
-            } else if (bl.channel.blacklist.has(message.channel.id)) {
-                continue;
-            } else if (
-                bl.role.blacklist.find((x) => message.member?._roles.includes(x))
-            ) {
-                continue;
-            } else if (
-                bl.user.blacklist.has(
-                    `${message.author.id}_${message.guild?.id || "dm"}`,
-                )
-            ) {
-                continue;
-            } else if (bl.globalUser.blacklist.has(message.author.id)) {
-                continue;
-            }
-        }
         if (cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm) continue;
         if (cmd.name.includes("$")) {
             cmd.name = (

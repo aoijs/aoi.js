@@ -111,44 +111,6 @@ module.exports = async (message, client, db) => {
       .split(" ")
       .slice(1);
 
-    //check if blacklisted
-    const bl = client.blacklist;
-    if (!bl.commands.includes(cmd.name?.toLowerCase())) {
-      if (!cmd.whitelist) {
-        if (bl.server.blacklist.has(message.guild?.id)) {
-          if (bl.server.errorMsg) {
-            message.channel.send(bl.server.errorMsg);
-          }
-          break;
-        } else if (bl.channel.blacklist.has(message.channel.id)) {
-          if (bl.channel.errorMsg) {
-            message.channel.send(bl.channel.errorMsg);
-          }
-          break;
-        } else if (
-          bl.role.blacklist.find((x) => message.member?._roles?.includes(x))
-        ) {
-          if (bl.role.errorMsg) {
-            message.channel.send(bl.role.errorMsg);
-          }
-          break;
-        } else if (
-          bl.user.blacklist.has(
-            `${message.author.id}_${message.guild?.id || "dm"}`,
-          )
-        ) {
-          if (bl.user.errorMsg) {
-            message.channel.send(bl.user.errorMsg);
-          }
-          break;
-        } else if (bl.globalUser.blacklist.has(message.author.id)) {
-          if (bl.globalUser.errorMsg) {
-            message.channel.send(bl.globalUser.errorMsg);
-          }
-          break;
-        }
-      }
-    }
     //if command doesn't exist , then break the loop
     if (!cmd.executeAt) cmd.executeAt = "guild";
     if (

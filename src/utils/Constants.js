@@ -38,11 +38,6 @@ const EventAvailables = {
     functionError: "Boolean",
 };
 
-const fetchInvitesOptions = {
-    enabled: "Boolean",
-    cacheInviters: "Boolean",
-};
-
 //---------------Abbreviation------------//
 
 const SI_SYMBOL = [
@@ -427,7 +422,6 @@ module.exports = {
     // ClientOptions:ClientOptions,
     IntentOptions: IntentOptions,
     formatOptions: FormatOptions,
-    fetchInvitesOptions: fetchInvitesOptions,
     ApplicationCmdOptions: ApplicationCmdOptions,
     //ClientPresenceOptions:ClientPresenceOptions,
     //PresenceActivityOptions:PresenceActivityOptions,

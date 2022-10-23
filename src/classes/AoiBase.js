@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 const { VariableManager } = require("./Variables.js");
-const Blacklist = require("./Blacklist.js");
 const InteractionManager = require("./Interaction.js");
 const {
   ActivityTypeAvailables,
@@ -65,8 +64,6 @@ class BaseClient extends Discord.Client {
     this.cmd = new CommandManager(this);
 
     this.interactionManager = new InteractionManager(this);
-
-    this.blacklist = new Blacklist(this);
 
     this.cacheManager = new CacheManager(this);
 
