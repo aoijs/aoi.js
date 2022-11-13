@@ -1,4 +1,4 @@
-const {WebhookUpdateOptions} = require("../../../utils/CallbackUtil.js")
+const {WebhookUpdateOptions} = require("../../../utils/EventUtil.js")
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);

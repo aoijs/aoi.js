@@ -4,9 +4,9 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    const [channelId, topic, privacy = "public"] = inside.splits;
+    const [channelID, topic, privacy = "public"] = inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
     if (channel.type !== d.util.channelTypes.Stage) return d.aoiError.fnError(d, "custom", {}, "Provided Channel Is Not A Stage Channel");
 

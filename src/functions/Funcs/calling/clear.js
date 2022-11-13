@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [amt, filter = "everyone", returnCount = "no", channelId = d.channel.id] =
+    let [amt, filter = "everyone", returnCount = "no", channelID = d.channel.id] =
         inside.splits;
 
     amt = Number(amt);
@@ -16,7 +16,7 @@ module.exports = async (d) => {
             "Invalid Amout Provided In",
         );
 
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
     let messages = await channel.messages

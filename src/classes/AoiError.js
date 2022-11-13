@@ -24,7 +24,7 @@ class AoiError {
     const error = new Error(
       `(Missing Intents) : "${event}" requires "${intent}" intent.`,
     );
-    error.name = "CallbackError";
+    error.name = "EventError";
     error.fileName = "./Bot.js";
     error.lineNumber = line;
     throw error;

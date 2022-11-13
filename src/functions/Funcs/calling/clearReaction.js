@@ -4,12 +4,12 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    const [channelId, messageId, userId, emoji] = inside.splits;
+    const [channelID, messageID, userId, emoji] = inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
-    const message = await d.util.getMessage(channel, messageId);
+    const message = await d.util.getMessage(channel, messageID);
     if (!message) return d.aoiError.fnError(d, "message", {inside});
 
     message.reactions.cache

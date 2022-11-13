@@ -2,9 +2,9 @@ module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();
 
-    const [channelId = d.channel.id, name, returnId = "no"] = inside.splits;
+    const [channelID = d.channel.id, name, returnId = "no"] = inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
     let result = await channel.clone({name}).catch(err => {

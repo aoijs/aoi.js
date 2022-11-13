@@ -4,13 +4,13 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [channelId, messageId, userFilters, time, reactions, awaits, removeReaction = "yes", awaitData = "{}", endAwait,] = data.inside.splits;
+    let [channelID, messageID, userFilters, time, reactions, awaits, removeReaction = "yes", awaitData = "{}", endAwait,] = data.inside.splits;
 
-    const channel = d.util.getChannel(d, channelId);
+    const channel = d.util.getChannel(d, channelID);
     if (!channel)
         return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
-    const msg = await d.util.getMessage(channel, messageId);
+    const msg = await d.util.getMessage(channel, messageID);
     if (!msg) return d.aoiError.fnError(d, "message", {inside: data.inside});
 
     time = isNaN(time) ? Time.parse(time)?.ms : Number(time);

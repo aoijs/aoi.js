@@ -5,7 +5,7 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [channelId, userFilter, time, replies, cmds, errorMsg = "", data = "{}", dm,] = inside.splits;
+    let [channelID, userFilter, time, replies, cmds, errorMsg = "", data = "{}", dm,] = inside.splits;
     try {
         data = JSON.parse(data);
     } catch (e) {
@@ -40,7 +40,7 @@ module.exports = async (d) => {
             channel = user.dmChannel;
         }
     } else {
-        channel = await d.util.getChannel(d, channelId);
+        channel = await d.util.getChannel(d, channelID);
     }
     const filter = (m) => {
         return (

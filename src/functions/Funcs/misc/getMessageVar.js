@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [varname, messageId = d.message?.id, table = d.client.db.tables[0]] =
+    let [varname, messageID = d.message?.id, table = d.client.db.tables[0]] =
         data.inside.splits;
     varname = varname.addBrackets();
 
@@ -15,7 +15,7 @@ module.exports = async (d) => {
         );
 
     data.result =
-        (await d.client.db.get(table, varname, messageId))?.value ||
+        (await d.client.db.get(table, varname, messageID))?.value ||
         d.client.variableManager.get(varname, table)?.default;
 
     data.result =

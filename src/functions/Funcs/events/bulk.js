@@ -1,4 +1,4 @@
-const {BulkData} = require("../../../utils/CallbackUtil.js");
+const {BulkData} = require("../../../utils/EventUtil.js");
 module.exports = d => {
     const {code} = d.command;
     const inside = d.unpack();

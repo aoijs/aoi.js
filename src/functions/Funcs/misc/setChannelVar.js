@@ -5,7 +5,7 @@ module.exports = async (d) => {
     let [
         varname,
         value,
-        channelId = d.channel.id,
+        channelID = d.channel.id,
         table = d.client.db.tables[0],
     ] = data.inside.splits;
 
@@ -34,7 +34,7 @@ module.exports = async (d) => {
     value = d.client.variableManager.parseData(value, variable.type);
 
     try {
-        await d.client.db.set(table, varname.addBrackets(), channelId, value);
+        await d.client.db.set(table, varname.addBrackets(), channelID, value);
     } catch (e) {
         d.aoiError.fnError(
             d,

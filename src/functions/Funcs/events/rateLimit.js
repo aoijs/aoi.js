@@ -1,4 +1,4 @@
-const {RateLimitOptions} = require("../../../utils/CallbackUtil.js");
+const {RateLimitOptions} = require("../../../utils/EventUtil.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);

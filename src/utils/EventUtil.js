@@ -10,7 +10,7 @@ const BulkOptions = (d) => {
         userMentions: d.data.bulk.map((x) => x.author.toString()).join(" , "),
         guildId: d.data.bulk.first().guildId,
         guildName: d.data.bulk.first().guild.name,
-        channelId: d.data.bulk.first().channelId,
+        channelID: d.data.bulk.first().channelID,
         channelName: d.data.bulk.first().channel.name,
     };
 };
@@ -22,12 +22,12 @@ const BulkData = (d, option) => {
 const PinData = (d) => {
     const data = {
         time: d.data.time,
-        channelId: d.data.channel.id,
+        channelID: d.data.channel.id,
         channelName: d.data.channel.name,
         channelMention: d.data.channel.toString(),
         guildId: d.data.guild.id,
         guildName: d.data.guild.name,
-        messageId: d.data.channel.messages.last()?.id,
+        messageID: d.data.channel.messages.last()?.id,
         messageContent: d.data.channel.messages.last()?.content,
     };
 };

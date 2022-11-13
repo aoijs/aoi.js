@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildID, userId, channelId, reason] = data.inside.splits;
+    const [guildID, userId, channelID, reason] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
@@ -13,12 +13,12 @@ module.exports = async d => {
     const state = guild.voiceStates.cache.get(member.id);
     if (!state?.channel) return d.aoiError.fnError(d, 'custom', {}, 'User Is Not In Any Voice/Stage Channel.');
 
-    if (channelId?.trim() === '' || !channelId) {
+    if (channelID?.trim() === '' || !channelID) {
         state.disconnect(reason?.addBrackets()).catch(e => {
             d.aoiError.fnError(d, 'custom', {}, 'Failed To Disconnect User With Reason: ' + e);
         });
     } else {
-        state.setChannel(channelId, reason?.addBrackets()).catch(e => {
+        state.setChannel(channelID, reason?.addBrackets()).catch(e => {
             d.aoiError.fnError(d, 'custom', {}, 'Failed To Move User With Reason: ' + e);
         });
     }

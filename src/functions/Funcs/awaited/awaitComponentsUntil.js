@@ -5,10 +5,10 @@ module.exports = async (d) => {
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
-    let [channelId, messageId, userFilter, time, customIds, awaitCommands, errorMsg = "", data = "",] = inside.splits;
-    let chan = await d.util.getChannel(d, channelId);
+    let [channelID, messageID, userFilter, time, customIds, awaitCommands, errorMsg = "", data = "",] = inside.splits;
+    let chan = await d.util.getChannel(d, channelID);
     if (!chan) return d.aoiError.fnError(d, "channel", {inside});
-    const msg = await d.util.getMessage(chan, messageId);
+    const msg = await d.util.getMessage(chan, messageID);
     if (!msg) return d.aoiError.fnError(d, "message", {inside});
     time = Time.parse(time)?.ms;
 

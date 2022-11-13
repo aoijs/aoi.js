@@ -4,9 +4,9 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [channelId, message, returnId = "no"] = inside.splits;
+    let [channelID, message, returnId = "no"] = inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
 
     message = await d.util.errorParser(message, d);

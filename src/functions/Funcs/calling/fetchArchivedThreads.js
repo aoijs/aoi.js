@@ -2,9 +2,9 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [channelId = d.channel.id, ...options] = data.inside.splits;
+    let [channelID = d.channel.id, ...options] = data.inside.splits;
     if (!options.length) options = ["name"]
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
     const threadData = await channel.threads.fetchArchieved();

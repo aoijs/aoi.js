@@ -2,8 +2,8 @@ module.exports = async d => {
     const {code, inside, err} = d.util.aoiFunc(d);
     if (err) return d.error(err);
 
-    let [channelId, threadId, reason] = inside.splits;
-    const channel = await d.util.getChannel(d, channelId);
+    let [channelID, threadId, reason] = inside.splits;
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside})
 
     const thread = channel.threads.cache.get(threadId);

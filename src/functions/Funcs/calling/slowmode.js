@@ -4,9 +4,9 @@ module.exports = d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [time, channelId = d.channel?.id] = data.inside.splits;
+    let [time, channelID = d.channel?.id] = data.inside.splits;
 
-    const channel = d.util.getChannel(d, channelId);
+    const channel = d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
     time = isNaN(time) ? Time.parse(time)?.ms : Number(time);

@@ -1,9 +1,9 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [channelId, option = "id", sep = " , "] = data.inside.splits;
+    const [channelID, option = "id", sep = " , "] = data.inside.splits;
 
-    const channel = await d.util.getChannel(d, channelId, true);
+    const channel = await d.util.getChannel(d, channelID, true);
     if (!channel)
         return d.aoiError.fnError(d, "channel", {inside: data.inside});
     if (

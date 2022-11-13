@@ -6,8 +6,8 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
     let [
-        channelId,
-        messageId,
+        channelID,
+        messageID,
         filter,
         time,
         reactions,
@@ -16,9 +16,9 @@ module.exports = async (d) => {
         data = "",
     ] = inside.splits;
     reactions = reactions.split(",");
-    const channel = await d.util.getChannel(d, channelId);
+    const channel = await d.util.getChannel(d, channelID);
     if (!channel) d.aoiError.fnError(d, "channel", {inside});
-    const m = await d.util.getMessage(channel, messageId);
+    const m = await d.util.getMessage(channel, messageID);
     if (!m) d.aoiError.fnError(d, "message", {inside});
     reactions.forEach((x) => {
         m.react(x).catch((err) =>
