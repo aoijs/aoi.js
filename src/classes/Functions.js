@@ -1,5 +1,5 @@
 const { Group } = require( "./structures/dist" );
-const {functions: parser, maps,grp} = require("../functions/parser.js");
+const {functions: parser, maps,grp} = require("../functions/AoiReader.js");
 
 class Function {
     constructor(code, name) {
@@ -12,7 +12,6 @@ class CustomFunction {
     constructor(d = {}, client) {
         this.client = client;
         this.name = d.name;
-        this['$if'] = d['$if'];
         this.code = d.code;
         this.type = d.type;
         this.params = d.params;
@@ -86,7 +85,7 @@ class FunctionManager {
         }
     }
 
-    createCustomFunction(...ds) {
+    createFunction(...ds) {
         for (const d of ds) {
             this.cache.set(
                 d.name.replace("$", ""),

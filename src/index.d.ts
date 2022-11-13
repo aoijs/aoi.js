@@ -480,7 +480,7 @@ declare module "aoi.js" {
 
         public cacheFunctions(): void;
 
-        public createCustomFunction(data: Array<Record<string, any>>): void;
+        public createFunction(data: Array<Record<string, any>>): void;
 
         public findFunctions(code: string): string[];
 
