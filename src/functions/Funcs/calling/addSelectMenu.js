@@ -1,4 +1,4 @@
-const {MessageSelectMenu} = require("discord.js");
+const {SelectMenuBuilder} = require("discord.js");
 
 module.exports = async (d) => {
     const {code} = d.command;
@@ -14,7 +14,7 @@ module.exports = async (d) => {
         disabled = "no",
         ...options
     ] = inside.splits;
-    const components = new MessageSelectMenu();
+    const components = new SelectMenuBuilder();
     index = Number(index) - 1;
     if (isNaN(index) || index < 0)
         d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");

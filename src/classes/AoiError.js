@@ -15,14 +15,14 @@ class AoiError {
   }
 
   /**
-   * @param  {string} callback
+   * @param  {string} event
    * @param  {string} intent
    * @param  {number} line
    * @returns {Error}
    */
-  static CallbackError(callback, intent, line) {
+  static EventError(event, intent, line) {
     const error = new Error(
-      `(Missing Intents) : "${callback}" requires "${intent}" intent.`,
+      `(Missing Intents) : "${event}" requires "${intent}" intent.`,
     );
     error.name = "CallbackError";
     error.fileName = "./Bot.js";

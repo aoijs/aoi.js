@@ -12,7 +12,7 @@ declare module "aoi.js" {
     class AoiError {
         constructor();
 
-        static CallbackError(callback: string, intent: string, line?: number): void;
+        static EventError(event: string, intent: string, line?: number): void;
 
         static CommandError(
             command: string,

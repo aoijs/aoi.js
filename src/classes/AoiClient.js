@@ -22,7 +22,7 @@ class Client extends BaseClient {
     //message Events
     onMessage(options) {
         if (!this.aoiOptions.intents.includes("GuildMessages"))
-            AoiError.CallbackError("onMessage", "GuildMessages", 91);
+            AoiError.EventError("onMessage", "GuildMessages", 91);
         this.messageEventOptions = options || {
             guildOnly: true,
             respondToBots: false,
@@ -49,7 +49,7 @@ class Client extends BaseClient {
 
     onMessageDelete() {
         if (!this.aoiOptions.intents.includes("GuildMessages"))
-            AoiError.CallbackError("onMessageDelete", "GuildMessages", 99);
+            AoiError.EventError("onMessageDelete", "GuildMessages", 99);
 
         this.on("messageDelete", async (data) => {
             await require("../handler/guildMessages/deleteMessage.js")(data, this);
@@ -58,7 +58,7 @@ class Client extends BaseClient {
 
     onMessageUpdate() {
         if (!this.aoiOptions.intents.includes("GuildMessages"))
-            AoiError.CallbackError("onMessageUpdate", "GuildMessages", 106);
+            AoiError.EventError("onMessageUpdate", "GuildMessages", 106);
 
         this.on("messageUpdate", async (oldm, newm) => {
             await require("../handler/guildMessages/updateMessage.js")(
@@ -98,7 +98,7 @@ class Client extends BaseClient {
 
     onMessageDeleteBulk() {
         if (!this.aoiOptions.intents.includes("GuildMessages"))
-            AoiError.CallbackError("onMessageDeleteBulk", "GuildMessages", 116);
+            AoiError.EventError("onMessageDeleteBulk", "GuildMessages", 116);
 
         this.on("messageDeleteBulk", async (data) => {
             await require("../handler/guildMessages/bulkDeleteMessage.js")(
@@ -290,7 +290,7 @@ class Client extends BaseClient {
     //guildMembers Events
     onJoin() {
         if (!this.aoiOptions.intents.includes("GuildMembers"))
-            AoiError.CallbackError("onJoin", "GuildMembers", 201);
+            AoiError.EventError("onJoin", "GuildMembers", 201);
 
         this.on(
             "guildMemberAdd",
@@ -301,7 +301,7 @@ class Client extends BaseClient {
 
     onLeave() {
         if (!this.aoiOptions.intents.includes("GuildMembers"))
-            AoiError.CallbackError("onLeave", "GuildMembers", 206);
+            AoiError.EventError("onLeave", "GuildMembers", 206);
 
         this.on(
             "guildMemberRemove",
@@ -312,7 +312,7 @@ class Client extends BaseClient {
 
     onMemberUpdate() {
         if (!this.aoiOptions.intents.includes("GuildMembers"))
-            AoiError.CallbackError("onMemberUpdate", "GuildMembers", 209);
+            AoiError.EventError("onMemberUpdate", "GuildMembers", 209);
 
         this.on(
             "guildMemberUpdate",
@@ -323,7 +323,7 @@ class Client extends BaseClient {
 
     onMemberAvailable() {
         if (!this.aoiOptions.intents.includes("GuildMembers"))
-            AoiError.CallbackError("onMemberAvailable", "GuildMembers", 214);
+            AoiError.EventError("onMemberAvailable", "GuildMembers", 214);
 
         this.on(
             "guildMemberAvailable",
@@ -334,7 +334,7 @@ class Client extends BaseClient {
 
     onMembersChunk() {
         if (!this.aoiOptions.intents.includes("GuildMembers"))
-            AoiError.CallbackError("onMembersChunk", "GuildMembers", 217);
+            AoiError.EventError("onMembersChunk", "GuildMembers", 217);
 
         this.on(
             "guildMembersChunk",
@@ -351,7 +351,7 @@ class Client extends BaseClient {
     //Emoji Events
     onEmojiCreate() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError("onEmojiCreate", "GuildEmojisAndStickers", 222);
+            AoiError.EventError("onEmojiCreate", "GuildEmojisAndStickers", 222);
 
         this.on(
             "emojiCreate",
@@ -362,7 +362,7 @@ class Client extends BaseClient {
 
     onEmojiDelete() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError("onEmojiDelete", "GuildEmojisAndStickers", 226);
+            AoiError.EventError("onEmojiDelete", "GuildEmojisAndStickers", 226);
 
         this.on(
             "emojiDelete",
@@ -373,7 +373,7 @@ class Client extends BaseClient {
 
     onEmojiUpdate() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError("onEmojiUpdate", "GuildEmojisAndStickers", 231);
+            AoiError.EventError("onEmojiUpdate", "GuildEmojisAndStickers", 231);
 
         this.on(
             "emojiUpdate",
@@ -384,7 +384,7 @@ class Client extends BaseClient {
 
     onStickerCreate() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onStickerCreate",
                 "GUILD_EMOJIS_AND_STICKERS",
                 169,
@@ -399,7 +399,7 @@ class Client extends BaseClient {
 
     onStickerDelete() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onStickerDelete",
                 "GuildEmojisAndStickers",
                 174,
@@ -414,7 +414,7 @@ class Client extends BaseClient {
 
     onStickerUpdate() {
         if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onStickerUpdate",
                 "GUILD_EMOJIS_AND_STICKERS",
                 231,
@@ -434,7 +434,7 @@ class Client extends BaseClient {
     //ban events
     onBanAdd() {
         if (!this.aoiOptions.intents.includes("GuildBans"))
-            AoiError.CallbackError("onBanAdd", "GuildBans", 235);
+            AoiError.EventError("onBanAdd", "GuildBans", 235);
 
         this.on(
             "guildBanAdd",
@@ -444,7 +444,7 @@ class Client extends BaseClient {
 
     onBanRemove() {
         if (!this.aoiOptions.intents.includes("GuildBans"))
-            AoiError.CallbackError("onBanRemove", "GuildBans", 239);
+            AoiError.EventError("onBanRemove", "GuildBans", 239);
 
         this.on(
             "guildBanRemove",
@@ -454,7 +454,7 @@ class Client extends BaseClient {
     //reactions
     onReactionAdd() {
         if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
-            AoiError.CallbackError("onReactionAdd", "GuildMessageReactions", 254);
+            AoiError.EventError("onReactionAdd", "GuildMessageReactions", 254);
 
         this.on(
             "messageReactionAdd",
@@ -469,7 +469,7 @@ class Client extends BaseClient {
 
     onReactionRemove() {
         if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onReactionRemove",
                 "GUILD_MESSAGE_REACTIONS",
                 258,
@@ -488,7 +488,7 @@ class Client extends BaseClient {
 
     onReactionRemoveAll() {
         if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onReactionRemoveAll",
                 "GuildMessageReactions",
                 263,
@@ -506,7 +506,7 @@ class Client extends BaseClient {
 
     onReactionRemoveEmoji() {
         if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onReactionRemoveEmoji",
                 "GUILD_MESSAGE_REACTIONS",
                 267,
@@ -525,7 +525,7 @@ class Client extends BaseClient {
     //guildVoiceStates Events
     onVoiceStateUpdate() {
         if (!this.aoiOptions.intents.includes("GuildVoiceStates"))
-            AoiError.CallbackError("onVoiceStateUpdate", "GuildVoiceStates", 272);
+            AoiError.EventError("onVoiceStateUpdate", "GuildVoiceStates", 272);
 
         this.on(
             "voiceStateUpdate",
@@ -541,7 +541,7 @@ class Client extends BaseClient {
     //presence events
     onPresenceUpdate() {
         if (!this.aoiOptions.intents.includes("GuildPresences"))
-            AoiError.CallbackError("onPresenceUpdate", "GuildPresences", 276);
+            AoiError.EventError("onPresenceUpdate", "GuildPresences", 276);
 
         this.on(
             "presenceUpdate",
@@ -556,7 +556,7 @@ class Client extends BaseClient {
             !this.aoiOptions.intents.includes("GuildMessageTyping") ||
             !this.aoiOptions.intents.includes("DirectMessageTyping")
         ) {
-            AoiError.CallbackError(
+            AoiError.EventError(
                 "onTypingStart",
                 "GuildMessageTyping or DirectMessageTyping",
                 229,
