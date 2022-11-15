@@ -1,27 +1,275 @@
 const AoiError = require("./AoiError.js");
-const BaseClient = require("./AoiBase.js");
-const { Command } = require("./Commands.js");
-const { FunctionManager } = require("./Functions.js");
+const { Command, CommandManager } = require("./Commands.js");
+const { Client, IntentsBitField } = require("discord.js");
+const {  IntentOptionsAll } = require( "../utils/Constants.js" );
+const InteractionManager = require( "./Interaction.js" );
+const CacheManager = require( "./CacheManager.js" );
+const { VariableManager } = require( "./Variables.js" );
+const { AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify } = require( "./Database.js" );
+const { Group } = require( "./structures/dist/group/group.js" );
+const { FunctionManager } = require( "./Functions.js" );
 
-const [major] = process.version.replace("v", "").split(".")
+const [major] = process.version.replace("v", "").split(".");
 if (isNaN(Number(major)) || Number(major) < 16) {
-    throw new Error(`node.js version must be v16.6.0 or above.`)
+    throw new Error(`node.js version must be v16.6.0 or above.`);
 }
 
+
 //Initialize aoi.js Client
-class Client extends BaseClient {
+class AoiClient {
+    #options = null;
+    #client = null;
+    #plugins = new Map();
+    #intents = [];
     constructor(options) {
-        super(options);
-        this.functionManager = new FunctionManager(this);
-        if (this.aoiOptions.respondOnEdit) {
-            this.aoiOptions.respondOnEdit.time =
-                this.aoiOptions.respondOnEdit.time || 60000;
+        if (options.cache) {
+            options.makeCache = CacheManager._setDjsCacheManagers(
+                options.cache,
+            );
+        }
+
+        if (options.presence?.activities?.length) {
+            if (
+                Object.keys(ActivityTypeAvailables).includes(
+                    options.presence?.activities[0].type,
+                ) ||
+                Object.values(ActivityTypeAvailables).includes(
+                    options.presence?.activities[0].type,
+                )
+            ) {
+                options.presence.activities[0].type =
+                    ActivityTypeAvailables[
+                        options.presence?.activities[0].type
+                    ] || options.presence?.activities[0].type;
+            } else {
+                throw new TypeError(
+                    `Activity Type Error: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
+                );
+            }
+        }
+
+        options.partials = options.partials || [
+            "CHANNEL",
+            "GUILD_MEMBER",
+            "MESSAGE",
+            "USER",
+            "REACTION",
+        ];
+
+        options.intents = !Array.isArray( options.intents )
+            ? options.intents?.toLowerCase() === "all"
+                ? IntentOptionsAll
+                : undefined
+            : options.intents;
+
+        const aoiOptions = Object.assign({}, options);
+
+        this.aoiOptions = aoiOptions;
+        this.#intents = new IntentsBitField(options.intents).toArray();
+        this.#createClient(options);
+
+        new CommandManager(this);
+
+        new InteractionManager(this);
+
+        new CacheManager(this);
+
+        new VariableManager( this );
+        
+        new FunctionManager( this );
+
+        if (options.autoUpdate) {
+            require("../handler/AoiAutoUpdate.js")();
+        }
+
+        if (
+            [
+                "default",
+                "dbdjs.db",
+                "dbdjs.db-sql",
+                "dbdjs.mongo",
+                "aoi.fb",
+                "aoi.db",
+            ].includes(options?.database?.type)
+        ) {
+            this.db = new AoijsAPI(
+                options?.database?.db,
+                {
+                    path: options?.database?.path || "./database/",
+                    tables: options?.database?.tables || ["main"],
+                },
+                {
+                    type: options?.database?.type || "default",
+                    promisify: options?.database?.promisify || false,
+                },
+                options.database?.extraOptions || {},
+            );
+        } else if (options?.database?.type === "dbdts.db") {
+            this.db = new DbdTsDb(
+                options.database?.db,
+                {
+                    path: options.database?.path || "./database",
+                    tables: options?.database?.tables || ["main"],
+                },
+                { type: "dbdts.db", promisify: false },
+                options.database?.extraOptions || {},
+            );
+        } else if (options?.database?.type === "aoi.mongo") {
+            this.db = new AoiMongoDb(
+                options.database?.db,
+                {
+                    path: options.database?.path,
+                    tables: options.database?.tables || ["main"],
+                },
+                { type: "aoi.mongo", promisify: true },
+                {
+                    ...AoiMongoDb.defaultOptions,
+                    ...(options.database?.extraOptions || {}),
+                },
+            );
+        } else if (
+            options?.database?.type === "custom" &&
+            !options?.database?.promisify
+        ) {
+            this.db = new CustomDb(
+                options?.database?.db,
+                {
+                    path: options.database?.path || "./database",
+                    tables: options?.database?.tables || ["main"],
+                },
+                { type: "custom", promisify: true },
+                options.database?.extraOptions || {},
+            );
+        } else if (
+            options?.database?.type === "custom" &&
+            options?.database?.promisify
+        ) {
+            this.db = new Promisify(
+                options.database?.db,
+                {
+                    path: options.database?.path || "./database",
+                    tables: options?.database?.tables || ["main"],
+                },
+                { type: "custom", promisify: true },
+                options.database?.extraOptions || {},
+            );
+        } else {
+            this.db = new AoijsAPI(
+                options?.database?.db || require("aoi.db"),
+                {
+                    path: options?.database?.path || "./database/",
+                    tables: options?.database?.tables || ["main"],
+                },
+                {
+                    type: options?.database?.type || "default",
+                    promisify: options?.database?.promisify || false,
+                },
+                options.database?.extraOptions || {},
+            );
+        }
+
+        if (options?.events?.functionError) {
+            this.on("functionError", async (data, client) => {
+                await require("../handler/custom/functionError.js")(
+                    data,
+                    client,
+                );
+            });
+        }
+
+        this.prefix = options.prefix;
+
+        Object.defineProperty(this, "statuses", { value: new Group() });
+
+        if (options.mobilePlatform === true) {
+            this.#client.options.ws.properties.browser = "Discord Android";
+        }
+
+        this.on("ready", async () => {
+            require("../handler/status.js")(this.statuses, this);
+            await require("../handler/startup.js")(this);
+            await require("../handler/nonIntents/ready.js")(this);
+        });
+        this.#client.login(options.token);
+    }
+    #createClient(options) {
+        const client = new Client(options);
+        this.#client = client;
+    }
+    on(event, callback) {
+        this.#client.on(event, callback);
+    }
+    emit ( event, ...args )
+    { 
+        this.#client.emit( event, ...args );
+    }
+    get client() {
+        return this.#client;
+    }
+    get plugins() {
+        return this.#plugins;
+    }
+    addPlugin(name, plugin) {
+        this.#plugins.set(name, plugin);
+    }
+    removePlugin(name) {
+        this.#plugins.delete(name);
+    }
+    getPlugin(name) {
+        return this.#plugins.get(name);
+    }
+    status(...statuses) {
+        for (const status of statuses) {
+            status.type =
+                Object.keys(ActivityTypeAvailables).includes(status.type) ||
+                Object.values(ActivityTypeAvailables).includes(status.type)
+                    ? ActivityTypeAvailables[status.type] || status.type
+                    : "PLAYING";
+            const option = {
+                name: status.text,
+                type: status.type,
+                url: status.url,
+            };
+
+            this.statuses.set(this.statuses.size, {
+                status: status.status || "online",
+                time: isNaN(status.time || 12) ? 12 : status.time,
+                activity: option,
+                afk: status.afk || false,
+                shardID: status.shardIDs || 0,
+            });
         }
     }
 
+    /**
+     * @param  {Record<string,string | number | object >} d
+     * @param  {string} table=this.db.tables[0]
+     */
+    variables(d, table = this.db.tables[0]) {
+        for (const [name, value] of Object.entries(d)) {
+            this.varManager.add({ name, value, table });
+        }
+        if (this.db instanceof DbdTsDb) {
+            const data = this.variableManager.cache
+                .allValues()
+                .map((x) => x.object());
+
+            this.db.addColumns(table, data);
+        }
+    }
+
+    async _createCacheFactory(options) {
+        options.makeCache = await CacheManager._setDjsCacheManagers(
+            options.cache,
+        );
+    }
+    get intents ()
+    {
+        return this.#intents;
+    }
     //message Events
     onMessage(options) {
-        if (!this.aoiOptions.intents.includes("GuildMessages"))
+        if (!this.intents.includes("GuildMessages"))
             AoiError.EventError("onMessage", "GuildMessages", 91);
         this.messageEventOptions = options || {
             guildOnly: true,
@@ -48,16 +296,19 @@ class Client extends BaseClient {
     }
 
     onMessageDelete() {
-        if (!this.aoiOptions.intents.includes("GuildMessages"))
+        if (!this.intents.includes("GuildMessages"))
             AoiError.EventError("onMessageDelete", "GuildMessages", 99);
 
         this.on("messageDelete", async (data) => {
-            await require("../handler/guildMessages/deleteMessage.js")(data, this);
+            await require("../handler/guildMessages/deleteMessage.js")(
+                data,
+                this,
+            );
         });
     }
 
     onMessageUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildMessages"))
+        if (!this.intents.includes("GuildMessages"))
             AoiError.EventError("onMessageUpdate", "GuildMessages", 106);
 
         this.on("messageUpdate", async (oldm, newm) => {
@@ -67,25 +318,26 @@ class Client extends BaseClient {
                 this,
             );
             if (
-                this.aoiOptions.respondOnEdit &&
+                this.respondOnEdit &&
                 newm.content !== oldm.content &&
-                this.aoiOptions.respondOnEdit.time > Date.now() - newm.createdTimestamp
+                this.respondOnEdit.time >
+                    Date.now() - newm.createdTimestamp
             ) {
-                if (this.aoiOptions.respondOnEdit.commands) {
+                if (this.respondOnEdit.commands) {
                     await require("../handler/guildMessages/commands.js")(
                         newm,
                         this,
                         this.db,
                     );
                 }
-                if (this.aoiOptions.respondOnEdit.alwaysExecute) {
+                if (this.respondOnEdit.alwaysExecute) {
                     await require("../handler/guildMessages/alwaysExecute.js")(
                         this,
                         newm,
                         this.db,
                     );
                 }
-                if (this.aoiOptions.respondOnEdit.nonPrefixed) {
+                if (this.respondOnEdit.nonPrefixed) {
                     await require("../handler/guildMessages/nonPrefixed.js")(
                         this,
                         newm,
@@ -97,7 +349,7 @@ class Client extends BaseClient {
     }
 
     onMessageDeleteBulk() {
-        if (!this.aoiOptions.intents.includes("GuildMessages"))
+        if (!this.intents.includes("GuildMessages"))
             AoiError.EventError("onMessageDeleteBulk", "GuildMessages", 116);
 
         this.on("messageDeleteBulk", async (data) => {
@@ -129,7 +381,11 @@ class Client extends BaseClient {
         this.on(
             "guildUpdate",
             async (oldg, newg) =>
-                await require("../handler/guilds/guildUpdate.js")(oldg, newg, this),
+                await require("../handler/guilds/guildUpdate.js")(
+                    oldg,
+                    newg,
+                    this,
+                ),
         );
     }
 
@@ -137,7 +393,10 @@ class Client extends BaseClient {
         this.on(
             "guildUnavailable",
             async (guild) =>
-                await require("../handler/guilds/guildUnavailable.js")(guild, this),
+                await require("../handler/guilds/guildUnavailable.js")(
+                    guild,
+                    this,
+                ),
         );
     }
 
@@ -153,7 +412,11 @@ class Client extends BaseClient {
         this.on(
             "roleUpdate",
             async (oldr, newr) =>
-                await require("../handler/guilds/roleUpdate.js")(oldr, newr, this),
+                await require("../handler/guilds/roleUpdate.js")(
+                    oldr,
+                    newr,
+                    this,
+                ),
         );
     }
 
@@ -169,7 +432,10 @@ class Client extends BaseClient {
         this.on(
             "channelCreate",
             async (channel) =>
-                await require("../handler/guilds/channelCreate.js")(channel, this),
+                await require("../handler/guilds/channelCreate.js")(
+                    channel,
+                    this,
+                ),
         );
     }
 
@@ -177,7 +443,11 @@ class Client extends BaseClient {
         this.on(
             "channelUpdate",
             async (oldc, newc) =>
-                await require("../handler/guilds/channelUpdate.js")(oldc, newc, this),
+                await require("../handler/guilds/channelUpdate.js")(
+                    oldc,
+                    newc,
+                    this,
+                ),
         );
     }
 
@@ -185,7 +455,10 @@ class Client extends BaseClient {
         this.on(
             "channelDelete",
             async (channel) =>
-                await require("../handler/guilds/channelDelete.js")(channel, this),
+                await require("../handler/guilds/channelDelete.js")(
+                    channel,
+                    this,
+                ),
         );
     }
 
@@ -237,7 +510,10 @@ class Client extends BaseClient {
         this.on(
             "threadCreate",
             async (thread) =>
-                await require("../handler/guilds/threadCreate.js")(thread, this),
+                await require("../handler/guilds/threadCreate.js")(
+                    thread,
+                    this,
+                ),
         );
     }
 
@@ -245,7 +521,11 @@ class Client extends BaseClient {
         this.on(
             "threadUpdate",
             async (oldt, newt) =>
-                await require("../handler/guilds/threadUpdate.js")(oldt, newt, this),
+                await require("../handler/guilds/threadUpdate.js")(
+                    oldt,
+                    newt,
+                    this,
+                ),
         );
     }
 
@@ -253,7 +533,10 @@ class Client extends BaseClient {
         this.on(
             "threadDelete",
             async (thread) =>
-                await require("../handler/guilds/threadDelete.js")(thread, this),
+                await require("../handler/guilds/threadDelete.js")(
+                    thread,
+                    this,
+                ),
         );
     }
 
@@ -261,7 +544,10 @@ class Client extends BaseClient {
         this.on(
             "threadListSync",
             async (collection) =>
-                await require("../handler/guilds/threadListSync.js")(collection, this),
+                await require("../handler/guilds/threadListSync.js")(
+                    collection,
+                    this,
+                ),
         );
     }
 
@@ -289,7 +575,7 @@ class Client extends BaseClient {
 
     //guildMembers Events
     onJoin() {
-        if (!this.aoiOptions.intents.includes("GuildMembers"))
+        if (!this.intents.includes("GuildMembers"))
             AoiError.EventError("onJoin", "GuildMembers", 201);
 
         this.on(
@@ -300,7 +586,7 @@ class Client extends BaseClient {
     }
 
     onLeave() {
-        if (!this.aoiOptions.intents.includes("GuildMembers"))
+        if (!this.intents.includes("GuildMembers"))
             AoiError.EventError("onLeave", "GuildMembers", 206);
 
         this.on(
@@ -311,29 +597,36 @@ class Client extends BaseClient {
     }
 
     onMemberUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildMembers"))
+        if (!this.intents.includes("GuildMembers"))
             AoiError.EventError("onMemberUpdate", "GuildMembers", 209);
 
         this.on(
             "guildMemberUpdate",
             async (oldm, newm) =>
-                await require("../handler/guildMembers/update.js")(oldm, newm, this),
+                await require("../handler/guildMembers/update.js")(
+                    oldm,
+                    newm,
+                    this,
+                ),
         );
     }
 
     onMemberAvailable() {
-        if (!this.aoiOptions.intents.includes("GuildMembers"))
+        if (!this.intents.includes("GuildMembers"))
             AoiError.EventError("onMemberAvailable", "GuildMembers", 214);
 
         this.on(
             "guildMemberAvailable",
             async (mem) =>
-                await require("../handler/guildMembers/available.js")(mem, this),
+                await require("../handler/guildMembers/available.js")(
+                    mem,
+                    this,
+                ),
         );
     }
 
     onMembersChunk() {
-        if (!this.aoiOptions.intents.includes("GuildMembers"))
+        if (!this.intents.includes("GuildMembers"))
             AoiError.EventError("onMembersChunk", "GuildMembers", 217);
 
         this.on(
@@ -350,7 +643,7 @@ class Client extends BaseClient {
 
     //Emoji Events
     onEmojiCreate() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError("onEmojiCreate", "GuildEmojisAndStickers", 222);
 
         this.on(
@@ -361,7 +654,7 @@ class Client extends BaseClient {
     }
 
     onEmojiDelete() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError("onEmojiDelete", "GuildEmojisAndStickers", 226);
 
         this.on(
@@ -372,18 +665,22 @@ class Client extends BaseClient {
     }
 
     onEmojiUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError("onEmojiUpdate", "GuildEmojisAndStickers", 231);
 
         this.on(
             "emojiUpdate",
             async (olde, newe) =>
-                await require("../handler/guildEmojis/update.js")(olde, newe, this),
+                await require("../handler/guildEmojis/update.js")(
+                    olde,
+                    newe,
+                    this,
+                ),
         );
     }
 
     onStickerCreate() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError(
                 "onStickerCreate",
                 "GUILD_EMOJIS_AND_STICKERS",
@@ -393,12 +690,15 @@ class Client extends BaseClient {
         this.on(
             "stickerCreate",
             async (sticker) =>
-                await require("../handler/guildEmojis/stickerCreate.js")(sticker, this),
+                await require("../handler/guildEmojis/stickerCreate.js")(
+                    sticker,
+                    this,
+                ),
         );
     }
 
     onStickerDelete() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError(
                 "onStickerDelete",
                 "GuildEmojisAndStickers",
@@ -408,12 +708,15 @@ class Client extends BaseClient {
         this.on(
             "stickerDelete",
             async (emoji) =>
-                await require("../handler/guildEmojis/stickerDelete.js")(emoji, this),
+                await require("../handler/guildEmojis/stickerDelete.js")(
+                    emoji,
+                    this,
+                ),
         );
     }
 
     onStickerUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildEmojisAndStickers"))
+        if (!this.intents.includes("GuildEmojisAndStickers"))
             AoiError.EventError(
                 "onStickerUpdate",
                 "GUILD_EMOJIS_AND_STICKERS",
@@ -433,27 +736,29 @@ class Client extends BaseClient {
 
     //ban events
     onBanAdd() {
-        if (!this.aoiOptions.intents.includes("GuildBans"))
+        if (!this.intents.includes("GuildBans"))
             AoiError.EventError("onBanAdd", "GuildBans", 235);
 
         this.on(
             "guildBanAdd",
-            async (ban) => await require("../handler/guildBans/add.js")(ban, this),
+            async (ban) =>
+                await require("../handler/guildBans/add.js")(ban, this),
         );
     }
 
     onBanRemove() {
-        if (!this.aoiOptions.intents.includes("GuildBans"))
+        if (!this.intents.includes("GuildBans"))
             AoiError.EventError("onBanRemove", "GuildBans", 239);
 
         this.on(
             "guildBanRemove",
-            async (ban) => await require("../handler/guildBans/remove.js")(ban, this),
+            async (ban) =>
+                await require("../handler/guildBans/remove.js")(ban, this),
         );
     }
     //reactions
     onReactionAdd() {
-        if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
+        if (!this.intents.includes("GuildMessageReactions"))
             AoiError.EventError("onReactionAdd", "GuildMessageReactions", 254);
 
         this.on(
@@ -468,7 +773,7 @@ class Client extends BaseClient {
     }
 
     onReactionRemove() {
-        if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
+        if (!this.intents.includes("GuildMessageReactions"))
             AoiError.EventError(
                 "onReactionRemove",
                 "GUILD_MESSAGE_REACTIONS",
@@ -487,7 +792,7 @@ class Client extends BaseClient {
     }
 
     onReactionRemoveAll() {
-        if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
+        if (!this.intents.includes("GuildMessageReactions"))
             AoiError.EventError(
                 "onReactionRemoveAll",
                 "GuildMessageReactions",
@@ -505,7 +810,7 @@ class Client extends BaseClient {
     }
 
     onReactionRemoveEmoji() {
-        if (!this.aoiOptions.intents.includes("GuildMessageReactions"))
+        if (!this.intents.includes("GuildMessageReactions"))
             AoiError.EventError(
                 "onReactionRemoveEmoji",
                 "GUILD_MESSAGE_REACTIONS",
@@ -524,7 +829,7 @@ class Client extends BaseClient {
 
     //guildVoiceStates Events
     onVoiceStateUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildVoiceStates"))
+        if (!this.intents.includes("GuildVoiceStates"))
             AoiError.EventError("onVoiceStateUpdate", "GuildVoiceStates", 272);
 
         this.on(
@@ -540,21 +845,25 @@ class Client extends BaseClient {
 
     //presence events
     onPresenceUpdate() {
-        if (!this.aoiOptions.intents.includes("GuildPresences"))
+        if (!this.intents.includes("GuildPresences"))
             AoiError.EventError("onPresenceUpdate", "GuildPresences", 276);
 
         this.on(
             "presenceUpdate",
             async (op, np) =>
-                await require("../handler/guildPresences/update.js")(op, np, this),
+                await require("../handler/guildPresences/update.js")(
+                    op,
+                    np,
+                    this,
+                ),
         );
     }
 
     //typing events
     onTypingStart() {
         if (
-            !this.aoiOptions.intents.includes("GuildMessageTyping") ||
-            !this.aoiOptions.intents.includes("DirectMessageTyping")
+            !this.intents.includes("GuildMessageTyping") ||
+            !this.intents.includes("DirectMessageTyping")
         ) {
             AoiError.EventError(
                 "onTypingStart",
@@ -566,7 +875,10 @@ class Client extends BaseClient {
         this.on(
             "typingStart",
             async (type) =>
-                await require("../handler/guildMessageTypings/start.js")(type, this),
+                await require("../handler/guildMessageTypings/start.js")(
+                    type,
+                    this,
+                ),
         );
     }
 
@@ -586,7 +898,10 @@ class Client extends BaseClient {
         this.on(
             "applicationCommandCreate",
             async (app) =>
-                await require("../handler/nonIntents/appCmdCreate.js")(app, this),
+                await require("../handler/nonIntents/appCmdCreate.js")(
+                    app,
+                    this,
+                ),
         );
     }
 
@@ -594,7 +909,10 @@ class Client extends BaseClient {
         this.on(
             "applicationCommandDelete",
             async (app) =>
-                await require("../handler/nonIntents/appCmdDelete.js")(app, this),
+                await require("../handler/nonIntents/appCmdDelete.js")(
+                    app,
+                    this,
+                ),
         );
     }
 
@@ -649,7 +967,10 @@ class Client extends BaseClient {
 
     onRateLimit() {
         this.on("rateLimit", async (rateLimitData) => {
-            await require("../handler/nonIntents/rateLimit.js")(rateLimitData, this);
+            await require("../handler/nonIntents/rateLimit.js")(
+                rateLimitData,
+                this,
+            );
         });
     }
 
@@ -717,9 +1038,13 @@ class Client extends BaseClient {
     command(...args) {
         for (const d of args) {
             if (!d.name)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a name!`);
+                throw new TypeError(
+                    `Command ${this.cmd.default.size} needs a name!`,
+                );
             if (!d.code)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a code!`);
+                throw new TypeError(
+                    `Command ${this.cmd.default.size} needs a code!`,
+                );
 
             this.cmd.default.set(this.cmd.default.size, new Command(d, this));
         }
@@ -741,7 +1066,8 @@ class Client extends BaseClient {
     deletedCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: deletedCommand. position: ${this.cmd.messageDelete.size}`,
             );
         }
@@ -754,7 +1080,8 @@ class Client extends BaseClient {
     updateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: updateCommand. position: ${this.cmd.messageUpdate.size}`,
             );
         }
@@ -768,8 +1095,11 @@ class Client extends BaseClient {
     bulkDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: bulkDeletedCommand. position: ${this.cmd.messageDeleteBulk.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: bulkDeletedCommand. position: ${
+                    this.cmd.messageDeleteBulk.size
+                }`,
             );
         }
 
@@ -783,7 +1113,8 @@ class Client extends BaseClient {
     guildJoinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: guildJoinCommand. position: ${this.cmd.guildJoin.size}`,
             );
         }
@@ -794,7 +1125,8 @@ class Client extends BaseClient {
     guildLeaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: guildLeaveCommand. position: ${this.cmd.guildLeave.size}`,
             );
         }
@@ -805,19 +1137,25 @@ class Client extends BaseClient {
     guildUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: guildUpdateCommand. position: ${this.cmd.guildUpdate.size}`,
             );
         }
 
-        this.cmd.guildUpdate.set(this.cmd.guildUpdate.size, new Command(d, this));
+        this.cmd.guildUpdate.set(
+            this.cmd.guildUpdate.size,
+            new Command(d, this),
+        );
     }
 
     guildUnavailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: guildUnavailableCommand. position: ${this.cmd.guildUnavailable.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: guildUnavailableCommand. position: ${
+                    this.cmd.guildUnavailable.size
                 }`,
             );
         }
@@ -830,7 +1168,8 @@ class Client extends BaseClient {
     roleCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: roleCreateCommand. position: ${this.cmd.roleCreate.size}`,
             );
         }
@@ -840,7 +1179,8 @@ class Client extends BaseClient {
     roleUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: roleUpdateCommand. position: ${this.cmd.roleUpdate.size}`,
             );
         }
@@ -850,7 +1190,8 @@ class Client extends BaseClient {
     roleDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: roleDeleteCommand. position: ${this.cmd.roleDelete.size}`,
             );
         }
@@ -860,8 +1201,11 @@ class Client extends BaseClient {
     channelCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: channelCreateCommand. position: ${this.cmd.channelCreate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: channelCreateCommand. position: ${
+                    this.cmd.channelCreate.size
+                }`,
             );
         }
         this.cmd.channelCreate.set(this.cmd.channelCreate.size, d);
@@ -870,8 +1214,11 @@ class Client extends BaseClient {
     channelUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: channelUpdateCommand. position: ${this.cmd.channelUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: channelUpdateCommand. position: ${
+                    this.cmd.channelUpdate.size
+                }`,
             );
         }
         this.cmd.channelUpdate.set(this.cmd.channelUpdate.size, d);
@@ -880,8 +1227,11 @@ class Client extends BaseClient {
     channelDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: channelDeleteCommand. position: ${this.cmd.channelDelete.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: channelDeleteCommand. position: ${
+                    this.cmd.channelDelete.size
+                }`,
             );
         }
         this.cmd.channelDelete.set(this.cmd.channelDelete.size, d);
@@ -890,8 +1240,10 @@ class Client extends BaseClient {
     channelPinsUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: channelPinsUpdateCommand. position: ${this.cmd.channelPinsUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: channelPinsUpdateCommand. position: ${
+                    this.cmd.channelPinsUpdate.size
                 }`,
             );
         }
@@ -901,8 +1253,10 @@ class Client extends BaseClient {
     stageInstanceCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: stageInstanceCreateCommand. position: ${this.cmd.stageInstanceCreate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: stageInstanceCreateCommand. position: ${
+                    this.cmd.stageInstanceCreate.size
                 }`,
             );
         }
@@ -912,8 +1266,10 @@ class Client extends BaseClient {
     stageInstanceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: stageInstanceUpdateCommand. position: ${this.cmd.stageInstanceUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: stageInstanceUpdateCommand. position: ${
+                    this.cmd.stageInstanceUpdate.size
                 }`,
             );
         }
@@ -923,8 +1279,10 @@ class Client extends BaseClient {
     stageInstanceDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: stageInstanceDeleteCommand. position: ${this.cmd.stageInstanceDelete.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: stageInstanceDeleteCommand. position: ${
+                    this.cmd.stageInstanceDelete.size
                 }`,
             );
         }
@@ -934,8 +1292,11 @@ class Client extends BaseClient {
     threadCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: threadCreateCommand. position: ${this.cmd.threadCreate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: threadCreateCommand. position: ${
+                    this.cmd.threadCreate.size
+                }`,
             );
         }
         this.cmd.threadCreate.set(this.cmd.threadCreate.size, d);
@@ -944,8 +1305,11 @@ class Client extends BaseClient {
     threadUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: threadUpdateCommand. position: ${this.cmd.threadUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: threadUpdateCommand. position: ${
+                    this.cmd.threadUpdate.size
+                }`,
             );
         }
         this.cmd.threadUpdate.set(this.cmd.threadUpdate.size, d);
@@ -954,8 +1318,11 @@ class Client extends BaseClient {
     threadDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: threadDeleteCommand. position: ${this.cmd.threadDelete.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: threadDeleteCommand. position: ${
+                    this.cmd.threadDelete.size
+                }`,
             );
         }
         this.cmd.threadDelete.set(this.cmd.threadDelete.size, d);
@@ -964,8 +1331,11 @@ class Client extends BaseClient {
     threadListSyncCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: threadListSyncCommand. position: ${this.cmd.threadListSync.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: threadListSyncCommand. position: ${
+                    this.cmd.threadListSync.size
+                }`,
             );
         }
         this.cmd.threadListSync.set(this.cmd.threadListSync.size, d);
@@ -974,8 +1344,10 @@ class Client extends BaseClient {
     threadMemberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: threadMemberUpdateCommand. position: ${this.cmd.threadMemberUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: threadMemberUpdateCommand. position: ${
+                    this.cmd.threadMemberUpdate.size
                 }`,
             );
         }
@@ -986,7 +1358,8 @@ class Client extends BaseClient {
     joinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: joinCommand. position: ${this.cmd.join.size}`,
             );
         }
@@ -996,7 +1369,8 @@ class Client extends BaseClient {
     leaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: leaveCommand. position: ${this.cmd.leave.size}`,
             );
         }
@@ -1006,8 +1380,10 @@ class Client extends BaseClient {
     memberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: MemberUpdateCommand. position: ${this.cmd.memberUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: MemberUpdateCommand. position: ${
+                    this.cmd.memberUpdate.size
                 }`,
             );
         }
@@ -1017,8 +1393,11 @@ class Client extends BaseClient {
     threadMembersUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: membersUpdateCommand. position: ${this.cmd.membersUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: membersUpdateCommand. position: ${
+                    this.cmd.membersUpdate.size
+                }`,
             );
         }
         this.cmd.membersUpdate.set(this.cmd.membersUpdate.size, d);
@@ -1027,8 +1406,11 @@ class Client extends BaseClient {
     memberAvailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: memberAvailableCommand. position: ${this.cmd.memberAvailable.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: memberAvailableCommand. position: ${
+                    this.cmd.memberAvailable.size
+                }`,
             );
         }
         this.cmd.memberAvailable.set(this.cmd.memberAvailable.size, d);
@@ -1037,8 +1419,11 @@ class Client extends BaseClient {
     membersChunkCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: membersChunkCommand. position: ${this.cmd.membersChunk.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: membersChunkCommand. position: ${
+                    this.cmd.membersChunk.size
+                }`,
             );
         }
         this.cmd.membersChunk.set(this.cmd.membersChunk.size, d);
@@ -1048,7 +1433,8 @@ class Client extends BaseClient {
     emojiCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: emojiCreateCommand. position: ${this.cmd.emojiCreate.size}`,
             );
         }
@@ -1058,7 +1444,8 @@ class Client extends BaseClient {
     emojiDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: emojiDeleteCommand. position: ${this.cmd.emojiDelete.size}`,
             );
         }
@@ -1068,7 +1455,8 @@ class Client extends BaseClient {
     emojiUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: emojiUpdateCommand. position: ${this.cmd.emojiUpdate.size}`,
             );
         }
@@ -1079,7 +1467,8 @@ class Client extends BaseClient {
     banAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: banAddCommand. position: ${this.cmd.banAdd.size}`,
             );
         }
@@ -1089,7 +1478,8 @@ class Client extends BaseClient {
     banRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: banRemoveCommand. position: ${this.cmd.banRemove.size}`,
             );
         }
@@ -1100,7 +1490,8 @@ class Client extends BaseClient {
     reactionAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: reactionAddCommand. position: ${this.cmd.reactionAdd.size}`,
             );
         }
@@ -1110,8 +1501,11 @@ class Client extends BaseClient {
     reactionRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: reactionRemoveCommand. position: ${this.cmd.reactionRemove.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: reactionRemoveCommand. position: ${
+                    this.cmd.reactionRemove.size
+                }`,
             );
         }
         this.cmd.reactionRemove.set(this.cmd.reactionRemove.size, d);
@@ -1120,8 +1514,10 @@ class Client extends BaseClient {
     reactionRemoveAllCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: reactionRemoveAllCommand. position: ${this.cmd.reactionRemoveAll.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: reactionRemoveAllCommand. position: ${
+                    this.cmd.reactionRemoveAll.size
                 }`,
             );
         }
@@ -1131,8 +1527,10 @@ class Client extends BaseClient {
     reactionRemoveEmojiCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: reactionRemoveEmojiCommand. position: ${this.cmd.reactionRemoveEmoji.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: reactionRemoveEmojiCommand. position: ${
+                    this.cmd.reactionRemoveEmoji.size
                 }`,
             );
         }
@@ -1143,8 +1541,11 @@ class Client extends BaseClient {
     presenceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: presenceUpdateCommand. position: ${this.cmd.presenceUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: presenceUpdateCommand. position: ${
+                    this.cmd.presenceUpdate.size
+                }`,
             );
         }
         this.cmd.presenceUpdate.set(this.cmd.presenceUpdate.size, d);
@@ -1154,8 +1555,10 @@ class Client extends BaseClient {
     voiceStateUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: voiceStateUpdateCommand. position: ${this.cmd.voiceStateUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: voiceStateUpdateCommand. position: ${
+                    this.cmd.voiceStateUpdate.size
                 }`,
             );
         }
@@ -1166,14 +1569,17 @@ class Client extends BaseClient {
     interactionCommand(d = {}) {
         if (!d.prototype) {
             throw new TypeError(
-                `Prototype is not provided in ${d.name || "unknown name"
+                `Prototype is not provided in ${
+                    d.name || "unknown name"
                 }: interactionCommand.`,
             );
         }
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: interactionCommand. position: ${this.cmd.interaction[d.prototype]?.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: interactionCommand. position: ${
+                    this.cmd.interaction[d.prototype]?.size
                 }`,
             );
         }
@@ -1186,30 +1592,42 @@ class Client extends BaseClient {
     applicationCmdCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: ApplicationCmdCreateCommand. position: ${this.cmd.applicationCmdCreate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: ApplicationCmdCreateCommand. position: ${
+                    this.cmd.applicationCmdCreate.size
                 }`,
             );
         }
-        this.cmd.applicationCmdCreate?.set(this.cmd.applicationCmdCreate.size, d);
+        this.cmd.applicationCmdCreate?.set(
+            this.cmd.applicationCmdCreate.size,
+            d,
+        );
     }
 
     applicationCmdDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: ApplicationCmdDeleteCommand. position: ${this.cmd.applicationCmdDelete.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: ApplicationCmdDeleteCommand. position: ${
+                    this.cmd.applicationCmdDelete.size
                 }`,
             );
         }
-        this.cmd.applicationCmdDelete?.set(this.cmd.applicationCmdDelete.size, d);
+        this.cmd.applicationCmdDelete?.set(
+            this.cmd.applicationCmdDelete.size,
+            d,
+        );
     }
 
     applicationCmdUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: ApplicationCmdUpdateCommand. position: ${this.cmd.onApplicationCmdUpdate.size
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: ApplicationCmdUpdateCommand. position: ${
+                    this.cmd.onApplicationCmdUpdate.size
                 }`,
             );
         }
@@ -1222,7 +1640,8 @@ class Client extends BaseClient {
     userUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: userUpdateCommand. position: ${this.cmd.userUpdate.size}`,
             );
         }
@@ -1232,8 +1651,11 @@ class Client extends BaseClient {
     variableCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: variableCreateCommand. position: ${this.cmd.variableCreate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: variableCreateCommand. position: ${
+                    this.cmd.variableCreate.size
+                }`,
             );
         }
         this.cmd.variableCreate?.set(this.cmd.variableCreate.size, d);
@@ -1242,8 +1664,11 @@ class Client extends BaseClient {
     variableDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: variableDeleteCommand. position: ${this.cmd.variableDelete.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: variableDeleteCommand. position: ${
+                    this.cmd.variableDelete.size
+                }`,
             );
         }
         this.cmd.variableDelete?.set(this.cmd.variableDelete.size, d);
@@ -1252,8 +1677,11 @@ class Client extends BaseClient {
     variableUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: variableUpdateCommand. position: ${this.cmd.variableUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: variableUpdateCommand. position: ${
+                    this.cmd.variableUpdate.size
+                }`,
             );
         }
         this.cmd.variableUpdate?.set(this.cmd.variableUpdate.size, d);
@@ -1262,7 +1690,8 @@ class Client extends BaseClient {
     readyCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: readyCommand. position: ${this.cmd.ready.size}`,
             );
         }
@@ -1272,8 +1701,11 @@ class Client extends BaseClient {
     functionErrorCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: functionErrorCommand. position: ${this.cmd.functionError.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: functionErrorCommand. position: ${
+                    this.cmd.functionError.size
+                }`,
             );
         }
         this.cmd.functionError?.set(this.cmd.functionError.size, d);
@@ -1282,7 +1714,8 @@ class Client extends BaseClient {
     loopCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: loopCommand. position: ${this.cmd.loop.size}`,
             );
         }
@@ -1292,7 +1725,8 @@ class Client extends BaseClient {
     timeoutCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: timeoutCommand. position: ${this.cmd.timeout.size}`,
             );
         }
@@ -1302,7 +1736,8 @@ class Client extends BaseClient {
     pulseCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: pulseCommand. position: ${this.cmd.pulse.size}`,
             );
         }
@@ -1312,7 +1747,8 @@ class Client extends BaseClient {
     rateLimitCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
+                `Code is not provided in ${
+                    d?.name || "unknown name"
                 }: rateLimitCommand. position: ${this.cmd.rateLimit.size}`,
             );
         }
@@ -1322,8 +1758,11 @@ class Client extends BaseClient {
     webhookUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
-                `Code is not provided in ${d?.name || "unknown name"
-                }: webhookUpdateCommand. position: ${this.cmd.webhookUpdate.size}`,
+                `Code is not provided in ${
+                    d?.name || "unknown name"
+                }: webhookUpdateCommand. position: ${
+                    this.cmd.webhookUpdate.size
+                }`,
             );
         }
         this.cmd.webhookUpdate?.set(this.cmd.webhookUpdate.size, d);
@@ -1331,4 +1770,4 @@ class Client extends BaseClient {
 }
 
 require("../utils/helpers/prototypes.js");
-module.exports = Client;
+module.exports = AoiClient;

@@ -1,24 +1,9 @@
 //---------------Client------------------//
 
-const IntentOptions = {
-    guilds: "Guilds",
-    guildMembers: "GuildMembers",
-    guildBans: "GuildBans",
-    guildEmojisAndStickers: "GuildEmojisAndStickers",
-    guildIntegrations: "GuildIntegrations",
-    guildWebhooks: "GuildWebhooks",
-    guildInvites: "GuildInvites",
-    guildVoiceStates: "GuildVoiceStates",
-    guildPresences: "GuildPresences",
-    guildMessages: "GuildMessages",
-    guildMessageReactions: "GuildMessageReactions",
-    guildMessageTyping: "GuildMessageTyping",
-    directMessages: "DirectMessages",
-    directMessageReactions: "DirectMessageReactions",
-    directMessageTyping: "DirectMessageTyping",
-    messageContent: "MessageContent",
-};
-IntentOptions.all = Object.values(IntentOptions);
+const { GatewayIntentBits } = require( "discord.js" );
+
+
+const IntentOptionAll = Object.values(GatewayIntentBits).reduce((a, b) => a | b, 0);
 
 const ActivityTypeAvailables = {
     playing: "PLAYING",
@@ -420,7 +405,7 @@ const Characters = [
 
 module.exports = {
     // ClientOptions:ClientOptions,
-    IntentOptions: IntentOptions,
+    IntentOptionsAll: IntentOptionAll,
     formatOptions: FormatOptions,
     ApplicationCmdOptions: ApplicationCmdOptions,
     //ClientPresenceOptions:ClientPresenceOptions,
