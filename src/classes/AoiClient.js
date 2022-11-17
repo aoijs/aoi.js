@@ -8,6 +8,7 @@ const { VariableManager } = require( "./Variables.js" );
 const { AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify } = require( "./Database.js" );
 const { Group } = require( "./structures/dist/group/group.js" );
 const { FunctionManager } = require( "./Functions.js" );
+const {ActivityTypeAvailables} = require("../utils/Constants");
 
 const [major] = process.version.replace("v", "").split(".");
 if (isNaN(Number(major)) || Number(major) < 16) {
@@ -62,9 +63,7 @@ class AoiClient {
                 : undefined
             : options.intents;
 
-        const aoiOptions = Object.assign({}, options);
-
-        this.aoiOptions = aoiOptions;
+        this.aoiOptions = Object.assign({}, options);
         this.#intents = new IntentsBitField(options.intents).toArray();
         this.#createClient(options);
 
@@ -193,8 +192,7 @@ class AoiClient {
         this.#client.login(options.token);
     }
     #createClient(options) {
-        const client = new Client(options);
-        this.#client = client;
+        this.#client = new Client(options);
     }
     on(event, callback) {
         this.#client.on(event, callback);

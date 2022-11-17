@@ -1,12 +1,11 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const [guildID = d.guild?.id] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    const [guildID = d.guild?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
-    guild.leave().catch((_err) => {
+    data.result = guild.leave().catch((_err) => {
         d.aoiError.fnError(
             d,
             "custom",
@@ -16,6 +15,6 @@ module.exports = async (d) => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };
