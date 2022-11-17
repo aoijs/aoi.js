@@ -52,7 +52,6 @@ class CustomFunction {
 class FunctionManager {
     constructor(client) {
         this.client = client;
-        this.client.functionManager = this;
         this.maps = maps;
         this.functions = /*Object.keys(parser)*/ parser;
         this.cache = new Group();

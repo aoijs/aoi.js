@@ -42,12 +42,9 @@ class Variable {
   }
 }
 
-class VariableManager
-{
-  #client;
+class VariableManager {
   constructor(client) {
-    this.#client = client;
-    this.#client.varManager = this;
+    this.client = client;
     this.cache = new Group();
   }
 
@@ -105,7 +102,7 @@ class VariableManager
     return this.cache.get(`${name}_${table}`);
   }
 
-  has(name, table = this.#client.db.tables[0]) {
+  has(name, table = this.client.db.tables[0]) {
     return this.cache.has(`${name}_${table}`);
   }
 

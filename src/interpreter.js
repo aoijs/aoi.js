@@ -216,8 +216,7 @@ const Interpreter = async (
                         noop() {
                         },
                         interpreter: Interpreter,
-                        client: client.client,
-                        bot:client,
+                        client: client,
                         embed: Discord.EmbedBuilder,
                     },
                     useChannel,
@@ -389,8 +388,7 @@ const Interpreter = async (
                             }
                         },
                         interpreter: Interpreter,
-                        client: client.client,
-                        bot: client,
+                        client: client,
                         embed: Discord.EmbedBuilder,
                     });
             }
