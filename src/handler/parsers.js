@@ -442,7 +442,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         const url = inside.join(":").trim();
         embed.setAuthor({
           name: text.addBrackets(),
-          iconURL: typeof url === "string" ? url.addBrackets() : undefined,
+          iconURL: url.addBrackets().trim() || undefined,
         });
         errorMessages = errorMessages.replace(`{author:${to}}`, "");
       }
@@ -484,7 +484,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
         embed.setFooter({
           text: text.addBrackets().trim(),
           iconURL:
-            typeof url === "string" ? url.addBrackets().trim() : undefined,
+             url.addBrackets().trim() || undefined,
         });
         errorMessages = errorMessages.replace(`{footer:${to}}`, "");
       }
