@@ -21,20 +21,9 @@
 [aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
 [aoijs-server-url]: https://aoi.js.org/invite
 
-[Preview](https://aoi.js.org/docs/6.0.0/guides/setup)
-
-English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md)
+[Preview](https://aoi.js.org/docs/guides/setup)
 
 </div>
-
-## Table of Contents
-- [Features](#features) 
-- [Installation](#installation)
-  - [Setup](#setup)
-- [Events](#events)
-- [Database](#database)
-- [Music Integration](#music-integration)
-- [Links](#links)
 
 ## Features
 
@@ -45,8 +34,7 @@ English | [Japanese](./README-jp.md) | [Spanish](./README-spanish.md)
 
 ## Installation
 
-**node.js 16.6.0 or newer is required.**  
-
+**node.js 16.6.0 or newer is required.**
 
 ```bash
 npm install aoi.js
@@ -62,8 +50,8 @@ yarn add aoi.js
 const aoijs = require("aoi.js")
 
 const bot = new aoijs.AoiClient({
-token: "DISCORD BOT TOKEN",
-prefix: "DISCORD BOT PREFIX",
+token: "Discord Bot Token",
+prefix: "Discord Bot Prefix",
 intents: ["MessageContent", "Guilds", "GuildsMessages"]
 })
 
@@ -109,30 +97,6 @@ bot.readyCommand({ //Event Command
 })
 ```
 
-## Database
-
-With aoi.js powerful integration of database support, it has allowed several custom databases to work aside with aoi.js. Below is an example using the default database, this is not needed.
-
-```javascript
-
-const aoijs = require("aoi.js")
-
-const bot = new aoijs.AoiClient({
-token: "DISCORD BOT TOKEN",
-prefix: "DISCORD BOT PREFIX",
-intents: ["GUILDS", "GUILD_MESSAGES"],
-
-//INSERT THE FOLLOWING CODE
-
-  database: {
-    db: require("dbdjs.db"),
-    type: "dbdjs.db",
-    path: "./database/",
-    tables: ["main"],
-  }
-})
-```
-
 ## Music Integration
 
 Use this on your precaution, we do not endorse anything or affiliated with, we only add support towards it.
@@ -151,8 +115,6 @@ More information in our [documentation](https://aoi.js.org/docs/advanced-guides/
 ## Disclaimer
     
 aoi.js is not affiliated or associated with Discord or any other services.
-
-aoi.js is managed by [Akarui Development Team](https://discord.gg/HMUfMXDQsV)   
     
 ## Links
 - [Website](https://aoi.js.org)
