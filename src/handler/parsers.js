@@ -404,7 +404,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       errorMessages = errorMessages.slice(0, index);
       const old = errorMessages;
 
-      const embed = new Discord.MessageEmbed();
+      const embed = new Discord.EmbedBuilder();
       if (errorMessages.includes("{title:")) {
         const inside = errorMessages.split("{title:")[1].split("}")[0];
         embed.setTitle(inside.addBrackets().trim());
@@ -468,7 +468,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
               : false;
             const ifv = i.join(",").trim();
 
-            embed.addField(ifn, ifv, ifi);
+            embed.addFields( { name: ifn, value: ifv, inline: ifi } );
           }
         }
         errorMessages = errorMessages.replace(`{fields:${inside}}`, "");

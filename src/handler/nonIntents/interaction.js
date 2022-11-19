@@ -2,7 +2,7 @@ const {
     Interaction,
     ButtonInteraction,
     SelectMenuInteraction,
-    ContextMenuInteraction,
+    ContextMenuCommandInteraction,
     CommandInteraction,
 } = require("discord.js");
 const Interpreter = require("../../interpreter.js");
@@ -11,7 +11,7 @@ const {
     MessageComponentTypes,
 } = require("../../utils/InteractionConstants.js");
 /**
- * @param  {Interaction | ButtonInteraction | SelectMenuInteraction | ContextMenuInteraction | CommandInteraction } interaction
+ * @param  {Interaction | ButtonInteraction | SelectMenuInteraction | ContextMenuCommandInteraction | CommandInteraction } interaction
  * @param  {import('../../classes/Bot.js')} client
  */
 module.exports = async (interaction, client) => {

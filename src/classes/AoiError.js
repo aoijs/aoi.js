@@ -5,7 +5,7 @@ const {
 } = require("../handler/parsers.js");
 const Util = require("./Util.js");
 const { Time } = require("../utils/helpers/customParser.js");
-const { Interaction } = require("discord.js");
+const {  BaseInteraction } = require("discord.js");
 
 class AoiError {
   constructor() {
@@ -108,7 +108,7 @@ class AoiError {
         return;
       msg = await d.data.interaction.reply(options);
     } else {
-      if (channel instanceof Interaction) {
+      if (channel instanceof BaseInteraction) {
         if (
           options.content === "" &&
           options.embeds?.length === 0 &&
