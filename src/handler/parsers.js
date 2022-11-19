@@ -286,7 +286,7 @@ const FileParser = (msg) => {
       o = o.split(":");
       const name = o.pop().addBrackets();
       const url = o.join(":").addBrackets();
-      const attachment = new Discord.MessageAttachment(url, name);
+      const attachment = new Discord.AttachmentBuilder(url, name);
       att.push(attachment);
     }
   }
@@ -300,7 +300,7 @@ const FileParser = (msg) => {
       u = u.split(":");
       const name = u.pop().addBrackets();
       const text = u.join(":").addBrackets();
-      const attachment = new Discord.MessageAttachment(
+      const attachment = new Discord.AttachmentBuilder(
         Buffer.from(text),
         name || "txt.txt",
       );
@@ -344,7 +344,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       const fields = inside.split(":");
       const name = fields.pop().addBrackets().trim();
       const text = fields.join(":").addBrackets().trim();
-      files.push(new Discord.MessageAttachment(Buffer.from(text), name));
+      files.push(new Discord.AttachmentBuilder(Buffer.from(text), name));
       errorMessage = errorMessage.replace(`{file:${inside}}`, "");
     }
   }
@@ -369,7 +369,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
       let [name, ...url] = inside.split(":");
       name = name.addBrackets().trim();
       url = url.join(":").addBrackets().trim();
-      const attachment = new Discord.MessageAttachment(url, name);
+      const attachment = new Discord.AttachmentBuilder(url, name);
       files.push(attachment);
       errorMessage = errorMessage.replace(`{attachment:${inside}}`, "");
     }
