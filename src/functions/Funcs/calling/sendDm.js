@@ -2,9 +2,9 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [msg, userId = d.author?.id, returnId = 'no'] = data.inside.splits;
+    let [msg, userID = d.author?.id, returnId = 'no'] = data.inside.splits;
 
-    const user = await d.util.getUser(d, userId);
+    const user = await d.util.getUser(d, userID);
     if (!user) return d.aoiError.fnError(d, 'user', {inside: data.inside});
 
     msg = await d.util.errorParser(msg, d);

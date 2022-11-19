@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err)
 
-    let [channelID, threadId, userId, reason] = data.inside.splits;
+    let [channelID, threadId, userID, reason] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID)
     if (!channel) d.aoiError.fnError(d, "channel", {inside: data.inside})
@@ -10,7 +10,7 @@ module.exports = async d => {
     const thread = channel.threads.cache.get(threadId);
     if (!thread) d.aoiError.fnError(d, "custom", {inside: data.inside}, "Invalid ThreadId Provided In")
 
-    thread.members.remove(userId, reason).catch(err => d.aoiError.fnError(d, "custom", {}, `Failed To Remove The Member With Reason: ${err}`))
+    thread.members.remove(userID, reason).catch(err => d.aoiError.fnError(d, "custom", {}, `Failed To Remove The Member With Reason: ${err}`))
 
     return {
 

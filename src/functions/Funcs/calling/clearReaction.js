@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    const [channelID, messageID, userId, emoji] = inside.splits;
+    const [channelID, messageID, userID, emoji] = inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
@@ -19,13 +19,13 @@ module.exports = async (d) => {
                 x.emoji.toString() === emoji.addBrackets() ||
                 x.emoji.id === emoji,
         )
-        ?.users.remove(userId)
+        ?.users.remove(userID)
         .catch((err) => {
             d.aoiError.fnError(
                 d,
                 "custom",
                 {},
-                `Failed To Remove Reaction For The User:'${userId}' With Reason: ${err}`,
+                `Failed To Remove Reaction For The User:'${userID}' With Reason: ${err}`,
             );
         });
 

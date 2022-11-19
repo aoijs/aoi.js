@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [varname, value, userId = d.author?.id, table = d.client.db.tables[0]] =
+    let [varname, value, userID = d.author?.id, table = d.client.db.tables[0]] =
         data.inside.splits;
 
     value = value.addBrackets();
@@ -30,7 +30,7 @@ module.exports = async (d) => {
     value = d.client.variableManager.parseData(value, variable.type);
 
     try {
-        await d.client.db.set(table, varname.addBrackets(), userId, value);
+        await d.client.db.set(table, varname.addBrackets(), userID, value);
     } catch (e) {
         d.aoiError.fnError(
             d,
