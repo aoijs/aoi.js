@@ -3,7 +3,7 @@ module.exports = async (d) => {
 
     const [
         guildID = d.guild?.id,
-        userId = d.author?.id,
+        userID = d.author?.id,
         size = 4096,
         dynamic = "yes",
         format,
@@ -13,7 +13,7 @@ module.exports = async (d) => {
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside})
 
     const user =
-        userId === d.author?.id ? d.member : await d.util.getMember(guild, userId);
+        userID === d.author?.id ? d.member : await d.util.getMember(guild, userID);
     if (!user) return d.aoiError.fnError(d, "member", {inside: data.inside});
 
     data.result = user.displayAvatarURL({

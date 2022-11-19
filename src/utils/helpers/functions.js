@@ -263,7 +263,7 @@ module.exports = {
         data.mobileStatus = presence?.clientStatus.mobile;
         data.guildId = presence?.guild.id;
 
-        data.authorId = presence?.userId;
+        data.authorId = presence?.userID;
         data.user = undefined;
         data.guild = undefined;
 

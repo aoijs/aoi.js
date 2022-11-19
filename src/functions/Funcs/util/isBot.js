@@ -1,9 +1,9 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [userId = d.author?.id] = data.inside.splits;
+    const [userID = d.author?.id] = data.inside.splits;
 
-    const user = await d.util.getUser(d, userId);
+    const user = await d.util.getUser(d, userID);
 
     data.result = user?.bot ? true : false;
 

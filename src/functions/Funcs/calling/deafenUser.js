@@ -2,8 +2,8 @@ module.exports = async d => {
     const {code, inside, err} = d.util.aoiFunc(d)
     if (err) return d.error(err);
 
-    const [userId = d.author.id, deaf = "yes"] = inside.splits;
-    const member = await d.util.getMember(d.guild, userId)
+    const [userID = d.author.id, deaf = "yes"] = inside.splits;
+    const member = await d.util.getMember(d.guild, userID)
     if (!member) return d.aoiError.fnError(d, "member", {inside});
 
     const voiceState = member.voice;

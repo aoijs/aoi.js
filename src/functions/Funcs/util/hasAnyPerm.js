@@ -4,12 +4,12 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [guildID, userId, ...perms] = data.inside.splits;
+    let [guildID, userID, ...perms] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
-    const member = await d.util.getMember(guild, userId);
+    const member = await d.util.getMember(guild, userID);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
     perms = perms.map(x => Perms[x]);

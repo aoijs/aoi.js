@@ -5,7 +5,7 @@ module.exports = async (d) => {
     let [
         varname,
         value,
-        userId = d.author?.id,
+        userID = d.author?.id,
         Id = d.guild?.id || "dm",
         table = d.client.db.tables[0],
     ] = data.inside.splits;
@@ -38,7 +38,7 @@ module.exports = async (d) => {
         await d.client.db.set(
             table,
             varname.addBrackets(),
-            `${userId}_${Id}`,
+            `${userID}_${Id}`,
             value,
         );
     } catch (e) {

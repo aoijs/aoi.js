@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
     let [
         limit = 5,
-        userId = d.author?.id,
+        userID = d.author?.id,
         action = "All",
         guildID = d.guild?.id,
         format = "{executor.username}: {target.id} - {action}",
@@ -25,7 +25,7 @@ module.exports = async (d) => {
     const audit = await guild
         .fetchAuditLogs({
             limit,
-            user: userId === "" ? undefined : userId,
+            user: userID === "" ? undefined : userID,
             type: action,
         })
         .catch((e) => {
