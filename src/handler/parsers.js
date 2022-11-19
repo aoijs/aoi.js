@@ -527,11 +527,11 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
             arg = inside.pop().trim();
             inline = arg === "yes";
           }
-          embed.addField(
-            inside[0].addBrackets().trim(),
-            inside.slice(1).join(":").addBrackets().trim(),
+          embed.addFields( {
+            name:inside[ 0 ].addBrackets().trim(),
+            value:inside.slice( 1 ).join( ":" ).addBrackets().trim(),
             inline,
-          );
+          } );
           errorMessages = errorMessages.replace(
             `{field:${inside.join(":")}${arg ? `:${arg}` : ""}}`,
             "",
