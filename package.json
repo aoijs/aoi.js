@@ -51,7 +51,7 @@
     "discord.js": "^14.6.0"
   },
   "devDependencies": {
-    "@akarui/aoi.music": "^1.2.6",
+    "@akarui/aoi.music": "github:akaruidevelopment/music#dev",
     "prettier": "^2.4.1",
     "typescript": "^4.5.2",
     "ws": "^8.3.0"
