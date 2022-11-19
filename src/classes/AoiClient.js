@@ -279,9 +279,10 @@ class Client extends BaseClient {
     onThreadMembersUpdate() {
         this.on(
             "threadMembersUpdate",
-            async (collection) =>
+            async (addedMembers,removedMembers) =>
                 await require("../handler/guilds/threadMembersUpdate.js")(
-                    collection,
+                    addedMembers,
+                    removedMembers,
                     this,
                 ),
         );
