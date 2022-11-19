@@ -4,7 +4,7 @@ const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const {
   ActivityTypeAvailables,
-  IntentOptions,
+  IntentOptions, IntentOptionAll
 } = require("../utils/Constants.js");
 const {
   AoijsAPI,
@@ -50,11 +50,11 @@ class BaseClient extends Discord.Client {
       "REACTION",
     ];
 
-    options.intents = !Array.isArray(options.intents)
+    options.intents = !Array.isArray( options.intents )
         ? options.intents?.toLowerCase() === "all"
-            ? IntentOptions.all
+            ? IntentOptionAll
             : undefined
-        : options.intents.map((x) => IntentOptions[x] || x);
+        : options.intents;
 
     const aoiOptions = Object.assign({}, options);
 
