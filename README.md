@@ -23,6 +23,8 @@
 
 [Preview](https://aoi.js.org/docs/guides/setup)
 
+English | [Español](README_Spanish.md)
+
 </div>
 
 ## Features
