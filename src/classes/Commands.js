@@ -1,61 +1,44 @@
+const { createFuncAST } = require( "../utils/helpers/functions.js" );
 const { Group } = require( "./structures/dist" );
 
 class Command {
-  constructor(d = {}, client) {
-    Object.defineProperty(this, "__client__", { value: client });
-    Object.entries(d).forEach((x) => (this[x[0]] = x[1]));
-    this.functions = this.serializeFunctions();
-    this.codeLines = this.serializeCode();
-  }
-
-  serializeFunctions() {
-    let Functions = this.__client__.functionManager.functions;
-    let code = this.code
-      ?.replace(/\\]/g, "#LEFT#")
-      .split("\\[")
-      .join("#RIGHT#")
-      .replace("\\,", "#COMMA#");
-    let funcs = [];
-    let loadsOfFunc = Functions.filter((thatfunc) =>
-      code.toLowerCase().includes(thatfunc.toLowerCase()),
-    );
-    const funcyboys = code.split("$");
-    for (const funcboy of funcyboys) {
-      let Func = loadsOfFunc.filter(
-        (f) =>
-          f.toLowerCase() === ("$" + funcboy.toLowerCase()).slice(0, f.length),
-      );
-      if (!Func.length) {
-        continue;
-      }
-      if (Func.length === 1) {
-        funcs.push(Func[0]);
-      } else if (Func.length > 1) {
-        funcs.push(Func.sort((a, b) => b.length - a.length)[0]);
-      }
+    constructor(d = {}, client) {
+        Object.defineProperty(this, "__client__", { value: client });
+        Object.entries(d).forEach((x) => (this[x[0]] = x[1]));
+        this.functions = this.serializeFunctions();
+        this.codeLines = this.serializeCode();
     }
-    return funcs;
-  }
 
-  serializeCode() {
-    return this.code?.split("\n");
-  }
+    serializeFunctions() {
+        let Functions = this.__client__.functionManager.functions;
+        let code = this.code
+            ?.replace(/\\]/g, "#LEFT#")
+            .split("\\[")
+            .join("#RIGHT#")
+            .replace("\\,", "#COMMA#");
+        const funcs = createFuncAST(`$execMain[${code}]`);
+        return funcs;
+    }
 
-  toString() {
-    return JSON.stringify(this);
-  }
+    serializeCode() {
+        return this.code?.split("\n");
+    }
 
-  toArray() {
-    return Object.entries(this);
-  }
+    toString() {
+        return JSON.stringify(this);
+    }
 
-  values() {
-    return Object.values(this);
-  }
+    toArray() {
+        return Object.entries(this);
+    }
 
-  keys() {
-    return Object.keys(this);
-  }
+    values() {
+        return Object.values(this);
+    }
+
+    keys() {
+        return Object.keys(this);
+    }
 }
 
 class CommandManager {

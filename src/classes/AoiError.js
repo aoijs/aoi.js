@@ -135,16 +135,13 @@ class AoiError {
     }
 
     if (extraOptions.reactions?.length) {
-      extraOptions.reactions.forEach((x) => msg.react(x));
+      extraOptions.reactions.forEach(async (x) =>await msg.react(x));
     }
     if (extraOptions.edits) {
       const editIn = setInterval(async () => {
         if (!extraOptions.edits.messages?.length) clearInterval(editIn);
         else {
-          const obj = await Util.errorParser(
-            JSON.stringify(extraOptions.edits.messages.shift()),
-            d,
-          );
+          const obj = extraOptions.edits.messages.shift();
 
           msg.edit(obj);
         }

@@ -47,7 +47,6 @@ class CacheManager {
       managers[CacheOptions[key]] = value;
     }
     const factory = Options.cacheWithLimits(managers);
-    console.log({factory})
     return factory
   }
 }

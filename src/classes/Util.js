@@ -127,42 +127,42 @@ class Util {
     let error;
     if (typeof errorM === "object") return errorM;
     const parsers = require("../handler/parsers.js");
-    try {
-      let e = errorM;
-      error = JSON.parse(e);
-      if (error.embeds?.includes("{newEmbed:")) {
-        error.embeds = await parsers.EmbedParser(error.embeds || "");
-      }
-      if (error.components?.includes("{actionRow:")) {
-        error.components = await parsers.ComponentParser(
-          error.components || "",
-          d.client,
-        );
-      }
-      if (
-        error.files?.includes("{attachment") ||
-        error.files?.includes("{file")
-      ) {
-        error.files = parsers.FileParser(error.files);
-      }
-      if (
-        typeof error.options === "string" &&
-        ["{reactions:", "{edit:", "{deletecommand:", "{delete:"].some((x) =>
-          error.options?.includes(x),
-        )
-      ) {
-        error.options = await parsers.OptionParser(error.options || "", d);
-      }
-    } catch (e) {
+    // try {
+    //   let e = errorM;
+    //   error = JSON.parse(e);
+    //   if (error.embeds?.includes("{newEmbed:")) {
+    //     error.embeds = await parsers.EmbedParser(error.embeds || "");
+    //   }
+    //   if (error.components?.includes("{actionRow:")) {
+    //     error.components = await parsers.ComponentParser(
+    //       error.components || "",
+    //       d.client,
+    //     );
+    //   }
+    //   if (
+    //     error.files?.includes("{attachment") ||
+    //     error.files?.includes("{file")
+    //   ) {
+    //     error.files = parsers.FileParser(error.files);
+    //   }
+    //   if (
+    //     typeof error.options === "string" &&
+    //     ["{reactions:", "{edit:", "{deletecommand:", "{delete:"].some((x) =>
+    //       error.options?.includes(x),
+    //     )
+    //   ) {
+    //     error.options = await parsers.OptionParser(error.options || "", d);
+    //   }
+    // } catch (e) {
       error = await parsers.ErrorHandler(d, errorM, true);
-    }
+    // }
     return error;
   }
 
   static aoiFunc(d, FieldsRequired = true) {
     const data = {
-      code: d.command.code,
       inside: d.unpack(),
+      code: d.code,
       function: d.func,
     };
     if (FieldsRequired) {

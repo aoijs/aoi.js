@@ -1,4 +1,4 @@
-const {TextChannel, NewsChannel} = require("discord.js");
+const { TextChannel, NewsChannel } = require("discord.js");
 const Interpreter = require("../../interpreter.js");
 /**
  * @param  {TextChannel | NewsChannel } channelData
@@ -18,7 +18,7 @@ module.exports = async (channelData, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -35,7 +35,7 @@ module.exports = async (channelData, client) => {
             client.db,
             false,
             chan?.id || "",
-            {oldVoiceState: os, newVoiceState: ns},
+            { oldVoiceState: os, newVoiceState: ns },
             chan || undefined,
         );
     }

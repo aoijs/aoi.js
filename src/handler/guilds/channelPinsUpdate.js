@@ -13,7 +13,7 @@ module.exports = async (updatedPinsChannel, time, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
@@ -29,7 +29,7 @@ module.exports = async (updatedPinsChannel, time, client) => {
             client.db,
             false,
             chan?.id,
-            {channel: updatedPinsChannel, time: time},
+            { channel: updatedPinsChannel, time: time },
             chan,
         );
     }

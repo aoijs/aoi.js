@@ -1,7 +1,7 @@
 module.exports = d => {
-    const {code} = d.command;
-
+    const data = d.util.aoiFunc( d ,false);
+    data.result = d.client.ws.ping;
     return {
-        code: d.util.setCode({function: d.func, code, result: d.client.ws.ping})
+        code: d.util.setCode(data)
     }
 } 

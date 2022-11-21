@@ -14,7 +14,7 @@ module.exports = async (os, ns, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -33,7 +33,7 @@ module.exports = async (os, ns, client) => {
             client.db,
             false,
             chan?.id || "",
-            {oldVoiceState: os, newVoiceState: ns},
+            { oldVoiceState: os, newVoiceState: ns },
             chan || undefined,
         );
     }

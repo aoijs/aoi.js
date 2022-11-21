@@ -11,13 +11,13 @@ module.exports = async (client) => {
         guild: undefined,
     };
     for (const cmd of cmds) {
-        const data = {...Data};
+        const data = { ...Data };
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );

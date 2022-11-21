@@ -15,7 +15,7 @@ module.exports = async (oldmCollection, newmCollection, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
@@ -31,7 +31,10 @@ module.exports = async (oldmCollection, newmCollection, client) => {
             client.db,
             false,
             chan?.id,
-            {oldThreadMembers: oldmCollection, newThreadMembers: newmCollection},
+            {
+                oldThreadMembers: oldmCollection,
+                newThreadMembers: newmCollection,
+            },
             chan,
         );
     }

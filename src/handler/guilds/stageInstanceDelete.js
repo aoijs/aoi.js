@@ -1,7 +1,7 @@
 const Interpreter = require("../../interpreter.js");
 module.exports = async (stageint, client) => {
     const cmds = client.cmd.stageInstanceDelete.allValues();
-    const data = {guild: stageint.guild, channel: stageint, client: client};
+    const data = { guild: stageint.guild, channel: stageint, client: client };
     let chan;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
@@ -9,7 +9,7 @@ module.exports = async (stageint, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
@@ -25,7 +25,7 @@ module.exports = async (stageint, client) => {
             client.db,
             false,
             chan?.id,
-            {oldc: stageint},
+            { oldc: stageint },
             chan,
         );
     }

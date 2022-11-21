@@ -2,14 +2,14 @@ const Interpreter = require("../../interpreter.js");
 module.exports = async (guild, client) => {
     let chan;
     const cmds = client.cmd.guildLeave.allValues();
-    const data = {guild: guild, client: client};
+    const data = { guild: guild, client: client };
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
             const id = await Interpreter(
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );

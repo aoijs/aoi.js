@@ -1,4 +1,4 @@
-const {MessageReaction, User} = require("discord.js");
+const { MessageReaction, User } = require("discord.js");
 const Interpreter = require("../../interpreter.js");
 /**
  * @param  {MessageReaction} reaction
@@ -21,7 +21,7 @@ module.exports = async (reaction, user, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -37,7 +37,7 @@ module.exports = async (reaction, user, client) => {
             client.db,
             false,
             chan?.id,
-            {reactionData: reaction},
+            { reactionData: reaction },
             chan,
         );
     }

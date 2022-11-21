@@ -12,7 +12,7 @@ module.exports = async (oa, na, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -30,7 +30,7 @@ module.exports = async (oa, na, client) => {
             client.db,
             false,
             chan?.id,
-            {newapp: na, oldapp: oa},
+            { newapp: na, oldapp: oa },
             chan,
         );
     }

@@ -13,7 +13,7 @@ module.exports = async (dmsg, client) => {
                 client,
                 data,
                 [],
-                {command: "channelParser", code: cmd.channel},
+                { command: "channelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -21,7 +21,8 @@ module.exports = async (dmsg, client) => {
             if (!channel) channel = dmsg.channel;
             chan = channel;
         } else {
-            data.channel = client.channels.cache.get(cmd.channel) || dmsg.channel;
+            data.channel =
+                client.channels.cache.get(cmd.channel) || dmsg.channel;
         }
         if (!data.guild) data.guild = dmsg.guild || dmsg.channel?.guild;
         await Interpreter(
@@ -32,7 +33,7 @@ module.exports = async (dmsg, client) => {
             client.db,
             false,
             dmsg.channel?.id,
-            {oldm: dmsg},
+            { oldm: dmsg },
             chan,
         );
     }

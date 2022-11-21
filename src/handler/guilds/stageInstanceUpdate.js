@@ -13,7 +13,7 @@ module.exports = async (oldstageint, newstageint, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
@@ -29,7 +29,7 @@ module.exports = async (oldstageint, newstageint, client) => {
             client.db,
             false,
             chan?.id,
-            {oldStageInstance: oldstageint, newStageInstance: newstageint},
+            { oldStageInstance: oldstageint, newStageInstance: newstageint },
             chan,
         );
     }

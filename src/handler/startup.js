@@ -5,14 +5,14 @@ module.exports = async (client) => {
     await require("./AoiWarning.js")(client);
 
     await require("./custom/timeout.js")(
-        {client, interpreter: Interpreter},
+        { client, interpreter: Interpreter },
         undefined,
         undefined,
         undefined,
         true,
     );
     await require("./custom/timeoutPulse.js")(
-        {client, interpreter: Interpreter},
+        { client, interpreter: Interpreter },
         undefined,
         undefined,
         undefined,
@@ -23,5 +23,4 @@ module.exports = async (client) => {
     if (client.cmd.loop.size) {
         await require("./custom/loop.js")(client);
     }
-
 };

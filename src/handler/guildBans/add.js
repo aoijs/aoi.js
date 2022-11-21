@@ -1,7 +1,7 @@
 const Interpreter = require("../../interpreter.js");
 module.exports = async (ban, client) => {
     const cmds = client.cmd.banAdd.allValues();
-    const data = {guild: ban.guild, author: ban?.user, client: client};
+    const data = { guild: ban.guild, author: ban?.user, client: client };
 
     let chan;
     for (const cmd of cmds) {
@@ -10,7 +10,7 @@ module.exports = async (ban, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
@@ -18,7 +18,7 @@ module.exports = async (ban, client) => {
             data.channel = chan;
         } else {
             chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan
+            data.channel = chan;
         }
         await Interpreter(
             client,
@@ -28,7 +28,7 @@ module.exports = async (ban, client) => {
             client.db,
             false,
             chan?.id,
-            {banData: ban},
+            { banData: ban },
             chan,
         );
     }

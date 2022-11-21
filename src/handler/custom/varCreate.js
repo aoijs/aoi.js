@@ -12,15 +12,15 @@ module.exports = async (data, client) => {
     for (const cmd of cmds) {
         const id = cmd.channel?.includes("$")
             ? (
-                await Interpreter(
-                    client,
-                    d,
-                    [],
-                    {name: "ChannelParser", code: cmd.channel},
-                    client.db,
-                    true,
-                )
-            )?.code
+                  await Interpreter(
+                      client,
+                      d,
+                      [],
+                      { name: "ChannelParser", code: cmd.channel },
+                      client.db,
+                      true,
+                  )
+              )?.code
             : cmd.channel;
 
         chan = client.channels.cache.get(id);
@@ -33,7 +33,7 @@ module.exports = async (data, client) => {
             client.db,
             false,
             chan?.id,
-            {oldv: data},
+            { oldv: data },
             chan,
         );
     }

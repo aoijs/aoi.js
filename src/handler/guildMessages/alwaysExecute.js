@@ -4,7 +4,8 @@ module.exports = async (client, message, db) => {
     if (client.messageEventOptions) {
         const options = client.messageEventOptions;
         if (
-            (!options.respondToBots && (message.webhookId || message.author.bot)) ||
+            (!options.respondToBots &&
+                (message.webhookId || message.author.bot)) ||
             (options.guildOnly && message.channel.type === Util.channelTypes.Dm)
         )
             return;
@@ -14,7 +15,14 @@ module.exports = async (client, message, db) => {
         .filter((c) => c.name === "$alwaysExecute");
     if (!commands.length) return;
     commands.map(async (command) => {
-        if (command.dmOnly && message.channel.type !== Util.channelTypes.Dm) return;
-        await Interpreter(client, message, message.content.split(" "), command, db);
+        if (command.dmOnly && message.channel.type !== Util.channelTypes.Dm)
+            return;
+        await Interpreter(
+            client,
+            message,
+            message.content.split(" "),
+            command,
+            db,
+        );
     });
 };

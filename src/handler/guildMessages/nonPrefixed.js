@@ -4,22 +4,26 @@ module.exports = async (client, message, db) => {
     if (client.messageEventOptions) {
         const options = client.messageEventOptions;
         if (
-            (!options.respondToBots && (message.webhookId || message.author.bot)) ||
+            (!options.respondToBots &&
+                (message.webhookId || message.author.bot)) ||
             (options.guildOnly && message.channel.type === Util.channelTypes.Dm)
         )
             return;
     }
-    const commands = client.cmd.default.allValues().filter((c) => c.nonPrefixed);
+    const commands = client.cmd.default
+        .allValues()
+        .filter((c) => c.nonPrefixed);
     if (!commands.length) return;
     for (const cmd of commands) {
-        if (cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm) continue;
+        if (cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm)
+            continue;
         if (cmd.name.includes("$")) {
             cmd.name = (
                 await Interpreter(
                     client,
                     message,
                     message.content.split(" "),
-                    {name: "NameParser", code: cmd.name},
+                    { name: "NameParser", code: cmd.name },
                     client.db,
                     true,
                 )
@@ -29,11 +33,11 @@ module.exports = async (client, message, db) => {
             !message.content.toLowerCase().startsWith(cmd.name.toLowerCase()) &&
             !(Array.isArray(cmd.aliases)
                 ? cmd.aliases.find((x) =>
-                    message.content.toLowerCase().startsWith(x.toLowerCase()),
-                )
+                      message.content.toLowerCase().startsWith(x.toLowerCase()),
+                  )
                 : cmd.aliases
-                    ? message.content.toLowerCase().startsWith(cmd.aliases)
-                    : undefined)
+                ? message.content.toLowerCase().startsWith(cmd.aliases)
+                : undefined)
         )
             continue;
         await Interpreter(

@@ -11,7 +11,7 @@ module.exports = async (rl, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -29,7 +29,7 @@ module.exports = async (rl, client) => {
             client.db,
             false,
             chan?.id,
-            {rateLimit: rl},
+            { rateLimit: rl },
             chan,
         );
     }

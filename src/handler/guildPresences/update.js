@@ -14,7 +14,7 @@ module.exports = async (op, np, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -33,7 +33,7 @@ module.exports = async (op, np, client) => {
             client.db,
             false,
             chan?.id || "",
-            {oldPresence: op, newPresence: np},
+            { oldPresence: op, newPresence: np },
             chan || undefined,
         );
     }

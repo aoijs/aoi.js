@@ -17,7 +17,10 @@ const {
 module.exports = async (interaction, client) => {
     client.interactionManager.resolve(interaction);
     if (interaction.isMessageComponent()) {
-        client.interactionManager.emit("messageComponentInteraction", interaction);
+        client.interactionManager.emit(
+            "messageComponentInteraction",
+            interaction,
+        );
     }
 
     let cmds;
@@ -25,7 +28,7 @@ module.exports = async (interaction, client) => {
     if (type === "component") {
         cmds = client.cmd.interaction[
             MessageComponentTypes[interaction.componentType]
-            ]
+        ]
             .filter((x) =>
                 x.name
                     ? Array.isArray(x.name)
@@ -52,11 +55,11 @@ module.exports = async (interaction, client) => {
                         client,
                         data,
                         [],
-                        {code: cmd.name, name: "NameParser"},
+                        { code: cmd.name, name: "NameParser" },
                         client.db,
                         true,
                         undefined,
-                        {interaction},
+                        { interaction },
                     )
                 )?.code;
             }
@@ -64,15 +67,15 @@ module.exports = async (interaction, client) => {
                 client,
                 data,
                 interaction.values ||
-                interaction.options?._hoistedOptions?.map((x) => x.value) || [
-                    interaction.customId,
-                ] ||
-                [],
+                    interaction.options?._hoistedOptions?.map(
+                        (x) => x.value,
+                    ) || [interaction.customId] ||
+                    [],
                 cmd,
                 client.db,
                 false,
                 undefined,
-                {interaction: interaction},
+                { interaction: interaction },
                 undefined,
             );
         }
@@ -96,11 +99,11 @@ module.exports = async (interaction, client) => {
                         client,
                         data,
                         [],
-                        {code: cmd.name, name: "NameParser"},
+                        { code: cmd.name, name: "NameParser" },
                         client.db,
                         true,
                         undefined,
-                        {interaction},
+                        { interaction },
                     )
                 )?.code;
             }
@@ -108,22 +111,24 @@ module.exports = async (interaction, client) => {
                 client,
                 data,
                 interaction.values ||
-                interaction.options?._hoistedOptions?.map((x) => x.value) || [
-                    interaction.customId,
-                ] ||
-                [],
+                    interaction.options?._hoistedOptions?.map(
+                        (x) => x.value,
+                    ) || [interaction.customId] ||
+                    [],
                 cmd,
                 client.db,
                 false,
                 undefined,
-                {interaction: interaction},
+                { interaction: interaction },
                 undefined,
             );
         }
     } else {
         cmds = client.cmd.interaction.slash
             .filter(
-                (x) => x.name.toLowerCase() === interaction.commandName.toLowerCase(),
+                (x) =>
+                    x.name.toLowerCase() ===
+                    interaction.commandName.toLowerCase(),
             )
             .allValues();
 
@@ -144,11 +149,11 @@ module.exports = async (interaction, client) => {
                         client,
                         data,
                         [],
-                        {code: cmd.name, name: "NameParser"},
+                        { code: cmd.name, name: "NameParser" },
                         client.db,
                         true,
                         undefined,
-                        {interaction},
+                        { interaction },
                     )
                 )?.code;
             }
@@ -156,19 +161,17 @@ module.exports = async (interaction, client) => {
                 client,
                 data,
                 interaction.values ||
-                interaction.options?._hoistedOptions?.map((x) => x.value) || [
-                    interaction.customId,
-                ] ||
-                [],
+                    interaction.options?._hoistedOptions?.map(
+                        (x) => x.value,
+                    ) || [interaction.customId] ||
+                    [],
                 cmd,
                 client.db,
                 false,
                 undefined,
-                {interaction: interaction},
+                { interaction: interaction },
                 undefined,
             );
         }
     }
 };
-  
-  

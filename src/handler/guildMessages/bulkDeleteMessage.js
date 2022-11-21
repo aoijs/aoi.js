@@ -12,7 +12,7 @@ module.exports = async (dmsg, client) => {
                 client,
                 {},
                 [],
-                {command: "channelParser", code: cmd.channel},
+                { command: "channelParser", code: cmd.channel },
                 client.db,
                 true,
             );
@@ -30,7 +30,7 @@ module.exports = async (dmsg, client) => {
             client.db,
             false,
             undefined,
-            {bulk: dmsg},
+            { bulk: dmsg },
             chan,
         );
     }

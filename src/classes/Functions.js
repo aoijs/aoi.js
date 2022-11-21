@@ -1,6 +1,14 @@
-const { Group } = require( "./structures/dist" );
-const {functions: parser, maps,grp} = require("../functions/AoiReader.js");
-
+const { Group } = require("./structures/dist");
+const { functions: parser, maps, grp } = require("../functions/AoiReader.js");
+class Block {
+    constructor(func) {
+        this.parent = func;
+        this.childs = [];
+    }
+    add(child) {
+        this.childs.push(child);
+    }
+}
 class Function {
     constructor(code, name) {
         this.name = name;
@@ -26,25 +34,7 @@ class CustomFunction {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        let funcs = [];
-        let loadsOfFunc = Functions.filter((thatfunc) =>
-            code.toLowerCase().includes(thatfunc.toLowerCase()),
-        );
-        const funcyboys = code.split("$");
-        for (const funcboy of funcyboys) {
-            let Func = loadsOfFunc.filter(
-                (f) =>
-                    f.toLowerCase() === ("$" + funcboy.toLowerCase()).slice(0, f.length),
-            );
-            if (!Func.length) {
-                continue;
-            }
-            if (Func.length === 1) {
-                funcs.push(Func[0]);
-            } else if (Func.length > 1) {
-                funcs.push(Func.sort((a, b) => b.length - a.length)[0]);
-            }
-        }
+        const funcs = createFuncAST(`$execMain[${code}]`);
         return funcs;
     }
 }
@@ -110,7 +100,8 @@ class FunctionManager {
         for (const funcboy of funcyboys) {
             let Func = loadsOfFunc.filter(
                 (f) =>
-                    f.toLowerCase() === ("$" + funcboy.toLowerCase()).slice(0, f.length),
+                    f.toLowerCase() ===
+                    ("$" + funcboy.toLowerCase()).slice(0, f.length),
             );
             if (!Func.length) {
                 continue;

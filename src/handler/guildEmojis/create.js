@@ -2,7 +2,7 @@ const Interpreter = require("../../interpreter.js");
 module.exports = async (newe, client) => {
     const cmds = client.cmd.emojiCreate.allValues();
 
-    const data = {guild: newe.guild, client: client};
+    const data = { guild: newe.guild, client: client };
     let chan;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
@@ -10,15 +10,15 @@ module.exports = async (newe, client) => {
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd?.channel},
+                { name: "ChannelParser", code: cmd?.channel },
                 client.db,
                 true,
             );
             chan = client.channels.cache.get(id?.code);
-            data.channel = chan
+            data.channel = chan;
         } else {
             chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan
+            data.channel = chan;
         }
         await Interpreter(
             client,
@@ -28,7 +28,7 @@ module.exports = async (newe, client) => {
             client.db,
             false,
             chan?.id,
-            {newe: newe},
+            { newe: newe },
             chan,
         );
     }
