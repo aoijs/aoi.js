@@ -1,9 +1,9 @@
 //---------------Client------------------//
 
-const { GatewayIntentBits } = require( "discord.js" );
+const { GatewayIntentBits, IntentsBitField } = require( "discord.js" );
 
 
-const IntentOptionAll = Object.values(GatewayIntentBits).reduce((a, b) => a | b, 0);
+const IntentOptionAll = Object.keys( IntentsBitField.Flags );
 
 const ActivityTypeAvailables = {
     playing: "PLAYING",

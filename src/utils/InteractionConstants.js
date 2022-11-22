@@ -1,3 +1,5 @@
+const { ApplicationCommandType } = require( "discord.js" );
+
 const InteractionTypes = {
     PING: "ping",
     APPLICATION_COMMAND: "slash",
@@ -10,10 +12,9 @@ const MessageComponentTypes = {
     SELECT_MENU: "selectMenu",
 };
 const SlashTypes = {
-    slash: "CHAT_INPUT",
-    user: "USER",
-    message: "MESSAGE",
-    modal: "MODAL_SUBMIT",
+    slash: ApplicationCommandType.ChatInput,
+    user: ApplicationCommandType.User,
+    message: ApplicationCommandType.Message,
 };
 module.exports = {
     InteractionTypes: InteractionTypes,

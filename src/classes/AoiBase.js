@@ -56,7 +56,8 @@ class BaseClient extends Discord.Client {
             : undefined
         : options.intents;
 
-    const aoiOptions = Object.assign({}, options);
+    const aoiOptions = {};
+    Object.assign( aoiOptions, options );
 
     super(options);
     this.aoiOptions = aoiOptions;
