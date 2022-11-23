@@ -162,7 +162,7 @@ class Util {
   static aoiFunc(d, FieldsRequired = true) {
     const data = {
       inside: d.unpack(),
-      code: d.code,
+      code: d.command.code,
       function: d.func,
     };
     if (FieldsRequired) {
