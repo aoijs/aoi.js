@@ -53,7 +53,6 @@ module.exports = async (d) => {
     let i = datas.length - 1;
 
     while (i >= 0) {
-        const member = datas[i];
 
         let u = cmds.length - 1;
 
@@ -62,8 +61,6 @@ module.exports = async (d) => {
             message: d.message,
             guild: d.guild,
             client: d.client,
-            author: member.user,
-            member,
         };
 
         while (u >= 0) {
@@ -77,7 +74,7 @@ module.exports = async (d) => {
                 false,
                 undefined,
                 {
-                    awaitData,
+                    awaitData: {...awaitData, role: datas[i]},
                 },
             );
 
