@@ -34,7 +34,26 @@ class CustomFunction {
             .split("\\[")
             .join("#RIGHT#")
             .replace("\\,", "#COMMA#");
-        const funcs = createFuncAST(`$execMain[${code}]`);
+        let funcs = [];
+        let loadsOfFunc = Functions.filter((thatfunc) =>
+            code.toLowerCase().includes(thatfunc.toLowerCase()),
+        );
+        const funcyboys = code.split("$");
+        for (const funcboy of funcyboys) {
+            let Func = loadsOfFunc.filter(
+                (f) =>
+                    f.toLowerCase() ===
+                    ("$" + funcboy.toLowerCase()).slice(0, f.length),
+            );
+            if (!Func.length) {
+                continue;
+            }
+            if (Func.length === 1) {
+                funcs.push(Func[0]);
+            } else if (Func.length > 1) {
+                funcs.push(Func.sort((a, b) => b.length - a.length)[0]);
+            }
+        }
         return funcs;
     }
 }
