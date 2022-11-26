@@ -1,16 +1,17 @@
 //---------------Client------------------//
 
-const { GatewayIntentBits, IntentsBitField } = require( "discord.js" );
+const { GatewayIntentBits, IntentsBitField, ActivityFlags, ActivityType, PermissionsBitField } = require( "discord.js" );
 
 
 const IntentOptionAll = Object.keys( IntentsBitField.Flags );
 
 const ActivityTypeAvailables = {
-    playing: "PLAYING",
-    watching: "WATCHING",
-    listening: "LISTENING",
-    streaming: "STREAMING",
-    competing: "COMPETING",
+    playing: ActivityType['Playing'],
+    streaming: ActivityType[ 'Streaming' ],
+    listening: ActivityType[ 'Listening' ],
+    watching: ActivityType[ 'Watching' ],
+    custom: ActivityType[ 'Custom' ],
+    competing: ActivityType[ 'Competing' ],
 };
 
 const DebugAvailables = {
@@ -285,47 +286,47 @@ const SlashOptionTypes = {
     number: 10,
 };
 const Perms = {
-    createinvite: "CREATE_INSTANT_INVITE",
-    kick: "KICK_MEMBERS",
-    ban: "BAN_MEMBERS",
-    admin: "ADMINISTRATOR", // (implicitly has all permissions, and bypasses all channel overwrites)
-    managechannel: "MANAGE_CHANNELS", // (edit and reorder channels)
-    manageserver: "MANAGE_GUILD", // (edit the guild information, region, etc.)
-    addreactions: "ADD_REACTIONS", // (add new reactions to messages)
-    viewauditlog: "VIEW_AUDIT_LOG",
-    priorityspeaker: "PRIORITY_SPEAKER",
-    stream: "STREAM",
-    viewchannel: "VIEW_CHANNEL",
-    sendmessage: "SEND_MESSAGES",
-    sendtts: "SEND_TTS_MESSAGES",
-    managemessages: "MANAGE_MESSAGES", // (delete messages and reactions)
-    embedlinks: "EMBED_LINKS", // (links posted will have a preview embedded)
-    attachfiles: "ATTACH_FILES",
-    readmessagehistory: "READ_MESSAGE_HISTORY", // (view messages that were posted prior to opening Discord)
-    mentioneveryone: "MENTION_EVERYONE",
-    externalemojis: "USE_EXTERNAL_EMOJIS", // (use emojis from different guilds)
-    viewguildinsights: "VIEW_GUILD_INSIGHTS",
-    connect: "CONNECT", // (connect to a voice channel)
-    speak: "SPEAK", // (speak in a voice channel)
-    mutemembers: "MUTE_MEMBERS", // (mute members across all voice channels)
-    deafenmembers: "DEAFEN_MEMBERS", // (deafen members across all voice channels)
-    movemembers: "MOVE_MEMBERS", // (move members between voice channels)
-    usevad: "USE_VAD", // (use voice activity detection)
-    changenickname: "CHANGE_NICKNAME",
-    managenicknames: "MANAGE_NICKNAMES", // (change other members' nicknames)
-    manageroles: "MANAGE_ROLES",
-    managewebhooks: "MANAGE_WEBHOOKS",
-    manageemojisandstickers: "MANAGE_EMOJIS_AND_STICKERS",
-    useappcmds: "USE_APPLICATION_COMMANDS",
-    requesttospeak: "REQUEST_TO_SPEAK",
-    manageevents: "MANAGE_EVENTS",
-    managethreads: "MANAGE_THREADS",
-    createpublicthreads: "CREATE_PUBLIC_THREADS",
-    createprivatethreads: "CREATE_PRIVATE_THREADS",
-    externalstickers: "USE_EXTERNAL_STICKERS", // (use stickers from different guilds)
-    sendmessageinthreads: "SEND_MESSAGES_IN_THREADS",
-    startembeddedactivities: "START_EMBEDDED_ACTIVITIES",
-    moderatemembers: "MODERATE_MEMBERS",
+    createinvite: PermissionsBitField['Flags'].CreateInstantInvite,
+    kickmembers: PermissionsBitField[ 'Flags' ].KickMembers,
+    banmembers: PermissionsBitField[ 'Flags' ].BanMembers,
+    administrator: PermissionsBitField[ 'Flags' ].Administrator,
+    managechannels: PermissionsBitField[ 'Flags' ].ManageChannels,
+    manageguild: PermissionsBitField[ 'Flags' ].ManageGuild,
+    addreactions: PermissionsBitField[ 'Flags' ].AddReactions,
+    viewauditlog: PermissionsBitField[ 'Flags' ].ViewAuditLog,
+    priorityspeaker: PermissionsBitField[ 'Flags' ].PrioritySpeaker,
+    stream: PermissionsBitField[ 'Flags' ].Stream,
+    viewchannel: PermissionsBitField[ 'Flags' ].ViewChannel,
+    sendmessages: PermissionsBitField[ 'Flags' ].SendMessages,
+    sendttsmessages: PermissionsBitField[ 'Flags' ].SendTTSMessages,
+    managemessages: PermissionsBitField[ 'Flags' ].ManageMessages,
+    embedlinks: PermissionsBitField[ 'Flags' ].EmbedLinks,
+    attachfiles: PermissionsBitField[ 'Flags' ].AttachFiles,
+    readmessagehistory: PermissionsBitField[ 'Flags' ].ReadMessageHistory,
+    mentioneveryone: PermissionsBitField[ 'Flags' ].MentionEveryone,
+    useexternalemojis: PermissionsBitField[ 'Flags' ].UseExternalEmojis,
+    viewguildinsights: PermissionsBitField[ 'Flags' ].ViewGuildInsights,
+    connect: PermissionsBitField[ 'Flags' ].Connect,
+    speak: PermissionsBitField[ 'Flags' ].Speak,
+    mute: PermissionsBitField[ 'Flags' ].MuteMembers,
+    deafen: PermissionsBitField[ 'Flags' ].DeafenMembers,
+    movemembers: PermissionsBitField[ 'Flags' ].MoveMembers,
+    usevad: PermissionsBitField[ 'Flags' ].UseVAD,
+    changenickname: PermissionsBitField[ 'Flags' ].ChangeNickname,
+    managenicknames: PermissionsBitField[ 'Flags' ].ManageNicknames,
+    manageroles: PermissionsBitField[ 'Flags' ].ManageRoles,
+    managedeemojisandstickers: PermissionsBitField[ 'Flags' ].ManageEmojisAndStickers,
+
+    //voice
+    requesttospeak: PermissionsBitField[ 'Flags' ].RequestToSpeak,
+    managethreads: PermissionsBitField[ 'Flags' ].ManageThreads,
+    usepublicthreads: PermissionsBitField[ 'Flags' ].UsePublicThreads,
+    useprivatethreads: PermissionsBitField[ 'Flags' ].UsePrivateThreads,
+    useexternalsticker: PermissionsBitField[ 'Flags' ].UseExternalStickers,
+    sendmessagesinthreads: PermissionsBitField[ 'Flags' ].SendMessagesInThreads,
+    startembededactivities: PermissionsBitField[ 'Flags' ].StartEmbeddedActivities,
+    //guild
+    all: PermissionsBitField[ 'Flags' ].All,
 };
 const FormatOptions = (date) => {
     const months = [
