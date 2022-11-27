@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://aoi.js.org">
+<a href="https://aoi.js.org">
     <img width="300" src="https://cdn.discordapp.com/attachments/804813961190572093/1013150967379808296/aoijs-v6.png" alt="aoijs">
   </a>
 </p>
@@ -34,84 +34,72 @@
 
 ## Installation
 
-**node.js 16.6.0 or newer is required.**
+**node.js 16.9.0 or newer is required.**
 
-```bash
+```shell
 npm install aoi.js
 ```
 
-```bash
+```shell
 yarn add aoi.js
 ```
 
 ## Setup
 
 ```javascript
-const aoijs = require("aoi.js")
+// Importing AoiClient
+import { AoiClient } from 'aoi.js';
 
-const bot = new aoijs.AoiClient({
-token: "Discord Bot Token",
-prefix: "Discord Bot Prefix",
-intents: ["MessageContent", "Guilds", "GuildsMessages"]
-})
+// Creating Our Bot
+const bot = new AoiClient({
+  token: 'DISCORD_BOT_TOKEN', // process.env.TOKEN || config.token
+  prefix: 'DISCORD_BOT_PREFIX',
+  intents: ['MessageContent', 'Guilds', 'GuildsMessages'],
+});
 
-//Events
-bot.onMessage()
+// Adding Events
+bot.addEvent(['onMessage', 'onInteractionCreate']);
 
-//Command Example (ping)
-bot.command({
-name: "ping",
-code: `Pong! $pingms`
-})
+// Creating Slash Commands on Ready Event
+bot.addEvent('onReady', {
+  channel: '',
+  code: `
+  $log[Created "Ping" Slash Command.]
+  $createApplicationCommand[$guildID;ping;Pong!;true;slash]
+  `
+});
 
-//Slash Interaction Command Example (ping)
-/*MUST EXECUTE FUNCTION FOR IT TO WORK
-$createApplicationCommand[$guildID;ping;Pong!;true;slash]
-*/
-bot.interactionCommand({
-  name: "ping",
+// Ping Slash Command
+bot.commands.add('interaction', {
+  name: 'ping',
   prototype: 'slash',
-  code: `$interactionReply[Pong! $pingms]`
-})
+  code: `$interactionReply[Pong! $ping ms!]`
+});
+
+// And Lastly Starting Our Bot
+bot.start();
 ```
+
+### Optional Packages
+
+- [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
+
+>  Use this on your precaution, we do not endorse anything or affiliated with, we only add support towards it.
+>
+> Do you want to make your Discord Bot different from others, possibly with the ability to play/stream music, it's simple and easy to use!
+
+```php
+$playTrack[type;name] // to play a track from the available third parties supported. 
+```
+
+> More information in our [documentation](https://aoi.js.org/docs/advanced-guides/aoimusic/)
 
 ### Function usage Example
 
 ```php
-$authorID - Return the author ID/the userID who executed the function
+$authorID // return the author ID/the userID who executed the function
 ```
 
-### How does it work?
-
-It's fairly simple, by using `$` as a sense of a function to execute, it's run by a command.
-By using `$` after the function name, and its additional fields, (if any) it'll work as intended by it function.
-
-## Events
-
-Events are the most important factor in creating a Discord Bot. This helps developers create certain events to occur within their Client. There are several events within aoi.js, an example event is when the Client is ready and logged onto the API.
-
-```javascript
-bot.readyCommand({ //Event Command
-    channel: "Channel ID", //The channel where the Client will log. (optional)
-    code: `Code to execute` //This can be a message or code to execute.
-})
-```
-
-## Music Integration
-
-Use this on your precaution, we do not endorse anything or affiliated with, we only add support towards it.
-
-Do you want to make your Discord Bot different from others, possibly with the ability to play/stream music, it's simple and easy to use!
-
-```php
-$playTrack[type;name] - To play a track from the available third parties supported. 
-```
-More information in our [documentation](https://aoi.js.org/docs/advanced-guides/aoimusic/)
-
-### Optional Extensions
-
-- [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
-    
 ## Disclaimer
     
 aoi.js is not affiliated or associated with Discord or any other services.
