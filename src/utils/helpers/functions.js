@@ -491,10 +491,13 @@ module.exports = {
         let i = 0;
         while (i < parser.length) {
             if (parser[0] != "{") {
-                while (parser[i] != "{") {
+                while ( parser[ i ] != "{" )
+                {
+                    if(i >= parser.length) break;
                     i++;
                 }
             }
+            if(i >= parser.length) break;
             while (left == 0 || right < left) {
                 part += parser[i];
                 if (parser[i] == "{") left++;
