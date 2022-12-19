@@ -87,6 +87,7 @@ declare module "aoi.js" {
         cache: CacheOptions;
         mobilePlatform?: boolean;
         disableLogs?: boolean;
+        plugins?: Array<string>;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: EventOptions;

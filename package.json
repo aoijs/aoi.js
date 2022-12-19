@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "aoi.js - A powerful package to create Discord Bots with built-in string functions.",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
@@ -10,7 +10,7 @@
     "prettywrite": "prettier --write \\\"src/**/*.js\\\""
   },
   "engines": {
-    "node": ">=16.6.0"
+    "node": ">=16.9.0"
   },
   "files": [
     "src"

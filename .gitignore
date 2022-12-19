@@ -1,6 +1,7 @@
 commands
 config.json
 node_modules
+plugins
 /database
 .idea
 /index.js
