@@ -54,12 +54,6 @@ class BaseClient extends Discord.Client {
             "REACTION",
         ];
 
-        options.intents = !Array.isArray(options.intents)
-            ? options.intents?.toLowerCase() === "all"
-                ? IntentOptionAll
-                : undefined
-            : options.intents;
-
         const aoiOptions = {};
         Object.assign(aoiOptions, options);
 
