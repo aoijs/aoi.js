@@ -1,3 +1,5 @@
+const { ApplicationCommandPermissionType } = require( "discord.js" );
+
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
@@ -12,7 +14,7 @@ module.exports = async (d) => {
             const e = perms[0].split(":");
             permissions.push({
                 id: e[0],
-                type: e[1].toUpperCase(),
+                type: ApplicationCommandPermissionType[e[1]],
                 permission: e[2] === "yes",
             });
         }
@@ -20,7 +22,7 @@ module.exports = async (d) => {
         const e = perms[0].split(":");
         permissions.push({
             id: e[0],
-            type: e[1].toUpperCase(),
+            type: ApplicationCommandPermissionType[e[1]],
             permission: e[2] === "yes",
         });
     }

@@ -1,6 +1,7 @@
 const parser = require("../../../handler/slashCommandOptionsParser");
 const {SlashOptionsParser} = require("../../../handler/parsers.js");
 const {SlashTypes} = require("../../../utils/InteractionConstants.js");
+const { ApplicationCommandType } = require( "discord.js" );
 module.exports = async (d) => {
     const {code} = d.command;
     const inside = d.unpack();
@@ -27,7 +28,7 @@ module.exports = async (d) => {
     if (!guild && !["global", "custom"].includes(guildID))
         return d.aoiError.fnError(d, "guild", {inside});
     type = SlashTypes[type] || type;
-    if (type === "CHAT_INPUT") {
+    if (type === ApplicationCommandType.ChatInput ) {
         if (opts.length) {
             if (opts.length === 1) {
                 try {

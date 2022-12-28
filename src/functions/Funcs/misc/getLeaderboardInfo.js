@@ -1,15 +1,9 @@
 module.exports = async (d) => {
     const code = d.command.code;
 
-    const r = code.split("$getLeaderboardInfo").length - 1;
-
-    const inside = code.split("$getLeaderboardInfo")[r].after();
-
-    const err = d.inside(inside);
-
-    if (err) return d.error(err);
-
-    const [variable, id, type = "user", option = "top"] = inside.splits;
+    const Data = d.util.aoiFunc( d );
+    if( Data.error ) return d.error( Data.error );
+    const [variable, id, type = "user", option = "top"] = Data.inside.splits;
 
     const res =
         type === "user"
@@ -38,8 +32,8 @@ module.exports = async (d) => {
             ? docs.find((e) => e.key === ID).data.value
             : 0,
     }[option];
-
+    Data.result = options;
     return {
-        code: code.replaceLast(`$getLeaderboardInfo${inside}`, options),
-    };
+        code: d.util.setCode(Data),
+    }
 };
