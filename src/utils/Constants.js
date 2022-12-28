@@ -4,6 +4,10 @@ const { GatewayIntentBits, IntentsBitField, ActivityFlags, ActivityType, Permiss
 
 
 const IntentOptionAll = Object.keys( IntentsBitField.Flags );
+const IntentOptions = {
+    ...IntentsBitField.FLAGS,
+};
+
 
 const ActivityTypeAvailables = {
     playing: ActivityType['Playing'],
@@ -12,6 +16,12 @@ const ActivityTypeAvailables = {
     watching: ActivityType[ 'Watching' ],
     custom: ActivityType[ 'Custom' ],
     competing: ActivityType[ 'Competing' ],
+    PLAYING: ActivityType[ 'Playing' ],
+    STREAMING: ActivityType[ 'Streaming' ],
+    LISTENING: ActivityType[ 'Listening' ],
+    WATCHING: ActivityType[ 'Watching' ],
+    CUSTOM: ActivityType[ 'Custom' ],
+    COMPETING: ActivityType[ 'Competing' ],
 };
 
 const DebugAvailables = {
@@ -423,4 +433,5 @@ module.exports = {
     SlashOptionTypes,
     Perms,
     Characters,
+    IntentOptions
 };
