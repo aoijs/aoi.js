@@ -5,7 +5,7 @@ const { GatewayIntentBits, IntentsBitField, ActivityFlags, ActivityType, Permiss
 
 const IntentOptionAll = Object.keys( IntentsBitField.Flags );
 const IntentOptions = {
-    ...IntentsBitField.FLAGS,
+    ...IntentsBitField.Flags,
 };
 
 
