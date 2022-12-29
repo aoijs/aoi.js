@@ -375,7 +375,7 @@ const FileParser = (msg) => {
     }
     return att;
 };
-const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
+const errorHandler = async ( errorMessage,d, returnMsg = false, channel) => {
     errorMessage = errorMessage.trim();
   const embeds = [];
   let send = true;

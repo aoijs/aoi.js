@@ -135,7 +135,7 @@ class AoiError {
     }
 
     if (extraOptions.reactions?.length) {
-      extraOptions.reactions.forEach(async (x) =>await msg.react(x));
+      extraOptions.reactions.forEach((x) =>msg.react(x));
     }
     if (extraOptions.edits) {
       const editIn = setInterval(async () => {

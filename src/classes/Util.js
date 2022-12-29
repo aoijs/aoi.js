@@ -107,12 +107,11 @@ class Util {
       Voice: Discord[ 'ChannelType' ].GuildVoice,
       Category: Discord[ 'ChannelType' ].GuildCategory,
       News: Discord[ 'ChannelType' ].GuildAnnouncement,
-      Store: Discord[ 'ChannelType' ].GuildStore,
       NewsThread: Discord[ 'ChannelType' ].AnnouncementThread,
       PublicThread: Discord[ 'ChannelType' ].PublicThread,
       PrivateThread: Discord[ 'ChannelType' ].PrivateThread,
       Stage: Discord[ 'ChannelType' ].GuildStageVoice,
-      Unknown: Discord[ 'ChannelType' ].Unknown,
+      GuildDirectory : Discord.ChannelType.GuildDirectory
     };
   }
 
@@ -154,8 +153,7 @@ class Util {
     //     error.options = await parsers.OptionParser(error.options || "", d);
     //   }
     // } catch (e) {
-    console.log(errorM)
-      error = await this.parsers.ErrorHandler(d, errorM, true);
+      error = await this.parsers.ErrorHandler( errorM,d, true);
     // }
     return error;
   }
