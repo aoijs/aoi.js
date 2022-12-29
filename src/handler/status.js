@@ -29,7 +29,6 @@ module.exports = (statuses, client) => {
               )
             )?.code
           : status[y].activity.name;
-
         client.user.setPresence({
           status: status[y].status,
           activities: [stats.activity],
