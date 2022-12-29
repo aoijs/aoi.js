@@ -294,7 +294,6 @@ class BaseClient extends Discord.Client {
    * @param  {object[]} statuses
    */
   status(...statuses) {
-    console.log(Object.keys(ActivityTypeAvailables));
     for (const status of statuses) {
       status.type =
         (Object.keys(ActivityTypeAvailables).includes(status.type) ||
