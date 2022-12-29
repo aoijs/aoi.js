@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 
 class Util {
   static constants = Constants;
+  static parsers = require("../handler/parsers.js");
 
   static getUser(d, id) {
     let user = d.client.users.cache.get(id);
@@ -125,7 +126,7 @@ class Util {
   static async errorParser(errorM, d) {
     let error;
     if (typeof errorM === "object") return errorM;
-    const parsers = require("../handler/parsers.js");
+
     // try {
     //   let e = errorM;
     //   error = JSON.parse(e);
@@ -153,7 +154,8 @@ class Util {
     //     error.options = await parsers.OptionParser(error.options || "", d);
     //   }
     // } catch (e) {
-      error = await parsers.ErrorHandler(d, errorM, true);
+    console.log(errorM)
+      error = await this.parsers.ErrorHandler(d, errorM, true);
     // }
     return error;
   }

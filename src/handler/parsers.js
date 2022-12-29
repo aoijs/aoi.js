@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const Util = require("../classes/Util.js");
 const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
 const SlashOption = require("./slashOption.js");
@@ -139,7 +138,6 @@ const EmbedParser = async (msg) => {
     return embeds;
 };
 const ComponentParser = async (msg, client) => {
-    let components;
     msg = mustEscape(msg);
     let msgs = msg.split("{actionRow:").slice(1);
     const actionRows = [];
@@ -206,7 +204,6 @@ const ComponentParser = async (msg, client) => {
             }
         }
         if (Checker("selectMenu")) {
-            const selectMenu = [];
             let inside = nya.split("{selectMenu:").slice(1).join("");
             inside = inside.split(":").map((c) => c.trim());
             const customID = inside.shift();
@@ -688,7 +685,7 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
                 embeds: send ? embeds : [],
                 files: files?.length ? files : [],
             })
-            .catch((Err) => {});
+            .catch(() => {});
 
         if (!m) return;
 
@@ -706,14 +703,14 @@ const errorHandler = async (d, errorMessage, returnMsg = false, channel) => {
 
                 await m.suppressEmbeds(suppress);
 
-                await m.edit(sender.message, sender.embed).catch((err) => null);
+                await m.edit(sender.message, sender.embed).catch(() => null);
             }
         }
 
         if (m && deleteAfter) {
             m.delete({
                 timeout: deleteAfter,
-            }).catch((err) => null);
+            }).catch(() => null);
         }
 
         if (returnMsg === "id") {
@@ -775,7 +772,7 @@ const OptionParser = async (options, d) => {
         const msgs = editPart.split(":{").slice(1).join(":{").split("}:{");
         const messages = [];
         for (const msg of msgs) {
-            messages.push(await Util.errorParser(msg.split("}:{")[0], d));
+            messages.push(await errorHandler(msg.split("}:{")[0], d));
         }
         optionData.edits = { time: dur, messages };
     }
