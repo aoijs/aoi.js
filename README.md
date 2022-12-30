@@ -34,7 +34,7 @@
 
 ## Installation
 
-**node.js 16.6.0 or newer is required.**
+**node.js 16.9.0 or newer is required.**
 
 ```bash
 npm install aoi.js
