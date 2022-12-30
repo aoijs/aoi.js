@@ -330,13 +330,13 @@ const Perms = {
     //voice
     requesttospeak: PermissionsBitField[ 'Flags' ].RequestToSpeak,
     managethreads: PermissionsBitField[ 'Flags' ].ManageThreads,
-    usepublicthreads: PermissionsBitField[ 'Flags' ].UsePublicThreads,
-    useprivatethreads: PermissionsBitField[ 'Flags' ].UsePrivateThreads,
+    createpublicthreads: PermissionsBitField[ 'Flags' ].CreatePublicThreads,
+    createprivatethreads: PermissionsBitField[ 'Flags' ].CreatePrivateThreads,
     useexternalsticker: PermissionsBitField[ 'Flags' ].UseExternalStickers,
     sendmessagesinthreads: PermissionsBitField[ 'Flags' ].SendMessagesInThreads,
-    startembededactivities: PermissionsBitField[ 'Flags' ].StartEmbeddedActivities,
+    useembeddedactivities: PermissionsBitField[ 'Flags' ].UseEmbeddedActivities,
     //guild
-    all: PermissionsBitField[ 'Flags' ].All,
+    all: Object.keys(PermissionsBitField[ 'Flags' ])
 };
 const FormatOptions = (date) => {
     const months = [
