@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [number] = data.inside.splits;
 
-    data.result = number.trim() === '' ? false : isNaN(number) ? false : true;
+    data.result = number.trim() === '' ? false : !isNaN(number);
 
     return {
         code: d.util.setCode(data)
