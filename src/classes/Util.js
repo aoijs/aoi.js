@@ -103,7 +103,7 @@ class Util {
   static get channelTypes() {
     return {
       Text: Discord.ChannelType.GuildText,
-      Dm: Discord.ChannelType.DM,
+      DM: Discord.ChannelType.DM,
       Forum: Discord.ChannelType.GuildForum,
       Voice: Discord.ChannelType.GuildVoice,
       Category: Discord.ChannelType.GuildCategory,
