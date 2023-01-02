@@ -17,9 +17,9 @@ module.exports = async (d) => {
             "Invalid Permission(s) Provided In",
         );
 
-    const memPerms = d.member.permissions.toArray();
-    if (memPerms.includes(Perms.administrator)) {
-    } else if (!stuffs.every((x) => memPerms.includes(Perms[x.trim()]))) {
+    const memPerms = d.member.permissions;
+    if (memPerms.has(Perms.administrator)) {
+    } else if (!stuffs.every((x) => memPerms.has(Perms[x.trim()]))) {
         error = true;
         if (err?.trim() === "") {
         } else {

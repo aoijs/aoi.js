@@ -16,9 +16,9 @@ module.exports = async (d) => {
             "Invalid Permission(s) Provided In",
         );
 
-    const BotPerms = d.guild.me.permissions.toArray();
-    if (BotPerms.includes(Perms.administrator)) {
-    } else if (!stuffs.every((x) => BotPerms.includes(Perms[x.trim()]))) {
+    const BotPerms = d.guild.me.permissions;
+    if (BotPerms.has(Perms.administrator)) {
+    } else if (!stuffs.every((x) => BotPerms.has(Perms[x.trim()]))) {
         error = true;
         if (err?.trim() === "") {
         } else {

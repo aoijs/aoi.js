@@ -1,4 +1,4 @@
-const {Perms} = require('../../../utils/Constants.js');
+const {FormatPerms: Perms} = require('../../../utils/Constants.js');
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);

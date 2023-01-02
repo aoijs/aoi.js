@@ -295,6 +295,7 @@ const SlashOptionTypes = {
     mentionable: 9,
     number: 10,
 };
+
 const Perms = {
     createinvite: PermissionsBitField['Flags'].CreateInstantInvite,
     kickmembers: PermissionsBitField[ 'Flags' ].KickMembers,
@@ -338,6 +339,11 @@ const Perms = {
     //guild
     all: Object.keys(PermissionsBitField[ 'Flags' ])
 };
+const FormatPerms = {};
+for ( const perm in PermissionsBitField.Flags )
+{
+    FormatPerms[ perm.toLowerCase() ] = perm;
+}
 const FormatOptions = (date) => {
     const months = [
         "January",
@@ -433,5 +439,6 @@ module.exports = {
     SlashOptionTypes,
     Perms,
     Characters,
-    IntentOptions
+    IntentOptions,
+    FormatPerms,
 };

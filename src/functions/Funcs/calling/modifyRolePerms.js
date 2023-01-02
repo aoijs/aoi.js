@@ -12,7 +12,7 @@ module.exports = async d => {
     const role = await guild.roles.fetch(roleId).catch(e => undefined);
     if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
 
-    let arrayPerms = new Set(role.permissions.toArray());
+    let arrayPerms = role.permissions;
     if (perms.includes('+all')) {
         arrayPerms = ['Administrator'];
     } else if (perms.includes('-all')) {
