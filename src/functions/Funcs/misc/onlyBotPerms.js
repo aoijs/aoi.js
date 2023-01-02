@@ -17,7 +17,7 @@ module.exports = async (d) => {
         );
 
     const BotPerms = d.guild.me.permissions.toArray();
-    if (BotPerms.includes(Perms.admin)) {
+    if (BotPerms.includes(Perms.administrator)) {
     } else if (!stuffs.every((x) => BotPerms.includes(Perms[x.trim()]))) {
         error = true;
         if (err?.trim() === "") {

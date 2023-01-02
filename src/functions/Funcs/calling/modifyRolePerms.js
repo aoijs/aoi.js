@@ -14,7 +14,7 @@ module.exports = async d => {
 
     let arrayPerms = new Set(role.permissions.toArray());
     if (perms.includes('+all')) {
-        arrayPerms = ['ADMINISTRATOR'];
+        arrayPerms = ['Administrator'];
     } else if (perms.includes('-all')) {
         arrayPerms = [];
     } else {

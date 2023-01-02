@@ -18,7 +18,7 @@ module.exports = async (d) => {
         );
 
     const memPerms = d.member.permissions.toArray();
-    if (memPerms.includes(Perms.admin)) {
+    if (memPerms.includes(Perms.administrator)) {
     } else if (!stuffs.every((x) => memPerms.includes(Perms[x.trim()]))) {
         error = true;
         if (err?.trim() === "") {
