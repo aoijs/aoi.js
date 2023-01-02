@@ -102,16 +102,17 @@ class Util {
 
   static get channelTypes() {
     return {
-      Text: Discord['ChannelType'].GuildText,
-      Dm: Discord['ChannelType'].DM,
-      Voice: Discord[ 'ChannelType' ].GuildVoice,
-      Category: Discord[ 'ChannelType' ].GuildCategory,
-      News: Discord[ 'ChannelType' ].GuildAnnouncement,
-      NewsThread: Discord[ 'ChannelType' ].AnnouncementThread,
-      PublicThread: Discord[ 'ChannelType' ].PublicThread,
-      PrivateThread: Discord[ 'ChannelType' ].PrivateThread,
-      Stage: Discord[ 'ChannelType' ].GuildStageVoice,
-      GuildDirectory : Discord.ChannelType.GuildDirectory
+      Text: Discord.ChannelType.GuildText,
+      DM: Discord.ChannelType.DM,
+      Forum: Discord.ChannelType.GuildForum,
+      Voice: Discord.ChannelType.GuildVoice,
+      Category: Discord.ChannelType.GuildCategory,
+      Announcement: Discord.ChannelType.GuildAnnouncement,
+      AnnouncementThread: Discord.ChannelType.AnnouncementThread,
+      PublicThread: Discord.ChannelType.PublicThread,
+      PrivateThread: Discord.ChannelType.PrivateThread,
+      Stage: Discord.ChannelType.GuildStageVoice,
+      GuildDirectory: Discord.ChannelType.GuildDirectory
     };
   }
 

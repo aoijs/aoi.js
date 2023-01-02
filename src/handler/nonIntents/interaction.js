@@ -26,7 +26,7 @@ module.exports = async (interaction, client) => {
 
     let cmds;
     const type = InteractionTypes[ interaction.type ];
-    console.log(type);
+    
     if (type === "component") {
         cmds = client.cmd.interaction[
             MessageComponentTypes[interaction.componentType]
