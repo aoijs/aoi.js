@@ -9,7 +9,7 @@ module.exports = async d => {
     const member = await d.util.getMember(guild, userID);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
-    data.result = member.voice.channelID;
+    data.result = member.voice.channelId;
 
     return {
         code: d.util.setCode(data)
