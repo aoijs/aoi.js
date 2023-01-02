@@ -81,7 +81,9 @@ class AoiError {
     options = {},
     extraOptions = {},
     d,
-  ) {
+  )
+  {
+    options = options.data ?? options;
     if (typeof options === "object") {
       options.content = options.content?.toString()?.trim() || " ";
       if (options.embeds && typeof options.embeds === "string") {
