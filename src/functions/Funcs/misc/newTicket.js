@@ -40,9 +40,9 @@ module.exports = async (d) => {
         if (channel) {
             channel.permissionOverwrites
                 .edit(d.author.id, {
-                    SEND_MESSAGES: true,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
+                    SendMessages: true,
+                    ViewChannel: true,
+                    ReadMessageHistory: true,
                 })
                 .catch(async (err) => {
                     d.aoiError.fnError(
@@ -53,8 +53,9 @@ module.exports = async (d) => {
                     );
                 });
             if (msg?.trim() !== "") {
-                const ticketMsg = await d.util.errorParser(msg.addBrackets(), d);
-                channel?.send(ticketMsg).catch((err) => {
+                const ticketMsg = await d.util.errorParser( msg.addBrackets(), d );
+                console.log({ticketMsg});
+                channel?.send(ticketMsg.data ?? ticketMsg).catch((err) => {
                     d.aoiError.fnError(
                         d,
                         "custom",
@@ -74,14 +75,14 @@ module.exports = async (d) => {
         data.result = returnId === "yes" ? channel?.id : undefined;
     } else {
         const channel = await createAt
-            .children.create(name.addBrackets())
-            .catch(async (e) => {
+            .children.create( { name: name.addBrackets() } )
+            .catch(async (err) => {
                 if (error && error?.trim() !== "") {
                     const ticketError = await d.util.errorParser(error || "", d);
                     d.aoiError.makeMessageError(
                         d.client,
                         d.channel,
-                        ticketError,
+                        ticketError.data ?? ticketError,
                         ticketError.options,
                     );
                 } else
@@ -96,9 +97,9 @@ module.exports = async (d) => {
         if (channel) {
             channel.permissionOverwrites
                 .edit(d.author.id, {
-                    SEND_MESSAGES: true,
-                    VIEW_CHANNEL: true,
-                    READ_MESSAGE_HISTORY: true,
+                    SendMessages: true,
+                    ViewChannel: true,
+                    ReadMessageHistory: true,
                 })
                 .catch(async (err) => {
                     d.aoiError.fnError(
@@ -110,7 +111,7 @@ module.exports = async (d) => {
                 });
             if (msg?.trim() !== "") {
                 const ticketMsg = await d.util.errorParser(msg.addBrackets(), d);
-                channel?.send(ticketMsg).catch((err) => {
+                channel?.send(ticketMsg.data ?? ticketMsg).catch((err) => {
                     d.aoiError.fnError(
                         d,
                         "custom",
