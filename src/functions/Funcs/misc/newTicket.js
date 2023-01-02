@@ -74,7 +74,7 @@ module.exports = async (d) => {
         data.result = returnId === "yes" ? channel?.id : undefined;
     } else {
         const channel = await createAt
-            .createChannel(name.addBrackets())
+            .children.create(name.addBrackets())
             .catch(async (e) => {
                 if (error && error?.trim() !== "") {
                     const ticketError = await d.util.errorParser(error || "", d);
