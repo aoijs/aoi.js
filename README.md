@@ -34,7 +34,7 @@
 
 ## Installation
 
-**node.js 16.6.0 or newer is required.**
+**node.js 16.9.0 or newer is required.**
 
 ```bash
 npm install aoi.js
@@ -52,7 +52,7 @@ const aoijs = require("aoi.js")
 const bot = new aoijs.AoiClient({
 token: "Discord Bot Token",
 prefix: "Discord Bot Prefix",
-intents: ["MessageContent", "Guilds", "GuildsMessages"]
+intents: ["MessageContent", "Guilds", "GuildMessages"]
 })
 
 //Events
