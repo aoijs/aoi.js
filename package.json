@@ -52,7 +52,7 @@
     "undici": "^5.14.0"
   },
   "devDependencies": {
-    "@akarui/aoi.music": "github:akaruidevelopment/music#main",
+    "@akarui/aoi.music": "^2.0.2",
     "@discordjs/opus": "^0.8.0",
     "aoi.parser": "github:usersatoshi/parsers#main",
     "prettier": "^2.4.1",

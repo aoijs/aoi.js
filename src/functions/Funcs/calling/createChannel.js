@@ -14,8 +14,8 @@ module.exports = async d => {
     type = d.util.channelTypes[type];
 
     let result = await guild.channels.create(
-        name,
         {
+            name,
             type,
             parent: parentId,
         }).catch(e => {
