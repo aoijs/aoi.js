@@ -1,22 +1,22 @@
 const { ApplicationCommandType, InteractionType, ComponentType } = require("discord.js");
-
 const InteractionTypes = {
-    PING: InteractionType.Ping,
-    APPLICATION_COMMAND: InteractionType.ApplicationCommand,
-    MESSAGE_COMPONENT: InteractionType.MessageComponent,
-    MODAL_SUBMIT: InteractionType.ModalSubmit,
-    APPLICATION_AUTOCOMPLETE: InteractionType.ApplicationCommandAutocomplete,
-};
+    [ InteractionType.Ping ]: "ping",
+    [ InteractionType.ApplicationCommand ]: "slash",
+    [ InteractionType.MessageComponent ]: "component",
+    [ InteractionType.ApplicationCommandAutocomplete ]: "autocomplete",
+    [ InteractionType.ModalSubmit ]: "modal",
+    };
+
 const MessageComponentTypes = {
-    ACTION_ROW: ComponentType.ActionRow,
-    BUTTON: ComponentType.Button,
-    STRING_SELECT: ComponentType.StringSelect,
-    INTEGER_SELECT: ComponentType.IntegerSelect,
-    ROLE_SELECT: ComponentType.RoleSelect,
-    USER_SELECT: ComponentType.UserSelect,
-    CHANNEL_SELECT: ComponentType.ChannelSelect,
-    MENTIONABLE_SELECT: ComponentType.MentionableSelect,
-    TEXT_INPUT: ComponentType.TextInput,
+    [ ComponentType.ActionRow ]: "actionRow",
+    [ ComponentType.Button ]: "button",
+    [ ComponentType.SelectMenu ]: "selectMenu",
+    [ ComponentType.StringSelect ]: "selectMenu",
+    [ ComponentType.ChannelSelect ]: "selectMenu",
+    [ ComponentType.RoleSelect ]: "selectMenu",
+    [ ComponentType.UserSelect ]: "selectMenu",
+    [ ComponentType.MentionableSelect ]: "selectMenu",
+    [ComponentType.TextInput]: "modal",
 };
 const SlashTypes = {
     slash: ApplicationCommandType.ChatInput,

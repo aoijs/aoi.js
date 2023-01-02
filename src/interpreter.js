@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const {CustomFunction} = require("./classes/Functions.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
-
+const IF = require("./utils/helpers/if.js");
 //Helper of aoijs
 const {Time} = require("./utils/helpers/customParser.js");
 const {CheckCondition} = require("./utils/helpers/checkCondition.js");
@@ -108,6 +108,85 @@ const Interpreter = async (
             code,
             functions: command.functions,
         };
+        if (command["$if"] === "v4") {
+            code = (
+                await IF({
+                    client,
+                    code,
+                    message,
+                    channel,
+                    args,
+                    data: {
+                        randoms: randoms,
+                        command: {
+                            name: command.name,
+                            code: code,
+                            error: command.error,
+                            async: command.async || false,
+                            functions: command.functions,
+                            __path__: command.__path__,
+                            codeLines: command.codeLines,
+                        },
+                        helpers: {
+                            time: Time,
+                            checkCondition: CheckCondition,
+                            mustEscape,
+                        },
+                        args: args,
+                        aoiError: require("./classes/AoiError.js"),
+                        data: data,
+                        func: undefined,
+                        funcLine: undefined,
+                        util: Util,
+                        allowedMentions: allowedMentions,
+                        embeds: embeds || [],
+                        components: components,
+                        files: attachments || [],
+                        timezone: timezone,
+                        channelUsed: channelUsed,
+                        vars: letVars,
+                        object: object,
+                        disableMentions: disableMentions,
+                        returnID: returnID,
+                        array: array,
+                        arrays,
+                        reactions: reactions,
+                        message: message.message || message,
+                        msg: msg.message || msg,
+                        author: author,
+                        guild: guild,
+                        channel: channel,
+                        member: member,
+                        mentions: mentions,
+                        unpack() {
+                            const last =
+                                code.split(this.func.replace("[", "")).length -
+                                1;
+                            const sliced = code.split(
+                                this.func.replace("[", ""),
+                            )[last];
+
+                            return sliced.after();
+                        },
+                        inside(unpacked) {
+                            if (typeof unpacked.inside !== "string") {
+                                if (suppressErrors) return suppressErrors;
+                                else {
+                                    return client.options.suppressAllErrors
+                                        ? client.options.errorMessage
+                                        : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
+                                }
+                            } else return false;
+                        },
+                        noop() {},
+                        interpreter: Interpreter,
+                        client: client,
+                        embed: Discord.MessageEmbed,
+                    },
+                })
+            ).code;
+            funcs = client.functionManager.findFunctions(code);
+        }
         //parsing functions (dont touch)
         for (let i = funcs.length; i > 0; i--) {
             if (!funcs.length) break;

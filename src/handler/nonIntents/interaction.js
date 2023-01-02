@@ -4,6 +4,7 @@ const {
     SelectMenuInteraction,
     ContextMenuCommandInteraction,
     CommandInteraction,
+    InteractionResponseType,
 } = require("discord.js");
 const Interpreter = require("../../interpreter.js");
 const {
@@ -24,7 +25,8 @@ module.exports = async (interaction, client) => {
     }
 
     let cmds;
-    const type = InteractionTypes[interaction.type];
+    const type = InteractionTypes[ interaction.type ];
+    console.log(type);
     if (type === "component") {
         cmds = client.cmd.interaction[
             MessageComponentTypes[interaction.componentType]
@@ -123,7 +125,9 @@ module.exports = async (interaction, client) => {
                 undefined,
             );
         }
-    } else {
+    } else
+    {
+
         cmds = client.cmd.interaction.slash
             .filter(
                 (x) =>
