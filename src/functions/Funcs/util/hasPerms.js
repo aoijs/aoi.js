@@ -17,7 +17,7 @@ module.exports = async d => {
 
     const memPerms = member.permissions.toArray()
 
-    data.result = memPerms.includes("ADMINISTRATOR") ? true : perms.every(x => memPerms.includes(x));
+    data.result = memPerms.includes("Administrator") ? true : perms.every(x => memPerms.includes(x));
 
     return {
         code: d.util.setCode(data)

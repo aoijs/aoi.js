@@ -108,7 +108,7 @@ const Interpreter = async (
             code,
             functions: command.functions,
         };
-        if (command["$if"] === "v4") {
+        if (command["$if"] === "old") {
             code = (
                 await IF({
                     client,
