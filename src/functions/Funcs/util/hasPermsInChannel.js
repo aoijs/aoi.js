@@ -19,8 +19,8 @@ module.exports = async (d) => {
             `Invalid Permissions In`,
         );
 
-    const upms = channel.permissionsFor(roleoruserId).toArray();
-    data.result = upms.includes(Perms.admin) ? true : upms && pms.every((p) => upms.includes(p));
+    const upms = channel.permissionsFor(roleoruserId);
+    data.result = upms.includes(Perms.administrator) ? true : upms && pms.every((p) => upms.has(p));
     return {
         code: d.util.setCode(data),
     };

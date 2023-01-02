@@ -15,9 +15,9 @@ module.exports = async d => {
     perms = perms.map(x => Perms[x]);
     if (perms.includes(undefined)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Permission Provided In");
 
-    const memPerms = member.permissions.toArray()
+    const memPerms = member.permissions;
 
-    data.result = memPerms.includes("ADMINISTRATOR") ? true : perms.some(x => memPerms.includes(x));
+    data.result = memPerms.has(Perms.administrator) ? true : perms.some(x => memPerms.has(x));
 
     return {
         code: d.util.setCode(data)
