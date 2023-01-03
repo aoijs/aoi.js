@@ -27,10 +27,10 @@
 
 ## Features
 
-- Built-in support of [database](https://www.npmjs.com/package/dbdjs.db) by default and ready for multipurpose.
-- Built-in 600+ functions, simple and easy to learn.
-- Simple to learn, all in string-based and compact.
-- Support of extensions available to be used by the community.
+- **Command handler:** Define and manage commands for your bot using the `LoadCommands` method. Modify or add new functionality easily.
+- **Utility functions:** Save time and effort with ready-made solutions for common tasks such as sending messages and checking user permissions.
+- **Interactive commands:** Allow users to interact with your bot using a special syntax in their messages. Flexible and natural interaction.
+- **Custom event handlers:** Customize the behavior of your bot in response to different events, such as message updates and user joins.
 
 ## Installation
 
@@ -83,12 +83,13 @@ $authorID - Return the author ID/the userID who executed the function
 
 ### How does it work?
 
-It's fairly simple, by using `$` as a sense of a function to execute, it's run by a command.
-By using `$` after the function name, and its additional fields, (if any) it'll work as intended by it function.
+aoi.js uses the `$` symbol as a way to execute functions. To use a function, simply type `$` followed by the function name and any additional fields (if required).
 
 ## Events
 
-Events are the most important factor in creating a Discord Bot. This helps developers create certain events to occur within their Client. There are several events within aoi.js, an example event is when the Client is ready and logged onto the API.
+Events are an important part of creating Discord bots. aoi.js includes several events that allow you to customize the behavior of your bot in response to different situations.
+
+For example, you can use the `readyCommand` event to specify what should happen when the bot is ready and logged onto the API:
 
 ```javascript
 bot.readyCommand({ //Event Command
