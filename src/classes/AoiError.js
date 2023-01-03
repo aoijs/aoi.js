@@ -149,7 +149,9 @@ class AoiError {
         }
       }, Time.parse(extraOptions.edits.time)?.ms);
     }
-    if (extraOptions.deleteIn) {
+    if ( extraOptions.deleteIn )
+    {
+      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn)?.ms;
       setTimeout(() => msg.delete(), extraOptions.deleteIn);
     }
     if (extraOptions.deleteCommand) {
