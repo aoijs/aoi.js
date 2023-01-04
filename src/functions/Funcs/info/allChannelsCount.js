@@ -5,7 +5,7 @@ module.exports = async (d) => {
     type = d.util.channelTypes[type] || type;
     data.result = type
         ? d.client.channels.cache.filter((x) =>
-            type === "Nsfw" ? (x.nsfw === true) : (x.type === type),
+            type === "NSFW" ? (x.nsfw === true) : (x.type === type),
         ).size
         : d.client.channels.cache.size;
     return {

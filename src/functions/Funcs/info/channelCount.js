@@ -10,7 +10,7 @@ module.exports = async (d) => {
         type === "all"
             ? guild.channels.cache.size
             : guild.channels.cache.filter((x) =>
-                type === "Nsfw" ? x.nsfw === true : x.type === d.util.channelTypes[type],
+                type === "NSFW" ? x.nsfw === true : x.type === d.util.channelTypes[type],
             ).size;
 
     return {

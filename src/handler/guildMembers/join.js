@@ -1,8 +1,5 @@
 const Interpreter = require("../../interpreter.js");
 module.exports = async (mem, client) => {
-    /*if(client.options.fetchInvites.enabled){
-      client.inviteSystem.userJoined(mem)
-  }*/
     let chan;
     const cmds = client.cmd.join.allValues();
     let data = {
