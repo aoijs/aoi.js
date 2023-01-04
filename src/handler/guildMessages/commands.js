@@ -7,7 +7,7 @@ module.exports = async (message, client, db) => {
         if (
             (!options.respondToBots &&
                 (message.webhookId || message.author.bot)) ||
-            (options.guildOnly && message.channel.type === Util.channelTypes.Dm)
+            (options.guildOnly && message.channel.type === Util.channelTypes.DM)
         )
             return;
     }
@@ -123,12 +123,12 @@ module.exports = async (message, client, db) => {
         if (!cmd.executeAt) cmd.executeAt = "guild";
         if (
             cmd.executeAt === "guild" &&
-            message.channel.type === Util.channelTypes.Dm
+            message.channel.type === Util.channelTypes.DM
         )
             break;
         else if (
             cmd.executeAt === "dm" &&
-            message.channel.type !== Util.channelTypes.Dm
+            message.channel.type !== Util.channelTypes.DM
         )
             break;
         //if cmd.async is true
