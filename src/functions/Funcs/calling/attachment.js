@@ -9,7 +9,7 @@ module.exports = async (d) => {
         type === "buffer"
             ? Buffer.from(attachment.addBrackets())
             : attachment.addBrackets(),
-        name.addBrackets(),
+        { name : name.addBrackets()},
     );
     d.files.push(result);
     return {
