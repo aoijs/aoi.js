@@ -52,8 +52,9 @@
     "undici": "^5.14.0"
   },
   "devDependencies": {
-    "@akarui/aoi.music": "^2.0.2",
+    "@akarui/aoi.music": "github:akaruidevelopment/music#main",
     "@discordjs/opus": "^0.8.0",
+    "@ffprobe-installer/ffprobe": "^1.4.1",
     "aoi.parser": "github:usersatoshi/parsers#main",
     "prettier": "^2.4.1",
     "typescript": "^4.5.2",

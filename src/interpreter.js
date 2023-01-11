@@ -388,7 +388,7 @@ const Interpreter = async (
                                         EmbedParser,
                                         FileParser,
                                         ComponentParser,
-                                    } = require("./handler/parsers.js");
+                                    } = Util.parsers;
 
                                     if (!message || !message.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());

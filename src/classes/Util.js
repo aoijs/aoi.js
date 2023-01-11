@@ -3,8 +3,7 @@ const Discord = require("discord.js");
 
 class Util {
   static constants = Constants;
-  static parsers = require("../handler/parsers.js");
-
+  static parsers = require( "../handler/parsers.js" );
   static getUser(d, id) {
     let user = d.client.users.cache.get(id);
     if (!user) {

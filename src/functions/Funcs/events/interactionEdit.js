@@ -1,4 +1,3 @@
-const {ComponentParser, EmbedParser, FileParser} = require('../../../handler/parsers.js');
 
 module.exports = async d => {
     const code = d.command.code;
@@ -8,11 +7,11 @@ module.exports = async d => {
 
     let [content = "", embeds = "", components = "", files = "", allowedMentions] = inside.splits;
 
-    embeds = await EmbedParser(embeds);
+    embeds = await d.util.parsers.EmbedParser(embeds);
 
-    components = await ComponentParser(components, d.client);
+    components = await d.util.parsers.ComponentParser(components, d.client);
 
-    files = await FileParser(files);
+    files = await d.util.parsers.FileParser(files);
 
     allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
 
