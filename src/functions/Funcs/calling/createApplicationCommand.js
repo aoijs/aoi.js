@@ -35,7 +35,7 @@ module.exports = async (d) => {
                     options = Array.isArray(options) ? options : [options];
                 } catch (e) {
                     if (opts[0].startsWith("{") && opts[0].endsWith("}"))
-                        options = await d.util.SlashOptionsParser(opts[0] || "");
+                        options = await d.util.parsers.SlashOptionsParser(opts[0] || "");
                     else options = await parser(opts);
                 }
             } else {
