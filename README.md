@@ -63,16 +63,6 @@ bot.command({
 name: "ping",
 code: `Pong! $pingms`
 })
-
-//Slash Interaction Command Example (ping)
-/*MUST EXECUTE FUNCTION FOR IT TO WORK
-$createApplicationCommand[$guildID;ping;Pong!;true;slash]
-*/
-bot.interactionCommand({
-  name: "ping",
-  prototype: 'slash',
-  code: `$interactionReply[Pong! $pingms]`
-})
 ```
 
 ### Function usage Example
