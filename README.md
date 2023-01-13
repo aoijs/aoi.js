@@ -38,9 +38,6 @@
 
 ```bash
 npm install aoi.js
-```
-
-```bash
 yarn add aoi.js
 ```
 
@@ -102,11 +99,7 @@ More information in our [documentation](https://aoi.js.org/docs/advanced-guides/
 ### Optional Extensions
 
 - [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
-    
-## Disclaimer
-    
-aoi.js is not affiliated or associated with Discord or any other services.
-    
+
 ## Links
 - [Website](https://aoi.js.org)
 - [NPM](https://www.npmjs.com/package/aoi.js)
