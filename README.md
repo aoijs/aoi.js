@@ -14,9 +14,9 @@
 [![AoiJS Server][aoijs-server]][aoijs-server-url]
 [![NPM downloads][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/aoi.js.svg?style=flat-square
+[npm-image]: http://img.shields.io/npm/v/aoi.js.svg
 [npm-url]: http://npmjs.org/package/aoi.js
-[download-image]: https://img.shields.io/npm/dt/aoi.js.svg?style=flat-square
+[download-image]: https://img.shields.io/npm/dt/aoi.js.svg
 [download-url]: https://npmjs.org/package/aoi.js
 [aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
 [aoijs-server-url]: https://aoi.js.org/invite
