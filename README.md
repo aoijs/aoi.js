@@ -21,7 +21,7 @@
 [aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
 [aoijs-server-url]: https://aoi.js.org/invite
 
-[Preview](https://aoi.js.org/docs/guides/setup)
+[View Documentation](https://aoi.js.org/docs/)
 
 </div>
 
