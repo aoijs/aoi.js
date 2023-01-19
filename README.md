@@ -94,11 +94,12 @@ Do you want to make your Discord Bot different from others, possibly with the ab
 ```php
 $playTrack[type;name] - To play a track from the available third parties supported. 
 ```
-More information in our [documentation](https://aoi.js.org/docs/advanced-guides/aoimusic/)
+More information in our [documentation](https://aoi.js.org/extensions/music/setup)
 
 ### Optional Extensions
 
 - [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
+- [@akarui/aoi.panel](https://www.npmjs.com/package/@akarui/aoi.panel) A developer panel for aoi.js (`npm install @akarui/aoi.panel`)
 
 ## Links
 - [Website](https://aoi.js.org)
