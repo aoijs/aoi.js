@@ -31,7 +31,7 @@ module.exports = async d => {
             return d.aoiError.makeMessageError(d.client, d.channel, {content: e}, {}, d)
         } else {
             error = await d.util.errorParser(error, d);
-            return d.aoiError.makeMessageError(d.client, d.channel, error, error.options, d)
+            return d.aoiError.makeMessageError(d.client, d.channel, error.data ?? error, error.options, d)
         }
     });
     const res = req?.data;

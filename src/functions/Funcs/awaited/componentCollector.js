@@ -15,7 +15,8 @@ module.exports = async (d) => {
             {inside},
             `Invalid Time provided In`,
         );
-    errorMsg = await d.util.errorParser(errorMsg, d);
+    errorMsg = await d.util.errorParser( errorMsg, d );
+    errorMsg = errorMsg.data ?? errorMsg;
     awaitData = JSON.parse(awaitData);
     cmds = cmds.split(",");
     cmds.forEach((x) => {

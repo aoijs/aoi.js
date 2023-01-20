@@ -40,7 +40,7 @@ module.exports = async (d) => {
             filter: userFilter,
             customIds: customIDs,
             cmds: cmds,
-            errorMessage: errorMsg,
+            errorMessage: errorMsg.data,
             uses: uses,
         },
         d.client,

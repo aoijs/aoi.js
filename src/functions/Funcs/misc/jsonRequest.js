@@ -26,7 +26,7 @@ module.exports = async d => {
         if (!error || error === '$default') return d.aoiError.fnError(d, 'custom', {}, 'Failed To Request To API With Reason: ' + e);
         else {
             const jsonError = await d.util.errorParser(error, d);
-            await d.aoiError.makeMessageError(d.client, d.channel, jsonError, jsonError.options);
+            await d.aoiError.makeMessageError(d.client, d.channel, jsonError.data ?? jsonError, jsonError.options);
         }
     });
 

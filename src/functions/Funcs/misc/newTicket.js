@@ -26,7 +26,7 @@ module.exports = async (d) => {
                     d.aoiError.makeMessageError(
                         d.client,
                         d.channel,
-                        ticketError,
+                        ticketError.data ?? ticketError,
                         ticketError.options,
                     );
                 } else

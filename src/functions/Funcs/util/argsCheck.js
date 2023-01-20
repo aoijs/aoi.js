@@ -15,7 +15,7 @@ module.exports = async d => {
     const check = condition.startsWith("<=") ? checker.c : condition.startsWith(">=") ? checker.d : condition.startsWith("<") ? checker.a : condition.startsWith(">") ? checker.b : checker.e
     if (!check && errorMessage !== "") {
         const senderr = await d.util.errorParser(errorMessage, d)
-        d.aoiError.makeMessageError(d.client, d.channel, senderr, senderr.options, d)
+        d.aoiError.makeMessageError(d.client, d.channel, senderr.data ?? senderr, senderr.options, d)
     }
     return {
         code: d.util.setCode({function: d.func, code, inside}),

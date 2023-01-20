@@ -20,7 +20,7 @@ module.exports = async (d) => {
             "Invalid Time Provided In",
         );
     customIds = customIds.split(",");
-    errorMsg = await d.util.errorParser(errorMsg, d);
+    errorMsg = await d.util.errorParser( errorMsg, d );
     awaitCommands = awaitCommands.split(",");
     awaitCommands.forEach((x) => {
         if (
@@ -82,7 +82,7 @@ module.exports = async (d) => {
                 d.aoiError.makeMessageError(
                     d.client,
                     d.channel,
-                    errorMsg,
+                    errorMsg.data ?? errorMsg,
                     extraOptions,
                 );
             } else {

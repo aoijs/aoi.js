@@ -447,7 +447,7 @@ const Interpreter = async (
                                         await makeMessageError(
                                             client,
                                             channel,
-                                            msg,
+                                            msg.data ?? msg,
                                             msg.aoiOptions,
                                             {
                                                 channel: channel,

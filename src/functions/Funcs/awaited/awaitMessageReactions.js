@@ -94,8 +94,8 @@ module.exports = async (d) => {
                 d.aoiError.makeMessageError(
                     d.client,
                     channel,
-                    {options: errorMsg},
-                    {extraOptions},
+                    errorMsg.data ?? errorMsg,
+                    {...extraOptions},
                 );
             } else d.aoiError.consoleError("$awaitMessageReactions", err);
         });

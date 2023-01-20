@@ -12,7 +12,7 @@ module.exports = async d => {
 
     msg = await d.util.errorParser(msg, d);
 
-    message.edit(msg).catch(e => {
+    message.edit(msg.data ? msg.data : msg).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Edit Message With Reason: " + e);
     });
 

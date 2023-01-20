@@ -11,7 +11,7 @@ module.exports = async d => {
 
     message = await d.util.errorParser(message, d);
 
-    const msg = await d.aoiError.makeMessageError(d.client, channel, message, message.options, d);
+    const msg = await d.aoiError.makeMessageError(d.client, channel, message.data ?? message, message.options, d);
 
 
     const result = (returnId === "yes" ? msg?.id : "") || "";

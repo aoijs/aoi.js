@@ -77,7 +77,7 @@ module.exports = async (d) => {
         .catch(async (err) => {
             if (errorMsg !== "") {
                 const emsg = await d.util.errorParser(errorMsg, d);
-                d.aoiError.makeMessageError(d.client, d.channel, emsg, emsg.options);
+                d.aoiError.makeMessageError(d.client, d.channel, emsg.data ?? emsg, emsg.options);
             } else d.aoiError.consoleError("$awaitCmdReactions", err);
         });
     return {

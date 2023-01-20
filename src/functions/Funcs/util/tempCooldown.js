@@ -45,7 +45,7 @@ module.exports = async (d) => {
         d.aoiError.makeMessageError(
             d.client,
             d.channel,
-            errorObject,
+            errorObject.data ?? errorObject,
             errorObject.options,
             d,
         );

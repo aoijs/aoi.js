@@ -9,7 +9,7 @@ module.exports = async d => {
     const webhook = new WebhookClient({id, token: token.addBrackets()});
     const editMessage = await d.util.errorParser(message, d);
 
-    const editedMessageData = await webhook.editMessage(messageID, editMessage).catch(e => {
+    const editedMessageData = await webhook.editMessage(messageID, editMessage.data ?? editMessage).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Edit Webhook Message With Reason: " + e);
     });
 

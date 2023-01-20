@@ -11,7 +11,7 @@ module.exports = async d => {
 
     let msg;
     try {
-        msg = await d.aoiError.makeMessageError(d.client, webhook, sendMessage, sendMessage.options, d);
+        msg = await d.aoiError.makeMessageError(d.client, webhook, sendMessage.data ?? sendMessage, sendMessage.options, d);
     } catch (err) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Webhook Message With Reason: ' + err);
     }
