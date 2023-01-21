@@ -174,8 +174,8 @@ const Interpreter = async (
                             if (typeof unpacked.inside !== "string") {
                                 if (suppressErrors) return suppressErrors;
                                 else {
-                                    return client.options.suppressAllErrors
-                                        ? client.options.errorMessage
+                                    return client.aoiOptions.suppressAllErrors
+                                        ? client.aoiOptions.errorMessage
                                         : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
                                 }
                             } else return false;
@@ -183,7 +183,7 @@ const Interpreter = async (
                         noop() {},
                         interpreter: Interpreter,
                         client: client,
-                        embed: Discord.MessageEmbed,
+                        embed: Discord.EmbedBuilder,
                     },
                 })
             ).code;
@@ -465,7 +465,7 @@ const Interpreter = async (
                                         )
                                     } else ;
                                 } else {
-                                    message.channel.send(
+                                    await message.channel.send(
                                         typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
