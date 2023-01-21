@@ -1,20 +1,20 @@
-const {MessageAttachment} = require("discord.js");
+const {AttachmentBuilder} = require("discord.js");
 module.exports = async (d) => {
     const {code} = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [guildid, url, name, returnSticker = "no", tags, description, reason] =
+    let [guildID, url, name, returnSticker = "no", tags, description, reason] =
         inside.splits;
 
-    const guild = await d.util.getGuild(d, guildid);
+    const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
-    const attachment = new MessageAttachment(url);
+    const file = new AttachmentBuilder(url);
 
     const sticker = await guild.stickers
-        .create(attachment, name, tags, {description, reason})
+        .create({file, name, tags, description, reason})
         .catch((e) => {
             d.aoiError.fnError(
                 d,
