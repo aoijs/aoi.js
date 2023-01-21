@@ -47,12 +47,14 @@ class BaseClient extends Discord.Client {
     }
 
     options.partials = options.partials || [
-      "CHANNEL",
-      "GUILD_MEMBER",
-      "MESSAGE",
-      "USER",
-      "REACTION"
-    ];
+      Discord.Partials.GuildMember,
+      Discord.Partials.Channel,
+      Discord.Partials.Message,
+      Discord.Partials.Reaction,
+      Discord.Partials.User,
+      Discord.Partials.GuildScheduledEvent,
+      Discord.Partials.ThreadMember,
+    ]
 
     const aoiOptions = {};
     Object.assign(aoiOptions, options);
