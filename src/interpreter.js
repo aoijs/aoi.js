@@ -8,6 +8,7 @@ const {Time} = require("./utils/helpers/customParser.js");
 const {CheckCondition} = require("./utils/helpers/checkCondition.js");
 const {mustEscape} = require("./utils/helpers/mustEscape.js");
 const {Command} = require("./classes/Commands.js");
+const PATH = require("path");
 /**
  * @param  {import('./classes/AoiClient.js')} client
  * @param  {Discord.Message | {
@@ -103,7 +104,8 @@ const Interpreter = async (
         let funcs = command.functions?.length
             ? command.functions
             : client.functionManager.findFunctions(command.code);
-        //debug system
+        command.__path__ = PATH.sep + command.name + ".js";
+         //   debug system
         const debug = {
             code,
             functions: command.functions,
@@ -243,7 +245,9 @@ const Interpreter = async (
                             error: command.error,
                             async: command.async || false,
                             functions: command.functions,
+                            __path__: command.__path__,
                             codeLines: command.codeLines,
+                            funcLine: funcLine
                         },
                         helpers: {
                             time: Time,
@@ -319,7 +323,9 @@ const Interpreter = async (
                             error: command.error,
                             async: command.async || false,
                             functions: command.functions,
+                            __path__: command.__path__,
                             codeLines: command.codeLines,
+                            funcLine: funcLine
                         },
                         helpers: {
                             time: Time,
@@ -418,7 +424,7 @@ const Interpreter = async (
                                         }
 
                                         if (!errorOccurred) {
-                                            message.channel.send({
+                                            await message.channel.send({
                                                 content: con,
                                                 embeds: em || [],
                                                 components: com || [],

@@ -188,8 +188,8 @@ class AoiError {
                     d.func
                 }: Invalid Member ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "message":
@@ -197,8 +197,8 @@ class AoiError {
                     d.func
                 }: Invalid Message ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "channel":
@@ -206,8 +206,8 @@ class AoiError {
                     d.func
                 }: Invalid Channel ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "user":
@@ -215,8 +215,8 @@ class AoiError {
                     d.func
                 }: Invalid User ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "role":
@@ -224,8 +224,8 @@ class AoiError {
                     d.func
                 }: Invalid Role ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "guild":
@@ -233,8 +233,8 @@ class AoiError {
                     d.func
                 }: Invalid Guild ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "emoji":
@@ -242,8 +242,8 @@ class AoiError {
                     d.func
                 }: Invalid Emoji ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "option":
@@ -251,15 +251,15 @@ class AoiError {
                     d.func
                 }: Invalid Option ID Provided In ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
             case "custom":
                 ans = `\`\`\`js\nAoiError: ${d.func}: ${message} ${
                     data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   line : \`${
-                    d.command.codeLines[d.funcLine - 1]
+                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
+                    d.command.codeLines
                 }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
                 break;
         }
