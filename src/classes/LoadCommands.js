@@ -84,8 +84,8 @@ class LoadCommands {
         cmds = require(name);
       } catch {
         debugs.push(
-          `${this.colors.failedWalking?.text || ""} Failed to walk in ${
-            this.colors.failedWalking?.name || ""
+          `${this.colors.failedLoading?.text || ""} Failed to load in ${
+            this.colors.failedLoading?.name || ""
           }${name}${this.allColors.reset || ""}`,
         );
 
@@ -105,7 +105,7 @@ class LoadCommands {
       if (!Array.isArray(cmds)) cmds = [cmds];
 
       debugs.push(
-        `|${this.colors?.walking || ""} Walking in ${name}${
+        `|${this.colors?.loading || ""} Loading in ${name}${
           this.allColors.reset || ""
         }|`,
       );
@@ -179,7 +179,7 @@ class LoadCommands {
           this.allColors.reset
         }  |  ${this.colors.loaded?.type || ""}Type${
           this.allColors.reset
-        }  |  ${this.colors.loaded?.text}State${this.allColors.reset}  |
+        }  |  ${this.colors.loaded?.text || ""}State${this.allColors.reset}  |
 |------------------------------------------|\n` + debugs.join("\n"),
       );
     }
@@ -215,8 +215,8 @@ class LoadCommands {
   setColors(
     c = {
       failLoad: null,
-      walking: null,
-      failedWalking: null,
+      loading: null,
+      failedLoading: null,
       loaded: null,
       typeError: null,
       noData: null,
@@ -271,10 +271,9 @@ class LoadCommands {
   get themes() {
     return {
       default: {
-        walking: ["blink", "dim", "fgWhite"],
-        failedWalking: {
+        loading: ["blink", "dim", "fgWhite"],
+        failedLoading: {
           name: ["bright", "fgYellow", "underline"],
-
           text: ["bright", "fgRed"],
         },
         typeError: {
@@ -294,8 +293,8 @@ class LoadCommands {
         },
       },
       diff: {
-        walking: ["fgGreen"],
-        failedWalking: {
+        loading: ["fgGreen"],
+        failedLoading: {
           text: ["fgRed"],
           name: ["bright", "fgRed"],
         },
