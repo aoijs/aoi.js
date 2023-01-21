@@ -35,15 +35,4 @@ module.exports = async (client) => {
             chan,
         );
     }
-    if (client.aoiOptions.disableLogs !== true) {
-        console.log(
-            "Initialized on \x1b[36maoi.js \x1b[32mv" +
-                require("../../../package.json").version +
-                `\x1b[0m || \x1b[36m${client.user.tag}` +
-                "\x1b[0m",
-        );
-        console.log(
-            "Discord Support Server: https://discord.gg/HMUfMXDQsV",
-        );
-    }
 };
