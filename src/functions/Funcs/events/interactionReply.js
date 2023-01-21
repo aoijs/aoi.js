@@ -4,7 +4,7 @@ module.exports = async d => {
     const inside = d.unpack()
     const err = d.inside(inside)
     if (err) return d.error(err)
-    let [content = "", embeds = "", components = "", files = "", allowedMentions = "", ephemeral = "no"] = inside.splits
+    let [content = "", embeds = "", components = "", files = "", allowedMentions = "all", ephemeral = "no"] = inside.splits
     embeds = await d.util.parsers.EmbedParser(embeds);
     components = await d.util.parsers.ComponentParser(components, d.client);
     files = await d.util.parsers.FileParser(files);
