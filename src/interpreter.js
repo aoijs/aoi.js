@@ -105,7 +105,7 @@ const Interpreter = async (
             ? command.functions
             : client.functionManager.findFunctions(command.code);
         command.__path__ = PATH.sep + command.name + ".js";
-         //   debug system
+        //   debug system
         const debug = {
             code,
             functions: command.functions,
@@ -180,7 +180,8 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {},
+                        noop() {
+                        },
                         interpreter: Interpreter,
                         client: client,
                         embed: Discord.EmbedBuilder,
