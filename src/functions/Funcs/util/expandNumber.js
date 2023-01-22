@@ -1,4 +1,4 @@
-const VALID_NUMBER = /^-\d+(?:\.\d+)?$/
+
 const {SI_SYMBOL} = require("../../../utils/Constants")
 
 module.exports = async d => {
@@ -21,9 +21,9 @@ module.exports = async d => {
     }
 
     const abbr = SI_SYMBOL[abbrIndex]
-    const number = abbrIndex ? abbrNumber.slice(0, -abbr.length) : abbrNumber
+    const number = abbrIndex ? abbrNumber.slice( 0, -abbr.length ) : abbrNumber
 
-    if (!VALID_NUMBER.test(number)) return d.aoiError.fnError(
+    if (isNaN(Number(number))) return d.aoiError.fnError(
         d,
         "custom",
         {inside},
