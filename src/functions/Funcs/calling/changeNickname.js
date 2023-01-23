@@ -9,7 +9,7 @@ module.exports = async (d) => {
     const member = await d.util.getMember(d.guild, userID);
     if (!member) return d.aoiError.fnError(d, "member", {inside});
 
-    member.setNickname(nick === "" ? null : nick.addBrackets(), reason);
+    await member.setNickname(nick === "" ? null : nick.addBrackets(), reason);
 
     return {
         code: d.util.setCode({function: d.func, code, inside}),
