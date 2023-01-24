@@ -7,9 +7,9 @@ module.exports = async (d) => {
 
     const [condition, truecon,falsecon] = data.inside.splits;
 
-    data.result = eval(CheckCondition.solve(mustEscape(condition)))
+    const res = eval(CheckCondition.solve(mustEscape(condition)))
 
-
+    data.result = res ? truecon : falsecon;
     
     return {
         code: d.util.setCode(data),
