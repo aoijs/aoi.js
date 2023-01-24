@@ -22,7 +22,7 @@ declare module "aoi.js" {
         ): void;
 
         static makeMessageError<Channel>(
-            client: Bot,
+            client: AoiClient,
             channel: Channel,
             message: ErrorMsg,
             options?: Record<string, unknown>,
@@ -167,7 +167,7 @@ declare module "aoi.js" {
         public variables(data: object, table?: string): void;
     }
 
-    class Bot extends BaseClient {
+    class AoiClient extends BaseClient {
         cmd: CommandManager;
         functionManager: FunctionManager;
 
@@ -398,7 +398,7 @@ declare module "aoi.js" {
     type CacheTypes = "cache" | "limitCache" | "setCache";
 
     class CacheManager {
-        constructor(client: Bot);
+        constructor(client: AoiClient);
 
         public get types(): CacheTypes;
 
@@ -418,9 +418,9 @@ declare module "aoi.js" {
     //ClientShard
     class ClientShard extends ShardingManager {
         file: string;
-        client: Bot;
+        client: AoiClient;
 
-        constructor(file: string, options: object, client: Bot);
+        constructor(file: string, options: object, client: AoiClient);
 
         public onShardDisconnect(): void;
 
@@ -437,9 +437,9 @@ declare module "aoi.js" {
     class Command {
         [key: string]: any;
 
-        __client__: Bot;
+        __client__: AoiClient;
 
-        constructor(d: object, client: Bot);
+        constructor(d: object, client: AoiClient);
 
         public serializeFunctions(): string[];
 
@@ -455,10 +455,10 @@ declare module "aoi.js" {
     }
 
     class CommandManager {
-        client: Bot;
+        client: AoiClient;
         customCmds?: Array<string>;
 
-        constructor(client: Bot, formCommand?: boolean, customCmds?: string[]);
+        constructor(client: AoiClient, formCommand?: boolean, customCmds?: string[]);
 
         public get types(): string[];
 
@@ -471,13 +471,13 @@ declare module "aoi.js" {
 
     //FunctionManager
     class FunctionManager {
-        client: Bot;
+        client: AoiClient;
         maps: Record<string, string[]>;
         functions: string[];
         cache: Group;
         interpreter: unknown;
 
-        constructor(client: Bot);
+        constructor(client: AoiClient);
 
         public cacheFunctions(): void;
 
@@ -490,10 +490,10 @@ declare module "aoi.js" {
 
     //LoadCommands
     class LoadCommands {
-        Client: Bot;
+        Client: AoiClient;
         AddToClient?: boolean;
 
-        constructor(Client: Bot, AddToClient?: boolean);
+        constructor(Client: AoiClient, AddToClient?: boolean);
 
         public load(cmd: CommandManager, path: string, debug?: boolean): void;
 
@@ -507,10 +507,10 @@ declare module "aoi.js" {
     }
 
     class CustomEvent extends EventEmitter {
-        client: Bot;
+        client: AoiClient;
         commands: Group;
 
-        constructor(client: Bot);
+        constructor(client: AoiClient);
 
         command(d: CustomEventCommand): void;
 
@@ -543,22 +543,22 @@ declare module "aoi.js" {
     };
 
     class Interaction extends EventEmitter {
-        client: Bot;
+        client: AoiClient;
 
-        constructor(client: Bot);
+        constructor(client: AoiClient);
 
         public resolve<Interaction>(interaction: Interaction): Interaction;
     }
 
     class InteractionManager extends Interaction {
-        client: Bot;
+        client: AoiClient;
         awaitComponents: unknown /*Await*/;
         componentCollector: unknown /*CustomCollector*/;
         buttonData: Group;
         applicationData: Group;
         selectMenuData: Group;
 
-        constructor(client: Bot);
+        constructor(client: AoiClient);
 
         public createApplicationData(d: ApplicationData): void;
 

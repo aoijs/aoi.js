@@ -15,7 +15,6 @@ module.exports = {
    * 				intents : ['GUILDS','GUILD_MESSAGES']
    * 			})
    */
-  Bot: Client,
   AoiClient: Client,
   /**
    * *  Custom Events Class
