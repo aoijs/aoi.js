@@ -439,7 +439,7 @@ const Interpreter = async (
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
                                 }
-                                if (suppressErrors && !errorOccurred) {
+                                else if (suppressErrors && !errorOccurred) {
                                     if (suppressErrors.trim() !== "") {
                                         const {makeMessageError} = require("./classes/AoiError.js")
                                         const msg =
@@ -464,7 +464,7 @@ const Interpreter = async (
                                                 data: data
                                             }
                                         )
-                                    } else ;
+                                    } 
                                 } else {
                                     await message.channel.send(
                                         typeof err === "object" ? err : err?.addBrackets(),
