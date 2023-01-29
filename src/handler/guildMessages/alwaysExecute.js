@@ -1,6 +1,6 @@
 const Interpreter = require("../../interpreter.js");
 const Util = require("../../classes/Util.js");
-module.exports = async (client, message, db) => {
+module.exports = async ( message,client, db) => {
     if (client.messageEventOptions) {
         const options = client.messageEventOptions;
         if (

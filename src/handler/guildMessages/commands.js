@@ -1,6 +1,6 @@
 const Interpreter = require("../../interpreter.js");
 const Util = require("../../classes/Util.js");
-module.exports = async (message, client, db) => {
+module.exports = async (message, client) => {
     if (client.messageEventOptions) {
         const options = client.messageEventOptions;
 
@@ -45,10 +45,11 @@ module.exports = async (message, client, db) => {
                   )
               )?.code?.addBrackets(),
           ]
-        : [client.prefix];
+            : [ client.prefix ];
     //for loop of prefix array
     for (let prefix of prefixes) {
         prefix = await prefix;
+        console.log( prefix );
         if (!message.content.toLowerCase().startsWith(prefix.toLowerCase()))
             continue;
         //getting message

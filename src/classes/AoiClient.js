@@ -35,14 +35,12 @@ class Client extends BaseClient {
                 this.db,
             );
             await require("../handler/guildMessages/alwaysExecute.js")(
-                this,
                 data,
-                this.db,
+                this,
             );
             await require("../handler/guildMessages/nonPrefixed.js")(
-                this,
                 data,
-                this.db,
+                this,
             );
         });
     }
