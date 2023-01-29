@@ -1,7 +1,15 @@
+#Ignore modules
+node_modules
+
+#Ignore database files
+database
+
+#Ignore Test Environment
 commands
 config.json
-node_modules
+src/tests/
 plugins
-/database
-.idea
 /index.js
+.idea
+.vscode
+.DS_Store
