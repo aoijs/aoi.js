@@ -49,7 +49,6 @@ module.exports = async (message, client) => {
     //for loop of prefix array
     for (let prefix of prefixes) {
         prefix = await prefix;
-        console.log( prefix );
         if (!message.content.toLowerCase().startsWith(prefix.toLowerCase()))
             continue;
         //getting message

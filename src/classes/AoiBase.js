@@ -346,7 +346,7 @@ class BaseClient extends Discord.Client {
     }
     #bindEvents() {
       const bits = new Discord.IntentsBitField( this.options.intents );
-        for (const event of this.aoiOptions.events) {
+        for (const event of this.aoiOptions.events ?? []) {
           let intent = EventsToIntents[ event ];
           const filedir = intent;
             const eventName = EventsToDjsEvents[event];
