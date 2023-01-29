@@ -158,6 +158,18 @@ class Util {
     return error;
   }
 
+  static async getRole ( guild, id )
+  { 
+    let role = guild.roles.cache.get(id);
+    if (!role) role = await this.fetchRole(guild, id);
+    return role;
+  }
+
+  static async fetchRole ( guild, id )
+  {
+    return guild.roles.fetch(id, { force: true }).catch((err) => undefined);
+  }
+
   static aoiFunc(d, FieldsRequired = true) {
     const data = {
       inside: d.unpack(),
@@ -193,7 +205,7 @@ class Util {
       (await this.getUser(d, id)) ||
       (await this.getChannel(d, id, false)) ||
       (await this.getMessage(d.channel, id)) ||
-      this.findRole(d.guild, id) ||
+      (await this.getRole(d.guild, id)) ||
       this.getEmoji(d, id) ||
       this.getSticker(d.guild, id) ||
       undefined
