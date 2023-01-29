@@ -346,7 +346,6 @@ class BaseClient extends Discord.Client {
     }
     #bindEvents() {
       const bits = new Discord.IntentsBitField( this.options.intents );
-      console.log(this.aoiOptions)
         for (const event of this.aoiOptions.events) {
           let intent = EventsToIntents[ event ];
           const filedir = intent;
@@ -372,7 +371,6 @@ class BaseClient extends Discord.Client {
                 : Array.isArray(file)
                 ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
                 : require(`../handler/${filedir}/${file}.js`);
-            console.log({ event, intent, filedir, file, eventName });
           this.on( eventName, ( ...args ) =>
           {
             if ( Array.isArray( func ) ) func.forEach( x => x( ...args, this ) );
