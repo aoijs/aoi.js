@@ -14,7 +14,7 @@ module.exports = async d => {
             d.aoiError.makeMessageError(
                 d.client,
                 d.channel,
-                errorMsgdata ?? errorMsg,
+                errorMsg.data ?? errorMsg,
                 errorMsg.options,
                 d,
             );
