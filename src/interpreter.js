@@ -434,7 +434,7 @@ const Interpreter = async (
                                         }
                                         errorOccurred = true;
                                     }
-                                } else ;
+                                }
                             } else {
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());

@@ -5,7 +5,7 @@ const { FunctionManager } = require("./Functions.js");
 
 const [major] = process.version.replace("v", "").split(".")
 if (isNaN(Number(major)) || Number(major) < 16) {
-    throw new Error(`node.js version must be v16.6.0 or above.`)
+    throw new Error(`node.js version must be v16.9.0 or above.`)
 }
 
 //Initialize aoi.js Client
