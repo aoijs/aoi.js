@@ -1,4 +1,3 @@
-const { createFuncAST } = require( "../utils/helpers/functions.js" );
 const { Group } = require( "./structures/dist" );
 
 class Command {
