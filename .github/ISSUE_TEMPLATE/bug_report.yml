@@ -27,7 +27,7 @@ body:
     attributes:
       label: Bugged Function
       render: js
-      description: Please type usage of your code:
+      description: Please type usage of your code
       placeholder: |
         module.exports = {
           name: "ping",
