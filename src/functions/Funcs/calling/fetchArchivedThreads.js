@@ -7,7 +7,7 @@ module.exports = async d => {
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
-    const threadData = await channel.threads.fetchArchieved();
+    const threadData = await channel.threads.fetchArchived();
 
     options = options.reduce((a, v) => ({...a, [v]: threadData.map(x => x[v]).join(" ,  ")}), {});
 
