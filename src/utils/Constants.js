@@ -475,6 +475,7 @@ const EventsToIntents = {
     onVariableCreate: "custom",
     onVariableDelete: "custom",
     onVariableUpdate: "custom",
+    onFunctionError: "custom",
     onRateLimit: "nonIntents",
     onWebhookUpdate: "guildWebhooks",
 };
@@ -530,6 +531,7 @@ const EventsToDjsEvents = {
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
+    onFunctionError: "functionError",
     onWebhookUpdate: Events.WebhooksUpdate,
 };
 
@@ -584,6 +586,7 @@ const EventstoFile = {
     onVariableCreate: "varCreate",
     onVariableDelete: "varDelete",
     onVariableUpdate: "varUpdate",
+    onFunctionError: "functionError",
     onWebhookUpdate: "update",
 };
 
