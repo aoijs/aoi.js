@@ -15,7 +15,7 @@ class Client extends BaseClient {
         this.functionManager = new FunctionManager(this);
         if (this.aoiOptions.respondOnEdit) {
             this.aoiOptions.respondOnEdit.time =
-                this.aoiOptions.respondOnEdit.time || 60000;
+                this.aoiOptions.respondOnEdit.time ?? 60000;
         }
     }
 

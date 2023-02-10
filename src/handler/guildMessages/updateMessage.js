@@ -1,6 +1,7 @@
 const Interpreter = require("../../interpreter.js");
 module.exports = async (oldm, newm, client) => {
     let chan;
+    
     for (const cmd of client.cmd.messageUpdate.allValues()) {
         const id = cmd.channel.includes("$")
             ? (
@@ -30,4 +31,34 @@ module.exports = async (oldm, newm, client) => {
             chan,
         );
     }
+
+
+                if (
+                    client.aoiOptions.respondOnEdit &&
+                    newm.content !== oldm.content &&
+                    client.aoiOptions.respondOnEdit.time >
+                        Date.now() - newm.createdTimestamp
+                ) {
+                    if (client.aoiOptions.respondOnEdit.commands) {
+                        await require("../handler/guildMessages/commands.js")(
+                            newm,
+                            client,
+                            client.db,
+                        );
+                    }
+                    if (client.aoiOptions.respondOnEdit.alwaysExecute) {
+                        await require("../handler/guildMessages/alwaysExecute.js")(
+                            client,
+                            newm,
+                            client.db,
+                        );
+                    }
+                    if (client.aoiOptions.respondOnEdit.nonPrefixed) {
+                        await require("../handler/guildMessages/nonPrefixed.js")(
+                            client,
+                            newm,
+                            client.db,
+                        );
+                    }
+                }
 };
