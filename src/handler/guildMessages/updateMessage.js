@@ -40,21 +40,21 @@ module.exports = async (oldm, newm, client) => {
                         Date.now() - newm.createdTimestamp
                 ) {
                     if (client.aoiOptions.respondOnEdit.commands) {
-                        await require("../handler/guildMessages/commands.js")(
+                        await require("./commands.js")(
                             newm,
                             client,
                             client.db,
                         );
                     }
                     if (client.aoiOptions.respondOnEdit.alwaysExecute) {
-                        await require("../handler/guildMessages/alwaysExecute.js")(
+                        await require("./alwaysExecute.js")(
                             client,
                             newm,
                             client.db,
                         );
                     }
                     if (client.aoiOptions.respondOnEdit.nonPrefixed) {
-                        await require("../handler/guildMessages/nonPrefixed.js")(
+                        await require("./nonPrefixed.js")(
                             client,
                             newm,
                             client.db,
