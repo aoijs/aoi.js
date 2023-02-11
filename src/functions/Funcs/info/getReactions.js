@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [channelID, messageID, reaction, force = "no", option = "username"] = data.inside.splits;
+    const [channelID, messageID, reaction, force = "false", option = "username"] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
@@ -12,7 +12,7 @@ module.exports = async d => {
 
     const reactions = message.reactions.cache.find(x => x.emoji.toString() === reaction.addBrackets());
 
-    if (force === "yes") await reactions?.users?.fetch();
+    if (force === "true") await reactions?.users?.fetch();
 
     data.result = reactions?.users?.cache.map(x => option.toLowerCase() === "mention" ? x.toString() : x[option.toLowerCase()]) || "none";
 

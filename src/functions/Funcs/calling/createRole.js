@@ -5,16 +5,16 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) d.error(err);
 
-    let [guildID, returnId = "no", name, color, hoist = "no", position, mentionable = "no", ...permissions] = inside.splits;
+    let [guildID, returnId = "false", name, color, hoist = "false", position, mentionable = "false", ...permissions] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildID === "" ? d.guild.id : guildID)
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
 
     name = name.addBrackets();
     color = color === "" ? undefined : color
-    hoist = hoist === "yes"
+    hoist = hoist === "true"
     position = isNaN(position) ? 1 : position
-    mentionable = mentionable === "yes"
+    mentionable = mentionable === "true"
     const wrongPerms = []
     permissions = permissions.map(x => {
         if (isNaN(permissions)) {
@@ -35,7 +35,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, "custom", {inside}, "Failed To Create Role With Reason: " + e);
     });
 
-    const result = returnId === "yes" ? role?.id : undefined
+    const result = returnId === "true" ? role?.id : undefined
 
     return {
         code: d.util.setCode({function: d.func, code, inside, result})

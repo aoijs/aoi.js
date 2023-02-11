@@ -2,7 +2,7 @@ module.exports = d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [n1, n2, allow = 'no', random = 'no'] = data.inside.splits;
+    const [n1, n2, allow = 'false', random = 'false'] = data.inside.splits;
 
     const inside = data.inside;
 
@@ -10,10 +10,10 @@ module.exports = d => {
 
     if (isNaN(Number(n1)) || isNaN(Number(n2)) || Number(n1) >= Number(n2)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Number In');
 
-    let n = allow === "yes" ? Math.random() * (Number(n2) - Number(n1)) + Number(n1) : Math.round(Math.random() * (Number(n2) - Number(n1))) + Number(n1)
+    let n = allow === "true" ? Math.random() * (Number(n2) - Number(n1)) + Number(n1) : Math.round(Math.random() * (Number(n2) - Number(n1))) + Number(n1)
 
-    if (d.randoms[inside] && random !== "yes") n = d.randoms[inside]
-    else if (random === "yes") d.randoms[`${inside}_${Math.floor(Math.random() * 999999)}`] = n
+    if (d.randoms[inside] && random !== "true") n = d.randoms[inside]
+    else if (random === "true") d.randoms[`${inside}_${Math.floor(Math.random() * 999999)}`] = n
     else d.randoms[inside] = n
 
     data.result = n;

@@ -29,7 +29,7 @@ module.exports = async d => {
                 description: Datas[1]?.trim()?.addBrackets() || null,
                 type: Number(Datas[2]) < 1 ? 1 : Number(Datas[2]),
                 options: await SlashOptionsParser(Datas[3] || ''),
-                defaultPermission: Datas[4] === 'yes'
+                defaultPermission: Datas[4] === 'true'
             }
         }
         d.client.application.commands.edit(id, DATA, guildID === 'global' ? undefined : guildID).catch(e => {

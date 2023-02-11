@@ -5,7 +5,7 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, duration, timeoutData, returnId = "no", pulse] =
+    const [name, duration, timeoutData, returnId = "false", pulse] =
         data.inside.splits;
 
     const time = isNaN(duration) ? Time.parse(duration)?.ms : Number(duration);
@@ -33,7 +33,7 @@ module.exports = (d) => {
 
     const timeout = Timeout(d, name.addBrackets(), time, tdata, pulseEvery);
 
-    if (returnId === "yes") {
+    if (returnId === "true") {
         data.result = timeout;
     }
 

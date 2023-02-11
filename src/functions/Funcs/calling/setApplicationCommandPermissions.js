@@ -15,7 +15,7 @@ module.exports = async (d) => {
             permissions.push({
                 id: e[0],
                 type: ApplicationCommandPermissionType[e[1]],
-                permission: e[2] === "yes",
+                permission: e[2] === "true",
             });
         }
     } else {
@@ -23,7 +23,7 @@ module.exports = async (d) => {
         permissions.push({
             id: e[0],
             type: ApplicationCommandPermissionType[e[1]],
-            permission: e[2] === "yes",
+            permission: e[2] === "true",
         });
     }
 

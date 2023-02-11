@@ -5,19 +5,19 @@ module.exports = async (d) => {
         guildID = d.guild?.id,
         type = "name",
         sep = " , ",
-        removeManagedRoles = "yes",
-        fetch = "no",
+        removeManagedRoles = "true",
+        fetch = "false",
     ] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
-    if (fetch === " yes") {
+    if (fetch === " true") {
         guild.roles.fetch();
     }
     let cache;
 
-    if (removeManagedRoles === "yes")
+    if (removeManagedRoles === "true")
         cache = guild.roles.cache.filter((x) => !x.managed);
     else cache = guild.roles.cache;
 

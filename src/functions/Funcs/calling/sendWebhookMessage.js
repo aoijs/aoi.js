@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [id, token, message, returnId = 'no'] = data.inside.splits;
+    const [id, token, message, returnId = 'false'] = data.inside.splits;
 
     const webhook = new WebhookClient({id, token: token.addBrackets()});
     const sendMessage = await d.util.errorParser(message, d);
@@ -16,7 +16,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Webhook Message With Reason: ' + err);
     }
 
-    data.result = returnId === 'yes' ? msg?.id : undefined;
+    data.result = returnId === 'true' ? msg?.id : undefined;
 
     return {
         code: d.util.setCode(data)

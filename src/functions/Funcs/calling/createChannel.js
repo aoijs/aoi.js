@@ -4,7 +4,7 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [guildID, name, type, returnId = 'no', parentId] = inside.splits;
+    let [guildID, name, type, returnId = 'false', parentId] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
@@ -21,7 +21,7 @@ module.exports = async d => {
         }).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Create Channel With Reason: " + e);
     });
-    result = returnId === 'yes' ? result.id : undefined;
+    result = returnId === 'true' ? result.id : undefined;
 
     return {
         code: d.util.setCode({function: d.func, code, inside, result})

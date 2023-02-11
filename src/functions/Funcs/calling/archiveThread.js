@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [threadID, channelID = d.channel.id, archive = "yes", reason] =
+    const [threadID, channelID = d.channel.id, archive = "true", reason] =
         data.inside.splits;
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
@@ -15,7 +15,7 @@ module.exports = async (d) => {
             `Failed To Fetch Thread With Reason : ${e.message}`,
         );
     });
-    thread.setArchived(archive === "yes", reason?.addBrackets()).catch((e) => {
+    thread.setArchived(archive === "true", reason?.addBrackets()).catch((e) => {
         return d.aoiError.fnError(
             d,
             "custom",

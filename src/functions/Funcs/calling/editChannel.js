@@ -43,7 +43,7 @@ module.exports = async (d) => {
             name = name === "$default" ? channel.name : name.addBrackets();
             type = type === "$default" ? channel.type : d.util.channelTypes[type];
             position = position === "$default" ? channel.position : Number(position);
-            nsfw = nsfw === "$default" ? channel.nsfw : nsfw === "yes";
+            nsfw = nsfw === "$default" ? channel.nsfw : nsfw === "true";
             topic = topic === "$default" ? channel.topic : topic.addBrackets();
             bitrate = bitrate === "$default" ? channel.bitrate : Number(bitrate);
             userLimit =
@@ -52,7 +52,7 @@ module.exports = async (d) => {
             lockPermissions =
                 lockPermissions === "$default"
                     ? channel.permissionsLocked
-                    : lockPermissions === "yes";
+                    : lockPermissions === "true";
             rateLimitPerUser =
                 rateLimitPerUser === "$default"
                     ? channel.rateLimitPerUser

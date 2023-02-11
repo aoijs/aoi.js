@@ -2,7 +2,7 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, type = "PLAYING", status = "online", url, afk = "no"] =
+    const [name, type = "PLAYING", status = "online", url, afk = "false"] =
         data.inside.splits;
 
     try {
@@ -15,7 +15,7 @@ module.exports = (d) => {
                     url: url?.addBrackets(),
                 },
             ],
-            afk: afk === "yes",
+            afk: afk === "true",
         });
     } catch (err) {
         d.aoiError.fnError(

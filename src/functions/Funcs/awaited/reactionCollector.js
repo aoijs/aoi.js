@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [channelID, messageID, userFilters, time, reactions, awaits, removeReaction = "yes", awaitData = "{}", endAwait,] = data.inside.splits;
+    let [channelID, messageID, userFilters, time, reactions, awaits, removeReaction = "true", awaitData = "{}", endAwait,] = data.inside.splits;
 
     const channel = d.util.getChannel(d, channelID);
     if (!channel)
@@ -67,7 +67,7 @@ module.exports = async (d) => {
     const collector = msg.createReactionCollector({filter, time});
 
     collector.on("collect", async (r, u) => {
-        if (removeReaction === "yes") {
+        if (removeReaction === "true") {
             await r.users.remove(u.id);
         }
 

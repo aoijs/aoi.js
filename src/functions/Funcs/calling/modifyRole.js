@@ -22,9 +22,9 @@ module.exports = async d => {
         RoleData = {
             name: roleDatas[0]?.addBrackets(),
             color: roleDatas[1]?.addBrackets(),
-            hoist: roleDatas[2] === 'yes',
+            hoist: roleDatas[2] === 'true',
             position: roleDatas[3] === '$default' ? role.position : Number(roleDatas[3]),
-            mentionable: roleDatas[4] === 'yes',
+            mentionable: roleDatas[4] === 'true',
             icon: roleDatas[5]?.addBrackets(),
             unicodeEmoji: roleDatas[6]?.addBrackets()
         }

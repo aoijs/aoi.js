@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [channelID, message, returnId = 'no'] = data.inside.splits;
+    const [channelID, message, returnId = 'false'] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
@@ -16,7 +16,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send TTS With Reason: ' + err);
     });
 
-    data.result = returnId === 'yes' ? msg.id : undefined;
+    data.result = returnId === 'true' ? msg.id : undefined;
 
     return {
         code: d.util.setCode(data)

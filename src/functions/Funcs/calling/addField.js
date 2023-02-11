@@ -10,7 +10,7 @@ module.exports = async (d) => {
     const index = Number(fields[i] ?? 1) - 1;
     const name = fields[i + 1].addBrackets();
     const value = fields[i + 2].addBrackets();
-    const inline = fields[i + 3] === "yes";
+    const inline = fields[i + 3] === "true";
 
     if (!d.embeds[index]) d.embeds[index] = new d.embed();
 

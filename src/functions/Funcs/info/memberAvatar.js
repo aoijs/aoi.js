@@ -5,7 +5,7 @@ module.exports = async (d) => {
         guildID = d.guild?.id,
         userID = d.author?.id,
         size = 4096,
-        dynamic = "yes",
+        dynamic = "true",
         format,
     ] = data.inside.splits;
 
@@ -18,7 +18,7 @@ module.exports = async (d) => {
 
     data.result = user.displayAvatarURL({
         size: Number(size),
-        dynamic: dynamic === "yes",
+        dynamic: dynamic === "true",
         format,
     });
 

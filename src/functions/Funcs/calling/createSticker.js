@@ -5,7 +5,7 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [guildID, url, name, returnSticker = "no", tags, description, reason] =
+    let [guildID, url, name, returnSticker = "false", tags, description, reason] =
         inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
@@ -24,7 +24,7 @@ module.exports = async (d) => {
             );
         });
 
-    if (returnSticker === "yes") d.stickers.push(sticker);
+    if (returnSticker === "true") d.stickers.push(sticker);
     return {
         code: d.util.setCode({function: d.func, code, inside, result}),
         sticker: d.stickers,

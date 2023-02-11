@@ -1,7 +1,7 @@
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
-    const [days = 7, guildID = d.guild?.id, roleIds, dry = 'no', reason, count = 'no'] = data.inside.splits;
+    const [days = 7, guildID = d.guild?.id, roleIds, dry = 'false', reason, count = 'false'] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
@@ -13,8 +13,8 @@ module.exports = async d => {
 
     data.result = await guild.members.prune({
         days: Number(days),
-        count: count === 'yes',
-        dry: dry === 'yes',
+        count: count === 'true',
+        dry: dry === 'true',
         roles: roleIds.split(',').map(x => x.trim()),
         reason: reason?.addBrackets(),
     }).catch(err => {

@@ -4,7 +4,7 @@ module.exports = async d => {
     const inside = d.unpack()
     const err = d.inside(inside)
     if (err) return d.error(err)
-    let [content = "", embeds = "", components = "", files = "", ephemeral = "no"] = inside.splits
+    let [content = "", embeds = "", components = "", files = "", ephemeral = "false"] = inside.splits
     embeds = await d.util.parsers.EmbedParser(embeds);
     components = await d.util.parsers.ComponentParser(components, d.client);
     files = await d.util.parsers.FileParser(files);
@@ -13,7 +13,7 @@ module.exports = async d => {
         embeds: embeds,
         components: components,
         files,
-        ephemeral: ephemeral === "yes" || ephemeral === "true"
+        ephemeral: ephemeral === "true" || ephemeral === "true"
     }).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     })

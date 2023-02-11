@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [id, token, messageID, message, returnID = "yes"] = data.inside.splits;
+    const [id, token, messageID, message, returnID = "true"] = data.inside.splits;
 
     const webhook = new WebhookClient({id, token: token.addBrackets()});
     const editMessage = await d.util.errorParser(message, d);
@@ -13,7 +13,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Edit Webhook Message With Reason: " + e);
     });
 
-    if (returnID === "yes") data.result = editedMessageData?.id;
+    if (returnID === "true") data.result = editedMessageData?.id;
 
     return {
         code: d.util.setCode(data)

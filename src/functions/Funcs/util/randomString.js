@@ -3,7 +3,7 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [range, diffExec = "no"] = data.inside.splits;
+    const [range, diffExec = "false"] = data.inside.splits;
 
     if (isNaN(range))
         return d.aoiError.fnError(d, "custom", {inside: data.inside});
@@ -14,7 +14,7 @@ module.exports = (d) => {
 
     if (randoms[`randomString${data.inside}`])
         data.result = randoms[`randomString${data.inside}`];
-    else if (diffExec === "yes") {
+    else if (diffExec === "true") {
         while (i < Number(range)) {
             data.result += Characters.charAt(
                 Math.floor(Math.random() * Characters.length),

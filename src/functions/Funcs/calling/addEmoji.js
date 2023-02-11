@@ -1,7 +1,7 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
-    const [guildID, url, name, returnEmoji = "no", reason, ...roles] = data.inside.splits;
+    const [guildID, url, name, returnEmoji = "false", reason, ...roles] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
@@ -14,7 +14,7 @@ module.exports = async (d) => {
     })
         .catch((err) => d.aoiError.fnError(d, "custom", {}, err.message));
 
-    data.result = returnEmoji === "yes" ? emoji.toString() : undefined
+    data.result = returnEmoji === "true" ? emoji.toString() : undefined
     return {
         code: d.util.setCode(data)
     }

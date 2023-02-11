@@ -11,14 +11,14 @@ module.exports = async (d) => {
         placeHolder,
         minValues = 1,
         maxValues = 1,
-        disabled = "no",
+        disabled = "false",
         ...options
     ] = inside.splits;
     const components = new SelectMenuBuilder();
     index = Number(index) - 1;
     if (isNaN(index) || index < 0)
         d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
-    disabled = disabled === "yes";
+    disabled = disabled === "true";
     placeHolder = placeHolder?.addBrackets();
     customId = customId?.addBrackets();
     minValues = Number(minValues);
@@ -58,7 +58,7 @@ module.exports = async (d) => {
         const label = option.shift().addBrackets();
         const description = option.shift().addBrackets();
         const value = option.shift().addBrackets();
-        const def = option.shift()?.addBrackets() === "yes";
+        const def = option.shift()?.addBrackets() === "true";
         let emoji = option.join( ":" )?.addBrackets();
         emoji = emoji === '' ? undefined : emoji;
         components.addOptions({label, description, value, default: def, emoji});

@@ -3,8 +3,8 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
     const __fields__ = data.inside.splits;
-    let __output__ = "no"
-    if (["yes", "no"].includes(__fields__[__fields__.length - 1])) {
+    let __output__ = "false"
+    if (["true", "false"].includes(__fields__[__fields__.length - 1])) {
         __output__ = __fields__.pop();
     }
     let __evaled__;
@@ -15,7 +15,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, "custom", {}, e);
     }
 
-    data.result = (__output__ === "yes" ? (
+    data.result = (__output__ === "true" ? (
         typeof __evaled__ === "object" ? require('util').inspect(__evaled__, {depth: 0}).deleteBrackets() : (
             typeof __evaled__ === "string" ? __evaled__.deleteBrackets() : __evaled__
         )

@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [amt, filter = "everyone", returnCount = "no", channelID = d.channel.id] =
+    let [amt, filter = "everyone", returnCount = "false", channelID = d.channel.id] =
         inside.splits;
 
     amt = Number(amt);
@@ -48,7 +48,7 @@ module.exports = async (d) => {
             "Failed To Delete Message With Reason: " + err,
         );
     });
-    result = returnCount === "yes" ? result.size : undefined;
+    result = returnCount === "true" ? result.size : undefined;
 
     return {
         code: d.util.setCode({function: d.func, code, inside, result}),

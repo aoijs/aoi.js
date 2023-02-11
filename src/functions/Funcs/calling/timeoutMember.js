@@ -6,7 +6,7 @@ module.exports = async (d) => {
         guildID = d.guild?.id,
         memberId = d.author?.id,
         timeout = "60s",
-        timeoutEndsAt = "no",
+        timeoutEndsAt = "false",
         reason,
     ] = data.inside.splits;
 
@@ -30,7 +30,7 @@ module.exports = async (d) => {
         });
 
     data.result =
-        timeoutEndsAt === "yes"
+        timeoutEndsAt === "true"
             ? mem.communicationDisabledUntilTimestamp
             : undefined;
 
