@@ -266,7 +266,7 @@ module.exports = {
         data.mobileStatus = presence?.clientStatus.mobile;
         data.guildId = presence?.guild.id;
 
-        data.authorId = presence?.userID;
+        data.authorId = presence?.authorId;
         data.user = undefined;
         data.guild = undefined;
 
@@ -334,22 +334,22 @@ module.exports = {
         let part = "";
         let i = 0;
         while (i < parser.length) {
-            if (parser[0] != "{") {
-                while ( parser[ i ] != "{" )
+            if (parser[0] !== "{") {
+                while ( parser[ i ] !== "{" )
                 {
                     if(i >= parser.length) break;
                     i++;
                 }
             }
             if(i >= parser.length) break;
-            while (left == 0 || right < left) {
+            while (left === 0 || right < left) {
                 part += parser[i];
-                if (parser[i] == "{") left++;
-                else if (parser[i] == "}") right++;
+                if (parser[i] === "{") left++;
+                else if (parser[i] === "}") right++;
                 // console.log(part);
                 i += 1;
-                if (i == parser.length) break;
-                if (left == right) break;
+                if (i === parser.length) break;
+                if (left === right) break;
             }
             ans.push(part);
             right = 0;
