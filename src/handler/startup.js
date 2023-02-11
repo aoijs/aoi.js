@@ -10,7 +10,7 @@ module.exports = async (client) => {
             "\x1b[0m",
         );
         console.log(
-            "Discord Support Server: https://discord.gg/HMUfMXDQsV",
+            "Official Support Server: https://discord.gg/HMUfMXDQsV",
         );
     }
 

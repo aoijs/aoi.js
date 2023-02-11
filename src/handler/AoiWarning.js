@@ -13,10 +13,7 @@ module.exports = async (client) => {
             const data = (await res.json()).tag_name
 
             if (json.version !== data) {
-
-                console.warn(
-                    "\x1b[31mAoiWarning: \u001b[33mYou are currently using an outdated version, install the latest version by" +
-                    "\u001b[0m" + " (\x1b[31mnpm i aoi.js@latest\x1b[0m)")
+                console.warn('\x1b[31mAoiWarning:\x1B[0m aoi.js is outdated! Update with "npm install aoi.js@latest".');
             }
         } catch {
         }
