@@ -49,7 +49,7 @@
     "dbdjs.db": "^2.0.2",
     "discord-api-types": "^0.37.15-next.aaa57b4.1666469569",
     "discord.js": "^14.7.1",
-    "undici": "^5.14.0"
+    "undici": "^5.18.0"
   },
   "devDependencies": {
     "@akarui/aoi.music": "github:akaruidevelopment/music#main",

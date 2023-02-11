@@ -1,5 +1,5 @@
 module.exports = (statuses, client) => {
-  if (client.aoiOptions.disableLogs !== true) {
+  if (client.aoiOptions.aoiLogs !== false) {
     console.log("\x1b[32mEnabled AoiClient Status.\x1b[0m");
   }
   if (statuses.size !== 0) {

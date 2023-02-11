@@ -2,7 +2,7 @@ const Interpreter = require("../interpreter.js");
 /*Copyright © 2021 @Akarui Development*/
 
 module.exports = async (client) => {
-    if (client.aoiOptions.disableLogs !== true) {
+    if (client.aoiOptions.aoiLogs !== false) {
         console.log(
             "Initialized on \x1b[36maoi.js \x1b[32mv" +
             require("../../package.json").version +

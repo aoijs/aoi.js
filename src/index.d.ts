@@ -86,7 +86,8 @@ declare module "aoi.js" {
         respondOnEdit?: RespondOnEditOptions;
         cache: CacheOptions;
         mobilePlatform?: boolean;
-        disableLogs?: boolean;
+        aoiLogs?: boolean;
+        aoiWarning?: boolean;
         plugins?: Array<string>;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
