@@ -49,11 +49,9 @@ const aoijs = require("aoi.js")
 const bot = new aoijs.AoiClient({
 token: "Discord Bot Token",
 prefix: "Discord Bot Prefix",
-intents: ["MessageContent", "Guilds", "GuildMessages"]
+intents: ["MessageContent", "Guilds", "GuildMessages"],
+events: ["onMessage"],
 })
-
-//Events
-bot.onMessage()
 
 //Command Example (ping)
 bot.command({
