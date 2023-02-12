@@ -329,8 +329,7 @@ const Perms = {
     changenickname: PermissionsBitField["Flags"].ChangeNickname,
     managenicknames: PermissionsBitField["Flags"].ManageNicknames,
     manageroles: PermissionsBitField["Flags"].ManageRoles,
-    manageemojisandstickers:
-        PermissionsBitField["Flags"].ManageEmojisAndStickers,
+    manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
     moderatemembers: PermissionsBitField["Flags"].ModerateMembers,
 
     //voice

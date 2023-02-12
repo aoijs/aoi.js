@@ -2,7 +2,7 @@ function searchIndexes(pat, txt) {
     const patLength = pat.length;
     const txtLength = txt.length;
 
-    const lps = new Array(patLength).fill(0);
+    const lps = new Int32Array(patLength);
 
     processPattern(pat, patLength, lps);
 

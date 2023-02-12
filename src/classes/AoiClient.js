@@ -1,4 +1,4 @@
-const AoiError = require("./AoiError.js");
+require("./AoiError.js");
 const BaseClient = require("./AoiBase.js");
 const { Command } = require("./Commands.js");
 const { FunctionManager } = require("./Functions.js");
