@@ -1,8 +1,8 @@
 const Interpreter = require("../../interpreter.js");
 const Util = require("../../classes/Util.js");
 module.exports = async ( message,client, db) => {
-    if (client.messageEventOptions) {
-        const options = client.messageEventOptions;
+    if (client.aoiOptions) {
+        const options = client.aoiOptions;
         if (
             (!options.respondToBots &&
                 (message.webhookId || message.author.bot)) ||

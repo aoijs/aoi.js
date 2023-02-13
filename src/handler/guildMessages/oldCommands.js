@@ -8,10 +8,10 @@ const CommandHandler = async (client, message, db) => {
     if (!message) return;
     if (
         message?.channel?.type === "dm" &&
-        client.messageEventOptions.guildOnly === false
+        client.aoiOptions.guildOnly === false
     )
         return;
-    if (message.author?.bot && client.messageEventOptions.respondToBots === false)
+    if (message.author?.bot && client.aoiOptions.respondToBots === false)
         return;
     const prefixes = [];
     for (const prefix of client.prefix) {
