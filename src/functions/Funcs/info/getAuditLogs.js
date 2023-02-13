@@ -9,7 +9,6 @@ module.exports = async (d) => {
         action,
         format = "{executor.username}: {target.id} - {action}"
     ] = data.inside.splits;
-
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
@@ -35,15 +34,14 @@ module.exports = async (d) => {
                 "Failed To Get Audit Logs With Reason: " + e
             );
         });
-
     data.result = audit.entries
         .map((logs) => {
                 return format
                     .replaceAll(`{executor.username}`, logs.executor.username)
                     .replaceAll(`{executor.mention}`, logs.executor)
-                    .replaceAll(`{executor.id}`, logs.executor.id)
-                    .replaceAll(`{executor.tag}`, logs.executor.tag)
-                    .replaceAll("{target.id}", logs.target.id)
+                    .replaceAll(`{executor.id}`, logs.executor?.id)
+                    .replaceAll(`{executor.tag}`, logs.executor?.tag)
+                    .replaceAll("{target.id}", logs.target?.id)
                     .replaceAll("{reason}", logs.reason)
                     .replaceAll("{action}", AuditLogEvent[logs.action])
                     .replaceAll("{id}", logs.id);
