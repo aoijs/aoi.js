@@ -82,7 +82,7 @@ class BaseClient extends Discord.Client {
             if (Array.isArray(options.plugins)) {
                 for (const plugin of options.plugins) {
                     if (typeof plugin === "string") {
-                        if (fs.fstatSync(plugin).isDirectory()) {
+                        if (fs.statSync(plugin).isDirectory()) {
                             const pluginPaths = fs.readdirSync(plugin);
                             for (const {} of pluginPaths) {
                                 const pluginPaths = fs.readdirSync(
