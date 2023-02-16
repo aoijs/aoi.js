@@ -105,7 +105,7 @@ const EmbedParser = async (msg) => {
                 const foi = ["yes", "no", "true", "false"].find(
                     (x) => x === fo[Number(fo.length - 1)].trim(),
                 )
-                    ? fo.pop().trim() === "yes"
+                    ? fo.pop().trim() === "true"
                     : false;
 
                 const fov = fo.join(":").addBrackets().trim();
@@ -122,7 +122,7 @@ const EmbedParser = async (msg) => {
                     const oofi = ["yes", "no", "true", "false"].find(
                         (x) => x === oof[oof.length - 1].trim(),
                     )
-                        ? oof.pop().trim() === "yes"
+                        ? oof.pop().trim() === "true"
                         : false;
                     const oofv = oof.join(",").addBrackets().trim();
                     embed.fields.push({
@@ -210,7 +210,7 @@ const ComponentParser = async (msg, client) => {
             const placeholder = inside.shift();
             const minVal = inside[0] === "" ? 0 : Number(inside.shift());
             const maxVal = inside[0] === "" ? 1 : Number(inside.shift());
-            const disabled = inside.shift() === "yes";
+            const disabled = inside.shift() === "true";
             const options = inside.join(":").trim();
 
             let optArray = [];
@@ -222,7 +222,7 @@ const ComponentParser = async (msg, client) => {
                     const label = opt.shift();
                     const value = opt.shift();
                     const desc = opt.shift();
-                    const def = opt.shift() === "yes";
+                    const def = opt.shift() === "true";
                     const emoji = opt.length
                         ? (opt || "").join(":").trim().startsWith("<")
                             ? client.emojis.cache.find(
@@ -271,7 +271,7 @@ const ComponentParser = async (msg, client) => {
                 style = isNaN(style) ? style : Number(style);
                 const custom_id = textInput.shift().addBrackets().trim();
                 const required =
-                    textInput.shift()?.addBrackets().trim() === "yes";
+                    textInput.shift()?.addBrackets().trim() === "true";
                 const placeholder = textInput.shift()?.addBrackets().trim();
                 const min_length = textInput.shift()?.addBrackets().trim();
                 const max_length = textInput.shift()?.addBrackets().trim();
@@ -414,236 +414,6 @@ const errorHandler = async ( errorMessage,d, returnMsg = false, channel) => {
                 .split(",")
                 .map((x) => x.trim());
     }
-    // if (errorMessage.includes("{edit:")) {
-    //   const editPart = errorMessage.split("{edit:")[1].split("}}")[0];
-    //   const dur = editPart.split(":")[0];
-    //   const msgs = editPart.split(":{").slice(1).join(":{").split("}:{");
-    //   const messages = [];
-    //   for (const msg of msgs) {
-    //     messages.push(await Util.errorParser(msg.split("}:{")[0], d));
-    //   }
-    //   edits = { time: dur, messages };
-
-    //   errorMessage = errorMessage.replace(`{edit:${editPart}}}`, "");
-    // }
-
-    // if (errorMessage.includes("{file:")) {
-    //   for (const after of errorMessage.split("{file:").slice(1)) {
-    //     const inside = after.split("}")[0];
-    //     const fields = inside.split(":");
-    //     const name = fields.pop().addBrackets().trim();
-    //     const text = fields.join(":").addBrackets().trim();
-    //     files.push(new Discord.AttachmentBuilder(Buffer.from(text), name));
-    //     errorMessage = errorMessage.replace(`{file:${inside}}`, "");
-    //   }
-    // }
-    // if (errorMessage.includes("{suppress:")) {
-    //   const inside = errorMessage.split("{suppress:")[1].split("}")[0].trim();
-
-    //   suppress = inside === "yes";
-
-    //   errorMessage = errorMessage.replace(`{suppress:${inside}}`, "");
-    // }
-    // if (errorMessage.includes("{interaction:")) {
-    //   const inside = errorMessage.split("{interaction:")[1].split("}")[0].trim();
-
-    //   interaction = inside === "yes";
-
-    //   errorMessage = errorMessage.replace(`{interaction:${inside}}`, "");
-    // }
-
-    // if (errorMessage.includes("{attachment:")) {
-    //   for (const after of errorMessage.split("{attachment:").slice(1)) {
-    //     const inside = after.split("}")[0];
-    //     let [name, ...url] = inside.split(":");
-    //     name = name.addBrackets().trim();
-    //     url = url.join(":").addBrackets().trim();
-    //     const attachment = new Discord.AttachmentBuilder(url, name);
-    //     files.push(attachment);
-    //     errorMessage = errorMessage.replace(`{attachment:${inside}}`, "");
-    //   }
-    // }
-
-    // if (errorMessage.includes("{deletecommand}")) {
-    //   deleteCommand = true;
-    //   errorMessage = errorMessage.replace(`{deletecommand}`, "");
-    // }
-    // if (errorMessage.includes("{delete:")) {
-    //   const inside = errorMessage.split("{delete:")[1].split("}")[0].trim();
-
-    //   deleteAfter = Time.parse(inside)?.ms;
-
-    //   errorMessage = errorMessage.replace(`{delete:${inside}}`, "");
-    // }
-
-    // if (errorMessage.includes("{execute:")) {
-    //   const command = errorMessage.split("{execute:")[1].split("}")[0];
-    //   errorMessage = errorMessage.replace(`{execute:${command}}`, "");
-    //   const cmd = d.client.cmd.awaited.find((c) => c.name === command);
-    //   if (!cmd)
-    //     return d.error(
-    //         `:x: Invalid awaited command '${command}' in {execute:${command}}`,
-    //     );
-    //   await d.interpreter(d.client, d.message, d.args, cmd);
-    // }
-    // if (errorMessage.includes("{newEmbed:")) {
-    //   const o = errorMessage.split("{newEmbed:").slice(1);
-    //   for (let errorMessages of o) {
-    //     const index = errorMessages.lastIndexOf("}");
-    //     errorMessages = errorMessages.slice(0, index);
-    //     const old = errorMessages;
-
-    //     const embed = new Discord.EmbedBuilder();
-    //     if (errorMessages.includes("{title:")) {
-    //       const inside = errorMessages.split("{title:")[1].split("}")[0];
-    //       embed.setTitle(inside.addBrackets().trim());
-    //       errorMessages = errorMessages.replace(`{title:${inside}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{url:")) {
-    //       const url = errorMessages.split("{url:")[1].split("}")[0].trim();
-
-    //       if (embed.title) embed.setURL(url.addBrackets());
-
-    //       errorMessages = errorMessages.replace(`{url:${url}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{timestamp")) {
-    //       const rest = errorMessages.includes("{timestamp:")
-    //         ? errorMessages.split("{timestamp:")[1].split("}")[0]
-    //         : "";
-
-    //       embed.setTimestamp(Number(rest.trim()) || Date.now());
-
-    //       errorMessages = errorMessages.replace(
-    //         `{timestamp${rest ? ":" + rest : ""}}`,
-    //         "",
-    //       );
-    //     }
-
-    //     if (errorMessages.includes("{author:")) {
-    //       const inside = errorMessages
-    //         .split("{author:")[1]
-    //         .split("}")[0]
-    //         .split(":");
-    //       let to = inside.join(":");
-    //       const text = inside.shift().trim();
-    //       const url = inside.join(":").trim();
-    //       embed.setAuthor({
-    //         name: text.addBrackets(),
-    //         iconURL: url.addBrackets().trim() || undefined,
-    //       });
-    //       errorMessages = errorMessages.replace(`{author:${to}}`, "");
-    //     }
-    //     if (errorMessages.includes("{authorURL:")) {
-    //       const inside = errorMessages
-    //         .split("{authorURL:")[1]
-    //         .split("}")[0]
-    //         .trim();
-    //       if (embed.author) embed.author.url = inside;
-    //       errorMessages = errorMessages.replace(`{authorURL:${inside}}`, "");
-    //     }
-    //     if (errorMessages.includes("{fields:")) {
-    //       const inside = errorMessages.split("{fields:").slice(1);
-    //       for (let o of inside) {
-    //         o = o.split("}")[0].split(":");
-    //         for (let i of o) {
-    //           i = i.split(",");
-    //           const ifn = i.shift().trim();
-    //           const ifi = ["yes", "no", true, false].find(
-    //             (x) => x === i[i.length - 1].trim(),
-    //           )
-    //             ? i.pop().trim() === "yes"
-    //             : false;
-    //           const ifv = i.join(",").trim();
-
-    //           embed.addFields( { name: ifn, value: ifv, inline: ifi } );
-    //         }
-    //       }
-    //       errorMessages = errorMessages.replace(`{fields:${inside}}`, "");
-    //     }
-    //     if (errorMessages.includes("{footer:")) {
-    //       const inside = errorMessages
-    //         .split("{footer:")[1]
-    //         .split("}")[0]
-    //         .split(":");
-    //       let to = inside.join(":");
-    //       const text = inside.shift();
-    //       const url = inside.join(":");
-    //       embed.setFooter({
-    //         text: text.addBrackets().trim(),
-    //         iconURL:
-    //            url.addBrackets().trim() || undefined,
-    //       });
-    //       errorMessages = errorMessages.replace(`{footer:${to}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{description:")) {
-    //       const inside = errorMessages
-    //         .split("{description:")[1]
-    //         .split("}")[0]
-    //         .trim();
-    //       embed.setDescription(inside.addBrackets());
-    //       errorMessages = errorMessages.replace(`{description:${inside}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{color:")) {
-    //       const inside = errorMessages.split("{color:")[1].split("}")[0].trim();
-    //       embed.setColor(inside.addBrackets());
-    //       errorMessages = errorMessages.replace(`{color:${inside}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{thumbnail:")) {
-    //       const inside = errorMessages
-    //         .split("{thumbnail:")[1]
-    //         .split("}")[0]
-    //         .trim();
-    //       embed.setThumbnail(inside.addBrackets());
-    //       errorMessages = errorMessages.replace(`{thumbnail:${inside}}`, "");
-    //     }
-
-    //     if (errorMessages.includes("{field:")) {
-    //       const fields = errorMessages.split("{field:");
-    //       fields.shift();
-    //       for (const after of fields) {
-    //         const inside = after.split("}")[0].split(":");
-    //         let inline = false;
-    //         let arg;
-    //         if (
-    //           inside.length > 2 &&
-    //           ["yes", "no"].some((w) => inside[inside.length - 1].trim() === w)
-    //         ) {
-    //           arg = inside.pop().trim();
-    //           inline = arg === "yes";
-    //         }
-    //         embed.addFields( {
-    //           name:inside[ 0 ].addBrackets().trim(),
-    //           value:inside.slice( 1 ).join( ":" ).addBrackets().trim(),
-    //           inline,
-    //         } );
-    //         errorMessages = errorMessages.replace(
-    //           `{field:${inside.join(":")}${arg ? `:${arg}` : ""}}`,
-    //           "",
-    //         );
-    //       }
-    //     }
-
-    //     if (errorMessages.includes("{image:")) {
-    //       const inside = errorMessages.split("{image:")[1].split("}")[0].trim();
-    //       embed.setImage(inside.addBrackets());
-    //       errorMessages = errorMessages.replace(`{image:${inside}}`, "");
-    //     }
-    //     errorMessage = errorMessage.replace("{newEmbed:" + old + "}", "");
-
-    //     embeds.push(embed);
-    //   }
-    // }
-
-    // if (errorMessage.includes("{reactions:")) {
-    //   const react = errorMessage.split("{reactions:")[1].split("}")[0];
-    //   reactions = react.split(":").map((x) => x.trim());
-    //   errorMessage = errorMessage.replace(`{reactions:${react}}`, "");
-    // }
 
     if (!embeds.length) send = false;
 
