@@ -21,7 +21,7 @@ class SlashOption {
             opt = opt.split(":");
             const name = opt.shift()?.addBrackets();
             const description = opt.shift()?.addBrackets();
-            const required = opt?.shift()?.addBrackets() === "yes" || false;
+            const required = opt?.shift()?.addBrackets() === "true" || false;
             const choice = opt.join(":");
 
             let choices;
@@ -41,7 +41,7 @@ class SlashOption {
             option = option.split(":");
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required = opt?.shift()?.addBrackets() === "yes" || false;
+            const required = opt?.shift()?.addBrackets() === "true" || false;
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
@@ -62,8 +62,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
@@ -84,8 +84,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             booleanOptions.push({type: 5, name, description, required});
         }
         return booleanOptions;
@@ -101,8 +101,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             userOptions.push({type: 6, name, description, required});
         }
         return userOptions;
@@ -118,8 +118,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             channelOptions.push({type: 7, name, description, required});
         }
         return channelOptions;
@@ -135,8 +135,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             roleOptions.push({type: 8, name, description, required});
         }
         return roleOptions;
@@ -153,8 +153,8 @@ class SlashOption {
                 option
                     ?.shift()
                     ?.addBrackets()
-                    ?.replace("yes", true)
-                    ?.replace("no", false) || true;
+                    ?.replace("true", true)
+                    ?.replace("false", false) || true;
             mentionOptions.push({type: 9, name, description, required});
         }
         return mentionOptions;
