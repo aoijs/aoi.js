@@ -44,16 +44,16 @@ yarn add aoi.js
 ## Setup
 
 ```javascript
-const aoijs = require("aoi.js")
+const { AoiClient } = require("aoi.js")
 
-const bot = new aoijs.AoiClient({
+const bot = new AoiClient({
 token: "Discord Bot Token",
 prefix: "Discord Bot Prefix",
 intents: ["MessageContent", "Guilds", "GuildMessages"],
-events: ["onMessage"],
+events: ["onMessage"]
 })
 
-//Command Example (ping)
+//Ping Command Example
 bot.command({
 name: "ping",
 code: `Pong! $pingms`
