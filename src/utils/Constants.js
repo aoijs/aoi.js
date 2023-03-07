@@ -331,7 +331,7 @@ const Perms = {
     manageroles: PermissionsBitField["Flags"].ManageRoles,
     manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
     moderatemembers: PermissionsBitField["Flags"].ModerateMembers,
-
+    managewebhooks: PermissionsBitField["Flags"].ManageWebhooks,
     //voice
     requesttospeak: PermissionsBitField["Flags"].RequestToSpeak,
     managethreads: PermissionsBitField["Flags"].ManageThreads,
