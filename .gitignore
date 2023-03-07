@@ -1,0 +1,23 @@
+#Ignore modules
+node_modules
+
+#Ignore compiled code
+#Comment this option before publishing and be sure to have run `npm run build`
+dist
+
+#Ignore Source
+#Unmark this option before publishing.
+#src
+
+#Ignore database files
+database
+
+#Ignore Test Environment
+commands
+config.json
+src/tests/
+plugins
+/index.js
+.idea
+.vscode
+.DS_Store
