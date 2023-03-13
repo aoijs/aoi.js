@@ -71,7 +71,7 @@ class AoijsAPI extends Database {
   }
 
   createTable(type) {
-    if (["default", "dbdjs.db"].includes(type)) {
+    if (type == "dbdjs.db") {
       const tables = this.tables.map((x) => ({ name: x }));
       this.db = new this.module.Database({
         path: this.path,
@@ -94,7 +94,9 @@ class AoijsAPI extends Database {
         this.path.replace("./", "") + "/database.sql",
         this.extraOptions.sqlOptions || { timeout: 5000 },
       );
-    } else if (type === "aoi.db") {
+    } else if ( type === "aoi.db" || type == "default" )
+    {
+      if ( !this.extraOptions.dbType ) this.extraOptions.dbType = "KeyValue";
       this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
         path: this.path,
         tables: this.tables,
