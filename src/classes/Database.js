@@ -71,7 +71,7 @@ class AoijsAPI extends Database {
   }
 
   createTable(type) {
-    if (type == "dbdjs.db") {
+    if (type === "dbdjs.db") {
       const tables = this.tables.map((x) => ({ name: x }));
       this.db = new this.module.Database({
         path: this.path,
