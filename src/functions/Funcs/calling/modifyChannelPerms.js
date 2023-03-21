@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [roruId, channelID, ...perms] = data.inside.splits;
+    const [roleoruserID, channelID, ...perms] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
@@ -16,7 +16,7 @@ module.exports = async d => {
         objPerms[Perms[perm.slice(1)]] = sign === '+' ? true : sign === '/' ? null : false;
     }
 
-    channel.permissionOverwrites.edit(roruId, objPerms).catch(e => {
+    channel.permissionOverwrites.edit(roleoruserID, objPerms).catch(e => {
         d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Perms With Reason: ' + e);
     });
 
