@@ -100,7 +100,7 @@ class AoijsAPI extends Database {
       this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
         path: this.path,
         tables: this.tables,
-        ...(this.extraOptions?.dbOptions ?? {}),
+        ...(this.extraOptions ?? {}),
       });
       this.db.connect();
     }
