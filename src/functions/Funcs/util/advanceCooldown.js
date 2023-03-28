@@ -1,11 +1,10 @@
 const {Time} = require("../../../utils/helpers/customParser.js");
-module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
 
-    let [time, id, errorObject = ""] = inside.splits;
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [time, id, errorObject = ""] = data.inside.splits;
     let error;
 
     let cooldown = await d.client.db.get(d.client.db.tables[0], "cooldown", id);
@@ -30,7 +29,7 @@ module.exports = async (d) => {
                 .replaceAll("%fullTime%", toString());
 
             errorObject = await d.util.errorParser(errorObject);
-            d.aoiError.makeMessageError(
+            await d.aoiError.makeMessageError(
                 d.client,
                 d.channel,
                 errorObject.data ?? errorObject,
@@ -45,7 +44,7 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         error,
     };
 };
