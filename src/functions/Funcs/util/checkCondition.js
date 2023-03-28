@@ -1,25 +1,26 @@
-const {CheckCondition} = require('../../../utils/helpers/checkCondition.js')
-const {mustEscape} = require('../../../utils/helpers/mustEscape.js')
-module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) d.error(err);
+const { CheckCondition } = require('../../../utils/helpers/checkCondition.js')
+const { mustEscape } = require('../../../utils/helpers/mustEscape.js')
 
-    const [condition] = inside.splits;
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    if (!["==", "!=", "<=", ">=", "||", "&&", "<", ">"].some(x => condition.includes(x))) return d.aoiError.fnError(d, "custom", {inside}, "Valid Operators Not Provided In");
+    const [condition] = data.inside.splits;
 
-    let result = CheckCondition.solve(mustEscape(condition) || "")
+    if (!["==", "!=", "<=", ">=", "||", "&&", "<", ">"].some(x => condition.includes(x))) {
+        return d.aoiError.fnError(d, "custom", data.inside, "Valid Operators Not Provided In");
+    }
 
-    result = eval(result)?.toString()
+    let result = CheckCondition.solve(mustEscape(condition) || "");
+    result = eval(result)?.toString();
 
     if (!["true", "false"].includes(result)) {
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Condition Provided In");
+        d.aoiError.fnError(d, "custom", data.inside, "Invalid Condition Provided In");
         result = undefined;
     }
 
+    data.result = result;
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
-} 
+}
