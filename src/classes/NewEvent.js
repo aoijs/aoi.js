@@ -24,7 +24,7 @@ class CustomEvent extends EventEmitter {
     listen(event) {
         this.on(event, async (...data) => {
             const commands = this.commands.filter(
-                (x) => x.listen.toLowerCase() === event,
+                (x) => x.listen === event,
             );
             await EventExecuter(event, this.client, commands, ...data);
         });
