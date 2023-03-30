@@ -1,10 +1,7 @@
-
 import { TranspilerError } from "../core/error.js";
-import  Scope  from "../core/structs/Scope.js";
-import  FUNCDATA from "../funcs/index.js";
-import {
-    funcData,
-} from "../typings/interfaces.js";
+import Scope from "../core/structs/Scope.js";
+import FUNCDATA from "../functions/index.js";
+import { funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
 export function areBracketsBalanced(code: string) {
     const leftbracket = /\[/g;
@@ -354,7 +351,7 @@ export function removeF(total: string) {
         total = total.replace(part, "");
         i++;
     }
-    return (total);
+    return total;
 }
 
 export function removeMF(total: string) {
@@ -366,5 +363,5 @@ export function removeMF(total: string) {
         total = total.replace(part, "");
         i++;
     }
-    return (total);
+    return total;
 }

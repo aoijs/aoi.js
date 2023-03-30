@@ -20,7 +20,17 @@ const transpiler = Transpiler( code, {
 } );
 
 const func = transpiler.func;
-console.log( func.toString() );
+
+console.log( `--------------------
+code:
+${code }
+
+
+func:
+${func.toString() }
+
+` );
+
 func();
 console.log( "--------------------" );
 const transpiler2 = Transpiler( code2, {
@@ -28,5 +38,14 @@ const transpiler2 = Transpiler( code2, {
 } );
 
 const func2 = transpiler2.func;
-console.log( func2.toString() );
+console.log(`--------------------
+code:
+${code2}
+
+
+func:
+${func2.toString()}
+
+`);
 func2();
+console.log("--------------------");

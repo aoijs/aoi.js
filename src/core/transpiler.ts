@@ -1,4 +1,4 @@
-import functions from "../funcs/index.js";
+import functions from "../functions/index.js";
 import { TranspilerOptions } from "../typings/interfaces.js";
 import {
     getFunctionList,
@@ -11,7 +11,10 @@ import { minify, MinifyOutput } from "uglify-js";
 import fixMath from "./parsers/mathParser.js";
 import Scope from "./structs/Scope.js";
 const functionNames = Object.keys(functions);
-export function Transpiler(code: string, options: TranspilerOptions):{ func: Function, code:string, scope: Scope[] } {
+export function Transpiler(
+    code: string,
+    options: TranspilerOptions,
+): { func: Function; code: string; scope: Scope[] } {
     const { scopeData, sendMessage, minify: uglify } = options;
     const flist = getFunctionList(code, functionNames);
 
