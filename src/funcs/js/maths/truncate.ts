@@ -6,8 +6,8 @@ import {
     parseResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $abs: FunctionData = {
-    name: "$abs",
+export const $truncate: FunctionData = {
+    name: "$truncate",
     type: "getter",
     brackets: true,
     optional: false,
@@ -21,9 +21,9 @@ export const $abs: FunctionData = {
     version: "7.0.0",
     default: ["void"],
     returns: "number",
-    description: "Returns the Absolute value of the number",
+    description: "Returns the Truncate off value of the number",
     code: (data, scope) => {
-        const numbers = data.inside;
+        const number = data.inside ?? "";
         const currentScope = scope[scope.length - 1];
         if (
             data.splits.length === 0 &&
@@ -34,17 +34,21 @@ export const $abs: FunctionData = {
                 `${data.name} requires at least 1 argument`,
             );
         }
-        if(!numbers) throw new TranspilerError(`${data.name} requires at least 1 argument`);
-        let abs =
-            numbers.includes( TranspilerCustoms.FS ) ||
-                numbers.includes( "__$DISCORD_DATA$__" ) ||
-                numbers.includes( TranspilerCustoms.MFS )
-                ? parseResult( numbers.trim() )
-                : Number( numbers );
-        abs = `Math.abs(${abs})`
+        if (!number)
+            throw new TranspilerError(
+                `${data.name} requires at least 1 argument`,
+            );
+        let truncate =
+            number.includes(TranspilerCustoms.FS) ||
+            number.includes("__$DISCORD_DATA$__") ||
+            number.includes(TranspilerCustoms.MFS)
+                ? parseResult(number.trim())
+                : Number(number);
 
-        const res = escapeMathResult(`(${abs})`);
-         currentScope.update(res, data);
+        truncate = `(Math.trunc(${truncate}))`;
+
+        const res = escapeMathResult(`(${truncate})`);
+        currentScope.update(res, data);
         return {
             code: res,
             scope,

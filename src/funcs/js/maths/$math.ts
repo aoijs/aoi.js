@@ -80,7 +80,7 @@ export const $math: FunctionData = {
     optional: false,
     fields: [
         {
-            name: "numbers",
+            name: "expression",
             type: "number",
             required: true,
         },
