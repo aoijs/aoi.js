@@ -57,4 +57,3 @@ export const $log: FunctionData = {
     },
 };
 
-export default $log;

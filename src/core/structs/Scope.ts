@@ -60,6 +60,10 @@ export default class Scope {
     addEmbeds(embeds: any[]) {
         this.embeds = [...this.embeds, ...embeds];
     }
+    addFunction ( func: string )
+    {
+        this.functions += func+ " \n";
+    }
     replaceLast(str: string, replacer: string, replacedTo: string) {
         const index = str.lastIndexOf(replacer);
         if (index === -1) return str;

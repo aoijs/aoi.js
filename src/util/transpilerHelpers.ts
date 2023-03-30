@@ -196,7 +196,7 @@ export function ExecuteData(code: string, data: funcData[], scope: Scope[]) {
             code = code.replace(d.total, result.code);
             // .replace(d.total.replaceAll(";", "#FUNCTION_SEPARATOR#"), result.code);
             if (d.type === "scope_getter") {
-                d.total = removeFunction(d.total);
+                d.total = removeFF(d.total);
                 scope[scope.length - 1].sendData.content = scope[
                     scope.length - 1
                 ].sendData.content.replace(d.total, result.code);
@@ -255,7 +255,7 @@ export function ExecuteData(code: string, data: funcData[], scope: Scope[]) {
                 code = code.replace(d.total, executed.code);
 
                 if (d.type === "getter" || d.type === "function_getter") {
-                    d.total = removeFunction(d.total);
+                    d.total = removeFF(d.total);
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
                     ].sendData.content.replace(d.total, executed.code);
@@ -268,7 +268,7 @@ export function ExecuteData(code: string, data: funcData[], scope: Scope[]) {
             d.type !== "scope_getter"
         ) {
             const s = scope[scope.length - 1];
-            d.total = removeFunction(d.total);
+            d.total = removeFF(d.total);
 
             s.sendData.content = s.sendData.content.replace(d.total, "");
             scope[scope.length - 1] = s;
@@ -333,7 +333,7 @@ export function convertToBool(output: string) {
     return output === "true" || output === "yes" ? true : false;
 }
 
-export function removeFunction(total: string) {
+export function removeFF(total: string) {
     if (!total.includes(TranspilerCustoms.FFS)) return total;
     const parts = total.split(TranspilerCustoms.FFS).slice(1);
     let i = 0;
@@ -345,3 +345,26 @@ export function removeFunction(total: string) {
     return parseResult(total);
 }
 
+export function removeF(total: string) {
+    if (!total.includes(TranspilerCustoms.FS)) return total;
+    const parts = total.split(TranspilerCustoms.FS).slice(1);
+    let i = 0;
+    while (i < parts.length) {
+        const part = parts[i].split(TranspilerCustoms.FE)[0];
+        total = total.replace(part, "");
+        i++;
+    }
+    return (total);
+}
+
+export function removeMF(total: string) {
+    if (!total.includes(TranspilerCustoms.MFS)) return total;
+    const parts = total.split(TranspilerCustoms.MFS).slice(1);
+    let i = 0;
+    while (i < parts.length) {
+        const part = parts[i].split(TranspilerCustoms.MFE)[0];
+        total = total.replace(part, "");
+        i++;
+    }
+    return (total);
+}

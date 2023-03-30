@@ -1,17 +1,4 @@
-import { inspect } from "util";
-import { parseString } from "./stringParser.js";
-import { parseData } from "../../util/transpilerHelpers.js";
 import Condition from "../structs/Condition.js";
-const opposites = {
-    "===": "!==",
-    "!==": "===",
-    "==": "!=",
-    "!=": "==",
-    ">": "<=",
-    "<": ">=",
-    ">=": "<",
-    "<=": ">",
-};
 export const operators = ["===", "!==", "==", "!=", ">", "<", ">=", "<="];
 
 export function countSBrackets(condition: string) {
@@ -45,7 +32,6 @@ export function conditionLexer(condition: string) {
     } else {
         tempCondition = condition;
     }
-    const counts = countSBrackets(tempCondition);
     let i = 0;
     let starter = new Condition("");
     while (i < tempCondition.length) {
