@@ -48,4 +48,52 @@ ${func2.toString()}
 
 `);
 func2();
-console.log("--------------------");
+console.log( "--------------------" );
+
+const code3 = `
+$let[hi;0]
+$while[$get[hi] < 10;
+    $log[$get[hi]]
+    $inc[$get[hi]]
+]
+`;
+
+
+const transpiler3 = Transpiler(code3, {
+    minify: true, // true to shorten the code (recommended)
+});
+
+const func3 = transpiler3.func;
+
+console.log(`--------------------
+code:
+${code3}
+
+
+func:
+${func3.toString()}
+
+`);
+
+func3();
+console.log( "--------------------" );
+
+const code4 = `$loop[10;{};$log[hi]]`;
+
+const transpiler4 = Transpiler( code4, {
+    minify: true, // true to shorten the code (recommended)
+} );
+
+const func4 = transpiler4.func;
+
+console.log( `--------------------
+code:
+${code4 }
+
+func:
+${func4.toString() }
+
+` );
+
+func4();
+console.log( "--------------------" );

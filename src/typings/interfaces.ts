@@ -42,7 +42,7 @@ export interface FunctionData {
     code: (
         data: funcData,
         scope: Scope[],
-    ) => { code: string; scope: Scope[]; data?: funcData };
+    ) => { code: string; scope: Scope[]; data?: funcData; }
 }
 export interface PartialFunctionData extends FunctionData {
     total: string;
