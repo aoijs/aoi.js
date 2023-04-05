@@ -10,11 +10,12 @@ import { TranspilerError } from "./error.js";
 import { minify, MinifyOutput } from "uglify-js";
 import fixMath from "./parsers/mathParser.js";
 import Scope from "./structs/Scope.js";
+import { AsyncFunction } from "../typings/types.js";
 const functionNames = Object.keys(functions);
 export function Transpiler(
     code: string,
     options: TranspilerOptions,
-): { func: Function; code: string; scope: Scope[] } {
+): { func: AsyncFunction; code: string; scope: Scope[] } {
     const { scopeData, sendMessage, minify: uglify } = options;
     const flist = getFunctionList(code, functionNames);
 
@@ -64,7 +65,7 @@ export function Transpiler(
                 (uglify
                     ? (<MinifyOutput>functionString).code
                     : <string>functionString),
-        )();
+        )() as AsyncFunction;
     } catch (e: any) {
         throw new TranspilerError(e);
     }

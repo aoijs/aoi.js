@@ -8,12 +8,12 @@
     "require": "./dist/cjs/index.js"
   },
   "scripts": {
-        "test": "node tests",
-        "start": "node index.js",
-        "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
-        "createpack": "node src/pack.js",
-        "lint": "eslint . --ext .ts --fix --ext .js",
-        "install": "npm run build"
+    "test": "node tests",
+    "start": "node index.js",
+    "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
+    "createpack": "node src/pack.js",
+    "lint": "eslint . --ext .ts --fix --ext .js",
+    "install": "npm run build"
   },
   "contributors": [
     "leref",
@@ -33,8 +33,10 @@
   "devDependencies": {
     "@types/node": "^16.18.23",
     "@types/uglify-js": "^3.17.1",
+    "@types/ws": "^8.5.4",
     "typescript": "^4.9.5"
   },
+  "type": "commonjs",
   "keywords": [
     "aoi.js",
     "aoi.js-next",
@@ -50,7 +52,10 @@
     "node": ">=16.9.0"
   },
   "dependencies": {
+    "@akarui/structures": "github:akaruidevelopment/structures#v2",
+    "aoiluna": "github:akaruidevelopment/aoiluna#main",
     "uglify-js": "^3.17.4",
-    "undici": "^5.21.0"
+    "undici": "^5.21.0",
+    "ws": "^8.13.0"
   }
 }

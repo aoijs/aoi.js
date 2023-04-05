@@ -7,8 +7,8 @@ import {
     parseResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $ping: FunctionData = {
-    name: "$ping",
+export const $guildId: FunctionData = {
+    name: "$guildId",
     type: "getter",
     brackets: false,
     optional: false,
@@ -16,13 +16,13 @@ export const $ping: FunctionData = {
     version: "7.0.0",
     default: [],
     returns: "number",
-    description: "Returns the Ping of client",
+    description: "Returns the guildId of current guild",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
-        
-        const ping = `__$DISCORD_DATA$__.client.ws.data.ping`;
 
-        const res = escapeResult(`(${ping})`);
+        const guildId = `__$DISCORD_DATA$__.guild?.id`;
+
+        const res = escapeResult(`(${guildId})`);
         currentScope.update(res, data);
         return {
             code: res,

@@ -1,5 +1,5 @@
 import  StringObject  from "../core/structs/StringObject.js";
-
+import { Cacher, Client, ClientOptions, GroupConfigOptions } from "aoiluna";
 export interface TranspilerOptions {
     sendMessage: boolean;
     scopeData?: {
@@ -17,6 +17,7 @@ export interface TranspilerOptions {
 
 import  Scope  from "../core/structs/Scope.js";
 import { CommandTypes } from "./types.js";
+import { AoiClient } from "../index.js";
 
 
 export interface FunctionData {
@@ -90,4 +91,28 @@ export interface TransformedGuild {
     rolesId: string[];
     emojisId: string[];
     stickersId: string[];
+}
+
+export interface AoiClientOptions extends ClientOptions
+{ 
+    prefixes: string | string[];
+    caches: Record<string, GroupConfigOptions>;
+}
+
+export interface CommandOptions
+{
+    name: string;
+    type: CommandTypes;
+    code: string;
+    aliases?: string[];
+    reverseRead?: boolean;
+    executeAt?: "guild" | "dm" | "both";
+    __path__: string;
+}
+
+export interface TranspiledFuncData
+{
+    client: Client;
+    bot: AoiClient;
+    [ key: string ]: unknown;
 }
