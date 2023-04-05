@@ -36,7 +36,7 @@ export function Transpiler(
 
     globalScope.sendFunction =
         scopeData?.sendFunction ?? globalScope.sendFunction;
-    const res = ExecuteData(parseResult(code), FData.funcs, [globalScope]);
+    const res = ExecuteData(parseResult(code), FData.funcs, [globalScope],options.reverse ?? false);
 
     if (res.scope[0].sendData.content.trim() !== "") {
         const scope = res.scope[0];

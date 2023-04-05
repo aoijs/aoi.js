@@ -178,9 +178,24 @@ export function getFunctionList(code: string, functions: string[]) {
     return res;
 }
 
-export function ExecuteData(code: string, data: funcData[], scope: Scope[]) {
-    let i = 0;
+export function reverseArray<T>(arr: T[]) {
+    let res: T[] = [];
+    for (let i = arr.length - 1; i >= 0; i--) {
+        //@ts-ignore
+        if (arr[i] instanceof Array) res.push(reverseArray(arr[i]));
+        res.push(arr[i]);
+    }
+    return res;
+}
 
+export function ExecuteData(
+    code: string,
+    data: funcData[],
+    scope: Scope[],
+    reverse = false,
+) {
+    let i = 0;
+    if ( reverse ) data = reverseArray( data );
     while (i < data.length) {
         let d = data[i];
 

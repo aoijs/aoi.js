@@ -2,42 +2,33 @@ import { TranspilerError,Scope } from "../../../core/index.js";
 
 import { funcData, FunctionData } from "../../../typings/interfaces.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
-export const $env: FunctionData = {
-    name: "$env",
+export const $passData: FunctionData = {
+    name: "$passData",
     brackets: true,
     optional: false,
     type: "getter",
     fields: [
         {
-            name: "env",
+            name: "passData",
             type: "string",
             required: true,
         },
     ],
-    description: "returns the value of an scoped variable of the current scope",
+    description: "return the data passed to the command from another command",
     default: ["void"],
     version: "7.0.0",
     returns: "?string",
     code: (data: funcData, scope: Scope[]) => {
-        const env = data.inside;
+        const passData = data.inside;
         const currentScope = scope[scope.length - 1];
         if (
-            !env &&
+            !passData &&
             !currentScope.name.startsWith("$try_") &&
             !currentScope.name.startsWith("$catch_")
         ) {
-            throw new TranspilerError(`${data.name}: ENV Not Provided.`);
+            throw new TranspilerError(`${data.name}: PASSDATA Not Provided.`);
         }
-        const mainenv = env?.split(".")[0];
-
-        if (
-            !currentScope.env.includes(<string>mainenv) &&
-            !currentScope.name.startsWith("$try_") &&
-            !currentScope.name.startsWith("$catch_")
-        ) {
-            throw new TranspilerError(`${data.name}: ENV ${env} Not Found`);
-        }
-        const res = escapeResult(`${env}`);
+        const res = escapeResult(`__$DISCORD_DATA$__${passData}`);
         currentScope.update(res, data);
         return {
             code: res,

@@ -4,3 +4,4 @@ export * from "./$let.js";
 export * from "./$log.js";
 export * from "./$inc.js";
 export * from "./$env.js";
+export * from "./$passData.js";

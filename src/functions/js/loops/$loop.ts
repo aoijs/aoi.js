@@ -1,7 +1,16 @@
-import { FunctionData, TranspilerError, Transpiler, conditionLexer, parseStringObject } from "../../..";
-import  StringObject  from "../../../core/structs/StringObject.js";
+import {
+    FunctionData,
+    TranspilerError,
+    Transpiler,
+    conditionLexer,
+    parseStringObject,
+} from "../../..";
+import StringObject from "../../../core/structs/StringObject.js";
 import Scope from "../../../core/structs/Scope.js";
-import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
+import {
+    getFunctionList,
+    escapeResult,
+} from "../../../util/transpilerHelpers.js";
 import funcs from "../../index.js";
 export const $loop: FunctionData = {
     name: "$loop",
@@ -13,7 +22,8 @@ export const $loop: FunctionData = {
             name: "times",
             type: "number",
             required: true,
-        }, {
+        },
+        {
             name: "extraData",
             type: "json",
             required: true,
@@ -25,7 +35,7 @@ export const $loop: FunctionData = {
         },
     ],
     version: "7.0.0",
-    default: ["void","void", "void"],
+    default: ["void", "void", "void"],
     returns: "void",
     description: "Loop statement",
     code: (data, scope) => {
@@ -50,13 +60,15 @@ export const $loop: FunctionData = {
                 `${data.name} function requires condition and code`,
             );
         }
-        let [ times,extraData, ...code ] = splits;
+        let [times, extraData, ...code] = splits;
 
-        if ( isNaN( Number( times ) ) && !currentScope.name.startsWith( "$try_" ) &&
-            !currentScope.name.startsWith( "$catch_" ) )
-        {
+        if (
+            isNaN(Number(times)) &&
+            !currentScope.name.startsWith("$try_") &&
+            !currentScope.name.startsWith("$catch_")
+        ) {
             throw new TranspilerError(
-                `${ data.name } function requires times field as number`,
+                `${data.name} function requires times field as number`,
             );
         }
         const currentObj = new StringObject("{");
@@ -66,16 +78,28 @@ export const $loop: FunctionData = {
             object = parseStringObject(extraData, currentObj);
         } catch (e) {
             throw new TranspilerError(`${data.name}: Invalid Object Provided`);
-        } 
-        currentScope.env.push( ...object.keys.map( x => `loop_${ x }` ) );
+        }
+        currentScope.env.push(...object.keys.map((x) => `loop_${x}`));
         currentScope.env.push("loop_index");
         let executedCode;
         const codeFunctionList = getFunctionList(
             code.join(";"),
             Object.keys(funcs),
         );
-        if (codeFunctionList.length) {
-            executedCode = Transpiler( code.join( ";" ), {
+        if (
+            code.join(";").startsWith("{execute:") &&
+            code.join(";").endsWith("}")
+        ) {
+            object.keys = object.keys.map((x) => `loop_${x}`);
+
+            const [name, type] = code
+                .join(";")
+                .split("{execute:")[1]
+                .split("}")[0]
+                .split(":");
+            executedCode = `__$DISCORD_DATA$__.bot.cmds.get("${name}", "${type}").code({...__$DISCORD_DATA$__, ...${object.solve()} })`;
+        } else if (codeFunctionList.length) {
+            executedCode = Transpiler(code.join(";"), {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
@@ -83,30 +107,23 @@ export const $loop: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                     env: currentScope.env,
-                }
-            } );
+                },
+            });
         } else {
-            if (
-                !currentScope.name.startsWith("$try_") ||
-                !currentScope.name.startsWith("$catch_")
-            )
-                throw new TranspilerError(
-                    `${data.name} requires function in code`,
-                );
+            executedCode = code.join(";");
         }
         const res = escapeResult(`
 for(let loop_index = 0; loop_index < ${times}; loop_index++) {
-  ${(<
-      {
-          code: string;
-          scope: Scope[];
-          func: any;
+      ${
+          typeof executedCode === "string"
+              ? executedCode
+              : (<{ code: string; scope: Scope[]; func: any }>(
+                    executedCode
+                ))?.scope[0].toString(false)
       }
-  >executedCode)?.scope[0].toString(false)}
 }
 `);
-        data.funcs = [];
-        currentScope.rest = currentScope.rest.replace(data.total, res);
+        currentScope.update(res, data);
         return { code: res, scope: scope, data };
     },
 };

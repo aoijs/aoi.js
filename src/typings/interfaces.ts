@@ -11,6 +11,7 @@ export interface TranspilerOptions {
         env?: string[];
         objects?: Record<string, StringObject>;
     };
+    reverse?: boolean;
     minify?: boolean;
 }
 

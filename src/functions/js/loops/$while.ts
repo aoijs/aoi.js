@@ -90,27 +90,20 @@ export const $while: FunctionData = {
                 }
             } );
         } else {
-            if (
-                !currentScope.name.startsWith("$try_") ||
-                !currentScope.name.startsWith("$catch_")
-            )
-                throw new TranspilerError(
-                    `${data.name} requires function in code`,
-                );
+            executedCode = code.join(";");
         }
         const res = escapeResult(`
 while(${executedCondition}) {
-  ${(<
-      {
-          code: string;
-          scope: Scope[];
-          func: any;
-      }
-  >executedCode)?.scope[0].toString(false)}
+   ${
+       typeof executedCode === "string"
+           ? executedCode
+           : (<{ code: string; scope: Scope[]; func: any }>(
+                 executedCode
+             ))?.scope[0].toString(false)
+   }
 }
 `);
-        data.funcs = [];
-        currentScope.rest = currentScope.rest.replace(data.total, res);
+        currentScope.update( res, data );
         return { code: res, scope: scope, data };
     },
 };

@@ -166,7 +166,7 @@ export default class Scope {
     getFunction(sendMessage = true, execute = false) {
         const name = this.name === "global" ? "main" : this.name;
         return (
-            `async function ${name}() {\n${this.toString(sendMessage)}\n}` +
+            `async function ${name}(__$DISCORD_DATA$__) {\n${this.toString(sendMessage)}\n}` +
             (execute
                 ? `\n${
                       this.addReturn ? "return " : ""
