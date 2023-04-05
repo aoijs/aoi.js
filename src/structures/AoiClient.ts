@@ -1,6 +1,7 @@
 import { Cacher, Client } from "aoiluna";
 import { AoiClientOptions } from "../typings/interfaces.js";
 import { CommandManager } from "../manager/Command.js";
+import { onMessage } from "../events/messageCreate.js";
 
 export class AoiClient
 {
@@ -14,6 +15,13 @@ export class AoiClient
         this.cmds = new CommandManager();
         this.options = options;
         if(options.caches)
-            this.cache = new Cacher(options.caches);
+            this.cache = new Cacher( options.caches );
+        
+        this.#bindEvents();
+    }
+    #bindEvents ()
+    {
+        for ( const event of this.options.events )
+            if ( event === 'MessageCreate' ) onMessage( this );
     }
 }

@@ -1,5 +1,5 @@
 import  StringObject  from "../core/structs/StringObject.js";
-import { Cacher, Client, ClientOptions, GroupConfigOptions } from "aoiluna";
+import { Cacher, Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
 export interface TranspilerOptions {
     sendMessage: boolean;
     scopeData?: {
@@ -94,7 +94,8 @@ export interface TransformedGuild {
 }
 
 export interface AoiClientOptions extends ClientOptions
-{ 
+{
+    events: (keyof typeof GatewayEventNames)[]; 
     prefixes: string | string[];
     caches: Record<string, GroupConfigOptions>;
 }
