@@ -1,39 +1,39 @@
-module.exports = async (d) => {
-    const code = d.command.code;
+const { AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb } = require( "../../../classes/Database.js" );
 
-    const Data = d.util.aoiFunc( d );
-    if( Data.error ) return d.error( Data.error );
-    const [variable, id, type = "user", option = "top"] = Data.inside.splits;
+module.exports = async ( d ) =>
+{ 
+    const data = d.util.aoiFunc( d );
+    if ( data.err ) return d.error( data.err );
 
-    const res =
-        type === "user"
-            ? `${id}_${d.guild?.id || 'dm'}`
-            : type === "globaluser"
-                ? id
-                : id;
+    const [ variable, id, type, options, table = d.client.db.tables[ 0 ] ] = data.inside.splits;
+    
+    const all = await d.client.db.all( table, variable.addBrackets(), 1 );
 
-    const docs = (
-        await d.client.db.all(d.client.db.tables[0], variable)
-    )
-        .filter((e) => e.key.startsWith(`${variable}_`) && (type === 'user' ? e.key.endsWith(`${d.guild?.id || 'dm'}`) : true))
-        .sort((x, y) => Number(y.data.value) - Number(x.data.value));
+    let key;
+    if ( d.client.db instanceof AoijsAPI || d.client.db instanceof AoiMongoDb )
+    {
+        key = `${ variable.addBrackets() }_${ ( type === 'user' ? `${ id }_${ d.guild?.id ?? "dm" }` : id ) }`;
+    } else if ( d.client.db instanceof DbdTsDb )
+    {
+        key = `${ ( type === 'user' ? `${ id }_${ d.guild?.id ?? "dm" }` : id ) }`;
+    } 
 
-    const ID = `${variable}_` + res;
+    const top = all.findIndex( x =>
+    {
+        if ( d.client.db instanceof DbdTsDb ) return x.id === key;
+        else return x.key === key;
+    } );
+    let value = all[ top ];
+    value = value?.value ?? value?.data?.value ?? value?.Data?.value ?? value?.Data ?? 0;
 
-    const data =
+    const Data =
         type === "server"
             ? d.client.guilds.cache.get(id) || {}
             : await d.client.users.fetch(id);
 
-    const options = {
-        top: docs.findIndex((e) => e.key === ID) + 1,
-        name: type === "server" ? data.name : data.tag,
-        value: docs.find((e) => e.key === ID)
-            ? docs.find((e) => e.key === ID).data.value
-            : 0,
-    }[option];
-    Data.result = options;
+    data.result = type === 'top' ? top + 1 : type === 'value' ? value : type === 'server' ? Data.name : Data.tag;
+
     return {
-        code: d.util.setCode(Data),
-    }
+        code: d.util.setCode( data ),
+    };
 };
