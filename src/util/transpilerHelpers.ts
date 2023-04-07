@@ -21,7 +21,7 @@ export function parseData(text: string) {
     if (text === "") return text;
     else if (!isNaN(Number(text)) && Number.isSafeInteger(Number(text)))
         return Number(text);
-    else if (!isNaN(Number(text)) && !Number.isSafeInteger(text)) return text;
+    else if ((!isNaN(Number(text)) && !Number.isSafeInteger(text)) || isBigInt(text)) return BigInt(text.replace("n", ""));
     else if (text === "null") return null;
     else if (text === "undefined") return undefined;
     else if (text === "true" || text === "false") return text === "true";
@@ -379,4 +379,9 @@ export function removeMF(total: string) {
         i++;
     }
     return total;
+}
+
+export function isBigInt ( string: string )
+{
+    return string.match ( /^-?\d+n$/ ) !== null;
 }

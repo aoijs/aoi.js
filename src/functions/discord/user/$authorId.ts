@@ -7,22 +7,22 @@ import {
     parseResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $guildName: FunctionData = {
-    name: "$guildName",
+export const $authorId: FunctionData = {
+    name: "$authorId",
     type: "getter",
     brackets: false,
     optional: false,
     fields: [],
     version: "7.0.0",
     default: [],
-    returns: "string",
-    description: "Returns the name of current guild",
+    returns: "number",
+    description: "Returns the id of the author",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const guildName = `__$DISCORD_DATA$__.guild?.name`;
+        const authorId = `__$DISCORD_DATA$__.author?.id`;
 
-        const res = escapeResult(`(${guildName})`);
+        const res = escapeResult(`(${authorId})`);
         currentScope.update(res, data);
         return {
             code: res,

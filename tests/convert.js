@@ -91,7 +91,7 @@ ${func3.toString()}
 
 `);
 
-func3({ client: { ws: { ping: 120 } } });
+func3( { client: { ws: { data: { ping: 120 } } } });
 console.log( "--------------------" );
 
 const code4 = `$loop[10;{};$log[$env[loop_index]]]`;
@@ -113,3 +113,23 @@ ${func4.toString() }
 
 func4();
 console.log( "--------------------" );
+
+const code5 = ` $onlyif[$authorId===715755977483223081n || $authorId === 285118390031351809n;$log[no]]
+$log[yes]`;
+
+const transpiler5 = Transpiler( code5, {
+    minify: true, // true to shorten the code (recommended)
+} );
+
+const func5 = transpiler5.func;
+
+console.log(`--------------------
+code:
+${code5}
+
+func:
+${func5.toString()}
+
+`);
+
+func5({ author: { id: 285118390031351809n } });

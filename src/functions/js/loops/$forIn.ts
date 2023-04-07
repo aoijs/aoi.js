@@ -80,7 +80,7 @@ export const $forIn: FunctionData = {
             executedCode = code.join( ";" );
         }
         const res = escapeResult(`
-for(let ${escapeVars(variable)} in ${objectName}){
+for(let ${variable} in ${escapeVars(objectName)}){
        ${
            typeof executedCode === "string"
                ? executedCode

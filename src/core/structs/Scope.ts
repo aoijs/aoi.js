@@ -40,7 +40,7 @@ export default class Scope {
         addReturn?: boolean,
     ) {
         this.name = name;
-        this.sendFunction = `__$DISCORD_DATA$__.channel.createMessage`;
+        this.sendFunction = `__$DISCORD_DATA$__.client.createMessage`;
         this.parent = parent;
         this.hasSendData = false;
         this.sendData = {
@@ -155,7 +155,7 @@ export default class Scope {
                                               ? "n"
                                               : ""),
                                   )},${sent});`
-                                : this.sendFunction + `(${sent});`
+                                : this.sendFunction + `(__$DISCORD_DATA$__.message.channelId,${sent});`
                         }`;
                     } else {
                         return "";

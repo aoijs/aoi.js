@@ -1,5 +1,6 @@
 import { AoiClient } from "../structures/AoiClient.js";
-import { GatewayEventNames, Message } from "aoiluna";
+import { GatewayEventNames, Message, Snowflake } from "aoiluna";
+import { isAutoFetchDataEnabled } from "../util/DapiHelper.js";
 export function onMessage(client: AoiClient) {
     client.client.on(GatewayEventNames.MessageCreate, async (message) => {
         await messageCreate(message, client);
@@ -13,6 +14,7 @@ export async function messageCreate(message: Message, client: AoiClient) {
         );
     else prefix = client.options.prefixes;
     if (!prefix) return;
+    if (!message.content.startsWith(prefix)) return;
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const cmd = args.shift()?.toLowerCase();
     if (!cmd) return;
@@ -26,10 +28,14 @@ export async function messageCreate(message: Message, client: AoiClient) {
             message,
             channel:
                 client.cache?.channels?.get(message.channelId) ??
-                (await client.client.getChannel(message.channelId)),
+                isAutoFetchDataEnabled("channel", client)
+                    ? await client.client.getChannel(message.channelId)
+                    : { id: message.channelId, fetched: false },
             guild:
                 client.cache?.guilds?.get(message.guildId) ??
-                (await client.client.getGuild(<bigint>message.guildId)),
+                isAutoFetchDataEnabled("guild", client)
+                    ? await client.client.getGuild(<Snowflake>message.guildId)
+                    : { id: message.guildId, fetched: false },
             author: message.author,
             client: client.client,
             args,

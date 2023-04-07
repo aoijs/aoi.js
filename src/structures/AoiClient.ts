@@ -1,4 +1,4 @@
-import { Cacher, Client } from "aoiluna";
+import { Cacher, Client, createCacheManager } from "aoiluna";
 import { AoiClientOptions } from "../typings/interfaces.js";
 import { CommandManager } from "../manager/Command.js";
 import { onMessage } from "../events/messageCreate.js";
@@ -15,7 +15,7 @@ export class AoiClient
         this.cmds = new CommandManager();
         this.options = options;
         if(options.caches)
-            this.cache = new Cacher( options.caches );
+            this.cache = createCacheManager(options.caches, this.client)
         
         this.#bindEvents();
     }

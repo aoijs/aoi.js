@@ -16,7 +16,7 @@ export interface TranspilerOptions {
 }
 
 import  Scope  from "../core/structs/Scope.js";
-import { CommandTypes } from "./types.js";
+import { CommandTypes, autoFetchDataTypes } from "./types.js";
 import { AoiClient } from "../index.js";
 
 
@@ -98,6 +98,7 @@ export interface AoiClientOptions extends ClientOptions
     events: (keyof typeof GatewayEventNames)[]; 
     prefixes: string | string[];
     caches: Record<string, GroupConfigOptions>;
+    autoFetchData?: autoFetchDataTypes[];
 }
 
 export interface CommandOptions

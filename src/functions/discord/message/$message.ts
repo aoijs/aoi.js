@@ -7,8 +7,8 @@ import {
     parseResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $guildName: FunctionData = {
-    name: "$guildName",
+export const $message: FunctionData = {
+    name: "$message",
     type: "getter",
     brackets: false,
     optional: false,
@@ -16,13 +16,13 @@ export const $guildName: FunctionData = {
     version: "7.0.0",
     default: [],
     returns: "string",
-    description: "Returns the name of current guild",
+    description: "Returns the author's message",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const guildName = `__$DISCORD_DATA$__.guild?.name`;
+        const message = `__$DISCORD_DATA$__.args?.join(" ")`;
 
-        const res = escapeResult(`(${guildName})`);
+        const res = escapeResult(`(${message})`);
         currentScope.update(res, data);
         return {
             code: res,

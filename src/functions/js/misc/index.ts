@@ -5,3 +5,8 @@ export * from "./$log.js";
 export * from "./$inc.js";
 export * from "./$env.js";
 export * from "./$passData.js";
+export * from "./$jseval.js";
+export * from "./$break.js";
+export * from "./$try.js";
+export * from "./$catch.js";
+export * from "./$finally.js";

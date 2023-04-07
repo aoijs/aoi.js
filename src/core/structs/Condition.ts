@@ -90,6 +90,9 @@ export default class Condition {
                                 );
                             }
                         }
+                    } else if ( typeof leftData === 'bigint' )
+                    {
+                        leftData = leftData.toString()+"n";
                     }
                 } else {
                     leftData = parseString(left.trim());
@@ -129,6 +132,8 @@ export default class Condition {
                                 );
                             }
                         }
+                    } else if (typeof rightData === "bigint") {
+                        rightData = rightData.toString() + "n";
                     }
                     res = opposite
                         ? `${leftData}${
