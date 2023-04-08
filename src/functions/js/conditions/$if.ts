@@ -1,6 +1,6 @@
 import { FunctionData, funcData, Scope, TranspilerError, Transpiler, conditionLexer } from "../../..";
 import funcs from "../../";
-import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
+import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers.js";
 
 export const $if: FunctionData = {
     name: "$if",
@@ -96,7 +96,7 @@ export const $if: FunctionData = {
             newscope.rest = executedErrorMsg + "\n";
             newscope.sendData.content = executedErrorMsg;
         }
-        const res = escapeResult(`
+        const res = escapeFunctionResult(`
     if(${executedCondition}) {
       ${newscope.toString()}
     }

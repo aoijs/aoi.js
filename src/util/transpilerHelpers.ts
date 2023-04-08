@@ -284,7 +284,6 @@ export function ExecuteData(
             const s = scope[ scope.length - 1 ];
             const oldt = d.total;
             d.total = removeFF(d.total);
-
             s.sendData.content = s.sendData.content.replace(d.total, "").replace(oldt, "");
             scope[scope.length - 1] = s;
         }

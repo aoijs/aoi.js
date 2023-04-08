@@ -7,7 +7,7 @@ import {
     conditionLexer,
 } from "../../../";
 import funcs from "../..";
-import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers";
+import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers";
 
 export const $elseIf: FunctionData = {
     name: "$elseIf",
@@ -104,7 +104,7 @@ export const $elseIf: FunctionData = {
             newscope.rest = executedErrorMsg + "\n";
             newscope.sendData.content = executedErrorMsg;
         }
-        const res = escapeResult(`
+        const res = escapeFunctionResult(`
     else if(${executedCondition}) {
       ${newscope.toString()}
     }

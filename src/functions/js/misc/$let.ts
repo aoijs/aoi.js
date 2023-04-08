@@ -48,14 +48,14 @@ export const $let: FunctionData = {
             }
         }
         if (
-            splits.length !== 2 &&
+            splits.length < 2 &&
             !currentScope.name.startsWith("$try_") &&
             !currentScope.name.startsWith("$catch_")
         ) {
             throw new TranspilerError(`${data.name} requires 2 arguments`);
         }
         const name = removeSetFunc(splits[0]);
-        let value = parseData(removeSetFunc(splits[1]));
+        let value = parseData(removeSetFunc(splits.slice(1).join(";")));
         if (
             typeof value === "string" &&
             value.includes(TranspilerCustoms.FS) &&

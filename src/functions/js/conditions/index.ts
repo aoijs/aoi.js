@@ -7,3 +7,4 @@ export * from "./$onlyif.js";
 export * from "./$switch.js";
 export * from "./$case.js";
 export * from "./$checkCondition.js";
+export * from "./$default.js";
