@@ -13,7 +13,7 @@ export const $break: FunctionData = {
     description: "Breaks out of a loop",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
-        const res = escapeFunctionResult(`break;`);
+        const res = escapeFunctionResult("break;");
         currentScope.rest = currentScope.rest.replace(data.total, res);
         scope[scope.length - 1] = currentScope;
         return {

@@ -1,7 +1,7 @@
 import { TranspilerError } from "../../../core/error.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
-import { escapeResult, escapeVars } from "../../../util/transpilerHelpers.js";
+import { escapeResult } from "../../../util/transpilerHelpers.js";
 export const $objectExists: FunctionData = {
     name: "$objectExists",
     brackets: true,

@@ -5,7 +5,7 @@ import { onMessage } from "../events/messageCreate.js";
 
 export class AoiClient
 {
-    client:Client
+    client:Client;
     cmds: CommandManager;
     options: AoiClientOptions;
     cache?: Cacher;
@@ -15,13 +15,13 @@ export class AoiClient
         this.cmds = new CommandManager();
         this.options = options;
         if(options.caches)
-            this.cache = createCacheManager(options.caches, this.client)
-        
+            this.cache = createCacheManager(options.caches, this.client);
+
         this.#bindEvents();
     }
     #bindEvents ()
     {
         for ( const event of this.options.events )
-            if ( event === 'MessageCreate' ) onMessage( this );
+            if ( event === "MessageCreate" ) onMessage( this );
     }
 }

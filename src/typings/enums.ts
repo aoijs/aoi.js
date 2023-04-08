@@ -15,6 +15,6 @@ export enum TranspilerCustoms
     FFE = "#FUNCTION_FUNCTION_END#",
     MFS = "#MATH_FUNCTION_START#",
     MFE = "#MATH_FUNCTION_END#",
-    SL = '#STRING_LITERAL#',
-    NL = '#NEW_LINE#',
+    SL = "#STRING_LITERAL#",
+    NL = "#NEW_LINE#",
 }

@@ -12,7 +12,7 @@
     "start": "node index.js",
     "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
     "createpack": "node src/pack.js",
-    "lint": "eslint . --ext .ts --fix --ext .js",
+    "lint": "eslint . --ext .ts --fix ",
     "install": "npm run build"
   },
   "contributors": [
@@ -34,6 +34,9 @@
     "@types/node": "^16.18.23",
     "@types/uglify-js": "^3.17.1",
     "@types/ws": "^8.5.4",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "eslint": "^8.38.0",
     "typescript": "^4.9.5"
   },
   "type": "commonjs",

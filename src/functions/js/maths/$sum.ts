@@ -31,7 +31,7 @@ export const $sum: FunctionData = {
                 `${data.name} requires at least 1 argument`,
             );
         }
-        let sum = numbers
+        const sum = numbers
             .map((x) =>
                 x.includes(TranspilerCustoms.FS) ||
                 x.includes("__$DISCORD_DATA$__") ||

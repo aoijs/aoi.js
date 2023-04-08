@@ -1,13 +1,9 @@
 import { TranspilerError } from "../../../core/error.js";
-import { parseString } from "../../../core/parsers/stringParser.js";
 import Scope from "../../../core/structs/Scope.js";
-import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     escapeResult,
     escapeVars,
-    parseData,
-    parseResult,
     removeSetFunc,
 } from "../../../util/transpilerHelpers.js";
 
@@ -28,7 +24,6 @@ export const $get: FunctionData = {
     returns: "any",
     description: "Gets the value of the variable",
     code: (data: funcData, scope: Scope[]) => {
-        let res;
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];
         if ($get.brackets) {
@@ -64,7 +59,7 @@ export const $get: FunctionData = {
         ) {
             throw new TranspilerError(`${data.name} cannot find ${name}`);
         }
-        res = `${escapeResult(escapeVars(name))}`;
+        const res = `${escapeResult(escapeVars(name))}`;
 
         currentScope.update( res, data );
         return { code: res, scope: scope };

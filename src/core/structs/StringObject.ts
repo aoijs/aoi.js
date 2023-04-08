@@ -39,7 +39,7 @@ export default class StringObject {
             const keys = this.keys;
             const values = this.values;
             let i = 0;
-            let text = ``;
+            let text = "";
             if (this.start === "[") {
                 text = values.join(",");
                 return `${this.start}${text}${this.end}`;
@@ -54,7 +54,7 @@ export default class StringObject {
             const keys = this.keys;
             const values = this.values;
             let i = 0;
-            let text = ``;
+            let text = "";
             if (this.start === "[") {
                 text = values.join(",");
                 return `${this.start}${text}${this.end}`;

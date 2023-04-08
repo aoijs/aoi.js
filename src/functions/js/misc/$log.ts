@@ -21,7 +21,7 @@ export const $log: FunctionData = {
     returns: "void",
     description: "Logs the text",
     code: (data: funcData, scope: Scope[]) => {
-        let res;
+
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];
         if ($log.brackets) {
@@ -51,7 +51,7 @@ export const $log: FunctionData = {
             throw new TranspilerError(`${data.name} requires a text`);
         }
         const parsedText = parseString(fixMath(text));
-        res = `${escapeFunctionResult(`console.log(${parsedText});`)}`;
+        const res = `${escapeFunctionResult(`console.log(${parsedText});`)}`;
         currentScope.update(res, data);
         return { code: res, scope: scope, data };
     },

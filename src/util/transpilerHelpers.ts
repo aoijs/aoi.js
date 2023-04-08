@@ -90,6 +90,7 @@ export function getFunctionData(
         rightCount = 0,
         i = 0;
     let rawTotal = "";
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         if (!FuncD?.brackets && !code.slice(func.length).startsWith("[")) {
             break;
@@ -118,7 +119,7 @@ export function getFunctionData(
         i++;
     }
     if (rawTotal === "") rawTotal = func;
-    let funcs = [];
+    const funcs = [];
     let inside =
         rawTotal.endsWith("]") && rawTotal.startsWith(`${func}[`)
             ? rawTotal.substring(func.length + 1, rawTotal.length - 1)
@@ -158,14 +159,14 @@ export const functionFinderRegex = /(\$[a-z]*)/gi;
 export function getFunctionList(code: string, functions: string[]) {
     const raws = code.match(functionFinderRegex);
     if (!raws) return [];
-    const functions_that_exists = functions.filter((x) =>
+    const functionsThatExists = functions.filter((x) =>
         code.toLowerCase().includes(x.toLowerCase()),
     );
 
-    let res = [];
+    const res = [];
 
     for (const raw of raws) {
-        let func = functions_that_exists.filter(
+        const func = functionsThatExists.filter(
             (x) => x.toLowerCase() === raw.toLowerCase().slice(0, x.length),
         );
         if (func.length === 1) res.push(func[0]);
@@ -179,10 +180,12 @@ export function getFunctionList(code: string, functions: string[]) {
 }
 
 export function reverseArray<T>(arr: T[]) {
-    let res: T[] = [];
-    for (let i = arr.length - 1; i >= 0; i--) {
+    const res : T[]= [];
+    for ( let i = arr.length - 1; i >= 0; i-- )
+    {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
-        if (arr[i] instanceof Array) res.push(reverseArray(arr[i]));
+        if (arr[i] instanceof Array) res.push(reverseArray((arr[i])));
         res.push(arr[i]);
     }
     return res;
@@ -294,7 +297,7 @@ export function ExecuteData(
 }
 export function _parseString(text: string) {
     const reg =
-        /((#FUNCTION_START#([\s$a-z.0-9?(){}\[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim;
+        /((#FUNCTION_START#([\s$a-z.0-9?(){}[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim;
     let matches = text.match(reg);
     const functionlist = matches?.slice(1) ?? [];
     functionlist;

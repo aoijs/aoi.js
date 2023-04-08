@@ -2,7 +2,6 @@ import {
     FunctionData,
     TranspilerError,
     Transpiler,
-    conditionLexer,
     parseStringObject,
 } from "../../..";
 import StringObject from "../../../core/structs/StringObject.js";
@@ -60,7 +59,7 @@ export const $loop: FunctionData = {
                 `${data.name} function requires condition and code`,
             );
         }
-        let [times, extraData, ...code] = splits;
+        const [times, extraData, ...code] = splits;
 
         if (
             isNaN(Number(times)) &&
@@ -115,12 +114,12 @@ export const $loop: FunctionData = {
         const res = escapeResult(`
 for(let loop_index = 0; loop_index < ${times}; loop_index++) {
       ${
-          typeof executedCode === "string"
-              ? executedCode
-              : (<{ code: string; scope: Scope[]; func: any }>(
+    typeof executedCode === "string"
+        ? executedCode
+        : (<{ code: string; scope: Scope[]; func: unknown }>(
                     executedCode
                 ))?.scope[0].toString(false)
-      }
+}
 }
 `);
         currentScope.update(res, data);

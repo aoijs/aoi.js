@@ -34,7 +34,7 @@ export const $pow: FunctionData = {
                 `${data.name} requires at least 1 argument`,
             );
         }
-        let pow = numbers
+        const pow = numbers
             .map((x) =>
                 x.includes(TranspilerCustoms.FS) ||
                 x.includes("__$DISCORD_DATA$__") ||
@@ -45,7 +45,7 @@ export const $pow: FunctionData = {
             .join("**");
 
         const res = escapeMathResult(`(${pow})`);
-         currentScope.update(res, data);
+        currentScope.update(res, data);
         return {
             code: res,
             scope,

@@ -55,7 +55,7 @@ export const $else: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                 }
-            
+
             } );
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
             newscope.packages = executedErrorMsg.scope[0].packages + "\n";
@@ -73,7 +73,7 @@ export const $else: FunctionData = {
       ${newscope.toString()}
     }
     `);
-        currentScope.rest = currentScope.rest.replace(data.total, res);
+        currentScope.update( res, data );
         return {
             code: res,
             scope: scope,

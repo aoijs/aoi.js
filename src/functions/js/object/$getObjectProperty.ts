@@ -1,11 +1,9 @@
 import { TranspilerError } from "../../../core/error.js";
 import Scope from "../../../core/structs/Scope.js";
-import { StringObject, parseStringObject } from "../../../index.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     escapeResult,
     escapeVars,
-    parseData,
 } from "../../../util/transpilerHelpers.js";
 export const $getObjectProperty: FunctionData = {
     name: "$getObjectProperty",

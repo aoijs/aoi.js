@@ -1,6 +1,6 @@
 import { FunctionData, funcData, Scope, TranspilerError, Transpiler } from "../../..";
 import { parseResult, getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
-import funcs from "../../"
+import funcs from "../../";
 export const $catch: FunctionData = {
     name: "$catch",
     brackets: true,

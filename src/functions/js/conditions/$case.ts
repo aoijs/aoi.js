@@ -4,38 +4,42 @@ import {
     Scope,
     TranspilerError,
     Transpiler,
-    conditionLexer,
-} from "../../../";
+    parseString,
+} from "../../..";
 import funcs from "../..";
-import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers";
+import {
+    getFunctionList,
+    escapeResult,
+    parseData,
+} from "../../../util/transpilerHelpers.js";
 
-export const $elseIf: FunctionData = {
-    name: "$elseIf",
+export const $case: FunctionData = {
+    name: "$case",
     brackets: true,
     optional: false,
     type: "scope",
     fields: [
         {
-            name: "condition",
+            name: "case",
             type: "string",
             required: true,
         },
         {
             name: "code",
             type: "string",
-            required: false,
+            required: true,
         },
     ],
-    default: ["void", ""],
-    returns: "void",
     version: "7.0.0",
-    description: "Else if statement",
+    default: ["void", "void"],
+    returns: "void",
+    description: "Case statement",
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];
-        if ($elseIf.brackets) {
+        if ($case.brackets) {
             if (
-                !data.total.startsWith($elseIf.name + "[") &&
+                !data.total.startsWith($case.name + "[") &&
                 (!currentScope.name.startsWith("$try_") ||
                     !currentScope.name.startsWith("$catch_"))
             ) {
@@ -44,31 +48,37 @@ export const $elseIf: FunctionData = {
                 );
             }
         }
-        const [condition, ...errorMsg] = splits;
-        const conditionFunctionList = getFunctionList(
-            condition,
-            Object.keys(funcs),
+        const [ caseValue, ...errorMsg ] = splits;
+
+        const caseFunctionList = getFunctionList(
+            caseValue,
+            Object.keys( funcs ),
         );
-        let executedCondition;
-        if (conditionFunctionList.length) {
-            executedCondition = Transpiler(condition, {
+        let exeCaseValue,parsedCase;
+        if ( caseFunctionList.length )
+        {
+            exeCaseValue = Transpiler( caseValue, {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
-                    env: currentScope.env,
                     name: currentScope.name,
                     objects: currentScope.objects,
+                    env: currentScope.env,
                 },
-            });
-            currentScope.functions +=
-                executedCondition.scope[0].functions + "\n";
-            currentScope.packages += executedCondition.scope[0].packages;
-            executedCondition = executedCondition.code;
-        } else {
-            executedCondition = condition;
+            } );
+            currentScope.functions += exeCaseValue.scope[ 0 ].functions + "\n";
+            currentScope.packages += exeCaseValue.scope[ 0 ].packages;
+            exeCaseValue = exeCaseValue.code;
+            parsedCase = parseData( exeCaseValue );
         }
-        executedCondition = conditionLexer(executedCondition);
-        executedCondition = executedCondition.solve(false);
+        else
+        {
+            exeCaseValue = caseValue;
+            parsedCase = parseData(exeCaseValue);
+            typeof parsedCase === "string" &&
+                (parsedCase = parseString(parsedCase));
+        }
+
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
@@ -88,10 +98,11 @@ export const $elseIf: FunctionData = {
                 scopeData: {
                     variables: currentScope.variables,
                     embeds: currentScope.embeds,
-                    env: currentScope.env,
                     name: currentScope.name,
                     objects: currentScope.objects,
+                    env: currentScope.env,
                 },
+                minify: true,
             });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
             newscope.packages = executedErrorMsg.scope[0].packages + "\n";
@@ -105,9 +116,9 @@ export const $elseIf: FunctionData = {
             newscope.sendData.content = executedErrorMsg;
         }
         const res = escapeResult(`
-    else if(${executedCondition}) {
+    case ${parsedCase}:
       ${newscope.toString()}
-    }
+      break;
     `);
         currentScope.update( res, data );
         return {

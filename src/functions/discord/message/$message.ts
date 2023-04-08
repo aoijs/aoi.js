@@ -1,10 +1,6 @@
-import { TranspilerError } from "../../../core/error.js";
-import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
-    escapeMathResult,
     escapeResult,
-    parseResult,
 } from "../../../util/transpilerHelpers.js";
 
 export const $message: FunctionData = {
@@ -20,7 +16,7 @@ export const $message: FunctionData = {
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const message = `__$DISCORD_DATA$__.args?.join(" ")`;
+        const message = "__$DISCORD_DATA$__.args?.join(\" \")";
 
         const res = escapeResult(`(${message})`);
         currentScope.update(res, data);

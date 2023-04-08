@@ -47,7 +47,7 @@ export const $root: FunctionData = {
   } catch(e){}
 }`);
         }
-        let root = numbers.map((x) =>
+        const root = numbers.map((x) =>
             x.includes(TranspilerCustoms.FS) ||
             x.includes("__$DISCORD_DATA$__") ||
             x.includes(TranspilerCustoms.MFS)

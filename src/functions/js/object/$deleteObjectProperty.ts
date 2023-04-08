@@ -1,7 +1,7 @@
 import { TranspilerError } from "../../../core/error.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
-import { escapeResult, escapeVars, parseData } from "../../../util/transpilerHelpers.js";
+import { escapeResult, escapeVars } from "../../../util/transpilerHelpers.js";
 export const $deleteObjectProperty: FunctionData = {
     name: "$deleteObjectProperty",
     brackets: true,
@@ -48,7 +48,7 @@ export const $deleteObjectProperty: FunctionData = {
         o.keys.splice(index, 1);
         o.values.splice(index, 1);
         const res = escapeResult(`delete ${escapeVars(name)}.${key}`);
-             currentScope.update(res, data);
+        currentScope.update(res, data);
         return {
             code: res,
             scope,

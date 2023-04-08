@@ -4,3 +4,6 @@ export * from "./$elseif.js";
 export * from "./$if.js";
 export * from "./$or.js";
 export * from "./$onlyif.js";
+export * from "./$switch.js";
+export * from "./$case.js";
+export * from "./$checkCondition.js";

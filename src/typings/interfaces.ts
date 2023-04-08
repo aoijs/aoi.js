@@ -1,10 +1,10 @@
 import  StringObject  from "../core/structs/StringObject.js";
-import { Cacher, Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
+import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
 export interface TranspilerOptions {
     sendMessage: boolean;
     scopeData?: {
         variables?: string[];
-        embeds?: any[];
+        embeds?: unknown[];
         name?: string;
         sendFunction?: string;
         functions?: string;
@@ -13,12 +13,12 @@ export interface TranspilerOptions {
     };
     reverse?: boolean;
     minify?: boolean;
+    parsedStringOnly?: boolean;
 }
 
 import  Scope  from "../core/structs/Scope.js";
 import { CommandTypes, autoFetchDataTypes } from "./types.js";
 import { AoiClient } from "../index.js";
-
 
 export interface FunctionData {
     name: string;
@@ -36,11 +36,11 @@ export interface FunctionData {
         type: string;
         required: boolean;
     }[];
-    returns: any;
+    returns: unknown;
     default: string[];
     description: string;
     version: string;
-    extra?: any;
+    extra?: unknown;
     code: (
         data: funcData,
         scope: Scope[],
@@ -74,13 +74,13 @@ export interface TransformedGuild {
     commands: number;
     partnered: boolean;
     verified: boolean;
-    mfaLevel: any;
-    explicitContentFilter: any;
-    defaultMessageNotifications: any;
-    systemChannelFlags: any;
-    premiumTier: any;
+    mfaLevel: unknown;
+    explicitContentFilter: unknown;
+    defaultMessageNotifications: unknown;
+    systemChannelFlags: unknown;
+    premiumTier: unknown;
     premiumSubscriptionCount: number | null;
-    preferredLocale: any;
+    preferredLocale: unknown;
     systemChannel: { id: string | null; name: string | undefined };
     splash: string | null;
     owner: { id: string; name: string; nick: string | null };
@@ -95,7 +95,7 @@ export interface TransformedGuild {
 
 export interface AoiClientOptions extends ClientOptions
 {
-    events: (keyof typeof GatewayEventNames)[]; 
+    events: (keyof typeof GatewayEventNames)[];
     prefixes: string | string[];
     caches: Record<string, GroupConfigOptions>;
     autoFetchData?: autoFetchDataTypes[];

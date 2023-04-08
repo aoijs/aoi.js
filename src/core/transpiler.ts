@@ -28,7 +28,7 @@ export function Transpiler(
     const tempcode = `$EXECUTEMAINCODEFUNCTION[
         ${code}
     ]`;
-    let FData = getFunctionData(tempcode, "$EXECUTEMAINCODEFUNCTION", flist);
+    const FData = getFunctionData(tempcode, "$EXECUTEMAINCODEFUNCTION", flist);
     const globalScope = new Scope(scopeData?.name ?? "global", undefined, code);
     globalScope.addVariables(scopeData?.variables ?? []);
     globalScope.addEmbeds(scopeData?.embeds ?? []);
@@ -37,7 +37,12 @@ export function Transpiler(
 
     globalScope.sendFunction =
         scopeData?.sendFunction ?? globalScope.sendFunction;
-    const res = ExecuteData(parseResult(code), FData.funcs, [globalScope],options.reverse ?? false);
+    const res = ExecuteData(
+        parseResult(code),
+        FData.funcs,
+        [globalScope],
+        options.reverse ?? false,
+    );
 
     if (res.scope[0].sendData.content.trim() !== "") {
         const scope = res.scope[0];
@@ -54,11 +59,20 @@ export function Transpiler(
             `code:${str} 
 <------------------------------------------------------->
       Failed To Transpile Code with error ${
-          (<MinifyOutput>functionString).error
-      }`,
+    (<MinifyOutput>functionString).error
+}`,
         );
     }
     let func;
+
+    if (options.parsedStringOnly)
+        return {
+            code: uglify
+                ? (<MinifyOutput>functionString).code
+                : <string>functionString,
+            func: async () => { return void 0; },
+            scope: res.scope,
+        };
     try {
         func = new Function(
             "return " +
@@ -66,8 +80,8 @@ export function Transpiler(
                     ? (<MinifyOutput>functionString).code
                     : <string>functionString),
         )() as AsyncFunction;
-    } catch (e: any) {
-        throw new TranspilerError(e);
+    } catch (e) {
+        throw new TranspilerError(e + "\n\n\n" + str);
     }
 
     return { func, ...res };

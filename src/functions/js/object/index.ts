@@ -6,6 +6,6 @@ export * from "./$deleteObjectProperty.js";
 export * from "./$getObjectKeys.js";
 export * from "./$getObjectValues.js";
 export * from "./$cloneObject.js";
-    export * from "./$objectExists.js";
+export * from "./$objectExists.js";
 
 // TODO: add $findObjectProperty

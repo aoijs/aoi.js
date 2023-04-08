@@ -17,10 +17,10 @@ export function conditionLexer(condition: string) {
     let tempCondition;
     if (condition.includes("#FUNCTION_START#")) {
         const matches = condition.match(
-            /((#FUNCTION_START#([$a-z.0-9\s?(){}\[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim,
+            /((#FUNCTION_START#([$a-z.0-9\s?(){}[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim,
         );
         if (matches) {
-            for (let match of matches) {
+            for (const match of matches) {
                 const newmatch = match
                     .replaceAll("(", "#SMOOTH_BRACKET_LEFT#")
                     .replaceAll(")", "#SMOOTH_BRACKET_RIGHT#");

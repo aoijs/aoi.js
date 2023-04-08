@@ -41,10 +41,10 @@ export const $abs: FunctionData = {
                 numbers.includes( TranspilerCustoms.MFS )
                 ? parseResult( numbers.trim() )
                 : Number( numbers );
-        abs = `Math.abs(${abs})`
+        abs = `Math.abs(${abs})`;
 
         const res = escapeMathResult(`(${abs})`);
-         currentScope.update(res, data);
+        currentScope.update(res, data);
         return {
             code: res,
             scope,

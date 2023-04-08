@@ -1,10 +1,6 @@
-import { TranspilerError } from "../../../core/error.js";
-import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
-    escapeMathResult,
     escapeResult,
-    parseResult,
 } from "../../../util/transpilerHelpers.js";
 
 export const $guildName: FunctionData = {
@@ -20,7 +16,7 @@ export const $guildName: FunctionData = {
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const guildName = `__$DISCORD_DATA$__.guild?.name`;
+        const guildName = "__$DISCORD_DATA$__.guild?.name";
 
         const res = escapeResult(`(${guildName})`);
         currentScope.update(res, data);

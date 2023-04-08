@@ -34,7 +34,7 @@ export const $multi: FunctionData = {
                 `${data.name} requires at least 1 argument`,
             );
         }
-        let multi = numbers
+        const multi = numbers
             .map((x) =>
                 x.includes(TranspilerCustoms.FS) ||
                 x.includes("__$DISCORD_DATA$__") ||

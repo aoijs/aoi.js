@@ -1,4 +1,5 @@
-const { Transpiler, functions } = require( '../dist/cjs' );
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { Transpiler, functions } = require( "../dist/cjs" );
 console.log( Object.keys( functions ) );
 
 // bottom to top
@@ -54,7 +55,6 @@ ${func.toString() }
 func();
 console.log( "--------------------" );
 
-
 const transpiler2 = Transpiler( code2, {
     minify: true, // true to shorten the code (recommended)
 } );
@@ -71,9 +71,6 @@ ${func2.toString()}
 `);
 func2();
 console.log( "--------------------" );
-
-
-
 
 const transpiler3 = Transpiler(code3, {
     minify: true, // true to shorten the code (recommended)
@@ -94,7 +91,7 @@ ${func3.toString()}
 func3( { client: { ws: { data: { ping: 120 } } } });
 console.log( "--------------------" );
 
-const code4 = `$loop[10;{};$log[$env[loop_index]]]`;
+const code4 = "$loop[10;{};$log[$env[loop_index]]]";
 
 const transpiler4 = Transpiler( code4, {
     minify: true, // true to shorten the code (recommended)
@@ -132,4 +129,32 @@ ${func5.toString()}
 
 `);
 
-func5({ author: { id: 285118390031351809n } });
+func5( { author: { id: 285118390031351809n } } );
+
+console.log( "--------------------" );
+
+const code6 = `
+
+$switch[$ping>200;
+    $case[true; $log[slow]]
+    $case[false; $log[fast]]
+]
+`;
+
+const transpiler6 = Transpiler( code6, {
+    minify: true, // true to shorten the code (recommended)
+} );
+
+const func6 = transpiler6.func;
+
+console.log(`--------------------
+code:
+${code6}
+
+func:
+${func6.toString()}
+`);
+
+func6( { client: { ws: { data: { ping: 120 } } } } );
+
+console.log( "--------------------" );

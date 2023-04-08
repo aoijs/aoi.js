@@ -24,9 +24,9 @@ export class Command
         const func = Transpiler( this.code, {
             sendMessage: true,
             minify: true,
-            reverse: this.reverseRead, 
+            reverse: this.reverseRead,
         } );
-        
+
         this.__compiled__  = func.func;
     }
 }

@@ -1,12 +1,8 @@
-import { TranspilerError } from "../../../core/error.js";
 import { Scope, parseString } from "../../../index.js";
-import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     convertToBool,
-    escapeMathResult,
     escapeResult,
-    parseResult,
 } from "../../../util/transpilerHelpers.js";
 export const $eval: FunctionData = {
     name: "$eval",
@@ -33,10 +29,9 @@ export const $eval: FunctionData = {
         const [output, ...code] = data.splits;
         const parsedOutput = convertToBool(output);
         const currentScope = scope[scope.length - 1];
-        const hash = Math.floor(Math.random() * 100000);
         const executedCode = `Transpiler(${parseString(
             code.join(";"),
-        )}, ${parsedOutput}, {}, false).func(__$DISCORD_DATA$__);\n`;
+        )}, {sendMessage: ${parsedOutput} ,minify: false }).func(__$DISCORD_DATA$__);\n`;
         const res = escapeResult(`
     ${executedCode}
     `);
@@ -45,7 +40,7 @@ export const $eval: FunctionData = {
                 "const { Transpiler } = await import('./transpiler.js');",
             )
         ) {
-            currentScope.packages += `const { Transpiler } = await import('./transpiler.js');\n`;
+            currentScope.packages += "const { Transpiler } = await import('./transpiler.js');\n";
         }
         currentScope.rest = currentScope.rest.replace(data.total, res);
         data.funcs = [];

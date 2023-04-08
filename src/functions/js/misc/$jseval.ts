@@ -53,7 +53,7 @@ export const $jseval: FunctionData = {
             )
         ) {
             const setres = `
-    async function __$jseval$__(Code) {
+    async function __$jsEval$__(Code) {
       try {
         const evaled =  await eval(Code);
         return typeof evaled === "object" ? UTIL.inspect(evaled,{depth:0}) : evaled;
@@ -71,9 +71,9 @@ export const $jseval: FunctionData = {
             currentScope.functions += escapeResult(setres) + "\n";
         }
         const res = `${escapeResult(
-            `await __$jseval$__.call(__$DISCORD_DATA$__,${Code})`,
+            `await __$jsEval$__.call(__$DISCORD_DATA$__,${Code})`,
         ) }`;
-        
+
         currentScope.rest = currentScope.rest.replace(data.total, res);
         return {
             code: parsedOutput ? res : "",

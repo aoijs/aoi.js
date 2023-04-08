@@ -1,1 +1,1 @@
-export * from "./$ping.js"
+export * from "./$ping.js";

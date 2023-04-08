@@ -43,7 +43,7 @@ export const $inc: FunctionData = {
         const res = escapeFunctionResult(
             `${variable}${incrementFunctionString};`,
         );
-        currentScope.update( res, data ); 
+        currentScope.update( res, data );
         return {
             code: res,
             scope: scope,

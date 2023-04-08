@@ -5,7 +5,7 @@ import { CommandOptions } from "../typings/interfaces.js";
 export class CommandManager {
     basicCommand: Group<string, Command> = new Group<string, Command>(Infinity);
     slashCommand: Group<string, Command> = new Group<string, Command>(Infinity);
-    
+
     addCommand ( command: CommandOptions )
     {
         const cmd = new Command( command );

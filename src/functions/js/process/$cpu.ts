@@ -49,8 +49,8 @@ return cpuPercent
             throw new Error(\`${data.name}: Invalid Type \${type}\`);
         }
 }`);
-        if (!currentScope.packages.includes(`const OS = await import("os")`)) {
-            currentScope.packages += `const OS = await import("os")\n`;
+        if (!currentScope.packages.includes("const OS = await import(\"os\")")) {
+            currentScope.packages += "const OS = await import(\"os\")\n";
         }
         if (
             !currentScope.functions.includes(

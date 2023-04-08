@@ -101,7 +101,7 @@ export const $if: FunctionData = {
       ${newscope.toString()}
     }
     `);
-        currentScope.rest = currentScope.rest.replace(data.total, res);
+        currentScope.update( res, data );
         return {
             code: res,
             scope: scope,

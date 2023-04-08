@@ -4,7 +4,6 @@ import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     escapeResult,
     escapeVars,
-    parseData,
 } from "../../../util/transpilerHelpers.js";
 export const $getObjectKeys: FunctionData = {
     name: "$getObjectKeys",

@@ -21,7 +21,7 @@ export const $ram: FunctionData = {
         const currentScope = scope[scope.length - 1];
         const type = parseString(data.inside ?? "rss");
 
-        let res = escapeResult(
+        const res = escapeResult(
             `(process.memoryUsage()[${type}] / 1024 / 1024).toFixed(2)`,
         );
         currentScope.rest = currentScope.rest.replace(data.total, res);

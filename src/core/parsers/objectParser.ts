@@ -4,7 +4,6 @@ import { parseData } from "../../util/transpilerHelpers.js";
 
 export const ObjectQuoteRegex = /".*?"/g;
 
-
 export function getObjectData(stringObject: string, currentObj: StringObject) {
     let i = 0,
         text = "";
@@ -21,7 +20,7 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
                 if (typeof t === "string") {
                     if (
                         t.trim().startsWith("'") ||
-                        t.trim().startsWith('"') ||
+                        t.trim().startsWith("\"") ||
                         t.trim().startsWith("`")
                     ) {
                         t = t.trim().slice(1, t.trim().length - 1);
@@ -53,7 +52,7 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
                 if (typeof t === "string") {
                     if (
                         t.trim().startsWith("'") ||
-                        t.trim().startsWith('"') ||
+                        t.trim().startsWith("\"") ||
                         t.trim().startsWith("`")
                     ) {
                         t = t.trim().slice(1, t.trim().length - 1);
@@ -77,7 +76,7 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
                 if (typeof t === "string") {
                     if (
                         t.trim().startsWith("'") ||
-                        t.trim().startsWith('"') ||
+                        t.trim().startsWith("\"") ||
                         t.trim().startsWith("`")
                     ) {
                         t = t.trim().slice(1, t.trim().length - 1);
@@ -108,7 +107,7 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
         if (typeof t === "string") {
             if (
                 t.trim().startsWith("'") ||
-                t.trim().startsWith('"') ||
+                t.trim().startsWith("\"") ||
                 t.trim().startsWith("`")
             ) {
                 t = t.trim().slice(1, t.trim().length - 1);

@@ -27,7 +27,7 @@ export const $round: FunctionData = {
     returns: "number",
     description: "Returns the Roundo off value of the number",
     code: (data, scope) => {
-        const [number,decimal = '0'] = data.splits;
+        const [number,decimal = "0"] = data.splits;
         const currentScope = scope[scope.length - 1];
         if (
             data.splits.length === 0 &&
@@ -48,13 +48,13 @@ export const $round: FunctionData = {
             number.includes(TranspilerCustoms.MFS)
                 ? parseResult(number.trim())
                 : Number( number );
-        let rounddecimal =
+        const rounddecimal =
             decimal.includes( TranspilerCustoms.FS ) ||
             decimal.includes( "__$DISCORD_DATA$__" ) ||
             decimal.includes( TranspilerCustoms.MFS )
                 ? parseResult( decimal.trim() )
                 : Number( decimal );
-        
+
         round = `((${round}).toFixed(${rounddecimal}))`;
 
         const res = escapeMathResult(`(${round})`);

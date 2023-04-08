@@ -4,7 +4,6 @@ import Scope from "../../../core/structs/Scope.js";
 import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
-    escapeResult,
     escapeVars,
     parseData,
     parseResult,
@@ -36,7 +35,7 @@ export const $let: FunctionData = {
         let res;
         const splits = data.splits;
         const currentScope = scope[ scope.length - 1 ];
-        // Initial Error Handling 
+        // Initial Error Handling
         if ($let.brackets) {
             if (
                 !data.total.startsWith($let.name + "[") &&

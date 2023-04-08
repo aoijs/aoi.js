@@ -29,7 +29,7 @@ export default class Condition {
     }
     solveAnd(condition: string, opposite: boolean) {
         const conditions = condition.split("&&");
-        let res = [];
+        const res = [];
         for (const c of conditions) {
             if (condition.includes("||")) {
                 res.push(this.solveOr(c, opposite));
@@ -41,7 +41,7 @@ export default class Condition {
     }
     solveOr(condition: string, opposite: boolean) {
         const conditions = condition.split("||");
-        let res = [];
+        const res = [];
         for (const c of conditions) {
             res.push(this._solve(c, opposite));
         }
@@ -73,12 +73,10 @@ export default class Condition {
                         }
                     } else if (typeof leftData === "string") {
                         if (
-                            (leftData.startsWith("#FUNCTION_START#") &&
+                            !((leftData.startsWith("#FUNCTION_START#") &&
                                 leftData.endsWith("#FUNCTION_END#")) ||
-                            leftData.startsWith("__$DISCORD_DATA$__")
+                            leftData.startsWith("__$DISCORD_DATA$__"))
                         ) {
-                            leftData = leftData;
-                        } else {
                             leftData = parseString(leftData);
                             if (
                                 typeof parseData(
@@ -90,7 +88,7 @@ export default class Condition {
                                 );
                             }
                         }
-                    } else if ( typeof leftData === 'bigint' )
+                    } else if ( typeof leftData === "bigint" )
                     {
                         leftData = leftData.toString()+"n";
                     }
@@ -107,14 +105,12 @@ export default class Condition {
                         }
                     } else if (typeof rightData === "string") {
                         if (
-                            (rightData.startsWith("#FUNCTION_START#") &&
+                            !((rightData.startsWith("#FUNCTION_START#") &&
                                 rightData.endsWith("#FUNCTION_END#")) ||
                             (rightData.startsWith("__$") &&
                                 rightData.includes("$__")) ||
-                            rightData.startsWith("__$DISCORD_DATA$__")
+                            rightData.startsWith("__$DISCORD_DATA$__"))
                         ) {
-                            rightData = rightData;
-                        } else {
                             rightData = parseString(rightData);
                             if (
                                 typeof parseData(
@@ -137,7 +133,7 @@ export default class Condition {
                     }
                     res = opposite
                         ? `${leftData}${
-                              opposites[
+                            opposites[
                                   <
                                       | "=="
                                       | "!="
@@ -148,14 +144,14 @@ export default class Condition {
                                       | "==="
                                       | "!=="
                                   >op
-                              ]
-                          }${rightData}`
+                            ]
+                        }${rightData}`
                         : `${leftData}${op}${rightData}`;
                 } else {
                     rightData = parseString(right.trim());
                     res = opposite
                         ? `${leftData}${
-                              opposites[
+                            opposites[
                                   <
                                       | "=="
                                       | "!="
@@ -166,8 +162,8 @@ export default class Condition {
                                       | "==="
                                       | "!=="
                                   >op
-                              ]
-                          }${rightData}`
+                            ]
+                        }${rightData}`
                         : `${leftData}${op}${rightData}`;
                 }
             } else {

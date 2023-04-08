@@ -34,7 +34,7 @@ export const $divide: FunctionData = {
                 `${data.name} requires at least 1 argument`,
             );
         }
-        let divide = numbers
+        const divide = numbers
             .map((x) =>
                 x.includes(TranspilerCustoms.FS) ||
                 x.includes("__$DISCORD_DATA$__") ||
@@ -45,7 +45,7 @@ export const $divide: FunctionData = {
             .join("/");
 
         const res = escapeMathResult(`(${divide})`);
-         currentScope.update(res, data);
+        currentScope.update(res, data);
         return {
             code: res,
             scope,

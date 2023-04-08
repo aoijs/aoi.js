@@ -1,5 +1,6 @@
 import { FunctionData, TranspilerError, Transpiler, conditionLexer } from "../../..";
 import Scope from "../../../core/structs/Scope.js";
+import { AsyncFunction } from "../../../typings/types.js";
 import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
 import funcs from "../../index.js";
 export const $while: FunctionData = {
@@ -45,7 +46,7 @@ export const $while: FunctionData = {
                 `${data.name} function requires condition and code`,
             );
         }
-        let [ condition, ...code ] = splits;
+        const [ condition, ...code ] = splits;
 
         const conditionFunctionList = getFunctionList(
             condition,
@@ -71,8 +72,7 @@ export const $while: FunctionData = {
         }
         executedCondition = conditionLexer(executedCondition);
         executedCondition = executedCondition.solve(false);
-        const hash = Math.floor( Math.random() * 100000 );
-        
+
         let executedCode;
         const codeFunctionList = getFunctionList(
             code.join(";"),
@@ -95,12 +95,12 @@ export const $while: FunctionData = {
         const res = escapeResult(`
 while(${executedCondition}) {
    ${
-       typeof executedCode === "string"
-           ? executedCode
-           : (<{ code: string; scope: Scope[]; func: any }>(
+    typeof executedCode === "string"
+        ? executedCode
+        : (<{ code: string; scope: Scope[]; func: AsyncFunction }>(
                  executedCode
              ))?.scope[0].toString(false)
-   }
+}
 }
 `);
         currentScope.update( res, data );

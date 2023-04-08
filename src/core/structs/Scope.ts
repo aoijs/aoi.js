@@ -1,5 +1,5 @@
 import { TranspilerCustoms } from "../../typings/enums.js";
-import { FunctionData, funcData } from "../../typings/interfaces.js";
+import { funcData } from "../../typings/interfaces.js";
 import {
     escapeResult,
     escapeVars,
@@ -17,12 +17,12 @@ export default class Scope {
     sendData: {
         content: string;
     };
-    embeds: any[] = [];
-    components: any[] = [];
-    files: any[] = [];
-    stickers: any[] = [];
+    embeds: unknown[] = [];
+    components: unknown[] = [];
+    files: unknown[] = [];
+    stickers: unknown[] = [];
     env: string[];
-    ephemeral: boolean = false;
+    ephemeral = false;
     variables: string[];
     setters: string;
     objects: Record<string, StringObject>;
@@ -32,7 +32,7 @@ export default class Scope {
     functions: string;
     addReturn: boolean;
     useChannel?: bigint;
-    packages: string = "";
+    packages = "";
     constructor(
         name: string,
         parent?: string,
@@ -40,7 +40,7 @@ export default class Scope {
         addReturn?: boolean,
     ) {
         this.name = name;
-        this.sendFunction = `__$DISCORD_DATA$__.client.createMessage`;
+        this.sendFunction = "__$DISCORD_DATA$__.client.createMessage";
         this.parent = parent;
         this.hasSendData = false;
         this.sendData = {
@@ -57,12 +57,11 @@ export default class Scope {
     addVariables(scopeVars: string[]) {
         this.variables.push(...scopeVars);
     }
-    addEmbeds(embeds: any[]) {
+    addEmbeds(embeds: unknown[]) {
         this.embeds = [...this.embeds, ...embeds];
     }
-    addFunction ( func: string )
-    {
-        this.functions += func+ " \n";
+    addFunction(func: string) {
+        this.functions += func + " \n";
     }
     replaceLast(str: string, replacer: string, replacedTo: string) {
         const index = str.lastIndexOf(replacer);
@@ -91,7 +90,7 @@ export default class Scope {
     removeChild(name: string) {
         this.children = this.children.filter((child) => child.name !== name);
     }
-    toString(sendMessage: boolean = true) {
+    toString(sendMessage = true) {
         const sendData: Record<string, string> = { ...this.sendData };
         sendData.embeds = escapeResult(escapeVars(`${this.name}_embeds`));
         sendData.components = escapeResult(
@@ -150,12 +149,13 @@ export default class Scope {
                         return `${this.addReturn ? "return " : ""} await ${
                             this.useChannel
                                 ? `__$DISCORD_DATA$__.client.createMessage(${parseString(
-                                      this.useChannel.toString() +
+                                    this.useChannel.toString() +
                                           (!isNaN(Number(this.useChannel))
                                               ? "n"
                                               : ""),
-                                  )},${sent});`
-                                : this.sendFunction + `(__$DISCORD_DATA$__.message.channelId,${sent});`
+                                )},${sent});`
+                                : this.sendFunction +
+                                  `(__$DISCORD_DATA$__.message.channelId,${sent});`
                         }`;
                     } else {
                         return "";
@@ -166,12 +166,14 @@ export default class Scope {
     getFunction(sendMessage = true, execute = false) {
         const name = this.name === "global" ? "main" : this.name;
         return (
-            `async function ${name}(__$DISCORD_DATA$__) {\n${this.toString(sendMessage)}\n}` +
+            `async function ${name}(__$DISCORD_DATA$__) {\n${this.toString(
+                sendMessage,
+            )}\n}` +
             (execute
                 ? `\n${
-                      this.addReturn ? "return " : ""
-                  }${name}(__$DISCORD_DATA$__);`
-                : ``)
+                    this.addReturn ? "return " : ""
+                }${name}(__$DISCORD_DATA$__);`
+                : "")
         ).replaceAll(TranspilerCustoms.SL, "`");
     }
     editMessage(channel: string, message: string) {
@@ -274,5 +276,32 @@ export default class Scope {
             );
             data.funcs = [];
         }
+    }
+
+    rawString() {
+        const sendData: Record<string, string> = { ...this.sendData };
+        sendData.embeds = escapeResult(escapeVars(`${this.name}_embeds`));
+        sendData.components = escapeResult(
+            escapeVars(`${this.name}_components`),
+        );
+        sendData.files = escapeResult(escapeVars(`${this.name}_files`));
+        sendData.stickers = escapeResult(escapeVars(`${this.name}_stickers`));
+        sendData.content = sendData.content.replaceAll(
+            "\n",
+            TranspilerCustoms.NL,
+        );
+        if (
+            sendData.content.replaceAll(TranspilerCustoms.NL, "").trim() !==
+                "" ||
+            this.embeds.length ||
+            this.files.length ||
+            this.stickers.length
+        )
+            this.hasSendData = true;
+        else this.hasSendData = false;
+
+        return parseResult(
+            `\n\n${this.rest.trim()}\n\n`.trim()
+        ).replaceAll(TranspilerCustoms.SL, "\\`");
     }
 }

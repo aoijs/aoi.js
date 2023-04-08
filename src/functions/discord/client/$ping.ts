@@ -1,10 +1,6 @@
-import { TranspilerError } from "../../../core/error.js";
-import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
-    escapeMathResult,
     escapeResult,
-    parseResult,
 } from "../../../util/transpilerHelpers.js";
 
 export const $ping: FunctionData = {
@@ -19,8 +15,8 @@ export const $ping: FunctionData = {
     description: "Returns the Ping of client",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
-        
-        const ping = `__$DISCORD_DATA$__.client.ws.data.ping`;
+
+        const ping = "__$DISCORD_DATA$__.client.ws.data.ping";
 
         const res = escapeResult(`(${ping})`);
         currentScope.update(res, data);

@@ -130,8 +130,7 @@ export function format(time: number) {
             Object.entries(data.object)
                 .slice(0, -1)
                 .forEach((x) => {
-                    if (!x[1]) {
-                    } else {
+                    if (x[1]) {
                         if (["months", "ms"].includes(x[0])) {
                             string.push(`${x[1]}${x[0].slice(0, 3)}`);
                         } else {
