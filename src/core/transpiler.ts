@@ -47,7 +47,7 @@ export function Transpiler(
     if (res.scope[0].sendData.content.trim() !== "") {
         const scope = res.scope[0];
         scope.hasSendData = true;
-        scope.rest.replace(scope.sendData.content.trim(), "");
+        scope.rest = scope.rest.replace(scope.sendData.content.trim(), "");
         res.scope[0] = scope;
     }
     let str = res.scope[0].getFunction(sendMessage);

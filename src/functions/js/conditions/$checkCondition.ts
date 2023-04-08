@@ -1,7 +1,7 @@
 import { conditionLexer } from "../../../index.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
-    escapeResult,
+    escapeResult, parseResult,
 } from "../../../util/transpilerHelpers.js";
 export const $checkCondition: FunctionData = {
     name: "$checkCondition",
@@ -18,12 +18,12 @@ export const $checkCondition: FunctionData = {
     ],
     default: ["void"],
     returns: "boolean",
-    description: "Returns true if all conditions are true",
+    description: "Returns true if the condition is true",
     code: (data, scope) => {
         const conditions = <string>data.inside;
         const currentScope = scope[scope.length - 1];
-        const solved = conditionLexer(conditions).solve(false);
-        const res = escapeResult(solved);
+        const solved = conditionLexer(conditions).solve();
+        const res = escapeResult(parseResult(solved));
         currentScope.update( res, data );
 
         return {

@@ -71,7 +71,7 @@ export const $while: FunctionData = {
             executedCondition = condition;
         }
         executedCondition = conditionLexer(executedCondition);
-        executedCondition = executedCondition.solve(false);
+        executedCondition = executedCondition.solve();
 
         let executedCode;
         const codeFunctionList = getFunctionList(

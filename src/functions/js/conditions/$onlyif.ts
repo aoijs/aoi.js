@@ -60,7 +60,7 @@ export const $onlyIf: FunctionData = {
             executedCondition = condition;
         }
         executedCondition = conditionLexer(executedCondition);
-        executedCondition = executedCondition.solve(false);
+        executedCondition = executedCondition.solve();
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,

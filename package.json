@@ -13,7 +13,8 @@
     "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
     "createpack": "node src/pack.js",
     "lint": "eslint . --ext .ts --fix ",
-    "install": "npm run build"
+    "install": "npm run build",
+    "buildStart": "npm run build && npm start"
   },
   "contributors": [
     "leref",

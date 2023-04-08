@@ -1,16 +1,6 @@
 import { inspect } from "util";
 import { parseData } from "../../util/transpilerHelpers";
 import { parseString } from "../parsers/stringParser";
-const opposites = {
-    "===": "!==",
-    "!==": "===",
-    "==": "!=",
-    "!=": "==",
-    ">": "<=",
-    "<": ">=",
-    ">=": "<",
-    "<=": ">",
-};
 const operators = ["===", "!==", "==", "!=", ">", "<", ">=", "<="];
 
 export default class Condition {
@@ -22,38 +12,38 @@ export default class Condition {
         this.nest = [];
         this.parent = parent ?? null;
     }
-    solve(opposite: boolean) {
+    solve() {
         if (this.nest.length) {
-            return this._solve(this.condition, opposite);
-        } else return this.solveAnd(this.condition, opposite);
+            return this._solve(this.condition);
+        } else return this.solveAnd(this.condition);
     }
-    solveAnd(condition: string, opposite: boolean) {
+    solveAnd(condition: string) {
         const conditions = condition.split("&&");
         const res = [];
         for (const c of conditions) {
             if (condition.includes("||")) {
-                res.push(this.solveOr(c, opposite));
+                res.push(this.solveOr(c));
             } else {
-                res.push(this._solve(c, opposite));
+                res.push(this._solve(c));
             }
         }
         return res.join("&&");
     }
-    solveOr(condition: string, opposite: boolean) {
+    solveOr(condition: string) {
         const conditions = condition.split("||");
         const res = [];
         for (const c of conditions) {
-            res.push(this._solve(c, opposite));
+            res.push(this._solve(c));
         }
         return res.join("||");
     }
-    _solve(condition: string, opposite: boolean): string {
+    _solve(condition: string): string {
         condition = condition
             .replaceAll("#SMOOTH_BRACKET_LEFT#", "(")
             .replaceAll("#SMOOTH_BRACKET_RIGHT#", ")");
         if (this.nest.length) {
             for (const c of this.nest) {
-                const solvedData = c.solve(opposite);
+                const solvedData = c.solve();
                 condition = condition.replace("#CONDITION#", `(${solvedData})`);
             }
             return condition;
@@ -131,40 +121,10 @@ export default class Condition {
                     } else if (typeof rightData === "bigint") {
                         rightData = rightData.toString() + "n";
                     }
-                    res = opposite
-                        ? `${leftData}${
-                            opposites[
-                                  <
-                                      | "=="
-                                      | "!="
-                                      | ">"
-                                      | "<"
-                                      | ">="
-                                      | "<="
-                                      | "==="
-                                      | "!=="
-                                  >op
-                            ]
-                        }${rightData}`
-                        : `${leftData}${op}${rightData}`;
+                    res = `${leftData}${op}${rightData}`;
                 } else {
                     rightData = parseString(right.trim());
-                    res = opposite
-                        ? `${leftData}${
-                            opposites[
-                                  <
-                                      | "=="
-                                      | "!="
-                                      | ">"
-                                      | "<"
-                                      | ">="
-                                      | "<="
-                                      | "==="
-                                      | "!=="
-                                  >op
-                            ]
-                        }${rightData}`
-                        : `${leftData}${op}${rightData}`;
+                    res = `${leftData}${op}${rightData}`;
                 }
             } else {
                 res = parseData(condition);

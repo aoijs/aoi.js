@@ -1,7 +1,7 @@
 import { conditionLexer } from "../../../index.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
-    escapeResult,
+    escapeResult, parseResult,
 } from "../../../util/transpilerHelpers.js";
 export const $or: FunctionData = {
     name: "$or",
@@ -22,9 +22,9 @@ export const $or: FunctionData = {
     code: (data, scope) => {
         const conditions = data.splits;
         const currentScope = scope[scope.length - 1];
-        const solved = conditionLexer(conditions.join("||")).solve(false);
+        const solved = conditionLexer(conditions.join("||")).solve();
 
-        const res = escapeResult(solved);
+        const res = escapeResult(parseResult(solved));
         currentScope.update( res, data );
 
         return {

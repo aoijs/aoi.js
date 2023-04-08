@@ -179,14 +179,13 @@ export function getFunctionList(code: string, functions: string[]) {
     return res;
 }
 
-export function reverseArray<T>(arr: T[]) {
-    const res : T[]= [];
+export function reverseArray(arr: funcData[]) {
+    const res : funcData[]= [];
     for ( let i = arr.length - 1; i >= 0; i-- )
     {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        if (arr[i] instanceof Array) res.push(reverseArray((arr[i])));
-        res.push(arr[i]);
+        const el = arr[ i ];
+        if ( el.funcs.length ) el.funcs = reverseArray( ( arr[ i ].funcs ) );
+        res.push(el);
     }
     return res;
 }
@@ -282,10 +281,11 @@ export function ExecuteData(
             d.type !== "function_getter" &&
             d.type !== "scope_getter"
         ) {
-            const s = scope[scope.length - 1];
+            const s = scope[ scope.length - 1 ];
+            const oldt = d.total;
             d.total = removeFF(d.total);
 
-            s.sendData.content = s.sendData.content.replace(d.total, "");
+            s.sendData.content = s.sendData.content.replace(d.total, "").replace(oldt, "");
             scope[scope.length - 1] = s;
         }
         i++;
