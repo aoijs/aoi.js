@@ -36,10 +36,10 @@ export const $clientAvatar: FunctionData = {
         const currentScope = scope[scope.length - 1];
 
         // Getting the client avatar
-        const clientAvatar = `__$DISCORD_DATA$__.client.AvatarURL({format: ${format}, dynamic: ${dynamic}, size: ${size}})`;
+        const clientAvatar = `__$DISCORD_DATA$__.client.readyData.user.avatarUrl({ size: ${size}, dynamic: ${dynamic}, format: "${format}" })`;
 
         // Returning the result
-        const res = escapeResult(`(${clientAvatar})`);
+        const res = escapeResult(clientAvatar);
 
         // Updating the scope
         currentScope.update(res, data);
