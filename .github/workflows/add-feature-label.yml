@@ -1,8 +1,7 @@
 name: Add Feature label
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+ - pull_request_target
 
 jobs:
   add-feature-label:
