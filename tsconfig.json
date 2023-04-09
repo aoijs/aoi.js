@@ -14,5 +14,9 @@
         "declarationMap": true,
         "resolveJsonModule": true,
         "rootDir": "./src"
-    }
+    },
+    "exclude": [
+        "src/**/*.md",
+        "src/**/templates/**",
+    ]
 }
