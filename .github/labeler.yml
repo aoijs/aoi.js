@@ -1,5 +1,5 @@
 Client:
-  - any: ['src/structures/Client.ts', 'src/functions/discord/client/*']
+  - any: ['src/structures/Client.ts', 'src/functions/discord/client/**/*']
   
 Classes: 
   - src/structures/*
