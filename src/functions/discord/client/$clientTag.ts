@@ -16,7 +16,7 @@ export const $clientTag: FunctionData = {
         const currentScope = scope[scope.length - 1];
 
         // Getting the client tag
-        const clientTag = "__$DISCORD_DATA$__.client?.tag()";
+        const clientTag = "__$DISCORD_DATA$__.client?.user.tag()";
 
         // Returning the result
         const res = escapeResult(clientTag);
