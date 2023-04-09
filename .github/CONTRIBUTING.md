@@ -26,8 +26,17 @@ If you want to suggest an enhancement to Aoi.js, please [submit an issue](./ISSU
 
 ### Pull Requests
 
-If you want to contribute to Aoi.js, please [submit a pull request](./PULL_REQUEST_TEMPLATE.md).
+If you want to contribute to Aoi.js, submit a pull request.
 
+- Pull requests related to [Modules](./PULL_REQUEST_TEMPLATE/Module.md)
+    - url: `https://github.com/AkaruiDevelopment/aoi.js/compare/v7...YOURGITHUBUSERNAME:aoi.js:BRANCH?quick_pull=1&template=Module.md`
+  
+- Pull requests related to [Functions](./PULL_REQUEST_TEMPLATE/Function.md)
+    - url: `https://github.com/AkaruiDevelopment/aoi.js/compare/v7...YOURGITHUBUSERNAME:aoi.js:BRANCH?quick_pull=1&template=Module.md`
+
+- Pull requests related to [Non-Core Aspect](./PULL_REQUEST_TEMPLATE/NonCore.md).
+    - url: `https://github.com/AkaruiDevelopment/aoi.js/compare/v7...YOURGITHUBUSERNAME:aoi.js:BRANCH?quick_pull=1&template=NonCore.md`
+  
 ### Requirements
 
 - NodeJS 18 (LTS)
