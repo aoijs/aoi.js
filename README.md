@@ -27,7 +27,7 @@
 
 ## Installation
 
-**node.js 16.9.0 or newer is required.**
+**node.js LTS or newer is required.**
 
 ```bash
 npm install aoi.js
@@ -37,22 +37,26 @@ yarn add aoi.js
 ## Setup
 
 ```javascript
-const { AoiClient } = require("aoi.js")
+// imports
+const { AoiClient,defaultCacheConfig } = require("aoi.js");
+const { Intents } = require("aoi.luna");
 
+// create a new client
 const bot = new AoiClient({
-token: "Discord Bot Token",
-prefix: "Discord Bot Prefix",
-intents: ["MessageContent", "Guilds", "GuildMessages"],
-events: ["onMessage"]
+  token: "TOKEN",
+  prefixes: "PREFIX",
+  intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
+  events: ['MessageCreate','Ready'],
+  caches: defaultCacheConfig(),
 })
 
-//Ping Command Example
-bot.command({
-name: "ping",
-code: `Pong! $pingms`
+// create a command
+bot.cmds.add({
+  name: "ping",
+  code: `Pong! $pingms`
+  type: "basic",
+  
 })
-
-bot.start()
 ```
 
 ## Links

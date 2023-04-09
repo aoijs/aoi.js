@@ -1,6 +1,6 @@
 import { TranspiledFuncData } from "./interfaces.js";
 
-export type CommandTypes = "basicCommand" | "slashCommand";
+export type CommandTypes = "basic" | "slash";
 export type AsyncFunction = ( arg: TranspiledFuncData ) => Promise<unknown>;
 
 export type autoFetchDataTypes =
@@ -11,3 +11,5 @@ export type autoFetchDataTypes =
     | "role"
     | "user"
     | "all";
+
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;

@@ -1,24 +1,45 @@
-# Contributing to aoi.js
-### Let's build aoi.js together!
+# Contribute to Aoi.js
 
-You might have the creativity to make useful functions for developers to use, well now you can.
+Thank you for taking the time to contribute to Aoi.js! We really appreciate it. 
 
-## How do you add your creation?
-Adding your creation to Aoi.js is simple as it gets, by making a Pull Request.
-Your pull request will be flagged as "Accepted" or "Declined".
+Before contributing, please make sure to read the [Code of Conduct](./CODE_OF_CONDUCT.md). We expect you to follow it in all your interactions with the project.
 
-Template can be found in the Respository.
+## New to Aoi.js?
 
-## Reporting bugs
-Have you encountered Issues when using aoi.js?
-Make an Issue of the problem for further Support, if you have the answer to solve it, Add the code in your Issue ( can be Link or Text, not File ).
+If you are new to Aoi.js, please take a look at the [documentation](https://aoi.js.org/docs). It is a great place to start.
 
-Template can be found in the Respository.
+## New Contributor Guide
 
-## What do I get from contributing
-Contributing for Aoi.js will grant you the Contributor Role.
+To get an overview of the codebase, check out the '[README.md](../src/README.md)' file in the `src` directory.
 
-Achieving the role will require you to do/be:
-- A member of the Server over three Months / been active sufficiently.
-- Contributed to aoi.js at least five or greater.
-- Knowledge of NodeJS Basics (NodeJS 16.6+)
+that will help you understand the structure of the project.
+
+## How to Contribute
+
+### Reporting Bugs
+
+If you find a bug in the source code, you can help us by [submitting an issue](./ISSUE_TEMPLATE/bug_report.md).
+
+### Suggesting Enhancements
+
+If you want to suggest an enhancement to Aoi.js, please [submit an issue](./ISSUE_TEMPLATE/feature_request.md).
+
+### Pull Requests
+
+If you want to contribute to Aoi.js, please [submit a pull request](./PULL_REQUEST_TEMPLATE.md).
+
+### Requirements
+
+- NodeJS 18 (LTS)
+- IDE (Visual Studio Code Recommended)
+- Git
+
+### Setup
+
+1. Fork the repository
+2. Clone the repository on your local machine
+3. Run `npm install` to install dependencies
+4. Run `npm run build` to build the project
+5. Run `npm run test` to test the project
+6. [Setup](./templates/setup.md) the bot 
+7. Run `npm start` to start the bot
