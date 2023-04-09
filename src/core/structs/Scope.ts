@@ -4,6 +4,7 @@ import {
     escapeResult,
     escapeVars,
     parseResult,
+    removeMultiLineComments,
     removeSetFunc,
 } from "../../util/transpilerHelpers.js";
 import fixMath from "../parsers/mathParser.js";
@@ -121,7 +122,7 @@ export default class Scope {
                 : parsedStr.trim().replaceAll(TranspilerCustoms.SL, "\\`");
 
         this.rest = this.replaceLast(
-            this.rest.trim(),
+            parseResult(removeMultiLineComments(this.rest.trim())),
             this.sendData.content.trim(),
             "",
         );

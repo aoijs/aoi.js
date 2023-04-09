@@ -268,11 +268,13 @@ export function ExecuteData(
 
                 code = code.replace(d.total, executed.code);
 
-                if (d.type === "getter" || d.type === "function_getter") {
+                if ( d.type === "getter" || d.type === "function_getter" )
+                {
+                    const oldt = d.total;
                     d.total = removeFF(d.total);
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
-                    ].sendData.content.replace(d.total, executed.code);
+                    ].sendData.content.replace(d.total, executed.code).replace(oldt, executed.code);
                 }
             }
         }
@@ -386,4 +388,9 @@ export function removeMF(total: string) {
 export function isBigInt ( string: string )
 {
     return string.match ( /^-?\d+n$/ ) !== null;
+}
+
+export function removeMultiLineComments ( code: string )
+{
+    return code.replace ( /\/\*[\s\S]*?\*\//g, "" );
 }

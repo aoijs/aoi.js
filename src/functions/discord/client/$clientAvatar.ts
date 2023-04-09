@@ -6,7 +6,7 @@ export const $clientAvatar: FunctionData = {
     name: "$clientAvatar",
     type: "getter",
     brackets: true,
-    optional: false,
+    optional: true,
     fields: [
         {
             name: "size",
