@@ -16,7 +16,7 @@ export const $clientId: FunctionData = {
         const currentScope = scope[scope.length - 1];
 
         // Getting the client ID
-        const clientId = "__$DISCORD_DATA$__.client?.id";
+        const clientId = "__$DISCORD_DATA$__.client?.user.id";
 
         // Returning the result
         const res = escapeResult(clientId);
