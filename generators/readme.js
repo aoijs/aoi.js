@@ -12,12 +12,13 @@ for ( const dir of dirs )
     const obj = {};
     for ( const subdir of subdirs )
     {
-        obj[ subdir ] = [];
-        const files = fs.readdirSync( file + "/" + dir + "/" + subdir, { withFileTypes: true } ).filter( x => x.isFile() && x.name.startsWith(("$")) ).map( x => x.name );
-        obj[ subdir ] = files;
+        const files = fs.readdirSync( file + "/" + dir + "/" + subdir, { withFileTypes: true } ).filter( x => x.isFile() && x.name.startsWith( ( "$" ) ) ).map( x => x.name.split( "." )[ 0 ] );
+        if( files.length)
+            obj[ subdir ] = files;
     }
     folders[ dir ] = obj;
 }
+console.log( folders );
 
 const readme = `# Functions
 
