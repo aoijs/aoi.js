@@ -1,17 +1,15 @@
 const fs = require("fs");
-const path = require("path");
 const { Group } = require("../classes/structures/dist");
 
 const maps = {};
 const grp = new Group();
 
 const functions = fs
-  .readdirSync(path.join(__dirname, "Funcs"))
-  .map((dir) => {
-    const files = fs.readdirSync(path.join(__dirname, "Funcs", dir));
-    maps[dir] = files.map((file) => file.split(".js")[0]);
-    return files.map((file) => "$" + file.split(".js")[0]);
-  })
-  .reduce((acc, val) => acc.concat(val), []);
+    .readdirSync(__dirname + "/Funcs")
+    .flatMap((dir) => {
+        const files = fs.readdirSync(__dirname + `/Funcs/${dir}`);
+        maps[dir] = files.map((file) => file.split(".js")[0]);
+        return files.map((file) => "$" + file.split(".js")[0]);
+    });
 
-module.exports = { functions, maps: Object.values(maps), grp };
+module.exports = { functions, maps, grp };
