@@ -13,7 +13,7 @@ const {
 } = require("../../utils/InteractionConstants.js");
 /**
  * @param  {Interaction | ButtonInteraction | SelectMenuInteraction | ContextMenuCommandInteraction | CommandInteraction } interaction
- * @param  {import('../../classes/Bot.js')} client
+ * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (interaction, client) => {
     client.interactionManager.resolve(interaction);

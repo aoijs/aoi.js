@@ -3,7 +3,7 @@ const { MessageReaction } = require("discord.js");
 /**
  * @param  {MessageReaction} reaction
  * @param  {User} user
- * @param  {import('../../classes/Bot.js')} client
+ * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (reaction, user, client) => {
     const cmds = client.cmd.reactionRemove.allValues();

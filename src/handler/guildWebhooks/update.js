@@ -2,7 +2,7 @@ const { TextChannel, NewsChannel } = require("discord.js");
 const Interpreter = require("../../interpreter.js");
 /**
  * @param  {TextChannel | NewsChannel } channelData
- * @param  {import('../../classes/Bot.js')} client
+ * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (channelData, client) => {
     const cmds = client.cmd.webhookUpdate.allValues();

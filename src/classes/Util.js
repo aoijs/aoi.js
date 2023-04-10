@@ -242,7 +242,7 @@ class Util {
   }
 
   /**
-   * @param  {import('../classes/Bot.js')} client
+   * @param  {import('../classes/AoiClient.js')} client
    * @param  {string} ChannelResolver
    * @returns {string?}
    */
@@ -270,7 +270,7 @@ class Util {
   }
 
   /**
-   * @param  {import("../classes/Bot.js")} client
+   * @param  {import("../classes/AoiClient.js")} client
    * @param  {string} UserResolver
    * @returns {string?}
    */

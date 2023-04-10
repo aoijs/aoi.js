@@ -25,7 +25,7 @@ class AoiError {
             `(Missing Intents) : "${event}" requires "${intent}" intent.`,
         );
         error.name = "EventError";
-        error.fileName = "./Bot.js";
+        error.fileName = "./AoiClient.js";
         error.lineNumber = line;
         throw error;
     }
@@ -64,7 +64,7 @@ class AoiError {
     }
 
     /**
-     * @param  {import('./Bot.js')} client
+     * @param  {import('./AoiClient.js')} client
      * @param  {import('discord.js').TextChannel |
      * import('discord.js').ThreadChannel |
      * import('discord.js').NewsChannel |

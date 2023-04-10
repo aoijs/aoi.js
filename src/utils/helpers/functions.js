@@ -69,7 +69,7 @@ module.exports = {
         return data;
     },
     /**
-     * @param  {import('../../classes/Bot.js')} client
+     * @param  {import('../../classes/AoiClient.js')} client
      */
     Client(client) {
         const data = {

@@ -2,7 +2,6 @@ const fs = require("fs");
 const { CommandManager } = require("./Commands.js");
 const PATH = require("path");
 
-//const Client = require("./Bot.js")
 class LoadCommands {
   constructor(client, addClassInClient = true) {
     this.client = client;
