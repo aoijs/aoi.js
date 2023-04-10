@@ -34,4 +34,38 @@ ${ Object.keys( folders ).map( x => Object.keys( folders[ x ] ).map( y => `${ y 
 ${ Object.keys( folders ).map( x => ` - \`${ x }\`: Contains functions related to ${ x }` ).join( "\n" )}
 `;
 
-fs.writeFileSync( file+"/README.md", readme );
+fs.writeFileSync( file + "/README.md", readme );
+
+const DiscordReadme = `# Discord
+
+## Directory Structure
+
+\`\`\`mermaid
+graph RL;
+${ Object.keys( folders[ "discord" ] ).map( x => folders[ "discord" ][ x ].map( y => `${ y } --> ${ x }` ).join( ";\n" ) ).join( ";\n" ) };
+
+\`\`\`
+
+## Divisions
+
+${ Object.keys( folders[ "discord" ] ).map( x => ` - \`${ x }\`: Contains functions related to ${ x }` ).join( "\n" )}
+`;
+
+fs.writeFileSync( file + "/discord/README.md", DiscordReadme );
+
+const JsReadme = `# JavaScript
+
+## Directory Structure
+
+\`\`\`mermaid
+graph RL;
+${ Object.keys( folders[ "js" ] ).map( x => folders[ "js" ][ x ].map( y => `${ y } --> ${ x }` ).join( ";\n" ) ).join( ";\n" ) };
+
+\`\`\`
+
+## Divisions
+
+${ Object.keys( folders[ "js" ] ).map( x => ` - \`${ x }\`: Contains functions related to ${ x }` ).join( "\n" )};
+`;
+
+fs.writeFileSync( file + "/js/README.md", JsReadme );
