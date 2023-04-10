@@ -5,14 +5,14 @@ This is the source code for Aoi.js. It is written in TypeScript and compiled to 
 ## Directory Structure
 
 ```mermaid
-graph TD;
-  Core --> Aoijs
-  Events --> Aoijs
-  Functions --> Aoijs
+graph RL;
+  Core -----> Aoijs
+  Events ----> Aoijs
+  Functions ---> Aoijs
   Manager --> Aoijs
-  Structures --> Aoijs
-  Typings --> Aoijs
-  Utils --> Aoijs
+  Structures ---> Aoijs
+  Typings ----> Aoijs
+  Utils -----> Aoijs
 ```
 
 ## Divisions
