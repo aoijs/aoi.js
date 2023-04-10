@@ -24,7 +24,7 @@ const readme = `# Functions
 
 ## Directory Structure
 \`\`\`mermaid
-graph TD;
+graph LR;
 ${ Object.keys( folders ).map( x => `${ x } --> Functions` ).join( ";\n" )};
 ${ Object.keys( folders ).map( x => Object.keys( folders[ x ] ).map( y => `${ y } --> ${ x }` ).join( ";\n" ) ).join( ";\n" )};
 ${ Object.keys( folders ).map( x => Object.keys( folders[ x ] ).map( y =>  folders[ x ][ y ] .map( z => `${ z } --> ${ y }` ).join( ";\n" ) ).join( ";\n" ) ).join( ";\n" )};

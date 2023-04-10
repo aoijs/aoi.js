@@ -2,7 +2,7 @@
 
 ## Directory Structure
 ```mermaid
-graph TD;
+graph LR;
 discord --> Functions;
 js --> Functions;
 client --> discord;
