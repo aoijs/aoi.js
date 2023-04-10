@@ -87,6 +87,8 @@ class CommandManager {
     threadMembersUpdate;
     join;
     leave;
+    inviteCreate;
+    inviteDelete;
     memberUpdate;
     membersUpdate;
     memberAvailable;
@@ -162,6 +164,8 @@ class CommandManager {
             "threadUpdate",
             "join",
             "leave",
+            "inviteCreate",
+            "inviteDelete",
             "memberUpdate",
             "memberAvailable",
             "membersChunk",
