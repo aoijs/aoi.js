@@ -14,20 +14,13 @@ const IntentOptions = {
     ...IntentsBitField.Flags,
 };
 
-const ActivityTypeAvailables = {
-    playing: ActivityType["Playing"],
-    streaming: ActivityType["Streaming"],
-    listening: ActivityType["Listening"],
-    watching: ActivityType["Watching"],
-    custom: ActivityType["Custom"],
-    competing: ActivityType["Competing"],
-    PLAYING: ActivityType["Playing"],
-    STREAMING: ActivityType["Streaming"],
-    LISTENING: ActivityType["Listening"],
-    WATCHING: ActivityType["Watching"],
-    CUSTOM: ActivityType["Custom"],
-    COMPETING: ActivityType["Competing"],
-};
+const ActivityTypeAvailables = {};
+const availableActivities = ['playing', 'streaming', 'listening', 'watching', 'custom', 'competing'];
+
+for (const activity of availableActivities) {
+    ActivityTypeAvailables[activity] = ActivityType[activity];
+    ActivityTypeAvailables[activity.toUpperCase()] = ActivityType[activity];
+}
 
 const DebugAvailables = {
     interpreter: "Boolean",
