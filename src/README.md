@@ -4,7 +4,16 @@ This is the source code for Aoi.js. It is written in TypeScript and compiled to 
 
 ## Directory Structure
 
-![Directory Structure](../.github/assets/srcStruct.png)
+```mermaid
+graph TD;
+  Core --> Aoijs
+  Events --> Aoijs
+  Functions --> Aoijs
+  Manager --> Aoijs
+  Structures --> Aoijs
+  Typings --> Aoijs
+  Utils --> Aoijs
+```
 
 ## Divisions
 
