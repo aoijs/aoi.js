@@ -2,6 +2,8 @@ import  StringObject  from "../core/structs/StringObject.js";
 import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
 export interface TranspilerOptions {
     sendMessage: boolean;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    minifier?: Function;
     scopeData?: {
         variables?: string[];
         embeds?: unknown[];
