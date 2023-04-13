@@ -5,7 +5,14 @@
   "main": "./dist/cjs/index.js",
   "exports": {
     "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    "require": "./dist/cjs/index.js",
+    "default": "./dist/cjs/index.js",
+    "esm": "./dist/esm/",
+    "cjs": "./dist/cjs/",
+    "esm/functions" : "./dist/esm/functions/index.js",
+    "cjs/functions" : "./dist/cjs/functions/index.js",
+    "esm/core" : "./dist/esm/core/index.js",
+    "cjs/core" : "./dist/cjs/core/index.js"
   },
   "scripts": {
     "test": "node tests",
