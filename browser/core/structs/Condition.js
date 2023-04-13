@@ -1,0 +1,134 @@
+import { inspect } from "util";
+import { parseData } from "../../util/transpilerHelpers";
+import { parseString } from "../parsers/stringParser";
+const operators = ["===", "!==", "==", "!=", ">", "<", ">=", "<="];
+export default class Condition {
+    condition;
+    nest;
+    parent;
+    constructor(condition, parent) {
+        this.condition = condition;
+        this.nest = [];
+        this.parent = parent ?? null;
+    }
+    solve() {
+        if (this.nest.length) {
+            return this._solve(this.condition);
+        }
+        else
+            return this.solveAnd(this.condition);
+    }
+    solveAnd(condition) {
+        const conditions = condition.split("&&");
+        const res = [];
+        for (const c of conditions) {
+            if (condition.includes("||")) {
+                res.push(this.solveOr(c));
+            }
+            else {
+                res.push(this._solve(c));
+            }
+        }
+        return res.join("&&");
+    }
+    solveOr(condition) {
+        const conditions = condition.split("||");
+        const res = [];
+        for (const c of conditions) {
+            res.push(this._solve(c));
+        }
+        return res.join("||");
+    }
+    _solve(condition) {
+        condition = condition
+            .replaceAll("#SMOOTH_BRACKET_LEFT#", "(")
+            .replaceAll("#SMOOTH_BRACKET_RIGHT#", ")");
+        if (this.nest.length) {
+            for (const c of this.nest) {
+                const solvedData = c.solve();
+                condition = condition.replace("#CONDITION#", `(${solvedData})`);
+            }
+            return condition;
+        }
+        else {
+            const op = operators.find((o) => condition.includes(o));
+            let res;
+            if (op) {
+                const [left, right] = condition.split(op);
+                let leftData, rightData;
+                if (left.trim().split(" ").length === 1) {
+                    leftData = parseData(left.trim());
+                    if (typeof leftData === "object") {
+                        try {
+                            leftData = JSON.stringify(leftData);
+                        }
+                        catch {
+                            leftData = inspect(leftData);
+                        }
+                    }
+                    else if (typeof leftData === "string") {
+                        if (!((leftData.startsWith("#FUNCTION_START#") &&
+                            leftData.endsWith("#FUNCTION_END#")) ||
+                            leftData.startsWith("__$DISCORD_DATA$__"))) {
+                            leftData = parseString(leftData);
+                            if (typeof parseData(leftData.substring(1, leftData.length - 1)) !== "string") {
+                                leftData = parseData(leftData.substring(1, leftData.length - 1));
+                            }
+                        }
+                    }
+                    else if (typeof leftData === "bigint") {
+                        leftData = leftData.toString() + "n";
+                    }
+                }
+                else {
+                    leftData = parseString(left.trim());
+                }
+                if (right.trim().split(" ").length === 1) {
+                    rightData = parseData(right.trim());
+                    if (typeof rightData === "object") {
+                        try {
+                            rightData = JSON.stringify(rightData);
+                        }
+                        catch {
+                            rightData = inspect(rightData);
+                        }
+                    }
+                    else if (typeof rightData === "string") {
+                        if (!((rightData.startsWith("#FUNCTION_START#") &&
+                            rightData.endsWith("#FUNCTION_END#")) ||
+                            (rightData.startsWith("__$") &&
+                                rightData.includes("$__")) ||
+                            rightData.startsWith("__$DISCORD_DATA$__"))) {
+                            rightData = parseString(rightData);
+                            if (typeof parseData(rightData.substring(1, rightData.length - 1)) !== "string") {
+                                rightData = parseData(rightData.substring(1, rightData.length - 1));
+                            }
+                        }
+                    }
+                    else if (typeof rightData === "bigint") {
+                        rightData = rightData.toString() + "n";
+                    }
+                    res = `${leftData}${op}${rightData}`;
+                }
+                else {
+                    rightData = parseString(right.trim());
+                    res = `${leftData}${op}${rightData}`;
+                }
+            }
+            else {
+                res = parseData(condition);
+                if (typeof res === "string" &&
+                    (!res.endsWith("#FUNCTION_END#") ||
+                        res.trim().split(" ").length > 1) &&
+                    !res.startsWith("#FUNCTION_START#")) {
+                    res = parseString(res);
+                }
+            }
+            return res;
+        }
+    }
+    add(part) {
+        this.condition += part;
+    }
+}
+//# sourceMappingURL=Condition.js.map

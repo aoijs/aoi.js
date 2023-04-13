@@ -1,0 +1,44 @@
+import { parseString } from "../../../index.js";
+import { convertToBool, escapeResult, } from "../../../util/transpilerHelpers.js";
+export const $eval = {
+    name: "$eval",
+    type: "function",
+    brackets: true,
+    optional: false,
+    fields: [
+        {
+            name: "output",
+            type: "boolean",
+            required: true,
+        },
+        {
+            name: "code",
+            type: "string",
+            required: true,
+        },
+    ],
+    default: ["void", "void"],
+    returns: "any",
+    version: "7.0.0",
+    description: "Evaluates the aoi.js code",
+    code: (data, scope) => {
+        const [output, ...code] = data.splits;
+        const parsedOutput = convertToBool(output);
+        const currentScope = scope[scope.length - 1];
+        const executedCode = `Transpiler(${parseString(code.join(";"))}, {sendMessage: ${parsedOutput} ,minify: false }).func(__$DISCORD_DATA$__);\n`;
+        const res = escapeResult(`
+    ${executedCode}
+    `);
+        if (!currentScope.packages.includes("const { Transpiler } = await import('./transpiler.js');")) {
+            currentScope.packages += "const { Transpiler } = await import('./transpiler.js');\n";
+        }
+        currentScope.rest = currentScope.rest.replace(data.total, res);
+        data.funcs = [];
+        return {
+            code: res,
+            scope: scope,
+            data: data,
+        };
+    },
+};
+//# sourceMappingURL=$eval.js.map

@@ -5,19 +5,13 @@
   "main": "./dist/cjs/index.js",
   "exports": {
     "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js",
-    "default": "./dist/cjs/index.js",
-    "esm": "./dist/esm/",
-    "cjs": "./dist/cjs/",
-    "esm/functions" : "./dist/esm/functions/index.js",
-    "cjs/functions" : "./dist/cjs/functions/index.js",
-    "esm/core" : "./dist/esm/core/index.js",
-    "cjs/core" : "./dist/cjs/core/index.js"
+    "require": "./dist/cjs/index.js"
   },
+  "browser": "./browser/index.js",
   "scripts": {
     "test": "node tests",
     "start": "node index.js",
-    "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
+    "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npx tsc -p tsconfig.browser.json && npm run createpack",
     "createpack": "node src/pack.js",
     "lint": "eslint . --ext .ts --fix ",
     "install": "npm run build",
