@@ -1,5 +1,5 @@
 import StringObject from "../structs/StringObject.js";
-import { parseString } from "./stringParser";
+import { parseString } from "./stringParser.js";
 import { parseData } from "../../util/transpilerHelpers.js";
 
 export const ObjectQuoteRegex = /".*?"/g;
