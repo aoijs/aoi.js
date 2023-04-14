@@ -3,7 +3,7 @@ import {
     TranspilerError,
     Transpiler,
     parseStringObject,
-} from "../../..";
+} from "../../../index.js";
 import StringObject from "../../../core/structs/StringObject.js";
 import Scope from "../../../core/structs/Scope.js";
 import {

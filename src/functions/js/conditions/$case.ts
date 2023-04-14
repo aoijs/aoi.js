@@ -5,8 +5,8 @@ import {
     TranspilerError,
     Transpiler,
     parseString,
-} from "../../..";
-import funcs from "../..";
+} from "../../../index.js";
+import funcs from "../../index.js";
 import {
     getFunctionList,
     escapeResult,

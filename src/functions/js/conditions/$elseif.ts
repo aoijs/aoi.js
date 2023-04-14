@@ -5,8 +5,8 @@ import {
     TranspilerError,
     Transpiler,
     conditionLexer,
-} from "../../../";
-import funcs from "../..";
+} from "../../../index.js";
+import funcs from "../../index.js";
 import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers";
 
 export const $elseIf: FunctionData = {

@@ -1,5 +1,5 @@
-import { FunctionData, funcData, Scope, TranspilerError, Transpiler } from "../../..";
-import funcs from "../../";
+import { FunctionData, funcData, Scope, TranspilerError, Transpiler } from "../../../index.js";
+import funcs from "../../index.js";
 import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers.js";
 
 export const $else: FunctionData = {

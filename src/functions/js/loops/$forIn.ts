@@ -1,4 +1,4 @@
-import { FunctionData, TranspilerError, Transpiler } from "../../..";
+import { FunctionData, TranspilerError, Transpiler } from "../../../index.js";
 import Scope from "../../../core/structs/Scope.js";
 import { getFunctionList, escapeResult, escapeVars } from "../../../util/transpilerHelpers.js";
 import funcs from "../../index.js";

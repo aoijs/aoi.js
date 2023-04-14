@@ -1,4 +1,4 @@
-import { FunctionData } from "../../..";
+import { FunctionData } from "../../../index.js";
 import { escapeFunctionResult } from "../../../util/transpilerHelpers.js";
 
 export const $break: FunctionData = {

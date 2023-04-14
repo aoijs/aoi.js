@@ -1,4 +1,4 @@
-import { FunctionData, Scope, TranspilerError, funcData, parseString } from "../../..";
+import { FunctionData, Scope, TranspilerError, funcData, parseString } from "../../../index.js";
 import { convertToBool, escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $jseval: FunctionData = {

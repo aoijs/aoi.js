@@ -1,5 +1,5 @@
-import { FunctionData, funcData, Scope, TranspilerError, Transpiler, conditionLexer } from "../../..";
-import funcs from "../../";
+import { FunctionData, funcData, Scope, TranspilerError, Transpiler, conditionLexer } from "../../../index.js";
+import funcs from "../../index.js";
 import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $onlyIf: FunctionData = {

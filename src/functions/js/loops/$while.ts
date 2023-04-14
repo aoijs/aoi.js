@@ -1,4 +1,4 @@
-import { FunctionData, TranspilerError, Transpiler, conditionLexer } from "../../..";
+import { FunctionData, TranspilerError, Transpiler, conditionLexer } from "../../../index.js";
 import Scope from "../../../core/structs/Scope.js";
 import { AsyncFunction } from "../../../typings/types.js";
 import { getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";

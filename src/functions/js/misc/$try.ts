@@ -1,5 +1,5 @@
-import { FunctionData, funcData, Scope, TranspilerError, Transpiler } from "../../..";
-import funcs from "../../";
+import { FunctionData, funcData, Scope, TranspilerError, Transpiler } from "../../../index.js";
+import funcs from "../../index.js";
 import { parseResult, getFunctionList, escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $try: FunctionData = {

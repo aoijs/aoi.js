@@ -1,4 +1,4 @@
-import { FunctionData, funcData, Scope, parseString } from "../../..";
+import { FunctionData, funcData, Scope, parseString } from "../../../index.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $cpu: FunctionData = {
