@@ -1,5 +1,5 @@
 import { AoiClient } from "..";
-import { autoFetchDataTypes } from "../typings/types";
+import { autoFetchDataTypes } from "../typings/types.js";
 
 export function isAutoFetchDataEnabled ( string: autoFetchDataTypes,client:AoiClient )
 {
