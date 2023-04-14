@@ -1,6 +1,6 @@
 import { inspect } from "util";
-import { parseData } from "../../util/transpilerHelpers";
-import { parseString } from "../parsers/stringParser";
+import { parseData } from "../../util/transpilerHelpers.js";
+import { parseString } from "../parsers/stringParser.js";
 const operators = ["===", "!==", "==", "!=", ">", "<", ">=", "<="];
 
 export default class Condition {
