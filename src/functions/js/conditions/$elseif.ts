@@ -7,7 +7,7 @@ import {
     conditionLexer,
 } from "../../../index.js";
 import funcs from "../../index.js";
-import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers";
+import { getFunctionList, escapeFunctionResult } from "../../../util/transpilerHelpers.js";
 
 export const $elseIf: FunctionData = {
     name: "$elseIf",
