@@ -1,9 +1,7 @@
 const { SI_SYMBOL, FormatOptions } = require("../Constants.js");
 const { setTimeout } = require("timers/promises");
 const {
-    Invite,
     CategoryChannel,
-    Emoji,
     GuildEmoji,
     ReactionEmoji,
     VoiceState,
@@ -43,7 +41,7 @@ module.exports = {
      * @param  {CategoryChannel} category
      */
     categoryChannelsOption(category) {
-        const cat = category.children;
+        const cat = category.children.cache;
         return {
             names: cat.map((x) => x.name),
             ids: cat.map((x) => x.id),
