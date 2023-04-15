@@ -7,7 +7,6 @@ const {
     Events,
 } = require("discord.js");
 
-const IntentOptionAll = Object.keys(IntentsBitField.Flags);
 const IntentOptions = {
     ...IntentsBitField.Flags,
 };
@@ -518,8 +517,6 @@ const EventsToDjsEvents = {
     onThreadListSync: Events.ThreadListSync,
     onThreadMemberUpdate: Events.ThreadMemberUpdate,
     onThreadMembersUpdate: Events.ThreadMembersUpdate,
-    onInviteCreate: Events.InviteCreate,
-    onInviteDelete: Events.InviteDelete,
 
     // Guild Members
     onJoin: Events.GuildMemberAdd,
@@ -578,8 +575,6 @@ const EventsToDjsEvents = {
     onFunctionError: "functionError",
 };
 
-
-// Message events
 const EventstoFile = {
     onMessage: ["commands", "alwaysExecute", "nonPrefixed"],
     onMessageDelete: "deleteMessage",
@@ -670,21 +665,16 @@ const EventstoFile = {
 const AllEvents = Object.keys(EventstoFile);
 
 module.exports = {
-    // ClientOptions:ClientOptions,
-    IntentOptionAll: IntentOptionAll,
-    formatOptions: FormatOptions,
-    ApplicationCmdOptions: ApplicationCmdOptions,
-    //ClientPresenceOptions:ClientPresenceOptions,
-    //PresenceActivityOptions:PresenceActivityOptions,
-    ActivityTypeAvailables: ActivityTypeAvailables,
-    //DatabaseOptions:DatabaseOptions,
-    DebugAvailables: DebugAvailables,
-    EventAvailables: EventAvailables,
-    SI_SYMBOL: SI_SYMBOL,
-    ButtonStyleOptions: ButtonStyleOptions,
-    ChannelOptions: ChannelOptions,
-    MemberOptions: MemberOptions,
-    CacheOptions: CacheOptions,
+    FormatOptions,
+    ApplicationCmdOptions,
+    ActivityTypeAvailables,
+    DebugAvailables,
+    EventAvailables,
+    SI_SYMBOL,
+    ButtonStyleOptions,
+    ChannelOptions,
+    MemberOptions,
+    CacheOptions,
     SlashOptionTypes,
     Perms,
     Characters,

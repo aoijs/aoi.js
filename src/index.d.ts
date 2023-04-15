@@ -45,7 +45,7 @@ declare module "aoi.js" {
         ): void;
     }
 
-    type IntentOptions = "all" | string[];
+    type IntentOptions = string[];
 
     type DatabaseOption<Database> = {
         type:
