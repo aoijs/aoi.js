@@ -415,10 +415,13 @@ const Characters = [
 ].join("");
 
 const EventsToIntents = {
+    // Guild Messages
     onMessage: "GuildMessages",
     onMessageDelete: "GuildMessages",
     onMessageUpdate: "GuildMessages",
     onMessageDeleteBulk: "GuildMessages",
+
+    // Guilds
     onGuildJoin: "Guilds",
     onGuildLeave: "Guilds",
     onGuildUpdate: "Guilds",
@@ -439,95 +442,112 @@ const EventsToIntents = {
     onThreadListSync: "Guilds",
     onThreadMemberUpdate: "Guilds",
     onThreadMembersUpdate: "Guilds",
+
+    // Guild Members
     onJoin: "GuildMembers",
     onLeave: "GuildMembers",
     onMemberUpdate: "GuildMembers",
     onMemberAvailable: "GuildMembers",
     onMembersChunk: "GuildMembers",
+
+    // Guild Emojis
     onEmojiCreate: "GuildEmojis",
     onEmojiDelete: "GuildEmojis",
     onEmojiUpdate: "GuildEmojis",
     onStickerCreate: "GuildEmojis",
     onStickerDelete: "GuildEmojis",
     onStickerUpdate: "GuildEmojis",
+
+    // Guild Bans
     onBanAdd: "GuildBans",
     onBanRemove: "GuildBans",
+
+    // Guild Invites
     onInviteCreate: "GuildInvites",
     onInviteDelete: "GuildInvites",
+
+    // Guild Message Reactions
     onReactionAdd: "GuildMessageReactions",
     onReactionRemove: "GuildMessageReactions",
     onReactionRemoveAll: "GuildMessageReactions",
     onReactionRemoveEmoji: "GuildMessageReactions",
+
+    // Guild Voice States
     onVoiceStateUpdate: "GuildVoiceStates",
+
+    // Guild Presences
     onPresenceUpdate: "GuildPresences",
+
+    // Guild Message Typings
     onTypingStart: "GuildMessageTypings",
+
+    // Non-Intents
     onInteractionCreate: "NonIntents",
     onApplicationCmdPermsUpdate: "NonIntents",
     onUserUpdate: "NonIntents",
+    onRateLimit: "NonIntents",
+
+    // Guild Webhooks
+    onWebhookUpdate: "GuildWebhooks",
+
+    // Custom
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
     onFunctionError: "Custom",
-    onRateLimit: "NonIntents",
-    onWebhookUpdate: "GuildWebhooks",
 };
 
 const EventsToDjsEvents = {
+    onBanAdd: Events.GuildBanAdd,
+    onBanRemove: Events.GuildBanRemove,
+    onChannelCreate: Events.ChannelCreate,
+    onChannelDelete: Events.ChannelDelete,
+    onChannelPinsUpdate: Events.ChannelPinsUpdate,
+    onChannelUpdate: Events.ChannelUpdate,
+    onEmojiCreate: Events.GuildEmojiCreate,
+    onEmojiDelete: Events.GuildEmojiDelete,
+    onEmojiUpdate: Events.GuildEmojiUpdate,
+    onFunctionError: "functionError",
+    onGuildJoin: Events.GuildCreate,
+    onGuildLeave: Events.GuildDelete,
+    onGuildUnavailable: Events.GuildUnavailable,
+    onGuildUpdate: Events.GuildUpdate,
+    onInviteCreate: Events.InviteCreate,
+    onInviteDelete: Events.InviteDelete,
+    onInteractionCreate: Events.InteractionCreate,
+    onMemberAvailable: Events.GuildMemberAvailable,
+    onMemberUpdate: Events.GuildMemberUpdate,
+    onMembersChunk: Events.GuildMembersChunk,
     onMessage: Events.MessageCreate,
     onMessageDelete: Events.MessageDelete,
     onMessageUpdate: Events.MessageUpdate,
     onMessageDeleteBulk: Events.MessageBulkDelete,
-    onGuildJoin: Events.GuildCreate,
-    onGuildLeave: Events.GuildDelete,
-    onGuildUpdate: Events.GuildUpdate,
-    onGuildUnavailable: Events.GuildUnavailable,
-    onRoleCreate: Events.GuildRoleCreate,
-    onRoleUpdate: Events.GuildRoleUpdate,
-    onRoleDelete: Events.GuildRoleDelete,
-    onChannelCreate: Events.ChannelCreate,
-    onChannelUpdate: Events.ChannelUpdate,
-    onChannelDelete: Events.ChannelDelete,
-    onChannelPinsUpdate: Events.ChannelPinsUpdate,
-    onStageInstanceCreate: Events.StageInstanceCreate,
-    onStageInstanceUpdate: Events.StageInstanceUpdate,
-    onStageInstanceDelete: Events.StageInstanceDelete,
-    onThreadCreate: Events.ThreadCreate,
-    onThreadUpdate: Events.ThreadUpdate,
-    onThreadDelete: Events.ThreadDelete,
-    onThreadListSync: Events.ThreadListSync,
-    onThreadMemberUpdate: Events.ThreadMemberUpdate,
-    onThreadMembersUpdate: Events.ThreadMembersUpdate,
-    onJoin: Events.GuildMemberAdd,
-    onLeave: Events.GuildMemberRemove,
-    onInviteCreate: Events.InviteCreate,
-    onInviteDelete: Events.InviteDelete,
-    onMemberUpdate: Events.GuildMemberUpdate,
-    onMemberAvailable: Events.GuildMemberAvailable,
-    onMembersChunk: Events.GuildMembersChunk,
-    onEmojiCreate: Events.GuildEmojiCreate,
-    onEmojiDelete: Events.GuildEmojiDelete,
-    onEmojiUpdate: Events.GuildEmojiUpdate,
-    onStickerCreate: Events.GuildStickerCreate,
-    onStickerDelete: Events.GuildStickerDelete,
-    onStickerUpdate: Events.GuildStickerUpdate,
-    onBanAdd: Events.GuildBanAdd,
-    onBanRemove: Events.GuildBanRemove,
+    onPresenceUpdate: Events.PresenceUpdate,
     onReactionAdd: Events.MessageReactionAdd,
     onReactionRemove: Events.MessageReactionRemove,
     onReactionRemoveAll: Events.MessageReactionRemoveAll,
     onReactionRemoveEmoji: Events.MessageReactionRemoveEmoji,
-    onVoiceStateUpdate: Events.VoiceStateUpdate,
-    onPresenceUpdate: Events.PresenceUpdate,
+    onRoleCreate: Events.GuildRoleCreate,
+    onRoleDelete: Events.GuildRoleDelete,
+    onRoleUpdate: Events.GuildRoleUpdate,
+    onStageInstanceCreate: Events.StageInstanceCreate,
+    onStageInstanceDelete: Events.StageInstanceDelete,
+    onStageInstanceUpdate: Events.StageInstanceUpdate,
+    onThreadCreate: Events.ThreadCreate,
+    onThreadDelete: Events.ThreadDelete,
+    onThreadListSync: Events.ThreadListSync,
+    onThreadMemberUpdate: Events.ThreadMemberUpdate,
+    onThreadMembersUpdate: Events.ThreadMembersUpdate,
+    onThreadUpdate: Events.ThreadUpdate,
     onTypingStart: Events.TypingStart,
-    onInteractionCreate: Events.InteractionCreate,
-    onApplicationCmdPermsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
-    onFunctionError: "functionError",
+    onVoiceStateUpdate: Events.VoiceStateUpdate,
     onWebhookUpdate: Events.WebhooksUpdate,
 };
+
 
 const EventstoFile = {
     onMessage: ["commands", "alwaysExecute", "nonPrefixed"],
