@@ -1,5 +1,6 @@
 import functions from "../functions/index.js";
 import { TranspilerOptions } from "../typings/interfaces.js";
+import { MinifyOutput, minify } from "uglify-js";
 import {
     getFunctionList,
     parseResult,
@@ -17,7 +18,6 @@ export function Transpiler(
     options: TranspilerOptions,
 ): { func: AsyncFunction; code: string; scope: Scope[] } {
     const { scopeData, sendMessage, minify: uglify } = options;
-    let { minifier } = options;
     const flist = getFunctionList(code, functionNames);
 
     flist.forEach((x) => {
@@ -53,21 +53,16 @@ export function Transpiler(
     }
     let str = res.scope[0].getFunction(sendMessage);
     str = fixMath(str);
-    if(!minifier) {
-        (async() => {
-            const { minify } = await import("uglify-js");
-            minifier = minify;
-        })();
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    const functionString = uglify ? (<Function>minifier)(str) : str;
 
-    if (uglify && (functionString).error) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    const functionString = uglify ? (minify)(str) : str;
+
+    if (uglify && (<MinifyOutput>functionString).error) {
         throw new TranspilerError(
             `code:${str} 
 <------------------------------------------------------->
       Failed To Transpile Code with error ${
-    (functionString).error
+    (<MinifyOutput>functionString).error
 }`,
         );
     }
@@ -76,7 +71,7 @@ export function Transpiler(
     if (options.parsedStringOnly)
         return {
             code: uglify
-                ? (functionString).code
+                ? (<MinifyOutput>functionString).code
                 : <string>functionString,
             func: async () => { return void 0; },
             scope: res.scope,
@@ -85,7 +80,7 @@ export function Transpiler(
         func = new Function(
             "return " +
                 (uglify
-                    ? (functionString).code
+                    ? (<MinifyOutput>functionString).code
                     : <string>functionString),
         )() as AsyncFunction;
     } catch (e) {
