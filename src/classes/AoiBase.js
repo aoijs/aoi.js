@@ -348,11 +348,11 @@ class BaseClient extends Discord.Client {
           const filedir = intent;
             const eventName = EventsToDjsEvents[event];
             const file = EventstoFile[event];
-          if ( intent === "guildEmojis" ) intent = "guildEmojisAndStickers";
-          if(intent === "guildMessageTypings") intent = "guildMessageTyping"; 
+          if ( intent === "GuildEmojis" ) intent = "GuildEmojisAndStickers";
+          if(intent === "GuildMessageTypings") intent = "GuildMessageTyping";
             if (
                 intent &&
-                !["custom", "nonIntents"].includes(intent) &&
+                !["Custom", "NonIntents"].includes(intent) &&
                 !bits.has(intent[0].toUpperCase() + intent.slice(1))
             ) {
                 return AoiError.EventError(event, intent, 357);
