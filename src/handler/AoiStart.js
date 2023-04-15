@@ -8,7 +8,13 @@ module.exports = async (client) => {
             '\x1b[33mSupport:\x1B[0m Discord Server: https://discord.gg/HMUfMXDQsV')
     }
 
-    await require("./AoiWarning.js")(client);
+    if (client.aoiOptions.aoiWarning !== false) {
+        await require("./AoiWarning.js")(client);
+    }
+
+    if (client.aoiOptions.AoiAutoUpdate === true) {
+        await require("./AoiAutoUpdate.js")(client);
+    }
 
     await require("./Custom/timeout.js")(
         {client, interpreter: Interpreter},

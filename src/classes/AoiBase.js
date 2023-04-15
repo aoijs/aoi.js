@@ -75,9 +75,6 @@ class BaseClient extends Discord.Client {
 
         this.variableManager = new VariableManager(this);
 
-        if (options.autoUpdate) {
-            require("../handler/AoiAutoUpdate.js")();
-        }
         if (options.plugins) {
             if (Array.isArray(options.plugins)) {
                 for (const plugin of options.plugins) {

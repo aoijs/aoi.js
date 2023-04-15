@@ -95,7 +95,7 @@ declare module "aoi.js" {
         errorMessage?: Array<string>;
         events?: EventOptions;
         disableFunctions?: Array<string>;
-        autoUpdate?: boolean;
+        AoiAutoUpdate?: boolean;
     };
 
     interface BaseCommand {
