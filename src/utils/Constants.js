@@ -485,7 +485,6 @@ const EventsToIntents = {
     onInteractionCreate: "NonIntents",
     onApplicationCmdPermsUpdate: "NonIntents",
     onUserUpdate: "NonIntents",
-    onRateLimit: "NonIntents",
 
     // Guild Webhooks
     onWebhookUpdate: "GuildWebhooks",
@@ -498,110 +497,172 @@ const EventsToIntents = {
 };
 
 const EventsToDjsEvents = {
-    onBanAdd: Events.GuildBanAdd,
-    onBanRemove: Events.GuildBanRemove,
-    onChannelCreate: Events.ChannelCreate,
-    onChannelDelete: Events.ChannelDelete,
-    onChannelPinsUpdate: Events.ChannelPinsUpdate,
-    onChannelUpdate: Events.ChannelUpdate,
-    onEmojiCreate: Events.GuildEmojiCreate,
-    onEmojiDelete: Events.GuildEmojiDelete,
-    onEmojiUpdate: Events.GuildEmojiUpdate,
-    onFunctionError: "functionError",
+    // Guilds
     onGuildJoin: Events.GuildCreate,
     onGuildLeave: Events.GuildDelete,
-    onGuildUnavailable: Events.GuildUnavailable,
     onGuildUpdate: Events.GuildUpdate,
-    onInviteCreate: Events.InviteCreate,
-    onInviteDelete: Events.InviteDelete,
-    onInteractionCreate: Events.InteractionCreate,
-    onMemberAvailable: Events.GuildMemberAvailable,
-    onMemberUpdate: Events.GuildMemberUpdate,
-    onMembersChunk: Events.GuildMembersChunk,
-    onMessage: Events.MessageCreate,
-    onMessageDelete: Events.MessageDelete,
-    onMessageUpdate: Events.MessageUpdate,
-    onMessageDeleteBulk: Events.MessageBulkDelete,
-    onPresenceUpdate: Events.PresenceUpdate,
-    onReactionAdd: Events.MessageReactionAdd,
-    onReactionRemove: Events.MessageReactionRemove,
-    onReactionRemoveAll: Events.MessageReactionRemoveAll,
-    onReactionRemoveEmoji: Events.MessageReactionRemoveEmoji,
+    onGuildUnavailable: Events.GuildUnavailable,
     onRoleCreate: Events.GuildRoleCreate,
-    onRoleDelete: Events.GuildRoleDelete,
     onRoleUpdate: Events.GuildRoleUpdate,
+    onRoleDelete: Events.GuildRoleDelete,
+    onChannelCreate: Events.ChannelCreate,
+    onChannelUpdate: Events.ChannelUpdate,
+    onChannelDelete: Events.ChannelDelete,
+    onChannelPinsUpdate: Events.ChannelPinsUpdate,
     onStageInstanceCreate: Events.StageInstanceCreate,
-    onStageInstanceDelete: Events.StageInstanceDelete,
     onStageInstanceUpdate: Events.StageInstanceUpdate,
+    onStageInstanceDelete: Events.StageInstanceDelete,
     onThreadCreate: Events.ThreadCreate,
+    onThreadUpdate: Events.ThreadUpdate,
     onThreadDelete: Events.ThreadDelete,
     onThreadListSync: Events.ThreadListSync,
     onThreadMemberUpdate: Events.ThreadMemberUpdate,
     onThreadMembersUpdate: Events.ThreadMembersUpdate,
-    onThreadUpdate: Events.ThreadUpdate,
+    onInviteCreate: Events.InviteCreate,
+    onInviteDelete: Events.InviteDelete,
+
+    // Guild Members
+    onJoin: Events.GuildMemberAdd,
+    onLeave: Events.GuildMemberRemove,
+    onMemberUpdate: Events.GuildMemberUpdate,
+    onMemberAvailable: Events.GuildMemberAvailable,
+    onMembersChunk: Events.GuildMembersChunk,
+
+    // Guild Emojis
+    onEmojiCreate: Events.GuildEmojiCreate,
+    onEmojiDelete: Events.GuildEmojiDelete,
+    onEmojiUpdate: Events.GuildEmojiUpdate,
+    onStickerCreate: Events.GuildStickerCreate,
+    onStickerDelete: Events.GuildStickerDelete,
+    onStickerUpdate: Events.GuildStickerUpdate,
+
+    // Guild Bans
+    onBanAdd: Events.GuildBanAdd,
+    onBanRemove: Events.GuildBanRemove,
+
+    // Guild Invites
+    onInviteCreate: Events.InviteCreate,
+    onInviteDelete: Events.InviteDelete,
+
+    // Guild Messages
+    onMessage: Events.MessageCreate,
+    onMessageDelete: Events.MessageDelete,
+    onMessageUpdate: Events.MessageUpdate,
+    onMessageDeleteBulk: Events.MessageBulkDelete,
+
+    // Guild Message Reactions
+    onReactionAdd: Events.MessageReactionAdd,
+    onReactionRemove: Events.MessageReactionRemove,
+    onReactionRemoveAll: Events.MessageReactionRemoveAll,
+    onReactionRemoveEmoji: Events.MessageReactionRemoveEmoji,
+
+    // Guild Voice States
+    onVoiceStateUpdate: Events.VoiceStateUpdate,
+
+    // Guild Presences
+    onPresenceUpdate: Events.PresenceUpdate,
+
+    // Guild Message Typings
     onTypingStart: Events.TypingStart,
+
+    // Non-Intents
+    onInteractionCreate: Events.InteractionCreate,
+    onApplicationCmdPermsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
+    onWebhookUpdate: Events.WebhooksUpdate,
+
+    // Custom
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
-    onVoiceStateUpdate: Events.VoiceStateUpdate,
-    onWebhookUpdate: Events.WebhooksUpdate,
+    onFunctionError: "functionError",
 };
 
 
+// Message events
 const EventstoFile = {
     onMessage: ["commands", "alwaysExecute", "nonPrefixed"],
     onMessageDelete: "deleteMessage",
     onMessageUpdate: "updateMessage",
     onMessageDeleteBulk: "bulkDeleteMessage",
+    onChannelPinsUpdate: "channelPinsUpdate",
+    onTypingStart: "start",
+
+    // Guild events
     onGuildJoin: "guildJoin",
     onGuildLeave: "guildLeave",
     onGuildUpdate: "guildUpdate",
     onGuildUnavailable: "guildUnavailable",
+
+    // Role events
     onRoleCreate: "roleCreate",
     onRoleUpdate: "roleUpdate",
     onRoleDelete: "roleDelete",
+
+    // Channel events
     onChannelCreate: "channelCreate",
     onChannelUpdate: "channelUpdate",
     onChannelDelete: "channelDelete",
-    onChannelPinsUpdate: "channelPinsUpdate",
+
+    // Stage instance events
     onStageInstanceCreate: "stageInstanceCreate",
     onStageInstanceUpdate: "stageInstanceUpdate",
     onStageInstanceDelete: "stageInstanceDelete",
+
+    // Thread events
     onThreadCreate: "threadCreate",
     onThreadUpdate: "threadUpdate",
     onThreadDelete: "threadDelete",
     onThreadListSync: "threadListSync",
     onThreadMemberUpdate: "threadMemberUpdate",
     onThreadMembersUpdate: "threadMembersUpdate",
+
+    // Member events
     onJoin: "join",
     onLeave: "leave",
-    onInviteCreate: "inviteCreate",
-    onInviteDelete: "inviteDelete",
     onMemberUpdate: "update",
     onMemberAvailable: "available",
     onMembersChunk: "chunk",
+
+    // Invite events
+    onInviteCreate: "inviteCreate",
+    onInviteDelete: "inviteDelete",
+
+    // Emoji and sticker events
     onEmojiCreate: "create",
     onEmojiDelete: "delete",
     onEmojiUpdate: "update",
     onStickerCreate: "stickerCreate",
     onStickerDelete: "stickerDelete",
     onStickerUpdate: "stickerUpdate",
+
+    // Ban events
     onBanAdd: "add",
     onBanRemove: "remove",
+
+    // Reaction events
     onReactionAdd: "add",
     onReactionRemove: "remove",
     onReactionRemoveAll: "removeAll",
     onReactionRemoveEmoji: "removeEmoji",
+
+    // Voice and presence events
     onVoiceStateUpdate: "update",
     onPresenceUpdate: "update",
-    onTypingStart: "start",
+
+    // Interaction and command events
     onInteractionCreate: "interaction",
     onApplicationCmdPermsUpdate: "appCmdPermUpdate",
+
+    // User events
     onUserUpdate: "userUpdate",
+
+    // Variable events
     onVariableCreate: "varCreate",
     onVariableDelete: "varDelete",
     onVariableUpdate: "varUpdate",
+
+    // Other events
     onFunctionError: "functionError",
     onWebhookUpdate: "update",
 };
