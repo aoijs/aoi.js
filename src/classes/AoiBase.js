@@ -272,7 +272,7 @@ class BaseClient extends Discord.Client {
 
         if (options?.events?.functionError) {
             this.on("functionError", async (data, client) => {
-                await require("../handler/custom/functionError.js")(
+                await require("../handler/Custom/functionError.js")(
                     data,
                     client,
                 );
@@ -290,8 +290,8 @@ class BaseClient extends Discord.Client {
 
         this.on("ready", async () => {
             require("../handler/status.js")(this.statuses, this);
-            await require("../handler/startup.js")(this);
-            await require("../handler/nonIntents/ready.js")(this);
+            await require("../handler/AoiStart.js")(this);
+            await require("../handler/NonIntents/ready.js")(this);
         });
         this.login(options.token);
     }

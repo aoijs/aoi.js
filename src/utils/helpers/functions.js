@@ -308,7 +308,7 @@ module.exports = {
         );
 
         if (!pulse) {
-            require("../../handler/custom/timeout.js")(
+            require("../../handler/Custom/timeout.js")(
                 d,
                 name,
                 duration,
@@ -316,7 +316,7 @@ module.exports = {
                 false,
             );
         } else {
-            require("../../handler/custom/timeoutPulse.js")(
+            require("../../handler/Custom/timeoutPulse.js")(
                 d,
                 name,
                 duration,
