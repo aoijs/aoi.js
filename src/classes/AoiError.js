@@ -1,11 +1,11 @@
 const Util = require("./Util.js");
 const {
-  ComponentParser,
-  EmbedParser,
-  FileParser,
+    ComponentParser,
+    EmbedParser,
+    FileParser,
 } = Util.parsers;
-const { Time } = require("../utils/helpers/customParser.js");
-const { BaseInteraction } = require("discord.js");
+const {Time} = require("../utils/helpers/customParser.js");
+const {BaseInteraction} = require("discord.js");
 
 class AoiError {
     constructor() {
@@ -266,12 +266,11 @@ class AoiError {
         return ans;
     }
 
-    //aoi.js system
     /**
-     * @param  {object} d
-     * @param  {"member" | "message" | "channel" | "user" | "role" | 'guild' | "emoji" | "option" | "custom" } type
-     * @param  {object} data
-     * @param  {string | void} message
+     * @param {object} d - The data object.
+     * @param {"member" | "message" | "channel" | "user" | "role" | "guild" | "emoji" | "option" | "custom"} type - The type of error.
+     * @param {object} data - The additional error data.
+     * @param {string} [message] - An optional custom error message.
      * @returns {void}
      */
     static fnError(d, type, data, message) {
