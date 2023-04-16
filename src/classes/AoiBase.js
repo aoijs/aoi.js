@@ -293,9 +293,6 @@ class BaseClient extends Discord.Client {
         this.login(options.token);
     }
 
-    /**
-     * @param  {object[]} statuses
-     */
     status(...statuses) {
         for (const status of statuses) {
             status.type =

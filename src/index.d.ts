@@ -140,18 +140,11 @@ declare module "aoi.js" {
 
     type StatusOption = {
         text: string;
-        url?: string;
+        url: string;
         time: number;
-        shardId?: number;
-        type:
-            | "PLAYING"
-            | "LISTENING"
-            | "WATCHING"
-            | "STREAMING"
-            | "playing"
-            | "listening"
-            | "streaming"
-            | "watching";
+        shardId: number;
+        type: "PLAYING" | "LISTENING" | "WATCHING" | "STREAMING" | "playing" | "listening" | "streaming" | "watching";
+        status: string;
     };
 
     class BaseClient extends Client {
@@ -162,7 +155,7 @@ declare module "aoi.js" {
         prefix: string | string[];
         db: any /*AoijsAPI | DbdTsDb | CustomDb | Promisify*/;
         statuses: Group;
-
+        
         constructor(options: ClientOptions);
 
         public status(d: StatusOption[]): void;

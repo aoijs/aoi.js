@@ -1,5 +1,4 @@
 const Interpreter = require("../interpreter.js");
-/*Copyright © 2021 @Akarui Development*/
 
 module.exports = async (client) => {
     if (client.aoiOptions.aoiLogs !== false) {
