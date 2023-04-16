@@ -151,9 +151,10 @@ module.exports = {
     },
     Guild(guild) {
         const data = Object.assign({}, guild);
-        //modifying data
+        // modifying data
         data.afkChannel = guild.afkChannel?.name;
         data.bannerURL = guild.bannerURL();
+        return data;
     },
     Message(msg) {
         const data = Object.assign({}, msg);
