@@ -181,89 +181,42 @@ class AoiError {
      * @returns {string}
      */
     static functionErrorResolve(d, type, data, message) {
-        let ans;
+        let errorData = {
+            Function: `\`${d.command.codeLines}\``,
+            Command: `"${d.command.name}"`,
+            Version: require("../../package.json").version,
+        };
+
         switch (type) {
             case "member":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Member ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Member ID";
                 break;
             case "message":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Message ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Message ID";
                 break;
             case "channel":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Channel ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Channel ID";
                 break;
             case "user":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid User ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "User ID";
                 break;
             case "role":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Role ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Role ID";
                 break;
             case "guild":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Guild ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Guild ID";
                 break;
             case "emoji":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Emoji ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Emoji ID";
                 break;
             case "option":
-                ans = `\`\`\`js\nAoiError: ${
-                    d.func
-                }: Invalid Option ID Provided In ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = "Option ID";
                 break;
             case "custom":
-                ans = `\`\`\`js\nAoiError: ${d.func}: ${message} ${
-                    data.inside || ""
-                } \n { \n   lineNumber : ${d.funcLine},\n   function : \`${
-                    d.command.codeLines
-                }\`,\n   path : "${d.command.__path__}" \n }\`\`\``;
+                errorData.type = message;
                 break;
         }
-        return ans;
+        return `\`\`\`js\nAoiError: ${d.func}: Invalid ${errorData.type} Provided In ${data.inside || ""} \n { \n   Function : ${errorData.Function},\n   Command : ${errorData.Command},\n   Version : ${errorData.Version} \n }\`\`\``;
     }
 
     /**
