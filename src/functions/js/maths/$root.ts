@@ -3,6 +3,7 @@ import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData } from "../../../typings/interfaces.js";
 import {
     escapeMathResult,
+    escapeResult,
     parseResult,
 } from "../../../util/transpilerHelpers.js";
 
@@ -35,7 +36,7 @@ export const $root: FunctionData = {
             );
         }
         if (!currentScope.functions.includes("function nthRoot")) {
-            currentScope.addFunction(`function nthRoot(x, n) {
+            currentScope.functions += (`function nthRoot(x, n) {
                 try {
     var negate = n % 2 == 1 && x < 0;
     if(negate)
@@ -45,7 +46,7 @@ export const $root: FunctionData = {
     if(Math.abs(x - n) < 1 && (x > 0 == n > 0))
       return negate ? -possible : possible;
   } catch(e){}
-}`);
+}\n`);
         }
         const root = numbers.map((x) =>
             x.includes(TranspilerCustoms.FS) ||
@@ -61,12 +62,12 @@ export const $root: FunctionData = {
                 ans = `nthRoot(${a}, ${b})`;
                 i += 1;
                 a = ans;
-                b = root[ i ];
+                b = root[ i-1 ];
             }
             return ans;
         };
 
-        const res = escapeMathResult(`(${rec(root[0], root[1])})`);
+        const res =  escapeResult(escapeMathResult(`(${rec(root[0], root[1])})`));
         currentScope.update(res, data);
         return {
             code: res,
