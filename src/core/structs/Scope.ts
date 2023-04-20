@@ -253,6 +253,7 @@ export default class Scope {
             );
         } else if (data.type === "setter") {
             this.setters += res + "\n";
+
             this.rest = this.rest.replace(
                 removeSetFunc(data.total).replaceAll(
                     TranspilerCustoms.FSEP,

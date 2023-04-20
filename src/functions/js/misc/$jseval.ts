@@ -56,7 +56,7 @@ export const $jseval: FunctionData = {
     async function __$jsEval$__(Code) {
       try {
         const evaled =  await eval(Code);
-        return typeof evaled === "object" ? UTIL.inspect(evaled,{depth:0}) : evaled;
+        return evaled;
       } catch (e) {
         return e;
       }

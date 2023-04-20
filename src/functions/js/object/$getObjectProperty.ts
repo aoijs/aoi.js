@@ -9,7 +9,7 @@ export const $getObjectProperty: FunctionData = {
     name: "$getObjectProperty",
     brackets: true,
     optional: false,
-    type: "function",
+    type: "getter",
     fields: [
         {
             name: "name",

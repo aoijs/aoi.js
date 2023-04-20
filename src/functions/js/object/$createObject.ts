@@ -1,6 +1,7 @@
 import { TranspilerError } from "../../../core/error.js";
 import Scope from "../../../core/structs/Scope.js";
 import { StringObject, parseStringObject } from "../../../index.js";
+import { TranspilerCustoms } from "../../../typings/enums.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     escapeResult,
@@ -42,14 +43,20 @@ export const $createObject: FunctionData = {
         currentObj.addEnd("}");
         let object;
         try {
-            object = parseStringObject(parsedObj, currentObj);
+            if([TranspilerCustoms.FFS,TranspilerCustoms.FS].some(x => parsedObj.startsWith(x))){
+                object = parsedObj;
+            }
+            else {
+                object = parseStringObject(parsedObj, currentObj);
+            }
         } catch (e) {
             throw new TranspilerError(`${data.name}: Invalid Object Provided`);
         }
         const res = escapeResult(
-            `const ${escapeVars(name)} =  ${object.solve()};`,
+            `const ${escapeVars(name)} =  ${typeof object === "string" ? object : object.solve()};`,
         );
-        currentScope.objects[name] = object;
+        currentScope.objects[name] = <StringObject>object;
+        currentScope.variables.push(name);
         currentScope.update( res, data );
         return {
             code: "",
