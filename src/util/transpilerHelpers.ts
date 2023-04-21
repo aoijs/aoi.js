@@ -3,6 +3,7 @@ import Scope from "../core/structs/Scope.js";
 import FUNCDATA from "../functions/index.js";
 import { funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
+import { StringObject, parseStringObject } from "../index.js";
 export function areBracketsBalanced(code: string) {
     const leftbracket = /\[/g;
     const rightbracket = /\]/g;
@@ -29,7 +30,13 @@ export function parseData(text: string) {
         try {
             return JSON.parse(text);
         } catch {
-            return text;
+            if(text.startsWith("{") && text.endsWith("}")) {
+                const so =  new StringObject("{");
+                so.addEnd("}");
+                let e;
+                eval(`e = ${parseStringObject(text, so).solve()}`);
+                return e;
+            } else return text;
         }
     }
 }

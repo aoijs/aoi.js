@@ -3,22 +3,28 @@ import {
     escapeResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $authorId: FunctionData = {
-    name: "$authorId",
+export const $userTag: FunctionData = {
+    name: "$userTag",
     type: "getter",
-    brackets: false,
+    brackets: true,
     optional: false,
-    fields: [],
+    fields: [
+        {
+            name: "user",
+            type: "bigint",
+            required: true,
+        }
+    ],
     version: "7.0.0",
     default: [],
-    returns: "bigint",
-    description: "Returns the id of the author",
+    returns: "string",
+    description: "Returns the tag of the user",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const authorId = "__$DISCORD_DATA$__.author?.id";
+        const userTag = `(await __$DISCORD_DATA$__.bot.util.getUser(${data.inside}))?.tag`;
 
-        const res = escapeResult(`(${authorId})`);
+        const res = escapeResult(`(${userTag})`);
         currentScope.update(res, data);
         return {
             code: res,

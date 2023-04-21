@@ -3,22 +3,22 @@ import {
     escapeResult,
 } from "../../../util/transpilerHelpers.js";
 
-export const $authorId: FunctionData = {
-    name: "$authorId",
+export const $authorTag: FunctionData = {
+    name: "$authorTag",
     type: "getter",
     brackets: false,
     optional: false,
     fields: [],
     version: "7.0.0",
     default: [],
-    returns: "bigint",
-    description: "Returns the id of the author",
+    returns: "string",
+    description: "Returns the tag of the author",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 
-        const authorId = "__$DISCORD_DATA$__.author?.id";
+        const authorTag = "__$DISCORD_DATA$__.author?.tag";
 
-        const res = escapeResult(`(${authorId})`);
+        const res = escapeResult(`(${authorTag})`);
         currentScope.update(res, data);
         return {
             code: res,

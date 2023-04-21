@@ -61,13 +61,6 @@ export const $jseval: FunctionData = {
         return e;
       }
     }`;
-            if (
-                !currentScope.packages.includes(
-                    "const UTIL = await import('util');",
-                )
-            ) {
-                currentScope.packages += "const UTIL = await import('util');\n";
-            }
             currentScope.functions += escapeResult(setres) + "\n";
         }
         const res = `${escapeResult(
