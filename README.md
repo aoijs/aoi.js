@@ -1,107 +1,99 @@
-<p align="center">
-  <a href="https://aoi.js.org">
-    <img width="300" src="https://cdn.discordapp.com/attachments/1058843428831629443/1063251770228342895/aoijsbanner.png" alt="aoijs">
-  </a>
-</p>
+<br/>
 
-<h1 align="center">aoi.js</h1>
+<div align="center" style="margin: 30px;">
+<a href="https://aoi.js.org/">
+  <img src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-banner.png?raw=true"   style="width:300px;" align="center"  alt="aoi.js"/>
+</a>
+<br />
+<br />
 
 <div align="center">
+    <a href="https://aoi.js.org/">Home Page</a> |
+    <a href="https://discord.gg/HMUfMXDQsV">Discord</a> |
+    <a href="https://aoi.js.org/exampkes.">Examples</a> |
+    <a href="https://aoi.js.org/docs/">Documentation</a>
+</div>
+</div>
+<br />
 
-**The most powerful string package to create a simple and fast Discord Bot.**
+<div align="center"><strong>Build a fast and powerful Discord bot with a comprehensive string package.</strong><br>
 
-[![NPM downloads][download-image]][download-url]
-[![AoiJS Server][aoijs-server]][aoijs-server-url]
-[![NPM version][npm-image]][npm-url]
-
-[npm-image]: http://img.shields.io/npm/v/aoi.js.svg?color=42cfff
-[npm-url]: http://npmjs.org/package/aoi.js
-[download-image]: https://img.shields.io/npm/dt/aoi.js.svg?color=3182b0
-[download-url]: https://npmjs.org/package/aoi.js
-[aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
-[aoijs-server-url]: https://aoi.js.org/invite
-
-[View Documentation](https://aoi.js.org/docs/)
 
 </div>
 
-## Features
+<div align="center">
 
-- **Command handler:** Define and manage commands for your bot using the `LoadCommands` method. Modify or add new functionality easily.
-- **Utility functions:** Save time and effort with ready-made solutions for common tasks such as sending messages and checking user permissions.
-- **Interactive commands:** Allow users to interact with your bot using a special syntax in their messages. Flexible and natural interaction.
-- **Custom event handlers:** Customize the behavior of your bot in response to different events, such as message updates and user joins.
+[![Discord](https://img.shields.io/discord/773352845738115102.svg?label=&logo=discord&logoColor=ffffff&color=5865F2&labelColor=5865F2)](https://discord.gg/HMUfMXDQsV)
+[![NPM](https://img.shields.io/npm/v/aoi.js.svg)](https://www.npmjs.com/package/aoi.js)
+[![Downloads](https://img.shields.io/npm/dt/aoi.js.svg)](https://www.npmjs.com/package/aoi.js)
+[![License](https://img.shields.io/npm/l/aoi.js.svg)](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/LICENSE)
+[![Stars](https://img.shields.io/github/stars/AkaruiDevelopment/aoi.js.svg)](https://github.com/AkaruiDevelopment/aoi.js/stargazers)
 
-## Installation
+</div>
 
-**node.js 16.9.0 or newer is required.**
+## What is aoi.js?
 
-```bash
-npm install aoi.js
-yarn add aoi.js
-```
+aoi.js is a JavaScript library that is designed to make it easy to build Discord bots. It is open-source and free to
+use, and provides a simple, easy-to-use interface for interacting with the Discord API and handling events. aoi.js is
+suitable for beginners who are new to building bots, as well as experienced developers who want to save time and
+streamline their workflow.
 
 ## Setup
 
 ```javascript
-const { AoiClient } = require("aoi.js")
+const {AoiClient} = require("aoi.js");
 
 const bot = new AoiClient({
-token: "Discord Bot Token",
-prefix: "Discord Bot Prefix",
-intents: ["MessageContent", "Guilds", "GuildMessages"],
-events: ["onMessage"]
-})
+    token: "DISCORD BOT TOKEN",
+    prefix: "DISCORD BOT PREFIX",
+    intents: ["MessageContent", "Guilds", "GuildMessages"],
+    events: ["onMessage"]
+});
 
-//Ping Command Example
+// Ping Command Example
 bot.command({
-name: "ping",
-code: `Pong! $pingms`
-})
+    name: "ping",
+    code: `Pong! $pingms`
+});
 ```
 
-### Function usage Example
-
-```php
-$authorID - Return the author ID/the userID who executed the function
-```
-
-### How does it work?
-
-aoi.js uses the `$` symbol as a way to execute functions. To use a function, simply type `$` followed by the function name and any additional fields (if required).
-
-## Events
-
-Events are an important part of creating Discord bots. aoi.js includes several events that allow you to customize the behavior of your bot in response to different situations.
-
-For example, you can use the `readyCommand` event to specify what should happen when the bot is ready and logged onto the API:
+### Interaction Command Setup
 
 ```javascript
-bot.readyCommand({ //Event Command
-    channel: "Channel ID", //The channel where the Client will log. (optional)
-    code: `Code to execute` //This can be a message or code to execute.
-})
+const {AoiClient} = require("aoi.js");
+
+const bot = new AoiClient({
+    token: "DISCORD BOT TOKEN",
+    prefix: "DISCORD BOT PREFIX",
+    intents: ["MessageContent", "Guilds", "GuildMessages"],
+    events: ["onMessage", "onInteractionCreate"]
+});
+
+// Create Interaction Ping
+bot.command({
+    name: "create",
+    code: `$createApplicationCommand[$guildID;ping;Pong!;true;slash]`
+});
+
+// Ping Interaction Command
+
+bot.interactionCommand({
+    name: "ping",
+    prototype: "slash",
+    code: `$interactionReply[Pong! $pingms;;;;everyone;false]`
+});
 ```
 
-## Music Integration
+## Contribution
 
-Use this on your precaution, we do not endorse anything or affiliated with, we only add support towards it.
+[👉 Refer to contribution docs for more information](https://discord.gg/HMUfMXDQsV)
 
-Do you want to make your Discord Bot different from others, possibly with the ability to play/stream music, it's simple and easy to use!
+## Our ♥️ Contributors
 
-```php
-$playTrack[type;name] - To play a track from the available third parties supported. 
-```
-More information in our [documentation](https://aoi.js.org/extensions/music/setup)
+<a href="https://github.com/Akaruidevelopment/aoi.js/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AkaruiDevelopment/aoi.js"  alt="aoi.js-contributors"/>
+</a>
 
-### Optional Extensions
+## License
 
-- [@akarui/aoi.music](https://www.npmjs.com/package/@akarui/aoi.music) to enable Music Functions compatibility. (`npm install @akarui/aoi.music`)
-- [@akarui/aoi.panel](https://www.npmjs.com/package/@akarui/aoi.panel) A developer panel for aoi.js (`npm install @akarui/aoi.panel`)
-
-## Links
-- [Website](https://aoi.js.org)
-- [NPM](https://www.npmjs.com/package/aoi.js)
-- [Github](https://github.com/AkaruiDevelopment/aoi.js)
-- [Discord Support Server](https://discord.gg/HMUfMXDQsV)
-- [Documentation](https://aoi.js.org/docs/)
+Licensed under the Apache License, Copyright 2021 - 2023 Leref
