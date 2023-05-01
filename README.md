@@ -18,6 +18,7 @@
 
 <div align="center"><strong>Build a fast and powerful Discord bot with a comprehensive string package.</strong><br>
 
+<br />
 
 </div>
 
