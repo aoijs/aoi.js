@@ -39,6 +39,7 @@
     "functions",
     "music",
     "aoi.music",
+    "aoi.panel",
     "bdfd",
     "Bot Designer for Discord",
     "discord",
@@ -46,10 +47,8 @@
   ],
   "dependencies": {
     "aoi.db": "^1.1.0",
-    "axios": "^0.24.0",
     "dbdjs.db": "^2.0.2",
-    "discord-api-types": "^0.37.15-next.aaa57b4.1666469569",
-    "discord.js": "^14.8.0",
+    "discord.js": "^14.9.0",
     "undici": "^5.18.0"
   },
   "devDependencies": {
@@ -57,6 +56,7 @@
     "@discordjs/opus": "^0.8.0",
     "@ffprobe-installer/ffprobe": "^1.4.1",
     "aoi.parser": "^1.2.1",
+    "discord-api-types": "^0.37.36-next.0d47c69.1677334692",
     "prettier": "^2.4.1",
     "typescript": "^4.5.2",
     "ws": "^8.3.0"
