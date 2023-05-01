@@ -105,14 +105,10 @@ bot.interactionCommand({
 
 ## Contribution
 
-[👉 Refer to contribution docs for more information](https://discord.gg/HMUfMXDQsV)
+[Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
 
 ## Our ♥️ Contributors
 
 <a href="https://github.com/Akaruidevelopment/aoi.js/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=AkaruiDevelopment/aoi.js"  alt="aoi.js-contributors"/>
 </a>
-
-## License
-
-Licensed under the Apache License, Copyright 2021 - 2023 Leref
