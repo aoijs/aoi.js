@@ -5,7 +5,7 @@ module.exports = async d => {
     const [link] = data.inside.splits;
 
     let res = await d.client.fetchInvite(link.addBrackets()).catch(e => undefined);
-    data.result = res ? true : false;
+    data.result = !!res;
 
     return {
         code: d.util.setCode(data)

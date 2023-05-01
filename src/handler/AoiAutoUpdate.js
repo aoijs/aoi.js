@@ -1,39 +1,43 @@
-const {exec} = require("child_process");
-const axios = require("axios").default;
+const { exec } = require("child_process");
+const { Agent, fetch } = require('undici');
 const json = require("../../package.json");
+
 module.exports = async () => {
-    console.log(
-        "aoi.js AutoUpdate: \u001b[33mExecuting a contact with API...\u001b[0m",
-    );
+    console.log("aoi.js AutoUpdate: \u001b[33mExecuting a contact with API...\u001b[0m");
 
     try {
-        const res = await axios.get("https://api.leref.repl.co/package/version"); //This will change in v6 to be native.
-        if (json.version !== res.data.version) {
+        const res = await fetch('https://registry.npmjs.org/aoi.js', {
+            dispatcher: new Agent({
+                keepAliveTimeout: 10000, // 10 seconds
+                keepAliveMaxTimeout: 15000 // 15 seconds
+            }),
+            headers: {
+                'User-Agent': 'aoi.js' // required by npm registry API
+            }
+        });
+
+        const data = await res.json();
+        if (json.version !== data['dist-tags'].latest) {
             console.log(
                 "aoi.js AutoUpdate: \u001b[33mAvailable version v" +
-                res.data.version +
-                " ready to install.\u001b[0m",
+                data['dist-tags'].latest +
+                " ready to install.\u001b[0m"
             );
 
             // Install initiate
-            console.log(
-                "aoi.js AutoUpdate: \u001b[33m Installing version...\u001b[0m",
-            );
+            console.log("aoi.js AutoUpdate: \u001b[33m Installing version...\u001b[0m");
             const Process = exec("npm i aoi.js@latest", (error) => {
                 if (error)
                     return console.error(
-                        "aoi.js AutoUpdate: \u001b[31mERR!\u001b[0m " +
-                        error.message,
+                        "aoi.js AutoUpdate: \u001b[31mERR!\u001b[0m " + error.message
                     );
 
                 console.log(
                     "aoi.js AutoUpdate: \u001b[32mSuccessfully Installed aoi.js v" +
-                    res.data.version +
-                    ".\u001b[0m",
+                    data['dist-tags'].latest +
+                    ".\u001b[0m"
                 );
-                console.log(
-                    "aoi.js AutoUpdate: Commencing 'RESTART' in 3 Seconds...",
-                );
+                console.log("aoi.js AutoUpdate: Commencing 'RESTART' in 3 Seconds...");
 
                 setTimeout(Reboot, 3000);
             });
@@ -47,13 +51,11 @@ module.exports = async () => {
                 console.log(chunk.toString());
             });
         } else {
-            console.log(
-                "aoi.js AutoUpdate: \u001b[32mVersion is up-to-date.\u001b[0m",
-            );
+            console.log("aoi.js AutoUpdate: \u001b[32mVersion is up-to-date.\u001b[0m");
         }
     } catch (error) {
         console.warn(
-            "aoi.js AutoUpdate: \u001b[31mUnexpected error when trying to reach API.\u001b[0m",
+            "aoi.js AutoUpdate: \u001b[31mUnexpected error when trying to reach API.\u001b[0m"
         );
     }
 };
@@ -70,8 +72,7 @@ function Reboot() {
         process.exit();
     } catch (e) {
         console.error(
-            `aoi.js AutoUpdate: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`,
+            `aoi.js AutoUpdate: \u001b[31mERR!\u001b[0m Failed to commence 'RESTART', ${e.message}`
         );
     }
 }
-/*Copyright © 2021 @Akarui Development*/

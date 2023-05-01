@@ -1,4 +1,4 @@
-const axios = require('axios');
+const { Agent, fetch } = require('undici');
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -6,11 +6,14 @@ module.exports = async d => {
 
     const [link] = data.inside.splits;
 
-    let res = await axios.get(link.addBrackets()).catch(e => undefined);
+    const response = await fetch(link.addBrackets(), {
+        agent: new Agent(),
+        method: 'GET',
+    }).catch(() => null);
 
-    data.result = res ? true : false;
+    data.result = response !== null;
 
     return {
         code: d.util.setCode(data)
-    }
+    };
 }

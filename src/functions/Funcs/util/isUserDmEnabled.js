@@ -8,7 +8,7 @@ module.exports = async (d) => {
 
     data.result = await user.send(" ").catch(err => err.code);
 
-    data.result = data.result === 50007 ? false : true;
+    data.result = data.result !== 50007;
 
     return {
         code: d.util.setCode(data),
