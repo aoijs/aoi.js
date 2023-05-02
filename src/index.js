@@ -6,7 +6,7 @@ const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 
 /**
- * aoiclient, custom events, command loader, client shard, error handling and utility functions
+ * AoiClient, custom events, command loader, client shard, error handling and utility functions
  * @namespace
  */
 module.exports = {
