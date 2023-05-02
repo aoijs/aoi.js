@@ -121,15 +121,15 @@ class LoadCommands {
         const valid = validCmds.some((c) => c === cmd.type);
 
         if (!valid) {
-          debugs.push(
-            `|${this.colors.typeError?.command || ""}${
-              cmd.name || cmd.channel
-            }${this.allColors.reset}|${this.colors.typeError?.type || ""}${
-              cmd.type
-            } ${this.allColors.reset}|${
-              this.colors.typeError?.text || ""
-            }Invalid Type Provided${this.allColors.reset}|`,
-          );
+          const typeErrorCommand = this.colors.typeError?.command || "";
+          const cmdNameOrChannel = cmd.name || cmd.channel;
+          const typeErrorType = this.colors.typeError?.type || "";
+          const invalidTypeMessage = "Invalid Type Provided";
+          const typeErrorText = this.colors.typeError?.text || "";
+
+          const debugMessage = `| ${typeErrorCommand}${cmdNameOrChannel}${this.allColors.reset} | ${typeErrorType}${cmd.type}${this.allColors.reset} | ${typeErrorText}${invalidTypeMessage}${this.allColors.reset} |`;
+
+          debugs.push(debugMessage);
 
           continue;
         }
