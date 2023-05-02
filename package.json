@@ -46,6 +46,7 @@
     "discordbot"
   ],
   "dependencies": {
+    "@akarui/structures": "github:AkaruiDevelopment/structures#v1",
     "aoi.db": "^1.1.0",
     "dbdjs.db": "^2.0.2",
     "discord.js": "^14.10.2",

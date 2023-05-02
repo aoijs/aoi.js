@@ -1,4 +1,4 @@
-const { Group } = require("./structures/dist");
+const { Group } = require("@akarui/structures");
 const { functions: parser, maps, grp } = require("../functions/AoiReader.js");
 class Block {
     constructor(func) {

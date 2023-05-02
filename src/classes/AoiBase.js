@@ -18,7 +18,7 @@ const {
 } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
-const { Group } = require("./structures/dist");
+const { Group } = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
 
 class BaseClient extends Discord.Client {

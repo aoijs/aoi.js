@@ -1,4 +1,4 @@
-const { Group } = require( "./structures/dist" );
+const { Group } = require("@akarui/structures");
 
 class Command {
     constructor(d = {}, client) {

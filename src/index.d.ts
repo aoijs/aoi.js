@@ -1,7 +1,5 @@
 import {Client, ShardingManager} from "discord.js";
-import {Group} from "./classes/structures/dist/group/group";
-import {LimitGroup} from "./classes/structures/dist/group/limitGroup";
-import {SuperSet} from "./classes/structures/dist/sets/superset";
+import {Group, LimitGroup, SuperSet} from "@akarui/structures";
 
 declare module "aoi.js" {
     import {EventEmitter} from "events";

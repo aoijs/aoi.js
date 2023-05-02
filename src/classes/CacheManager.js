@@ -1,6 +1,6 @@
 const { CacheOptions } = require("../utils/Constants.js");
 const { Options } = require("discord.js");
-const Cachers = require("./structures/dist/index.js");
+const Cachers = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
 
 class CacheManager {

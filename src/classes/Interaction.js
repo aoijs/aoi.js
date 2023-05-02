@@ -1,5 +1,5 @@
 const {EventEmitter} = require("events");
-const { Group } = require( "./structures/dist" );
+const { Group } = require("@akarui/structures");
 
 class Interaction extends EventEmitter {
     constructor(client) {

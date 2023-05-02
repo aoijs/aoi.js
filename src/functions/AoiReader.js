@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Group } = require("../classes/structures/dist");
+const { Group } = require("@akarui/structures");
 
 const maps = {};
 const grp = new Group();
