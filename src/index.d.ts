@@ -87,7 +87,6 @@ declare module "aoi.js" {
         respondToBots: boolean;
         guildOnly: boolean;
         cache: CacheOptions;
-        mobilePlatform?: boolean;
         aoiLogs?: boolean;
         aoiWarning?: boolean;
         plugins?: Array<string>;

@@ -281,10 +281,6 @@ class BaseClient extends Discord.Client {
 
         Object.defineProperty(this, "statuses", { value: new Group() });
 
-        if (options.mobilePlatform === true) {
-            this.options.ws.properties.browser = "Discord Android";
-        }
-
         this.on("ready", async () => {
             require("../handler/status.js")(this.statuses, this);
             await require("../handler/AoiStart.js")(this);
