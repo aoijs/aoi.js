@@ -254,7 +254,7 @@ class BaseClient extends Discord.Client {
             );
         } else {
             this.db = new AoijsAPI(
-                options?.database?.db || require("dbdjs.db"),
+                options?.database?.db || require("aoi.db"),
                 {
                     path: options?.database?.path || "./database/",
                     tables: options?.database?.tables || ["main"],
@@ -263,7 +263,7 @@ class BaseClient extends Discord.Client {
                     type: options?.database?.type || "default",
                     promisify: options?.database?.promisify || false,
                 },
-                options.database?.extraOptions || {},
+                options?.database?.extraOptions || {},
             );
         }
 
