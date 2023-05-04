@@ -11,7 +11,6 @@ const IntentOptions = {
     ...IntentsBitField.Flags,
 };
 
-
 const ActivityTypeAvailables = {
     playing: ActivityType["Playing"],
     streaming: ActivityType["Streaming"],
