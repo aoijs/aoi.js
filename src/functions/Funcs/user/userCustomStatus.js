@@ -2,7 +2,7 @@ module.exports = async d => {
     const {ActivityType} = require("discord.js");
     const data = d.util.aoiFunc(d);
 
-    const [userID = d.author?.id, guildID = d.guild?.id, type = 'state'] = data.inside.splits;
+    const [guildID = d.guild?.id, userID = d.author?.id, type = 'state'] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
