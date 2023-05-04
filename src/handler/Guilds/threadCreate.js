@@ -1,5 +1,5 @@
 const Interpreter = require("../../interpreter.js");
-module.exports = async (thread, client) => {
+module.exports = async (thread, newc, client) => {
     const cmds = client.cmd.threadCreate.allValues();
     const data = { guild: thread.guild, channel: thread, client: client };
     let chan;
