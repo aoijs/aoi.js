@@ -1,6 +1,7 @@
 import  StringObject  from "../core/structs/StringObject.js";
 import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
 export interface TranspilerOptions {
+    customFunctions?: Record<string, FunctionData>;
     sendMessage: boolean;
     scopeData?: {
         variables?: string[];

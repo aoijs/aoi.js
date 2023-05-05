@@ -1,6 +1,7 @@
 import { CommandOptions } from "../typings/interfaces.js";
 import { AsyncFunction, CommandTypes } from "../typings/types.js";
 import { Transpiler } from "../core/transpiler.js";
+import { AoiClient } from "./AoiClient.js";
 export class Command
 {
     name: string;
@@ -11,7 +12,7 @@ export class Command
     reverseRead?: boolean;
     executeAt?: "guild" | "dm" | "both";
     __compiled__: AsyncFunction;
-    constructor ( data: CommandOptions )
+    constructor ( data: CommandOptions,client:AoiClient )
     {
         this.name = data.name;
         this.type = data.type;
@@ -25,6 +26,7 @@ export class Command
             sendMessage: true,
             minify: true,
             reverse: this.reverseRead,
+            customFunctions: client.managers.functions.functions.toJSON(),
         } );
 
         this.__compiled__  = func.func;

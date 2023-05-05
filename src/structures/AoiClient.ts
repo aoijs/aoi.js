@@ -3,18 +3,25 @@ import { AoiClientOptions } from "../typings/interfaces.js";
 import { CommandManager } from "../manager/Command.js";
 import { onMessage } from "../events/messageCreate.js";
 import { Util } from "./Util.js";
+import { FunctionManager } from "../manager/Function.js";
 
 export class AoiClient
 {
     client:Client;
-    cmds: CommandManager;
+    managers: {
+        commands: CommandManager;
+        functions: FunctionManager;
+    };
     options: AoiClientOptions;
     cache?: Cacher;
     util:Util;
     constructor ( options: AoiClientOptions )
     {
         this.client = new Client( options );
-        this.cmds = new CommandManager();
+        this.managers = {
+            commands: new CommandManager( this ),
+            functions: new FunctionManager( this )
+        };
         this.options = options;
         if(options.caches)
             this.cache = createCacheManager(options.caches, this.client);

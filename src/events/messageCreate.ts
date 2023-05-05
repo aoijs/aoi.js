@@ -18,7 +18,7 @@ export async function messageCreate(message: Message, client: AoiClient) {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const cmd = args.shift()?.toLowerCase();
     if (!cmd) return;
-    const commands = client.cmds.basicCommand.filter(
+    const commands = client.managers.commands.basicCommand.filter(
         (x) => x.name === cmd || (x.aliases?.includes(cmd) ?? false),
     );
 

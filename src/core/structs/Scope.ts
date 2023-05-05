@@ -41,7 +41,7 @@ export default class Scope {
         addReturn?: boolean,
     ) {
         this.name = name;
-        this.sendFunction = "__$DISCORD_DATA$__.client.createMessage";
+        this.sendFunction = "await __$DISCORD_DATA$__.client.createMessage";
         this.parent = parent;
         this.hasSendData = false;
         this.sendData = {
@@ -149,7 +149,7 @@ export default class Scope {
                     if (this.hasSendData && sendMessage) {
                         return `${this.addReturn ? "return " : ""} await ${
                             this.useChannel
-                                ? `__$DISCORD_DATA$__.client.createMessage(${parseString(
+                                ? this.sendFunction+`(${parseString(
                                     this.useChannel.toString() +
                                           (!isNaN(Number(this.useChannel))
                                               ? "n"

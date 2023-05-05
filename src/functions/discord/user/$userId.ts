@@ -24,7 +24,7 @@ export const $userId: FunctionData = {
         ) {
             throw new TranspilerError(`${data.name} requires a username.`);
         }
-        const userId = `(await __$DISCORD_DATA$__.bot.util.findUser(${name}))?.id`;
+        const userId = `(await __$DISCORD_DATA$__.bot.util.findUser(\`${name}\`))?.id`;
 
         const res = escapeResult(`(${userId})`);
         currentScope.update(res, data);

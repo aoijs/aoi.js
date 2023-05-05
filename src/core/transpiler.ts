@@ -1,4 +1,4 @@
-import functions from "../functions/index.js";
+import funcs from "../functions/index.js";
 import { TranspilerOptions } from "../typings/interfaces.js";
 import { MinifyOutput, minify } from "uglify-js";
 import {
@@ -12,12 +12,14 @@ import { TranspilerError } from "./error.js";
 import fixMath from "./parsers/mathParser.js";
 import Scope from "./structs/Scope.js";
 import { AsyncFunction } from "../typings/types.js";
-const functionNames = Object.keys(functions);
+
 export function Transpiler(
     code: string,
     options: TranspilerOptions,
 ): { func: AsyncFunction; code: string; scope: Scope[] } {
-    const { scopeData, sendMessage, minify: uglify } = options;
+    const { scopeData, sendMessage, minify: uglify,customFunctions } = options;
+    const functions = { ...funcs, ...customFunctions };
+    const functionNames = Object.keys(functions);
     const flist = getFunctionList(code, functionNames);
 
     flist.forEach((x) => {
