@@ -19,7 +19,7 @@ module.exports = async (d) => {
             `Invalid Permissions In`,
         );
 
-    const upms = [channel.permissionsFor(roleoruserId)];
+    const upms = channel.permissionsFor(roleoruserId);
 
     if (!upms)
         return d.aoiError.fnError(
@@ -29,7 +29,7 @@ module.exports = async (d) => {
             `Role or User not found`,
         );
 
-    data.result = upms.includes(Perms.administrator) ? true : upms && pms.every((p) => upms.has(p));
+    data.result = upms.has(Perms.administrator) ? true : upms && pms.every((p) => upms.has(p));
     return {
         code: d.util.setCode(data),
     };
