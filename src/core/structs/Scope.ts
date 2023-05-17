@@ -1,4 +1,4 @@
-import { TranspilerCustoms } from "../../typings/enums.js";
+import { BundlerCustoms, TranspilerCustoms } from "../../typings/enums.js";
 import { funcData } from "../../typings/interfaces.js";
 import {
     escapeResult,
@@ -33,6 +33,7 @@ export default class Scope {
     functions: string;
     addReturn: boolean;
     useChannel?: bigint;
+    embededJS: string[] = [];
     packages = "";
     constructor(
         name: string,
@@ -91,6 +92,18 @@ export default class Scope {
     removeChild(name: string) {
         this.children = this.children.filter((child) => child.name !== name);
     }
+    updateEmbedJs() {
+        const embeds = [...this.embededJS.reverse()];
+        for (const embed of embeds) {
+            const old = this.rest;
+            this.rest = this.replaceLast(this.rest, BundlerCustoms.EJS, embed);
+            if (this.rest === old) {
+                this.packages = this.embededJS.shift() + "\n" + this.packages;
+            } else {
+                this.embededJS.shift();
+            }
+        }
+    }
     toString(sendMessage = true) {
         const sendData: Record<string, string> = { ...this.sendData };
         sendData.embeds = escapeResult(escapeVars(`${this.name}_embeds`));
@@ -99,10 +112,9 @@ export default class Scope {
         );
         sendData.files = escapeResult(escapeVars(`${this.name}_files`));
         sendData.stickers = escapeResult(escapeVars(`${this.name}_stickers`));
-        sendData.content = sendData.content.replaceAll(
-            "\n",
-            TranspilerCustoms.NL,
-        );
+        sendData.content = sendData.content
+            .replaceAll("\n", TranspilerCustoms.NL)
+            .replaceAll(BundlerCustoms.EJS, "");
         if (
             sendData.content.replaceAll(TranspilerCustoms.NL, "").trim() !==
                 "" ||
@@ -121,11 +133,13 @@ export default class Scope {
                 ? " "
                 : parsedStr.trim().replaceAll(TranspilerCustoms.SL, "\\`");
 
-        this.rest = this.replaceLast(
-            parseResult(removeMultiLineComments(this.rest.trim())),
-            this.sendData.content.trim(),
-            "",
-        );
+        if (sendData.content.trim() !== "") {
+            this.rest = this.replaceLast(
+                parseResult(removeMultiLineComments(this.rest.trim())),
+                sendData.content.replaceAll(TranspilerCustoms.NL,"\n").trim(),
+                "",
+            );
+        }
         parsedStr = parsedStr.replaceAll("\\n", TranspilerCustoms.NL);
 
         const sent = `{
@@ -149,12 +163,13 @@ export default class Scope {
                     if (this.hasSendData && sendMessage) {
                         return `${this.addReturn ? "return " : ""} await ${
                             this.useChannel
-                                ? this.sendFunction+`(${parseString(
-                                    this.useChannel.toString() +
+                                ? this.sendFunction +
+                                  `(${parseString(
+                                      this.useChannel.toString() +
                                           (!isNaN(Number(this.useChannel))
                                               ? "n"
                                               : ""),
-                                )},${sent});`
+                                  )},${sent});`
                                 : this.sendFunction +
                                   `(__$DISCORD_DATA$__.message.channelId,${sent});`
                         }`;
@@ -302,8 +317,9 @@ export default class Scope {
             this.hasSendData = true;
         else this.hasSendData = false;
 
-        return parseResult(
-            `\n\n${this.rest.trim()}\n\n`.trim()
-        ).replaceAll(TranspilerCustoms.SL, "\\`");
+        return parseResult(`\n\n${this.rest.trim()}\n\n`.trim()).replaceAll(
+            TranspilerCustoms.SL,
+            "\\`",
+        );
     }
 }

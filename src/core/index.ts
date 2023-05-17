@@ -12,5 +12,7 @@ import  Condition from "./structs/Condition.js";
 import StringObject from "./structs/StringObject.js";
 import { conditionLexer } from "./parsers/conditionParser.js";
 
+export * from "./bundler.js";
+
 export { Scope, Block, Condition, StringObject, conditionLexer, fixMath};
 

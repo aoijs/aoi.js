@@ -1,5 +1,5 @@
 const regex =
-    /#MATH_FUNCTION_START#[#$._0-9a-z*+-/%^&|?()]*#MATH_FUNCTION_END#/gi;
+    /#MATH_FUNCTION_START#[#$._0-9a-\s*+-/%^&|?()]*#MATH_FUNCTION_END#/gi;
 export default function fixMath(code: string) {
     let res = code;
     const matches = code.match(regex);

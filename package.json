@@ -41,7 +41,7 @@
     "@typescript-eslint/parser": "^5.57.1",
     "eslint": "^8.38.0",
     "js-beautify": "^1.14.7",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.4"
   },
   "type": "commonjs",
   "keywords": [
@@ -61,8 +61,16 @@
   "dependencies": {
     "@akarui/structures": "github:akaruidevelopment/structures#v2",
     "aoiluna": "github:akaruidevelopment/aoiluna#main",
+    "boxen": "^7.1.0",
+    "chalk": "^5.2.0",
+    "cli-spinners": "^2.9.0",
+    "dotenv": "^16.0.3",
+    "ora": "^6.3.0",
     "uglify-js": "^3.17.4",
     "undici": "^5.21.0",
     "ws": "^8.13.0"
+  },
+  "bin": {
+    "aoijs": "./bin/index.mjs"
   }
 }

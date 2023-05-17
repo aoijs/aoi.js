@@ -17,7 +17,7 @@ export function Transpiler(
     code: string,
     options: TranspilerOptions,
 ): { func: AsyncFunction; code: string; scope: Scope[] } {
-    const { scopeData, sendMessage, minify: uglify,customFunctions } = options;
+    const { scopeData, sendMessage, minify: uglify, customFunctions } = options;
     const functions = { ...funcs, ...customFunctions };
     const functionNames = Object.keys(functions);
     const flist = getFunctionList(code, functionNames);
@@ -37,7 +37,7 @@ export function Transpiler(
     globalScope.addEmbeds(scopeData?.embeds ?? []);
     globalScope.env.push(...(scopeData?.env ?? []));
     globalScope.objects = { ...globalScope.objects, ...scopeData?.objects };
-
+    globalScope.embededJS = scopeData?.embedJs ?? [];
     globalScope.sendFunction =
         scopeData?.sendFunction ?? globalScope.sendFunction;
     const res = ExecuteData(
@@ -53,11 +53,13 @@ export function Transpiler(
         scope.rest = scope.rest.replace(scope.sendData.content.trim(), "");
         res.scope[0] = scope;
     }
+    res.scope[0].updateEmbedJs();
+
     let str = res.scope[0].getFunction(sendMessage);
     str = fixMath(str);
 
     // eslint-disable-next-line @typescript-eslint/ban-types
-    const functionString = uglify ? (minify)(str) : str;
+    const functionString = uglify ? minify(str) : str;
 
     if (uglify && (<MinifyOutput>functionString).error) {
         throw new TranspilerError(
@@ -75,7 +77,9 @@ export function Transpiler(
             code: uglify
                 ? (<MinifyOutput>functionString).code
                 : <string>functionString,
-            func: async () => { return void 0; },
+            func: async () => {
+                return void 0;
+            },
             scope: res.scope,
         };
     try {

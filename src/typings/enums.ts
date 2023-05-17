@@ -18,3 +18,9 @@ export enum TranspilerCustoms
     SL = "#STRING_LITERAL#",
     NL = "#NEW_LINE#",
 }
+
+export enum BundlerCustoms  {
+    LB = "#LEFT_BRACKET#",
+    RB = "#RIGHT_BRACKET#",
+    EJS = "#EMBEDDED_JS#",
+}

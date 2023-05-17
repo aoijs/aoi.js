@@ -1,3 +1,4 @@
+import { BundlerCustoms, TranspilerCustoms } from "../../typings/enums.js";
 import Block from "../structs/Block.js";
 
 export function createStringAST(text: string) {
@@ -15,7 +16,17 @@ export function createStringAST(text: string) {
                 stack.push(i - 13);
             }
             res = text[i];
-        } else {
+        } else if(res.includes(TranspilerCustoms.MFS)) {
+            stack.push(i - TranspilerCustoms.MFS.length-1);
+            res = text[i];
+        } else if(res.includes(TranspilerCustoms.MFE)) {
+            const a = stack.pop();
+            if (!a) {
+                stack.push(i - TranspilerCustoms.MFE.length-1);
+            }
+            res = text[i];
+        }
+        else {
             res += text[i];
         }
         i++;
@@ -42,7 +53,21 @@ export function createStringAST(text: string) {
             block = block.parent ? block.parent : block;
             block.add(text[i] ?? "");
             res = "";
-        } else {
+        } else if(res.includes(TranspilerCustoms.MFS)) {
+            const nest = new Block(block.nest.length, false, block);
+            block.text = block.text.replace(TranspilerCustoms.MFS, "");
+            block.add(`#NEST_POSITION_${block.nest.length}#`);
+            block.addBlock(nest);
+            block = nest;
+            block.add(text[i]);
+            res = "";
+        } else if(res.includes(TranspilerCustoms.MFE)) {
+            block.text = block.text.replace(TranspilerCustoms.MFE, "");
+            block = block.parent ? block.parent : block;
+            block.add(text[i] ?? "");
+            res = "";
+        }
+        else {
             res += text[i];
             block.add(text[i] ?? "");
         }
@@ -53,7 +78,7 @@ export function createStringAST(text: string) {
 
 export function parseString(text: string) {
     const ast = createStringAST(text);
-    return ast.parse();
+    return ast.parse().replaceAll(BundlerCustoms.EJS ,`\${${BundlerCustoms.EJS}}`);
 }
 
 //console.log(parseString("#FUNCTION_START#__$DISCORD_DATA__#FUNCTION_END#"))

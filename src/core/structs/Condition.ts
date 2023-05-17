@@ -1,6 +1,7 @@
 import { inspect } from "util";
 import { parseData } from "../../util/transpilerHelpers.js";
 import { parseString } from "../parsers/stringParser.js";
+import { BundlerCustoms } from "../../typings/enums.js";
 const operators = ["===", "!==", "==", "!=", ">", "<", ">=", "<="];
 
 export default class Condition {
@@ -65,7 +66,7 @@ export default class Condition {
                         if (
                             !((leftData.startsWith("#FUNCTION_START#") &&
                                 leftData.endsWith("#FUNCTION_END#")) ||
-                            leftData.startsWith("__$DISCORD_DATA$__"))
+                            leftData.startsWith("__$DISCORD_DATA$__") || leftData.trim() === BundlerCustoms.EJS )
                         ) {
                             leftData = parseString(leftData);
                             if (
@@ -99,7 +100,7 @@ export default class Condition {
                                 rightData.endsWith("#FUNCTION_END#")) ||
                             (rightData.startsWith("__$") &&
                                 rightData.includes("$__")) ||
-                            rightData.startsWith("__$DISCORD_DATA$__"))
+                            rightData.startsWith("__$DISCORD_DATA$__") || rightData.trim() === BundlerCustoms.EJS)
                         ) {
                             rightData = parseString(rightData);
                             if (
@@ -132,7 +133,7 @@ export default class Condition {
                     typeof res === "string" &&
                     (!res.endsWith("#FUNCTION_END#") ||
                         res.trim().split(" ").length > 1) &&
-                    !res.startsWith("#FUNCTION_START#")
+                    !res.startsWith("#FUNCTION_START#") && res.trim() !== BundlerCustoms.EJS
                 ) {
                     res = parseString(res);
                 }

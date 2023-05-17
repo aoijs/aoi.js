@@ -1,4 +1,4 @@
-import { FunctionData, funcData, Scope, parseString } from "../../../index.js";
+import { FunctionData, funcData, Scope } from "../../../index.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $ram: FunctionData = {
@@ -19,10 +19,10 @@ export const $ram: FunctionData = {
     description: "Returns the bot's ram usage",
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
-        const type = parseString(data.inside ?? "rss");
+        const type = data.inside ?? "rss";
 
         const res = escapeResult(
-            `(process.memoryUsage()[${type}] / 1024 / 1024).toFixed(2)`,
+            `(process.memoryUsage().${type} / 1024 / 1024).toFixed(2)`,
         );
         currentScope.rest = currentScope.rest.replace(data.total, res);
         return {

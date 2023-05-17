@@ -22,7 +22,11 @@ export function parseData(text: string) {
     if (text === "") return text;
     else if (!isNaN(Number(text)) && Number.isSafeInteger(Number(text)))
         return Number(text);
-    else if ((!isNaN(Number(text)) && !Number.isSafeInteger(text)) || isBigInt(text)) return BigInt(text.replace("n", ""));
+    else if (
+        (!isNaN(Number(text)) && !Number.isSafeInteger(text)) ||
+        isBigInt(text)
+    )
+        return BigInt(text.replace("n", ""));
     else if (text === "null") return null;
     else if (text === "undefined") return undefined;
     else if (text === "true" || text === "false") return text === "true";
@@ -30,8 +34,8 @@ export function parseData(text: string) {
         try {
             return JSON.parse(text);
         } catch {
-            if(text.startsWith("{") && text.endsWith("}")) {
-                const so =  new StringObject("{");
+            if (text.startsWith("{") && text.endsWith("}")) {
+                const so = new StringObject("{");
                 so.addEnd("}");
                 let e;
                 eval(`e = ${parseStringObject(text, so).solve()}`);
@@ -187,11 +191,10 @@ export function getFunctionList(code: string, functions: string[]) {
 }
 
 export function reverseArray(arr: funcData[]) {
-    const res : funcData[]= [];
-    for ( let i = arr.length - 1; i >= 0; i-- )
-    {
-        const el = arr[ i ];
-        if ( el.funcs.length ) el.funcs = reverseArray( ( arr[ i ].funcs ) );
+    const res: funcData[] = [];
+    for (let i = arr.length - 1; i >= 0; i--) {
+        const el = arr[i];
+        if (el.funcs.length) el.funcs = reverseArray(arr[i].funcs);
         res.push(el);
     }
     return res;
@@ -204,7 +207,8 @@ export function ExecuteData(
     reverse = false,
 ) {
     let i = 0;
-    if ( reverse ) data = reverseArray( data );
+
+    if (reverse) data = reverseArray(data);
     while (i < data.length) {
         let d = data[i];
 
@@ -259,15 +263,25 @@ export function ExecuteData(
                     .replace(oldd, result.code);
 
                 if (d.type === "getter" || d.type === "function_getter") {
+                    let oldcontent = scope[scope.length - 1].sendData.content;
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
-                    ].sendData.content
-                        .replace(d.total, result.code)
-                        .replace(
+                    ].sendData.content.replace(d.total, result.code);
+                    if (
+                        oldcontent === scope[scope.length - 1].sendData.content
+                    ) {
+                        scope[scope.length - 1].sendData.content = scope[
+                            scope.length - 1
+                        ].sendData.content.replace(
                             d.total.replaceAll(";", TranspilerCustoms.FSEP),
                             result.code,
-                        )
-                        .replace(oldd, result.code);
+                        );
+                        oldcontent = scope[scope.length - 1].sendData.content;
+                    }
+                    if (oldcontent === scope[scope.length - 1].sendData.content)
+                        scope[scope.length - 1].sendData.content = scope[
+                            scope.length - 1
+                        ].sendData.content.replace(oldd, result.code);
                 }
             } else {
                 executed = d.code(d, scope);
@@ -275,13 +289,17 @@ export function ExecuteData(
 
                 code = code.replace(d.total, executed.code);
 
-                if ( d.type === "getter" || d.type === "function_getter" )
-                {
+                if (d.type === "getter" || d.type === "function_getter") {
                     const oldt = d.total;
+                    const oldcontent = scope[scope.length - 1].sendData.content;
                     d.total = removeFF(d.total);
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
-                    ].sendData.content.replace(d.total, executed.code).replace(oldt, executed.code);
+                    ].sendData.content.replace(d.total, executed.code);
+                    if (oldcontent === scope[scope.length - 1].sendData.content)
+                        scope[scope.length - 1].sendData.content = scope[
+                            scope.length - 1
+                        ].sendData.content.replace(oldt, executed.code);
                 }
             }
         }
@@ -290,10 +308,13 @@ export function ExecuteData(
             d.type !== "function_getter" &&
             d.type !== "scope_getter"
         ) {
-            const s = scope[ scope.length - 1 ];
+            const s = scope[scope.length - 1];
             const oldt = d.total;
+            const oldcontent = s.sendData.content;
             d.total = removeFF(d.total);
-            s.sendData.content = s.sendData.content.replace(d.total, "").replace(oldt, "");
+            s.sendData.content = s.sendData.content.replace(d.total, "");
+            if (oldcontent === s.sendData.content)
+                s.sendData.content = s.sendData.content.replace(oldt, "");
             scope[scope.length - 1] = s;
         }
         i++;
@@ -392,12 +413,10 @@ export function removeMF(total: string) {
     return total;
 }
 
-export function isBigInt ( string: string )
-{
-    return string.match ( /^-?\d+n$/ ) !== null;
+export function isBigInt(string: string) {
+    return string.match(/^-?\d+n$/) !== null;
 }
 
-export function removeMultiLineComments ( code: string )
-{
-    return code.replace ( /\/\*[\s\S]*?\*\//g, "" );
+export function removeMultiLineComments(code: string) {
+    return code.replace(/\/\*[\s\S]*?\*\//g, "");
 }

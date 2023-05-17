@@ -11,6 +11,7 @@ export interface TranspilerOptions {
         functions?: string;
         env?: string[];
         objects?: Record<string, StringObject>;
+        embedJs?:string[];
     };
     reverse?: boolean;
     minify?: boolean;
@@ -18,7 +19,7 @@ export interface TranspilerOptions {
 }
 
 import  Scope  from "../core/structs/Scope.js";
-import { CommandTypes, autoFetchDataTypes } from "./types.js";
+import { AsyncFunction, CommandTypes, autoFetchDataTypes } from "./types.js";
 import { AoiClient } from "../index.js";
 
 export interface FunctionData {
@@ -106,7 +107,7 @@ export interface CommandOptions
 {
     name: string;
     type: CommandTypes;
-    code: string;
+    code: string | AsyncFunction;
     aliases?: string[];
     reverseRead?: boolean;
     executeAt?: "guild" | "dm" | "both";
