@@ -112,6 +112,7 @@ export interface CommandOptions
     reverseRead?: boolean;
     executeAt?: "guild" | "dm" | "both";
     __path__: string;
+    [key: string]: unknown;
 }
 
 export interface TranspiledFuncData

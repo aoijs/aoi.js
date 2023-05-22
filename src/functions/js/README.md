@@ -51,6 +51,7 @@ $objectExists --> object;
 $cpu --> process;
 $ram --> process;
 $includes --> string;
+$toString --> string;
 
 ```
 

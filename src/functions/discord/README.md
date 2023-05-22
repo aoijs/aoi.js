@@ -13,7 +13,14 @@ $guildId --> guild;
 $guildName --> guild;
 $message --> message;
 $eval --> misc;
+$authorAvatar --> user;
 $authorId --> user;
+$authorName --> user;
+$authorTag --> user;
+$userAvatar --> user;
+$userId --> user;
+$username --> user;
+$userTag --> user;
 
 ```
 

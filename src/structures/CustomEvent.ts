@@ -1,36 +1,32 @@
+import { EventEmitter } from "events";
+import { AoiClient } from "./AoiClient.js";
 import { Group } from "@akarui/structures";
-import { Command } from "../structures/Command.js";
-import { CommandOptions } from "../typings/interfaces.js";
-import { Optional } from "../typings/types.js";
-import fs, { readFile } from "fs/promises";
-import { AoiClient, Bundler } from "../index.js";
+import { Command } from "./Command.js";
+import { Bundler, CommandOptions, TranspiledFuncData } from "../index.js";
 import Path from "path";
-
-export class CommandManager {
-    basicCommand: Group<string, Command> = new Group<string, Command>(Infinity);
-    slashCommand: Group<string, Command> = new Group<string, Command>(Infinity);
+import fs, { readFile } from "fs/promises";
+export class CustomEvent extends EventEmitter {
+    commands: Group<string,Command>;
     #client: AoiClient;
     constructor(client: AoiClient) {
+        super();
         this.#client = client;
+        this.commands = new Group<string,Command>(Infinity);
     }
+    listen(eventName:string) {
+        this.on(eventName,async (...args) => {
+            const cmds = this.commands.filter((cmd) => cmd.listen === eventName);
 
-    add(command: Optional<CommandOptions, "__path__">) {
-        if (!command.name) throw new Error("Command name is required");
-        if (!command.type) throw new Error("Command type is required");
-        if (!command.__path__) command.__path__ = "root";
-        const cmd = new Command(command as CommandOptions, this.#client);
-        if (cmd.type === "basic") this.basicCommand.set(cmd.name, cmd);
-        else if (cmd.type === "slash") this.slashCommand.set(cmd.name, cmd);
-        else {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            throw new Error("Invalid command type provided", {
-                ...command,
-            });
-        }
+            for (const cmd of cmds.values()) {
+                await cmd.__compiled__({bot:this.#client, eventData:args} as unknown as TranspiledFuncData);
+            }
+        });
     }
-
-    addMany(commands: Optional<CommandOptions, "__path__">[]) {
+    add(command: CommandOptions) {
+        const cmd = new Command(command,this.#client);
+        this.commands.set(cmd.name,cmd);
+    }
+    addMany(commands: CommandOptions[]) {
         for (const command of commands) this.add(command);
     }
     async load({
@@ -115,9 +111,7 @@ export class CommandManager {
             }).join("\n")}
         `,
             {
-                title: `∴ Loading ${chalk.blueBright(
-                    path,
-                )} ( ${chalk.yellowBright(Commands.length)} )`,
+                title: `∴ Loading Events ( ${chalk.yellowBright(Commands.length)} )`,
                 borderStyle: "round",
                 borderColor: "cyan",
                 textAlignment: "left",

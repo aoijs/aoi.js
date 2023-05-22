@@ -11,6 +11,7 @@ export class Command {
     reverseRead?: boolean;
     executeAt?: "guild" | "dm" | "both";
     __compiled__: AsyncFunction;
+    [key: string]: unknown;
     constructor(data: CommandOptions, client: AoiClient) {
         this.name = data.name;
         this.type = data.type;
@@ -19,6 +20,10 @@ export class Command {
         this.__path__ = data.__path__;
         this.executeAt = data.executeAt ?? "both";
         this.reverseRead = data.reverseRead ?? false;
+
+        for(const key in data) {
+            if(!["name", "type", "code", "aliases", "__path__", "executeAt", "reverseRead"].includes(key)) this[key] = data[key];
+        }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         if (this.code instanceof Function) this.__compiled__ = this.code;
