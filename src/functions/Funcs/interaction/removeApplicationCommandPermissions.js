@@ -21,12 +21,14 @@ module.exports = async (d) => {
     if (guildID === "global") {
         d.client.application.commands.permissions.remove({
             command: id,
+            token: d.client.token,
             ...permissions,
         });
     } else {
         d.client.application.commands.permissions.remove({
             guild: guildID,
             command: id,
+            token: d.client.token,
             ...permissions,
         });
     }

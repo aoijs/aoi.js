@@ -1,4 +1,4 @@
-const { ApplicationCommandPermissionType } = require( "discord.js" );
+const { ApplicationCommandPermissionType } = require("discord.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -31,12 +31,14 @@ module.exports = async (d) => {
         d.client.application.commands.permissions.add({
             command: id,
             permissions,
+            token: d.client.token,
         });
     } else {
         d.client.application.commands.permissions.add({
             guild: guildID,
             command: id,
             permissions,
+            token: d.client.token,
         });
     }
 
