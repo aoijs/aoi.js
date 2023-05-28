@@ -2,7 +2,7 @@ name: Reporting Bug
 description: Report us the issue, and leave it to us! 🤗
 title: "Bug: "
 labels: "bug"
-assignees: "USERSATOSHI,Leref"
+assignees: "Leref"
 body:
   - type: markdown
     attributes:
@@ -46,11 +46,10 @@ body:
       label: Version of aoi.js
       description: What version of aoi.js are you using?
       options:
-        - v6.0.0
-        - v6.0.1
-        - v6.0.2
+        - v6.2.0
+        - v6.2.5
+        - v6.2.6
         - v6.0.3
-        - v6-dev 
     validations:
       required: true
       
