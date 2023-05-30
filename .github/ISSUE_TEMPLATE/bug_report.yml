@@ -46,11 +46,7 @@ body:
       label: Version of aoi.js
       description: What version of aoi.js are you using?
       options:
-        - v6.0.0
-        - v6.0.1
-        - v6.0.2
-        - v6.0.3
-        - v6-dev 
+       - v7.0.0
     validations:
       required: true
       
