@@ -149,5 +149,3 @@ export function parseStringObject(
         currentObj,
     );
 }
-export { StringObject };
-

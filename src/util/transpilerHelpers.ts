@@ -40,6 +40,12 @@ export function parseData(text: string) {
                 let e;
                 eval(`e = ${parseStringObject(text, so).solve()}`);
                 return e;
+            } else if (text.startsWith("[") && text.endsWith("]")) {
+                const so = new StringObject("[");
+                so.addEnd("]");
+                let e;
+                eval(`e = ${parseStringObject(text, so).solve()}`);
+                return e;
             } else return text;
         }
     }

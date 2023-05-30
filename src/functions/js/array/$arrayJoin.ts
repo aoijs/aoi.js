@@ -2,47 +2,45 @@ import { TranspilerError } from "../../../core/error.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import { escapeResult, escapeVars } from "../../../util/transpilerHelpers.js";
-export const $cloneObject: FunctionData = {
-    name: "$cloneObject",
+export const $arrayJoin: FunctionData = {
+    name: "$arrayJoin",
     brackets: true,
     optional: false,
-    type: "setter",
-    version: "7.0.0",
+    type: "getter",
     fields: [
         {
-            name: "name",
+            name: "array",
             type: "string",
             required: true,
         },
         {
-            name: "name",
+            name: "separator",
             type: "string",
-            required: true,
+            required: false,
         },
     ],
-    description: "clones an Object",
-    default: ["void", "void"],
-    returns: "void",
+    description: "Joins all elements of an array into a string.",
+    default: ["void", ", "],
+    returns: "string",
+    version: "7.0.0",
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
-        const [name, target] = data.splits;
+        const [name, separator = ", "] = data.splits;
+
         if (
-            !currentScope.objects[name] &&
+            !currentScope.variables.includes(name) &&
             !currentScope.name.startsWith("$try_") &&
             !currentScope.name.startsWith("$catch_")
-        ) {
+        )
             throw new TranspilerError(
-                `${data.name}: Invalid Object Name Provided`,
+                `${data.name}: Array ${name} does not exist`,
             );
-        }
-        currentScope.objects[target] = currentScope.objects[name];
-        const res = escapeResult(
-            `const ${escapeVars(target)} =  structuredClone(${escapeVars(name)});`,
-        );
+
+        const res = escapeResult(`${escapeVars(name)}.join(${separator})`);
         currentScope.update(res, data);
 
         return {
-            code: "",
+            code: res,
             scope,
         };
     },

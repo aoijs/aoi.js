@@ -59,7 +59,8 @@ export const $let: FunctionData = {
         if (
             typeof value === "string" &&
             value.includes(TranspilerCustoms.FS) &&
-            !value.includes(TranspilerCustoms.MFS)
+            !value.includes(TranspilerCustoms.MFS) &&
+            !(!value.split(TranspilerCustoms.FS)[0] && !value.split(TranspilerCustoms.FE)[1])
         ) {
             value = parseString(value);
         }

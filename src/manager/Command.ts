@@ -110,7 +110,7 @@ export class CommandManager {
         const box = boxen(
             `${Commands.map((cmd) => {
                 return `∷ ${chalk.cyanBright(cmd.loaded ? "Loaded" : "Failed")} ${chalk.greenBright(
-                    cmd,
+                    cmd.path,
                 )} ${chalk.redBright(cmd.loaded ? "" : cmd.reason)}`;
             }).join("\n")}
         `,

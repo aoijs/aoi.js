@@ -5,38 +5,38 @@ export function createStringAST(text: string) {
     let block = new Block(-1, true);
     let i = 0;
     let res = "";
-    const stack: number[] = [];
-    while (i <= text.length) {
-        if (res.includes("#FUNCTION_START#")) {
-            stack.push(i - 15);
-            res = text[i];
-        } else if (res.includes("#FUNCTION_END#")) {
-            const a = stack.pop();
-            if (!a) {
-                stack.push(i - 13);
-            }
-            res = text[i];
-        } else if(res.includes(TranspilerCustoms.MFS)) {
-            stack.push(i - TranspilerCustoms.MFS.length-1);
-            res = text[i];
-        } else if(res.includes(TranspilerCustoms.MFE)) {
-            const a = stack.pop();
-            if (!a) {
-                stack.push(i - TranspilerCustoms.MFE.length-1);
-            }
-            res = text[i];
-        }
-        else {
-            res += text[i];
-        }
-        i++;
-    }
-    if (stack.length) {
-        stack;
-        stack.forEach((x) => {
-            text = text.substring(0, x - 1) + text.slice(x + 15, text.length);
-        });
-    }
+    // const stack: number[] = [];
+    // while (i <= text.length) {
+    //     if (res.includes("#FUNCTION_START#")) {
+    //         stack.push(i - 15);
+    //         res = text[i];
+    //     } else if (res.includes("#FUNCTION_END#")) {
+    //         const a = stack.pop();
+    //         if (!a) {
+    //             stack.push(i - 13);
+    //         }
+    //         res = text[i];
+    //     } else if(res.includes(TranspilerCustoms.MFS)) {
+    //         stack.push(i - TranspilerCustoms.MFS.length-1);
+    //         res = text[i];
+    //     } else if(res.includes(TranspilerCustoms.MFE)) {
+    //         const a = stack.pop();
+    //         if (!a) {
+    //             stack.push(i - TranspilerCustoms.MFE.length-1);
+    //         }
+    //         res = text[i];
+    //     }
+    //     else {
+    //         res += text[i];
+    //     }
+    //     i++;
+    // }
+    // if (stack.length) {
+    //     stack;
+    //     stack.forEach((x) => {
+    //         text = text.substring(0, x - 1) + text.slice(x + 15, text.length);
+    //     });
+    // }
     i = 0;
     res = "";
     while (i <= text.length) {
@@ -47,12 +47,12 @@ export function createStringAST(text: string) {
             block.addBlock(nest);
             block = nest;
             block.add(text[i]);
-            res = "";
+            res = text[i] ?? "";
         } else if (res.includes("#FUNCTION_END#")) {
             block.text = block.text.replace("#FUNCTION_END#", "");
             block = block.parent ? block.parent : block;
             block.add(text[i] ?? "");
-            res = "";
+            res = text[i] ?? "";
         } else if(res.includes(TranspilerCustoms.MFS)) {
             const nest = new Block(block.nest.length, false, block);
             block.text = block.text.replace(TranspilerCustoms.MFS, "");
@@ -60,12 +60,12 @@ export function createStringAST(text: string) {
             block.addBlock(nest);
             block = nest;
             block.add(text[i]);
-            res = "";
+            res = text[i] ?? "";
         } else if(res.includes(TranspilerCustoms.MFE)) {
             block.text = block.text.replace(TranspilerCustoms.MFE, "");
             block = block.parent ? block.parent : block;
             block.add(text[i] ?? "");
-            res = "";
+            res = text[i] ?? "";
         }
         else {
             res += text[i];
