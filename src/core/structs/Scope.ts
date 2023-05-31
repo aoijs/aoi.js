@@ -136,7 +136,7 @@ export default class Scope {
         if (sendData.content.trim() !== "") {
             this.rest = this.replaceLast(
                 parseResult(removeMultiLineComments(this.rest.trim())),
-                sendData.content.replaceAll(TranspilerCustoms.NL,"\n").trim(),
+                sendData.content.replaceAll(TranspilerCustoms.NL, "\n").trim(),
                 "",
             );
         }
@@ -264,7 +264,7 @@ export default class Scope {
         if (data.type === "function") {
             this.rest = this.rest.replace(
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),
-                res,
+                res.replaceAll("$", "$$$$"),
             );
         } else if (data.type === "setter") {
             this.setters += res + "\n";
@@ -279,17 +279,17 @@ export default class Scope {
         } else if (data.type === "function_getter") {
             this.rest = this.rest.replace(
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),
-                res,
+                res.replaceAll("$", "$$$$"),
             );
         } else if (data.type === "getter") {
             this.rest = this.rest.replace(
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),
-                res,
+                res.replaceAll("$", "$$$$"),
             );
         } else if (data.type === "scope" || data.type === "scope_getter") {
             this.rest = this.rest.replace(
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),
-                res,
+                res.replaceAll("$", "$$$$"),
             );
             data.funcs = [];
         }

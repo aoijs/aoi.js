@@ -171,7 +171,7 @@ export function getFunctionData(
         ...FuncD,
     };
 }
-export const functionFinderRegex = /(\$[a-z]*)/gi;
+export const functionFinderRegex = /(\$[a-z]+)/gi;
 
 export function getFunctionList(code: string, functions: string[]) {
     const raws = code.match(functionFinderRegex);
@@ -224,13 +224,16 @@ export function ExecuteData(
             scope = result.scope;
             d = <funcData>result.data;
 
-            code = code.replace(d.total, result.code);
+            code = code.replace(d.total, result.code.replaceAll("$", "$$$$"));
             // .replace(d.total.replaceAll(";", "#FUNCTION_SEPARATOR#"), result.code);
             if (d.type === "scope_getter") {
                 d.total = removeFF(d.total);
                 scope[scope.length - 1].sendData.content = scope[
                     scope.length - 1
-                ].sendData.content.replace(d.total, result.code);
+                ].sendData.content.replace(
+                    d.total,
+                    result.code.replaceAll("$", "$$$$"),
+                );
             }
         } else {
             let executed: {
@@ -250,13 +253,18 @@ export function ExecuteData(
                 const oldtotal = d.total;
 
                 d.total = d.total
-                    .replace(d.inside ?? "", executed.code)
+                    .replace(
+                        d.inside ?? "",
+                        executed.code.replaceAll("$", "$$$$"),
+                    )
                     .replace(
                         d.inside?.replaceAll(TranspilerCustoms.FSEP, ";") ?? "",
-                        executed.code,
+                        executed.code.replaceAll("$", "$$$$"),
                     );
 
-                code = code.replace(oldtotal, d.total).replace(oldd, d.total);
+                code = code
+                    .replace(oldtotal, d.total.replaceAll("$", "$$$$"))
+                    .replace(oldd, d.total.replaceAll("$", "$$$$"));
 
                 d.inside = executed.code;
                 d.splits = d.inside.split(";");
@@ -264,15 +272,18 @@ export function ExecuteData(
                 const result = d.code(d, scope);
 
                 code = code
-                    .replace(d.total, result.code)
+                    .replace(d.total, result.code.replaceAll("$", "$$$$"))
                     // .replace(d.total.replaceAll(";", "#FUNCTION_SEPARATOR#"), result.code)
-                    .replace(oldd, result.code);
+                    .replace(oldd, result.code.replaceAll("$", "$$$$"));
 
                 if (d.type === "getter" || d.type === "function_getter") {
                     let oldcontent = scope[scope.length - 1].sendData.content;
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
-                    ].sendData.content.replace(d.total, result.code);
+                    ].sendData.content.replace(
+                        d.total,
+                        result.code.replaceAll("$", "$$$$"),
+                    );
                     if (
                         oldcontent === scope[scope.length - 1].sendData.content
                     ) {
@@ -280,20 +291,26 @@ export function ExecuteData(
                             scope.length - 1
                         ].sendData.content.replace(
                             d.total.replaceAll(";", TranspilerCustoms.FSEP),
-                            result.code,
+                            result.code.replaceAll("$", "$$$$"),
                         );
                         oldcontent = scope[scope.length - 1].sendData.content;
                     }
                     if (oldcontent === scope[scope.length - 1].sendData.content)
                         scope[scope.length - 1].sendData.content = scope[
                             scope.length - 1
-                        ].sendData.content.replace(oldd, result.code);
+                        ].sendData.content.replace(
+                            oldd,
+                            result.code.replaceAll("$", "$$$$"),
+                        );
                 }
             } else {
                 executed = d.code(d, scope);
                 scope = executed.scope;
 
-                code = code.replace(d.total, executed.code);
+                code = code.replace(
+                    d.total,
+                    executed.code.replaceAll("$", "$$$$"),
+                );
 
                 if (d.type === "getter" || d.type === "function_getter") {
                     const oldt = d.total;
@@ -301,11 +318,17 @@ export function ExecuteData(
                     d.total = removeFF(d.total);
                     scope[scope.length - 1].sendData.content = scope[
                         scope.length - 1
-                    ].sendData.content.replace(d.total, executed.code);
+                    ].sendData.content.replace(
+                        d.total,
+                        executed.code.replaceAll("$", "$$$$"),
+                    );
                     if (oldcontent === scope[scope.length - 1].sendData.content)
                         scope[scope.length - 1].sendData.content = scope[
                             scope.length - 1
-                        ].sendData.content.replace(oldt, executed.code);
+                        ].sendData.content.replace(
+                            oldt,
+                            executed.code.replaceAll("$", "$$$$"),
+                        );
                 }
             }
         }
