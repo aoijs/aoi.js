@@ -22,7 +22,9 @@ export default async function createProject(dir, options) {
         spinner.text = chalk.hex("#A64253")("Creating package.json...");
         await fs.promises.writeFile(
             path.join(projectDir, "package.json"),
-            "{}",
+            `{ 
+                ${options.esm ? "\"type\": \"module\"" : ""}
+            }`,
         );
         spinner.succeed(chalk.hex("#A64253")("Created package.json!"));
     }
@@ -31,45 +33,37 @@ export default async function createProject(dir, options) {
     if (options.music) packagesToInstall.push("@akarui/aoi.music");
     if (options.db) packagesToInstall.push("aoi.db");
     if (options.panel) packagesToInstall.push("@akarui/aoi.panel");
-    await promisify(exec)(`npm i ${packagesToInstall.join(" ")}`, {
+    const {stderr,stdout} = await promisify(exec)(`npm i ${packagesToInstall.join(" ")}`, {
         cwd: projectDir,
-    });
-
+    }); 
+    if (stderr) {
+        console.log(stderr);
+        process.exit(1);
+    }
+    console.log(stdout);
     spinner.succeed(chalk.hex("#A64253")("Installed dependencies!"));
 
     const spinner2 = ora(spinnerData);
     spinner2.text = chalk.hex("#A64253")("Creating project files...");
     const commandDir = path.join(projectDir, "commands");
     const voiceDir = path.join(projectDir, "voice");
-    const customFunctionDir = path.join(projectDir, "customFunctions");
+    const handler = path.join(projectDir, "handler");
 
     const spin3 = ora(spinnerData);
     // creating index.js
     spin3.text = chalk.hex("#A64253")("Creating index.js...");
-    if (!options.aoi)
-        await fs.promises.writeFile(
-            path.join(projectDir, "index.js"),
-            files.js["index.js"][options.esm ? "esm" : "cjs"],
-        );
-    else
-        await fs.promises.writeFile(
-            path.join(projectDir, "index.js"),
-            files.aoi["index.js"][options.esm ? "esm" : "cjs"],
-        );
+    await fs.promises.writeFile(
+        path.join(projectDir, "index.js"),
+        files[options.esm ? "esm" : "cjs"]["index.js"]
+    );
     spin3.succeed(chalk.hex("#A64253")("Created index.js!"));
 
     // creating config.js
     spin3.text = chalk.hex("#A64253")("Creating config.js...");
-    if (!options.aoi)
-        await fs.promises.writeFile(
-            path.join(projectDir, "config.js"),
-            files.js["config.js"][options.esm ? "esm" : "cjs"],
-        );
-    else
-        await fs.promises.writeFile(
-            path.join(projectDir, "config.js"),
-            files.aoi["config.js"][options.esm ? "esm" : "cjs"],
-        );
+    await fs.promises.writeFile(
+        path.join(projectDir, "config.js"),
+        files[options.esm ? "esm" : "cjs"]["config.js"],
+    );
     spin3.succeed(chalk.hex("#A64253")("Created config.js!"));
 
     //creating commands
@@ -77,17 +71,31 @@ export default async function createProject(dir, options) {
         await fs.promises.mkdir(commandDir);
         console.group(chalk.hex("#A64253")("∴ Created commands folder!"));
     }
-    for (const command of Object.keys(
-        options.aoi ? files.aoi.commands : files.js.commands,
-    )) {
-        await fs.promises.writeFile(
-            path.join(commandDir, command),
-            options.aoi
-                ? files.aoi.commands[command]
-                : files.js.commands[command][options.esm ? "esm" : "cjs"],
-        );
-        console.log(chalk.hex("#A64253")(`∷ Created ${command}!`));
+
+    await fs.promises.writeFile(
+        path.join(commandDir, options.aoi ? "command.template.aoi" : "command.template.js"),
+        options.aoi
+            ? files.aoi["commands/command.template.aoi"]
+            : files[options.esm ? "esm" : "cjs"]["commands/command.template.js"],
+    );
+    console.log(chalk.hex("#A64253")(`∷ Created ${
+        options.aoi ? "command.template.aoi" : "command.template.js"
+    }!`));
+
+    console.groupEnd();
+
+    //creating handler
+    spin3.text = chalk.hex("#A64253")("Creating handler...");
+    if (!fs.existsSync(handler)) {
+        await fs.promises.mkdir(handler);
+        console.group(chalk.hex("#A64253")("∴ Created handler folder!"));
     }
+
+    await fs.promises.writeFile(
+        path.join(handler, "index.js"),
+        options.aoi ? files.aoi[options.esm ? "esm" : "cjs"]["handler/index.aoi"] : files[options.esm ? "esm" : "cjs"]["handler/index.js"],
+    );
+    console.log(chalk.hex("#A64253")("∷ Created index.js!"));
     console.groupEnd();
 
     spinner2.succeed(chalk.hex("#A64253")("Created project files!"));

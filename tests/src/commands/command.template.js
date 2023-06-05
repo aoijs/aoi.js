@@ -1,8 +1,7 @@
 
-/*
- *   export default {
- *      name: "CommandName",
- *      type: "CommandType",
- *      aliases?: ["CommandAlias"],
- *      code: "CommandCode" | AsyncFunction,
- *   }
+export default {
+    name: "CommandName",
+    aliases: ["CommandAliases"], //optional
+    type: "CommandType", 
+    code: `CommandCode`
+};

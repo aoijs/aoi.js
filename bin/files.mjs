@@ -32,53 +32,21 @@
 */
 
 const Structure = {
-    js: {
-        "index.js": {
-            cjs: `
-// imports
-const { AoiClient } = require("aoi.js");
-const dotenv = require("dotenv");
-dotenv.config();
+    esm: {
+        "index.js": `
+import { Client } from "aoi.js";
+import config from "./config.js";
+import { commandHandler } from "./handler/index.js";
 
-const Config = require("./config.js");
-const Handler = require("./handler/index.js");
-          
-// create a new client
-const bot = new AoiClient(Config.Client);
-
-// Handler
-Handler(bot);
-`,
-            esm: `
-// imports
-import { AoiClient } from "aoi.js";
-import Config from "./config.js";
-import { Commands as CommandHandler,Functions as FunctionHandler }  from "./handler/index.js";
-
-// create a new client
-const bot = new AoiClient(Config.Client);
-
-// Handler
-await FunctionHandler(bot);
-await CommandHandler(bot);
-            `,
-        },
-        "config.js": {
-            cjs: `
-const { Intents } = require("aoiluna");
-const { defaultCacheConfig } = require("aoi.js");
-module.exports = {
-    Client: {
-        token: process.env.TOKEN,
-        prefixes: "!",
-        intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
-        events: ['MessageCreate','Ready'],
-        caches: defaultCacheConfig(),
-    },
-};`,
-            esm: `
+const bot = new Client( config.Client );
+await commandHandler( bot );
+        `,
+        "config.js": `
 import { Intents } from "aoiluna";
 import { defaultCacheConfig } from "aoi.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default {
     Client: {
@@ -89,102 +57,92 @@ export default {
         caches: defaultCacheConfig(),
     },
 };`,
-        },
-        commands: {
-            "command.template.js": {
-                cjs: `
-/*
- *   module.exports = {
- *      name: "CommandName",
- *      type: "CommandType",
- *      aliases?: ["CommandAlias"],
- *      code: "CommandCode" | AsyncFunction,
- *   };
-*/`,
-                esm: `
-/*
- *   export default {
- *      name: "CommandName",
- *      type: "CommandType",
- *      aliases?: ["CommandAlias"],
- *      code: "CommandCode" | AsyncFunction,
- *   };
- */`,
-            },
-        },
+        "handler/index.js": `
+const commandHandler = async (bot) => {
+    await bot.managers.commands.load({ path: "./commands" });
+}`,
+        "commands/command.template.js": `
+export default {
+    name: "CommandName",
+    aliases: ["CommandAliases"], //optional
+    type: "CommandType", 
+    code: \`CommandCode\`
+};
+`,
+    },
+    cjs: {
+        "index.js": `
+const { Client } = require("aoi.js");
+const config = require("./config.js");
+const { commandHandler } = require("./handler");
+
+const bot = new Client( config.Client );
+
+(async () => {
+    await commandHandler( bot );
+})();
+`,
+        "config.js": `
+const { Intents } = require("aoiluna");
+const { defaultCacheConfig } = require("aoi.js");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+module.exports = {
+    Client: {
+        token: process.env.TOKEN,
+        prefixes: "!",
+        intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
+        events: ['MessageCreate','Ready'],
+        caches: defaultCacheConfig(),
+    },
+};`,
+        "handler/index.js": `
+const commandHandler = async (bot) => {
+    await bot.managers.commands.load({ path: "./commands" });
+};
+
+module.exports = {
+    commandHandler,
+};`,
+        "commands/command.template.js": `
+module.exports = {
+    name: "CommandName",
+    aliases: ["CommandAliases"], //optional
+    type: "CommandType",
+    code: \`CommandCode\`
+};
+`,
     },
     aoi: {
-        "index.js": {
-            cjs: `
-// imports
-const { AoiClient } = require("aoi.js");
-const dotenv = require("dotenv");
-dotenv.config();
+        esm: {
+            "handler/index.js": `
+const commandHandler = async (bot) => {
+     await bot.managers.commands.load({ path: "./commands", usingAoi: true });
+};
 
-const Config = require("./config.js");
-const Handler = require("./handler/index.js");
-
-            
-// create a new client
-const bot = new AoiClient(Config.Client);
-
-// Handler
-Handler(bot);
-            `,
-            esm: `
-// imports
-import { AoiClient } from "aoi.js";
-import Config from "./config.js";
-import { Commands as CommandHandler,Functions as FunctionHandler } from "./handler/index.js";
-
-// create a new client
-const bot = new AoiClient(Config.Client);
-
-// Handler
-await CommandHandler(bot);
-await FunctionHandler(bot);
+export {
+    commandHandler,
+}
             `,
         },
-        "config.js": {
-            cjs: `
-const { Intents } = require("aoiluna");
-const { defaultCacheConfig } = require("aoi.js");
-module.exports = {
-    Client: {
-        token: process.env.TOKEN,
-        prefixes: "!",
-        intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
-        events: ['MessageCreate','Ready'],
-        caches: defaultCacheConfig(),
-    },
-};`,
-            esm: `
-import { Intents } from "aoiluna";
-import { defaultCacheConfig } from "aoi.js";
-
-export default {
-    Client: {
-        token: process.env.TOKEN,
-        prefixes: "!",
-        intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
-        events: ['MessageCreate','Ready'],
-        caches: defaultCacheConfig(),
-    },
-};`,
+        cjs: {
+            "handler/index.js": `
+        const commandHandler = async (bot) => {
+            await bot.managers.commands.load({ path: "./commands", usingAoi: true });
+        };
+        
+        module.exports = {
+            commandHandler,
+        };`,
         },
-        commands: {
-            "command.template.aoi": `
-/*
- *  [exportCommand: CommandType] {
- ?      name: CommandName
- ?      aliases: [CommandAlias]
- ?      code: @{    
- ?          code
- ?      }
- *  }
-*/
-            `,
-        },
+        "commands/command.template.aoi": `
+[exportCommand: CommandType] {
+    name: CommandName
+    aliases: CommandAliases
+    code: CommandCode
+}`,
     },
 };
 

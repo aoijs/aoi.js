@@ -1,6 +1,9 @@
 
 import { Intents } from "aoiluna";
 import { defaultCacheConfig } from "aoi.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default {
     Client: {

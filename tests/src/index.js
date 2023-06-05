@@ -1,12 +1,8 @@
 
-// imports
-import { AoiClient } from "aoi.js";
-import Config from "./config.js";
-import { Commands as CommandHandler,Functions as FunctionHandler }  from "./handler/index.js";
+import { Client } from "aoi.js";
+import config from "./config.js";
+import { commandHandler } from "./handler/index.js";
 
-// create a new client
-const bot = new AoiClient(Config.Client);
-
-// Handler
-await FunctionHandler(bot);
-await CommandHandler(bot);
+const bot = new Client( config.Client );
+await commandHandler( bot );
+        
