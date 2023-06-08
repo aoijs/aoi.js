@@ -36,10 +36,10 @@ const Structure = {
         "index.js": `
 import { Client } from "aoi.js";
 import config from "./config.js";
-import { commandHandler } from "./handler/index.js";
 
 const bot = new Client( config.Client );
-await commandHandler( bot );
+
+await bot.managers.commands.load({ path: "./commands" });
         `,
         "config.js": `
 import { Intents } from "aoiluna";
@@ -57,10 +57,6 @@ export default {
         caches: defaultCacheConfig(),
     },
 };`,
-        "handler/index.js": `
-const commandHandler = async (bot) => {
-    await bot.managers.commands.load({ path: "./commands" });
-}`,
         "commands/command.template.js": `
 export default {
     name: "CommandName",
@@ -74,12 +70,11 @@ export default {
         "index.js": `
 const { Client } = require("aoi.js");
 const config = require("./config.js");
-const { commandHandler } = require("./handler");
 
 const bot = new Client( config.Client );
 
 (async () => {
-    await commandHandler( bot );
+    await bot.managers.commands.load({ path: "./commands" });
 })();
 `,
         "config.js": `
@@ -98,14 +93,6 @@ module.exports = {
         caches: defaultCacheConfig(),
     },
 };`,
-        "handler/index.js": `
-const commandHandler = async (bot) => {
-    await bot.managers.commands.load({ path: "./commands" });
-};
-
-module.exports = {
-    commandHandler,
-};`,
         "commands/command.template.js": `
 module.exports = {
     name: "CommandName",
@@ -117,25 +104,26 @@ module.exports = {
     },
     aoi: {
         esm: {
-            "handler/index.js": `
-const commandHandler = async (bot) => {
-     await bot.managers.commands.load({ path: "./commands", usingAoi: true });
-};
+            "index.js": `
+import { Client } from "aoi.js";
+import config from "./config.js";
 
-export {
-    commandHandler,
-}
-            `,
+const bot = new Client( config.Client );
+
+await bot.managers.commands.load({ path: "./commands", usingAoi: true });
+        `,
         },
         cjs: {
-            "handler/index.js": `
-        const commandHandler = async (bot) => {
-            await bot.managers.commands.load({ path: "./commands", usingAoi: true });
-        };
-        
-        module.exports = {
-            commandHandler,
-        };`,
+            "index.js": `
+const { Client } = require("aoi.js");
+const config = require("./config.js");
+
+const bot = new Client( config.Client );
+
+(async () => {
+    await bot.managers.commands.load({ path: "./commands", usingAoi: true });
+})();
+`,
         },
         "commands/command.template.aoi": `
 [exportCommand: CommandType] {
