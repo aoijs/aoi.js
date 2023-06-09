@@ -455,7 +455,7 @@ const Interpreter = async (
                                             client,
                                             channel,
                                             msg.data ?? msg,
-                                            msg.aoiOptions,
+                                            msg.options,
                                             {
                                                 channel: channel,
                                                 message: message,
