@@ -39,7 +39,7 @@ yarn add aoi.js
 ```javascript
 // imports
 const { AoiClient,defaultCacheConfig } = require("aoi.js");
-const { Intents } = require("aoi.luna");
+const { Intents } = require("aoiluna");
 
 // create a new client
 const bot = new AoiClient({
@@ -51,11 +51,9 @@ const bot = new AoiClient({
 })
 
 // create a command
-bot.cmds.add({
+bot.command({
   name: "ping",
   code: `Pong! $pingms`
-  type: "basic",
-  
 })
 ```
 
