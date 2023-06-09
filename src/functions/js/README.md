@@ -4,6 +4,20 @@
 
 ```mermaid
 graph RL;
+$arrayAt --> array;
+$arrayConcat --> array;
+$arrayCreate --> array;
+$arrayEvery --> array;
+$arrayFilter --> array;
+$arrayFind --> array;
+$arrayForEach --> array;
+$arrayIncludes --> array;
+$arrayIndexOf --> array;
+$arrayJoin --> array;
+$arrayLastIndexOf --> array;
+$arrayLength --> array;
+$arrayMap --> array;
+$arrayPop --> array;
 $and --> conditions;
 $case --> conditions;
 $checkCondition --> conditions;
@@ -39,6 +53,7 @@ $let --> misc;
 $log --> misc;
 $passData --> misc;
 $try --> misc;
+$useComponent --> misc;
 $addObjectProperty --> object;
 $cloneObject --> object;
 $createObject --> object;
@@ -57,6 +72,7 @@ $toString --> string;
 
 ## Divisions
 
+ - `array`: Contains functions related to array
  - `conditions`: Contains functions related to conditions
  - `loops`: Contains functions related to loops
  - `maths`: Contains functions related to maths

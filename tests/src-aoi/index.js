@@ -5,5 +5,5 @@ const config = require("./config.js");
 const bot = new Client( config.Client );
 
 (async () => {
-    await bot.managers.commands.load({ path: "./commands" });
+    await bot.managers.commands.load({ path: "./commands", usingAoi: true });
 })();

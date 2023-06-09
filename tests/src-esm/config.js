@@ -1,11 +1,11 @@
 
-const { Intents } = require("aoiluna");
-const { defaultCacheConfig } = require("aoi.js");
-const dotenv = require("dotenv");
+import { Intents } from "aoiluna";
+import { defaultCacheConfig } from "aoi.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-module.exports = {
+export default {
     Client: {
         token: process.env.TOKEN,
         prefixes: "!",

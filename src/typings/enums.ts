@@ -24,3 +24,7 @@ export enum BundlerCustoms  {
     RB = "#RIGHT_BRACKET#",
     EJS = "#EMBEDDED_JS#",
 }
+
+export enum AoiClientEvents {
+    Error = "error",
+}

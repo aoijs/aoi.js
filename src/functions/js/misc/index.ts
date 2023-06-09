@@ -10,3 +10,4 @@ export * from "./$break.js";
 export * from "./$try.js";
 export * from "./$catch.js";
 export * from "./$finally.js";
+export * from "./$useComponent.js";

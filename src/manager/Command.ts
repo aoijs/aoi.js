@@ -7,26 +7,38 @@ import { AoiClient, Bundler } from "../index.js";
 import Path from "path";
 
 export class CommandManager {
-    basicCommand: Group<string, Command> = new Group<string, Command>(Infinity);
-    slashCommand: Group<string, Command> = new Group<string, Command>(Infinity);
+    basic: Group<number, Command> = new Group<number, Command>(Infinity);
+    interaction: Group<number, Command> = new Group<number, Command>(Infinity);
+    ready: Group<number, Command> = new Group<number, Command>(Infinity);
+    debug: Group<number, Command> = new Group<number, Command>(Infinity);
+    component: Group<string, Command> = new Group<string, Command>(Infinity);
     #client: AoiClient;
     constructor(client: AoiClient) {
         this.#client = client;
     }
-
+    isValidType(type: string) {
+        return ["basic", "interaction", "ready", "debug"].includes(type);
+    }
+    get types() {
+        return ["basic", "interaction", "ready", "debug"];
+    }
     add(command: Optional<CommandOptions, "__path__">) {
         if (!command.name) throw new Error("Command name is required");
         if (!command.type) throw new Error("Command type is required");
         if (!command.__path__) command.__path__ = "root";
         const cmd = new Command(command as CommandOptions, this.#client);
-        if (cmd.type === "basic") this.basicCommand.set(cmd.name, cmd);
-        else if (cmd.type === "slash") this.slashCommand.set(cmd.name, cmd);
+        if (this.isValidType(command.type) && command.type !== "component")
+            this[command.type].set(this[command.type].size, cmd);
         else {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            throw new Error("Invalid command type provided", {
-                ...command,
-            });
+            if (command.type === "component")
+                this.component.set(command.name, cmd);
+            else {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                throw new Error("Invalid command type provided", {
+                    ...command,
+                });
+            }
         }
     }
 
@@ -43,7 +55,8 @@ export class CommandManager {
         const chalk = (await import("chalk")).default;
         const boxen = (await import("boxen")).default;
         const stats = await fs.stat(path);
-        const Commands: {path:string,loaded:boolean,reason?:string}[] = [];
+        const Commands: { path: string; loaded: boolean; reason?: string }[] =
+            [];
         if (!usingAoi) {
             if (stats.isDirectory()) {
                 const files = await fs.readdir(path);
@@ -72,10 +85,17 @@ export class CommandManager {
                                 this.addMany(command.default);
                             } else this.add(command.default);
 
-                            Commands.push({path:<string>filePath.split("/").pop(),loaded:true});
+                            Commands.push({
+                                path: <string>filePath.split("/").pop(),
+                                loaded: true,
+                            });
                         } catch (e) {
                             /* empty */
-                            Commands.push({path:<string>filePath.split("/").pop(),loaded:false,reason:e as string});
+                            Commands.push({
+                                path: <string>filePath.split("/").pop(),
+                                loaded: false,
+                                reason: e as string,
+                            });
                         }
                     }
                 }
@@ -94,10 +114,17 @@ export class CommandManager {
                             const cmd = Bundler(command).command;
                             cmd.__path__ = filePath;
                             this.add(cmd as unknown as CommandOptions);
-                            Commands.push({path:<string>filePath.split("/").pop(),loaded:true});
+                            Commands.push({
+                                path: <string>filePath.split("/").pop(),
+                                loaded: true,
+                            });
                         } catch (e) {
                             /* empty */
-                            Commands.push({path:<string>filePath.split("/").pop(),loaded:false,reason:e as string});
+                            Commands.push({
+                                path: <string>filePath.split("/").pop(),
+                                loaded: false,
+                                reason: e as string,
+                            });
                         }
                     }
                     // else if(stats.isFile() && file.endsWith(".aoi") && !file.endsWith(".template.aoi")) {
@@ -109,9 +136,11 @@ export class CommandManager {
         }
         const box = boxen(
             `${Commands.map((cmd) => {
-                return `∷ ${chalk.cyanBright(cmd.loaded ? "Loaded" : "Failed")} ${chalk.greenBright(
-                    cmd.path,
-                )} ${chalk.redBright(cmd.loaded ? "" : cmd.reason)}`;
+                return `∷ ${chalk.cyanBright(
+                    cmd.loaded ? "Loaded" : "Failed",
+                )} ${chalk.greenBright(cmd.path)} ${chalk.redBright(
+                    cmd.loaded ? "" : cmd.reason,
+                )}`;
             }).join("\n")}
         `,
             {
@@ -123,7 +152,7 @@ export class CommandManager {
                 textAlignment: "left",
                 backgroundColor: "black",
                 width: 100,
-                padding:1,
+                padding: 1,
                 dimBorder: true,
                 float: "center",
             },

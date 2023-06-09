@@ -11,6 +11,7 @@ $clientToken --> client;
 $ping --> client;
 $guildId --> guild;
 $guildName --> guild;
+$interactionData --> interaction;
 $message --> message;
 $eval --> misc;
 $authorAvatar --> user;
@@ -28,6 +29,7 @@ $userTag --> user;
 
  - `client`: Contains functions related to client
  - `guild`: Contains functions related to guild
+ - `interaction`: Contains functions related to interaction
  - `message`: Contains functions related to message
  - `misc`: Contains functions related to misc
  - `user`: Contains functions related to user
