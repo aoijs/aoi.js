@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     const [channelID = d.channel?.id, response = "{mention} ({type}):\nAllowed Perms: {allow}\nDenied Perms: {deny}", sep = " , "] = data.inside.splits;
 
-    const channel = await d.util.getChannel(d, channelID);
+    const channel = await d.util.getChannel(d, channelID,true);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
     let overwrites = [...channel.permissionOverwrites.cache.values()];
