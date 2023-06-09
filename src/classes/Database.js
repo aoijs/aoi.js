@@ -65,7 +65,8 @@ class Database {
 class AoijsAPI extends Database {
   constructor(module, options = {}, db = {}, extraOptions = {}) {
     super(module, options, db.promisify);
-    this.type = db.type || "default";
+    this.type = db.type || "aoi.db";
+    if(this.type === "default") this.type = "aoi.db";
     this.extraOptions = extraOptions;
     this.createTable(this.type);
   }
@@ -106,7 +107,7 @@ class AoijsAPI extends Database {
     }
   }
   async set(table, name, id, value) {
-    if (this.type === "aoi.db") {
+    if (this.type === "aoi.db" ) {
       if (this.extraOptions.dbType === "KeyValue") {
 
         await this.db.set(table, id ? `${name}_${id}` : name, { value });
