@@ -12,6 +12,7 @@ module.exports = async (d) => {
         name,
         description,
         defaultPermission = "true",
+        setNSFW = "false",
         type = "slash",
         ...opts
     ] = inside.splits;
@@ -61,6 +62,7 @@ module.exports = async (d) => {
                 name: name,
                 type,
                 description: description?.addBrackets(),
+                nsfw: setNSFW === "false",
                 defaultMemberPermission: defaultPermission === "true" || defaultPermission === "true",
                 options,
             },
