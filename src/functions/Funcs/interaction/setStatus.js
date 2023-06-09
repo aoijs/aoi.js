@@ -11,7 +11,7 @@ module.exports = (d) => {
             activities: [
                 {
                     name: name.addBrackets(),
-                    type,
+                    type: type === "PLAYING" ? 0 : type === "STREAMING" ? 1 : type === "LISTENING" ? 2 : type === "WATCHING" ? 3 : type === "COMPETING" ? 5 : 0,
                     url: url?.addBrackets(),
                 },
             ],

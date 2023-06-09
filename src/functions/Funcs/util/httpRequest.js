@@ -7,8 +7,8 @@ module.exports = async (d) => {
     let [url, method = 'get', body = '', property, error = 'default', ...header] =
         data.inside.splits;
 
-    body = body?.trim() === '' ? undefined : JSON.parse(body);
-
+    body = body?.trim() === '' ? undefined : body
+    console.log(body);
     let headers = {};
     if (header.length === 1) {
         try {
@@ -36,8 +36,8 @@ module.exports = async (d) => {
 
         const responseBody = await response.text();
         data.result = property
-            ? JSON.parse(responseBody)?.[property]
-            : JSON.stringify(JSON.parse(responseBody), null, 2);
+            ? eval(`JSON.parse(responseBody)?.${property}`)
+            : responseBody;
     } catch (error) {
         console.error(error);
         if (error === 'default' || !error) {

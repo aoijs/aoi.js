@@ -1,12 +1,12 @@
 const Interpreter = require("../../interpreter.js");
-module.exports = async (dmsg, client) => {
+module.exports = async (dmsg, dchannel, client) => {
     const d = {
-        guild: dmsg.guild,
-        channel: dmsg.channel,
+        guild: dchannel.guild,
+        channel: dchannel,
         client: dmsg.client,
     };
     let chan;
-    for (const cmd of client.cmd.messageDelete.allValues()) {
+    for (const cmd of client.cmd.messageDeleteBulk.allValues()) {
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
                 client,
@@ -17,7 +17,7 @@ module.exports = async (dmsg, client) => {
                 true,
             );
             let channel = client.channels.cache.get(id?.code);
-            if (!channel) channel = dmsg.first().channel;
+            if (!channel) channel = dchannel;
             chan = channel;
         } else {
             chan = cmd.channel;
