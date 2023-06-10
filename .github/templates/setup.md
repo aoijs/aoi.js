@@ -1,6 +1,6 @@
 # Setup 
 
-> * After installing aoi.js open your terminal and type
+> * After cloning the project do `npm i -g` to install bin files then exeute following cmd in terminal
 >
 > ```bash
 > npx aoijs -n 
