@@ -1,7 +1,13 @@
-import { Interaction, InteractionTypes, Snowflake } from "aoiluna";
+import { GatewayEventNames, Interaction, InteractionTypes, Snowflake } from "aoiluna";
 import { AoiClient } from "../structures/AoiClient.js";
 import { isAutoFetchDataEnabled } from "../util/DapiHelper.js";
 import { AoiClientEvents } from "../typings/enums.js";
+
+export function onInteraction(client: AoiClient) {
+    client.client.on(GatewayEventNames.InteractionCreate, async (interaction) => {
+        await interactionCreate(interaction, client);
+    });
+}
 
 export async function interactionCreate(
     interaction: Interaction,

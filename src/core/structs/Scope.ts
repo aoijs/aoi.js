@@ -60,7 +60,7 @@ export default class Scope {
         this.variables.push(...scopeVars);
     }
     addEmbeds(embeds: unknown[]) {
-        this.embeds = [...this.embeds, ...embeds];
+        this.embeds.push(...embeds);
     }
     addFunction(func: string) {
         this.functions += func + " \n";
