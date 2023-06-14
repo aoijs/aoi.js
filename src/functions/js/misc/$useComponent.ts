@@ -1,4 +1,4 @@
-import { StringObject, parseStringObject } from "../../..";
+import { StringObject, parseStringObject } from "../../../index.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
