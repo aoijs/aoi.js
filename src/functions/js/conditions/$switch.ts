@@ -57,7 +57,7 @@ export const $switch: FunctionData = {
 
         if ( variableFunctionList.length )
         {
-            Execvariable = Transpiler( variable, {
+            Execvariable = Transpiler(variable, {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
@@ -66,7 +66,8 @@ export const $switch: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
-            } ).code;
+                client: currentScope.client,
+            }).code;
         }
         else
         {
@@ -77,6 +78,7 @@ export const $switch: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -97,6 +99,7 @@ export const $switch: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
+                client: currentScope.client,
                 parsedStringOnly: true,
             });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";

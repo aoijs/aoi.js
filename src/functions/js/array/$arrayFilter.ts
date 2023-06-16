@@ -56,6 +56,7 @@ export const $arrayFilter: FunctionData = {
                     objects: currentScope.objects,
                     env: [...currentScope.env, "array_element"],
                 },
+                client: currentScope.client,
             });
             currentScope.functions +=
                 executedCondition.scope[0].functions + "\n";

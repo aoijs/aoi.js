@@ -107,6 +107,7 @@ export const $loop: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
+                client: currentScope.client,
             });
         } else {
             executedCode = code.join(";");

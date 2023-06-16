@@ -59,6 +59,7 @@ export const $elseIf: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                 },
+                client: currentScope.client,
             });
             currentScope.functions +=
                 executedCondition.scope[0].functions + "\n";
@@ -72,6 +73,7 @@ export const $elseIf: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -92,6 +94,7 @@ export const $elseIf: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                 },
+                client: currentScope.client,
             });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
             newscope.packages = executedErrorMsg.scope[0].packages + "\n";

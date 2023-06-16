@@ -54,6 +54,7 @@ export const $arrayMap: FunctionData = {
                     objects: currentScope.objects,
                     env: [...currentScope.env, "array_element"],
                 },
+                client: currentScope.client,
             });
             currentScope.functions += executedCode.scope[0].functions + "\n";
             currentScope.packages += executedCode.scope[0].packages;

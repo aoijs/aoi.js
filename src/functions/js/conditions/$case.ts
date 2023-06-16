@@ -57,7 +57,7 @@ export const $case: FunctionData = {
         let exeCaseValue,parsedCase;
         if ( caseFunctionList.length )
         {
-            exeCaseValue = Transpiler( caseValue, {
+            exeCaseValue = Transpiler(caseValue, {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
@@ -65,7 +65,8 @@ export const $case: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
-            } );
+                client: currentScope.client,
+            });
             currentScope.functions += exeCaseValue.scope[ 0 ].functions + "\n";
             currentScope.packages += exeCaseValue.scope[ 0 ].packages;
             exeCaseValue = exeCaseValue.code;
@@ -82,6 +83,7 @@ export const $case: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -102,6 +104,7 @@ export const $case: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
+                client: currentScope.client,
                 minify: true,
             });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";

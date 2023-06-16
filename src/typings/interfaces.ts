@@ -1,5 +1,5 @@
 import  StringObject  from "../core/structs/StringObject.js";
-import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions } from "aoiluna";
+import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions, Snowflake } from "aoiluna";
 export interface TranspilerOptions {
     customFunctions?: Record<string, FunctionData>;
     sendMessage: boolean;
@@ -12,14 +12,16 @@ export interface TranspilerOptions {
         env?: string[];
         objects?: Record<string, StringObject>;
         embedJs?:string[];
+        useChannel?: Snowflake | string;
     };
     reverse?: boolean;
     minify?: boolean;
     parsedStringOnly?: boolean;
+    client: AoiClient;
 }
 
 import  Scope  from "../core/structs/Scope.js";
-import { AsyncFunction, CommandTypes, autoFetchDataTypes } from "./types.js";
+import { AsyncFunction, CommandTypes, PluginType, autoFetchDataTypes } from "./types.js";
 import { AoiClient } from "../index.js";
 
 export interface FunctionData {
@@ -120,4 +122,18 @@ export interface TranspiledFuncData
     client: Client;
     bot: AoiClient;
     [ key: string ]: unknown;
+}
+
+export interface Plugin {
+    name: string;
+    func: (...args: unknown[]) => unknown;
+}
+
+export interface Plugins {
+    type: PluginType;
+    plugins: Plugin[];
+}
+
+export interface PluginOptions {
+    plugins: Plugins[];
 }

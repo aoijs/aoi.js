@@ -26,6 +26,7 @@ export const $catch: FunctionData = {
         const hash = Math.floor(Math.random() * 1000000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             parseResult(code),
             true,
@@ -37,18 +38,16 @@ export const $catch: FunctionData = {
             codeexe = code;
         } else
         {
-            codeexe = Transpiler(
-                code,
-                {
-                    sendMessage: true,
-                    scopeData: {
-                        variables: currentScope.variables,
-                        embeds: currentScope.embeds,
-                        name: newscope.name,
-                        env: [ "catch_error" ],
-                    },
-                }
-            );
+            codeexe = Transpiler(code, {
+                sendMessage: true,
+                scopeData: {
+                    variables: currentScope.variables,
+                    embeds: currentScope.embeds,
+                    name: newscope.name,
+                    env: ["catch_error"],
+                },
+                client: currentScope.client,
+            });
             newscope.functions = codeexe.scope[ 0 ].functions + "\n";
             newscope.packages = codeexe.scope[ 0 ].packages + "\n";
             newscope.setters = codeexe.scope[ 0 ].setters + "\n";

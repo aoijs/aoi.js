@@ -44,14 +44,16 @@ export const $if: FunctionData = {
         );
         let executedCondition;
         if (conditionFunctionList.length) {
-            executedCondition = Transpiler( condition, {
-                sendMessage: false, scopeData: {
+            executedCondition = Transpiler(condition, {
+                sendMessage: false,
+                scopeData: {
                     variables: currentScope.variables,
                     name: currentScope.name,
                     objects: currentScope.objects,
                     env: currentScope.env,
-                }
-            } );
+                },
+                client: currentScope.client,
+            });
             currentScope.functions +=
                 executedCondition.scope[0].functions + "\n";
             currentScope.packages += executedCondition.scope[0].packages;
@@ -66,6 +68,7 @@ export const $if: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -77,14 +80,17 @@ export const $if: FunctionData = {
             Object.keys(funcs),
         );
         if (errorMsgFunctionList.length) {
-            executedErrorMsg = Transpiler(errorMsg.join(";"), {sendMessage:true, scopeData: {
-                variables: currentScope.variables,
-                embeds: currentScope.embeds,
-                name: currentScope.name,
-                objects: currentScope.objects,
-                env: currentScope.env,
-            }
-            } );
+            executedErrorMsg = Transpiler(errorMsg.join(";"), {
+                sendMessage: true,
+                scopeData: {
+                    variables: currentScope.variables,
+                    embeds: currentScope.embeds,
+                    name: currentScope.name,
+                    objects: currentScope.objects,
+                    env: currentScope.env,
+                },
+                client: currentScope.client,
+            });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
             newscope.packages = executedErrorMsg.scope[0].packages + "\n";
             newscope.setters = executedErrorMsg.scope[0].setters + "\n";

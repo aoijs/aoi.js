@@ -15,21 +15,13 @@ export async function interactionCreate(
 ) {
     const cmdName = getCommandName(interaction);
     if (!cmdName) return;
-
-    const commands = client.managers.commands.interaction.filter(
-        (x) => x.name === cmdName,
-    );
-    if (!commands.size) return;
-
-    for (const cmd of commands.values()) {
-        await cmd
-            .__compiled__({
-                interaction,
-                client: client.client,
-                bot: client,
-                command: cmd,
-                message: interaction.message,
-                channel:
+    await client.managers.commands.exec({
+        type: "interaction",
+        data: {interaction,
+            client: client.client,
+            bot: client,
+            message: interaction.message,
+            channel:
                     interaction.channel ??
                     client.cache?.channels?.get(interaction.channelId) ??
                     isAutoFetchDataEnabled("channel", client)
@@ -37,21 +29,23 @@ export async function interactionCreate(
                               interaction.channelId as Snowflake,
                         )
                         : { id: interaction.channelId, fetched: false },
-                guild:
+            guild:
                     client.cache?.guilds?.get(interaction.guildId) ??
                     isAutoFetchDataEnabled("guild", client)
                         ? await client.client.getGuild(
                               interaction.guildId as Snowflake,
                         )
                         : { id: interaction.guildId, fetched: false },
-                author: interaction.user,
-                member: interaction.member,
-            })
-            .catch((e) => {
-                if (e.component && !e.success) return;
-                else client.emit(AoiClientEvents.Error, e);
-            });
-    }
+            author: interaction.user,
+            member: interaction.member,
+        },
+        filter: (cmd) => cmd.name === cmdName,
+    })
+
+        .catch((e) => {
+            if (e.component && !e.success) return;
+            else client.emit(AoiClientEvents.Error, e);
+        });
 }
 
 function getCommandName(interaction: Interaction) {

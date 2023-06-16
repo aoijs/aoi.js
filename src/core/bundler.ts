@@ -1,8 +1,9 @@
 import * as Transpiler  from "./transpiler.js";
 import { JsonXYaml } from "./structs/JsonXYaml.js";
 import { BundlerCustoms } from "../typings/enums.js";
+import { AoiClient } from "../index.js";
 
-export function Bundler(code: string) {
+export function Bundler(code: string,client:AoiClient) {
     const embedJs = parseEmbedJs(code);
     for (const ejs of embedJs) {
         code = code.replace(`\${${ejs}}`, BundlerCustoms.EJS);
@@ -16,6 +17,7 @@ export function Bundler(code: string) {
         sendMessage: true,
         minify: true,
         reverse: <boolean>command.reverse ?? false,
+        client,
     }).func;
 
     return  {

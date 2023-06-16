@@ -36,6 +36,7 @@ export const $else: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -47,16 +48,17 @@ export const $else: FunctionData = {
             Object.keys(funcs),
         );
         if (errorMsgFunctionList.length) {
-            executedErrorMsg = Transpiler( errorMsg.join( ";" ), {
-                sendMessage: true, scopeData: {
+            executedErrorMsg = Transpiler(errorMsg.join(";"), {
+                sendMessage: true,
+                scopeData: {
                     variables: currentScope.variables,
                     embeds: currentScope.embeds,
                     env: currentScope.env,
                     name: currentScope.name,
                     objects: currentScope.objects,
-                }
-
-            } );
+                },
+                client: currentScope.client,
+            });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
             newscope.packages = executedErrorMsg.scope[0].packages + "\n";
             newscope.setters = executedErrorMsg.scope[0].setters + "\n";

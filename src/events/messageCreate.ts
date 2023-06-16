@@ -19,14 +19,12 @@ export async function messageCreate(message: Message, client: AoiClient) {
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const cmd = args.shift()?.toLowerCase();
     if (!cmd) return;
-    const commands = client.managers.commands.basic.filter(
-        (x) => x.name === cmd || (x.aliases?.includes(cmd) ?? false),
-    );
-
-    if (!commands?.size) return;
-    for (const cmd of commands.values()) {
-        await cmd
-            .__compiled__({
+    await client.managers.commands
+        .exec({
+            type: "basic",
+            filter: (x) =>
+                x.name === cmd || (x.aliases?.includes(cmd) ?? false),
+            data: {
                 message,
                 channel:
                     client.cache?.channels?.get(message.channelId) ??
@@ -38,18 +36,18 @@ export async function messageCreate(message: Message, client: AoiClient) {
                     isAutoFetchDataEnabled("guild", client)
                         ? await client.client.getGuild(
                               <Snowflake>message.guildId,
-                        )
+                          )
                         : { id: message.guildId, fetched: false },
                 author: message.author,
                 client: client.client,
                 args,
                 bot: client,
                 member: message.member,
-                command: cmd,
-            })
-            .catch((e) => {
-                if (e.component && !e.success) return;
-                else client.emit(AoiClientEvents.Error, e);
-            });
-    }
+            },
+        })
+
+        .catch((e) => {
+            if (e.component && !e.success) return;
+            else client.emit(AoiClientEvents.Error, e);
+        });
 }

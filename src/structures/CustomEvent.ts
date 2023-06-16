@@ -87,7 +87,7 @@ export class CustomEvent extends EventEmitter {
                     else if (stats.isFile() && file.endsWith(".aoi")) {
                         const command = await readFile(filePath, "utf-8");
                         try {
-                            const cmd = Bundler(command).command;
+                            const cmd = Bundler(command,this.#client).command;
                             cmd.__path__ = filePath;
                             this.add(cmd as unknown as CommandOptions);
                             Commands.push({path:<string>filePath.split("/").pop(),loaded:true});

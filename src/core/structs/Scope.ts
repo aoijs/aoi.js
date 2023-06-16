@@ -1,3 +1,4 @@
+import { AoiClient } from "../../index.js";
 import { BundlerCustoms, TranspilerCustoms } from "../../typings/enums.js";
 import { funcData } from "../../typings/interfaces.js";
 import {
@@ -32,11 +33,13 @@ export default class Scope {
     sendFunction: string;
     functions: string;
     addReturn: boolean;
-    useChannel?: bigint;
+    useChannel?: bigint | string;
     embededJS: string[] = [];
     packages = "";
+    client: AoiClient;
     constructor(
         name: string,
+        client: AoiClient,
         parent?: string,
         code?: string,
         addReturn?: boolean,
@@ -55,6 +58,7 @@ export default class Scope {
         this.functions = "";
         this.rest = code?.replaceAll("`", TranspilerCustoms.SL) || "";
         this.addReturn = addReturn ?? false;
+        this.client = client;
     }
     addVariables(scopeVars: string[]) {
         this.variables.push(...scopeVars);
@@ -84,7 +88,7 @@ export default class Scope {
         );
     }
     addChild(child: string) {
-        this.children.push(new Scope(child, this.name));
+        this.children.push(new Scope(child, this.client, this.name));
     }
     getChild(name: string) {
         return this.children.find((child) => child.name === name);
@@ -165,10 +169,9 @@ export default class Scope {
                             this.useChannel
                                 ? this.sendFunction +
                                   `(${parseString(
-                                      this.useChannel.toString() +
-                                          (!isNaN(Number(this.useChannel))
-                                              ? "n"
-                                              : ""),
+                                      typeof this.useChannel === "bigint"
+                                          ? this.useChannel.toString() + "n"
+                                          : this.useChannel.toString(),
                                   )},${sent});`
                                 : this.sendFunction +
                                   `(__$DISCORD_DATA$__.message.channelId,${sent});`

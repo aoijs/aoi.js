@@ -1,7 +1,7 @@
 import { Group } from "@akarui/structures";
 import { Command } from "../structures/Command.js";
-import { CommandOptions } from "../typings/interfaces.js";
-import { Optional } from "../typings/types.js";
+import { CommandOptions, TranspiledFuncData } from "../typings/interfaces.js";
+import { CommandTypes, Optional } from "../typings/types.js";
 import fs, { readFile } from "fs/promises";
 import { AoiClient, Bundler } from "../index.js";
 import Path from "path";
@@ -111,7 +111,7 @@ export class CommandManager {
                     else if (stats.isFile() && file.endsWith(".aoi")) {
                         const command = await readFile(filePath, "utf-8");
                         try {
-                            const cmd = Bundler(command).command;
+                            const cmd = Bundler(command,this.#client).command;
                             cmd.__path__ = filePath;
                             this.add(cmd as unknown as CommandOptions);
                             Commands.push({
@@ -159,5 +159,18 @@ export class CommandManager {
         );
 
         console.log(box);
+    }
+
+    async exec({type, data,filter}:{
+        type:CommandTypes;
+        data:TranspiledFuncData;
+        filter:(cmd:Command) => boolean;
+    }) {
+        const cmd = this[type].filter((cmd) => filter(cmd));
+        if (cmd.size) {
+            for (const command of cmd.values()) {
+                await command.__compiled__({...data,command});
+            }
+        }
     }
 }

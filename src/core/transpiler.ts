@@ -32,7 +32,7 @@ export function Transpiler(
         ${code}
     ]`;
     const FData = getFunctionData(tempcode, "$EXECUTEMAINCODEFUNCTION", flist);
-    const globalScope = new Scope(scopeData?.name ?? "global", undefined, code);
+    const globalScope = new Scope(scopeData?.name ?? "global", options.client,undefined, code);
     globalScope.addVariables(scopeData?.variables ?? []);
     globalScope.addEmbeds(scopeData?.embeds ?? []);
     globalScope.env.push(...(scopeData?.env ?? []));
@@ -40,6 +40,7 @@ export function Transpiler(
     globalScope.embededJS = scopeData?.embedJs ?? [];
     globalScope.sendFunction =
         scopeData?.sendFunction ?? globalScope.sendFunction;
+    globalScope.useChannel = scopeData?.useChannel;
     const res = ExecuteData(
         parseResult(code),
         FData.funcs,

@@ -2,8 +2,9 @@ import { Client, Cacher } from "aoiluna";
 import { CommandManager } from "../manager/Command.js";
 import { FunctionManager } from "../manager/Function.js";
 import { Util } from "../structures/Util.js";
-import { AoiClientOptions, CommandOptions, TranspiledFuncData } from "./interfaces.js";
+import { AoiClientOptions, CommandOptions, Plugin, TranspiledFuncData } from "./interfaces.js";
 import { AoiClientEvents } from "./enums.js";
+import PluginManager from "../manager/Plugin.js";
 
 export type CommandTypes = "basic" | "interaction" | "ready" | "debug" | "component";
 export type AsyncFunction = (arg: TranspiledFuncData) => Promise<unknown>;
@@ -39,9 +40,16 @@ export type AoiClientProps = {
     managers: {
         commands: CommandManager;
         functions: FunctionManager;
+        plugins: PluginManager;
     };
     options: AoiClientOptions;
     cache?: Cacher;
     util: Util;
     __on__: Partial<Record<AoiClientEvents, ((...args:unknown[]) => void)[]>>;
 };
+
+export type PluginType = "pre" | "post" | "load" | "preEvent" | "postEvent" | "preCommand" | "postCommand";
+
+export type PluginManagerProps = {
+    [ key in PluginType ]: Plugin[];
+}

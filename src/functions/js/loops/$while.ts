@@ -54,15 +54,16 @@ export const $while: FunctionData = {
         );
         let executedCondition;
         if (conditionFunctionList.length) {
-            executedCondition = Transpiler( condition, {
+            executedCondition = Transpiler(condition, {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
                     name: currentScope.name,
                     objects: currentScope.objects,
                     env: currentScope.env,
-                }
-            } );
+                },
+                client: currentScope.client,
+            });
             currentScope.functions +=
                 executedCondition.scope[0].functions + "\n";
             currentScope.packages += executedCondition.scope[0].packages;
@@ -79,7 +80,7 @@ export const $while: FunctionData = {
             Object.keys(funcs),
         );
         if (codeFunctionList.length) {
-            executedCode = Transpiler( code.join( ";" ), {
+            executedCode = Transpiler(code.join(";"), {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
@@ -87,8 +88,9 @@ export const $while: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                     env: currentScope.env,
-                }
-            } );
+                },
+                client: currentScope.client,
+            });
         } else {
             executedCode = code.join(";");
         }

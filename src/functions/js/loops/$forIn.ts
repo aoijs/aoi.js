@@ -65,7 +65,7 @@ export const $forIn: FunctionData = {
             Object.keys(funcs),
         );
         if (codeFunctionList.length) {
-            executedCode = Transpiler( code.join( ";" ), {
+            executedCode = Transpiler(code.join(";"), {
                 sendMessage: false,
                 scopeData: {
                     variables: currentScope.variables,
@@ -73,8 +73,9 @@ export const $forIn: FunctionData = {
                     name: currentScope.name,
                     objects: currentScope.objects,
                     env: currentScope.env,
-                }
-            } );
+                },
+                client: currentScope.client,
+            });
         } else {
             executedCode = code.join( ";" );
         }

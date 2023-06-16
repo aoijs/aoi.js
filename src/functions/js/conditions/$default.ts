@@ -46,6 +46,7 @@ export const $default: FunctionData = {
         const hash = Math.floor(Math.random() * 100000);
         const newscope = new Scope(
             `${data.name}_${hash}`,
+            currentScope.client,
             currentScope.name,
             errorMsg.join(";"),
             true,
@@ -66,6 +67,7 @@ export const $default: FunctionData = {
                     objects: currentScope.objects,
                     env: currentScope.env,
                 },
+                client: currentScope.client,
                 minify: true,
             });
             newscope.functions = executedErrorMsg.scope[0].functions + "\n";
