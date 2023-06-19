@@ -127,13 +127,13 @@ bot.command({
 ```mermaid
 graph LR
 
-A[aoi.js] --> B[@akarui/aoi.music]
+A[aoi.js] --> B[aoi.music]
 A --> C[aoi.db]
 A --> D[aoi.vsc-extension]
-A --> E[aoi.cli]
-A --> F[@akarui/aoi.panel]
-A --> G[@akarui/aoi.orms]
-A --> H[@akarui/aoi.plugins]
+A --> F[aoi.panel]
+A --> G[aoi.orms]
+A --> H[aoi.plugins]
+A --> I[aoiLuna]
 ```
 
 ## Contributing
