@@ -12,16 +12,19 @@ export const $authorAvatar: FunctionData = {
         {
             name: "size",
             type: "number",
+            description: "The size of the avatar",
             required: false,
         },
         {
             name: "dynamic",
             type: "boolean",
+            description: "Whether the avatar is dynamic",
             required: false,
         },
         {
             name: "format",
             type: "string",
+            description: "The format of the avatar",
             required: false,
         }
     ],
@@ -29,6 +32,11 @@ export const $authorAvatar: FunctionData = {
     default: ["1024", "true", "'png'"],
     returns: "string",
     description: "Returns the avatar of the author",
+    example: `
+        $authorAvatar // returns the avatar of the author
+
+        $authorAvatar[4096;true;png] // returns the avatar of the author with size 4096, dynamic true and format png
+    `,
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

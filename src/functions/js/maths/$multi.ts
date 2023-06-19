@@ -15,6 +15,7 @@ export const $multi: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to multiply",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $multi: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the multiplication of the numbers",
+    example: `
+    $multi[1;2] // returns 2
+    $multi[1;2;3] // returns 6
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

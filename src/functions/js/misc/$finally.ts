@@ -11,6 +11,7 @@ export const $finally: FunctionData = {
         {
             name: "code",
             type: "string",
+            description: "The code to execute after try and catch",
             required: true,
         },
     ],
@@ -18,6 +19,19 @@ export const $finally: FunctionData = {
     description: "finally statement that runs after try and catch",
     default: ["void"],
     returns: "void",
+    example: `
+        $try[
+        $let[;1]
+    ]
+    $catch[
+        $log[ 
+            $env[catch_error]
+        ]
+    ]
+    $finally[
+        $log[hello world]
+    ]
+`,
     code: (data: funcData, scope: Scope[]) => {
         const code = data.inside;
         if (!code) {
@@ -34,11 +48,9 @@ export const $finally: FunctionData = {
         );
         let codeexe;
         const funcList = getFunctionList(code, Object.keys(funcs));
-        if ( !funcList.length )
-        {
+        if (!funcList.length) {
             codeexe = code;
-        } else
-        {
+        } else {
             codeexe = Transpiler(code, {
                 sendMessage: true,
                 scopeData: {
@@ -49,16 +61,16 @@ export const $finally: FunctionData = {
                 },
                 client: currentScope.client,
             });
-            newscope.functions = codeexe.scope[ 0 ].functions + "\n";
-            newscope.packages = codeexe.scope[ 0 ].packages + "\n";
-            newscope.setters = codeexe.scope[ 0 ].setters + "\n";
-            newscope.rest = codeexe.scope[ 0 ].rest + "\n";
-            newscope.sendData = codeexe.scope[ 0 ].sendData;
-            newscope.embeds = codeexe.scope[ 0 ].embeds;
-            newscope.components = codeexe.scope[ 0 ].components;
-            newscope.files = codeexe.scope[ 0 ].files;
-            newscope.stickers = codeexe.scope[ 0 ].stickers;
-            newscope.variables = codeexe.scope[ 0 ].variables;
+            newscope.functions = codeexe.scope[0].functions + "\n";
+            newscope.packages = codeexe.scope[0].packages + "\n";
+            newscope.setters = codeexe.scope[0].setters + "\n";
+            newscope.rest = codeexe.scope[0].rest + "\n";
+            newscope.sendData = codeexe.scope[0].sendData;
+            newscope.embeds = codeexe.scope[0].embeds;
+            newscope.components = codeexe.scope[0].components;
+            newscope.files = codeexe.scope[0].files;
+            newscope.stickers = codeexe.scope[0].stickers;
+            newscope.variables = codeexe.scope[0].variables;
         }
         const res = escapeResult(`finally {
         ${newscope.toString(true)}

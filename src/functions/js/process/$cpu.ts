@@ -11,12 +11,17 @@ export const $cpu: FunctionData = {
         {
             name: "type",
             type: "process|os",
+            description: "The type of cpu usage to get",
             required: false,
         },
     ],
     default: ["process"],
     returns: "number",
     description: "Returns the CPU usage",
+    example: `
+    $cpu // returns the cpu usage of the process    
+    $cpu[os] // returns the cpu usage of the os
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const type = parseString(data.inside ?? "process");

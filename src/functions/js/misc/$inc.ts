@@ -11,19 +11,19 @@ export const $inc: FunctionData = {
         {
             name: "variable",
             type: "string",
+            description: "The variable to increment",
             required: true,
         },
         {
             name: "incrementFunction",
             type: "function",
+            description: "The function to increment the variable",
             required: false,
         },
     ],
     version: "7.0.0",
     default: ["void", "++"],
-    extra: {
-        example: "$inc[$get[i];++]",
-    },
+    example: "$inc[$get[i]]",
     returns: "void",
     description: "Increments the variable",
     code: (data: funcData, scope: Scope[]) => {

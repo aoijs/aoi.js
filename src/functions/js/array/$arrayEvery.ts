@@ -17,11 +17,13 @@ export const $arrayEvery: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "query",
             type: "function",
+            description: "The query to check",
             required: true,
         },
     ],
@@ -29,6 +31,11 @@ export const $arrayEvery: FunctionData = {
     default: ["void", "void"],
     returns: "boolean",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;1;2;3;4;5]
+        $arrayEvery[myArray;$env[array_element]<=;5] // returns true
+        $arrayEvery[myArray;$env[array_element]>=;5] // returns false
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];
@@ -70,7 +77,9 @@ export const $arrayEvery: FunctionData = {
         executedCondition = executedCondition.solve();
 
         const res = escapeResult(
-            `${escapeVars(name)}.every(array_element => ${parseResult(executedCondition)})`,
+            `${escapeVars(name)}.every(array_element => ${parseResult(
+                executedCondition,
+            )})`,
         );
         currentScope.update(res, data);
 

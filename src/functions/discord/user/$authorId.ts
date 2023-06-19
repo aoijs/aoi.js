@@ -13,6 +13,7 @@ export const $authorId: FunctionData = {
     default: [],
     returns: "bigint",
     description: "Returns the id of the author",
+    example: "author id is `$authorId`",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

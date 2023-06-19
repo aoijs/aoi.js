@@ -12,6 +12,7 @@ export const $sum: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to add",
             required: true,
         },
     ],
@@ -19,6 +20,10 @@ export const $sum: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the sum of the numbers",
+    example: `
+    $sum[1;2] // returns 3
+    $sum[7;4;3] // returns 14
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

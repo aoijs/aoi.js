@@ -14,6 +14,7 @@ export const $getObjectValues: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to get the values from",
             required: true,
         }
     ],
@@ -21,6 +22,10 @@ export const $getObjectValues: FunctionData = {
     description: "returns all the values in the object",
     default: ["void",],
     returns: "void",
+    example: `
+        $createObject[object;{key:value,key2:value2}]
+        $getObjectValues[object] // returns value, value2
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const name = data.inside as string;

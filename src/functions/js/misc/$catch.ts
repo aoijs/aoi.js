@@ -10,6 +10,7 @@ export const $catch: FunctionData = {
         {
             name: "code",
             type: "string",
+            description: "The code to execute if the try statement fails",
             required: true,
         },
     ],
@@ -17,6 +18,16 @@ export const $catch: FunctionData = {
     description: "catch statement that executes when try fails",
     default: ["void"],
     returns: "void",
+    example: `
+        $try[
+            $let[;1]
+        ]
+        $catch[
+            $log[ 
+                $env[catch_error]
+            ]
+        ]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const code = data.inside;
         if (!code) {

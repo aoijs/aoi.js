@@ -11,6 +11,7 @@ export const $arrayLength: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
     ],
@@ -18,6 +19,10 @@ export const $arrayLength: FunctionData = {
     default: ["void"],
     returns: "number",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayLength[myArray] // returns 3
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const name = data.inside as string;

@@ -13,11 +13,13 @@ export const $useComponent: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the component to use",
             required: true,
         },
         {
             name: "data",
             type: "object",
+            description: "The data to pass to the component",
             required: false,
         },
     ],
@@ -25,6 +27,9 @@ export const $useComponent: FunctionData = {
     default: ["void", "undefined"],
     returns: "any",
     version: "7.0.0",
+    example: `
+        $useComponent[hello;{hello: world}] // executes the component hello with the data {hello: world}
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope.at(-1) as Scope;
         //code here

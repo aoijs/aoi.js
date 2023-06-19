@@ -13,11 +13,13 @@ export const $eval: FunctionData = {
         {
             name: "output",
             type: "boolean",
+            description: "Whether to send the output to the channel",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to evaluate",
             required: true,
         },
     ],
@@ -25,6 +27,9 @@ export const $eval: FunctionData = {
     returns: "any",
     version: "7.0.0",
     description: "Evaluates the aoi.js code",
+    example: `
+    $eval[true;$ping] // sends the ping to the channel
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [output, ...code] = data.splits;
         const parsedOutput = convertToBool(output);

@@ -19,6 +19,11 @@ export const $userTag: FunctionData = {
     default: ["authorId"],
     returns: "string",
     description: "Returns the tag of the user",
+    example: `
+        $userTag // returns the tag of the author
+
+        $userTag[123456789012345678] // returns the tag of the user with id 123456789012345678
+    `,
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

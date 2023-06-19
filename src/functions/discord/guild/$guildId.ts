@@ -13,6 +13,7 @@ export const $guildId: FunctionData = {
     default: [],
     returns: "number",
     description: "Returns the guildId of current guild",
+    example: "current guild id is `$guildId`",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

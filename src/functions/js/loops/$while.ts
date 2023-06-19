@@ -12,11 +12,13 @@ export const $while: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to execute if the while statement is true",
             required: true,
         },
     ],
@@ -24,6 +26,13 @@ export const $while: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     description: "While statement",
+    example: `
+        $let[num;1]
+        $while[$get[num] < 5;
+            $log[hello world]
+            $inc[$get[num]]
+        ]
+    `,
     code: (data, scope) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

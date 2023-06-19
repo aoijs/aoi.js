@@ -15,11 +15,13 @@ export const $title: FunctionData = {
         {
             name: "index or title",
             type: "string | number",
+            description: "The index of the embed to set the title of",
             required: true,
         },
         {
             name: "title",
             type: "string",
+            description: "The title to set",
             required: false,
         },
     ],
@@ -27,6 +29,11 @@ export const $title: FunctionData = {
     default: ["text", ""],
     returns: "void",
     version: "7.0.0",
+    example: `
+        $title[hello world] // sets the title of the first embed to "hello world"
+
+        $title[2;hello world] // sets the title of the second embed to "hello world"
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope.at(-1) as Scope;
         //code here

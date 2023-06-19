@@ -15,6 +15,7 @@ export const $sub: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to subtract",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $sub: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the sub of the numbers",
+    example: `
+    $sub[1;2] // returns -1
+    $sub[7;4;3] // returns 0
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -15,10 +15,12 @@ export const $round: FunctionData = {
         {
             name: "number",
             type: "number",
+            description: "The number to round off",
             required: true,
         }, {
             name: "decimal",
             type: "number",
+            description: "The decimal to round off",
             required: false,
         }
     ],
@@ -26,6 +28,10 @@ export const $round: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the Roundo off value of the number",
+    example: `
+    $round[1;2] // returns 1.00
+    $round[1.2;0] // returns 1
+    `,
     code: (data, scope) => {
         const [number,decimal = "0"] = data.splits;
         const currentScope = scope[scope.length - 1];

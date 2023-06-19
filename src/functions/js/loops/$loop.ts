@@ -20,16 +20,19 @@ export const $loop: FunctionData = {
         {
             name: "times",
             type: "number",
+            description: "The times to loop",
             required: true,
         },
         {
             name: "extraData",
             type: "json",
+            description: "The extra data to send to the loop",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to execute",
             required: true,
         },
     ],
@@ -37,6 +40,9 @@ export const $loop: FunctionData = {
     default: ["void", "void", "void"],
     returns: "void",
     description: "Loop statement",
+    example: `
+        $loop[5;{name: hello, age: 12};$log[hello world]]
+    `,
     code: (data, scope) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -14,11 +14,13 @@ export const $arrayAt: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "index",
             type: "number",
+            description: "The index of the array",
             required: true,
         },
     ],
@@ -26,6 +28,12 @@ export const $arrayAt: FunctionData = {
     default: ["void", "void"],
     returns: "any",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayAt[myArray;1] // returns "hello"
+        $arrayAt[myArray;2] // returns "world"
+        $arrayAt[myArray;-1] // returns "nya"
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, index] = data.splits;
         const currentScope = scope[scope.length - 1];
@@ -38,7 +46,7 @@ export const $arrayAt: FunctionData = {
                 `${data.name}: Variable ${name} doesn't exist`,
             );
 
-        const parsedIndex = Number(index)-1;
+        const parsedIndex = (Number(index) <0 ? Number(index) : Number(index)-1);
         if (
             isNaN(parsedIndex) &&
             !currentScope.name.startsWith("$try_") &&
@@ -46,7 +54,7 @@ export const $arrayAt: FunctionData = {
         )
             throw new TranspilerError(`${data.name}: Index must be a number`);
 
-        const res = escapeResult(`${escapeVars(name)}[${parsedIndex}]`);
+        const res = escapeResult(`${escapeVars(name)}?.at(${parsedIndex})`);
         currentScope.update(res, data);
 
         return {

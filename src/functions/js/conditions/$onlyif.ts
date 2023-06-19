@@ -11,11 +11,13 @@ export const $onlyIf: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
         {
             name: "errorMsg",
             type: "string",
+            description: "The error message to send if the condition is false",
             required: false,
         },
     ],
@@ -23,6 +25,10 @@ export const $onlyIf: FunctionData = {
     default: ["void", ""],
     returns: "void",
     description: "onlyIf statement",
+    example: `
+        $onlyIf[$ping<100;
+        $log[ping is less than 100]
+    ]`,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -17,11 +17,13 @@ export const $arrayFind: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "query",
             type: "function",
+            description: "The query to check",
             required: true,
         },
     ],
@@ -29,6 +31,11 @@ export const $arrayFind: FunctionData = {
     default: ["void", "void"],
     returns: "any",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;1;2;3;4;5]
+        $arrayFind[myArray;$env[array_element]<=;5] // returns 1
+        $arrayFind[myArray;$env[array_element]>=;5] // returns 5
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];

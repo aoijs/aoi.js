@@ -11,6 +11,7 @@ export const $arrayPop: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
     ],
@@ -19,6 +20,10 @@ export const $arrayPop: FunctionData = {
     default: ["void"],
     returns: "any",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayPop[myArray] // returns nya
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope.at(-1) as Scope;
         const name = data.inside as string;

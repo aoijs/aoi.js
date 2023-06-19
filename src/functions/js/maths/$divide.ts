@@ -15,6 +15,7 @@ export const $divide: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to divide",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $divide: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the division of the numbers",
+    example: `
+    $divide[1;2] // returns 0.5
+    $divide[1;2;3] // returns 0.16666666666666666
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

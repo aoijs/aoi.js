@@ -11,6 +11,7 @@ export const $clientToken: FunctionData = {
     default: [],
     returns: "string",
     description: "Returns the token of client",
+    example: "client token is `$clientToken`",
     code: (data, scope) => {
         // Getting the current scope
         const currentScope = scope[scope.length - 1];

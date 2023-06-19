@@ -10,11 +10,13 @@ export const $jseval: FunctionData = {
         {
             name: "output",
             type: "string",
+            description: "Whether to output the result of the code",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to evaluate",
             required: true,
         },
     ],
@@ -22,6 +24,9 @@ export const $jseval: FunctionData = {
     default: ["void", "void"],
     returns: "any",
     description: "Evaluates the provided Js code",
+    example: `
+        $jsEval[false;log("hello world")]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const [output, ...code] = splits;

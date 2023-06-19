@@ -13,6 +13,7 @@ export const $ping: FunctionData = {
     default: [],
     returns: "number",
     description: "Returns the Ping of client",
+    example: "client ping is `$ping`",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

@@ -16,9 +16,14 @@ export const $username: FunctionData = {
         }
     ],
     version: "7.0.0",
-    default: [],
+    default: ["void"],
     returns: "string",
     description: "Returns the name of the user",
+    example: `
+        $username[$authorId] // returns the name of the author
+
+        $username[123456789012345678] // returns the name of the user with id 123456789012345678
+    `,
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

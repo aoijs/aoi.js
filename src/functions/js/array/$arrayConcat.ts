@@ -14,11 +14,13 @@ export const $arrayConcat: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "values",
             type: "string[]",
+            description: "The arrays to concatenate",
             required: true,
         },
     ],
@@ -26,6 +28,12 @@ export const $arrayConcat: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world]
+        $arrayCreate[myNextArray;nya]
+
+        $arrayConcat[myArray;myNextArray] // myArray is now ["hello", "world", "nya"]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];

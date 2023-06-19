@@ -16,11 +16,13 @@ export const $arrayCreate: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "values",
             type: "unknown",
+            description: "The values to create the array with",
             required: true,
         },
     ],
@@ -28,6 +30,10 @@ export const $arrayCreate: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayCreate[myNextArray;1;2;3]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -39,11 +39,13 @@ export interface FunctionData {
         name: string;
         type: string;
         required: boolean;
+        description?: string;
     }[];
     returns: unknown;
     default: string[];
     description: string;
     version: string;
+    example:string;
     extra?: unknown;
     code: (
         data: funcData,

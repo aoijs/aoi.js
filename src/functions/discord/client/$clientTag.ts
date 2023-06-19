@@ -11,6 +11,9 @@ export const $clientTag: FunctionData = {
     default: [],
     returns: "string",
     description: "Returns the username of client with discriminator",
+    example: `
+        $clientTag // returns the username of client with discriminator
+    `,
     code: (data, scope) => {
         // Getting the current scope
         const currentScope = scope[scope.length - 1];
@@ -26,4 +29,4 @@ export const $clientTag: FunctionData = {
             scope,
         };
     },
-}
+};

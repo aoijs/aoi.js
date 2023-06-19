@@ -13,6 +13,7 @@ export const $log: FunctionData = {
         {
             name: "text",
             type: "string",
+            description: "The text to log",
             required: true,
         },
     ],
@@ -20,6 +21,9 @@ export const $log: FunctionData = {
     default: ["void"],
     returns: "void",
     description: "Logs the text",
+    example: `
+        $log[hello world] // logs hello world
+    `,
     code: (data: funcData, scope: Scope[]) => {
 
         const splits = data.splits;

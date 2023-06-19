@@ -15,16 +15,19 @@ export const $addObjectProperty: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to add the property to",
             required: true,
         },
         {
             name: "key",
             type: "string",
+            description: "The key of the property to add",
             required: true,
         },
         {
             name: "value",
             type: "any",
+            description: "The value of the property to add",
             required: true,
         },
     ],
@@ -32,6 +35,11 @@ export const $addObjectProperty: FunctionData = {
     description: "adds a value to the key in the object",
     default: ["void", "void", "void"],
     returns: "void",
+    example: `
+        $createObject[object;{key:value}]
+        $addObjectProperty[object;key2;value2]
+        $getObjectProperty[object;key2] // returns value2
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, key, ...value] = data.splits;

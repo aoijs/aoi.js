@@ -19,11 +19,13 @@ export const $let: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the variable to set",
             required: true,
         },
         {
             name: "value",
             type: "string",
+            description: "The value to set the variable to",
             required: true,
         },
     ],
@@ -31,6 +33,9 @@ export const $let: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     description: "Sets the value of the variable",
+    example: `
+        $let[hello;world] // sets the variable hello to world
+    `,
     code: (data: funcData, scope: Scope[]) => {
         let res;
         const splits = data.splits;

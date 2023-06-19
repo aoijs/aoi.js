@@ -10,11 +10,13 @@ export const $includes: FunctionData = {
         {
             name: "text",
             type: "string",
+            description: "The text to check",
             required: true,
         },
         {
             name: "search",
             type: "string",
+            description: "The text to search for",
             required: true,
         },
     ],
@@ -22,6 +24,10 @@ export const $includes: FunctionData = {
     default: ["void", "void"],
     returns: "boolean",
     description: "Checks if the text includes the search",
+    example: `
+        $includes[Hello World;Hello] // returns true
+        $includes[Hello World;hello] // returns false
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [text, search] = data.splits;

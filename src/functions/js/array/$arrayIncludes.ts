@@ -11,11 +11,13 @@ export const $arrayIncludes: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "value",
             type: "string",
+            description: "The value to check",
             required: true,
         },
     ],
@@ -23,6 +25,11 @@ export const $arrayIncludes: FunctionData = {
     default: ["void", "void"],
     returns: "boolean",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayIncludes[myArray;hello] // returns true
+        $arrayIncludes[myArray;hi] // returns false
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, value] = data.splits;

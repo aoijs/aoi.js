@@ -11,15 +11,18 @@ export const $forIn: FunctionData = {
         {
             name: "variable",
             type: "string",
+            description: "The variable to use",
             required: true,
         }, {
             name: "objectName",
             type: "string",
+            description: "The object to use",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to execute",
             required: true,
         },
     ],
@@ -27,6 +30,13 @@ export const $forIn: FunctionData = {
     default: ["void","void", "void"],
     returns: "void",
     description: "ForIn statement",
+    example: `
+        $createObject[object;{
+            name: hello,
+            age: 12
+        }]
+        $forIn[key;object;$log[key is $env[key]]
+    `,
     code: (data, scope) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

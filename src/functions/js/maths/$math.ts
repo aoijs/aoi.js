@@ -81,6 +81,7 @@ export const $math: FunctionData = {
         {
             name: "expression",
             type: "number",
+            description: "The math expression to evaluate",
             required: true,
         },
     ],
@@ -88,6 +89,12 @@ export const $math: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "evaluates a math expression",
+    example: `
+    $math[1 + 1] // returns 2
+    $math[1 + 1 * 2] // returns 3
+
+    $math[sin(1) + cos(1)] // returns 1.3817732906760363
+    `,
     code: (data, scope) => {
         const numbers = data.inside;
         const currentScope = scope[scope.length - 1];

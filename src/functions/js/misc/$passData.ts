@@ -11,6 +11,7 @@ export const $passData: FunctionData = {
         {
             name: "passData",
             type: "string",
+            description: "access the data passed to the command from another command",
             required: true,
         },
     ],
@@ -18,6 +19,9 @@ export const $passData: FunctionData = {
     default: ["void"],
     version: "7.0.0",
     returns: "?string",
+    example: `
+    $passData[hello] // returns the data passed to the command from another command
+`,
     code: (data: funcData, scope: Scope[]) => {
         const passData = data.inside;
         const currentScope = scope[scope.length - 1];

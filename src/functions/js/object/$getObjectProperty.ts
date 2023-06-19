@@ -14,11 +14,13 @@ export const $getObjectProperty: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to get the property from",
             required: true,
         },
         {
             name: "key",
             type: "string",
+            description: "The key of the property to get",
             required: true,
         },
     ],
@@ -26,6 +28,10 @@ export const $getObjectProperty: FunctionData = {
     description: "gets the value of the key in the object",
     default: ["void", "void"],
     returns: "void",
+    example: `
+        $createObject[object;{key:value}]
+        $getObjectProperty[object;key] // returns value
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, key ] = data.splits;

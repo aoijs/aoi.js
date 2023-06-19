@@ -13,6 +13,7 @@ export const $authorName: FunctionData = {
     default: [],
     returns: "string",
     description: "Returns the name of the author",
+    example: "author name is `$authorName`",
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
 

@@ -11,16 +11,19 @@ export const $clientAvatar: FunctionData = {
         {
             name: "size",
             type: "number",
+            description: "The size of the avatar",
             required: false,
         },
         {
             name: "format",
             type: "string",
+            description: "The format of the avatar",
             required: false,
         },
         {
             name: "dynamic",
             type: "boolean",
+            description: "Whether the avatar is gif or not",
             required: false,
         },
     ],
@@ -28,6 +31,11 @@ export const $clientAvatar: FunctionData = {
     default: ["void", "void", "void"],
     returns: "string",
     description: "Returns the Avatar of client",
+    example: `
+        $clientAvatar // returns the avatar of client
+
+        $clientAvatar[4096;true;png] // returns the avatar of client with size 4096, dynamic true and format png
+    `,
     code: (data: funcData, scope: Scope[]) => {
         // Adding default values
         const [size = 4096, dynamic = "true", format = "png"] = data.splits;

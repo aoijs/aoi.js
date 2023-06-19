@@ -16,6 +16,7 @@ export const $get: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the variable to get",
             required: true,
         },
     ],
@@ -23,6 +24,10 @@ export const $get: FunctionData = {
     default: ["void"],
     returns: "any",
     description: "Gets the value of the variable",
+    example: `
+        $let[hello;world]
+        $get[hello] // returns world
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

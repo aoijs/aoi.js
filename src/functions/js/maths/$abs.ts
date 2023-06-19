@@ -15,6 +15,7 @@ export const $abs: FunctionData = {
         {
             name: "number",
             type: "number",
+            description: "The number to get the absolute value from",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $abs: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the Absolute value of the number",
+    example: `
+    $abs[1] // returns 1
+    $abs[-1] // returns 1
+    `,
     code: (data, scope) => {
         const numbers = data.inside;
         const currentScope = scope[scope.length - 1];

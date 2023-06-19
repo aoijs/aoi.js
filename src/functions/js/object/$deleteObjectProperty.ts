@@ -11,11 +11,13 @@ export const $deleteObjectProperty: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to delete the property from",
             required: true,
         },
         {
             name: "key",
             type: "string",
+            description: "The key of the property to delete",
             required: true,
         },
     ],
@@ -23,6 +25,11 @@ export const $deleteObjectProperty: FunctionData = {
     description: "deletes the key in the object",
     default: ["void", "void", ],
     returns: "void",
+    example: `
+        $createObject[object;{key:value}]
+        $deleteObjectProperty[object;key]
+        $getObjectProperty[object;key] // returns undefined
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, key] = data.splits;

@@ -1,19 +1,20 @@
 import { TranspilerError } from "../../../index.js";
 import { FunctionData } from "../../../typings/interfaces.js";
-import {
-    escapeResult,
-} from "../../../util/transpilerHelpers.js";
+import { escapeResult } from "../../../util/transpilerHelpers.js";
 
 export const $userId: FunctionData = {
     name: "$userId",
     type: "getter",
     brackets: true,
     optional: false,
-    fields: [{ name: "username", type: "string", required: true}],
+    fields: [{ name: "username", type: "string", required: true,description: "The username of the user" }],
     version: "7.0.0",
-    default: [],
+    default: ["void"],
     returns: "bigint",
-    description: "Returns the id of the user",
+    description: "Returns the id of the user ( provided user should have mutual servers with the bot )",
+    example: `
+        $userId[leref] // returns the id of the user with provided username
+        `,
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
         const name = data.inside;

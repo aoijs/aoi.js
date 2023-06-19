@@ -11,11 +11,13 @@ export const $if: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
         {
             name: "code",
             type: "string",
+            description: "The code to execute if the if statement is true",
             required: true,
         },
     ],
@@ -23,6 +25,17 @@ export const $if: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     description: "If statement",
+    example: `
+        $if[$ping<100;
+        $log[ping is less than 100]
+    ]
+    $elseIf[$ping<200;
+        $log[ping is less than 200]
+    ]
+    $else[
+        $log[ping is greater than 200]
+    ]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

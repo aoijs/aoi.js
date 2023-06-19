@@ -15,6 +15,7 @@ export const $truncate: FunctionData = {
         {
             name: "number",
             type: "number",
+            description: "The number to truncate off",
             required: true,
         },
     ],
@@ -22,6 +23,9 @@ export const $truncate: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the Truncate off value of the number",
+    example: `
+    $truncate[1.22342] // returns 1
+`,
     code: (data, scope) => {
         const number = data.inside ?? "";
         const currentScope = scope[scope.length - 1];

@@ -13,12 +13,18 @@ export const $checkCondition: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
     ],
     default: ["void"],
     returns: "boolean",
     description: "Returns true if the condition is true",
+    example: `
+    $checkCondition[$isNumber[1]] // returns true
+
+    $checkCondition[hello === world] // returns false
+    `,
     code: (data, scope) => {
         const conditions = <string>data.inside;
         const currentScope = scope[scope.length - 1];

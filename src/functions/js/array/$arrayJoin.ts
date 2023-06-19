@@ -11,11 +11,13 @@ export const $arrayJoin: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "separator",
             type: "string",
+            description: "The separator to join the array with",
             required: false,
         },
     ],
@@ -23,6 +25,12 @@ export const $arrayJoin: FunctionData = {
     default: ["void", ", "],
     returns: "string",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayJoin[myArray] // returns hello, world, nya
+    
+        $arrayJoin[myArray; | ] // returns hello | world | nya
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, separator = ", "] = data.splits;

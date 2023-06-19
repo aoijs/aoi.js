@@ -152,6 +152,7 @@ export default class Scope {
   components: ${escapeVars(`${this.name}_components`)},
   files: ${escapeVars(`${this.name}_files`)},
   stickers: ${escapeVars(`${this.name}_stickers`)},
+  flags: ${this.ephemeral ? 64 : 0},
     }`.replaceAll(TranspilerCustoms.NL, "\\\\n");
 
         return parseResult(

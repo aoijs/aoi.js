@@ -28,6 +28,10 @@ export const $arrayMap: FunctionData = {
     default: ["void", "void"],
     returns: "array",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;1;2;3;4;5]
+        $arrayMap[myArray;$sum[$env[array_element];1]] // returns [2,3,4,5,6]
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];

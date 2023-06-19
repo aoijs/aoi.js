@@ -17,17 +17,23 @@ export const $createObject: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to create",
             required: true,
         },
         {
             name: "object",
             type: "json",
+            description: "The object to create",
             required: true,
         },
     ],
     description: "creates an Object",
     default: ["void", "void"],
     returns: "void",
+    example: `
+        $createObject[object;{key:value}]
+        $getObjectProperty[object;key] // returns value
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, ...obj] = data.splits;

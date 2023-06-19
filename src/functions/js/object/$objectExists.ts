@@ -11,6 +11,7 @@ export const $objectExists: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to check",
             required: true,
         },
     ],
@@ -18,6 +19,12 @@ export const $objectExists: FunctionData = {
     description: "returns whether object exists or not",
     default: ["void"],
     returns: "object",
+    example: `
+        $createObject[object;{key:value}]
+        $objectExists[object] // returns true
+
+        $objectExists[object2] // returns false
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const name = data.inside;

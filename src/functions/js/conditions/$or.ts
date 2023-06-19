@@ -13,12 +13,17 @@ export const $or: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
     ],
     default: ["void"],
     returns: "boolean",
     description: "Returns true if any condition is true",
+    example: `
+    $or[$isNumber[1];$isNumber[2]] // returns true
+    $or[$isNumber[1];$isNumber[abc]] // returns true
+    `,
     code: (data, scope) => {
         const conditions = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -11,6 +11,16 @@ export const $break: FunctionData = {
     default: [],
     returns: "void",
     description: "Breaks out of a loop",
+    example: `
+    
+    $let[i;0]
+    $while[$get[i] < 5 ;
+        $if[$get[i] == 3; $break]
+        $log[$get[i]]
+        $inc[$get[i]]
+    ]
+    // Logs 0, 1, 2
+    `,
     code: (data, scope) => {
         const currentScope = scope[scope.length - 1];
         const res = escapeFunctionResult("break;");

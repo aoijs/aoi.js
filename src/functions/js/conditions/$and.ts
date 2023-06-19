@@ -11,12 +11,17 @@ export const $and: FunctionData = {
         {
             name: "condition",
             type: "string",
+            description: "The condition to check",
             required: true,
         },
     ],
     default: ["void"],
     returns: "boolean",
-    description: "Returns true if all conditions are true",
+    description: "Returns true if all conditions are true ( function version of && )",
+    example: `
+    $and[$isNumber[1];$isNumber[2]] // returns true 
+    $and[$isNumber[1];$isNumber[hello]] // returns false
+    `,
     code: (data, scope) => {
         const conditions = data.splits;
         const currentScope = scope[scope.length - 1];

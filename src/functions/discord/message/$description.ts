@@ -12,11 +12,13 @@ export const $description: FunctionData = {
         {
             name: "index or description",
             type: "string | number",
+            description: "The index of the embed to set the description of",
             required: true,
         },
         {
             name: "description",
             type: "string",
+            description: "The description to set",
             required: false,
         },
     ],
@@ -24,6 +26,11 @@ export const $description: FunctionData = {
     default: ["text", ""],
     returns: "void",
     version: "7.0.0",
+    example: `
+        $description[hello world] // sets the description of the first embed to "hello world"
+
+        $description[2;hello world] // sets the description of the second embed to "hello world"
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope.at(-1) as Scope;
         //code here

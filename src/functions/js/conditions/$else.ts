@@ -11,6 +11,7 @@ export const $else: FunctionData = {
         {
             name: "code",
             type: "string",
+            description: "The code to execute if the else statement is true",
             required: false,
         },
     ],
@@ -18,6 +19,16 @@ export const $else: FunctionData = {
     version: "7.0.0",
     returns: "void",
     description: "Else statement",
+    example: `
+    $if[$ping<100;
+        $log[ping is less than 100]
+    ]
+    $elseIf[$ping<200;
+        $log[ping is less than 200]
+    ]
+    $else[
+        $log[ping is greater than 200]
+    ]`,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

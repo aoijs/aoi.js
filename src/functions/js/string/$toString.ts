@@ -10,6 +10,7 @@ export const $toString: FunctionData = {
         {
             name: "data",
             type: "any",
+            description: "The data to convert to string",
             required: true,
         },
     ],
@@ -17,6 +18,11 @@ export const $toString: FunctionData = {
     default: [ "void"],
     returns: "string",
     description: "Checks if the text toString the search",
+    example: `
+        $toString[Hello World] // returns "Hello World"
+        $toString[1] // returns "1"
+        $toString[true] // returns "true"
+        `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const value = <string>data.inside;

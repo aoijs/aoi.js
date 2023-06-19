@@ -17,11 +17,13 @@ export const $arrayForEach: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "code",
             type: "function",
+            description: "The code to execute",
             required: true,
         },
     ],
@@ -29,6 +31,10 @@ export const $arrayForEach: FunctionData = {
     default: ["void", "void"],
     returns: "void",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayForEach[myArray;$log[$env[array_element]]] // logs "hello", "world", "nya"
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const [name, ...values] = data.splits;
         const currentScope = scope[scope.length - 1];

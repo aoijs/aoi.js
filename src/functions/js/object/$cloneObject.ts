@@ -12,17 +12,24 @@ export const $cloneObject: FunctionData = {
         {
             name: "name",
             type: "string",
+            description: "The name of the object to clone",
             required: true,
         },
         {
-            name: "name",
+            name: "target",
             type: "string",
+            description: "The name of the object to clone to",
             required: true,
         },
     ],
     description: "clones an Object",
     default: ["void", "void"],
     returns: "void",
+    example: `
+        $createObject[object;{key:value}]
+        $cloneObject[object;object2]
+        $getObjectProperty[object2;key] // returns value
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, target] = data.splits;

@@ -16,6 +16,7 @@ export const $root: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to get the root from",
             required: true,
         },
     ],
@@ -23,6 +24,12 @@ export const $root: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the root of the numbers",
+    example: `
+    $root[4;2] // returns 2
+    $root[27;3] // returns 3
+
+    $root[625;4;2] // returns 5
+`,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -10,6 +10,7 @@ export const $ram: FunctionData = {
         {
             name: "type",
             type: "rss|heapUsed|heapTotal|external|arrayBuffer",
+            description: "The type of ram to get",
             required: false,
         },
     ],
@@ -17,6 +18,13 @@ export const $ram: FunctionData = {
     default: ["rss"],
     returns: "number",
     description: "Returns the bot's ram usage",
+    example: `
+        $ram // returns the rss ram usage
+        $ram[heapUsed] // returns the heapUsed ram usage
+        $ram[heapTotal] // returns the heapTotal ram usage
+        $ram[external] // returns the external ram usage
+        $ram[arrayBuffer] // returns the arrayBuffer ram usage
+        `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const type = data.inside ?? "rss";

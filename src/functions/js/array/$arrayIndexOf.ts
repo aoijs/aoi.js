@@ -14,11 +14,13 @@ export const $arrayIndexOf: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "value",
             type: "string",
+            description: "The value to check",
             required: true,
         },
     ],
@@ -27,6 +29,12 @@ export const $arrayIndexOf: FunctionData = {
     default: ["void", "void"],
     returns: "number",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya]
+        $arrayIndexOf[myArray;hello] // returns 1
+
+        $arrayIndexOf[myArray;hi] // returns 0
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, value] = data.splits;

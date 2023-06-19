@@ -15,6 +15,7 @@ export const $pow: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to get the power from",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $pow: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the power of the numbers",
+    example: `
+    $pow[1;2] // returns 1
+    $pow[7;4;3] // returns 2401
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

@@ -20,13 +20,27 @@ export const $default: FunctionData = {
         {
             name: "code",
             type: "string",
+            description: "The code to execute if the default case is true",
             required: true,
         },
     ],
     version: "7.0.0",
     default: ["void", "void"],
     returns: "void",
-    description: "Case statement",
+    description: "Default case statement",
+    example: `
+        $let[num;1]
+    $switch[$get[num];
+        $case[1;
+            $log[hello world]
+        ]
+        $case[2;
+            $log[hello world 2]
+        ]
+        $default[
+            $log[hello world default]
+        ]
+    ]`,
     code: (data: funcData, scope: Scope[]) => {
         const splits = data.splits;
         const currentScope = scope[scope.length - 1];

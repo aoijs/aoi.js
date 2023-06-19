@@ -11,6 +11,7 @@ export const $try: FunctionData = {
         {
             name: "code",
             type: "string",
+            description: "The code to execute",
             required: true,
         },
     ],
@@ -18,6 +19,19 @@ export const $try: FunctionData = {
     description: "try statement that tests if a code works",
     default: ["void"],
     returns: "void",
+    example: `
+    $try[
+        $let[;1]
+    ]
+    $catch[
+        $log[
+            $env[catch_error]
+        ]
+    ]
+    $finally[
+        $log[hello world]
+    ]
+`,
     code: (data: funcData, scope: Scope[]) => {
         const code = data.inside;
         if (!code) {

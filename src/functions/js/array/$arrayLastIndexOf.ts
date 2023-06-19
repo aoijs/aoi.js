@@ -11,11 +11,13 @@ export const $arrayLastIndexOf: FunctionData = {
         {
             name: "array",
             type: "string",
+            description: "The name of the array",
             required: true,
         },
         {
             name: "value",
             type: "string",
+            description: "The value to check",
             required: true,
         },
     ],
@@ -24,6 +26,12 @@ export const $arrayLastIndexOf: FunctionData = {
     default: ["void", "void"],
     returns: "number",
     version: "7.0.0",
+    example: `
+        $arrayCreate[myArray;hello;world;nya;hello]
+        $arrayLastIndexOf[myArray;hello] // returns 4
+
+        $arrayLastIndexOf[myArray;hi] // returns 0
+    `,
     code: (data: funcData, scope: Scope[]) => {
         const currentScope = scope[scope.length - 1];
         const [name, value] = data.splits;

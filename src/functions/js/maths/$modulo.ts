@@ -15,6 +15,7 @@ export const $modulo: FunctionData = {
         {
             name: "numbers",
             type: "number",
+            description: "The numbers to get the modulo from",
             required: true,
         },
     ],
@@ -22,6 +23,10 @@ export const $modulo: FunctionData = {
     default: ["void"],
     returns: "number",
     description: "Returns the modulo of the numbers",
+    example: `
+    $modulo[1;2] // returns 1
+    $modulo[7;4;3] // returns 0
+    `,
     code: (data, scope) => {
         const numbers = data.splits;
         const currentScope = scope[scope.length - 1];

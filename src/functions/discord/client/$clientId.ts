@@ -11,6 +11,9 @@ export const $clientId: FunctionData = {
     default: [],
     returns: "number",
     description: "Returns the ID of client",
+    example: `
+        $clientId // returns the ID of client
+    `,
     code: (data, scope) => {
         // Getting the current scope
         const currentScope = scope[scope.length - 1];

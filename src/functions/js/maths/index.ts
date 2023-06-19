@@ -7,3 +7,5 @@ export * from "./$pow.js";
 export * from "./$modulo.js";
 export * from "./$math.js";
 export * from "./$abs.js";
+export * from "./$truncate.js";
+export * from "./$round.js";

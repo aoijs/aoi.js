@@ -11,6 +11,7 @@ export const $env: FunctionData = {
         {
             name: "env",
             type: "string",
+            description: "The env to get from the current scope",
             required: true,
         },
     ],
@@ -18,6 +19,16 @@ export const $env: FunctionData = {
     default: ["void"],
     version: "7.0.0",
     returns: "?string",
+    example: `
+    $try[
+        $let[;1]
+    ]
+    $catch[
+        $log[ 
+            $env[catch_error]
+        ]
+    ]
+`,
     code: (data: funcData, scope: Scope[]) => {
         const env = data.inside;
         const currentScope = scope[scope.length - 1];
