@@ -11,8 +11,16 @@ $clientToken --> client;
 $ping --> client;
 $guildId --> guild;
 $guildName --> guild;
+$autocompleteRespond --> interaction;
 $interactionData --> interaction;
+$interactionDefer --> interaction;
+$interactionDeferUpdate --> interaction;
+$interactionModal --> interaction;
+$interactionReply --> interaction;
+$interactionUpdate --> interaction;
+$description --> message;
 $message --> message;
+$title --> message;
 $eval --> misc;
 $authorAvatar --> user;
 $authorId --> user;
@@ -20,8 +28,8 @@ $authorName --> user;
 $authorTag --> user;
 $userAvatar --> user;
 $userId --> user;
-$username --> user;
 $userTag --> user;
+$username --> user;
 
 ```
 

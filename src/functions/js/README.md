@@ -41,6 +41,7 @@ $root --> maths;
 $round --> maths;
 $sub --> maths;
 $sum --> maths;
+$truncate --> maths;
 $break --> misc;
 $catch --> misc;
 $comment --> misc;
