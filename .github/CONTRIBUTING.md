@@ -18,11 +18,11 @@ that will help you understand the structure of the project.
 
 ### Reporting Bugs
 
-If you find a bug in the source code, you can help us by [submitting an issue](./ISSUE_TEMPLATE/bug_report.md).
+If you find a bug in the source code, you can help us by [submitting an issue](./ISSUE_TEMPLATE/bug_report.yml).
 
 ### Suggesting Enhancements
 
-If you want to suggest an enhancement to Aoi.js, please [submit an issue](./ISSUE_TEMPLATE/feature_request.md).
+If you want to suggest an enhancement to Aoi.js, please [submit an issue](./ISSUE_TEMPLATE/feature_request.yml).
 
 ### Pull Requests
 
