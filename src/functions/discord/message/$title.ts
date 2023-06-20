@@ -55,7 +55,7 @@ export const $title: FunctionData = {
             };
 
             currentScope.setters += escapeResult(
-                `${escapeVars(currentScope.name)}_embeds[${index}] = { fields: [] };`
+                `${escapeVars(`${currentScope.name}_embeds`)}[${index}] = { fields: [] };`
             );
         }
 
@@ -63,7 +63,7 @@ export const $title: FunctionData = {
         currentScope.embeds[index] = embed;
 
         const res = escapeResult(
-            `${escapeVars(currentScope.name)}_embeds[${index}].title = ${parseString(actualTitle)};`
+            `${escapeVars(`${currentScope.name}_embeds`)}[${index}].title = ${parseString(actualTitle)};`
         );
 
         currentScope.update(res, data);
