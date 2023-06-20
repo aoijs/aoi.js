@@ -111,7 +111,7 @@ export class CommandManager {
                     else if (stats.isFile() && file.endsWith(".aoi")) {
                         const command = await readFile(filePath, "utf-8");
                         try {
-                            const cmd = Bundler(command,this.#client).command;
+                            const cmd = Bundler(command, this.#client).command;
                             cmd.__path__ = filePath;
                             this.add(cmd as unknown as CommandOptions);
                             Commands.push({
@@ -161,15 +161,25 @@ export class CommandManager {
         console.log(box);
     }
 
-    async exec({type, data,filter}:{
-        type:CommandTypes;
-        data:TranspiledFuncData;
-        filter:(cmd:Command) => boolean;
+    async exec({
+        type,
+        data,
+        filter,
+    }: {
+        type: CommandTypes;
+        data: TranspiledFuncData;
+        filter: (cmd: Command) => boolean;
     }) {
         const cmd = this[type].filter((cmd) => filter(cmd));
         if (cmd.size) {
             for (const command of cmd.values()) {
-                await command.__compiled__({...data,command});
+                this.#client.managers.plugins.preCommand.forEach((plugin) => {
+                    plugin.func({ command, data });
+                });
+                await command.__compiled__({ ...data, command });
+                this.#client.managers.plugins.postCommand.forEach((plugin) => {
+                    plugin.func({ command, data });
+                });
             }
         }
     }

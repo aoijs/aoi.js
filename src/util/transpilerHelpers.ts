@@ -206,6 +206,23 @@ export function reverseArray(arr: funcData[]) {
     return res;
 }
 
+export function Reverse(code: string, funcs: funcData[]) {
+    let codeWithGenricFuncs = code;
+
+    for(const func of funcs) {
+        codeWithGenricFuncs = codeWithGenricFuncs.replace(func.total, "#GENERIC-FUNCTION#");
+    }
+
+    const reversedFuncs = reverseArray(funcs);
+
+    for(const func of reversedFuncs) {
+        codeWithGenricFuncs = codeWithGenricFuncs.replace("#GENERIC-FUNCTION#", func.total);
+    }
+
+    return { code: codeWithGenricFuncs, funcs: reversedFuncs };
+
+}
+
 export function ExecuteData(
     code: string,
     data: funcData[],
@@ -214,7 +231,12 @@ export function ExecuteData(
 ) {
     let i = 0;
 
-    if (reverse) data = reverseArray(data);
+    if (reverse) {
+        const { code: newCode, funcs } = Reverse(code, data);
+        code = newCode;
+        data = funcs;
+        scope[0].rest = code;
+    }
     while (i < data.length) {
         let d = data[i];
 
