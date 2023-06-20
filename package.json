@@ -72,5 +72,12 @@
   },
   "bin": {
     "aoijs": "./bin/index.mjs"
-  }
+  },
+  "files": [
+    "dist",
+    "bin",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ]
 }
