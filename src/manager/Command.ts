@@ -69,18 +69,7 @@ export class CommandManager {
                         // importing on windows
                         let command;
                         try {
-                            if (process.platform === "win32") {
-                                const fp = Path.join(
-                                    "file:///",
-                                    process.cwd(),
-                                    filePath,
-                                );
-                                command = await import(fp);
-                            } else {
-                                command = await import(
-                                    Path.join(process.cwd(), filePath)
-                                );
-                            }
+                            command = await this.loadFile(filePath);
                             if (Array.isArray(command.default)) {
                                 this.addMany(command.default);
                             } else this.add(command.default);
@@ -182,5 +171,21 @@ export class CommandManager {
                 });
             }
         }
+    }
+
+    async loadFile(filePath:string) {
+        let command;
+        if(!require) {
+            if (process.platform === "win32") {
+                const fp = Path.join("file:///", process.cwd(), filePath);
+                command = await import(fp);
+            } else {
+                command = await import(Path.join(process.cwd(), filePath));
+            }
+        } else {
+            command = require(filePath);
+        }
+
+        return command;
     }
 }
