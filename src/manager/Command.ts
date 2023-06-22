@@ -22,6 +22,10 @@ export class CommandManager {
     get types() {
         return ["basic", "interaction", "ready", "debug"];
     }
+
+    static cmdTypes() {
+        return ["basic", "interaction", "ready", "debug","component"];
+    }
     add(command: Optional<CommandOptions, "__path__">) {
         if (!command.name) throw new Error("Command name is required");
         if (!command.type) throw new Error("Command type is required");
