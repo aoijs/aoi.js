@@ -1,7 +1,7 @@
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
-    const [guildID = d.guild?.id, userID = d.author?.id, size = 4096, dynamic = 'true', format] = data.inside.splits;
+    const [guildID = d.guild?.id, userID = d.author?.id, size = 4096, dynamic = 'true', extension] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
@@ -12,7 +12,7 @@ module.exports = async d => {
     data.result = member.avatarURL({
         size: Number(size),
         dynamic: dynamic === 'true',
-        format
+        extension
     });
 
     return {
