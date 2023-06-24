@@ -15,7 +15,7 @@
     "createpack": "node src/pack.js",
     "lint": "eslint . --ext .ts --fix ",
     "buildStart": "npm run build && npm start",
-    "genmd": "node generators/readme.js",
+    "genmd": "node generators/readme.js"
   },
   "contributors": [
     "leref",
