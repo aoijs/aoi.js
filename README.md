@@ -133,7 +133,7 @@ A --> D[aoi.vsc-extension]
 A --> F[aoi.panel]
 A --> G[aoi.orms]
 A --> H[aoi.plugins]
-A --> I[aoiLuna]
+A --> I[zeneth]
 ```
 
 ## Contributing
