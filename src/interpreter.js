@@ -46,6 +46,7 @@ const Interpreter = async (
     sendMessage = false,
 ) => {
     try {
+                const start = performance.now();
         //defining vars//
         let code = command.code
             ?.replaceAll("\\]", "#LEFT#")
@@ -537,7 +538,7 @@ const Interpreter = async (
                 arrays = FuncData?.arrays;
             }
         }
-        const start = performance.now();
+
         const ended = (performance.now() - start).toFixed(3);
         embeds = JSON.parse(
             JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended),
