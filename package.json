@@ -16,7 +16,6 @@
     "lint": "eslint . --ext .ts --fix ",
     "buildStart": "npm run build && npm start",
     "genmd": "node generators/readme.js",
-    "install": "npm run build"
   },
   "contributors": [
     "leref",
