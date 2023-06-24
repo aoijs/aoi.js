@@ -1,4 +1,4 @@
-import { RawEmbedData } from "aoiluna";
+import { RawEmbedData } from "zeneth";
 import { parseString } from "../../../core/parsers/stringParser.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";

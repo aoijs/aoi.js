@@ -1,5 +1,4 @@
-
-import { Intents } from "aoiluna";
+import { Intents } from "zeneth";
 import { defaultCacheConfig } from "aoi.js";
 import dotenv from "dotenv";
 
@@ -9,8 +8,9 @@ export default {
     Client: {
         token: process.env.TOKEN,
         prefixes: "!",
-        intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
-        events: ['MessageCreate','Ready'],
+        intents:
+            Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
+        events: ["MessageCreate", "Ready"],
         caches: defaultCacheConfig(),
     },
 };

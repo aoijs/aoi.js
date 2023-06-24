@@ -1,5 +1,5 @@
 import { AoiClient } from "../structures/AoiClient.js";
-import { GatewayEventNames, Message, Snowflake } from "aoiluna";
+import { GatewayEventNames, Message, Snowflake } from "zeneth";
 import { isAutoFetchDataEnabled } from "../util/DapiHelper.js";
 import { AoiClientEvents } from "../typings/enums.js";
 export function onMessage(client: AoiClient) {

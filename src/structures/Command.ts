@@ -2,7 +2,7 @@ import { CommandOptions } from "../typings/interfaces.js";
 import { AsyncFunction, CommandTypes } from "../typings/types.js";
 import { Transpiler } from "../core/transpiler.js";
 import { AoiClient } from "./AoiClient.js";
-import { Snowflake } from "aoiluna";
+import { Snowflake } from "zeneth";
 export class Command {
     name: string;
     type: CommandTypes;
@@ -23,26 +23,42 @@ export class Command {
         this.executeAt = data.executeAt ?? "both";
         this.reverseRead = data.reverseRead ?? false;
 
-        for(const key in data) {
-            if(!["name", "type", "code", "aliases", "__path__", "executeAt", "reverseRead"].includes(key)) this[key] = data[key];
+        for (const key in data) {
+            if (
+                ![
+                    "name",
+                    "type",
+                    "code",
+                    "aliases",
+                    "__path__",
+                    "executeAt",
+                    "reverseRead",
+                ].includes(key)
+            )
+                this[key] = data[key];
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         if (this.code instanceof Function) this.__compiled__ = this.code;
         else {
             let chan: Snowflake | undefined | AsyncFunction;
-            if(this.channel) {
-                if(typeof this.channel === "string" && this.channel.startsWith("$")) {
+            if (this.channel) {
+                if (
+                    typeof this.channel === "string" &&
+                    this.channel.startsWith("$")
+                ) {
                     chan = Transpiler(this.channel, {
                         sendMessage: false,
-                        minify:true,
-                        customFunctions: client.managers.functions.functions.toJSON(),
+                        minify: true,
+                        customFunctions:
+                            client.managers.functions.functions.toJSON(),
                         scopeData: {
                             name: "GLOBAL_CHANNEL",
                         },
                         client,
                     }).func;
-                } else if(typeof this.channel === "string") chan = BigInt(this.channel);
+                } else if (typeof this.channel === "string")
+                    chan = BigInt(this.channel);
                 else chan = this.channel;
             }
             const func = Transpiler(this.code, {
@@ -52,9 +68,13 @@ export class Command {
                 customFunctions: client.managers.functions.functions.toJSON(),
                 client,
                 scopeData: {
-                    functions: typeof chan === "function" ? `${chan.toString()}`: undefined,
-                    useChannel: typeof chan === "function" ? "GLOBAL_CHANNEL()" : chan,
-                }
+                    functions:
+                        typeof chan === "function"
+                            ? `${chan.toString()}`
+                            : undefined,
+                    useChannel:
+                        typeof chan === "function" ? "GLOBAL_CHANNEL()" : chan,
+                },
             });
 
             this.__compiled__ = func.func;

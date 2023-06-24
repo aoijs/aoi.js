@@ -84,12 +84,10 @@ export function Transpiler(
             scope: res.scope,
         };
     try {
-        func = new Function(
-            "return " +
-                (uglify
-                    ? (<MinifyOutput>functionString).code
-                    : <string>functionString),
-        )() as AsyncFunction;
+        const strr = uglify
+            ? (<MinifyOutput>functionString).code
+            : <string>functionString;
+        func = eval(`const f = ${strr}; f`) as AsyncFunction;
     } catch (e) {
         throw new TranspilerError(e + "\n\n\n" + str);
     }

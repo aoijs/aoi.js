@@ -1,4 +1,4 @@
-import { Camelize, GatewayEventNames, GatewayReadyData } from "aoiluna";
+import { Camelize, GatewayEventNames, GatewayReadyData } from "zeneth";
 import { AoiClient } from "../index.js";
 
 export function onReady(client: AoiClient) {
@@ -7,7 +7,10 @@ export function onReady(client: AoiClient) {
     });
 }
 
-export async function ready(data: Camelize<GatewayReadyData>, client: AoiClient) {
+export async function ready(
+    data: Camelize<GatewayReadyData>,
+    client: AoiClient,
+) {
     await client.managers.commands.exec({
         type: "ready",
         data: {

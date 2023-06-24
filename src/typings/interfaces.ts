@@ -1,5 +1,11 @@
-import  StringObject  from "../core/structs/StringObject.js";
-import { Client, ClientOptions, GatewayEventNames, GroupConfigOptions, Snowflake } from "aoiluna";
+import StringObject from "../core/structs/StringObject.js";
+import {
+    Client,
+    ClientOptions,
+    GatewayEventNames,
+    GroupConfigOptions,
+    Snowflake,
+} from "zeneth";
 export interface TranspilerOptions {
     customFunctions?: Record<string, FunctionData>;
     sendMessage: boolean;
@@ -11,7 +17,7 @@ export interface TranspilerOptions {
         functions?: string;
         env?: string[];
         objects?: Record<string, StringObject>;
-        embedJs?:string[];
+        embedJs?: string[];
         useChannel?: Snowflake | string;
     };
     reverse?: boolean;
@@ -20,8 +26,13 @@ export interface TranspilerOptions {
     client: AoiClient;
 }
 
-import  Scope  from "../core/structs/Scope.js";
-import { AsyncFunction, CommandTypes, PluginType, autoFetchDataTypes } from "./types.js";
+import Scope from "../core/structs/Scope.js";
+import {
+    AsyncFunction,
+    CommandTypes,
+    PluginType,
+    autoFetchDataTypes,
+} from "./types.js";
 import { AoiClient } from "../index.js";
 
 export interface FunctionData {
@@ -45,12 +56,12 @@ export interface FunctionData {
     default: string[];
     description: string;
     version: string;
-    example:string;
+    example: string;
     extra?: unknown;
     code: (
         data: funcData,
         scope: Scope[],
-    ) => { code: string; scope: Scope[]; data?: funcData; }
+    ) => { code: string; scope: Scope[]; data?: funcData };
 }
 export interface PartialFunctionData extends FunctionData {
     total: string;
@@ -99,16 +110,14 @@ export interface TransformedGuild {
     stickersId: string[];
 }
 
-export interface AoiClientOptions extends ClientOptions
-{
+export interface AoiClientOptions extends ClientOptions {
     events: (keyof typeof GatewayEventNames)[];
     prefixes: string | string[];
     caches: Record<string, GroupConfigOptions>;
     autoFetchData?: autoFetchDataTypes[];
 }
 
-export interface CommandOptions
-{
+export interface CommandOptions {
     name: string;
     type: CommandTypes;
     code: string | AsyncFunction;
@@ -119,11 +128,10 @@ export interface CommandOptions
     [key: string]: unknown;
 }
 
-export interface TranspiledFuncData
-{
+export interface TranspiledFuncData {
     client: Client;
     bot: AoiClient;
-    [ key: string ]: unknown;
+    [key: string]: unknown;
 }
 
 export interface Plugin {

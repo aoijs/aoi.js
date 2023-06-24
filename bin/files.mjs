@@ -42,7 +42,7 @@ const bot = new Client( config.Client );
 await bot.managers.commands.load({ path: "./commands" });
         `,
         "config.js": `
-import { Intents } from "aoiluna";
+import { Intents } from "zeneth";
 import { defaultCacheConfig } from "aoi.js";
 import dotenv from "dotenv";
 
@@ -78,7 +78,7 @@ const bot = new Client( config.Client );
 })();
 `,
         "config.js": `
-const { Intents } = require("aoiluna");
+const { Intents } = require("zeneth");
 const { defaultCacheConfig } = require("aoi.js");
 const dotenv = require("dotenv");
 
