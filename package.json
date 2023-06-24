@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "7.0.0",
+  "version": "7.0.0-dev",
   "description": "A next generation package to create Discord Bots with built-in string functions.",
   "main": "./dist/cjs/index.js",
   "exports": {
