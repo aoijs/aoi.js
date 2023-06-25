@@ -19,7 +19,7 @@ export const $ping: FunctionData = {
 
         const ping = "__$DISCORD_DATA$__.client.ws.data.ping";
 
-        const res = escapeResult(`(${ping})`);
+        const res = escapeResult(`${ping}`);
         currentScope.update(res, data);
         return {
             code: res,
