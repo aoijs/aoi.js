@@ -69,7 +69,7 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".js")) {
+                    else if (stats.isFile() && file.endsWith(".js") && !file.endsWith(".template.js")) {
                         // importing on windows
                         let command;
                         try {
@@ -101,7 +101,7 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".aoi")) {
+                    else if (stats.isFile() && file.endsWith(".aoi") && !file.endsWith(".template.aoi")) {
                         const command = await readFile(filePath, "utf-8");
                         try {
                             const cmd = Bundler(command, this.#client).command;
