@@ -1,4 +1,4 @@
-import { Message } from "aoiluna";
+import { Message } from "zeneth";
 import { AoiClient } from "..";
 import { autoFetchDataTypes } from "../typings/types.js";
 
@@ -19,7 +19,7 @@ export function defaultCacheConfig() {
     return {
         messages: {
             class: "Message",
-            cacheFunction: (message: Message ) => !message.author.bot,
+            cacheFunction: (message: Message) => !message.author.bot,
         },
         channels: {
             class: "Channel",

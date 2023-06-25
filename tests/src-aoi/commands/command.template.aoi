@@ -2,5 +2,7 @@
 [exportCommand: CommandType] {
     name: CommandName
     aliases: CommandAliases
-    code: CommandCode
+    code: @{
+        CommandCode
+    }
 }

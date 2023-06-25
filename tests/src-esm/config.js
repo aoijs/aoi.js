@@ -1,5 +1,5 @@
 
-import { Intents } from "aoiluna";
+import { Intents } from "zeneth";
 import { defaultCacheConfig } from "aoi.js";
 import dotenv from "dotenv";
 

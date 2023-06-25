@@ -1,4 +1,9 @@
-import { Client, createCacheManager } from "aoiluna";
+import {
+    Client,
+    CreateApplicationCommandPayload,
+    Snowflake,
+    createCacheManager,
+} from "zeneth";
 import { AoiClientOptions, CommandOptions } from "../typings/interfaces.js";
 import { CommandManager } from "../manager/Command.js";
 import { onMessage } from "../events/messageCreate.js";
@@ -79,6 +84,16 @@ class AoiClient {
     on(event: AoiClientEvents, func: (...args: unknown[]) => void) {
         if (!this.__on__[event]) this.__on__[event] = [];
         this.__on__[event]?.push(func);
+    }
+
+    createApplicationCommand(
+        globalOrGuldId: "global" | Snowflake,
+        data: CreateApplicationCommandPayload,
+    ) {
+        if (globalOrGuldId === "global") {
+            return this.client.createGlobalApplicationCommand(data);
+        }
+        return this.client.createGuildApplicationCommand(globalOrGuldId, data);
     }
 }
 

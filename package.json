@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "7.0.0",
+  "version": "7.0.0-dev",
   "description": "A next generation package to create Discord Bots with built-in string functions.",
   "main": "./dist/cjs/index.js",
   "exports": {
@@ -59,8 +59,7 @@
     "node": ">=18.x"
   },
   "dependencies": {
-    "@akarui/structures": "github:akaruidevelopment/structures#v2",
-    "aoiluna": "github:akaruidevelopment/aoiluna#main",
+    "@akarui/structures": "^2.0.1",
     "boxen": "^7.1.0",
     "chalk": "^5.2.0",
     "cli-spinners": "^2.9.0",
@@ -68,16 +67,17 @@
     "ora": "^6.3.0",
     "uglify-js": "^3.17.4",
     "undici": "^5.21.0",
-    "ws": "^8.13.0"
+    "ws": "^8.13.0",
+    "zeneth": "^0.0.1"
   },
   "bin": {
     "aoijs": "./bin/index.mjs"
   },
   "files": [
-    "dist",
     "bin",
+    "dist",
+    "README.md",
     "LICENSE",
-    "package.json",
-    "README.md"
+    "package.json"
   ]
 }

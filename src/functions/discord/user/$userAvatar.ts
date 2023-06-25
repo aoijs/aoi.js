@@ -51,9 +51,9 @@ export const $userAvatar: FunctionData = {
 
         const [id,size=1024,dynamic=true,format="'png'"] = data.splits;
 
-        const avatar = `(await __$DISCORD_DATA$__.bot.util.getUser(${id}))?.avatarUrl({size: ${size}, dynamic: ${dynamic}, format: ${format} })`;
+        const avatar = `(await __$DISCORD_DATA$__.bot.util.getUser(${id}))?.avatarUrl({size: ${size}, dynamic: ${dynamic}, format: ${format} }`;
 
-        const res = escapeResult(`(${avatar})`);
+        const res = escapeResult(`${avatar}`);
         currentScope.update(res, data);
         return {
             code: res,

@@ -1,4 +1,4 @@
-import { RawEmbedData } from "aoiluna";
+import { RawEmbedData } from "zeneth";
 import { parseString } from "../../../core/parsers/stringParser.js";
 import Scope from "../../../core/structs/Scope.js";
 import { FunctionData, funcData } from "../../../typings/interfaces.js";
@@ -53,7 +53,13 @@ export const $description: FunctionData = {
             };
 
             currentScope.setters += escapeResult(
+<<<<<<< HEAD
                 `${escapeVars(`${currentScope.name}_embeds`)}[${index}] = { fields: [] };`
+=======
+                `${escapeVars(
+                    currentScope.name + "_embeds",
+                )}[${index}] = { fields: [] };`,
+>>>>>>> d679aa85ca16eee7375524de8ce607c9ee85db14
             );
         }
 
@@ -61,9 +67,15 @@ export const $description: FunctionData = {
         currentScope.embeds[index] = embed;
 
         const res = escapeResult(
+<<<<<<< HEAD
             `${escapeVars(`${currentScope.name}_embeds`)}[${index}].description = ${parseString(
                 actualDescription,
             )};`,
+=======
+            `${escapeVars(
+                currentScope.name + "_embeds",
+            )}[${index}].description = ${parseString(actualDescription)};`,
+>>>>>>> d679aa85ca16eee7375524de8ce607c9ee85db14
         );
 
         currentScope.update(res, data);

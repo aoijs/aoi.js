@@ -22,6 +22,10 @@ export class CommandManager {
     get types() {
         return ["basic", "interaction", "ready", "debug"];
     }
+
+    static cmdTypes() {
+        return ["basic", "interaction", "ready", "debug", "component"];
+    }
     add(command: Optional<CommandOptions, "__path__">) {
         if (!command.name) throw new Error("Command name is required");
         if (!command.type) throw new Error("Command type is required");
@@ -65,22 +69,15 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".js")) {
+                    else if (
+                        stats.isFile() &&
+                        file.endsWith(".js") &&
+                        !file.endsWith(".template.js")
+                    ) {
                         // importing on windows
                         let command;
                         try {
-                            if (process.platform === "win32") {
-                                const fp = Path.join(
-                                    "file:///",
-                                    process.cwd(),
-                                    filePath,
-                                );
-                                command = await import(fp);
-                            } else {
-                                command = await import(
-                                    Path.join(process.cwd(), filePath)
-                                );
-                            }
+                            command = await this.loadFile(filePath);
                             if (Array.isArray(command.default)) {
                                 this.addMany(command.default);
                             } else this.add(command.default);
@@ -108,7 +105,11 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".aoi")) {
+                    else if (
+                        stats.isFile() &&
+                        file.endsWith(".aoi") &&
+                        !file.endsWith(".template.aoi")
+                    ) {
                         const command = await readFile(filePath, "utf-8");
                         try {
                             const cmd = Bundler(command, this.#client).command;
@@ -182,5 +183,21 @@ export class CommandManager {
                 });
             }
         }
+    }
+
+    async loadFile(filePath: string) {
+        let command;
+        try {
+            command = require(filePath);
+        } catch {
+            if (process.platform === "win32") {
+                const fp = Path.join("file:///", process.cwd(), filePath);
+                command = await import(fp);
+            } else {
+                command = await import(Path.join(process.cwd(), filePath));
+            }
+        }
+
+        return command;
     }
 }

@@ -1,5 +1,5 @@
 
-const { Intents } = require("aoiluna");
+const { Intents } = require("zeneth");
 const { defaultCacheConfig } = require("aoi.js");
 const dotenv = require("dotenv");
 
