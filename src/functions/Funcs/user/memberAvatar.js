@@ -11,7 +11,7 @@ module.exports = async d => {
 
     data.result = member.avatarURL({
         size: Number(size),
-        dynamic: dynamic === 'true',
+        forceStatic: dynamic === 'false',
         extension
     });
 
