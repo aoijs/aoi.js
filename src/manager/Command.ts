@@ -24,7 +24,7 @@ export class CommandManager {
     }
 
     static cmdTypes() {
-        return ["basic", "interaction", "ready", "debug","component"];
+        return ["basic", "interaction", "ready", "debug", "component"];
     }
     add(command: Optional<CommandOptions, "__path__">) {
         if (!command.name) throw new Error("Command name is required");
@@ -69,7 +69,11 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".js") && !file.endsWith(".template.js")) {
+                    else if (
+                        stats.isFile() &&
+                        file.endsWith(".js") &&
+                        !file.endsWith(".template.js")
+                    ) {
                         // importing on windows
                         let command;
                         try {
@@ -101,7 +105,11 @@ export class CommandManager {
                     const stats = await fs.stat(filePath);
                     if (stats.isDirectory())
                         await this.load({ path: filePath, usingAoi });
-                    else if (stats.isFile() && file.endsWith(".aoi") && !file.endsWith(".template.aoi")) {
+                    else if (
+                        stats.isFile() &&
+                        file.endsWith(".aoi") &&
+                        !file.endsWith(".template.aoi")
+                    ) {
                         const command = await readFile(filePath, "utf-8");
                         try {
                             const cmd = Bundler(command, this.#client).command;
@@ -177,17 +185,17 @@ export class CommandManager {
         }
     }
 
-    async loadFile(filePath:string) {
+    async loadFile(filePath: string) {
         let command;
-        if(!require) {
+        try {
+            command = require(filePath);
+        } catch {
             if (process.platform === "win32") {
                 const fp = Path.join("file:///", process.cwd(), filePath);
                 command = await import(fp);
             } else {
                 command = await import(Path.join(process.cwd(), filePath));
             }
-        } else {
-            command = require(filePath);
         }
 
         return command;
