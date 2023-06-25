@@ -1,8 +1,8 @@
 
-const { Client } = require("aoi.js");
+const { AoiClient } = require("aoi.js");
 const config = require("./config.js");
 
-const bot = new Client( config.Client );
+const bot = new AoiClient( config.Client );
 
 (async () => {
     await bot.managers.commands.load({ path: "./commands", usingAoi: true });

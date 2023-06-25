@@ -34,10 +34,10 @@
 const Structure = {
     esm: {
         "index.js": `
-import { Client } from "aoi.js";
+import { AoiClient } from "aoi.js";
 import config from "./config.js";
 
-const bot = new Client( config.Client );
+const bot = new AoiClient( config.Client );
 
 await bot.managers.commands.load({ path: "./commands" });
         `,
@@ -68,10 +68,10 @@ export default {
     },
     cjs: {
         "index.js": `
-const { Client } = require("aoi.js");
+const { AoiClient } = require("aoi.js");
 const config = require("./config.js");
 
-const bot = new Client( config.Client );
+const bot = new AoiClient( config.Client );
 
 (async () => {
     await bot.managers.commands.load({ path: "./commands" });
@@ -105,20 +105,20 @@ module.exports = {
     aoi: {
         esm: {
             "index.js": `
-import { Client } from "aoi.js";
+import { AoiClient } from "aoi.js";
 import config from "./config.js";
 
-const bot = new Client( config.Client );
+const bot = new AoiClient( config.Client );
 
 await bot.managers.commands.load({ path: "./commands", usingAoi: true });
         `,
         },
         cjs: {
             "index.js": `
-const { Client } = require("aoi.js");
+const { AoiClient } = require("aoi.js");
 const config = require("./config.js");
 
-const bot = new Client( config.Client );
+const bot = new AoiClient( config.Client );
 
 (async () => {
     await bot.managers.commands.load({ path: "./commands", usingAoi: true });
@@ -129,7 +129,9 @@ const bot = new Client( config.Client );
 [exportCommand: CommandType] {
     name: CommandName
     aliases: CommandAliases
-    code: CommandCode
+    code: @{
+        CommandCode
+    }
 }`,
     },
 };
