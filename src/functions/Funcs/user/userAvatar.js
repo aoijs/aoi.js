@@ -8,7 +8,7 @@ module.exports = async d => {
 
     data.result = user.displayAvatarURL({
         size: Number(size),
-        dynamic: dynamic === 'true',
+        forceStatic: dynamic === 'false',
         extension
     });
 
