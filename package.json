@@ -74,6 +74,7 @@
     "aoijs": "./bin/index.mjs"
   },
   "files": [
+    "bin",
     "dist",
     "README.md",
     "LICENSE",
