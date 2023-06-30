@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [userID, guildID = d.guild?.id, reason] = data.inside.splits;
+    const [guildID = d.guild?.id, userID, reason] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
@@ -13,7 +13,6 @@ module.exports = async d => {
     member.kick(reason?.addBrackets()).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Kick With Reason: ' + e)
     });
-    ;
 
     return {
         code: d.util.setCode(data)
