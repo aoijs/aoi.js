@@ -79,7 +79,7 @@ const bot = new AoiClient({
     events: ["onMessage", "onInteractionCreate"],
     database: {
         type: "aoi.db",
-        db: require("aoi.db"),
+        db: require("@akarui/aoi.db"),
         tables: ["main"],
         path: "./database/",
         extraOptions: {
