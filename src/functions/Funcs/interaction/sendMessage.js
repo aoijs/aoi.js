@@ -6,7 +6,7 @@ module.exports = async d => {
 
     let [message, returnId = "false"] = inside.splits;
 
-    message = await d.util.errorParser( message, d );
+    message = await d.util.errorParser(message, d);
     const msg = await d.aoiError.makeMessageError(d.client, d.channel, message.data ?? message, message.options, d);
 
 

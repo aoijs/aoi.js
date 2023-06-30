@@ -10,7 +10,7 @@ module.exports = async d => {
     msg = await d.util.errorParser(msg, d);
 
     try {
-        data.result = await d.aoiError.makeMessageError(d.client, user, msg.data?? msg, msg.options, d);
+        data.result = await d.aoiError.makeMessageError(d.client, user, msg.data ?? msg, msg.options, d);
     } catch (err) {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Send Dm With Reason: ' + err);
     }

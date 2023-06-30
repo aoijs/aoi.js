@@ -11,8 +11,8 @@ module.exports = async (d) => {
     const text = fields[i + 1].addBrackets();
     const iconURL = fields[i + 2]?.addBrackets();
 
-    if ( !d.embeds[ index ] ) d.embeds[ index ] = new d.embed();
-    
+    if (!d.embeds[index]) d.embeds[index] = new d.embed();
+
     d.embeds[index].setFooter({
         text,
         iconURL,

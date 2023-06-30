@@ -9,10 +9,10 @@ module.exports = async (d) => {
     const index = Number(fields[i] ?? 1) - 1;
     const timestamp = fields[i + 1] ?? Date.now();
 
-    if ( !d.embeds[ index ] ) d.embeds[ index ] = new d.embed();
-    
-    d.embeds[ index ].setTimestamp( timestamp );
-    
+    if (!d.embeds[index]) d.embeds[index] = new d.embed();
+
+    d.embeds[index].setTimestamp(timestamp);
+
     return {
         code: d.util.setCode(data),
         embeds: d.embeds,

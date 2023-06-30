@@ -1,4 +1,4 @@
-const { ApplicationCommandPermissionType } = require("discord.js");
+const {ApplicationCommandPermissionType} = require("discord.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);

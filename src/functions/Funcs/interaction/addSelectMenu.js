@@ -59,7 +59,7 @@ module.exports = async (d) => {
         const description = option.shift().addBrackets();
         const value = option.shift().addBrackets();
         const def = option.shift()?.addBrackets() === "true";
-        let emoji = option.join( ":" )?.addBrackets();
+        let emoji = option.join(":")?.addBrackets();
         emoji = emoji === '' ? undefined : emoji;
         components.addOptions({label, description, value, default: def, emoji});
     }

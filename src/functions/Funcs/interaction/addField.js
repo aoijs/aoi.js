@@ -1,7 +1,7 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    if ( data.err ) return d.error( data.err );
-    
+    if (data.err) return d.error(data.err);
+
     const fields = data.inside.splits;
     let i = 0;
 
