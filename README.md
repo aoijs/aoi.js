@@ -10,7 +10,7 @@
 <div align="center">
     <a href="https://aoi.js.org/">Home Page</a> |
     <a href="https://discord.gg/HMUfMXDQsV">Discord</a> |
-    <a href="https://aoi.js.org/exampkes.">Examples</a> |
+    <a href="https://aoi.js.org/wikis.">Examples</a> |
     <a href="https://aoi.js.org/docs/">Documentation</a>
 </div>
 </div>
@@ -51,7 +51,7 @@ const bot = new AoiClient({
     events: ["onMessage"],
     database: {
         type: "aoi.db",
-        db: require("aoi.db"),
+        db: require("@akarui/aoi.db"),
         tables: ["main"],
         path: "./database/",
         extraOptions: {
