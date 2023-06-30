@@ -254,7 +254,7 @@ class BaseClient extends Discord.Client {
             );
         } else {
             this.db = new AoijsAPI(
-                options?.database?.db || require("aoi.db"),
+                options?.database?.db || require("@akarui/aoi.db"),
                 {
                     path: options?.database?.path || "./database/",
                     tables: options?.database?.tables || ["main"],
