@@ -1,43 +1,58 @@
+<p align="center">
+  <a href="https://aoi.js.org">
+    <img width="300" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-banner.png?raw=true" alt="aoijs">
+  </a>
+</p>
+
+<div align="center">
+  <b>The most powerful string package to create a simple and fast Discord Bot.</b>
+</div>
+
+---
+
 <br/>
 
-<div align="center" style="margin: 30px;">
-<a href="https://aoi.js.org/">
-  <img src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-banner.png?raw=true"   style="width:300px;" align="center"  alt="aoi.js"/>
-</a>
-<br />
-<br />
-
-<div align="center">
-    <a href="https://aoi.js.org/">Home Page</a> |
-    <a href="https://discord.gg/HMUfMXDQsV">Discord</a> |
-    <a href="https://aoi.js.org/wikis.">Examples</a> |
-    <a href="https://aoi.js.org/docs/">Documentation</a>
-</div>
-</div>
-<br />
-
-<div align="center"><strong>Build a fast and powerful Discord bot with a comprehensive string package.</strong><br>
-
-<br />
-
-</div>
-
 <div align="center">
 
-[![Discord](https://img.shields.io/discord/773352845738115102.svg?label=&logo=discord&logoColor=ffffff&color=5865F2&labelColor=5865F2)](https://discord.gg/HMUfMXDQsV)
-[![NPM](https://img.shields.io/npm/v/aoi.js.svg)](https://www.npmjs.com/package/aoi.js)
-[![Downloads](https://img.shields.io/npm/dt/aoi.js.svg)](https://www.npmjs.com/package/aoi.js)
-[![License](https://img.shields.io/npm/l/aoi.js.svg)](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/LICENSE)
-[![Stars](https://img.shields.io/github/stars/AkaruiDevelopment/aoi.js.svg)](https://github.com/AkaruiDevelopment/aoi.js/stargazers)
+[![NPM downloads][download-image]][download-url] &nbsp; &nbsp;
+[![AoiJS Server][aoijs-server]][aoijs-server-url] &nbsp; &nbsp;
+[![NPM version][npm-image]][npm-url] &nbsp; &nbsp;
+![License](https://img.shields.io/npm/l/aoi.js) &nbsp; &nbsp;
+![Website](https://img.shields.io/website?url=https%3A%2F%2Faoi.js.org&label=aoi.js.org) &nbsp; &nbsp;
+
+[npm-image]: https://img.shields.io/npm/v/aoi.js.svg?color=42cfff
+[npm-url]: https://npmjs.org/package/aoi.js
+[download-image]: https://img.shields.io/npm/dt/aoi.js.svg?color=3182b0
+[download-url]: https://npmjs.org/package/aoi.js
+[aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
+[aoijs-server-url]: https://discord.gg/HMUfMXDQsV
+
+  </div>
+
+<br />
+
+<div align = "center">
+
+**[ Documentation ](https://aoi.js.org/docs/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ Website ](https://aoi.js.org/)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
 
 </div>
 
-## What is aoi.js?
+---
 
-aoi.js is a JavaScript library that is designed to make it easy to build Discord bots. It is open-source and free to
-use, and provides a simple, easy-to-use interface for interacting with the Discord API and handling events. aoi.js is
-suitable for beginners who are new to building bots, as well as experienced developers who want to save time and
-streamline their workflow.
+## About
+
+aoi.js is a JavaScript library that is designed to make it easy to build Discord bots.
+
+It is open-source and free to use, and provides a simple, easy-to-use interface for interacting with the Discord API and handling events.
+
+aoi.js is suitable for beginners who are new to building bots, as well as experienced developers who want to save time and streamline their workflow.
+
+## Features
+
+-   **600+ pre-built functions** to work around
+-   **Built-in [custom local database](https://github.com/akaruidevelopment/aoi.db)** as well as support popular databases like mongodb, sql etc;
+-   **Extensions to support** aoi.music, aoi.panel, etc;
+-   **Easy to use** and **beginner friendly** with a simple syntax `$`;
 
 ## Setup
 
