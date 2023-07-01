@@ -46,7 +46,7 @@ const Interpreter = async (
     sendMessage = false,
 ) => {
     try {
-                const start = performance.now();
+        const start = performance.now();
         //defining vars//
         let code = command.code
             ?.replaceAll("\\]", "#LEFT#")
