@@ -4,7 +4,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, msg = "", place = d.guild?.id, returnId = "false", error] =
+    const [name, msg = "", place = d.guild?.id, returnID = "false", error] =
         data.inside.splits;
 
     const createAt =
@@ -72,7 +72,7 @@ module.exports = async (d) => {
             channel.id,
         );
 
-        data.result = returnId === "true" ? channel?.id : undefined;
+        data.result = returnID === "true" ? channel?.id : undefined;
     } else {
         const channel = await createAt
             .children.create( { name: name.addBrackets() } )
@@ -128,7 +128,7 @@ module.exports = async (d) => {
             channel.id,
         );
 
-        data.result = returnId === "true" ? channel?.id : undefined;
+        data.result = returnID === "true" ? channel?.id : undefined;
     }
 
     return {

@@ -4,7 +4,7 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [channelID, name, archive = "MAX", type = "public", startMessage, returnId = "false"] = inside.splits;
+    let [channelID, name, archive = "MAX", type = "public", startMessage, returnID = "false"] = inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, "channel", {inside});
@@ -23,6 +23,6 @@ module.exports = async d => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result: returnId === "true" ? result?.id : ""})
+        code: d.util.setCode({function: d.func, code, inside, result: returnID === "true" ? result?.id : ""})
     }
 }
