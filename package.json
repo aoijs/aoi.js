@@ -1,7 +1,7 @@
 {
   "name": "aoi.js",
   "version": "6.3.0",
-  "description": "aoi.js - A powerful package to create Discord Bots with built-in string functions.",
+  "description": "A powerful package to create Discord Bots with built-in string functions.",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
   "scripts": {
