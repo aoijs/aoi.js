@@ -107,8 +107,6 @@ bot.interactionCommand({
 
 [Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
 
-## Our ♥️ Contributors
+## License
 
-<a href="https://github.com/Akaruidevelopment/aoi.js/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AkaruiDevelopment/aoi.js"  alt="aoi.js-contributors"/>
-</a>
+aoi.js is licensed under the [Apache License 2.0](./LICENSE).
