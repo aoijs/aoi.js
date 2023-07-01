@@ -9,6 +9,7 @@ const {CheckCondition} = require("./utils/helpers/checkCondition.js");
 const {mustEscape} = require("./utils/helpers/mustEscape.js");
 const {Command} = require("./classes/Commands.js");
 const PATH = require("path");
+const {deprecate} = require("util");
 /**
  * @param  {import('./classes/AoiClient.js')} client
  * @param  {Discord.Message | {
@@ -112,6 +113,7 @@ const Interpreter = async (
             functions: command.functions,
         };
         if (command["$if"] === "old") {
+            deprecate(() => {}, "Using $if: old is deprecated. Use $if")();
             code = (
                 await IF({
                     client,
@@ -177,7 +179,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`AoiError: ${this.func}: Invalid Usage (line : ${funcLine})\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${this.func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
@@ -294,7 +296,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
@@ -371,7 +373,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`AoiError: ${func}: Invalid Usage (line : ${funcLine})\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
