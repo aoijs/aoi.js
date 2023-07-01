@@ -1,10 +1,12 @@
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
-    const [roleId, newPosition, guildID = d.guild?.id] = data.inside.splits;
+    const [guildID = d.guild?.id, roleID, newPosition] = data.inside.splits;
+
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
-    const role = await guild.roles.fetch(roleId);
+
+    const role = await guild.roles.fetch(roleID);
     if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
 
     await role.setPosition(newPosition).catch((err) => {
@@ -15,4 +17,3 @@ module.exports = async d => {
         code: d.util.setCode(data)
     }
 }
-//Usage: $setRolePosition[role id, new position, guild id(optional)]

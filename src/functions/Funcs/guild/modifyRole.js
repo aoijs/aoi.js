@@ -4,13 +4,13 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildID, roleId, ...roleDatas] = data.inside.splits;
+    const [guildID, roleID, ...roleDatas] = data.inside.splits;
     let RoleData;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-    const role = await guild.roles.fetch(roleId).catch(e => undefined);
+    const role = await guild.roles.fetch(roleID).catch(e => undefined);
     if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
 
     if (roleDatas.length === 1) {

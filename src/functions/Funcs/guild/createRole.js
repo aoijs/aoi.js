@@ -5,7 +5,7 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) d.error(err);
 
-    let [guildID, returnId = "false", name, color, hoist = "false", position, mentionable = "false", ...permissions] = inside.splits;
+    let [guildID, name, color, position, icon, hoist = "false", unicodeEmoji, mentionable = "false", returnId = "false", reason, ...permissions] = inside.splits;
 
     const guild = await d.util.getGuild(d, guildID === "" ? d.guild.id : guildID)
     if (!guild) return d.aoiError.fnError(d, "guild", {inside});
