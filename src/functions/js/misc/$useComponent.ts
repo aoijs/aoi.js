@@ -43,17 +43,7 @@ export const $useComponent: FunctionData = {
         const obj = parseStringObject(actualRestData, currentObj);
 
         const res= escapeResult(`
-        await (async()=>{
-          const Cmp_${name} = await __$Discord_Data$__.bot.executeComponent("${name}",{
-            ...__$Discord_Data$__,
-            ...${obj.solve()}
-          };
-          if(!Cmp_${name}.success) throw new Error("Sample Error",{
-            component: "${name}",
-            success: Cmp_${name}.success,
-          });
-          return Cmp_${name}.data;
-        })().catch((e)=>{throw new Error(e.message);})
+         ${currentScope.client.returnComponent(name,obj.solve())}
           `
         );
 

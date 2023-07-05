@@ -4,6 +4,7 @@ import FUNCDATA from "../functions/index.js";
 import { funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
 import { StringObject, parseStringObject } from "../index.js";
+import { Command } from "../structures/Command.js";
 export function areBracketsBalanced(code: string) {
     const leftbracket = /\[/g;
     const rightbracket = /\]/g;
@@ -94,6 +95,7 @@ export function getFunctionData(
     code: string,
     func: string,
     functions: string[],
+    command?:Command,
 ): funcData {
     const FuncD = FUNCDATA[func];
     const reg = new RegExp(`${func.replace("$", "\\$")}`, "i");
@@ -109,11 +111,19 @@ export function getFunctionData(
     let rawTotal = "";
     // eslint-disable-next-line no-constant-condition
     while (true) {
+        if(i >= code.length) break;
         if (!FuncD?.brackets && !code.slice(func.length).startsWith("[")) {
             break;
         }
         if (!FuncD?.optional && !code.slice(func.length).startsWith("[")) {
-            throw new TranspilerError(`${func}: Required Brackets`);
+            throw new TranspilerError("Function requires brackets",{
+                function: {
+                    name: func,
+                    code: func,
+                },
+                cmd: command?.name,
+                path: command?.__path__,
+            });
         }
         if (
             areBracketsBalanced(code) &&
@@ -122,11 +132,11 @@ export function getFunctionData(
             break;
 
         if (rightCount === leftCount && rightCount !== 0) break;
-        if (!areBracketsBalanced(code)) {
-            throw new TranspilerError(
-                "Brackets are not balanced in code:\n\n" + code,
-            );
-        }
+        // if (!areBracketsBalanced(code)) {
+        //     throw new TranspilerError(
+        //         "Brackets are not balanced in code:\n\n" + code,
+        //     );
+        // }
         if (code.slice(func.length)[0] !== "[") {
             break;
         }
@@ -136,6 +146,15 @@ export function getFunctionData(
         i++;
     }
     if (rawTotal === "") rawTotal = func;
+    if (!areBracketsBalanced(rawTotal) && func !== "$EXECUTEMAINCODEFUNCTION")
+        throw new TranspilerError("Brackets are not balanced", {
+            function: {
+                name: func,
+                code: rawTotal,
+            },
+            cmd: command?.name,
+            path: command?.__path__,
+        });
     const funcs = [];
     let inside =
         rawTotal.endsWith("]") && rawTotal.startsWith(`${func}[`)

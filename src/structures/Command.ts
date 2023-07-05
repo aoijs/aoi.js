@@ -73,7 +73,7 @@ export class Command {
                             ? `${chan.toString()}`
                             : undefined,
                     useChannel:
-                        typeof chan === "function" ? "GLOBAL_CHANNEL()" : chan,
+                        typeof chan === "function" ? `${chan.name}()` : chan,
                 },
             });
 

@@ -24,6 +24,7 @@ export interface TranspilerOptions {
     minify?: boolean;
     parsedStringOnly?: boolean;
     client: AoiClient;
+    command?: Command;
 }
 
 import Scope from "../core/structs/Scope.js";
@@ -34,6 +35,7 @@ import {
     autoFetchDataTypes,
 } from "./types.js";
 import { AoiClient } from "../index.js";
+import { Command } from "../structures/Command.js";
 
 export interface FunctionData {
     name: string;

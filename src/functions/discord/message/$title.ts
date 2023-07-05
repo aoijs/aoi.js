@@ -68,6 +68,8 @@ export const $title: FunctionData = {
             )}[${index}].title = ${parseString(actualTitle)};`,
         );
 
+        currentScope.update(res, data);
+
         return {
             code: res,
             scope,

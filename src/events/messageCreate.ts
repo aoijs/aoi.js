@@ -36,7 +36,7 @@ export async function messageCreate(message: Message, client: AoiClient) {
                     isAutoFetchDataEnabled("guild", client)
                         ? await client.client.getGuild(
                               <Snowflake>message.guildId,
-                          )
+                        )
                         : { id: message.guildId, fetched: false },
                 author: message.author,
                 client: client.client,

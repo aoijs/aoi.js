@@ -43,6 +43,12 @@ export const $interactionModal: FunctionData = {
         )
             throw new TranspilerError(
                 `${data.name} requires a message or content`,
+                {
+                    function: {
+                        name: data.name,
+                        code: data.total,
+                    },
+                }
             );
 
         let msgExecute;

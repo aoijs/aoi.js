@@ -37,14 +37,14 @@ export async function interactionCreate(
                     isAutoFetchDataEnabled("channel", client)
                         ? await client.client.getChannel(
                               interaction.channelId as Snowflake,
-                          )
+                        )
                         : { id: interaction.channelId, fetched: false },
                 guild:
                     client.cache?.guilds?.get(interaction.guildId) ??
                     isAutoFetchDataEnabled("guild", client)
                         ? await client.client.getGuild(
                               interaction.guildId as Snowflake,
-                          )
+                        )
                         : { id: interaction.guildId, fetched: false },
                 author: interaction.user,
                 member: interaction.member,
@@ -60,13 +60,13 @@ export async function interactionCreate(
 
 function getCommandName(interaction: Interaction) {
     switch (interaction.type) {
-        case InteractionTypes.ApplicationCommand:
-            return interaction.data.name;
-        case InteractionTypes.MessageComponent:
-            return interaction.customId as string;
-        case InteractionTypes.ApplicationCommandAutocomplete:
-            return interaction.data.name;
-        default:
-            return undefined;
+    case InteractionTypes.ApplicationCommand:
+        return interaction.data.name;
+    case InteractionTypes.MessageComponent:
+        return interaction.customId as string;
+    case InteractionTypes.ApplicationCommandAutocomplete:
+        return interaction.data.name;
+    default:
+        return undefined;
     }
 }

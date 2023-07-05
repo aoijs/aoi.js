@@ -12,6 +12,8 @@ import { FunctionManager } from "../manager/Function.js";
 import { AoiClientProps, CommandTypes } from "../typings/types.js";
 import { AoiClientEvents } from "../typings/enums.js";
 import PluginManager from "../manager/Plugin.js";
+import { onInteraction } from "../events/interactionCreate.js";
+import { onReady } from "../events/ready.js";
 
 interface AoiClient extends AoiClientProps {
     client: Client;
@@ -42,7 +44,19 @@ class AoiClient {
     }
     #bindEvents() {
         for (const event of this.options.events)
-            if (event === "MessageCreate") onMessage(this);
+            switch (event) {
+            case "MessageCreate":
+                onMessage(this);
+                break;
+            case "InteractionCreate":
+                onInteraction(this);
+                break;
+            case "Ready":
+                onReady(this);
+                break;
+            default:
+                break;
+            }
     }
     #bindCommands() {
         const cmdTypes = this.managers.commands.types as CommandTypes[];
@@ -94,6 +108,16 @@ class AoiClient {
             return this.client.createGlobalApplicationCommand(data);
         }
         return this.client.createGuildApplicationCommand(globalOrGuldId, data);
+    }
+
+    returnComponent(name: string, dataString:string) {
+        const component = this.managers.commands.component.get(name);
+        if (!component) throw new Error(`Component ${name} not found`);
+        const func = component.__compiled__.toString();
+        return `
+${dataString};
+${func}
+`;
     }
 }
 

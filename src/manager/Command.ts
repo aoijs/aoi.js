@@ -184,7 +184,6 @@ export class CommandManager {
             }
         }
     }
-
     async loadFile(filePath: string) {
         let command;
         try {
