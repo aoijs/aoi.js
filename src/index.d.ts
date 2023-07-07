@@ -87,12 +87,12 @@ declare module "aoi.js" {
         cache: CacheOptions;
         aoiLogs?: boolean;
         aoiWarning?: boolean;
+        aoiAutoUpdate?: boolean;
         plugins?: Array<string>;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: EventOptions;
         disableFunctions?: Array<string>;
-        AoiAutoUpdate?: boolean;
     };
 
     interface BaseCommand {
