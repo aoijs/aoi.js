@@ -182,7 +182,7 @@ class AoiError {
      */
     static functionErrorResolve(d, type, data, message) {
         let errorData = {
-            Function: `\`${d.command.codeLines}\``,
+            Function: `\`${d.func}\``,
             Command: `\`${d.command.name}\``,
             Version: require("../../package.json").version,
         };
