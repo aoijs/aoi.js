@@ -6,7 +6,7 @@ module.exports = async ( message,client, db) => {
         if (
             (!options.respondToBots &&
                 (message.webhookId || message.author.bot)) ||
-            (options.guildOnly && message.channel.type === Util.channelTypes.Dm)
+            (options.guildOnly && message.channel.type === Util.channelTypes.DM)
         )
             return;
     }
@@ -15,7 +15,7 @@ module.exports = async ( message,client, db) => {
         .filter((c) => c.nonPrefixed);
     if (!commands.length) return;
     for (const cmd of commands) {
-        if (cmd.dmOnly && message.channel.type !== Util.channelTypes.Dm)
+        if (cmd.dmOnly && message.channel.type !== Util.channelTypes.DM)
             continue;
         if (cmd.name.includes("$")) {
             cmd.name = (

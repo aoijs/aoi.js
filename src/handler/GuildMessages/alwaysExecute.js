@@ -6,7 +6,7 @@ module.exports = async ( message,client, db) => {
         if (
             (!options.respondToBots &&
                 (message.webhookId || message.author.bot)) ||
-            (options.guildOnly && message.channel.type === Util.channelTypes.Dm)
+            (options.guildOnly && message.channel.type === Util.channelTypes.DM)
         )
             return;
     }
@@ -15,7 +15,7 @@ module.exports = async ( message,client, db) => {
         .filter((c) => c.name === "$alwaysExecute");
     if (!commands.length) return;
     commands.map(async (command) => {
-        if (command.dmOnly && message.channel.type !== Util.channelTypes.Dm)
+        if (command.dmOnly && message.channel.type !== Util.channelTypes.DM)
             return;
         await Interpreter(
             client,
