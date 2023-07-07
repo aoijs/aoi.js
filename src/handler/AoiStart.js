@@ -18,7 +18,7 @@ module.exports = async (client) => {
     }
 
     if (client.aoiOptions.aoiAutoUpdate === true) {
-        await require("./aoiAutoUpdate.js")(client);
+        await require("./AoiAutoUpdate.js")(client);
     }
 
     await require("./Custom/timeout.js")(
