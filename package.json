@@ -1,19 +1,22 @@
 {
   "name": "aoi.js",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "description": "A powerful package to create Discord Bots with built-in string functions.",
+  "author": "Leref <itzleref@gmail.com>",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
   "scripts": {
     "start": "node index.js",
-    "prettycheck": "prettier --check \\\"src/**/*.js\\\"",
-    "prettywrite": "prettier --write \\\"src/**/*.js\\\""
+    "prettycheck": "prettier --check \"src/**/*.js\"",
+    "prettywrite": "prettier --write \"src/**/*.js\""
   },
   "engines": {
     "node": ">=16.9.0"
   },
   "files": [
-    "src"
+    "src",
+    "LICENSE",
+    "README.md"
   ],
   "license": "Apache-2.0",
   "licenses": [
@@ -22,6 +25,7 @@
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
+  "homepage": "https://aoi.js.org",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
