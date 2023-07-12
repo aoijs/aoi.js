@@ -671,8 +671,14 @@ const EventstoFile = {
 
 const AllEvents = Object.keys(EventstoFile);
 
+const fetchInvitesOptions = {
+    enabled: "Boolean",
+    cacheInviters: "Boolean",
+};
+
 module.exports = {
     FormatOptions,
+    fetchInvitesOptions,
     ApplicationCmdOptions,
     ActivityTypeAvailables,
     DebugAvailables,

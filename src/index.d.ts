@@ -92,7 +92,10 @@ declare module "aoi.js" {
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: EventOptions;
-        disableFunctions?: Array<string>;
+        fetchInvites?: {
+            enabled: boolean;
+            cacheInviters?: boolean;
+        };
     };
 
     interface BaseCommand {

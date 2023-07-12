@@ -4,6 +4,7 @@ const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
+const AoiInviteSystem = require("./classes/AoiInviteSystem.js");
 
 /**
  * AoiClient, custom events, command loader, client shard, error handling and utility functions
@@ -16,4 +17,5 @@ module.exports = {
   ClientShard,
   AoiError,
   Util,
+  AoiInviteSystem
 };
