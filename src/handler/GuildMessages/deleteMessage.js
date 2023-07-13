@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (dmsg, client) => {
     const data = Object.assign({}, dmsg);
     data.channel = dmsg.channel;

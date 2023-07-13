@@ -1,4 +1,4 @@
-const Interpreter = require("../interpreter.js");
+const Interpreter = require("../core/interpreter.js");
 module.exports = async (event, shardID, client, cmds) => {
     for (const cmd of cmds.shardDisconnect.array()) {
         const id = cmd?.channel?.includes("$")

@@ -1,5 +1,5 @@
 const { TextChannel, NewsChannel } = require("discord.js");
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 /**
  * @param  {TextChannel | NewsChannel } channelData
  * @param  {import('../../classes/AoiClient.js')} client

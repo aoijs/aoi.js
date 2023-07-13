@@ -1,5 +1,5 @@
 const IF = async (d) => {
-    const interpreter = require("../../interpreter.js");
+    const interpreter = require("../../core/interpreter.js");
     let code = d.code;
     let message = d.message;
     let client = d.client;

@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldstageint, newstageint, client) => {
     const cmds = client.cmd.stageInstanceUpdate.allValues();
     const data = {

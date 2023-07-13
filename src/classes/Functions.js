@@ -1,5 +1,5 @@
 const { Group } = require("@akarui/structures");
-const { functions: parser, maps, grp } = require("../functions/AoiReader.js");
+const { functions: parser, maps, grp } = require("../core/AoiReader.js");
 class Block {
     constructor(func) {
         this.parent = func;
@@ -65,7 +65,7 @@ class FunctionManager {
         this.functions = /*Object.keys(parser)*/ parser;
         this.cache = new Group();
         this.cacheFunctions();
-        this.interpreter = require("../interpreter.js");
+        this.interpreter = require("../core/interpreter.js");
         this.usage = grp;
     }
 
@@ -82,7 +82,7 @@ class FunctionManager {
                     this.cache.set(
                         ogname,
                         new Function(
-                            require(`../functions/Funcs/${file}/${ogname}.js`),
+                            require(`../functions/${file}/${ogname}.js`),
                             func,
                         ),
                     );

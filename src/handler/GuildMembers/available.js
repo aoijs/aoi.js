@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (mem, client) => {
     let chan;
     const cmds = client.cmd.memberAvailable.allValues();

@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (error, client) => {
     const cmds = client.cmd.functionError.allValues();
     let chan;

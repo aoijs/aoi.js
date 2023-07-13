@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (updatedPinsChannel, time, client) => {
     const cmds = client.cmd.channelPinsUpdate.allValues();
     const data = {

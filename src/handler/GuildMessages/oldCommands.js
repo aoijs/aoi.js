@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 //const alwaysExecuteCommands = require("./alwaysExecuteCommands")
 //const nonPrefixedCommands = require("./nonPrefixedCommands.js")
 //const testInterpreter = require("../testInterpreter")

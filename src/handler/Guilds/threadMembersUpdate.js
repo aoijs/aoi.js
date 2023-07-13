@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldmCollection, newmCollection, client) => {
     const cmds = client.cmd.threadMembersUpdate.allValues();
     const data = {

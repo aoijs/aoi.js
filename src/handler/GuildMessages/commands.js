@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 const Util = require("../../classes/Util.js");
 module.exports = async (message, client) => {
     if (client.aoiOptions) {

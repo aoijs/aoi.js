@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (newc, client) => {
     const cmds = client.cmd.channelCreate.allValues();
     const data = { guild: newc.guild, channel: newc, client: client };

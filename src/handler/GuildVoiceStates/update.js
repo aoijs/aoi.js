@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (os, ns, client) => {
     const cmds = client.cmd.voiceStateUpdate.allValues();
     for (const cmd of cmds) {

@@ -6,7 +6,7 @@ const {
     CommandInteraction,
     InteractionResponseType,
 } = require("discord.js");
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 const {
     InteractionTypes,
     MessageComponentTypes,

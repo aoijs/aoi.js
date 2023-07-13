@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (role, client) => {
     const cmds = client.cmd.roleCreate.allValues();
     const data = { guild: role.guild, client: client };

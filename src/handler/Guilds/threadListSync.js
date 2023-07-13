@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 module.exports = async (threadCollection, client) => {
     const cmds = client.cmd.threadListSync.allValues();
     const data = {

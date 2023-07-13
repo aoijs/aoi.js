@@ -1,5 +1,5 @@
 const { MessageReaction, User } = require("discord.js");
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 /**
  * @param  {MessageReaction} reaction
  * @param  {User} user

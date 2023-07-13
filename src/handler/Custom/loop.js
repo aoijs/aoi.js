@@ -1,4 +1,4 @@
-const Interpreter = require("../../interpreter.js");
+const Interpreter = require("../../core/interpreter.js");
 /**
  * @param  {import('../../classes/AoiClient.js')} client
  */
