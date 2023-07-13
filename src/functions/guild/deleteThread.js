@@ -1,18 +1,18 @@
-module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [channelID, threadId, reason] = inside.splits;
+    let [channelID, threadID, reason] = data.inside.splits;
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside})
+    if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside})
 
-    const thread = channel.threads.cache.get(threadId);
-    if (!thread) return d.aoiError.fnError(d, "custom", {inside}, "Invalid ThreadId Provided In")
+    const thread = channel.threads.cache.get(threadID);
+    if (!thread) return d.aoiError.fnError(d, "custom", {inside: data.inside}, "Invalid ThreadID Provided In")
 
     thread.delete(reason);
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 
 }
