@@ -118,7 +118,10 @@ class AoiInviteSystem extends EventEmitter {
         for (const d of datas) {
             const format = custom
                 .replace(/{top}/g, i)
-                .replace(/{username}/g, this.client.users.cache.get(d.data.value.inviter.id)?.username)
+                .replace(
+                    /{username}/g,
+                    this.client.users.cache.get(d.data.value.inviter.id)?.username
+                )
                 .replace(/{total}/g, d.data.value.counts.total)
                 .replace(/{real}/g, d.data.value.counts.real)
                 .replace(/{fake}/g, d.data.value.counts.fake)
@@ -137,10 +140,12 @@ class AoiInviteSystem extends EventEmitter {
         const newDatas = await this.fetchInvites(member.guild).allValues();
 
         for (let i = 0; i < invites.length; i++) {
-            const index = invites.findIndex(invite => invite.code === newDatas[i].code);
+            const index = invites.findIndex((invite) => invite.code === newDatas[i].code);
 
             if (index > -1 && invites[index].uses < newDatas[i].uses) {
                 const inviter = await this.db.get("invite", `${member.guild.id}_${invites[index].inviter.id}`);
+
+                inviter.value.inviter.code = invites[index].code;
 
                 if (Number(BigInt(member.user.createdTimestamp)) >= Number(BigInt(this.fakeLimit))) {
                     inviter.value.counts.real += 1;
