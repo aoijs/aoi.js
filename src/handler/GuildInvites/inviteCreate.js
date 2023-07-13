@@ -1,4 +1,5 @@
 const Interpreter = require("../../core/interpreter.js");
+
 module.exports = async (invite, client) => {
     const cmds = client.cmd.inviteCreate.allValues();
     for (const cmd of cmds) {
@@ -6,19 +7,20 @@ module.exports = async (invite, client) => {
         const data = {
             guild: invite.guild,
             client: client,
+            inviteData: invite,
         };
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
                 client,
                 data,
                 [],
-                {name: "ChannelParser", code: cmd.channel},
+                { name: "ChannelParser", code: cmd.channel },
                 client.db,
-                true,
+                true
             );
             const channel = client.channels.cache.get(id?.code);
             chan = channel ?? undefined;
-            data.channel = chan
+            data.channel = chan;
         } else {
             const channel = client.channels.cache.get(cmd.channel);
             chan = channel ?? undefined;
@@ -32,8 +34,8 @@ module.exports = async (invite, client) => {
             client.db,
             false,
             chan?.id || "",
-            {inviteData: invite},
-            chan || undefined,
+            { inviteData: invite },
+            chan || undefined
         );
     }
 };
