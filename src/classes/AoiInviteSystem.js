@@ -36,7 +36,7 @@ class AoiInviteSystem extends EventEmitter {
         this.ready = false;
         for (let i = 0; i < this.guilds.size; i++) {
             const guild = [...this.guilds.values()][i];
-            this.invites.set(guild.id, await guild.invites.fetch());
+            this.invites.set(guild.id, await guild.invites.fetch().catch(() => null));
 
             await timer(1500);
         }

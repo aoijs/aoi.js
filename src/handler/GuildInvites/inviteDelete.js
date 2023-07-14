@@ -8,6 +8,7 @@ module.exports = async (invite, client) => {
             guild: invite.guild,
             client: client,
             inviteData: invite,
+            author: invite.inviter,
         };
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
