@@ -107,6 +107,7 @@ class CommandManager {
     applicationCmdCreate;
     applicationCmdDelete;
     applicationCmdUpdate;
+    applicationCmdPermUpdate;
     userUpdate;
     variableCreate;
     variableDelete;
@@ -118,6 +119,10 @@ class CommandManager {
     pulse;
     rateLimit;
     webhookUpdate;
+    autoModActionExecution;
+    autoModCreate;
+    autoModDelete;
+    autoModUpdate;
 
     constructor(client, formCommand = true, customCmds = []) {
         client.cmd = this;
@@ -194,6 +199,7 @@ class CommandManager {
             "applicationCmdCreate",
             "applicationCmdUpdate",
             "applicationCmdDelete",
+            "applicationCmdPermUpdate",
             "userUpdate",
             "rateLimit",
             "shardReady",
@@ -201,6 +207,10 @@ class CommandManager {
             "shardReconnecting",
             "shardDisconnect",
             "shardError",
+            "autoModActionExecution",
+            "autoModCreate",
+            "autoModDelete",
+            "autoModUpdate"
         ];
     }
 

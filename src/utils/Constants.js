@@ -489,11 +489,17 @@ const EventsToIntents = {
 
     // Non-Intents
     onInteractionCreate: "NonIntents",
-    onApplicationCmdPermsUpdate: "NonIntents",
+    onApplicationCommandPermissionsUpdate: "NonIntents",
     onUserUpdate: "NonIntents",
 
     // Guild Webhooks
     onWebhookUpdate: "GuildWebhooks",
+
+    //Automod
+    onAutoModerationActionExecution: "AutoModerationExecution",
+    onAutoModerationRuleDelete: "AutoModerationConfiguration",
+    onAutoModerationRuleCreate:"AutoModerationConfiguration",
+    onAutoModerationRuleUpdate: "AutoModerationConfiguration",
 
     // Custom
     onVariableCreate: "Custom",
@@ -571,9 +577,15 @@ const EventsToDjsEvents = {
 
     // Non-Intents
     onInteractionCreate: Events.InteractionCreate,
-    onApplicationCmdPermsUpdate: Events.ApplicationCommandPermissionsUpdate,
+    onApplicationCommandPermissionsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
     onWebhookUpdate: Events.WebhooksUpdate,
+
+    //Automod
+    onAutoModerationActionExecution: Events.AutoModerationActionExecution,
+    onAutoModerationRuleDelete: Events.AutoModerationRuleDelete,
+    onAutoModerationRuleCreate: Events.AutoModerationRuleCreate,
+    onAutoModerationRuleUpdate: Events.AutoModerationRuleUpdate,
 
     // Custom
     onVariableCreate: "variableCreate",
@@ -654,7 +666,7 @@ const EventstoFile = {
 
     // Interaction and command events
     onInteractionCreate: "interaction",
-    onApplicationCmdPermsUpdate: "appCmdPermUpdate",
+    onApplicationCommandPermissionsUpdate: "appCmdPermUpdate",
 
     // User events
     onUserUpdate: "userUpdate",
@@ -667,6 +679,13 @@ const EventstoFile = {
     // Other events
     onFunctionError: "functionError",
     onWebhookUpdate: "update",
+
+    //Automod
+    onAutoModerationActionExecution: "autoModActionExecution",
+    onAutoModerationRuleDelete: "autoModCreate",
+    onAutoModerationRuleCreate: "autoModDelete",
+    onAutoModerationRuleUpdate: "autoModUpdate",
+
 };
 
 const AllEvents = Object.keys(EventstoFile);
