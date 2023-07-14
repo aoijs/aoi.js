@@ -1,45 +1,38 @@
-import {Client, ShardingManager} from "discord.js";
-import {Group, LimitGroup, SuperSet} from "@akarui/structures";
+import { Client, ShardingManager } from "discord.js";
+import { Group, LimitGroup, SuperSet } from "@akarui/structures";
 
 declare module "aoi.js" {
-    import {EventEmitter} from "events";
+    import { EventEmitter } from "events";
 
     type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
 
-    //AoiError
+    // AoiError
     class AoiError {
-        constructor();
-
         static EventError(event: string, intent: string, line?: number): void;
-
         static CommandError(
             command: string,
             type: string,
             name: string,
-            position?: number,
+            position?: number
         ): void;
-
         static makeMessageError<Channel>(
             client: AoiClient,
             channel: Channel,
             message: ErrorMsg,
-            options?: Record<string, unknown>,
+            options?: Record<string, unknown>
         ): void;
-
         static consoleError(errorname: string, errorMsg: ErrorMsg): void;
-
         static functionErrorResolve<d>(
             d: d,
             type: string,
             object: object,
-            message: ErrorMsg,
+            message: ErrorMsg
         ): void;
-
         static fnError<d>(
             d: d,
             type: string,
             object: object,
-            message: ErrorMsg,
+            message: ErrorMsg
         ): void;
     }
 
@@ -144,7 +137,7 @@ declare module "aoi.js" {
         url: string;
         time: number;
         shardId: number;
-        type: "PLAYING" | "LISTENING" | "WATCHING" | "STREAMING" | "playing" | "listening" | "streaming" | "watching";
+        type: "PLAYING" | "LISTENING" | "WATCHING" | "STREAMING";
         status: string;
     };
 
@@ -152,16 +145,15 @@ declare module "aoi.js" {
         aoiOptions: Record<string, any>;
         interactionManager: InteractionManager;
         cacheManager: CacheManager;
-        variableManager: any /*VariableManager*/;
+        variableManager: any;
         prefix: string | string[];
-        db: any /*AoijsAPI | DbdTsDb | CustomDb | Promisify*/;
+        db: any;
         statuses: Group;
-        
+
         constructor(options: ClientOptions);
 
-        public status(d: StatusOption[]): void;
-
-        public variables(data: object, table?: string): void;
+        status(d: StatusOption[]): void;
+        variables(data: object, table?: string): void;
     }
 
     class AoiClient extends BaseClient {
@@ -170,159 +162,100 @@ declare module "aoi.js" {
 
         constructor(options: ClientOptions);
 
-        public command(d: Command): void;
-
-        public awaitedCommand(d: AwaitCommand): void;
-
-        public deletedCommand(d: EventCommand): void;
-
-        public updateCommand(d: EventCommand): void;
-
-        public bulkDeleteCommand(d: EventCommand): void;
-
-        public guildJoinCommand(d: EventCommand): void;
-
-        public guildLeaveCommand(d: EventCommand): void;
-
-        public guildUpdateCommand(d: EventCommand): void;
-
-        public guildUnavailableCommand(d: EventCommand): void;
-
-        public roleCreateCommand(d: EventCommand): void;
-
-        public roleUpdateCommand(d: EventCommand): void;
-
-        public roleDeleteCommand(d: EventCommand): void;
-
-        public channelCreateCommand(d: EventCommand): void;
-
-        public channelUpdateCommand(d: EventCommand): void;
-
-        public channelDeleteCommand(d: EventCommand): void;
-
-        public channelPinsUpdateCommand(d: EventCommand): void;
-
-        public stageInstanceCreateCommand(d: EventCommand): void;
-
-        public stageInstanceUpdateCommand(d: EventCommand): void;
-
-        public stageInstanceDeleteCommand(d: EventCommand): void;
-
-        public threadCreateCommand(d: EventCommand): void;
-
-        public threadUpdateCommand(d: EventCommand): void;
-
-        public threadDeleteCommand(d: EventCommand): void;
-
-        public threadListSyncCommand(d: EventCommand): void;
-
-        public threadMemberUpdateCommand(d: EventCommand): void;
-
-        public joinCommand(d: EventCommand): void;
-
-        public leaveCommand(d: EventCommand): void;
-
-        public memberUpdateCommand(d: EventCommand): void;
-
-        public threadMembersUpdateCommand(d: EventCommand): void;
-
-        public memberAvailableCommand(d: EventCommand): void;
-
-        public membersChunkCommand(d: EventCommand): void;
-
-        public emojiCreateCommand(d: EventCommand): void;
-
-        public emojiDeleteCommand(d: EventCommand): void;
-
-        public emojiUpdateCommand(d: EventCommand): void;
-
-        public banAddCommand(d: EventCommand): void;
-
-        public banRemoveCommand(d: EventCommand): void;
-
-        public reactionAddCommand(d: EventCommand): void;
-
-        public reactionRemoveCommand(d: EventCommand): void;
-
-        public reactionRemoveAllCommand(d: EventCommand): void;
-
-        public reactionRemoveEmojiCommand(d: EventCommand): void;
-
-        public presenceUpdateCommand(d: EventCommand): void;
-
-        public voiceStateUpdateCommand(d: EventCommand): void;
-
-        public interactionCommand(d: InteractionCommand): void;
-
-        public applicationCmdCreateCommand(d: EventCommand): void;
-
-        public applicationCmdDeleteCommand(d: EventCommand): void;
-
-        public applicationCmdUpdateCommand(d: EventCommand): void;
-
-        public userUpdateCommand(d: EventCommand): void;
-
-        public variableCreateCommand(d: EventCommand): void;
-
-        public variableDeleteCommand(d: EventCommand): void;
-
-        public variableUpdateCommand(d: EventCommand): void;
-
-        public readyCommand(d: EventCommand): void;
-
-        public functionErrorCommand(d: EventCommand): void;
-
-        public loopCommand(d: LoopCommand): void;
-
-        public timeoutCommand(d: EventCommand): void;
-
-        public pulseCommand(d: EventCommand): void;
-
-        public rateLimitCommand(d: EventCommand): void;
-
-        public webhookUpdateCommand(d: EventCommand): void;
+        command(d: Command): void;
+        awaitedCommand(d: AwaitCommand): void;
+        deletedCommand(d: EventCommand): void;
+        updateCommand(d: EventCommand): void;
+        bulkDeleteCommand(d: EventCommand): void;
+        guildJoinCommand(d: EventCommand): void;
+        guildLeaveCommand(d: EventCommand): void;
+        guildUpdateCommand(d: EventCommand): void;
+        guildUnavailableCommand(d: EventCommand): void;
+        roleCreateCommand(d: EventCommand): void;
+        roleUpdateCommand(d: EventCommand): void;
+        roleDeleteCommand(d: EventCommand): void;
+        channelCreateCommand(d: EventCommand): void;
+        channelUpdateCommand(d: EventCommand): void;
+        channelDeleteCommand(d: EventCommand): void;
+        channelPinsUpdateCommand(d: EventCommand): void;
+        stageInstanceCreateCommand(d: EventCommand): void;
+        stageInstanceUpdateCommand(d: EventCommand): void;
+        stageInstanceDeleteCommand(d: EventCommand): void;
+        threadCreateCommand(d: EventCommand): void;
+        threadUpdateCommand(d: EventCommand): void;
+        threadDeleteCommand(d: EventCommand): void;
+        threadListSyncCommand(d: EventCommand): void;
+        threadMemberUpdateCommand(d: EventCommand): void;
+        joinCommand(d: EventCommand): void;
+        leaveCommand(d: EventCommand): void;
+        memberUpdateCommand(d: EventCommand): void;
+        threadMembersUpdateCommand(d: EventCommand): void;
+        memberAvailableCommand(d: EventCommand): void;
+        membersChunkCommand(d: EventCommand): void;
+        emojiCreateCommand(d: EventCommand): void;
+        emojiDeleteCommand(d: EventCommand): void;
+        emojiUpdateCommand(d: EventCommand): void;
+        banAddCommand(d: EventCommand): void;
+        banRemoveCommand(d: EventCommand): void;
+        reactionAddCommand(d: EventCommand): void;
+        reactionRemoveCommand(d: EventCommand): void;
+        reactionRemoveAllCommand(d: EventCommand): void;
+        reactionRemoveEmojiCommand(d: EventCommand): void;
+        presenceUpdateCommand(d: EventCommand): void;
+        voiceStateUpdateCommand(d: EventCommand): void;
+        interactionCommand(d: InteractionCommand): void;
+        applicationCmdCreateCommand(d: EventCommand): void;
+        applicationCmdDeleteCommand(d: EventCommand): void;
+        applicationCmdUpdateCommand(d: EventCommand): void;
+        userUpdateCommand(d: EventCommand): void;
+        variableCreateCommand(d: EventCommand): void;
+        variableDeleteCommand(d: EventCommand): void;
+        variableUpdateCommand(d: EventCommand): void;
+        readyCommand(d: EventCommand): void;
+        functionErrorCommand(d: EventCommand): void;
+        loopCommand(d: LoopCommand): void;
+        timeoutCommand(d: EventCommand): void;
+        pulseCommand(d: EventCommand): void;
+        rateLimitCommand(d: EventCommand): void;
+        webhookUpdateCommand(d: EventCommand): void;
     }
 
-    //cacheManager
+    // cacheManager
     type CacheTypes = "cache" | "limitCache" | "setCache";
 
     class CacheManager {
         constructor(client: AoiClient);
 
-        public get types(): CacheTypes;
+        get types(): CacheTypes;
 
-        public _validType(type: string): boolean;
+        _validType(type: string): boolean;
 
-        public createCache(type: "cache", name: string): Group;
-        public createCache(type: "limitCache", name: string): LimitGroup;
-        public createCache(type: "setCache", name: string): SuperSet;
+        createCache(type: "cache", name: string): Group;
+        createCache(type: "limitCache", name: string): LimitGroup;
+        createCache(type: "setCache", name: string): SuperSet;
 
-        public deleteCache(type: "cache", name: string): Group;
-        public deleteCache(type: "limitCache", name: string): LimitGroup;
-        public deleteCache(type: "setCache", name: string): SuperSet;
+        deleteCache(type: "cache", name: string): Group;
+        deleteCache(type: "limitCache", name: string): LimitGroup;
+        deleteCache(type: "setCache", name: string): SuperSet;
 
-        public static _DjsCacheManager(cache: CacheOptions): any;
+        static _DjsCacheManager(cache: CacheOptions): any;
     }
 
-    //ClientShard
+    // ClientShard
     class ClientShard extends ShardingManager {
         file: string;
         client: AoiClient;
 
         constructor(file: string, options: object, client: AoiClient);
 
-        public onShardDisconnect(): void;
-
-        public onShardError(): void;
-
-        public onShardResume(): void;
-
-        public onShardReconnecting(): void;
-
-        public onShardReady(): void;
+        onShardDisconnect(): void;
+        onShardError(): void;
+        onShardResume(): void;
+        onShardReconnecting(): void;
+        onShardReady(): void;
     }
 
-    //CommandManager
+    // CommandManager
     class Command {
         [key: string]: any;
 
@@ -330,17 +263,12 @@ declare module "aoi.js" {
 
         constructor(d: object, client: AoiClient);
 
-        public serializeFunctions(): string[];
-
-        public serializeCode(): void | string[];
-
-        public toString(): string;
-
-        public toArray(): [string, any][];
-
-        public keys(): string[];
-
-        public values(): unknown[];
+        serializeFunctions(): string[];
+        serializeCode(): void | string[];
+        toString(): string;
+        toArray(): [string, any][];
+        keys(): string[];
+        values(): unknown[];
     }
 
     class CommandManager {
@@ -349,16 +277,14 @@ declare module "aoi.js" {
 
         constructor(client: AoiClient, formCommand?: boolean, customCmds?: string[]);
 
-        public get types(): string[];
+        get types(): string[];
 
-        public createCommand(d: any): void;
-
-        public formCommand(): void;
-
-        public formCustomCommand(customCmds: string[]): void;
+        createCommand(d: any): void;
+        formCommand(): void;
+        formCustomCommand(customCmds: string[]): void;
     }
 
-    //FunctionManager
+    // FunctionManager
     class FunctionManager {
         client: AoiClient;
         maps: Record<string, string[]>;
@@ -368,31 +294,24 @@ declare module "aoi.js" {
 
         constructor(client: AoiClient);
 
-        public cacheFunctions(): void;
-
-        public createFunction(data: Array<Record<string, any>>): void;
-
-        public findFunctions(code: string): string[];
-
-        public serializeCode(code: string): string[];
+        cacheFunctions(): void;
+        createFunction(data: Array<Record<string, any>>): void;
+        findFunctions(code: string): string[];
+        serializeCode(code: string): string[];
     }
 
-    //LoadCommands
+    // LoadCommands
     class LoadCommands {
         Client: AoiClient;
         AddToClient?: boolean;
 
         constructor(Client: AoiClient, AddToClient?: boolean);
 
-        public load(cmd: CommandManager, path: string, debug?: boolean): void;
-
-        public update(debug?: boolean): void;
-
-        public setColors(colors: object): void;
-
-        public get allColors(): object;
-
-        public get themes(): object;
+        load(cmd: CommandManager, path: string, debug?: boolean): void;
+        update(debug?: boolean): void;
+        setColors(colors: object): void;
+        get allColors(): object;
+        get themes(): object;
     }
 
     class CustomEvent extends EventEmitter {
@@ -402,7 +321,6 @@ declare module "aoi.js" {
         constructor(client: AoiClient);
 
         command(d: CustomEventCommand): void;
-
         listen(event: string): void;
     }
 
@@ -423,7 +341,7 @@ declare module "aoi.js" {
     type ApplicationData = {
         data: {
             name: string;
-            description: void | string;
+            description?: string;
             options?: object[];
             type?: "CHAT_INPUT" | "USER" | "MESSAGE";
             defaultPermission?: boolean;
@@ -436,33 +354,26 @@ declare module "aoi.js" {
 
         constructor(client: AoiClient);
 
-        public resolve<Interaction>(interaction: Interaction): Interaction;
+        resolve<Interaction>(interaction: Interaction): Interaction;
     }
 
     class InteractionManager extends Interaction {
         client: AoiClient;
-        awaitComponents: unknown /*Await*/;
-        componentCollector: unknown /*CustomCollector*/;
+        awaitComponents: unknown;
+        componentCollector: unknown;
         buttonData: Group;
         applicationData: Group;
         selectMenuData: Group;
 
         constructor(client: AoiClient);
 
-        public createApplicationData(d: ApplicationData): void;
-
-        public createButtonData(d: object): void;
-
-        public createSelectMenuData(d: object): void;
-
-        public stringifyApplicationData(name: string): string;
-
-        public resolveButtonData(name: string): string;
-
-        public resolveSelectMenuData(name: string): string;
-
-        public resolveSelectMenuOptionData(options: object[]): string;
-
-        public get buttonDataLength(): number;
+        createApplicationData(d: ApplicationData): void;
+        createButtonData(d: object): void;
+        createSelectMenuData(d: object): void;
+        stringifyApplicationData(name: string): string;
+        resolveButtonData(name: string): string;
+        resolveSelectMenuData(name: string): string;
+        resolveSelectMenuOptionData(options: object[]): string;
+        get buttonDataLength(): number;
     }
 }
