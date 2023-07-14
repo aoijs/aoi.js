@@ -103,6 +103,7 @@ class Util {
     return {
       Text: Discord.ChannelType.GuildText,
       DM: Discord.ChannelType.DM,
+      GroupDM: Discord.ChannelType.GroupDM,
       Forum: Discord.ChannelType.GuildForum,
       Voice: Discord.ChannelType.GuildVoice,
       Category: Discord.ChannelType.GuildCategory,
