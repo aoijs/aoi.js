@@ -82,6 +82,7 @@ declare module "aoi.js" {
         intents: IntentOptions;
         database?: DatabaseOption<any>;
         respondOnEdit?: RespondOnEditOptions;
+        disableFunctions?: Array<string>;
         respondToBots: boolean;
         guildOnly: boolean;
         cache: CacheOptions;

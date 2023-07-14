@@ -20,6 +20,7 @@ const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
 const { Group } = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
+const { functions: parser } = require("../core/AoiReader.js");
 
 class BaseClient extends Discord.Client {
     constructor(options) {
@@ -41,7 +42,7 @@ class BaseClient extends Discord.Client {
                 options.presence.activities[0].type =
                     ActivityTypeAvailables[
                         options.presence?.activities[0].type
-                    ] || options.presence?.activities[0].type;
+                        ] || options.presence?.activities[0].type;
             } else {
                 throw new TypeError(
                     `Activity Type Error: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
@@ -276,6 +277,15 @@ class BaseClient extends Discord.Client {
             });
         }
 
+        if (Array.isArray(options?.disableFunctions) && options?.disableFunctions.length) {
+            options?.disableFunctions.forEach((func) => {
+                const index = parser.findIndex((f) => f === func);
+                if (index !== -1) {
+                    parser.splice(index, 1);
+                }
+            });
+        }
+
         this.prefix = options.prefix;
         this.#bindEvents();
 
@@ -335,14 +345,14 @@ class BaseClient extends Discord.Client {
         );
     }
     #bindEvents() {
-      const bits = new Discord.IntentsBitField( this.options.intents );
+        const bits = new Discord.IntentsBitField(this.options.intents);
         for (const event of this.aoiOptions.events ?? []) {
-          let intent = EventsToIntents[ event ];
-          const filedir = intent;
+            let intent = EventsToIntents[event];
+            const filedir = intent;
             const eventName = EventsToDjsEvents[event];
             const file = EventstoFile[event];
-          if ( intent === "GuildEmojis" ) intent = "GuildEmojisAndStickers";
-          if(intent === "GuildMessageTypings") intent = "GuildMessageTyping";
+            if (intent === "GuildEmojis") intent = "GuildEmojisAndStickers";
+            if (intent === "GuildMessageTypings") intent = "GuildMessageTyping";
             if (
                 intent &&
                 !["Custom", "NonIntents"].includes(intent) &&
@@ -359,12 +369,11 @@ class BaseClient extends Discord.Client {
             ].includes(event)
                 ? require(`../shardhandler/${event}.js`)
                 : Array.isArray(file)
-                ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
-                : require(`../handler/${filedir}/${file}.js`);
-          this.on( eventName, ( ...args ) =>
-          {
-            if ( Array.isArray( func ) ) func.forEach( x => x( ...args, this ) );
-            else func( ...args, this );
+                    ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
+                    : require(`../handler/${filedir}/${file}.js`);
+            this.on(eventName, (...args) => {
+                if (Array.isArray(func)) func.forEach((x) => x(...args, this));
+                else func(...args, this);
             });
         }
     }
