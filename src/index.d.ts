@@ -1,5 +1,6 @@
 import { Client, ShardingManager } from "discord.js";
 import { Group, LimitGroup, SuperSet } from "@akarui/structures";
+import { AllEvents } from "./utils/Constants";
 
 declare module "aoi.js" {
     import { EventEmitter } from "events";
@@ -64,11 +65,6 @@ declare module "aoi.js" {
 
     type CacheOptions = Record<string, number | undefined | null>;
 
-    type EventOptions = {
-        functionError?: boolean;
-        timeout?: boolean;
-    };
-
     type ClientOptions = {
         token: string;
         prefix: string | Array<string>;
@@ -85,7 +81,7 @@ declare module "aoi.js" {
         plugins?: Array<string>;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
-        events?: EventOptions;
+        events?: Array<AllEvents>;
         fetchInvites?: {
             enabled: boolean;
             cacheInviters?: boolean;
