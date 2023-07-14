@@ -5,7 +5,7 @@ module.exports = async d => {
     const [Code, returnCode = "false", sendMessage = "true", returnExecution = "false", returnID = "false"] = data.inside.splits;
 
     let result = await d.interpreter(d.client, d.message, d.args, {
-        name: "Eval",
+        name: "eval",
         code: Code.addBrackets()
     }, d.client.db, returnCode === "true", undefined, {}, undefined, undefined, returnExecution === "true", returnID === "true", sendMessage === "true")
 
