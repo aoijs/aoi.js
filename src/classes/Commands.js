@@ -106,7 +106,7 @@ class CommandManager {
     voiceStateUpdate;
     applicationCmdCreate;
     applicationCmdDelete;
-    onApplicationCmdUpdate;
+    applicationCmdUpdate;
     userUpdate;
     variableCreate;
     variableDelete;
