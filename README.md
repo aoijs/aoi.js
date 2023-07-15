@@ -49,10 +49,11 @@ aoi.js is suitable for beginners who are new to building bots, as well as experi
 
 ## Features
 
--   **600+ pre-built functions** to work around
--   **Built-in [custom local database](https://github.com/akaruidevelopment/aoi.db)** as well as support popular databases like mongodb, sql etc;
--   **Extensions to support** aoi.music, aoi.panel, etc;
--   **Easy to use** and **beginner friendly** with a simple syntax `$`;
+- **600+ Pre-built Functions:** aoi.js comes packed with over 600 pre-built functions that empower you to create dynamic and interactive Discord bots with ease.
+- **Built-in Custom Local Database:** With aoi.js, you get a powerful custom local database out of the box. You can also seamlessly integrate popular databases like MongoDB and SQL for more advanced data management.
+- **Extensions for Added Functionality:** Enhance your bot's capabilities with aoi.js extensions like aoi.music and aoi.panel. These extensions make it simple to add music playback, interactive panels, and more to your bot.
+- **Easy-to-Use and Beginner Friendly:** aoi.js boasts a user-friendly syntax that is perfect for beginners. The simple `$` prefix makes it easy to write commands and get your bot up and running quickly.
+
 
 ## Setup
 
