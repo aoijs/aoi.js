@@ -21,10 +21,6 @@ module.exports = async (client) => {
         await require("./AoiAutoUpdate.js")(client);
     }
 
-    if (client.aoiOptions.fetchInvites?.enabled) {
-        await require("./AoiFetchInvites.js")(client);
-    }
-
     await require("./Custom/timeout.js")(
         {client, interpreter: Interpreter},
         undefined,

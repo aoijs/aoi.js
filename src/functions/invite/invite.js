@@ -1,19 +1,8 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const inviteSystem = d.client.AoiInviteSystem;
-    if (!inviteSystem || !inviteSystem.ready) {
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            "Invite system is not initialized or not ready."
-        );
-    }
-
-    const guildID = data.guild.id;
-    const inviteCode = data.inviteCode;
-    const invite = inviteSystem.invites.get(guildID)?.get(inviteCode);
+    const guildID = d.guild.id;
+    const invite = d.data.inviteData;
     if (!invite) {
         return d.aoiError.fnError(
             d,

@@ -29,6 +29,8 @@ class Client extends BaseClient {
 
             this.cmd.default.set(this.cmd.default.size, new Command(d, this));
         }
+
+
     }
 
     awaitedCommand(d = {}) {

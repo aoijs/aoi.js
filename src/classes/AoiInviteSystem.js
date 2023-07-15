@@ -1,116 +1,127 @@
 const { EventEmitter } = require("events");
 const { KeyValue } = require("@akarui/aoi.db");
 const { Group } = require("@akarui/structures");
-const timer = (ms) => new Promise((res) => setTimeout(() => res, ms));
+const { setTimeout: timer } = require("timers/promises");
 
 class AoiInviteSystem extends EventEmitter {
+    fakeLimit = "1209600000";
+    cache = {
+        invites: new Group(),
+        users: new Group(),
+        guilds: undefined,
+    };
+    options;
+    db;
+    client;
+    readyAt;
+
     constructor(client, cache = false) {
         super();
-        this.fakeLimit = "1209600000";
-        this.cache = cache;
+        this.options = {
+            cache: cache,
+        };
         this.client = client;
-        this.invites = new Group();
-        this.ready = false;
-        this.timeStamp = null;
-        this.guilds = client.guilds.cache;
+
         this.db = new KeyValue({
             path: "./database/",
             tables: ["invite"], // Specify the table name here
         });
         this.db.connect();
 
-        if (cache) {
-            this.users = new Group();
-        }
-
-        this.on("FINISHED", () => {
-            console.log("Fetched All Invites");
-            this.timeStamp = Date.now();
-            this.ready = true;
+        this.client.AoiInviteSystem = this;
+        this.on("FetchFinished", () => {
+            this.readyAt = Date.now();
+            console.log(
+                `${new Date().toLocaleString()} [AoiInviteSystem]: Fetched All Invites`,
+            );
         });
 
-        this.client.AoiInviteSystem = this;
+        this.#bindEvents();
     }
 
     async fetchAll() {
-        this.ready = false;
-        for (let i = 0; i < this.guilds.size; i++) {
-            const guild = [...this.guilds.values()][i];
-            this.invites.set(guild.id, await guild.invites.fetch().catch(() => null));
+        const guilds = this.cache.guilds.allValues();
 
+        for (let i = 0; i < guilds.length; i++) {
+            const guild = guilds[i];
+            const invites = await guild.invites.fetch().catch((e) => {
+                console.log(e);
+                return null;
+            });
+            this.cache.invites.set(guild.id, invites);
             await timer(1500);
         }
-        this.emit("FINISHED");
+
+        this.emit("FetchFinished");
     }
 
     async fetchInvites(guild) {
-        return guild.invites.fetch();
+        return guild.invites.fetch().catch((e) => {
+            return null;
+        });
     }
 
     async fetchInviters() {
         const allData = await this.db.all("invite");
         for (const data of allData) {
-            this.users.set(data.key, data);
+            const [userID, guildID] = data.key.split("_");
+            if (!this.cache.users.has(userID)) {
+                this.cache.users.set(userID, new Group());
+            }
+
+            this.cache.users.get(userID).set(guildID, data.value);
         }
-        console.log("Fetched All Inviters");
+        console.log(
+            `${new Date().toLocaleString()} [AoiInviteSystem]: Fetched All Inviters`,
+        );
     }
 
     get totalInvitesCount() {
-        let i = 0;
-        for (const invites of this.invites.array()) {
-            i += invites.size;
-        }
-        return i;
-    }
-
-    set(guildID, code, invite) {
-        return this.invites.get(guildID).set(code, invite);
+        return this.cache.invites.reduce((acc, cur) => acc + cur.size, 0);
     }
 
     invitesCount(guildID) {
-        return this.invites.get(guildID).size;
+        return this.cache.invites.get(guildID).size;
     }
 
-    delete(guildID, code) {
-        this.invites.get(guildID).delete(code);
-    }
-
-    dataFormat() {
-        return {
-            inviter: { id: "id", code: [] },
-            counts: { real: 0, fake: 0, leave: 0, bonus: 0, total: 0 },
-        };
-    }
-
-    createUser(guild, userID, code) {
-        let data = this.dataFormat();
-        data.inviter.id = userID;
-        data.inviter.code.push(code);
-        this.db.set(`${guild}_${userID}`, data);
-        return;
-    }
-
-    async count(guildID, inviter, type) {
-        if (this.cache) {
-            const user = this.users.get(`${guildID}_${inviter}`);
-            if (!user) return "User isn't an inviter for this server";
-            return user.value.counts[type];
+    async set(guildID, userID, inviteData) {
+        
+        if (this.cache.users.has(userID)) {
+            this.cache.users.get(userID).set(guildID, inviteData);
         } else {
-            const data = await this.db.get(`${guildID}_${inviter}`);
-            return data?.value.counts[type] || "";
+            this.cache.users.set(userID, new Group());
+            this.cache.users.get(userID).set(guildID, inviteData);
         }
+
+        await this.db.set("invite", userID + "_" + guildID, {
+            value: inviteData,
+        });
+    }
+    async get(guildID, userID) {
+        if (!this.cache.users.has(userID)) {
+            return (await this.db.get("invite", userID + "_" + guildID))?.value;
+        } else {
+            return await this.cache.users.get(userID).get(guildID);
+        }
+    }
+    async delete(guildID, userID, code) {
+        if (this.cache.users.has(userID))
+            this.cache.users.get(userID).delete(guildID);
+
+        return await this.db.delete("invite", userID + "_" + guildID);
     }
 
     async lb(
+        guildId,
         custom = "{top}) {username}: `total:{total}`,`real:{real}`,`fake:{fake}`,`leave:{leave}`",
         list = 10,
-        page = 1
+        page = 1,
     ) {
         let datas;
-        if (this.cache) {
-            datas = this.users.allValues();
+        if (this.cache.users.size) {
+            datas = this.cache.users.allValues().map((x) => x.get(guildId));
         } else {
-            datas = await this.db.all("invite");
+            datas = await this.db.all("invite", (x) => x.key.endsWith(guildId));
         }
         let lb = [];
         let i = 1;
@@ -120,14 +131,18 @@ class AoiInviteSystem extends EventEmitter {
                 .replace(/{top}/g, i)
                 .replace(
                     /{username}/g,
-                    this.client.users.cache.get(d.data.value.inviter.id)?.username
+                    this.client.users.cache.get(d.data.value.inviter.id)
+                        ?.username,
                 )
                 .replace(/{total}/g, d.data.value.counts.total)
                 .replace(/{real}/g, d.data.value.counts.real)
                 .replace(/{fake}/g, d.data.value.counts.fake)
                 .replace(/{leave}/g, d.data.value.counts.leave)
                 .replace(/{id}/g, d.data.value.inviter.id)
-                .replace(/{tag}/g, this.client.users.cache.get(d.data.value.inviter.id)?.tag);
+                .replace(
+                    /{tag}/g,
+                    this.client.users.cache.get(d.data.value.inviter.id)?.tag,
+                );
 
             lb.push(format);
             i++;
@@ -135,46 +150,165 @@ class AoiInviteSystem extends EventEmitter {
         return lb.slice((page - 1) * list, page * list).join("\n");
     }
 
-    async userJoined(member) {
-        const invites = this.invites.get(member.guild.id).allValues();
-        const newDatas = await this.fetchInvites(member.guild).allValues();
+    async memberJoin(member) {
+        const invites = await this.fetchInvites(member.guild);
+        const oldInvites = this.cache.invites.get(member.guild.id);
 
-        for (let i = 0; i < invites.length; i++) {
-            const index = invites.findIndex((invite) => invite.code === newDatas[i].code);
+        const invite = invites.find(
+            (x) =>
+                !oldInvites.has(x.code) && x.uses > oldInvites.get(x.code).uses,
+        );
+        if (!invite) return;
 
-            if (index > -1 && invites[index].uses < newDatas[i].uses) {
-                const inviter = await this.db.get("invite", `${member.guild.id}_${invites[index].inviter.id}`);
+        const inviter = invite.inviter;
+        let inviterData = await this.get(member.guild.id, inviter.id);
 
-                inviter.value.inviter.code = invites[index].code;
-
-                if (Number(BigInt(member.user.createdTimestamp)) >= Number(BigInt(this.fakeLimit))) {
-                    inviter.value.counts.real += 1;
-                    inviter.value.counts.total += 1;
-                } else {
-                    inviter.value.counts.fake += 1;
-                }
-
-                await this.db.set("invite", `${member.guild.id}_${inviter.id}`, inviter.value);
-                break;
-            }
+        if (!inviterData) {
+            inviterData = AoiInviteSystem.defaultInviteData(invite.inviter);
+            inviterData.codes = [invite.code];
         }
+
+        const data = {
+            inviter: inviter.id,
+            codes: inviterData.codes,
+            counts: {
+                total: inviterData ? inviterData.counts.total + 1 : inviterData,
+                real: inviterData ?  this.isFake(member) ? inviterData.counts.real : inviterData.counts.real + 1 : inviterData,
+                fake: inviterData ? this.isFake(member) ? inviterData.counts.fake + 1 : inviterData.counts.fake : inviterData,
+                leave: inviterData ? inviterData.counts.leave : inviterData,
+            },
+        };
+
+        await this.set(member.guild.id, inviter.id, data);
+    }
+
+    async isFake(member) {
+        return (
+            Date.now() - member.user.createdTimestamp < this.fakeLimit ||
+            member.user.bot ||
+            member.user.system
+        )
+    }
+
+    async memberLeave(member) {
+        const invites = await this.fetchInvites(member.guild);
+        const oldInvites = this.cache.invites.get(member.guild.id);
+
+        const invite = invites.find(
+            (x) =>
+                !oldInvites.has(x.code) && x.uses < oldInvites.get(x.code).uses,
+        );
+        if (!invite) return;
+
+        const inviter = invite.inviter.id;
+        let inviterData = await this.get(member.guild.id, inviter.id);
+
+        if (!inviterData) {
+            inviterData = AoiInviteSystem.defaultInviteData(invite.inviter);
+            inviterData.codes = [invite.code];
+        }
+
+        const data = {
+            inviter: inviter,
+            codes: inviterData.codes,
+            counts: {
+                total: inviterData ? inviterData.counts.total +1 : 0,
+                real: inviterData ? this.isFake(member) ? inviterData.counts.real : inviterData.counts.real - 1 : 0, // this.isFake(member) ? inviterData.counts.real : inviterData.counts.real - 1 : 0,
+                fake: inviterData ? this.isFake(member) ? inviterData.counts.fake - 1 : inviterData.counts.fake : 0,
+                leave: inviterData ? inviterData.counts.leave + 1 : 0,
+            },
+        };
+
+        await this.set(member.guild.id, inviter.id, data);
     }
 
     async inviteCreate(invite) {
-        const user = await this.db.get("invite", invite.inviter?.id);
-        if (user) {
-            user.inviter.code.push(invite.code);
-            await this.db.set("invite", invite.inviter?.id, user);
-        }
+        let inviterData = await this.get(invite.guild.id, invite.inviter.id);
+        if (!inviterData)
+            inviterData = AoiInviteSystem.defaultInviteData(invite.inviter);
+        const data = {
+            inviter: invite.inviter.id,
+            codes: [...inviterData.codes, invite.code],
+            counts: {
+                total: inviterData ? inviterData.counts.total : 0,
+                real: inviterData ? inviterData.counts.real : 0,
+                fake: inviterData ? inviterData.counts.fake : 0,
+                leave: inviterData ? inviterData.counts.leave : 0,
+            },
+        };
+
+        await this.set(invite.guild.id, invite.inviter.id, data);
     }
 
     async inviteDelete(invite) {
-        const user = await this.db.get("invite", invite.inviter?.id);
-        if (user) {
-            const index = user.inviter.code.indexOf(invite.code);
-            user.inviter.code.splice(index, 1);
-            await this.db.set("invite", invite.inviter?.id, user);
+        console.log(invite)
+        const inviterData = await this.get(invite.guild.id, invite.inviterId);
+        if (!inviterData) return;
+        const data = {
+            inviter: invite.inviter.id,
+            codes: inviterData.codes.filter((x) => x !== invite.code),
+            counts: {
+                total: inviterData ? inviterData.counts.total : inviterData,
+                real: inviterData ? inviterData.counts.real : inviterData,
+                fake: inviterData ? inviterData.counts.fake : inviterData,
+                leave: inviterData ? inviterData.counts.leave : inviterData,
+            },
+        };
+
+        await this.set(invite.guild.id, invite.inviter.id, data);
+    }
+
+    #bindEvents() {
+        this.client.prependOnceListener("ready", () => {
+            this.cache.guilds = new Group(this.client.guilds.cache.entries());
+            this.fetchAll();
+
+            if (this.options.cache) {
+                this.fetchInviters();
+            }
+        });
+
+        this.client.prependListener("inviteCreate", (invite) => this.inviteCreate(invite));
+        this.client.prependListener("inviteDelete", (invite) => this.inviteDelete(invite));
+        this.client.prependListener("guildMemberAdd", (member) => this.memberJoin(member));
+        this.client.prependListener("guildMemberRemove", (member) =>
+            this.memberLeave(member),
+        );
+
+        this.client.prependListener("guildBanAdd", (ban) =>
+            this.memberLeave({
+                user: ban.user,
+                guild: ban.guild,
+            }),
+        );
+    }
+
+    invitesCount(guildID) {
+        return this.cache.invites.get(guildID).size;
+    }
+
+    async count(guildID, inviter, type) {
+        if (this.cache) {
+            const user = this.cache.users.get(inviter)?.get(guildID);
+            if (!user) return "User isn't an inviter for this server";
+            return user.counts[type];
+        } else {
+            const data = await this.db.get(`${inviter}_${guildID}`);
+            return data?.value.counts[type] || "";
         }
+    }
+
+    static defaultInviteData(inviter) {
+        return {
+            inviter: inviter.id,
+            codes: [],
+            counts: {
+                total: 0,
+                real: 0,
+                fake: 0,
+                leave: 0,
+            },
+        };
     }
 }
 
