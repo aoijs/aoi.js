@@ -18,12 +18,12 @@ module.exports = async (d) => {
         const guild = d.guild;
         if (guild && inviteSystem.cache.invites.has(guild.id)) {
             const invites = inviteSystem.cache.invites.get(guild.id);
-            const allinvites = invites.filter((invite) => invite.inviter?.id === user.id);
+            const allinvites = invites.filter((invite) => invite.inviterId === user.id);
             if (allinvites.size) {
-                inviter = allinvites.first().inviter.id;
+                inviter = allinvites.top().inviterId;
                 code = allinvites.map((invite) => invite.code).join(", ");
                 real = await inviteSystem.count(guild.id,inviter , "real");
-                fake = await inviteSystem.count(guild.id, inviter , "fake");
+                fake = await inviteSystem.count(guild.id, inviter ,"fake");
             }
         }
     }

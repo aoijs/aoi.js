@@ -45,10 +45,10 @@ class AoiInviteSystem extends EventEmitter {
         for (let i = 0; i < guilds.length; i++) {
             const guild = guilds[i];
             const invites = await guild.invites.fetch().catch((e) => {
-                console.log(e);
                 return null;
             });
-            this.cache.invites.set(guild.id, invites);
+            const entries = structuredClone([...invites.entries()]);
+            this.cache.invites.set(guild.id, new Group(entries));
             await timer(1500);
         }
 
@@ -92,7 +92,6 @@ class AoiInviteSystem extends EventEmitter {
             this.cache.users.set(userID, new Group());
             this.cache.users.get(userID).set(guildID, inviteData);
         }
-
         await this.db.set("invite", userID + "_" + guildID, {
             value: inviteData,
         });
@@ -119,29 +118,41 @@ class AoiInviteSystem extends EventEmitter {
     ) {
         let datas;
         if (this.cache.users.size) {
-            datas = this.cache.users.allValues().map((x) => x.get(guildId));
+            datas = this.cache.users.allValues().map((x) => x.get(guildId)).map(x => {
+                return {
+                    value: x,
+                }
+            });
         } else {
             datas = await this.db.all("invite", (x) => x.key.endsWith(guildId));
         }
         let lb = [];
         let i = 1;
-
+        datas = datas.sort((a, b) =>{
+            if(a.value.counts.total > b.value.counts.total) return -1;
+            if(a.value.counts.total < b.value.counts.total) return 1;
+            if(a.value.counts.total == b.value.counts.total) {
+                if(a.value.counts.real > b.value.counts.real) return -1;
+                if(a.value.counts.real < b.value.counts.real) return 1;
+                if(a.value.counts.real == b.value.counts.real) return 0;
+            }
+        });
         for (const d of datas) {
             const format = custom
                 .replace(/{top}/g, i)
                 .replace(
                     /{username}/g,
-                    this.client.users.cache.get(d.data.value.inviter.id)
+                    this.client.users.cache.get(d.value.inviter)
                         ?.username,
                 )
-                .replace(/{total}/g, d.data.value.counts.total)
-                .replace(/{real}/g, d.data.value.counts.real)
-                .replace(/{fake}/g, d.data.value.counts.fake)
-                .replace(/{leave}/g, d.data.value.counts.leave)
-                .replace(/{id}/g, d.data.value.inviter.id)
+                .replace(/{total}/g, d.value.counts.total)
+                .replace(/{real}/g, d.value.counts.real)
+                .replace(/{fake}/g, d.value.counts.fake)
+                .replace(/{leave}/g, d.value.counts.leave)
+                .replace(/{id}/g, d.value.inviter)
                 .replace(
                     /{tag}/g,
-                    this.client.users.cache.get(d.data.value.inviter.id)?.tag,
+                    this.client.users.cache.get(d.value.inviter)?.tag,
                 );
 
             lb.push(format);
@@ -151,12 +162,12 @@ class AoiInviteSystem extends EventEmitter {
     }
 
     async memberJoin(member) {
+
         const invites = await this.fetchInvites(member.guild);
         const oldInvites = this.cache.invites.get(member.guild.id);
-
         const invite = invites.find(
             (x) =>
-                !oldInvites.has(x.code) && x.uses > oldInvites.get(x.code).uses,
+                x.uses > oldInvites.get(x.code).uses 
         );
         if (!invite) return;
 
@@ -182,12 +193,10 @@ class AoiInviteSystem extends EventEmitter {
         await this.set(member.guild.id, inviter.id, data);
     }
 
-    async isFake(member) {
-        return (
-            Date.now() - member.user.createdTimestamp < this.fakeLimit ||
-            member.user.bot ||
-            member.user.system
-        )
+    isFake(member) {
+        return Date.now() - member.user.createdTimestamp < this.fakeLimit ||
+            member.user.bot
+        
     }
 
     async memberLeave(member) {
@@ -213,8 +222,10 @@ class AoiInviteSystem extends EventEmitter {
             codes: inviterData.codes,
             counts: {
                 total: inviterData ? inviterData.counts.total +1 : 0,
-                real: inviterData ? this.isFake(member) ? inviterData.counts.real : inviterData.counts.real - 1 : 0, // this.isFake(member) ? inviterData.counts.real : inviterData.counts.real - 1 : 0,
-                fake: inviterData ? this.isFake(member) ? inviterData.counts.fake - 1 : inviterData.counts.fake : 0,
+                real: inviterData ? 
+                inviterData.counts.real 
+                : 0, // this.isFake(member) ? inviterData.counts.real : inviterData.counts.real - 1 : 0,
+                fake: inviterData ? inviterData.counts.fake : 0,
                 leave: inviterData ? inviterData.counts.leave + 1 : 0,
             },
         };
@@ -236,12 +247,11 @@ class AoiInviteSystem extends EventEmitter {
                 leave: inviterData ? inviterData.counts.leave : 0,
             },
         };
-
+        this.cache.invites.get(invite.guild.id).set(invite.code, invite);
         await this.set(invite.guild.id, invite.inviter.id, data);
     }
 
     async inviteDelete(invite) {
-        console.log(invite)
         const inviterData = await this.get(invite.guild.id, invite.inviterId);
         if (!inviterData) return;
         const data = {
@@ -254,7 +264,7 @@ class AoiInviteSystem extends EventEmitter {
                 leave: inviterData ? inviterData.counts.leave : inviterData,
             },
         };
-
+        this.cache.invites.get(invite.guild.id).delete(invite.code);
         await this.set(invite.guild.id, invite.inviter.id, data);
     }
 
