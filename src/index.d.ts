@@ -78,7 +78,6 @@ declare module "aoi.js" {
         aoiLogs?: boolean;
         aoiWarning?: boolean;
         aoiAutoUpdate?: boolean;
-        plugins?: Array<string>;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: Array<AllEvents>;
