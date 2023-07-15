@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
-const fs = require("fs");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
+const fs = require("fs");;
+const path = require("path");
 const {
     ActivityTypeAvailables,
     IntentOptions,
@@ -65,9 +66,7 @@ class BaseClient extends Discord.Client {
         options.intents = options.intents.map((x) => IntentOptions[x] || x);
         super(options);
         this.aoiOptions = aoiOptions;
-        this.plugins = {
-            functions: [],
-        };
+
         this.cmd = new CommandManager(this);
 
         this.interactionManager = new InteractionManager(this);
@@ -76,112 +75,6 @@ class BaseClient extends Discord.Client {
 
         this.variableManager = new VariableManager(this);
 
-        if (options.plugins) {
-            if (Array.isArray(options.plugins)) {
-                for (const plugin of options.plugins) {
-                    if (typeof plugin === "string") {
-                        if (fs.statSync(plugin).isDirectory()) {
-                            const pluginPaths = fs.readdirSync(plugin);
-                            for (const {} of pluginPaths) {
-                                const pluginPaths = fs.readdirSync(
-                                    options.plugins,
-                                );
-                                for (const pluginPath of pluginPaths) {
-                                    const pluginModule = require(`${process.cwd()}/${
-                                        options.plugins
-                                    }/${pluginPath}`);
-                                    if (pluginModule?.init) {
-                                        pluginModule.init(this);
-                                    }
-
-                                    if (pluginModule?.commands) {
-                                        this.cmd.add(pluginModule.commands);
-                                    }
-
-                                    if (pluginModule?.functions) {
-                                        this.functionManager.createFunction(
-                                            ...pluginModule.functions,
-                                        );
-                                        this.plugins.functions.push(
-                                            ...pluginModule.functions,
-                                        );
-                                    }
-                                }
-                            }
-                        } else {
-                            const pluginPath = require.resolve(plugin, {
-                                paths: [process.cwd()],
-                            });
-                            const pluginModule = require(pluginPath);
-                            if (pluginModule?.init) {
-                                pluginModule.init(this);
-                            }
-
-                            if (pluginModule?.commands) {
-                                this.cmd.add(pluginModule.commands);
-                            }
-
-                            if (pluginModule?.functions) {
-                                this.functionManager.createFunction(
-                                    ...pluginModule.functions,
-                                );
-                                this.plugins.functions.push(
-                                    ...pluginModule.functions,
-                                );
-                            }
-                        }
-                    } else {
-                        throw new TypeError("Plugin must be a string");
-                    }
-                }
-            } else if (typeof options.plugins === "string") {
-                if (fs.statSync(options.plugins).isDirectory()) {
-                    const pluginPaths = fs.readdirSync(options.plugins);
-                    for (const pluginPath of pluginPaths) {
-                        const pluginModule = require(`${process.cwd()}/${
-                            options.plugins
-                        }/${pluginPath}`);
-                        if (pluginModule?.init) {
-                            pluginModule.init(this);
-                        }
-
-                        if (pluginModule?.commands) {
-                            this.cmd.add(pluginModule.commands);
-                        }
-
-                        if (pluginModule?.functions) {
-                            this.functionManager.createFunction(
-                                ...pluginModule.functions,
-                            );
-                            this.plugins.functions.push(
-                                ...pluginModule.functions,
-                            );
-                        }
-                    }
-                } else {
-                    const pluginPath = require.resolve(options.plugins, {
-                        paths: [process.cwd()],
-                    });
-                    const pluginModule = require(pluginPath);
-                    if (pluginModule?.init) {
-                        pluginModule.init(this);
-                    }
-
-                    if (pluginModule?.commands) {
-                        this.cmd.add(pluginModule.commands);
-                    }
-
-                    if (pluginModule?.functions) {
-                        this.functionManager.createFunction(
-                            ...pluginModule.functions,
-                        );
-                        this.plugins.functions.push(...pluginModule.functions);
-                    }
-                }
-            } else {
-                throw new TypeError("Plugin must be a string");
-            }
-        }
         if (
             [
                 "default",
@@ -266,15 +159,6 @@ class BaseClient extends Discord.Client {
                 },
                 options?.database?.extraOptions || {},
             );
-        }
-
-        if (options?.events?.functionError) {
-            this.on("functionError", async (data, client) => {
-                await require("../handler/Custom/functionError.js")(
-                    data,
-                    client,
-                );
-            });
         }
 
         if (Array.isArray(options?.disableFunctions) && options?.disableFunctions.length) {
