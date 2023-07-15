@@ -24,7 +24,7 @@ class AoiInviteSystem extends EventEmitter {
 
         this.db = new KeyValue({
             path: "./database/",
-            tables: ["invite"], // Specify the table name here
+            tables: ["invite","inviteCodes"], // Specify the table name here
         });
         this.db.connect();
 
@@ -96,6 +96,26 @@ class AoiInviteSystem extends EventEmitter {
             value: inviteData,
         });
     }
+
+    async setCode(guildID, code, codeData) {
+        if(codeData.length == 0) {
+            await this.db.delete("inviteCodes", code + "_" + guildID);
+            return;
+        }
+        await this.db.set("inviteCodes", code + "_" + guildID, {
+            value: codeData,
+        });
+    }
+
+    async deleteCode(guildID, code) {
+        await this.db.delete("inviteCodes", code + "_" + guildID);
+    }
+
+    async getCode(guildID, code) {
+            return (await this.db.get("inviteCodes", code + "_" + guildID))
+                ?.value;
+    }
+
     async get(guildID, userID) {
         if (!this.cache.users.has(userID)) {
             return (await this.db.get("invite", userID + "_" + guildID))?.value;
@@ -176,7 +196,6 @@ class AoiInviteSystem extends EventEmitter {
 
         if (!inviterData) {
             inviterData = AoiInviteSystem.defaultInviteData(invite.inviter);
-            inviterData.codes = [invite.code];
         }
 
         const data = {
@@ -189,6 +208,8 @@ class AoiInviteSystem extends EventEmitter {
                 leave: inviterData ? inviterData.counts.leave : inviterData,
             },
         };
+        const codeData = await this.getCode(member.guild.id, invite.code);
+        await this.setCode(member.guild.id, invite.code, [...(codeData ?? []), member.id]);
 
         await this.set(member.guild.id, inviter.id, data);
     }
@@ -200,15 +221,11 @@ class AoiInviteSystem extends EventEmitter {
     }
 
     async memberLeave(member) {
-        const invites = await this.fetchInvites(member.guild);
-        const oldInvites = this.cache.invites.get(member.guild.id);
-
-        const invite = invites.find(
-            (x) =>
-                !oldInvites.has(x.code) && x.uses < oldInvites.get(x.code).uses,
-        );
-        if (!invite) return;
-
+        const ddd = await this.db.all("inviteCodes");
+        const d = ddd.find(x => x.value.includes(member.id));
+        if(!d) return;
+        const code = d.key.split("_")[0];
+        const invite = await this.client.fetchInvite(code);
         const inviter = invite.inviter.id;
         let inviterData = await this.get(member.guild.id, inviter.id);
 
@@ -230,7 +247,10 @@ class AoiInviteSystem extends EventEmitter {
             },
         };
 
-        await this.set(member.guild.id, inviter.id, data);
+        const codeData = await this.getCode(member.guild.id, invite.code);
+        await this.setCode(invite.guild.id, invite.code, codeData.filter(x => x !== member.id));
+
+        await this.set(invite.guild.id, inviter, data);
     }
 
     async inviteCreate(invite) {
@@ -248,7 +268,10 @@ class AoiInviteSystem extends EventEmitter {
             },
         };
         this.cache.invites.get(invite.guild.id).set(invite.code, invite);
-        await this.set(invite.guild.id, invite.inviter.id, data);
+        await this.set(invite.guild.id, data.inviter, data);
+        
+        await this.setCode(invite.guild.id, invite.code, []);
+
     }
 
     async inviteDelete(invite) {
@@ -266,6 +289,8 @@ class AoiInviteSystem extends EventEmitter {
         };
         this.cache.invites.get(invite.guild.id).delete(invite.code);
         await this.set(invite.guild.id, invite.inviter.id, data);
+
+        await this.deleteCode(invite.guild.id, invite.code);
     }
 
     #bindEvents() {

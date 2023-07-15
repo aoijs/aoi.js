@@ -13,6 +13,8 @@ module.exports = async (d) => {
     let code = "";
     let real = 0;
     let fake = 0;
+    let total = 0;
+    let leave = 0;
 
     if (inviteSystem) {
         const guild = d.guild;
@@ -24,6 +26,8 @@ module.exports = async (d) => {
                 code = allinvites.map((invite) => invite.code).join(", ");
                 real = await inviteSystem.count(guild.id,inviter , "real");
                 fake = await inviteSystem.count(guild.id, inviter ,"fake");
+                total = await inviteSystem.count(guild.id, inviter ,"total");
+                leave = await inviteSystem.count(guild.id, inviter ,"leave");
             }
         }
     }
@@ -37,6 +41,8 @@ module.exports = async (d) => {
         code,
         real,
         fake,
+        total,
+        leave,
     };
 
     if (!option) {
