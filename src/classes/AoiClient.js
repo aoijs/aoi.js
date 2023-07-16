@@ -650,6 +650,46 @@ class Client extends BaseClient {
         }
         this.cmd.webhookUpdate?.set(this.cmd.webhookUpdate.size, d);
     }
+
+    autoModActionExecutionCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: autoModActionExecutionCommand. position: ${this.cmd.autoModActionExecution.size}`,
+            );
+        }
+        this.cmd.autoModActionExecution?.set(this.cmd.autoModActionExecution.size, d);
+    }
+
+    autoModCreateCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: autoModCreateCommand. position: ${this.cmd.autoModCreate.size}`,
+            );
+        }
+        this.cmd.autoModCreate?.set(this.cmd.autoModCreate.size, d);
+    }
+
+    autoModDeleteCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: autoModDeleteCommand. position: ${this.cmd.autoModDelete.size}`,
+            );
+        }
+        this.cmd.autoModDelete?.set(this.cmd.autoModDelete.size, d);
+    }
+
+    autoModUpdateCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: autoModUpdateCommand. position: ${this.cmd.autoModUpdate.size}`,
+            );
+        }
+        this.cmd.autoModUpdate?.set(this.cmd.autoModUpdate.size, d);
+    }
 }
 
 require("../utils/helpers/prototypes.js");
