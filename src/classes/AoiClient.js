@@ -517,12 +517,26 @@ class Client extends BaseClient {
         if (!d.code) {
             throw new TypeError(
                 `Code is not provided in ${d?.name || "unknown name"
-                }: ApplicationCmdUpdateCommand. position: ${this.cmd.onApplicationCmdUpdate.size
+                }: ApplicationCmdUpdateCommand. position: ${this.cmd.applicationCmdUpdate.size
                 }`,
             );
         }
-        this.cmd.onApplicationCmdUpdate?.set(
-            this.cmd.onApplicationCmdUpdate.size,
+        this.cmd.applicationCmdUpdate?.set(
+            this.cmd.applicationCmdUpdate.size,
+            d,
+        );
+    }
+
+    applicationCmdPermissionsUpdateCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: ApplicationCmdPermissionsUpdateCommand. position: ${this.cmd.applicationCmdPermissionsUpdate.size
+                }`,
+            );
+        }
+        this.cmd.applicationCmdPermissionsUpdate?.set(
+            this.cmd.applicationCmdPermissionsUpdate.size,
             d,
         );
     }
