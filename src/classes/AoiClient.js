@@ -690,6 +690,26 @@ class Client extends BaseClient {
         }
         this.cmd.autoModUpdate?.set(this.cmd.autoModUpdate.size, d);
     }
+
+    inviteCreateCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: inviteCreateCommand. position: ${this.cmd.inviteCreate.size}`,
+            );
+        }
+        this.cmd.inviteCreate?.set(this.cmd.inviteCreate.size, d);
+    }
+
+    inviteDeleteCommand(d = {}) {
+        if (!d.code) {
+            throw new TypeError(
+                `Code is not provided in ${d?.name || "unknown name"
+                }: inviteDeleteCommand. position: ${this.cmd.inviteDelete.size}`,
+            );
+        }
+        this.cmd.inviteDelete?.set(this.cmd.inviteDelete.size, d);
+    }
 }
 
 require("../utils/helpers/prototypes.js");
