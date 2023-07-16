@@ -41,7 +41,7 @@
 
 ## About
 
-aoi.js is a JavaScript library that is designed to make it easy to build Discord bots.
+axoo.js is a JavaScript library that is designed to make it easy to build Discord bots.
 
 It is open-source and free to use, and provides a simple, easy-to-use interface for interacting with the Discord API and handling events.
 
