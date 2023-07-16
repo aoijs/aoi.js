@@ -666,7 +666,7 @@ const EventstoFile = {
 
     // Interaction and command events
     onInteractionCreate: "interaction",
-    onApplicationCommandPermissionsUpdate: "appCmdPermUpdate",
+    onApplicationCommandPermissionsUpdate: "appCmdPermissionsUpdate",
 
     // User events
     onUserUpdate: "userUpdate",

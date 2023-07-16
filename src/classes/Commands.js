@@ -107,7 +107,7 @@ class CommandManager {
     applicationCmdCreate;
     applicationCmdDelete;
     applicationCmdUpdate;
-    applicationCmdPermUpdate;
+    applicationCmdPermissionsUpdate;
     userUpdate;
     variableCreate;
     variableDelete;
@@ -199,7 +199,7 @@ class CommandManager {
             "applicationCmdCreate",
             "applicationCmdUpdate",
             "applicationCmdDelete",
-            "applicationCmdPermUpdate",
+            "applicationCmdPermissionsUpdate",
             "userUpdate",
             "rateLimit",
             "shardReady",
