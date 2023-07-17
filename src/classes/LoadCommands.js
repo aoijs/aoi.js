@@ -2,6 +2,15 @@ const fs = require("fs");
 const { CommandManager } = require("./Commands.js");
 const PATH = require("path");
 
+function isObject(data) {
+  return (
+      data instanceof Object &&
+      !Buffer.isBuffer(data) &&
+      !Array.isArray(data) &&
+      !(data instanceof RegExp)
+  );
+}
+
 class LoadCommands {
   constructor(client, addClassInClient = true) {
     this.client = client;
@@ -13,116 +22,103 @@ class LoadCommands {
   }
 
   async load(client, path, debug = true) {
-    function isObject(data) {
-      return (
-        data instanceof Object &&
-        !Buffer.isBuffer(data) &&
-        !Array.isArray(data) &&
-        !(data instanceof RegExp)
-      );
-    }
-
-    async function walk(file) {
-      const something = await fs.promises
-        .readdir(file, { withFileTypes: true })
-        .then((f) => {
-          return f.map((d) => {
-            d.name = `${file}${PATH.sep}${d.name}`;
-
-            return d;
-          });
-        });
-
-      const files = something.filter((d) => d.isFile());
-      const dirs = something.filter((d) => d.isDirectory());
-
-      for (const d of dirs) {
-        const items = await walk(d.name);
-
-        files.push(...items);
-      }
-
-      return files;
-    }
-
-    if (typeof path !== "string")
+    if (typeof path !== "string") {
       throw new TypeError(
-        `Expecting typeof string on 'path' parameter, get '${typeof path}' instead`,
+          `Expecting typeof string on 'path' parameter, got '${typeof path}' instead`
       );
+    }
 
-    if (!PATH.isAbsolute(path)) path = PATH.resolve(path);
+    if (!PATH.isAbsolute(path)) {
+      path = PATH.resolve(path);
+    }
 
     try {
-      if (await fs.promises.stat(path).then((f) => !f.isDirectory()))
+      const stat = await fs.promises.stat(path);
+      if (!stat.isDirectory()) {
         console.error("Error!");
+      }
     } catch (e) {
-      throw new TypeError("Path is not a valid directory! ErrorMessage: " + e);
+      throw new TypeError(
+          "Path is not a valid directory! ErrorMessage: " + e
+      );
     }
 
     const index = this.paths.findIndex((d) => d.path === path);
 
-    if (index < 0)
+    if (index < 0) {
       this.paths.push({
         path,
         debug,
         commandsLocation: client,
         keys: Object.keys(client),
       });
+    }
 
-    const validCmds = Object.getOwnPropertyNames(client);
+    const validCmds = new Set(Object.getOwnPropertyNames(client));
+
+    async function walk(file) {
+      const something = await fs.promises
+          .readdir(file, { withFileTypes: true })
+          .then((f) => {
+            return f.map((d) => {
+              d.name = `${file}${PATH.sep}${d.name}`;
+
+              return d;
+            });
+          });
+
+      const files = something.filter((d) => d.isFile());
+      const dirs = something.filter((d) => d.isDirectory());
+
+      const items = await Promise.all(dirs.map((d) => walk(d.name)));
+
+      for (const item of items) {
+        files.push(...item);
+      }
+
+      return files;
+    }
 
     const dirents = await walk(path);
     const debugs = [];
 
     for (const { name } of dirents) {
-      delete require.cache[name];
-
-      let cmds;
-
-      try {
-        cmds = require(name);
-      } catch {
-        debugs.push(
-          `${this.colors.failedLoading?.text || ""}Failed to load in ${
-            this.colors.failedLoading?.name || ""
-          }${name}${this.allColors.reset || ""}`,
-        );
-
-        continue;
-      }
+      const cmds = require(name);
 
       if (cmds == null) {
         debugs.push(
-          `${this.colors.noData?.text || ""} No data provided in ${
-            this.colors.noData?.name || ""
-          }${name}${this.allColors.reset || ""}`,
+            `${this.colors.noData?.text || ""} No data provided in ${
+                this.colors.noData?.name || ""
+            }${name}${this.allColors.reset || ""}`
         );
 
         continue;
       }
 
-      if (!Array.isArray(cmds)) cmds = [cmds];
+      if (!Array.isArray(cmds)) {
+        cmds = [cmds];
+      }
 
       debugs.push(
-        `|${this.colors?.loading || ""} Loading in ${name}${
-          this.allColors.reset || ""
-        } |`,
+          `|${this.colors?.loading || ""} Loading in ${name}${
+              this.allColors.reset || ""
+          } |`
       );
 
       for (const cmd of cmds) {
+        const { type, name: cmdName, channel, prototype } = cmd;
         if (!isObject(cmd)) {
-          debugs.push(` Provided data is not an object`);
-
+          debugs.push(" Provided data is not an object");
           continue;
         }
 
-        if (!("type" in cmd)) cmd.type = "default";
+        if (!("type" in cmd)) {
+          cmd.type = "default";
+        }
 
-        const valid = validCmds.some((c) => c === cmd.type);
-
-        if (!valid) {
+        if (!validCmds.has(cmd.type)) {
           const typeErrorCommand = this.colors.typeError?.command || "";
-          const cmdNameOrChannel = cmd.name || cmd.channel;
+          const cmdNameOrChannel = cmdName || channel;
           const typeErrorType = this.colors.typeError?.type || "";
           const invalidTypeMessage = "Invalid Type Provided";
           const typeErrorText = this.colors.typeError?.text || "";
@@ -141,41 +137,30 @@ class LoadCommands {
           if (client instanceof CommandManager) {
             client.createCommand(cmd);
           } else {
-            /*if(cmd.type === "interaction"){
-          client[cmd.type][cmd.prototype].set(client[cmd.type][cmd.prototype].size,cmd);
-}
-            else */
             client[cmd.type].set(client[cmd.type].size, cmd);
           }
         } catch (e) {
-          console.error(e);
+          const failLoadCommand = this.colors.failLoad?.command || "";
+          const failLoadType = this.colors.failLoad?.type || "";
+          const failLoadText = this.colors.failLoad?.text || "";
           debugs.push(
-            `|${this.colors.failLoad?.command || ""}'${
-              cmd.name || cmd.channel
-            }'| ${this.colors.failLoad?.type || ""}${cmd.type}${
-              this.allColors.reset
-            }| ${this.colors.failLoad?.text || ""}Failed To Load${
-              this.allColors.reset
-            }`);
+              `|${failLoadCommand}'${cmdName || channel}'| ${failLoadType}${cmd.type}${this.allColors.reset}| ${failLoadText}Failed To Load${this.allColors.reset} |`
+          );
 
+          console.error(e);
           continue;
         }
 
-        debugs.push(`Loaded ${this.colors.loaded?.command || ""}'${
-          cmd.name || cmd.channel
-        }' ${this.colors.loaded?.type || ""}|${cmd.type}| ${
-          this.allColors.reset || ""
-        }${this.colors.loaded?.text || ""}${this.allColors.reset || ""}`);
+        const loadedCommand = this.colors.loaded?.command || "";
+        const loadedType = this.colors.loaded?.type || "";
+        const loadedText = this.colors.loaded?.text || "";
+        debugs.push(`Loaded ${loadedCommand}'${cmdName || channel}' ${loadedType}|${cmd.type}| ${this.allColors.reset}${loadedText}${this.allColors.reset}`);
       }
     }
 
     if (debug) {
       console.log(
-        `|  ${this.colors.loaded?.command || ""}Command${
-          this.allColors.reset
-        }  |  ${this.colors.loaded?.type || ""}Type${
-          this.allColors.reset
-        }  |  ${this.colors.loaded?.text || ""}State${this.allColors.reset}  |
+          `|  ${this.colors.loaded?.command || ""}Command${this.allColors.reset}  |  ${this.colors.loaded?.type || ""}Type${this.allColors.reset}  |  ${this.colors.loaded?.text || ""}State${this.allColors.reset}  |
 |------------------------------------------|\n` + debugs.join("\n"),
       );
     }
@@ -187,15 +172,15 @@ class LoadCommands {
         try {
           if (cmd === "interaction") {
             dp.commandsLocation.interaction.slash =
-              dp.commandsLocation.interaction.slash.filter((x) => !x.load);
+                dp.commandsLocation.interaction.slash.filter((x) => !x.load);
             dp.commandsLocation.interaction.button =
-              dp.commandsLocation.interaction.button.filter((x) => !x.load);
+                dp.commandsLocation.interaction.button.filter((x) => !x.load);
             dp.commandsLocation.interaction.selectMenu =
-              dp.commandsLocation.interaction.selectMenu.filter((x) => !x.load);
+                dp.commandsLocation.interaction.selectMenu.filter((x) => !x.load);
             dp.commandsLocation.interaction.modal = dp.commandsLocation.interaction.modal.filter((x) => !x.load);
           } else
             dp.commandsLocation[cmd] = dp.commandsLocation[cmd].filter(
-              (x) => !x.load,
+                (x) => !x.load,
             );
           if (cmd.loopInterval) {
             clearInterval(cmd.loopInterval);
@@ -209,14 +194,14 @@ class LoadCommands {
   }
 
   setColors(
-    c = {
-      failLoad: null,
-      loading: null,
-      failedLoading: null,
-      loaded: null,
-      typeError: null,
-      noData: null,
-    },
+      c = {
+        failLoad: null,
+        loading: null,
+        failedLoading: null,
+        loaded: null,
+        typeError: null,
+        noData: null,
+      },
   ) {
     for (const co of Object.keys(c)) {
       if (Array.isArray(c[co])) {
@@ -226,11 +211,15 @@ class LoadCommands {
         for (const coo of Object.keys(c[co])) {
           if (Array.isArray(c[co][coo])) {
             this.colors[co][coo] = c[co][coo]
-              .map((x) => this.allColors[x])
-              .join(" ");
-          } else this.colors[co][coo] = c[co][coo];
+                .map((x) => this.allColors[x])
+                .join(" ");
+          } else {
+            this.colors[co][coo] = c[co][coo];
+          }
         }
-      } else this.colors[co] = this.allColors[c[co]];
+      } else {
+        this.colors[co] = this.allColors[c[co]];
+      }
     }
   }
 
