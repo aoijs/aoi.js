@@ -10,6 +10,9 @@ if (isNaN(Number(major)) || Number(major) < 16) {
 
 //Initialize aoi.js Client
 class Client extends BaseClient {
+    /**
+     * @param {import("../index").ClientOptions} options AoiClient constructor options.
+     */
     constructor(options) {
         super(options);
         this.functionManager = new FunctionManager(this);
@@ -19,20 +22,24 @@ class Client extends BaseClient {
         }
     }
 
-    //Commands
+    /**
+     * Add a command to the AoiClient.
+     * @param  {import("../index").Command[]} args 
+     */
     command(...args) {
         for (const d of args) {
-            if (!d.name)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a name!`);
-            if (!d.code)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a code!`);
-
-            this.cmd.default.set(this.cmd.default.size, new Command(d, this));
+            if (!d.name) throw new TypeError(`Command ${this.cmd.default.size} needs a name!`);
+            if (!d.code) throw new TypeError(`Command ${this.cmd.default.size} needs a code!`);
+            if (!("type" in d)) d.type = "default";
+            if (!this.cmd.types.includes(d.type)) throw new TypeError(`Invalid command type in ${this.cmd.default.size}!`);
+            this.cmd[d.type].set(this.cmd[d.type].size, new Command(d, this));
         }
-
-
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     awaitedCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(`Code is not provided in ${d.name}`);
@@ -46,6 +53,10 @@ class Client extends BaseClient {
         this.cmd.awaited.set(this.cmd.awaited.size, new Command(d, this));
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     deletedCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -59,6 +70,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     updateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -73,6 +88,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     bulkDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -87,7 +106,10 @@ class Client extends BaseClient {
         );
     }
 
-    //-------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     guildJoinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -99,6 +121,10 @@ class Client extends BaseClient {
         this.cmd.guildJoin.set(this.cmd.guildJoin.size, new Command(d, this));
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     guildLeaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -110,6 +136,10 @@ class Client extends BaseClient {
         this.cmd.guildLeave.set(this.cmd.guildLeave.size, new Command(d, this));
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     guildUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -121,6 +151,10 @@ class Client extends BaseClient {
         this.cmd.guildUpdate.set(this.cmd.guildUpdate.size, new Command(d, this));
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     guildUnavailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -135,6 +169,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     roleCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -145,6 +183,10 @@ class Client extends BaseClient {
         this.cmd.roleCreate.set(this.cmd.roleCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     roleUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -155,6 +197,10 @@ class Client extends BaseClient {
         this.cmd.roleUpdate.set(this.cmd.roleUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     roleDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -165,6 +211,10 @@ class Client extends BaseClient {
         this.cmd.roleDelete.set(this.cmd.roleDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     channelCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -175,6 +225,10 @@ class Client extends BaseClient {
         this.cmd.channelCreate.set(this.cmd.channelCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     channelUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -185,6 +239,10 @@ class Client extends BaseClient {
         this.cmd.channelUpdate.set(this.cmd.channelUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     channelDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -195,6 +253,10 @@ class Client extends BaseClient {
         this.cmd.channelDelete.set(this.cmd.channelDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     channelPinsUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -206,6 +268,10 @@ class Client extends BaseClient {
         this.cmd.channelPinsUpdate.set(this.cmd.channelPinsUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     stageInstanceCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -217,6 +283,10 @@ class Client extends BaseClient {
         this.cmd.stageInstanceCreate.set(this.cmd.stageInstanceCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     stageInstanceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -228,6 +298,10 @@ class Client extends BaseClient {
         this.cmd.stageInstanceUpdate.set(this.cmd.stageInstanceUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     stageInstanceDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -239,6 +313,10 @@ class Client extends BaseClient {
         this.cmd.stageInstanceDelete.set(this.cmd.stageInstanceDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -249,6 +327,10 @@ class Client extends BaseClient {
         this.cmd.threadCreate.set(this.cmd.threadCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -259,6 +341,10 @@ class Client extends BaseClient {
         this.cmd.threadUpdate.set(this.cmd.threadUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -269,6 +355,10 @@ class Client extends BaseClient {
         this.cmd.threadDelete.set(this.cmd.threadDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadListSyncCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -279,6 +369,10 @@ class Client extends BaseClient {
         this.cmd.threadListSync.set(this.cmd.threadListSync.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadMemberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -290,7 +384,10 @@ class Client extends BaseClient {
         this.cmd.threadMemberUpdate.set(this.cmd.threadMemberUpdate.size, d);
     }
 
-    //--------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     joinCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -301,6 +398,10 @@ class Client extends BaseClient {
         this.cmd.join.set(this.cmd.join.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     leaveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -311,6 +412,10 @@ class Client extends BaseClient {
         this.cmd.leave.set(this.cmd.leave.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     memberUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -322,6 +427,10 @@ class Client extends BaseClient {
         this.cmd.memberUpdate.set(this.cmd.memberUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     threadMembersUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -332,6 +441,10 @@ class Client extends BaseClient {
         this.cmd.membersUpdate.set(this.cmd.membersUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     memberAvailableCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -342,6 +455,10 @@ class Client extends BaseClient {
         this.cmd.memberAvailable.set(this.cmd.memberAvailable.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     membersChunkCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -352,7 +469,10 @@ class Client extends BaseClient {
         this.cmd.membersChunk.set(this.cmd.membersChunk.size, d);
     }
 
-    //---------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     emojiCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -363,6 +483,10 @@ class Client extends BaseClient {
         this.cmd.emojiCreate.set(this.cmd.emojiCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     emojiDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -373,6 +497,10 @@ class Client extends BaseClient {
         this.cmd.emojiDelete.set(this.cmd.emojiDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     emojiUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -383,7 +511,10 @@ class Client extends BaseClient {
         this.cmd.emojiUpdate.set(this.cmd.emojiUpdate.size, d);
     }
 
-    //--------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     banAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -394,6 +525,10 @@ class Client extends BaseClient {
         this.cmd.banAdd.set(this.cmd.banAdd.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     banRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -404,7 +539,10 @@ class Client extends BaseClient {
         this.cmd.banRemove.set(this.cmd.banRemove.size, d);
     }
 
-    //---------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     reactionAddCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -415,6 +553,10 @@ class Client extends BaseClient {
         this.cmd.reactionAdd.set(this.cmd.reactionAdd.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     reactionRemoveCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -425,6 +567,10 @@ class Client extends BaseClient {
         this.cmd.reactionRemove.set(this.cmd.reactionRemove.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     reactionRemoveAllCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -436,6 +582,10 @@ class Client extends BaseClient {
         this.cmd.reactionRemoveAll.set(this.cmd.reactionRemoveAll.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     reactionRemoveEmojiCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -447,7 +597,10 @@ class Client extends BaseClient {
         this.cmd.reactionRemoveEmoji.set(this.cmd.reactionRemoveEmoji.size, d);
     }
 
-    //---------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     presenceUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -458,7 +611,10 @@ class Client extends BaseClient {
         this.cmd.presenceUpdate.set(this.cmd.presenceUpdate.size, d);
     }
 
-    //---------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     voiceStateUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -470,7 +626,10 @@ class Client extends BaseClient {
         this.cmd.voiceStateUpdate.set(this.cmd.voiceStateUpdate.size, d);
     }
 
-    //---------------------------------//
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     interactionCommand(d = {}) {
         if (!d.prototype) {
             throw new TypeError(
@@ -491,6 +650,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     applicationCmdCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -502,6 +665,10 @@ class Client extends BaseClient {
         this.cmd.applicationCmdCreate?.set(this.cmd.applicationCmdCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     applicationCmdDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -513,6 +680,10 @@ class Client extends BaseClient {
         this.cmd.applicationCmdDelete?.set(this.cmd.applicationCmdDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     applicationCmdUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -527,6 +698,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     applicationCmdPermissionsUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -541,6 +716,10 @@ class Client extends BaseClient {
         );
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     userUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -551,6 +730,10 @@ class Client extends BaseClient {
         this.cmd.userUpdate?.set(this.cmd.userUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     variableCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -561,6 +744,10 @@ class Client extends BaseClient {
         this.cmd.variableCreate?.set(this.cmd.variableCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     variableDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -571,6 +758,10 @@ class Client extends BaseClient {
         this.cmd.variableDelete?.set(this.cmd.variableDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     variableUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -581,6 +772,10 @@ class Client extends BaseClient {
         this.cmd.variableUpdate?.set(this.cmd.variableUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     readyCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -591,6 +786,10 @@ class Client extends BaseClient {
         this.cmd.ready?.set(this.cmd.ready.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     functionErrorCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -601,6 +800,10 @@ class Client extends BaseClient {
         this.cmd.functionError?.set(this.cmd.functionError.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     loopCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -611,6 +814,10 @@ class Client extends BaseClient {
         this.cmd.loop?.set(this.cmd.loop.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     timeoutCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -621,6 +828,10 @@ class Client extends BaseClient {
         this.cmd.timeout?.set(this.cmd.timeout.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     pulseCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -631,6 +842,10 @@ class Client extends BaseClient {
         this.cmd.pulse?.set(this.cmd.pulse.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     rateLimitCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -641,6 +856,10 @@ class Client extends BaseClient {
         this.cmd.rateLimit?.set(this.cmd.rateLimit.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     webhookUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -651,6 +870,10 @@ class Client extends BaseClient {
         this.cmd.webhookUpdate?.set(this.cmd.webhookUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     autoModActionExecutionCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -661,6 +884,10 @@ class Client extends BaseClient {
         this.cmd.autoModActionExecution?.set(this.cmd.autoModActionExecution.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     autoModCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -671,6 +898,10 @@ class Client extends BaseClient {
         this.cmd.autoModCreate?.set(this.cmd.autoModCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     autoModDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -681,6 +912,10 @@ class Client extends BaseClient {
         this.cmd.autoModDelete?.set(this.cmd.autoModDelete.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     autoModUpdateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -691,6 +926,10 @@ class Client extends BaseClient {
         this.cmd.autoModUpdate?.set(this.cmd.autoModUpdate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     inviteCreateCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
@@ -701,6 +940,10 @@ class Client extends BaseClient {
         this.cmd.inviteCreate?.set(this.cmd.inviteCreate.size, d);
     }
 
+    /**
+     * @deprecated
+     * Use AoiClient#command instead.
+     */
     inviteDeleteCommand(d = {}) {
         if (!d.code) {
             throw new TypeError(
