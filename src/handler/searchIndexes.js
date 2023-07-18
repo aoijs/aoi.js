@@ -13,8 +13,8 @@ function searchIndexes(pat, txt) {
 
     while (txtIndex < txtLength) {
         if (pat[patIndex] === txt[txtIndex]) {
-            ++patIndex;
-            ++txtIndex;
+            patIndex++;
+            txtIndex++;
         }
 
         if (patIndex === patLength) {
@@ -24,7 +24,7 @@ function searchIndexes(pat, txt) {
             if (patIndex !== 0) {
                 patIndex = lps[patIndex - 1];
             } else {
-                ++txtIndex;
+                txtIndex++;
             }
         }
     }
@@ -38,7 +38,7 @@ function processPattern(pat, patLength, lps) {
 
     while (index < patLength) {
         if (pat[index] === pat[len]) {
-            ++len;
+            len++;
             lps[index++] = len;
         } else if (len !== 0) {
             len = lps[len - 1];
