@@ -15,7 +15,7 @@ const { deprecate } = require("util");
 let isDeprecated = false;
 function deprecateOldIfUsage() {
     if (!isDeprecated) {
-        deprecate(() => {}, "Using $if: old is deprecated. Use $if")();
+        deprecate(() => { }, "Using $if: old is deprecated. Use $if")();
         isDeprecated = true;
     }
 }
@@ -82,21 +82,21 @@ const Interpreter = async (
             member,
             msg,
         ] = [
-            data.randoms || {},
-            "UTC",
-            data.vars || {},
-            data.object || {},
-            ["roles", "users", "everyone"],
-            data.array || [],
-            data.arrays || [],
-            [],
-            message.channel,
-            message.author,
-            message.guild,
-            message.mentions,
-            message.member,
-            message,
-        ];
+                data.randoms || {},
+                "UTC",
+                data.vars || {},
+                data.object || {},
+                ["roles", "users", "everyone"],
+                data.array || [],
+                data.arrays || [],
+                [],
+                message.channel,
+                message.author,
+                message.guild,
+                message.mentions,
+                message.member,
+                message,
+            ];
         let errorOccurred;
         let embeds;
         let deleteIn;
@@ -193,7 +193,7 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {},
+                        noop() { },
                         interpreter: Interpreter,
                         client: client,
                         embed: Discord.EmbedBuilder,
@@ -312,7 +312,7 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {},
+                        noop() { },
                         interpreter: Interpreter,
                         client: client,
                         embed: Discord.EmbedBuilder,
@@ -390,8 +390,8 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {},
-                        async error(err) {
+                        noop() { },
+                        async error(err, d) {
                             error = true;
                             client.emit(
                                 "functionError",
@@ -406,51 +406,20 @@ const Interpreter = async (
                             );
                             if (client.aoiOptions.suppressAllErrors) {
                                 if (client.aoiOptions.errorMessage) {
-                                    const {
-                                        EmbedParser,
-                                        FileParser,
-                                        ComponentParser,
-                                    } = Util.parsers;
 
                                     if (!message || !message.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
-                                        let [con, em, com, fil] = [" ", "", "", ""];
-                                        let isArray = Array.isArray(
-                                            client.aoiOptions.errorMessage
-                                        );
-                                        if (isArray) {
-                                            isArray = client.aoiOptions.errorMessage;
-                                            con =
-                                                isArray[0] === "" || !isArray[0]
-                                                    ? " "
-                                                    : isArray[0];
-                                            em =
-                                                isArray[1] !== "" && isArray[1]
-                                                    ? await EmbedParser(isArray[1] || "")
-                                                    : [];
-                                            fil =
-                                                isArray[3] !== "" && isArray[3]
-                                                    ? FileParser(isArray[3] || "")
-                                                    : [];
-                                            com =
-                                                isArray[2] !== "" && isArray[2]
-                                                    ? await ComponentParser(isArray[2] || "")
-                                                    : [];
-                                        } else {
-                                            con =
-                                                client.aoiOptions.errorMessage.addBrackets() === ""
-                                                    ? " "
-                                                    : client.aoiOptions.errorMessage.addBrackets();
-                                        }
+                                        const errorMsg = await Util.errorParser(client.aoiOptions.errorMessage, d);
 
                                         if (!errorOccurred) {
-                                            await message.channel.send({
-                                                content: con,
-                                                embeds: em || [],
-                                                components: com || [],
-                                                files: fil || [],
-                                            });
+                                            AoiError.makeMessageError(
+                                                client,
+                                                channel,
+                                                errorMsg.data ?? errorMsg,
+                                                errorMsg.options,
+                                                d,
+                                            );
                                         }
                                         errorOccurred = true;
                                     }
@@ -458,22 +427,19 @@ const Interpreter = async (
                             } else {
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
-                                } else if (suppressErrors && !errorOccurred) {
+                                }
+                                else if (suppressErrors && !errorOccurred) {
                                     if (suppressErrors.trim() !== "") {
-                                        const {
-                                            makeMessageError,
-                                        } = require("../classes/AoiError.js");
-                                        const msg = await Util.errorParser(
-                                            suppressErrors
-                                                ?.split("{error}")
-                                                .join(err.addBrackets()),
-                                            {
-                                                channel: channel,
-                                                message: message,
-                                                guild: guild,
-                                                author: author,
-                                            }
-                                        );
+                                        const { makeMessageError } = require("../classes/AoiError.js")
+                                        const msg =
+                                            await Util.errorParser(
+                                                suppressErrors?.split("{error}").join(err.addBrackets()),
+                                                {
+                                                    channel: channel,
+                                                    message: message,
+                                                    guild: guild,
+                                                    author: author,
+                                                });
                                         await makeMessageError(
                                             client,
                                             channel,
@@ -484,13 +450,13 @@ const Interpreter = async (
                                                 message: message,
                                                 guild: guild,
                                                 author: author,
-                                                data: data,
+                                                data: data
                                             }
-                                        );
+                                        )
                                     }
                                 } else {
                                     await message.channel.send(
-                                        typeof err === "object" ? err : err?.addBrackets()
+                                        typeof err === "object" ? err : err?.addBrackets(),
                                     );
                                 }
                                 errorOccurred = true;
