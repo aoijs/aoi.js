@@ -4,7 +4,7 @@ module.exports = async d => {
     const err = d.inside(inside)
     if (err) return d.error(err)
     let [name, value] = inside.splits;
-    if (!d.object) return d.aoiError.fnError(d, "custom", {}, "No Object Present")
+    if (!d.object) return d.aoiError.fnError(d, "custom", {}, "object")
     try {
         value = JSON.parse(value)
     } catch (e) {
