@@ -216,7 +216,7 @@ class AoiError {
                 errorData.type = message;
                 break;
         }
-        return `\`\`\`js\nAoiError: Invalid ${errorData.type} Provided In ${data.inside || ""} \n { \n   Function : ${errorData.Function},\n   Command : ${errorData.Command},\n   Version : ${errorData.Version} \n }\`\`\``;
+        return `\`\`\`js\nAoiError: Invalid ${errorData.type} ${data.inside || ""} \n { \n   Function : ${errorData.Function},\n   Command : ${errorData.Command},\n   Version : ${errorData.Version} \n }\`\`\``;
     }
 
     /**
