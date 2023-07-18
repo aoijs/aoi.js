@@ -1,15 +1,25 @@
 const Discord = require("discord.js");
-const {CustomFunction} = require("../classes/Functions.js");
+const { CustomFunction } = require("../classes/Functions.js");
 const AoiError = require("../classes/AoiError.js");
 const Util = require("../classes/Util.js");
 const IF = require("../utils/helpers/if.js");
 //Helper of aoijs
-const {Time} = require("../utils/helpers/customParser.js");
-const {CheckCondition} = require("../utils/helpers/checkCondition.js");
-const {mustEscape} = require("../utils/helpers/mustEscape.js");
-const {Command} = require("../classes/Commands.js");
+const { Time } = require("../utils/helpers/customParser.js");
+const { CheckCondition } = require("../utils/helpers/checkCondition.js");
+const { mustEscape } = require("../utils/helpers/mustEscape.js");
+const { Command } = require("../classes/Commands.js");
 const PATH = require("path");
-const {deprecate} = require("util");
+const { deprecate } = require("util");
+
+// Deprecate error for $if: old
+let isDeprecated = false;
+function deprecateOldIfUsage() {
+    if (!isDeprecated) {
+        deprecate(() => {}, "Using $if: old is deprecated. Use $if")();
+        isDeprecated = true;
+    }
+}
+
 /**
  * @param  {import('../classes/AoiClient.js')} client
  * @param  {Discord.Message | {
@@ -44,7 +54,7 @@ const Interpreter = async (
     returnMessage,
     returnExecution,
     returnID,
-    sendMessage = false,
+    sendMessage = false
 ) => {
     try {
         const start = performance.now();
@@ -102,7 +112,8 @@ const Interpreter = async (
         let funcLine;
         let returnData = {};
         command.codeLines =
-            command.codeLines || client.functionManager.serializeCode(command.code);
+            command.codeLines ||
+            client.functionManager.serializeCode(command.code);
         let funcs = command.functions?.length
             ? command.functions
             : client.functionManager.findFunctions(command.code);
@@ -113,7 +124,7 @@ const Interpreter = async (
             functions: command.functions,
         };
         if (command["$if"] === "old") {
-            deprecate(() => {}, "Using $if: old is deprecated. Use $if")();
+            deprecateOldIfUsage();
             code = (
                 await IF({
                     client,
@@ -165,10 +176,9 @@ const Interpreter = async (
                         mentions: mentions,
                         unpack() {
                             const last =
-                                code.split(this.func.replace("[", "")).length -
-                                1;
+                                code.split(this.func.replace("[", "")).length - 1;
                             const sliced = code.split(
-                                this.func.replace("[", ""),
+                                this.func.replace("[", "")
                             )[last];
 
                             return sliced.after();
@@ -183,8 +193,7 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {
-                        },
+                        noop() {},
                         interpreter: Interpreter,
                         client: client,
                         embed: Discord.EmbedBuilder,
@@ -202,22 +211,25 @@ const Interpreter = async (
             let func = funcs[i - 1];
 
             if (error) break;
-            const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
+            const regex = new RegExp(
+                "\\" + func.replace("[", "\\["),
+                "gi"
+            );
 
             code = code.replace(regex, func);
             //more debug
-            debug[func] = {regex, func};
+            debug[func] = { regex, func };
             command.codeLines?.map((x) => x.replace(regex, func));
             funcLine =
                 command.codeLines.length -
                 command.codeLines
                     ?.reverse()
                     .findIndex((x) =>
-                        x.toLowerCase().split(" ").includes(func.toLowerCase()),
+                        x.toLowerCase().split(" ").includes(func.toLowerCase())
                     );
 
             const functionObj = client.functionManager.cache.get(
-                func.replace("$", "").replace("[", ""),
+                func.replace("$", "").replace("[", "")
             );
             if (
                 functionObj instanceof CustomFunction &&
@@ -229,7 +241,7 @@ const Interpreter = async (
                 for (let p = functionObj.params.length - 1; p >= 0; p--) {
                     d.code = d.code.replace(
                         `{${functionObj.params[p]}}`,
-                        unpack(code, func).splits[p],
+                        unpack(code, func).splits[p]
                     );
                     param.push(functionObj.params[p]);
                 }
@@ -251,7 +263,7 @@ const Interpreter = async (
                             functions: command.functions,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
-                            funcLine: funcLine
+                            funcLine: funcLine,
                         },
                         helpers: {
                             time: Time,
@@ -300,8 +312,7 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {
-                        },
+                        noop() {},
                         interpreter: Interpreter,
                         client: client,
                         embed: Discord.EmbedBuilder,
@@ -310,11 +321,13 @@ const Interpreter = async (
                     returnMessage,
                     returnExecution,
                     returnID,
-                    sendMessage,
+                    sendMessage
                 );
                 FuncData.code = code.replaceLast(
-                    functionObj.params.length ? `${func}${param.join(";")}` : func,
-                    FuncData.code,
+                    functionObj.params.length
+                        ? `${func}${param.join(";")}`
+                        : func,
+                    FuncData.code
                 );
             } else {
                 FuncData = await client.functionManager.cache
@@ -329,7 +342,7 @@ const Interpreter = async (
                             functions: command.functions,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
-                            funcLine: funcLine
+                            funcLine: funcLine,
                         },
                         helpers: {
                             time: Time,
@@ -377,8 +390,7 @@ const Interpreter = async (
                                 }
                             } else return false;
                         },
-                        noop() {
-                        },
+                        noop() {},
                         async error(err) {
                             error = true;
                             client.emit(
@@ -390,7 +402,7 @@ const Interpreter = async (
                                     channel,
                                     guild,
                                 },
-                                client,
+                                client
                             );
                             if (client.aoiOptions.suppressAllErrors) {
                                 if (client.aoiOptions.errorMessage) {
@@ -404,10 +416,15 @@ const Interpreter = async (
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
                                         let [con, em, com, fil] = [" ", "", "", ""];
-                                        let isArray = Array.isArray(client.aoiOptions.errorMessage);
+                                        let isArray = Array.isArray(
+                                            client.aoiOptions.errorMessage
+                                        );
                                         if (isArray) {
                                             isArray = client.aoiOptions.errorMessage;
-                                            con = isArray[0] === "" || !isArray[0] ? " " : isArray[0];
+                                            con =
+                                                isArray[0] === "" || !isArray[0]
+                                                    ? " "
+                                                    : isArray[0];
                                             em =
                                                 isArray[1] !== "" && isArray[1]
                                                     ? await EmbedParser(isArray[1] || "")
@@ -441,19 +458,22 @@ const Interpreter = async (
                             } else {
                                 if (!message || !message.channel) {
                                     console.error(err.addBrackets());
-                                }
-                                else if (suppressErrors && !errorOccurred) {
+                                } else if (suppressErrors && !errorOccurred) {
                                     if (suppressErrors.trim() !== "") {
-                                        const {makeMessageError} = require("../classes/AoiError.js")
-                                        const msg =
-                                            await Util.errorParser(
-                                                suppressErrors?.split("{error}").join(err.addBrackets()),
-                                                {
-                                                    channel: channel,
-                                                    message: message,
-                                                    guild: guild,
-                                                    author: author,
-                                                });
+                                        const {
+                                            makeMessageError,
+                                        } = require("../classes/AoiError.js");
+                                        const msg = await Util.errorParser(
+                                            suppressErrors
+                                                ?.split("{error}")
+                                                .join(err.addBrackets()),
+                                            {
+                                                channel: channel,
+                                                message: message,
+                                                guild: guild,
+                                                author: author,
+                                            }
+                                        );
                                         await makeMessageError(
                                             client,
                                             channel,
@@ -464,13 +484,13 @@ const Interpreter = async (
                                                 message: message,
                                                 guild: guild,
                                                 author: author,
-                                                data: data
+                                                data: data,
                                             }
-                                        )
-                                    } 
+                                        );
+                                    }
                                 } else {
                                     await message.channel.send(
-                                        typeof err === "object" ? err : err?.addBrackets(),
+                                        typeof err === "object" ? err : err?.addBrackets()
                                     );
                                 }
                                 errorOccurred = true;
@@ -543,7 +563,7 @@ const Interpreter = async (
 
         const ended = (performance.now() - start).toFixed(3);
         embeds = JSON.parse(
-            JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended),
+            JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended)
         );
 
         debug.executionTime = ended + " ms";

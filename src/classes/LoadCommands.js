@@ -83,7 +83,7 @@ class LoadCommands {
     const debugs = [];
 
     for (const { name } of dirents) {
-      const cmds = require(name);
+      let cmds = require(name);
 
       if (cmds == null) {
         debugs.push(
