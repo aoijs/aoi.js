@@ -1,16 +1,16 @@
-const searchIndexes = require("../../handler/searchIndexes");
 const fs = require("fs");
+const searchIndexes = require("../../handler/searchIndexes");
+
 String.prototype.replaceLast = function (find, replace) {
     const index = this.lastIndexOf(find);
 
     if (index >= 0) {
-        return (
-            this.substring(0, index) + replace + this.substring(index + find.length)
-        );
+        return this.substring(0, index) + replace + this.substring(index + find.length);
     }
 
     return this.toString();
 };
+
 String.prototype.deleteBrackets = function () {
     return this.replace(/\[/g, "#RIGHT#")
         .replace(/]/g, "#LEFT#")
@@ -42,14 +42,11 @@ String.prototype.after = function () {
         : undefined;
 
     let inside;
-
     let total = "";
-
     let splits = [];
 
     if (after) {
         const before = this.substring(0, afterIndex);
-
         const rightIndexes = searchIndexes("[", after);
         const leftIndexes = searchIndexes("]", after);
 
@@ -61,12 +58,10 @@ String.prototype.after = function () {
             total = `${before}[${inside}]`;
         } else {
             const merged = [];
-
             let leftIndex = 0;
 
             for (let i = 0; i < rightIndexes.length; ++i) {
                 const right = rightIndexes[i];
-
                 let left = leftIndexes[leftIndex];
 
                 while (left < right && typeof left === "number") {
@@ -77,6 +72,7 @@ String.prototype.after = function () {
 
                     left = leftIndexes[++leftIndex];
                 }
+
                 merged.push({
                     index: right,
                     isLeft: false,
@@ -87,7 +83,6 @@ String.prototype.after = function () {
 
             while (leftIndex < leftIndexes.length) {
                 const left = leftIndexes[leftIndex++];
-
                 merged.push({
                     index: left,
                     isLeft: true,
@@ -99,7 +94,6 @@ String.prototype.after = function () {
 
             for (let i = 0; i < merged.length; ++i) {
                 const obj = merged[i];
-
                 index = obj.index;
 
                 if (obj.isLeft) --depth;
@@ -153,21 +147,18 @@ Array.prototype.goof = function (sep = "_") {
         x
             .split(sep)
             .map((w) =>
-                w.toLowerCase().replace(w[0].toLowerCase(), w[0].toUpperCase()),
+                w.toLowerCase().replace(w[0].toLowerCase(), w[0].toUpperCase())
             )
-            .join(" "),
+            .join(" ")
     ).join(", ");
 };
 
 async function walk(path) {
     const something = await fs.promises
-
-        .readdir(path, {withFileTypes: true})
-
+        .readdir(path, { withFileTypes: true })
         .then((f) => {
             return f.map((d) => {
                 d.name = `${path}/${d.name}`;
-
                 return d;
             });
         });
@@ -177,8 +168,13 @@ async function walk(path) {
 
     for (const d of dirs) {
         const items = await walk(d.name);
-
         files.push(...items);
     }
+
     return files;
 }
+
+module.exports = {
+    walk,
+    searchIndexes,
+};
