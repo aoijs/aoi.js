@@ -9,7 +9,7 @@ module.exports = async d => {
     const user = userID === d.author?.id ? d.member : await d.util.getMember(guild, userID);
     if (!user) return d.aoiError.fnError(d, "member", {inside: data.inside});
 
-    data.result = user.displayAvatarURL({
+    data.result = user.avatarURL({
         size: Number(size),
         forceStatic: dynamic === "false",
         extension,
