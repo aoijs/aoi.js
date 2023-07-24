@@ -2,13 +2,15 @@ module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   const { code } = d.command;
 
-  const [objectName, json] = data.inside.splits;
+  if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
+  const objects = data.inside.splits;
   try {
-    const object = JSON.parse(json.addBrackets());
-    d.data.objects = d.data.objects || {};
-    d.data.objects[objectName] = object;
-    d.object = object;
+    for (const objectName of objects) {
+      if (d.data.objects && objects in d.data.objects) {
+        delete d.data.objects[objectName];
+      }
+    }
   } catch (e) {
     return d.aoiError.fnError(
       d,

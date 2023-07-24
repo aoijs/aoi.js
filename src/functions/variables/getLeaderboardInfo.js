@@ -1,39 +1,61 @@
-const { AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb } = require( "../../classes/Database.js" );
+module.exports = async (d) => {
+  const data = d.util.aoiFunc(d);
+  if (data.err) return d.error(data.err);
 
-module.exports = async ( d ) =>
-{ 
-    const data = d.util.aoiFunc( d );
-    if ( data.err ) return d.error( data.err );
+  const [variable, id, type = "guild", format, table = d.client.db.tables[0]] = data.inside.splits;
 
-    const [ variable, id, type, options, table = d.client.db.tables[ 0 ] ] = data.inside.splits;
-    
-    const all = await d.client.db.all( table, variable.addBrackets(), 1 );
+  let key = null;
+  let cache = null;
+  let user = null;
 
-    let key;
-    if ( d.client.db instanceof AoijsAPI || d.client.db instanceof AoiMongoDb )
-    {
-        key = `${ variable.addBrackets() }_${ ( type === 'user' ? `${ id }_${ d.guild?.id ?? "dm" }` : id ) }`;
-    } else if ( d.client.db instanceof DbdTsDb )
-    {
-        key = `${ ( type === 'user' ? `${ id }_${ d.guild?.id ?? "dm" }` : id ) }`;
-    } 
+  const all = await d.client.db.all(table, variable);
 
-    const top = all.findIndex( x =>
-    {
-        if ( d.client.db instanceof DbdTsDb ) return x.id === key;
-        else return x.key === key;
-    } );
-    let value = all[ top ];
-    value = value?.value ?? value?.data?.value ?? value?.Data?.value ?? value?.Data ?? 0;
+  if (type === "guild") {
+    key = `${variable.addBrackets()}_${`${id}_${
+      d.guild?.id === undefined ? "dm" : d.guild?.id
+    }`}`;
+    cache = await d.client.guilds.cache.get(id);
+    user =
+      typeof cache === "undefined" || Object.keys(cache).length === 0
+        ? await d.client.users.fetch(id)
+        : undefined;
+  } else if (type === "global") {
+    key = `${variable.addBrackets()}_${id}`;
+    cache = await d.client.guilds.cache.get(id);
+    user =
+      typeof cache === "undefined" || Object.keys(cache).length === 0
+        ? await d.client.users.fetch(id)
+        : undefined;
+  } else if (type === "message" || type === "channel") {
+    key = `${variable.addBrackets()}_${id}`;
+  } else {
+    d.aoiError.fnError(d, "custom", { inside: data.inside }, `type`);
+  }
 
-    const Data =
-        type === "server"
-            ? d.client.guilds.cache.get(id) || {}
-            : await d.client.users.fetch(id);
+  const foundData = all.find((x) => x.key === key);
+  const foundDataMap = all
+    .map((x, pos) => ({ value: x.value, key: x.key, pos: pos + 1 }))
+    .sort((a, b) => a.value - b.value);
+  let value = foundData?.value ?? 0;
 
-    data.result = type === 'top' ? top + 1 : type === 'value' ? value : type === 'server' ? Data.name : Data.tag;
+  switch (format) {
+    case "top":
+      data.result = foundDataMap.find((x) => x.key === key)?.pos || null;
+      break;
+    case "value":
+      data.result = value;
+      break;
+    case "tag":
+      data.result = user.tag || null;
+      break;
+    case "username":
+      data.result = user.username || null;
+      break;
+    default:
+      data.result = null;
+  }
 
-    return {
-        code: d.util.setCode( data ),
-    };
+  return {
+    code: d.util.setCode(data),
+  };
 };

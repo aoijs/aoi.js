@@ -1,22 +1,20 @@
 module.exports = async (d) => {
-    const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err);
+  const data = d.util.aoiFunc(d);
+  if (!d.object) return d.aoiError.fnError(d, "custom", {}, "object");
 
-    const [objectProperty, objectName] = data.inside.splits;
+  const [objectName, ...properties] = data.inside.splits;
+  let object = d.data.objects?.[objectName];
 
-    if (!objectName) return d.aoiError.fnError(d, 'custom', {}, 'Missing object!');
+  if (!object) {
+    return d.aoiError.fnError(d, "custom", {}, "Object not found!");
+  }
 
-    if (!objectProperty) return d.aoiError.fnError(d, 'custom', {}, 'Missing object property names!');
+  properties.forEach((property) => {
+    delete object[property];
+  });
 
-    const propertyNames = objectProperty.split(",");
-    const object = JSON.parse(objectName);
-
-    propertyNames.forEach(propertyName => {
-        delete object[propertyName];
-    });
-
-    data.result = JSON.stringify(object);
-    return {
-        code: d.util.setCode(data)
-    };
-}
+  return {
+    code: d.util.setCode(data),
+    data: { ...d.data, objects: { ...d.data.objects, [objectName]: object } },
+  };
+};
