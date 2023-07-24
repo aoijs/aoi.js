@@ -189,7 +189,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
@@ -308,7 +308,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
@@ -386,7 +386,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: Invalid Usage Provided In \`${func}\`\n\`\`\``;
                                 }
                             } else return false;
                         },
