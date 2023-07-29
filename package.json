@@ -56,11 +56,11 @@
     "undici": "^5.18.0"
   },
   "devDependencies": {
-    "@akarui/aoi.music": "github:akaruidevelopment/music#main",
+    "@akarui/aoi.music": "^2.3.0",
     "@discordjs/opus": "^0.8.0",
     "@ffprobe-installer/ffprobe": "^1.4.1",
     "aoi.parser": "^1.2.1",
-    "discord-api-types": "^0.37.47",
+    "discord-api-types": "^0.37.50",
     "prettier": "^2.4.1",
     "typescript": "^4.5.2",
     "ws": "^8.3.0"
