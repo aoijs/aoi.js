@@ -1,9 +1,7 @@
 const {
     AoijsAPI,
-    DbdTsDb,
     CustomDb,
-    Promisify,
-    AoiMongoDb
+    Promisify
 } = require("../../classes/Database.js");
 
 module.exports = async (d) => {
@@ -25,13 +23,6 @@ module.exports = async (d) => {
         all
             .filter(async (x) => await d.util.getGuild(d, x.key.split("_")[1]))
             .forEach(async (x) => await d.client.db.delete(table, x.key));
-    } else if (d.client.db instanceof DbdTsDb) {
-        all
-            .filter(async (x) => await d.util.getGuild(d, x.id))
-            .forEach(
-                async (x) =>
-                    await d.client.db.delete(table, x[varname.addBrackets()]),
-            );
     } else if (
         d.client.db instanceof CustomDb ||
         d.client.db instanceof Promisify
@@ -63,10 +54,6 @@ module.exports = async (d) => {
                 async (x) =>
                     await d.client.db.delete(table, x.key || x.id || x.ID || x.Id),
             );
-    } else if (d.client.db instanceof AoiMongoDb) {
-        all
-            .filter(async (x) => await d.util.getUser(d, x.key.split("_")[1]))
-            .forEach(async (x) => await d.client.db.delete(table, x.key));
     }
 
     return {

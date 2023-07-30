@@ -1,10 +1,3 @@
-const {
-    AoijsAPI,
-    DbdTsDb,
-    CustomDb,
-    Promisify,
-} = require("../../classes/Database");
-
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 

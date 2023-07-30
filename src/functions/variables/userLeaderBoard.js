@@ -1,4 +1,4 @@
-const {AoijsAPI, DbdTsDb, AoiMongoDb, CustomDb, Promisify} = require("../../classes/Database.js");
+const {AoijsAPI, CustomDb, Promisify} = require("../../classes/Database.js");
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -21,10 +21,6 @@ module.exports = async d => {
             if (d.client.db.type === "aoi.db")
                 return Number(y.value) - Number(x.value);
             else return Number(y.data.value) - Number(x.data.value);
-        } else if (d.client.db instanceof DbdTsDb) {
-            return (Number(y[variable.addBrackets()]) - Number(x[variable.addBrackets()]));
-        } else if (d.client.db instanceof AoiMongoDb) {
-            return (Number(y.value) - Number(x.value))
         } else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {
             return (Number(y.value || y[variable.addBrackets()] || (typeof y.data === 'object' ? y.data.value : y.data)) - Number(x.value || x[variable.addBrackets()] || (typeof x.data === 'object' ? x.data.value : x.data)))
         }
@@ -33,14 +29,6 @@ module.exports = async d => {
         if (d.client.db instanceof AoijsAPI) {
             if (d.client.db.type === "aoi.db") value = Number(Data.value);
             else value = Number(Data.data.value);
-
-            user = await d.util.getMember(guild, Data.key.split('_')[1])
-        } else if (d.client.db instanceof DbdTsDb) {
-            value = Number(Data[variable.addBrackets()]);
-
-            user = await d.util.getMember(guild, Data.key.split('_')[0])
-        } else if (d.client.db instanceof AoiMongoDb) {
-            value = Number(Data.value)
 
             user = await d.util.getMember(guild, Data.key.split('_')[1])
         } else if (d.client.db instanceof CustomDb || d.client.db instanceof Promisify) {

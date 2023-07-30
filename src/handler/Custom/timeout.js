@@ -1,9 +1,8 @@
 const AoiError = require("../../classes/AoiError.js");
 const {
-  DbdTsDb,
   AoijsAPI,
   CustomDb,
-  Promisify,
+  Promisify
 } = require("../../classes/Database.js");
 
 module.exports = async (d, name, duration, timeoutData, onReady) => {
@@ -15,8 +14,6 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
         if (d.client.db instanceof AoijsAPI) {
           if (d.client.db.type === "aoi.db") return !x.value.__pulseEvery__;
           else return !x.data.value.__pulseEvery__;
-        } else if (d.client.db instanceof DbdTsDb) {
-          return !x["setTimeout"].__pulseEvery__;
         } else if (
           d.client.db instanceof CustomDb ||
           d.client.db instanceof Promisify
@@ -35,8 +32,6 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
         if (d.client.db instanceof AoijsAPI) {
           if(d.client.db.type === "aoi.db") t = data.value;
           else t = data.data.value;
-        } else if (d.client.db instanceof DbdTsDb) {
-          t = data["setTimeout"];
         } else if (
           d.client.db instanceof CustomDb ||
           d.client.db instanceof Promisify
