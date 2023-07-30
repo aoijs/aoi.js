@@ -42,12 +42,7 @@ declare module "aoi.js" {
     type DatabaseOption<Database> = {
         type:
             | "default"
-            | "dbdjs.db"
             | "aoi.db"
-            | "dbdts.db"
-            | "dbdjs.mongo"
-            | "dbdjs.db-sql"
-            | "aoi.fb"
             | "custom";
         db: Database;
         path?: string;

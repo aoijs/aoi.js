@@ -90,7 +90,6 @@ class CommandManager {
     inviteCreate;
     inviteDelete;
     memberUpdate;
-    membersUpdate;
     memberAvailable;
     membersChunk;
     emojiCreate;

@@ -78,10 +78,6 @@ class BaseClient extends Discord.Client {
         if (
             [
                 "default",
-                "dbdjs.db",
-                "dbdjs.db-sql",
-                "dbdjs.mongo",
-                "aoi.fb",
                 "aoi.db",
             ].includes(options?.database?.type)
         ) {
@@ -97,30 +93,7 @@ class BaseClient extends Discord.Client {
                 },
                 options.database?.extraOptions || {},
             );
-        } else if (options?.database?.type === "dbdts.db") {
-            this.db = new DbdTsDb(
-                options.database?.db,
-                {
-                    path: options.database?.path || "./database",
-                    tables: options?.database?.tables || ["main"],
-                },
-                { type: "dbdts.db", promisify: false },
-                options.database?.extraOptions || {},
-            );
-        } else if (options?.database?.type === "aoi.mongo") {
-            this.db = new AoiMongoDb(
-                options.database?.db,
-                {
-                    path: options.database?.path,
-                    tables: options.database?.tables || ["main"],
-                },
-                { type: "aoi.mongo", promisify: true },
-                {
-                    ...AoiMongoDb.defaultOptions,
-                    ...(options.database?.extraOptions || {}),
-                },
-            );
-        } else if (
+        }  else if (
             options?.database?.type === "custom" &&
             !options?.database?.promisify
         ) {

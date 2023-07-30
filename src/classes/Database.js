@@ -66,38 +66,14 @@ class AoijsAPI extends Database {
   constructor(module, options = {}, db = {}, extraOptions = {}) {
     super(module, options, db.promisify);
     this.type = db.type || "aoi.db";
-    if(this.type === "default") this.type = "aoi.db";
+    if (this.type === "default") this.type = "aoi.db";
     this.extraOptions = extraOptions;
     this.createTable(this.type);
   }
 
   createTable(type) {
-    if (type === "dbdjs.db") {
-      const tables = this.tables.map((x) => ({ name: x }));
-      this.db = new this.module.Database({
-        path: this.path,
-        tables: tables,
-        maxFileData: 10000,
-        cache: 10000,
-        saveTime: 3,
-        getTime: 1,
-        allTime: 2,
-        deleteTime: 4,
-      });
-      this.db.connect();
-    } else if (type === "dbdjs.mongo") {
-      this.db = this.module.default;
-      this.tables.forEach((x) => this.db.createModel(x));
-    } else if (type === "aoi.fb") {
-      this.db = this.module;
-    } else if (type === "dbdjs.db-sql") {
-      this.db = this.module.PromisedDatabase(
-        this.path.replace("./", "") + "/database.sql",
-        this.extraOptions.sqlOptions || { timeout: 5000 },
-      );
-    } else if ( type === "aoi.db" || type === "default" )
-    {
-      if ( !this.extraOptions.dbType ) this.extraOptions.dbType = "KeyValue";
+    if (type === "aoi.db" || type === "default") {
+      if (!this.extraOptions.dbType) this.extraOptions.dbType = "KeyValue";
       this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
         path: this.path,
         tables: this.tables,
@@ -106,60 +82,62 @@ class AoijsAPI extends Database {
       this.db.connect();
     }
   }
+
   async set(table, name, id, value) {
-    if (this.type === "aoi.db" ) {
+    if (this.type === "aoi.db") {
       if (this.extraOptions.dbType === "KeyValue") {
 
-        await this.db.set(table, id ? `${name}_${id}` : name, { value });
+        await this.db.set(table, id ? `${name}_${id}` : name, {value});
       } else if (this.extraOptions.dbType === "WideColumn") {
         return await this.db.set(
-          table,
-          { name: name, value },
-          { name: "id", value: id },
+            table,
+            {name: name, value},
+            {name: "id", value: id},
         );
       } else if (this.extraOptions.dbType === "Transmmiter") {
-        if(this.extraOptions.dbOptions.databaseType === "KeyValue") 
-        return await this.db.set(table, name, id);
-        else if(this.extraOptions.dbOptions.databaseType === "WideColumn")
-                return await this.db.set(
-                  table,
-                  { name: name, value },
-                  { name: "id", value: id },
-                );
+        if (this.extraOptions.dbOptions.databaseType === "KeyValue")
+          return await this.db.set(table, name, id);
+        else if (this.extraOptions.dbOptions.databaseType === "WideColumn")
+          return await this.db.set(
+              table,
+              {name: name, value},
+              {name: "id", value: id},
+          );
       }
     } else {
       await super.set(table, name, id, value);
     }
   }
+
   async get(table, name, id) {
     if (this.type === "aoi.db") {
-      if(this.extraOptions.dbType === "KeyValue"){
-      return await this.db.get(table, id ? `${name}_${id}` : name);
-      }
-      else if(this.extraOptions.dbType === "WideColumn"){
-        return await this.db.get(table,name,id);
-      }
-      else if(this.extraOptions.dbType === "Transmmiter"){
-        return await this.db.get(table,name,id);
+      if (this.extraOptions.dbType === "KeyValue") {
+        return await this.db.get(table, id ? `${name}_${id}` : name);
+      } else if (this.extraOptions.dbType === "WideColumn") {
+        return await this.db.get(table, name, id);
+      } else if (this.extraOptions.dbType === "Transmmiter") {
+        return await this.db.get(table, name, id);
       }
     } else {
       return await super.get(table, name, id);
     }
   }
+
   async all(table, varname, lengthofId, funconId) {
     if (this.type === "aoi.db") {
       return await this.db.all(
-        table,
-        (x) =>
-          x.startsWith(`${varname}_`) &&
-          (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
-          (funconId ? this.checkConditionOnId(x, ...funconId) : true),
-        Infinity,
+          table,
+          (x) =>
+              x.startsWith(`${varname}_`) &&
+              (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
+              (funconId ? this.checkConditionOnId(x, ...funconId) : true),
+          Infinity,
       );
     } else {
       return await super.all(table, varname, lengthofId, funconId);
     }
   }
+
   async delete(table, name, id) {
     if (this.type === "aoi.db") {
       return await this.db.delete(table, id ? `${name}_${id}` : name);
@@ -168,226 +146,6 @@ class AoijsAPI extends Database {
     }
   }
 }
-
-class DbdTsDb extends Database {
-  constructor(module, options = {}, db = {}, extraOptions = {}) {
-    super(module, options, db.promisify);
-    this.createSetUp();
-    this.extraOptions = extraOptions;
-    this.type = db.type;
-  }
-
-  createSetUp() {
-    const { Database, Table } = this.module;
-    if (!this.extraOptions?.dbdtsType) {
-      this.db = new Database({
-        path: this.path.endsWith("/")
-          ? this.path + "database.sql"
-          : this.path + "/database.sql",
-      });
-      this.tables.forEach((x) =>
-        this.db.addTable(
-          new Table(x, this.db, [
-            { name: "key", type: "TEXT", primary: true },
-            { name: "invite_tracker", type: "JSON", default: {} },
-            { name: "cooldown", type: "TEXT", default: "0" },
-            { name: "setTimeout", type: "JSON", default: {} },
-          ]),
-        ),
-      );
-    }
-  }
-
-  checkConditionOnId(id, position, value) {
-    id = id.split("_");
-    return id[position] === value;
-  }
-
-  set(table, name, id, value) {
-    const data = {};
-    data.key = id;
-    data[name] = value;
-    this.db.set(table, data);
-  }
-
-  get(table, name, id) {
-    let data = this.db.get(table, {
-      where: {
-        column: "key",
-        equals: id,
-      },
-    });
-    return new Promise((res) =>
-      res({
-        value: data[name],
-      }),
-    );
-  }
-
-  all(table, varname, lengthofId, funconId) {
-    if (!varname) {
-      return new Promise((res) => res(this.db.all(table)));
-    } else {
-      const all = this.db.all(table);
-      new Promise((res) =>
-        res(
-          all.filter(
-            (x) =>
-              x[varname] &&
-              (lengthofId ? x.key.split("_").length === lengthofId : true) &&
-              (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
-          ),
-        ),
-      );
-    }
-  }
-
-  delete(table, name) {
-    this.db.delete(table, { where: { column: name } });
-  }
-
-  addColumns(table, data) {
-    this.db.tables.get(table).addColumns(data);
-    this.db.connect();
-  }
-}
-
-class AoiMongoDb extends Database {
-  constructor(module, options = {}, db = {}, extraOptions = {}) {
-    super(module, options, db.promisify);
-
-    this.extraOptions = extraOptions;
-    this.type = db.type;
-    this.setup();
-  }
-
-  setup() {
-    const { Mongo } = this.module;
-    const { MongoClient } = require("mongodb");
-
-    const mongoClient = new MongoClient(
-      this.path,
-      this.extraOptions.clientOptions,
-    );
-    const preClient = mongoClient.connect();
-
-    this.preClient = preClient.catch(() => {});
-
-    preClient
-      .then((client) => {
-        this.db = client.db(this.extraOptions.databaseName);
-        /** @type {Map<string, import("aoi.mongo").Mongo>} */
-        this.collections = new Map();
-
-        for (const collectionName of this.tables) {
-          const mongo = new Mongo({
-            client,
-            dbName: this.extraOptions.databaseName,
-            collectionName,
-          });
-
-          this.collections.set(collectionName, mongo);
-        }
-      })
-      .catch((error) => {
-        this.error = error;
-        throw error;
-      });
-  }
-
-  async set(table, name, id, value) {
-    await this.preClient;
-    if (this.error) throw this.error;
-
-    const mongo = this.collections.get(table);
-    const key = `${name}_${id}`;
-
-    const res = await mongo.set(key, value);
-    return !!res.upsertedCount || !!res.modifiedCount;
-  }
-
-  async get(table, name, id) {
-    await this.preClient;
-    if (this.error) throw this.error;
-
-    const mongo = this.collections.get(table);
-    const key = `${name}_${id}`;
-
-    return mongo.get(key);
-  }
-
-  async all(table, varName, lengthOfId, funcOnId) {
-    await this.preClient;
-    if (this.error) throw this.error;
-
-    const mongo = this.collections.get(table);
-    let cursor;
-
-    if (!varName) {
-      cursor = await mongo.all();
-    } else {
-      const regex = this.regExpOf(varName, lengthOfId, funcOnId);
-      cursor = await mongo.match(regex);
-    }
-
-    const documents = [];
-    for await (const doc of cursor) {
-      documents.push(doc);
-    }
-
-    return documents;
-  }
-
-  async delete(table, name, id) {
-    await this.preClient;
-    if (this.error) throw this.error;
-
-    const mongo = this.collections.get(table);
-    const key = `${name}${id ? `_${id}` : ""}`;
-
-    const res = await mongo.delete(key);
-    return !!res.deletedCount;
-  }
-
-  async roundTrip() {
-    await this.preClient;
-    if (this.error) throw this.error;
-
-    const before = Date.now();
-    await this.db.command({ ping: 1 });
-
-    return Date.now() - before;
-  }
-
-  regExpOf(varName, lengthOfId, funcOnId) {
-    const ids = [];
-
-    for (let i = 0; i < lengthOfId; i++) {
-      ids.push("\\d+");
-    }
-
-    if (funcOnId) {
-      const [index, id] = funcOnId;
-      ids[index] = this.escapeRegExp(String(id));
-    }
-
-    const name = this.escapeRegExp(varName);
-
-    return new RegExp(`^${name}${ids.length ? `_${ids.join("_")}` : ".+"}$`);
-  }
-
-  escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  }
-
-  static get defaultOptions() {
-    return {
-      clientOptions: { keepAlive: true },
-      databaseName: "aoijs",
-    };
-  }
-}
-
 class CustomDb extends Database {
   constructor(module, options = {}, db = {}, extraOptions = {}) {
     super(module, options, db.promisfy);
@@ -524,8 +282,6 @@ class Promisify extends CustomDb {
 
 module.exports = {
   AoijsAPI,
-  DbdTsDb,
-  AoiMongoDb,
   CustomDb,
   Promisify,
 };
