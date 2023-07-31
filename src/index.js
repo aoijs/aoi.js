@@ -6,6 +6,7 @@ const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
 const AoiInviteSystem = require("./classes/AoiInviteSystem.js");
 const { AoijsAPI, CustomDb, Promisify } = require("./classes/Database.js");
+const CacheManager = require("./classes/CacheManager.js");
 
 /**
  * AoiClient, custom events, command loader, client shard, error handling and utility functions
@@ -21,5 +22,6 @@ module.exports = {
   AoiInviteSystem,
   AoijsAPI,
   CustomDb,
-  Promisify
+  Promisify,
+  CacheManager,
 };
