@@ -2,15 +2,6 @@ const fs = require("fs");
 const { CommandManager } = require("./Commands.js");
 const PATH = require("path");
 
-function isObject(data) {
-  return (
-      data instanceof Object &&
-      !Buffer.isBuffer(data) &&
-      !Array.isArray(data) &&
-      !(data instanceof RegExp)
-  );
-}
-
 class LoadCommands {
   constructor(client, addClassInClient = true) {
     this.client = client;
@@ -22,39 +13,14 @@ class LoadCommands {
   }
 
   async load(client, path, debug = true) {
-    if (typeof path !== "string") {
-      throw new TypeError(
-          `Expecting typeof string on 'path' parameter, got '${typeof path}' instead`
+    function isObject(data) {
+      return (
+          data instanceof Object &&
+          !Buffer.isBuffer(data) &&
+          !Array.isArray(data) &&
+          !(data instanceof RegExp)
       );
     }
-
-    if (!PATH.isAbsolute(path)) {
-      path = PATH.resolve(path);
-    }
-
-    try {
-      const stat = await fs.promises.stat(path);
-      if (!stat.isDirectory()) {
-        console.error("Error!");
-      }
-    } catch (e) {
-      throw new TypeError(
-          "Path is not a valid directory! ErrorMessage: " + e
-      );
-    }
-
-    const index = this.paths.findIndex((d) => d.path === path);
-
-    if (index < 0) {
-      this.paths.push({
-        path,
-        debug,
-        commandsLocation: client,
-        keys: Object.keys(client),
-      });
-    }
-
-    const validCmds = new Set(Object.getOwnPropertyNames(client));
 
     async function walk(file) {
       const something = await fs.promises
@@ -70,55 +36,93 @@ class LoadCommands {
       const files = something.filter((d) => d.isFile());
       const dirs = something.filter((d) => d.isDirectory());
 
-      const items = await Promise.all(dirs.map((d) => walk(d.name)));
+      for (const d of dirs) {
+        const items = await walk(d.name);
 
-      for (const item of items) {
-        files.push(...item);
+        files.push(...items);
       }
 
       return files;
     }
 
+    if (typeof path !== "string")
+      throw new TypeError(
+          `Expecting typeof string on 'path' parameter, get '${typeof path}' instead`,
+      );
+
+    if (!PATH.isAbsolute(path)) path = PATH.resolve(path);
+
+    try {
+      if (await fs.promises.stat(path).then((f) => !f.isDirectory()))
+        console.error("Error!");
+    } catch (e) {
+      throw new TypeError("Path is not a valid directory! ErrorMessage: " + e);
+    }
+
+    const index = this.paths.findIndex((d) => d.path === path);
+
+    if (index < 0)
+      this.paths.push({
+        path,
+        debug,
+        commandsLocation: client,
+        keys: Object.keys(client),
+      });
+
+    const validCmds = Object.getOwnPropertyNames(client);
+
     const dirents = await walk(path);
     const debugs = [];
 
     for (const { name } of dirents) {
-      let cmds = require(name);
+      delete require.cache[name];
 
-      if (cmds == null) {
+      let cmds;
+
+      try {
+        cmds = require(name);
+      } catch {
         debugs.push(
-            `${this.colors.noData?.text || ""} No data provided in ${
-                this.colors.noData?.name || ""
-            }${name}${this.allColors.reset || ""}`
+            `${this.colors.failedLoading?.text || ""}Failed to load in ${
+                this.colors.failedLoading?.name || ""
+            }${name}${this.allColors.reset || ""}`,
         );
 
         continue;
       }
 
-      if (!Array.isArray(cmds)) {
-        cmds = [cmds];
+      if (cmds == null) {
+        debugs.push(
+            `${this.colors.noData?.text || ""} No data provided in ${
+                this.colors.noData?.name || ""
+            }${name}${this.allColors.reset || ""}`,
+        );
+
+        continue;
       }
+
+      if (!Array.isArray(cmds)) cmds = [cmds];
 
       debugs.push(
           `|${this.colors?.loading || ""} Loading in ${name}${
               this.allColors.reset || ""
-          } |`
+          } |`,
       );
 
       for (const cmd of cmds) {
-        const { type, name: cmdName, channel, prototype } = cmd;
         if (!isObject(cmd)) {
-          debugs.push(" Provided data is not an object");
+          debugs.push(` Provided data is not an object`);
+
           continue;
         }
 
-        if (!("type" in cmd)) {
-          cmd.type = "default";
-        }
+        if (!("type" in cmd)) cmd.type = "default";
 
-        if (!validCmds.has(cmd.type)) {
+        const valid = validCmds.some((c) => c === cmd.type);
+
+        if (!valid) {
           const typeErrorCommand = this.colors.typeError?.command || "";
-          const cmdNameOrChannel = cmdName || channel;
+          const cmdNameOrChannel = cmd.name || cmd.channel;
           const typeErrorType = this.colors.typeError?.type || "";
           const invalidTypeMessage = "Invalid Type Provided";
           const typeErrorText = this.colors.typeError?.text || "";
@@ -140,27 +144,34 @@ class LoadCommands {
             client[cmd.type].set(client[cmd.type].size, cmd);
           }
         } catch (e) {
-          const failLoadCommand = this.colors.failLoad?.command || "";
-          const failLoadType = this.colors.failLoad?.type || "";
-          const failLoadText = this.colors.failLoad?.text || "";
-          debugs.push(
-              `|${failLoadCommand}'${cmdName || channel}'| ${failLoadType}${cmd.type}${this.allColors.reset}| ${failLoadText}Failed To Load${this.allColors.reset} |`
-          );
-
           console.error(e);
+          debugs.push(
+              `|${this.colors.failLoad?.command || ""}'${
+                  cmd.name || cmd.channel
+              }'| ${this.colors.failLoad?.type || ""}${cmd.type}${
+                  this.allColors.reset
+              }| ${this.colors.failLoad?.text || ""}Failed To Load${
+                  this.allColors.reset
+              }`);
+
           continue;
         }
 
-        const loadedCommand = this.colors.loaded?.command || "";
-        const loadedType = this.colors.loaded?.type || "";
-        const loadedText = this.colors.loaded?.text || "";
-        debugs.push(`Loaded ${loadedCommand}'${cmdName || channel}' ${loadedType}|${cmd.type}| ${this.allColors.reset}${loadedText}${this.allColors.reset}`);
+        debugs.push(`Loaded ${this.colors.loaded?.command || ""}'${
+            cmd.name || cmd.channel
+        }' ${this.colors.loaded?.type || ""}|${cmd.type}| ${
+            this.allColors.reset || ""
+        }${this.colors.loaded?.text || ""}${this.allColors.reset || ""}`);
       }
     }
 
     if (debug) {
       console.log(
-          `|  ${this.colors.loaded?.command || ""}Command${this.allColors.reset}  |  ${this.colors.loaded?.type || ""}Type${this.allColors.reset}  |  ${this.colors.loaded?.text || ""}State${this.allColors.reset}  |
+          `|  ${this.colors.loaded?.command || ""}Command${
+              this.allColors.reset
+          }  |  ${this.colors.loaded?.type || ""}Type${
+              this.allColors.reset
+          }  |  ${this.colors.loaded?.text || ""}State${this.allColors.reset}  |
 |------------------------------------------|\n` + debugs.join("\n"),
       );
     }
@@ -213,13 +224,9 @@ class LoadCommands {
             this.colors[co][coo] = c[co][coo]
                 .map((x) => this.allColors[x])
                 .join(" ");
-          } else {
-            this.colors[co][coo] = c[co][coo];
-          }
+          } else this.colors[co][coo] = c[co][coo];
         }
-      } else {
-        this.colors[co] = this.allColors[c[co]];
-      }
+      } else this.colors[co] = this.allColors[c[co]];
     }
   }
 

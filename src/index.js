@@ -1,5 +1,5 @@
 const AoiClient = require("./classes/AoiClient");
-const CustomEvent = require("./classes/NewEvent.js");
+const CustomEvent = require("./classes/CustomEvent.js");
 const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
