@@ -1,13 +1,94 @@
 import { Client, ShardingManager } from "discord.js";
 import { Group, LimitGroup, SuperSet } from "@akarui/structures";
 import { AllEvents } from "./utils/Constants";
+import { Constants } from "./utils/Constants";
+import { parsers } from "./handler/parsers";
 
 declare module "aoi.js" {
     import { EventEmitter } from "events";
 
     type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
 
-    // AoiError
+    class Util {
+        static constants: typeof Constants;
+        static parsers: typeof parsers;
+
+        static getUser(d: any, id: string): Promise<User | undefined>;
+        static fetchUser(d: any, id: string): Promise<User | undefined>;
+
+        static fetchChannel(d: any, id: string): Promise<Channel | undefined>;
+        static getChannel(d: any, id: string, force?: boolean): Channel | undefined;
+
+        static fetchMember(guild: Guild, id: string): Promise<GuildMember | undefined>;
+        static fetchMembers(guild: Guild, options: any): Promise<Collection<Snowflake, GuildMember>>;
+        static getMember(guild: Guild, id: string): GuildMember | undefined;
+
+        static getMembers(guild: Guild, options: { type: string; query: string; limit: number }, force?: boolean): Collection<Snowflake, GuildMember>;
+
+        static fetchMessage(channel: Channel, id: string): Promise<Message | undefined>;
+        static getMessage(channel: Channel, id: string): Message | undefined;
+
+        static setCode(options: any, escape?: boolean): string;
+
+        static getGuild(d: any, id: string): Guild | undefined;
+
+        static get channelTypes(): {
+            Text: number;
+            DM: number;
+            GroupDM: number;
+            Forum: number;
+            Voice: number;
+            Category: number;
+            Announcement: number;
+            AnnouncementThread: number;
+            PublicThread: number;
+            PrivateThread: number;
+            Stage: number;
+            GuildDirectory: number;
+        };
+
+        static get threadTypes(): {
+            public: string;
+            private: string;
+        };
+
+        static errorParser(errorM: ErrorMsg, d: any): Promise<any>;
+
+        static getRole(guild: Guild, id: string): Promise<Role | undefined>;
+        static fetchRole(guild: Guild, id: string): Promise<Role | undefined>;
+
+        static aoiFunc(d: any, FieldsRequired?: boolean): any;
+
+        static getEmoji(d: any, Emoji: string): Emoji | undefined;
+
+        static getSticker(guild: Guild, Sticker: string): any;
+
+        static findId(d: any, id: string): Promise<any>;
+
+        static findMember(guild: Guild, memberResolver: string): string | undefined;
+
+        static findGuildChannel(guild: Guild, ChannelResolver: string): string | undefined;
+
+        static findChannel(client: Client, ChannelResolver: string): string | undefined;
+
+        static findRole(guild: Guild, RoleResolver: string): string | undefined;
+
+        static findUser(client: Client, UserResolver: string): string | undefined;
+
+        static findRoles(guild: Guild, options: { type: string; query: string; limit: number }): Collection<Snowflake, Role>;
+
+        static searchType: string[];
+        static audioFilters: {
+            nightcore: (value: number) => any;
+            bassboost: (value: number) => any;
+            "8d": () => any;
+            pitch: (value: number) => any;
+            karaoke: (value: number) => any;
+            slowed: (value: number) => any;
+            deep: (value: number) => any;
+        };
+    }
+
     class AoiError {
         static EventError(event: string, intent: string, line?: number): void;
         static CommandError(
