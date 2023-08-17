@@ -9,6 +9,27 @@ declare module "aoi.js" {
 
     type ErrorMsg = string | Record<string, string | boolean | object | any[]>;
 
+    declare global {
+        interface String {
+            replaceLast(find: string, replace: string): string;
+            deleteBrackets(): string;
+            removeBrackets(): string;
+            check(): string;
+            after(): {
+                inside: string;
+                total: string;
+                splits: string[];
+                toString(): string;
+                addBrackets(): string;
+            };
+            addBrackets(): string;
+        }
+
+        interface Array<T> {
+            goof(sep?: string): string;
+        }
+    }
+
     class Util {
         static constants: typeof Constants;
         static parsers: typeof parsers;
