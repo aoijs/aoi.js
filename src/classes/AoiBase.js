@@ -172,7 +172,7 @@ class BaseClient extends Discord.Client {
                 time: isNaN(status.time || 12) ? 12 : status.time,
                 activity: option,
                 afk: status.afk || false,
-                shardID: status.shardIDs || 0,
+                shardID: status.shardId || 0,
             });
         }
     }
