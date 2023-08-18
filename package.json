@@ -57,8 +57,6 @@
   },
   "devDependencies": {
     "@akarui/aoi.music": "^2.3.0",
-    "@discordjs/opus": "^0.8.0",
-    "@ffprobe-installer/ffprobe": "^1.4.1",
     "aoi.js-library": "^2.0.2",
     "discord-api-types": "^0.37.50",
     "prettier": "^2.4.1",
