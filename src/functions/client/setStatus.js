@@ -4,14 +4,14 @@ module.exports = (d) => {
 
     const [name, type = "PLAYING", status = "online", url, afk = "false"] =
         data.inside.splits;
-
     try {
         d.client.user.setPresence({
             status: status,
             activities: [
                 {
                     name: name.addBrackets(),
-                    type: type === "PLAYING" ? 0 : type === "STREAMING" ? 1 : type === "LISTENING" ? 2 : type === "WATCHING" ? 3 : type === "COMPETING" ? 5 : 0,
+                    state: name.addBrackets(),
+                    type: type === "PLAYING" ? 0 : type === "STREAMING" ? 1 : type === "LISTENING" ? 2 : type === "WATCHING" ? 3 : type === "CUSTOM" ? 4 : type === "COMPETING" ? 5 : 0,
                     url: url?.addBrackets(),
                 },
             ],
