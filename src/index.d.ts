@@ -1,5 +1,6 @@
 import { Client, ShardingManager } from "discord.js";
 import { Group, LimitGroup, SuperSet } from "@akarui/structures";
+import { Group as Collection } from "@akarui/structures";
 import { AllEvents } from "./utils/Constants";
 import { Constants } from "./utils/Constants";
 import { parsers } from "./handler/parsers";
@@ -110,6 +111,21 @@ declare module "aoi.js" {
         };
     }
 
+    class CustomEvent extends EventEmitter {
+        client: AoiClient;
+        commands: Collection<string, any>;
+
+        constructor(client: AoiClient);
+
+        command(d: {
+            name: string;
+            listen: string;
+            code: string;
+        }): void;
+
+        listen(event: string): void;
+    }
+
     class AoiError {
         static EventError(event: string, intent: string, line?: number): void;
         static CommandError(
@@ -211,11 +227,6 @@ declare module "aoi.js" {
     interface InteractionCommand extends BaseCommand {
         name: string | Array<string>;
         prototype: "application" | "button" | "selectMenu";
-    }
-
-    interface CustomEventCommand extends BaseCommand {
-        name: string;
-        listen: string;
     }
 
     interface LoopCommand extends BaseCommand {
