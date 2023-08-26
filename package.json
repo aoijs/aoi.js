@@ -52,7 +52,7 @@
   "dependencies": {
     "@akarui/aoi.db": "^1.0.0",
     "@akarui/structures": "^1.0.2",
-    "discord.js": "^14.12.1",
+    "discord.js": "^14.13.0",
     "undici": "^5.18.0"
   },
   "devDependencies": {
