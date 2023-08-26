@@ -236,7 +236,7 @@ declare module "aoi.js" {
     }
 
     type StatusOption = {
-        text: string;
+        name: string;
         url: string;
         time: number;
         shardId: number;
