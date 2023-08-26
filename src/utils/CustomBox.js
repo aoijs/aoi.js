@@ -2,7 +2,7 @@ const chalk = require('chalk');
 
 function createCustomBoxedMessage(messages, borderColor = 'yellow', title = null) {
     if (!Array.isArray(messages)) {
-        messages = [messages]; // Ensure messages is an array
+        messages = [messages];
     }
 
     const maxLength = title
