@@ -1,5 +1,5 @@
 const json = require("../../package.json");
-const createCustomBoxedMessage = require('../utils/CustomBox.js'); // Adjust the path accordingly
+const createCustomBoxedMessage = require('../utils/CustomBox.js');
 
 module.exports = async () => {
     try {
@@ -10,8 +10,8 @@ module.exports = async () => {
         createCustomBoxedMessage(
             [installedVersion, discordServer],
             'white',
-            { text: 'aoi.js ', textColor: 'cyan' } // Specify title and title color
-        ); // Specify text, border color, and title
+            { text: 'aoi.js ', textColor: 'cyan' }
+        );
     } catch (error) {
         console.error(`AoiLogs: Error during initialization: ${error.message}`);
     }

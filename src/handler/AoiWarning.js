@@ -1,6 +1,6 @@
 const { Agent, fetch } = require('undici');
 const json = require("../../package.json");
-const createCustomBoxedMessage = require('../utils/CustomBox.js'); // Adjust the path accordingly
+const createCustomBoxedMessage = require('../utils/CustomBox.js');
 
 module.exports = async () => {
     try {
@@ -22,20 +22,20 @@ module.exports = async () => {
             createCustomBoxedMessage(
                 [{ text: 'AoiWarning: aoi.js is outdated! Update with "npm install aoi.js@latest".', textColor: 'red' }],
                 'white',
-                { text: 'AoiWarning', textColor: 'yellow' } // Specify title and title color
-            ); // Specify text, border color, and title
+                { text: 'AoiWarning', textColor: 'yellow' }
+            );
         } else if (isDevVersion) {
             createCustomBoxedMessage(
                 [{ text: 'AoiWarning: You are currently on a development version.', textColor: 'yellow' }],
                 'white',
-                { text: 'AoiWarning', textColor: 'yellow' } // Specify title and title color
-            ); // Specify text, border color, and title
+                { text: 'AoiWarning', textColor: 'yellow' }
+            );
         }
     } catch (error) {
         createCustomBoxedMessage(
             [{ text: `AoiWarning: Failed to check for updates: ${error.message}`, textColor: 'white' }],
             'red',
-            { text: 'AoiWarning', textColor: 'yellow' } // Specify title and title color
-        ); // Specify text, border color, and title
+            { text: 'AoiWarning', textColor: 'yellow' }
+        );
     }
 };

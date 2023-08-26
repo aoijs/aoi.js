@@ -239,8 +239,8 @@ declare module "aoi.js" {
         name: string;
         url: string;
         time: number;
-        shardId: number;
-        type: "PLAYING" | "LISTENING" | "WATCHING" | "STREAMING";
+        shardID: number;
+        type: "Playing" | "Listening" | "Watching" | "Streaming";
         status: string;
     };
 
