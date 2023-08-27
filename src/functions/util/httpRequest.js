@@ -8,7 +8,6 @@ module.exports = async (d) => {
         data.inside.splits;
 
     body = body?.trim() === '' ? undefined : body
-    console.log(body);
     let headers = {};
     if (header.length === 1) {
         try {
@@ -38,13 +37,13 @@ module.exports = async (d) => {
         data.result = property
             ? eval(`JSON.parse(responseBody)?.${property}`)
             : responseBody;
-    } catch (error) {
-        console.error(error);
-        if (error === 'default' || !error) {
+    } catch (err) {
+        console.error(err);
+        if (error === 'default') {
             return d.aoiError.makeMessageError(
                 d.client,
                 d.channel,
-                { content: error.message },
+                { content: err },
                 {},
                 d
             );
