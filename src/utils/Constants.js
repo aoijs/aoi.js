@@ -12,18 +12,12 @@ const IntentOptions = {
 };
 
 const ActivityTypeAvailables = {
-    playing: ActivityType["Playing"],
-    streaming: ActivityType["Streaming"],
-    listening: ActivityType["Listening"],
-    watching: ActivityType["Watching"],
-    custom: ActivityType["Custom"],
-    competing: ActivityType["Competing"],
-    PLAYING: ActivityType["Playing"],
-    STREAMING: ActivityType["Streaming"],
-    LISTENING: ActivityType["Listening"],
-    WATCHING: ActivityType["Watching"],
-    CUSTOM: ActivityType["Custom"],
-    COMPETING: ActivityType["Competing"],
+    playing: ActivityType.Playing,
+    streaming: ActivityType.Streaming,
+    listening: ActivityType.Listening,
+    watching: ActivityType.Watching,
+    custom: ActivityType.Custom,
+    competing: ActivityType.Competing,
 };
 
 const DebugAvailables = {
