@@ -147,7 +147,7 @@ class BaseClient extends Discord.Client {
         Object.defineProperty(this, "statuses", { value: new Group() });
 
         this.on("ready", async () => {
-            require("../handler/status.js")(this.statuses, this);
+            await require("../handler/status.js")(this.statuses, this);
             await require("../handler/AoiStart.js")(this);
             await require("../handler/NonIntents/ready.js")(this);
         });
@@ -157,19 +157,20 @@ class BaseClient extends Discord.Client {
     status(...statuses) {
         for (const status of statuses) {
             status.type =
-                Object.keys(ActivityTypeAvailables).includes(status.type) ||
+                Object.keys(ActivityTypeAvailables).includes(status.type.toLowerCase()) ||
                 Object.values(ActivityTypeAvailables).includes(status.type)
-                    ? ActivityTypeAvailables[status.type]
-                    : ActivityTypeAvailables.PLAYING;
+                    ? ActivityTypeAvailables[status.type.toLowerCase()]
+                    : ActivityTypeAvailables.playing;
+
             const option = {
-                name: status.text,
+                name: status.name,
                 type: status.type,
                 url: status.url,
             };
 
             this.statuses.set(this.statuses.size, {
-                status: status.status || "online",
-                time: isNaN(status.time || 12) ? 12 : status.time,
+                status: status.status || 'online',
+                time: isNaN(status.time) ? 12 : status.time,
                 activity: option,
                 afk: status.afk || false,
                 shardID: status.shardId || 0,

@@ -1,17 +1,25 @@
+const {ActivityTypeAvailables} = require("../../utils/Constants");
 module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, type = "PLAYING", status = "online", url, afk = "false"] =
+    const [name, type = "playing", status = "online", url, afk = "false"] =
         data.inside.splits;
 
+    const lowercaseType = type.toLowerCase();
+
+    const state = lowercaseType === "custom" ? { state: name.addBrackets() } : {};
+
     try {
+        const typeValue = ActivityTypeAvailables[lowercaseType] || ActivityTypeAvailables.playing;
+
         d.client.user.setPresence({
-            status: status,
+            status,
             activities: [
                 {
                     name: name.addBrackets(),
-                    type: type === "PLAYING" ? 0 : type === "STREAMING" ? 1 : type === "LISTENING" ? 2 : type === "WATCHING" ? 3 : type === "COMPETING" ? 5 : 0,
+                    ...state,
+                    type: typeValue,
                     url: url?.addBrackets(),
                 },
             ],

@@ -51,7 +51,7 @@ aoi.js is suitable for beginners who are new to building bots, as well as experi
 
 - **600+ Pre-built Functions:** aoi.js comes packed with over 600 pre-built functions that empower you to create dynamic and interactive Discord bots with ease.
 - **Built-in Custom Local Database:** With aoi.js, you get a powerful custom local database out of the box.
-- **Extensions for Added Functionality:** Enhance your bot's capabilities with aoi.js extensions like aoi.music and aoi.panel. These extensions make it simple to add music playback, interactive panels, and more to your bot.
+- **Extensions for Added Functionality:** Enhance your bots capabilities with aoi.js extensions like aoi.music and aoi.panel. These extensions make it simple to add music playback, interactive panels, and more to your bot.
 - **Easy-to-Use and Beginner Friendly:** aoi.js boasts a user-friendly syntax that is perfect for beginners. The simple `$` prefix makes it easy to write commands and get your bot up and running quickly.
 
 
@@ -61,8 +61,8 @@ aoi.js is suitable for beginners who are new to building bots, as well as experi
 const {AoiClient} = require("aoi.js");
 
 const bot = new AoiClient({
-    token: "DISCORD BOT TOKEN",
-    prefix: "DISCORD BOT PREFIX",
+    token: "Discord Bot Token",
+    prefix: "Discord Bot Prefix",
     intents: ["MessageContent", "Guilds", "GuildMessages"],
     events: ["onMessage"],
     database: {
@@ -89,8 +89,8 @@ bot.command({
 const {AoiClient} = require("aoi.js");
 
 const bot = new AoiClient({
-    token: "DISCORD BOT TOKEN",
-    prefix: "DISCORD BOT PREFIX",
+    token: "Discord Bot Token",
+    prefix: "Discord Bot Prefix",
     intents: ["MessageContent", "Guilds", "GuildMessages"],
     events: ["onMessage", "onInteractionCreate"],
     database: {

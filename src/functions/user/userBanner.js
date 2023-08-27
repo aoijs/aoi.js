@@ -1,8 +1,7 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [userID = d.author?.id, size = "4096", dynamic = "true", format = "webp"] =
-        data.inside.splits;
+    const [userID = d.author?.id, size = 4096, dynamic = 'true', extension] = data.inside.splits;
 
     const user = await d.util.getUser(d, userID);
     if (!user) return d.aoiError.fnError(d, "user", {inside: data.inside});
@@ -15,8 +14,8 @@ module.exports = async (d) => {
     else {
         data.result = user.bannerURL({
             size: Number(size),
-            dynamic: dynamic === "true",
-            format,
+            forceStatic: dynamic === 'false',
+            extension,
         });
     }
 
