@@ -1,38 +1,23 @@
-module.exports = async (d) => {
+module.exports = async(d) => {
     const data = d.util.aoiFunc(d);
-    const [guildID, ruleName, triggerType, eventType, actionType, reason, enableRule = true, ...rest] = data.inside.splits;
+    const [guildId = d.message.guild.id, name, triggerType, triggerMetadata, actions, enabled = true, exemptRoles, exemptChannels, reason] = data.inside.splits;
 
-    const guild = await d.client.guilds.fetch(guildID);
+    const guild = await d.client.guilds.fetch(guildId);
 
-    if (isNaN(parseInt(triggerType)) || isNaN(parseInt(eventType)) || isNaN(parseInt(actionType))) {
-        return d.aoiError.fnError(d, "custom", {}, "argument(s). Expected integers for triggerType, eventType, and actionType.");
+    if (isNaN(Number(triggerType))) {
+        return d.aoiError.fnError(d, "custom", {}, "argument(s). \`" + data.inside.splits[2] + "\` is not a valid triggerType.");
     }
 
-    const triggerMetadata = {
-        keywordFilter: rest.slice(0, rest.length - (rest.length > 2 ? 2 : 0)),
-        regexPatterns: [],
-        presets: [],
-        allowList: [],
-        mentionTotalLimit: null,
-    };
-
-    const actions = [
-        {
-            type: parseInt(actionType),
-            reason: reason,
-            metadata: {},
-        },
-    ];
-
-    const autoModRule = await guild.autoModerationRules.create({
-        name: ruleName,
-        eventType: parseInt(eventType),
-        triggerType: parseInt(triggerType),
-        triggerMetadata,
-        actions,
-        enabled: enableRule === "true",
-        exempt_roles: rest.length > 1 ? rest[rest.length - 2].split(",") : [],
-        exempt_channels: rest.length > 1 ? rest[rest.length - 1].split(",") : [],
+    await guild.autoModerationRules.create({
+        name,
+        eventType: 1,
+        triggerType: Number(triggerType),
+        triggerMetadata: triggerMetadata === "" ? {} : JSON.parse(triggerMetadata),
+        actions: actions === "" ? {} : JSON.parse(actions),
+        enabled: Boolean(enabled),
+        exemptRoles: exemptRoles ? exemptRoles.split(',').map(role => role.trim()) : [],
+        exemptChannels: exemptChannels ? exemptChannels.split(',').map(channel => channel.trim()) : [],
+        reason
     });
 
     return {
