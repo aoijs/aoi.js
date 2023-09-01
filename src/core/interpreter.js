@@ -409,10 +409,13 @@ const Interpreter = async (
                                     if (!message || !message.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
-                                        const errorMsg = await Util.errorParser(client.aoiOptions.errorMessage, d);
-
+                                        const {
+                                            makeMessageError,
+                                        } = require("../classes/AoiError.js");
+                                        const message = await Util.errorParser(client.aoiOptions.errorMessage, d);
+                                    
                                         if (!errorOccurred) {
-                                            await message.channel.send(errorMsg);
+                                            await makeMessageError(client, channel, message.data ?? message, message.options, d);
                                         }
                                         errorOccurred = true;
                                     }
