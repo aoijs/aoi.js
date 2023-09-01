@@ -46,9 +46,9 @@ body:
       label: Version of aoi.js
       description: What version of aoi.js are you using?
       options:
-        - v6.2.0
-        - v6.2.5
-        - v6.2.6
+        - v6.5.0
+        - v6.4.0
+        - v6.3.0
     validations:
       required: true
       
@@ -58,9 +58,9 @@ body:
       label: Version of Node.js
       description: Also, what version of Node.js are you using? 
       options:
-        - v16.6.0 (Lowest)
-        - v18.14.0 (LTS)
-        - v19.6.0 (Current)
+        - v16.11.0 (Lowest)
+        - v18.17.1 (LTS)
+        - v20.5.1 (Current)
     validations:
       required: true
       
