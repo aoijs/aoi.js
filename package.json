@@ -11,7 +11,7 @@
     "prettywrite": "prettier --write \"src/**/*.js\""
   },
   "engines": {
-    "node": ">=16.9.0"
+    "node": ">=16.11.0"
   },
   "files": [
     "src",
