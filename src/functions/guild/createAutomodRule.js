@@ -1,8 +1,8 @@
 module.exports = async(d) => {
     const data = d.util.aoiFunc(d);
-    const [guildId = d.message.guild.id, name, triggerType, triggerMetadata, actions, enabled = true, exemptRoles, exemptChannels, reason] = data.inside.splits;
+    const [guildID = d.message.guild.id, name, triggerType, triggerMetadata, actions, enabled = true, exemptRoles, exemptChannels, reason] = data.inside.splits;
 
-    const guild = await d.client.guilds.fetch(guildId);
+    const guild = await d.client.guilds.fetch(guildID);
 
     if (isNaN(Number(triggerType))) {
         return d.aoiError.fnError(d, "custom", {}, "argument(s). \`" + data.inside.splits[2] + "\` is not a valid triggerType.");
