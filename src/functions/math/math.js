@@ -4,10 +4,10 @@ module.exports = async (d) => {
 
     let result;
 
-    const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.|\^|\×|\÷)/g;
+    const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.|\^)/g;
 
     try {
-        const operation = data.inside.inside.addBrackets().match(OPERATORS).join("").replace(/\^/g, '**').replace(/\×/g, '*').replace(/\÷/g, '/');
+        const operation = data.inside.inside.addBrackets().match(OPERATORS).join("");
 
         if (operation.replace(OPERATORS, "").trim().length)
             return d.aoiError.fnError(
