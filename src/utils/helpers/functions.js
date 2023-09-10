@@ -221,7 +221,7 @@ module.exports = {
         data.position = role.position;
         data.permissions = role.permissions.toArray().join(" , ");
         data.tagsbotid = role.tags?.botId;
-        data.tagsapplicationid = role.tags?.applicationId;
+        data.tagsintegrationId = role.tags?.integrationId;
         data.tagspremiumSubscriberRole = role.tags?.premiumSubscriberRole;
 
         return data;
