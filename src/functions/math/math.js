@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
     let result;
 
-    const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.)/g;
+    const OPERATORS = /([0-9]|\/|\+|\*|-|%|<|\(|\)|\[|\]|\.|\^)/g;
 
     try {
         const operation = data.inside.inside.addBrackets().match(OPERATORS).join("");

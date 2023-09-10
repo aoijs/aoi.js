@@ -1,12 +1,12 @@
-const createCustomBoxedMessage = require('../utils/CustomBox.js'); // Adjust the path accordingly
+const createCustomBoxedMessage = require('../utils/CustomBox.js');
 
 let recommendationLogged = false;
 
 module.exports = async (statuses, client) => {
   if (statuses.size !== 0) {
     let y = 0;
-    let status = statuses.allValues();
 
+    let status = statuses.allValues();
     const f = async () => {
       if (!status[y]) {
         y = 0;
@@ -18,31 +18,33 @@ module.exports = async (statuses, client) => {
         stats.activity.type = status[y].activity.type;
         stats.activity.url = status[y].activity.url;
 
-        if (status[y].activity.name && status[y].activity.name.includes("$")) {
-          stats.activity.name = (
-              await client.functionManager.interpreter(
-                  client,
-                  {},
-                  [],
-                  { code: status[y].activity.name },
-                  client.db,
-                  true,
-              )
-          )?.code;
+        if (status[y].activity.name) {
+
+          if (status[y].activity.name.includes("$")) {
+            stats.activity.name = (
+                await client.functionManager.interpreter(
+                    client,
+                    {},
+                    [],
+                    { code: status[y].activity.name },
+                    client.db,
+                    true,
+                )
+            )?.code;
+          } else {
+            stats.activity.name = status[y].activity.name;
+          }
         } else {
           if (!recommendationLogged) {
-            const recommendationMessage = `Provide a name for status[${y}]`;
-
-            // Include 'AoiWarning' as the title for this message
+            const recommendationMessage = `Use the name method or provide a name for status[${y}]`;
             createCustomBoxedMessage([{ text: recommendationMessage, textColor: 'red' }], 'white', {
               text: 'AoiWarning',
               textColor: 'yellow',
-            });
+            })
             recommendationLogged = true;
           }
 
-          // Use the provided name or a default value
-          stats.activity.name = status[y].activity.name || 'Using aoi.js';
+          stats.activity.name = "Using aoi.js";
         }
 
         client.user.setPresence({

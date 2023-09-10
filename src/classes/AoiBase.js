@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
+const LoadCommands = require("./LoadCommands.js");
 const fs = require("fs");;
 const path = require("path");
 const {
@@ -154,6 +155,11 @@ class BaseClient extends Discord.Client {
         this.login(options.token);
     }
 
+    loadCommands(directory, debug = true) {
+
+        const loader = new LoadCommands(this);
+        loader.load(this.cmd, directory, debug);
+    }
     status(...statuses) {
         for (const status of statuses) {
             status.type =

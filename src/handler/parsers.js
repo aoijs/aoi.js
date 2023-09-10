@@ -141,14 +141,14 @@ const ComponentParser = async (msg, client) => {
     msg = mustEscape(msg);
     let msgs = msg.split("{actionRow:").slice(1);
     const actionRows = [];
-    for (let nya of msgs) {
-        const index = nya.lastIndexOf("}");
-        nya = nya.slice(0, index);
+    for (let aoi of msgs) {
+        const index = aoi.lastIndexOf("}");
+        aoi = aoi.slice(0, index);
 
         const buttonPart = [];
-        const Checker = (neko) => nya.includes("{" + neko + ":");
+        const Checker = (checker) => aoi.includes("{" + checker + ":");
         if (Checker("button")) {
-            const inside = nya.split("{button:").slice(1);
+            const inside = aoi.split("{button:").slice(1);
             for (let button of inside) {
                 button = button?.split("}")[0];
                 button = button?.split(":").map((x) => x.trim());
@@ -204,7 +204,7 @@ const ComponentParser = async (msg, client) => {
             }
         }
         if (Checker("selectMenu")) {
-            let inside = nya.split("{selectMenu:").slice(1).join("");
+            let inside = aoi.split("{selectMenu:").slice(1).join("");
             inside = inside.split(":").map((c) => c.trim());
             const customID = inside.shift();
             const placeholder = inside.shift();
@@ -263,7 +263,7 @@ const ComponentParser = async (msg, client) => {
             });
         }
         if (Checker("textInput")) {
-            let inside = nya.split("{textInput:").slice(1);
+            let inside = aoi.split("{textInput:").slice(1);
             for (let textInput of inside) {
                 textInput = textInput.split("}")[0].split(":");
                 const label = textInput.shift().addBrackets().trim();
