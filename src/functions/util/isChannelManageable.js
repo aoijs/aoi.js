@@ -9,4 +9,3 @@ module.exports = async d => {
         code: d.util.setCode(data)
     }
 }
-//Usage: $isChannelManageable[channel id(optional)]

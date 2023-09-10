@@ -11,4 +11,3 @@ module.exports = async d => {
         code: d.util.setCode(data)
     }
 }
-//Usage `$isServerDeafened[user's id(optional); server's id(optional)]`

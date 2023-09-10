@@ -15,7 +15,7 @@ module.exports = async (d) => {
 
     let isemoji = emoji.trim() === "" ? undefined : guild.emojis.cache.get(emoji);
 
-    data.result = isemoji ? true : false;
+    data.result = !!isemoji;
 
     return {
         code: d.util.setCode(data),
