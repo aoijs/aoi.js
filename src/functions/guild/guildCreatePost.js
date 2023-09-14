@@ -16,7 +16,7 @@ module.exports = async (d) => {
     const thread = await forum.threads.create({
         name,
         autoArchiveDuration,
-        message: content?.data,
+        message: content.data ? content.data : content,
         appliedTags: parseTags,
         reason
     });
