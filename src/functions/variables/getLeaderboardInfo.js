@@ -21,18 +21,18 @@ module.exports = async (d) => {
 
   if (type === "guild") {
     key = `${variable.addBrackets()}_${`${id}_${
-      d.guild?.id === undefined ? "dm" : d.guild?.id
+      d.guild?.id === "undefined" ? "dm" : d.guild?.id
     }`}`;
     cache = await d.util.getGuild(d, id);
     user =
-      typeof cache === undefined || Object.keys(cache).length === 0
+      typeof cache === "undefined" || Object.keys(cache).length === 0
         ? await d.util.getUser(d, id)
         : undefined;
   } else if (type === "global") {
     key = `${variable.addBrackets()}_${id}`;
     cache = await d.util.getGuild(d, id);
     user =
-      typeof cache === undefined || Object.keys(cache).length === 0
+      typeof cache === "undefined" || Object.keys(cache).length === 0
         ? await d.util.getUser(d, id)
         : undefined;
   } else if (type === "message" || type === "channel") {
