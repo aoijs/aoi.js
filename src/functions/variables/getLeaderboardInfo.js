@@ -54,6 +54,9 @@ module.exports = async (d) => {
     case "username":
       data.result = user.username || null;
       break;
+    case "tag":
+      data.result = user.tag || '0000';
+      break;
     default:
       data.result = null;
   }
