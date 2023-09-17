@@ -117,7 +117,7 @@ class CommandManager {
     timeout;
     pulse;
     rateLimit;
-    webhookUpdate;
+    webhooksUpdate;
     autoModActionExecution;
     autoModCreate;
     autoModDelete;
@@ -178,7 +178,7 @@ class CommandManager {
             "emojiDelete",
             "banAdd",
             "banRemove",
-            "webhookUpdate",
+            "webhooksUpdate",
             "voiceStateUpdate",
             "presenceUpdate",
             "reactionAdd",

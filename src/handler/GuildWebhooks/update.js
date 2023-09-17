@@ -1,11 +1,13 @@
 const { TextChannel, NewsChannel } = require("discord.js");
 const Interpreter = require("../../core/interpreter.js");
 /**
+ * @param os
+ * @param ns
  * @param  {TextChannel | NewsChannel } channelData
  * @param  {import('../../classes/AoiClient.js')} client
  */
-module.exports = async (channelData, client) => {
-    const cmds = client.cmd.webhookUpdate.allValues();
+module.exports = async (os, ns, channelData, client) => {
+    const cmds = client.cmd.webhooksUpdate.allValues();
     for (const cmd of cmds) {
         let chan;
         const data = {
