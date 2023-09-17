@@ -2,10 +2,10 @@
 node_modules
 
 #Ignore database files
-database
+/database
 
 #Ignore Test Environment
-commands
+/commands
 config.json
 src/tests/
 plugins
