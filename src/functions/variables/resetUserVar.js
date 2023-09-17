@@ -1,6 +1,4 @@
 const {
-    CustomDb,
-    Promisify,
     AoijsAPI
 } = require("../../classes/Database.js");
 
@@ -27,37 +25,6 @@ module.exports = async (d) => {
         all
             .filter(async (x) => await d.util.getUser(d, x.key.split("_")[1]))
             .forEach(async (x) => await d.client.db.delete(table, x.key));
-    } else if (
-        d.client.db instanceof CustomDb ||
-        d.client.db instanceof Promisify
-    ) {
-        all
-            .filter(async (x) => {
-                if (data.key) {
-                    const arr = data.key.split("_");
-                    return await d.util.getUser(d, arr[1]);
-                } else if (data.id) {
-                    const arr = data.id.split("_");
-                    return await d.util.getUser(d, arr[1]);
-                } else if (data.ID) {
-                    const arr = data.ID.split("_");
-                    return await d.util.getUser(d, arr[1]);
-                } else if (data.Id) {
-                    const arr = data.Id.split("_");
-                    return await d.util.getUser(d, arr[1]);
-                } else {
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {},
-                        "Database Not Supported For LeaderBoard",
-                    );
-                }
-            })
-            .forEach(
-                async (x) =>
-                    await d.client.db.delete(table, x.key || x.id || x.ID || x.Id),
-            );
     }
     return {
         code: d.util.setCode(data),

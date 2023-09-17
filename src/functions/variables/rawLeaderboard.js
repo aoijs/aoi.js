@@ -1,7 +1,5 @@
 const {
-    AoijsAPI,
-    CustomDb,
-    Promisify
+    AoijsAPI
 } = require("../../classes/Database.js");
 
 module.exports = async (d) => {
@@ -37,22 +35,6 @@ module.exports = async (d) => {
             if (d.client.db.type === "aoi.db")
                 return Number(y.value) - Number(x.value);
             else return Number(y.data.value) - Number(x.data.value);
-        } else if (
-            d.client.db instanceof CustomDb ||
-            d.client.db instanceof Promisify
-        ) {
-            return (
-                Number(
-                    y.value ||
-                    y[variable.addBrackets()] ||
-                    (typeof y.Data === "object" ? y.Data.value : y.Data),
-                ) -
-                Number(
-                    x.value ||
-                    x[variable.addBrackets()] ||
-                    (typeof x.Data === "object" ? x.Data.value : x.Data),
-                )
-            );
         }
     })) {
         let user;
@@ -61,37 +43,6 @@ module.exports = async (d) => {
             else value = Number(Data.data.value);
 
             user = await getdata(user, Data, 1);
-        } else if (
-            d.client.db instanceof CustomDb ||
-            d.client.db instanceof Promisify
-        ) {
-            value = Number(
-                Data.value ||
-                Data[variable.addBrackets()] ||
-                (typeof Data.Data === "object" ? Data.Data.value : Data.Data),
-            );
-
-            if (Data.key) {
-                const arr = Data.key.split("_");
-                user = await customarr(arr);
-            } else if (Data.id) {
-                const arr = Data.id.split("_");
-                user = await customarr(arr);
-            } else if (Data.ID) {
-                const arr = Data.ID.split("_");
-                user = await customarr(arr);
-            } else if (Data.Id) {
-                const arr = Data.Id.split("_");
-                user = await customarr(arr);
-            } else {
-                d.aoiError.fnError(
-                    d,
-                    "custom",
-                    {},
-                    "database Not Supported For LeaderBoard",
-                );
-                break;
-            }
         }
 
         if (user) {
@@ -131,7 +82,7 @@ module.exports = async (d) => {
                 const CODE = await d.interpreter(
                     d.client,
                     {
-                        guild: guild,
+                        guild: d.message.guild,
                         channel: d.message.channel,
                         author: user,
                     },

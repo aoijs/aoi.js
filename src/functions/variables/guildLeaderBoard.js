@@ -1,7 +1,5 @@
 const {
-    AoijsAPI,
-    Promisify,
-    CustomDb
+    AoijsAPI
 } = require("../../classes/Database.js");
 
 module.exports = async (d) => {
@@ -11,7 +9,7 @@ module.exports = async (d) => {
     const [
         variable,
         type = "asc",
-        custom = `{top}) {username} : {value}`,
+        custom = `{top}. {username}: {value}`,
         list = 10,
         page = 1,
         table = d.client.db.tables[0],
@@ -28,22 +26,6 @@ module.exports = async (d) => {
             if (d.client.db.type === "aoi.db")
                 return Number(y.value) - Number(x.value);
             else return Number(y.data.value) - Number(x.data.value);
-        } else if (
-            d.client.db instanceof CustomDb ||
-            d.client.db instanceof Promisify
-        ) {
-            return (
-                Number(
-                    y.value ||
-                    y[variable.addBrackets()] ||
-                    (typeof y.Data === "object" ? y.Data.value : y.Data),
-                ) -
-                Number(
-                    x.value ||
-                    x[variable.addBrackets()] ||
-                    (typeof x.Data === "object" ? x.Data.value : x.Data),
-                )
-            );
         }
     })) {
         let user;
@@ -52,37 +34,6 @@ module.exports = async (d) => {
             else value = Number(Data.data.value);
 
             user = await d.util.getGuild(d, Data.key.split("_")[1]);
-        } else if (
-            d.client.db instanceof CustomDb ||
-            d.client.db instanceof Promisify
-        ) {
-            value = Number(
-                Data.value ||
-                Data[variable.addBrackets()] ||
-                (typeof Data.Data === "object" ? Data.Data.value : Data.Data),
-            );
-
-            if (Data.key) {
-                const arr = Data.key.split("_");
-                user = await d.util.getGuild(d, arr.length === 2 ? arr[1] : arr[0]);
-            } else if (Data.id) {
-                const arr = Data.id.split("_");
-                user = await d.util.getGuild(d, arr.length === 2 ? arr[1] : arr[0]);
-            } else if (Data.ID) {
-                const arr = Data.ID.split("_");
-                user = await d.util.getGuild(d, arr.length === 2 ? arr[1] : arr[0]);
-            } else if (Data.Id) {
-                const arr = Data.Id.split("_");
-                user = await d.util.getGuild(d, arr.length === 2 ? arr[1] : arr[0]);
-            } else {
-                d.aoiError.fnError(
-                    d,
-                    "custom",
-                    {},
-                    "database Not Supported For LeaderBoard",
-                );
-                break;
-            }
         }
 
         if (user) {

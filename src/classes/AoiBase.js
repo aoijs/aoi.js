@@ -2,8 +2,6 @@ const Discord = require("discord.js");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
-const fs = require("fs");;
-const path = require("path");
 const {
     ActivityTypeAvailables,
     IntentOptions,
@@ -12,9 +10,7 @@ const {
     EventstoFile,
 } = require("../utils/Constants.js");
 const {
-    AoijsAPI,
-    CustomDb,
-    Promisify
+    AoijsAPI
 } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
@@ -80,45 +76,6 @@ class BaseClient extends Discord.Client {
                 "aoi.db",
             ].includes(options?.database?.type)
         ) {
-            this.db = new AoijsAPI(
-                options?.database?.db,
-                {
-                    path: options?.database?.path || "./database/",
-                    tables: options?.database?.tables || ["main"],
-                },
-                {
-                    type: options?.database?.type || "default",
-                    promisify: options?.database?.promisify || false,
-                },
-                options.database?.extraOptions || {},
-            );
-        }  else if (
-            options?.database?.type === "custom" &&
-            !options?.database?.promisify
-        ) {
-            this.db = new CustomDb(
-                options?.database?.db,
-                {
-                    path: options.database?.path || "./database",
-                    tables: options?.database?.tables || ["main"],
-                },
-                { type: "custom", promisify: true },
-                options.database?.extraOptions || {},
-            );
-        } else if (
-            options?.database?.type === "custom" &&
-            options?.database?.promisify
-        ) {
-            this.db = new Promisify(
-                options.database?.db,
-                {
-                    path: options.database?.path || "./database",
-                    tables: options?.database?.tables || ["main"],
-                },
-                { type: "custom", promisify: true },
-                options.database?.extraOptions || {},
-            );
-        } else {
             this.db = new AoijsAPI(
                 options?.database?.db || require("@akarui/aoi.db"),
                 {
@@ -186,7 +143,7 @@ class BaseClient extends Discord.Client {
 
     /**
      * @param  {Record<string,string | number | object >} d
-     * @param  {string} table=this.db.tables[0]
+     * @param table
      */
     variables(d, table = this.db.tables[0]) {
         for (const [name, value] of Object.entries(d)) {
