@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 const Util = require("../../classes/Util.js");
-module.exports = async ( message,client, db) => {
+module.exports = async ( message,client) => {
     if (client.aoiOptions) {
         const options = client.aoiOptions;
         if (

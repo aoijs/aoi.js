@@ -122,6 +122,7 @@ class CommandManager {
     autoModCreate;
     autoModDelete;
     autoModUpdate;
+    interaction;
 
     constructor(client, formCommand = true, customCmds = []) {
         client.cmd = this;
