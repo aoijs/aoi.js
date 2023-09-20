@@ -128,9 +128,7 @@ client.loadCommands("./commands/", true);
 
 ## Extensions by Community
 
-  <a href="https://aoi.js.org/extensions/aoicanvas">
-    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-logo.png?raw=true" alt="aoi.canvas">
-  </a>
+- **[aoi.canvas](https://aoi.js.org/extensions/aoicanvas)** - Create beautiful images with aoi.canvas.
 
 ## Contributing
 
