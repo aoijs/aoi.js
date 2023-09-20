@@ -120,3 +120,11 @@ client.loadCommands("./commands/", true);
 ## Contributing
 
 [Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
+
+## Extensions 
+  <a href="https://aoi.js.org/extensions/aoipanel">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@akarui/aoi.panel">
+  </a>
+  <a href="https://aoi.js.org/extensions/aoimusic">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@akarui/aoi.music">
+  </a>
