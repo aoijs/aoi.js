@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { VariableManager } = require("./Variables.js");
+const {VariableManager} = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
 const {
@@ -13,10 +13,10 @@ const {
     AoijsAPI
 } = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
-const { CommandManager } = require("./Commands.js");
-const { Group } = require("@akarui/structures");
+const {CommandManager} = require("./Commands.js");
+const {Group} = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
-const { functions: parser } = require("../core/AoiReader.js");
+const {functions: parser} = require("../core/AoiReader.js");
 
 class BaseClient extends Discord.Client {
     constructor(options) {
@@ -102,7 +102,7 @@ class BaseClient extends Discord.Client {
         this.prefix = options.prefix;
         this.#bindEvents();
 
-        Object.defineProperty(this, "statuses", { value: new Group() });
+        Object.defineProperty(this, "statuses", {value: new Group()});
 
         this.on("ready", async () => {
             await require("../handler/status.js")(this.statuses, this);
@@ -117,6 +117,7 @@ class BaseClient extends Discord.Client {
         const loader = new LoadCommands(this);
         loader.load(this.cmd, directory, debug);
     }
+
     status(...statuses) {
         for (const status of statuses) {
             status.type =
@@ -147,7 +148,7 @@ class BaseClient extends Discord.Client {
      */
     variables(d, table = this.db.tables[0]) {
         for (const [name, value] of Object.entries(d)) {
-            this.variableManager.add({ name, value, table });
+            this.variableManager.add({name, value, table});
         }
     }
 
@@ -156,6 +157,7 @@ class BaseClient extends Discord.Client {
             options.cache,
         );
     }
+
     #bindEvents() {
         const bits = new Discord.IntentsBitField(this.options.intents);
         for (const event of this.aoiOptions.events ?? []) {
@@ -173,20 +175,25 @@ class BaseClient extends Discord.Client {
                 return AoiError.EventError(event, intent, 357);
             }
 
-            const func = [
-                "shardDisconnect",
-                "shardError",
-                "shardReconnecting",
-                "shardResume",
-            ].includes(event)
-                ? require(`../shardhandler/${event}.js`)
-                : Array.isArray(file)
-                    ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
-                    : require(`../handler/${filedir}/${file}.js`);
-            this.on(eventName, (...args) => {
-                if (Array.isArray(func)) func.forEach((x) => x(...args, this));
-                else func(...args, this);
-            });
+            try {
+                const func = [
+                    "shardDisconnect",
+                    "shardError",
+                    "shardReconnecting",
+                    "shardResume",
+                ].includes(event)
+                    ? require(`../shardhandler/${event}.js`)
+                    : Array.isArray(file)
+                        ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
+                        : require(`../handler/${filedir}/${file}.js`);
+
+                this.on(eventName, (...args) => {
+                    if (Array.isArray(func)) func.forEach((x) => x(...args, this));
+                    else func(...args, this);
+                });
+            } catch (error) {
+                throw new TypeError(`Error loading "${event}" event, does not exist!`);
+            }
         }
     }
 }
