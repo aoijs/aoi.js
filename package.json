@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "6.5.5",
+  "version": "6.5.6",
   "description": "A powerful package to create Discord Bots with built-in string functions.",
   "author": "Leref <itzleref@gmail.com>",
   "main": "src/index.js",

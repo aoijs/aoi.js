@@ -119,12 +119,14 @@ client.loadCommands("./commands/", true);
 
 ## Official Extensions 
 
+<div align="center">
   <a href="https://aoi.js.org/extensions/aoipanel">
     <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@akarui/aoi.panel">
   </a>
   <a href="https://aoi.js.org/extensions/aoimusic">
     <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@akarui/aoi.music">
   </a>
+</div>
 
 ## Extensions by Community
 
