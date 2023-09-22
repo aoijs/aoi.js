@@ -1,10 +1,10 @@
 const BaseClient = require("./AoiBase");
-const { Command } = require("./Commands");
-const { FunctionManager } = require("./Functions");
+const {Command} = require("./Commands");
+const {FunctionManager} = require("./Functions");
 
 const [major] = process.version.replace("v", "").split(".");
 if (isNaN(Number(major)) || Number(major) < 16) {
-    throw new Error("node.js version must be v16.9.0 or above.");
+    throw new Error("node.js version must be v16.11.0 or above.");
 }
 
 // Initialize aoi.js Client
@@ -30,6 +30,16 @@ class Client extends BaseClient {
         }
     }
 
+    interactionCommand(d = {}) {
+        if (!d.prototype) {
+            throw new TypeError(`Prototype is not provided in ${d.name || "unknown name"}: interactionCommand.`,);
+        }
+        if (!d.code) {
+            throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: interactionCommand. position: ${this.cmd.interaction[d.prototype]?.size}`,);
+        }
+        this.cmd.interaction[d.prototype]?.set(this.cmd.interaction[d.prototype].size, d);
+    }
+
     addCommandType(type, d = {}) {
         if (!d.code) {
             throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: ${type}. position: ${this.cmd[type].size}`);
@@ -38,7 +48,6 @@ class Client extends BaseClient {
         this.cmd[type].set(this.cmd[type].size, new Command(d, this));
     }
 
-    // Other command types
     awaitedCommand(d = {}) {
         this.addCommandType("awaited", d);
     }
@@ -200,10 +209,6 @@ class Client extends BaseClient {
         this.addCommandType("voiceStateUpdate", d);
     }
 
-    interactionCommand(d = {}) {
-        this.addCommandType("interaction", d);
-    }
-
     applicationCmdCreateCommand(d = {}) {
         this.addCommandType("applicationCmdCreate", d);
     }
@@ -260,8 +265,8 @@ class Client extends BaseClient {
         this.addCommandType("rateLimit", d);
     }
 
-    webhookUpdateCommand(d = {}) {
-        this.addCommandType("webhookUpdate", d);
+    webhooksUpdateCommand(d = {}) {
+        this.addCommandType("webhooksUpdate", d);
     }
 
     autoModActionExecutionCommand(d = {}) {
@@ -288,5 +293,6 @@ class Client extends BaseClient {
         this.addCommandType("inviteDelete", d);
     }
 }
+
 require("../utils/helpers/prototypes.js");
 module.exports = Client;

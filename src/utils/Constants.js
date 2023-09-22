@@ -487,7 +487,7 @@ const EventsToIntents = {
     onUserUpdate: "NonIntents",
 
     // Guild Webhooks
-    onWebhookUpdate: "GuildWebhooks",
+    onWebhooksUpdate: "GuildWebhooks",
 
     //Automod
     onAutoModerationActionExecution: "AutoModerationExecution",
@@ -573,7 +573,7 @@ const EventsToDjsEvents = {
     onInteractionCreate: Events.InteractionCreate,
     onApplicationCommandPermissionsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
-    onWebhookUpdate: Events.WebhooksUpdate,
+    onWebhooksUpdate: Events.WebhooksUpdate,
 
     //Automod
     onAutoModerationActionExecution: Events.AutoModerationActionExecution,
@@ -672,7 +672,7 @@ const EventstoFile = {
 
     // Other events
     onFunctionError: "functionError",
-    onWebhookUpdate: "update",
+    onWebhooksUpdate: "update",
 
     //Automod
     onAutoModerationActionExecution: "autoModActionExecution",

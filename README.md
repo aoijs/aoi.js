@@ -33,7 +33,7 @@
 
 <div align = "center">
 
-**[ Documentation ](https://aoi.js.org/docs/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ Website ](https://aoi.js.org/)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
+**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
 
 </div>
 
@@ -58,14 +58,33 @@ aoi.js is suitable for beginners who are new to building bots, as well as experi
 ## Setup
 
 ```javascript
-const {AoiClient} = require("aoi.js");
+const { AoiClient } = require("aoi.js");
 
-const bot = new AoiClient({
-    token: "Discord Bot Token",
-    prefix: "Discord Bot Prefix",
+const client = new AoiClient({
     intents: ["MessageContent", "Guilds", "GuildMessages"],
-    events: ["onMessage"],
-    database: {
+    events: ["onMessage", "onInteractionCreate"],
+    prefix: "Discord Bot Prefix",
+    token: "Discord Bot Token"
+});
+
+// Ping Command
+client.command({
+    name: "ping",
+    code: `Pong! $pingms`
+});
+```
+
+### Adding Database
+
+```javascript
+const { AoiClient } = require("aoi.js");
+
+const client = new AoiClient({
+    intents: ["MessageContent", "Guilds", "GuildMessages"],
+    events: ["onMessage", "onInteractionCreate"],
+    prefix: "Discord Bot Prefix",
+    token: "Discord Bot Token",
+        database: {
         type: "aoi.db",
         db: require("@akarui/aoi.db"),
         tables: ["main"],
@@ -77,52 +96,42 @@ const bot = new AoiClient({
 });
 
 // Ping Command
-bot.command({
+client.command({
     name: "ping",
     code: `Pong! $pingms`
 });
 ```
 
-### Interaction Command Setup
+## Command Handler
+
+By default, aoi.js does not have a command handler. However, you can easily add one by using the `loadCommands` method.
 
 ```javascript
-const {AoiClient} = require("aoi.js");
-
-const bot = new AoiClient({
-    token: "Discord Bot Token",
-    prefix: "Discord Bot Prefix",
-    intents: ["MessageContent", "Guilds", "GuildMessages"],
-    events: ["onMessage", "onInteractionCreate"],
-    database: {
-        type: "aoi.db",
-        db: require("@akarui/aoi.db"),
-        tables: ["main"],
-        path: "./database/",
-        extraOptions: {
-            dbType: "KeyValue"
-        }
-    }
-});
-
-// Create Interaction Ping
-bot.command({
-    name: "create",
-    code: `$createApplicationCommand[$guildID;ping;Pong!;true;slash]`
-});
-
-// Ping Interaction Command
-
-bot.interactionCommand({
-    name: "ping",
-    prototype: "slash",
-    code: `$interactionReply[Pong! $pingms;;;;everyone;false]`
-});
+client.loadCommands("./commands/", true);
 ```
 
-## Contribution
+- `./commands/` is the directory where your commands are located.
+- `true` allows to log the commands in console.
+
+## Notices
+
+- **Reading Functions**: Currently it reads `$` functions from bottom to top.
+
+## Official Extensions 
+
+<div align="center">
+  <a href="https://aoi.js.org/extensions/aoipanel">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@akarui/aoi.panel">
+  </a>
+  <a href="https://aoi.js.org/extensions/aoimusic">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@akarui/aoi.music">
+  </a>
+</div>
+
+## Extensions by Community
+
+- **[aoi.canvas](https://aoi.js.org/extensions/aoicanvas)** - Create beautiful images with aoi.canvas.
+
+## Contributing
 
 [Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
-
-## License
-
-aoi.js is licensed under the [Apache License 2.0](./LICENSE).

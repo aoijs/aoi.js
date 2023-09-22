@@ -214,10 +214,9 @@ declare module "aoi.js" {
     interface Command extends BaseCommand {
         name: string;
         aliases?: string | Array<string>;
-        async?: boolean;
         whitelist?: boolean;
         nonPrefixed?: boolean;
-        error?: string;
+        dmOnly?: boolean;
     }
 
     interface AwaitCommand extends BaseCommand {
@@ -320,7 +319,7 @@ declare module "aoi.js" {
         timeoutCommand(d: EventCommand): void;
         pulseCommand(d: EventCommand): void;
         rateLimitCommand(d: EventCommand): void;
-        webhookUpdateCommand(d: EventCommand): void;
+        webhooksUpdateCommand(d: EventCommand): void;
     }
 
     // cacheManager
