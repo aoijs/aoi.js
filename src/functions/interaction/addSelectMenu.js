@@ -66,6 +66,7 @@ module.exports = async (d) => {
     d.components[index].components.push(components);
     return {
         code: d.util.setCode({function: d.func, code, inside}),
+        data: { ...d.data, components: Object.assign({}, d.data.components, d.components) },
         components: d.components,
     };
 };
