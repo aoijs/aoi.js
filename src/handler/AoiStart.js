@@ -1,6 +1,7 @@
 const Interpreter = require("../core/interpreter.js");
 
-module.exports = async (client) => {
+module.exports = async (client, options) => {
+
     if (client.aoiOptions.aoiLogs !== false) {
         await require("./AoiLogs.js")(client);
     }
@@ -13,21 +14,24 @@ module.exports = async (client) => {
         await require("./AoiAutoUpdate.js")(client);
     }
 
-    await require("./Custom/timeout.js")(
-        {client, interpreter: Interpreter},
-        undefined,
-        undefined,
-        undefined,
-        true,
-    );
-    await require("./Custom/timeoutPulse.js")(
-        {client, interpreter: Interpreter},
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        true,
-    );
+    if (client.aoiOptions.database && client.aoiOptions.database) {
+        await require("./Custom/timeout.js")(
+            { client, interpreter: Interpreter },
+            undefined,
+            undefined,
+            undefined,
+            true
+        );
+
+        await require("./Custom/timeoutPulse.js")(
+            { client, interpreter: Interpreter },
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            true
+        );
+    }
 
     if (client.cmd.loop.size) {
         await require("./Custom/loop.js")(client);
