@@ -1,7 +1,3 @@
-const createCustomBoxedMessage = require('../utils/CustomBox.js');
-
-let recommendationLogged = false;
-
 module.exports = async (statuses, client) => {
   if (statuses.size !== 0) {
     let y = 0;
@@ -35,16 +31,7 @@ module.exports = async (statuses, client) => {
             stats.activity.name = status[y].activity.name;
           }
         } else {
-          if (!recommendationLogged) {
-            const recommendationMessage = `Use the name method or provide a name for status[${y}]`;
-            createCustomBoxedMessage([{ text: recommendationMessage, textColor: 'red' }], 'white', {
-              text: 'AoiWarning',
-              textColor: 'yellow',
-            })
-            recommendationLogged = true;
-          }
-
-          stats.activity.name = "Using aoi.js";
+          throw new TypeError(`Use the name method or provide a name for status[${y}]`);
         }
 
         client.user.setPresence({
