@@ -1,62 +1,54 @@
-const createCustomBoxedMessage = require('../utils/CustomBox.js');
-
-let recommendationLogged = false;
-
 module.exports = async (statuses, client) => {
-  if (statuses.size !== 0) {
-    let y = 0;
-
-    let status = statuses.allValues();
-    const f = async () => {
-      if (!status[y]) {
-        y = 0;
-      }
-      setTimeout(async () => {
-        const stats = {};
-        stats.activity = {};
-
-        stats.activity.type = status[y].activity.type;
-        stats.activity.url = status[y].activity.url;
-
-        if (status[y].activity.name) {
-
-          if (status[y].activity.name.includes("$")) {
-            stats.activity.name = (
-                await client.functionManager.interpreter(
-                    client,
-                    {},
-                    [],
-                    { code: status[y].activity.name },
-                    client.db,
-                    true,
-                )
-            )?.code;
-          } else {
-            stats.activity.name = status[y].activity.name;
-          }
-        } else {
-          if (!recommendationLogged) {
-            const recommendationMessage = `Use the name method or provide a name for status[${y}]`;
-            createCustomBoxedMessage([{ text: recommendationMessage, textColor: 'red' }], 'white', {
-              text: 'AoiWarning',
-              textColor: 'yellow',
-            })
-            recommendationLogged = true;
-          }
-
-          stats.activity.name = "Using aoi.js";
-        }
-
-        client.user.setPresence({
-          status: status[y].status,
-          activities: [stats.activity],
-          afk: status[y].afk,
-        });
-
-        y++;
-        await f();
-      }, (status[y]?.time || 12) * 1000);
-    };
-    f();
+  if (statuses.size === 0) {
+    return;
   }
+
+  const statusArray = statuses.allValues();
+  let y = 0;
+
+  const processStatus = async () => {
+    if (!statusArray[y]) {
+      y = 0;
+    }
+
+    const stats = {
+      activity: {
+        type: statusArray[y].activity.type,
+        url: statusArray[y].activity.url,
+      },
+    };
+
+    if (statusArray[y].activity.name) {
+      if (statusArray[y].activity.name.includes("$")) {
+        stats.activity.name = (
+            await client.functionManager.interpreter(
+                client,
+                {},
+                [],
+                { code: statusArray[y].activity.name },
+                client.db,
+                true
+            )
+        )?.code;
+      } else {
+        stats.activity.name = statusArray[y].activity.name;
+      }
+    } else {
+      throw new TypeError(`Use the name method or provide a name for status[${y}]`);
+    }
+
+    client.user.setPresence({
+      status: statusArray[y].status,
+      activities: [stats.activity],
+      afk: statusArray[y].afk,
+    });
+
+    y++;
+
+    if (y < statusArray.length) {
+      setTimeout(processStatus, statusArray[y]?.time * 1000 || 0);
+    }
+  };
+
+  await processStatus();
 };

@@ -64,7 +64,6 @@ class Client extends BaseClient {
         this.addCommandType("messageDeleteBulk", d);
     }
 
-    // Add other command types here
     guildJoinCommand(d = {}) {
         this.addCommandType("guildJoin", d);
     }

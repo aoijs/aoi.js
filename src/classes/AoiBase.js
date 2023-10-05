@@ -26,26 +26,6 @@ class BaseClient extends Discord.Client {
             );
         }
 
-        if (options.presence?.activities?.length) {
-            if (
-                Object.keys(ActivityTypeAvailables).includes(
-                    options.presence?.activities[0].type,
-                ) ||
-                Object.values(ActivityTypeAvailables).includes(
-                    options.presence?.activities[0].type,
-                )
-            ) {
-                options.presence.activities[0].type =
-                    ActivityTypeAvailables[
-                        options.presence?.activities[0].type
-                        ] || options.presence?.activities[0].type;
-            } else {
-                throw new TypeError(
-                    `Activity Type Error: Invalid Activity Type (${options.presence?.activities[0].type}) Provided`,
-                );
-            }
-        }
-
         options.partials = options.partials || [
             Discord.Partials.GuildMember,
             Discord.Partials.Channel,
@@ -105,9 +85,9 @@ class BaseClient extends Discord.Client {
         Object.defineProperty(this, "statuses", {value: new Group()});
 
         this.on("ready", async () => {
+            await require("../handler/NonIntents/ready.js")(this);
             await require("../handler/status.js")(this.statuses, this);
             await require("../handler/AoiStart.js")(this);
-            await require("../handler/NonIntents/ready.js")(this);
         });
         this.login(options.token);
     }
@@ -146,9 +126,13 @@ class BaseClient extends Discord.Client {
      * @param  {Record<string,string | number | object >} d
      * @param table
      */
-    variables(d, table = this.db.tables[0]) {
+    variables(d, table = this.db?.tables?.[0]) {
+        if (this.db === undefined) {
+            throw new TypeError('A database must be provided to use the variables method.');
+        }
+
         for (const [name, value] of Object.entries(d)) {
-            this.variableManager.add({name, value, table});
+            this.variableManager.add({ name, value, table });
         }
     }
 

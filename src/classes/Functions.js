@@ -22,7 +22,7 @@ class CustomFunction {
         this.name = d.name;
         this.code = d.code;
         this.type = d.type;
-        this.params = d.params;
+        this.params = d.params || [];
         this.functions =
             this.type === "aoi.js" ? this.serializeFunctions() : undefined;
     }

@@ -569,11 +569,13 @@ const EventsToDjsEvents = {
     // Guild Message Typings
     onTypingStart: Events.TypingStart,
 
+    // Guild Webhooks
+    onWebhooksUpdate: Events.WebhooksUpdate,
+
     // Non-Intents
     onInteractionCreate: Events.InteractionCreate,
     onApplicationCommandPermissionsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
-    onWebhooksUpdate: Events.WebhooksUpdate,
 
     //Automod
     onAutoModerationActionExecution: Events.AutoModerationActionExecution,
@@ -658,11 +660,9 @@ const EventstoFile = {
     onVoiceStateUpdate: "update",
     onPresenceUpdate: "update",
 
-    // Interaction and command events
+    // Non-Intents
     onInteractionCreate: "interaction",
     onApplicationCommandPermissionsUpdate: "appCmdPermissionsUpdate",
-
-    // User events
     onUserUpdate: "userUpdate",
 
     // Variable events
