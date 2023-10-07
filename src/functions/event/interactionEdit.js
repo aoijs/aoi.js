@@ -10,18 +10,17 @@ module.exports = async d => {
 
     files = await d.util.parsers.FileParser(files);
 
-    allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
+    allowedMentions = allowedMentions === "all" ? [ "everyone", "users", "roles" ] : (allowedMentions ? allowedMentions?.split(",") : []);
 
     await d.data.interaction?.editReply({
-            content: content.trim() === "" ? " " : content.addBrackets(),
-            embeds: embeds,
-            components: components,
-            files,
-            allowedMentions: {
-                parse: allowedMentions
-            }
+        content: content.trim() === "" ? " " : content.addBrackets(),
+        embeds: embeds,
+        components: components,
+        files,
+        allowedMentions: {
+            parse: allowedMentions
         }
-    ).catch(e => {
+    }).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     });
 
