@@ -34,7 +34,7 @@ module.exports = async (statuses, client) => {
         stats.activity.name = statusArray[y].activity.name;
       }
     } else {
-      throw new TypeError(`Use the name method or provide a name for status[${y}]`);
+      throw new TypeError(`Missing or invalid 'name' method in status[${y}]`);
     }
 
     client.user.setPresence({
