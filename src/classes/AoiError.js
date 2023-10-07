@@ -123,7 +123,7 @@ class AoiError {
                 )
                     return;
                 msg = await channel.reply(options).catch((e) => {
-                    this.consoleError("CreateMessageError", e);
+                    AoiError.consoleError("CreateMessageError", e);
                     return undefined;
                 });
             } else {
@@ -135,7 +135,7 @@ class AoiError {
                 )
                     return;
                 msg = await channel.send(options).catch((e) => {
-                    this.consoleError("CreateMessageError", e);
+                    AoiError.consoleError("CreateMessageError", e);
                     return undefined;
                 });
             }
