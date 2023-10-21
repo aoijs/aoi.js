@@ -69,8 +69,13 @@ class AoijsAPI extends Database {
     }
 
     createTable(type) {
-        if (type === "aoi.db" || type === "default") {
-            if (!this.extraOptions.dbType) this.extraOptions.dbType = "KeyValue";
+        if (
+            type === "aoi.db" ||
+            type === "default" ||
+            this.type === "aoi.db-dev"
+        ) {
+            if (!this.extraOptions.dbType)
+                this.extraOptions.dbType = "KeyValue";
             this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
                 path: this.path,
                 tables: this.tables,
@@ -81,24 +86,27 @@ class AoijsAPI extends Database {
     }
 
     async set(table, name, id, value) {
-        if (this.type === "aoi.db") {
+        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
             if (this.extraOptions.dbType === "KeyValue") {
-
-                await this.db.set(table, id ? `${name}_${id}` : name, {value});
+                await this.db.set(table, id ? `${name}_${id}` : name, {
+                    value,
+                });
             } else if (this.extraOptions.dbType === "WideColumn") {
                 return await this.db.set(
                     table,
-                    {name: name, value},
-                    {name: "id", value: id},
+                    { name: name, value },
+                    { name: "id", value: id },
                 );
             } else if (this.extraOptions.dbType === "Transmitter") {
                 if (this.extraOptions.dbOptions.databaseType === "KeyValue")
                     return await this.db.set(table, name, id);
-                else if (this.extraOptions.dbOptions.databaseType === "WideColumn")
+                else if (
+                    this.extraOptions.dbOptions.databaseType === "WideColumn"
+                )
                     return await this.db.set(
                         table,
-                        {name: name, value},
-                        {name: "id", value: id},
+                        { name: name, value },
+                        { name: "id", value: id },
                     );
             }
         } else {
@@ -107,7 +115,7 @@ class AoijsAPI extends Database {
     }
 
     async get(table, name, id) {
-        if (this.type === "aoi.db") {
+        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
             if (this.extraOptions.dbType === "KeyValue") {
                 return await this.db.get(table, id ? `${name}_${id}` : name);
             } else if (this.extraOptions.dbType === "WideColumn") {
@@ -130,13 +138,21 @@ class AoijsAPI extends Database {
                     (funconId ? this.checkConditionOnId(x, ...funconId) : true),
                 Infinity,
             );
-        } else {
+        } else if(this.type === "aoi.db-dev") {
+            return await this.db.all(table, (x) => 
+                 x.key.startsWith(`${varname}_`) &&
+                    (lengthofId ? x.key.split("_").slice(1).length === lengthofId : true) &&
+                    (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
+                Infinity,
+            );
+        } 
+        else {
             return await super.all(table, varname, lengthofId, funconId);
         }
     }
 
     async delete(table, name, id) {
-        if (this.type === "aoi.db") {
+        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
             return await this.db.delete(table, id ? `${name}_${id}` : name);
         } else {
             return super.delete(table, name, id);

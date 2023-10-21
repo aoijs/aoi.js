@@ -1,42 +1,39 @@
 const { Group } = require("@akarui/structures");
 
 class Command {
-    constructor(d = {}, client) {
-        Object.defineProperty(this, "__client__", { value: client });
-        Object.entries(d).forEach((x) => (this[x[0]] = x[1]));
+    constructor(data = {}, client) {
+        this.__client__ = client;
+        if (typeof data.code === "string") {
+            this.code = data.code;
+        } else {
+            throw new TypeError(`Missing or invalid 'code' property in '${data.name}' command`);
+        }
+        Object.entries(data).forEach(([key, value]) => (this[key] = value));
         this.functions = this.serializeFunctions();
         this.codeLines = this.serializeCode();
     }
 
     serializeFunctions() {
-        let Functions = this.__client__.functionManager.functions;
-        let code = this.code
-            ?.replace(/\\]/g, "#LEFT#")
-            .split("\\[")
-            .join("#RIGHT#")
-            .replace("\\,", "#COMMA#");
-         let funcs = [];
-         let loadsOfFunc = Functions.filter((thatfunc) =>
-             code.toLowerCase().includes(thatfunc.toLowerCase()),
-         );
-         const funcyboys = code.split("$");
-         for (const funcboy of funcyboys) {
-             let Func = loadsOfFunc.filter(
-                 (f) =>
-                     f.toLowerCase() ===
-                     ("$" + funcboy.toLowerCase()).slice(0, f.length),
-             );
-             if (!Func.length) {
-                 continue;
-             }
-             if (Func.length === 1) {
-                 funcs.push(Func[0]);
-             } else if (Func.length > 1) {
-                 funcs.push(Func.sort((a, b) => b.length - a.length)[0]);
-             }
-         }
-         return funcs;
+        const availableFunctions = this.__client__.functionManager.functions;
+        let code = this.code.replace(/\\]/g, "#LEFT#").split("\\[").join("#RIGHT#").replace("\\,", "#COMMA#");
+        const usedFunctions = [];
 
+        const functionTokens = code.split("$");
+        for (const functionToken of functionTokens) {
+            const matchingFunctions = availableFunctions.filter(func =>
+                func.toLowerCase() === ("$" + functionToken.toLowerCase()).slice(0, func.length)
+            );
+
+            if (matchingFunctions.length) {
+                if (matchingFunctions.length === 1) {
+                    usedFunctions.push(matchingFunctions[0]);
+                } else if (matchingFunctions.length > 1) {
+                    usedFunctions.push(matchingFunctions.sort((a, b) => b.length - a.length)[0]);
+                }
+            }
+        }
+
+        return usedFunctions;
     }
 
     serializeCode() {
@@ -61,73 +58,25 @@ class Command {
 }
 
 class CommandManager {
-    awaited;
-    messageDelete;
-    messageUpdate;
-    messageDeleteBulk;
-    guildJoin;
-    guildLeave;
-    guildUpdate;
-    guildUnavailable;
-    roleCreate;
-    roleUpdate;
-    roleDelete;
-    channelCreate;
-    channelUpdate;
-    channelDelete;
-    channelPinsUpdate;
-    stageInstanceCreate;
-    stageInstanceUpdate;
-    stageInstanceDelete;
-    threadCreate;
-    threadUpdate;
-    threadDelete;
-    threadListSync;
-    threadMemberUpdate;
-    threadMembersUpdate;
-    join;
-    leave;
-    inviteCreate;
-    inviteDelete;
-    memberUpdate;
-    memberAvailable;
-    membersChunk;
-    emojiCreate;
-    emojiDelete;
-    emojiUpdate;
-    banAdd;
-    banRemove;
-    reactionAdd;
-    reactionRemove;
-    reactionRemoveAll;
-    reactionRemoveEmoji;
-    presenceUpdate;
-    voiceStateUpdate;
-    applicationCmdCreate;
-    applicationCmdDelete;
-    applicationCmdUpdate;
-    applicationCmdPermissionsUpdate;
-    userUpdate;
-    variableCreate;
-    variableDelete;
-    variableUpdate;
-    ready;
-    functionError;
-    loop;
-    timeout;
-    pulse;
-    rateLimit;
-    webhooksUpdate;
-    autoModActionExecution;
-    autoModCreate;
-    autoModDelete;
-    autoModUpdate;
-    interaction;
-
     constructor(client, formCommand = true, customCmds = []) {
         client.cmd = this;
         this.client = client;
         this.isClientCommand = formCommand;
+        this.types = [
+            "default", "awaited", "messageDelete", "messageUpdate", "messageDeleteBulk", "guildJoin",
+            "guildUpdate", "guildLeave", "guildUnavailable", "roleCreate", "roleUpdate", "roleDelete",
+            "channelCreate", "channelUpdate", "channelDelete", "channelPinsUpdate", "stageInstanceCreate",
+            "stageInstanceUpdate", "stageInstanceDelete", "stickerCreate", "stickerDelete", "stickerUpdate",
+            "threadCreate", "threadDelete", "threadListSync", "threadMemberUpdate", "threadMembersUpdate",
+            "threadUpdate", "join", "leave", "inviteCreate", "inviteDelete", "memberUpdate", "memberAvailable",
+            "membersChunk", "emojiCreate", "emojiUpdate", "emojiDelete", "banAdd", "banRemove", "webhooksUpdate",
+            "voiceStateUpdate", "presenceUpdate", "reactionAdd", "reactionRemove", "reactionRemoveEmoji",
+            "reactionRemoveAll", "typingStart", "loop", "timeout", "pulse", "ready", "variableCreate",
+            "variableDelete", "variableUpdate", "functionError", "interaction", "applicationCmdCreate",
+            "applicationCmdUpdate", "applicationCmdDelete", "applicationCmdPermissionsUpdate", "userUpdate",
+            "rateLimit", "shardReady", "shardResume", "shardReconnecting", "shardDisconnect", "shardError",
+            "autoModActionExecution", "autoModCreate", "autoModDelete", "autoModUpdate"
+        ];
 
         if (formCommand) {
             this.formCommand();
@@ -137,85 +86,8 @@ class CommandManager {
         }
     }
 
-    get types() {
-        return [
-            "default",
-            "awaited",
-            "messageDelete",
-            "messageUpdate",
-            "messageDeleteBulk",
-            "guildJoin",
-            "guildUpdate",
-            "guildLeave",
-            "guildUnavailable",
-            "roleCreate",
-            "roleUpdate",
-            "roleDelete",
-            "channelCreate",
-            "channelUpdate",
-            "channelDelete",
-            "channelPinsUpdate",
-            "stageInstanceCreate",
-            "stageInstanceUpdate",
-            "stageInstanceDelete",
-            "stickerCreate",
-            "stickerDelete",
-            "stickerUpdate",
-            "threadCreate",
-            "threadDelete",
-            "threadListSync",
-            "threadMemberUpdate",
-            "threadMembersUpdate",
-            "threadUpdate",
-            "join",
-            "leave",
-            "inviteCreate",
-            "inviteDelete",
-            "memberUpdate",
-            "memberAvailable",
-            "membersChunk",
-            "emojiCreate",
-            "emojiUpdate",
-            "emojiDelete",
-            "banAdd",
-            "banRemove",
-            "webhooksUpdate",
-            "voiceStateUpdate",
-            "presenceUpdate",
-            "reactionAdd",
-            "reactionRemove",
-            "reactionRemoveEmoji",
-            "reactionRemoveAll",
-            "typingStart",
-            "loop",
-            "timeout",
-            "pulse",
-            "ready",
-            "variableCreate",
-            "variableDelete",
-            "variableUpdate",
-            "functionError",
-            "interaction",
-            "applicationCmdCreate",
-            "applicationCmdUpdate",
-            "applicationCmdDelete",
-            "applicationCmdPermissionsUpdate",
-            "userUpdate",
-            "rateLimit",
-            "shardReady",
-            "shardResume",
-            "shardReconnecting",
-            "shardDisconnect",
-            "shardError",
-            "autoModActionExecution",
-            "autoModCreate",
-            "autoModDelete",
-            "autoModUpdate"
-        ];
-    }
-
     formCommand() {
-        this.types.forEach((x) => (this[x] = new Group()));
+        this.types.forEach(x => (this[x] = new Group()));
         this.interaction = {
             selectMenu: new Group(),
             button: new Group(),
@@ -224,27 +96,27 @@ class CommandManager {
         };
     }
 
-    createCommand(d = {}) {
-        d.type = d.type || "default";
-        if (d.type === "interaction") {
-            this[d.type][d.prototype].set(
-                this[d.type][d.prototype].size,
-                new Command(d, this.client),
-            );
+    createCommand(data = {}) {
+        data.type = data.type || "default";
+        if (data.type === "interaction") {
+            this.interaction[data.prototype].set(this.interaction[data.prototype].size, new Command(data, this.client));
         } else {
-            this[d.type].set(this[d.type].size, new Command(d, this.client));
+            this[data.type].set(this[data.type].size, new Command(data, this.client));
         }
     }
 
     formCustomCommand(customCmds) {
-        customCmds.forEach((x) => {
+        customCmds.forEach(x => {
             this[x] = new Group();
         });
-        if (!customCmds.includes("default")) this.default = new Group();
+
+        if (!customCmds.includes("default")) {
+            this.default = new Group();
+        }
     }
 }
 
 module.exports = {
-  CommandManager,
-  Command,
+    CommandManager,
+    Command,
 };

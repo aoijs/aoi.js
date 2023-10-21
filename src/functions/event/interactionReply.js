@@ -10,7 +10,7 @@ module.exports = async d => {
 
     files = await d.util.parsers.FileParser(files);
 
-    allowedMentions = allowedMentions === "all" ? [ "everyone", "users", "roles" ] : allowedMentions?.split( "," ) || [];
+    allowedMentions = allowedMentions === "all" ? [ "everyone", "users", "roles" ] : (allowedMentions ? allowedMentions?.split(",") : []);
 
     await d.data.interaction?.reply({
         content: content.trim() === "" ? " " : content.addBrackets(),
