@@ -7,7 +7,7 @@ module.exports = async d => {
     const res = d.client.users.cache.findKey(x => x.username.toLowerCase() === user.addBrackets().toLowerCase());
     if (!res) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid User Provided In');
 
-    data.result = res.id;
+    data.result = res;
 
     return {
         code: d.util.setCode(data)
