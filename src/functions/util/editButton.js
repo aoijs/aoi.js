@@ -5,11 +5,11 @@ module.exports = async (d) => {
   const inside = d.unpack();
   if (data.err) return d.error(data.err);
 
-  let [index, customId, custom, label, style, disabled, emoji, messageId, channelId = d.channel.id] = data.inside.splits;
+  let [index, customId, custom, label, style, disabled, emoji, messageID, channelID = d.channel.id] = data.inside.splits;
 
-  const channel = await d.util.getChannel(d, channelId);
+  const channel = await d.util.getChannel(d, channelID);
   if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
-  const message = await d.util.getMessage(channel, messageId);
+  const message = await d.util.getMessage(channel, messageID);
   if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
   if (!customId) return d.aoiError.fnError(d, "custom", { inside }, "Empty customId was provided");
   if (isNaN(index) || Number(index) < 1) d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
