@@ -12,7 +12,7 @@ module.exports = async (d) => {
   const message = await d.util.getMessage(channel, messageId);
   if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
   if (!customId) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Empty customId was provided");
-  if (isNaN(index) || Number(index) < 1) d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
+  if (isNaN(index) || Number(index) < 1) d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
   index = Number(index) - 1;
   if (style) {
     style = d.util.constants.ButtonStyleOptions[style] || Number(style);
