@@ -11,12 +11,12 @@ module.exports = async (d) => {
   if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
   const message = await d.util.getMessage(channel, messageId);
   if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
-  if (!customId) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Empty customId was provided");
+  if (!customId) return d.aoiError.fnError(d, "custom", { inside }, "Empty customId was provided");
   if (isNaN(index) || Number(index) < 1) d.aoiError.fnError(d, "custom", {inside}, "Invalid Index Provided In");
   index = Number(index) - 1;
   if (style) {
     style = d.util.constants.ButtonStyleOptions[style] || Number(style);
-    if (style > 5 || style < 1) d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Style Provided In");
+    if (style > 5 || style < 1) d.aoiError.fnError(d, "custom", { inside }, "Invalid Style Provided In");
   }
   const components = message.components;
   if (!components[index]) components[index] = { type: 1, components: [] };
