@@ -15,3 +15,11 @@ plugins
 .DS_Store
 /dist
 ignore
+
+#Ignore replit
+.replit
+.upm
+package.json
+package-lock.json
+.git
+replit.nix
