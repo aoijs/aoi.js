@@ -16,10 +16,4 @@ plugins
 /dist
 ignore
 
-#Ignore replit
-.replit
-.upm
-package.json
-package-lock.json
 .git
-replit.nix
