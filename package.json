@@ -66,8 +66,4 @@
   },
   "type": "commonjs",
   "types": "./src/index.d.ts"
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 32be109 (fixed/readded package-lock and package)
