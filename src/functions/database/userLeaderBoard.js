@@ -10,16 +10,27 @@ module.exports = async d => {
     list = 10,
     page = 1,
     table = d.client.db.tables[0],
+    hideNegativeValue = false,
+    hideZeroValue = false
   ] = data.inside.splits;
-
-  let db = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildID]);
-  db.sort((a, b) => a.value - b.value);
-  if (type === "desc") db = db.reverse();
 
   const guild = await d.util.getGuild(d, guildID);
   if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
   if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
+  let v = d.client.variableManager.get(variable, table)
+
+  if (v.type !== 'INTEGER') {
+  if (isNaN(Number(v.default ? v.default : 'null'))) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" is not a numbered variable`);
+  }
+
+  let db = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildID]);
+  db.sort((a, b) => a.value - b.value);
+  
+  if (type === "desc") db = db.reverse();
+
+  if (hideNegativeValue === "true") db = db.filter(x => x.value >= 0);
+  if (hideZeroValue === "true") db = db.filter(x => x.value != 0);
 
   let y = 0;
   let value;
