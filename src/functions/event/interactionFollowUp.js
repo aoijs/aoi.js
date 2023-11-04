@@ -10,7 +10,7 @@ module.exports = async d => {
 
     files = await d.util.parsers.FileParser(files);
 
-    await d.data.interaction?.followUp({
+    const i = await d.data.interaction?.followUp({
         content: content.trim() === "" ? " " : content.addBrackets(),
         embeds: embeds,
         components: components,
@@ -19,8 +19,6 @@ module.exports = async d => {
     }).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     })
-
-    const i = await d.data.interaction?.fetchReply();
 
     data.result = returnID === "true" ? i?.id : undefined;
 
