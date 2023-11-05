@@ -9,7 +9,6 @@ import {
     TranspiledFuncData,
 } from "./interfaces.js";
 import { AoiClientEvents } from "./enums.js";
-import PluginManager from "../manager/Plugin.js";
 
 export type CommandTypes =
     | "basic"
@@ -51,7 +50,6 @@ export type AoiClientProps = {
     managers: {
         commands: CommandManager;
         functions: FunctionManager;
-        plugins: PluginManager;
     };
     options: AoiClientOptions;
     cache?: Cacher;

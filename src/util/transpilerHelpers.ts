@@ -5,6 +5,7 @@ import { funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
 import { StringObject, parseStringObject } from "../index.js";
 import { Command } from "../structures/Command.js";
+
 export function areBracketsBalanced(code: string) {
     const leftbracket = /\[/g;
     const rightbracket = /\]/g;
@@ -12,6 +13,7 @@ export function areBracketsBalanced(code: string) {
     const rightbracketCount = code.match(rightbracket)?.length ?? 0;
     return leftbracketCount === rightbracketCount;
 }
+
 export function countBrackets(code: string) {
     const leftbracket = /\[/g;
     const rightbracket = /\]/g;
@@ -19,6 +21,7 @@ export function countBrackets(code: string) {
     const rightbracketCount = code.match(rightbracket)?.length ?? 0;
     return { leftbracketCount, rightbracketCount };
 }
+
 export function parseData(text: string) {
     if (text === "") return text;
     else if (!isNaN(Number(text)) && Number.isSafeInteger(Number(text)))
@@ -61,6 +64,7 @@ export function escapeResult(res: string) {
 export function escapeMathResult(res: string) {
     return `${TranspilerCustoms.MFS}${res}${TranspilerCustoms.MFE}`;
 }
+
 export function parseResult(result: string) {
     if (typeof result !== "string") return result;
     return result
@@ -95,7 +99,7 @@ export function getFunctionData(
     code: string,
     func: string,
     functions: string[],
-    command?:Command,
+    command?: Command,
 ): funcData {
     const FuncD = FUNCDATA[func];
     const reg = new RegExp(`${func.replace("$", "\\$")}`, "i");
@@ -111,12 +115,12 @@ export function getFunctionData(
     let rawTotal = "";
     // eslint-disable-next-line no-constant-condition
     while (true) {
-        if(i >= code.length) break;
+        if (i >= code.length) break;
         if (!FuncD?.brackets && !code.slice(func.length).startsWith("[")) {
             break;
         }
         if (!FuncD?.optional && !code.slice(func.length).startsWith("[")) {
-            throw new TranspilerError("Function requires brackets",{
+            throw new TranspilerError("Function requires brackets", {
                 function: {
                     name: func,
                     code: func,
@@ -228,18 +232,23 @@ export function reverseArray(arr: funcData[]) {
 export function Reverse(code: string, funcs: funcData[]) {
     let codeWithGenricFuncs = code;
 
-    for(const func of funcs) {
-        codeWithGenricFuncs = codeWithGenricFuncs.replace(func.total, "#GENERIC-FUNCTION#");
+    for (const func of funcs) {
+        codeWithGenricFuncs = codeWithGenricFuncs.replace(
+            func.total,
+            "#GENERIC-FUNCTION#",
+        );
     }
 
     const reversedFuncs = reverseArray(funcs);
 
-    for(const func of reversedFuncs) {
-        codeWithGenricFuncs = codeWithGenricFuncs.replace("#GENERIC-FUNCTION#", func.total);
+    for (const func of reversedFuncs) {
+        codeWithGenricFuncs = codeWithGenricFuncs.replace(
+            "#GENERIC-FUNCTION#",
+            func.total,
+        );
     }
 
     return { code: codeWithGenricFuncs, funcs: reversedFuncs };
-
 }
 
 export function ExecuteData(

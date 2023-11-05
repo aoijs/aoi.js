@@ -174,13 +174,7 @@ export class CommandManager {
         const cmd = this[type].filter((cmd) => filter(cmd));
         if (cmd.size) {
             for (const command of cmd.values()) {
-                this.#client.managers.plugins.preCommand.forEach((plugin) => {
-                    plugin.func({ command, data });
-                });
                 await command.__compiled__({ ...data, command });
-                this.#client.managers.plugins.postCommand.forEach((plugin) => {
-                    plugin.func({ command, data });
-                });
             }
         }
     }

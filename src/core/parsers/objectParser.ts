@@ -7,6 +7,7 @@ export const ObjectQuoteRegex = /".*?"/g;
 export function getObjectData(stringObject: string, currentObj: StringObject) {
     let i = 0,
         text = "";
+    let arrayEnded = false;
     while (i < stringObject.length) {
         const char = stringObject[i];
         if (char === "{" || char === "[") {
@@ -14,6 +15,7 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
             currentObj.addValue(`#StringObject_${newObj.name}#`);
             currentObj = newObj;
         } else if (char === "}" || char === "]") {
+            if(char === "]") arrayEnded = true;
             currentObj.addEnd(char);
             if (text.trim() !== "") {
                 let t = parseData(text.trim());
@@ -47,6 +49,11 @@ export function getObjectData(stringObject: string, currentObj: StringObject) {
             currentObj.addKey(text.trim());
             text = "";
         } else if (char === ",") {
+            if(arrayEnded) {
+                i++;
+                arrayEnded = false;
+                continue;
+            }
             if (currentObj.start === "[") {
                 let t = parseData(text.trim());
                 if (typeof t === "string") {

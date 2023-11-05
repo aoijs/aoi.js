@@ -11,7 +11,6 @@ import { Util } from "./Util.js";
 import { FunctionManager } from "../manager/Function.js";
 import { AoiClientProps, CommandTypes } from "../typings/types.js";
 import { AoiClientEvents } from "../typings/enums.js";
-import PluginManager from "../manager/Plugin.js";
 import { onInteraction } from "../events/interactionCreate.js";
 import { onReady } from "../events/ready.js";
 
@@ -25,7 +24,6 @@ class AoiClient {
         this.managers = {
             commands: new CommandManager(this),
             functions: new FunctionManager(this),
-            plugins: new PluginManager(),
         };
         this.options = options;
         if (options.caches)
@@ -36,11 +34,6 @@ class AoiClient {
         this.util = Util;
         Util.client = this;
         this.__on__ = {};
-
-        const plugs = this.managers.plugins.getPlugins("load");
-        for (const plug of plugs) {
-            plug.func(this);
-        }
     }
     #bindEvents() {
         for (const event of this.options.events)
