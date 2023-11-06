@@ -1,9 +1,10 @@
 module.exports = d => {
     const data = d.util.aoiFunc(d);
 
-    let [text, sep = ' '] = data.inside.splits;
+    let [name, text, sep = ' '] = data.inside.splits;
+    if (!name) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Name Provided In');
 
-    d.array = text.addBrackets().split(sep.addBrackets());
+    d.array[name] = text.addBrackets().split(sep.addBrackets());
     d.data.array = d.array;
 
     return {
