@@ -12,7 +12,7 @@ module.exports = async (d) => {
         table = d.client.db.tables[0],
     ] = data.inside.splits;
 
-    const all = await d.client.db.all(
+    let all = await d.client.db.all(
         table,
         (data) =>
             data.key.startsWith(variable.deleteBrackets()) &&
