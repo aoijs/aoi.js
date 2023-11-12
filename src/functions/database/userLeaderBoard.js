@@ -26,16 +26,18 @@ module.exports = async (d) => {
     let value;
     let content = [];
 
-    const px = page * list - list,
+    const px = (page-1) * list,
         py = page * list;
-    all = all.slice(px, py);
-    let y = px;
 
-    for (const Data of all.sort((x, y) => {
+       all = all.sort((x, y) => {
         if (d.client.db.type === "aoi.db")
             return Number(y.value) - Number(x.value);
         else return Number(y.data.value) - Number(x.data.value);
-    })) {
+    });
+    all = all.slice(px, py);
+    let y = px+1;
+
+    for (const Data of all  ) {
         let user;
 
         if (d.client.db.type === "aoi.db") value = Number(Data.value);
