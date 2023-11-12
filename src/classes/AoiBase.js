@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const {VariableManager} = require("./Variables.js");
+const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
 const {
@@ -9,14 +9,12 @@ const {
     EventsToDjsEvents,
     EventstoFile,
 } = require("../utils/Constants.js");
-const {
-    AoijsAPI
-} = require("./Database.js");
+const Database = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
-const {CommandManager} = require("./Commands.js");
-const {Group} = require("@akarui/structures");
+const { CommandManager } = require("./Commands.js");
+const { Group } = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
-const {functions: parser} = require("../core/AoiReader.js");
+const { functions: parser } = require("../core/AoiReader.js");
 
 class BaseClient extends Discord.Client {
     constructor(options) {
@@ -51,26 +49,41 @@ class BaseClient extends Discord.Client {
         this.variableManager = new VariableManager(this);
 
         if (
-            [
-                "default",
-                "aoi.db",
-            ].includes(options?.database?.type)
+            ["default", "aoi.db"].includes(options?.database?.type) ||
+            !options?.database
         ) {
-            this.db = new AoijsAPI(
-                options?.database?.db || require("@akarui/aoi.db"),
+            const dbData = options?.database;
+
+            this.db = new Database(
+                dbData?.type
+                    ? dbData?.type === "default"
+                        ? "aoi.db"
+                        : dbData?.type
+                    : "aoi.db",
+                dbData?.db ?? require("@akarui/aoi.db"),
+                dbData?.dbType ?? "KeyValue",
                 {
-                    path: options?.database?.path || "./database/",
-                    tables: options?.database?.tables || ["main"],
+                    dataConfig: {
+                        path: dbData?.path ?? "./database",
+                        tables: dbData?.tables?.length
+                            ? [...dbData?.tables, "__aoijs_vars__"]
+                            : ["main", "__aoijs_vars__"],
+                    },
+                    encryptionConfig: {
+                        securityKey:
+                            dbData?.securityKey ??
+                            "a-32-characters-long-string-here",
+                        encriptData: dbData?.encriptData ?? false,
+                    },
+                    ...dbData?.extraOptions,
                 },
-                {
-                    type: options?.database?.type || "default",
-                    promisify: options?.database?.promisify || false,
-                },
-                options?.database?.extraOptions || {},
             );
         }
 
-        if (Array.isArray(options?.disableFunctions) && options?.disableFunctions.length) {
+        if (
+            Array.isArray(options?.disableFunctions) &&
+            options?.disableFunctions.length
+        ) {
             options?.disableFunctions.forEach((func) => {
                 const index = parser.findIndex((f) => f === func);
                 if (index !== -1) {
@@ -82,7 +95,7 @@ class BaseClient extends Discord.Client {
         this.prefix = options.prefix;
         this.#bindEvents();
 
-        Object.defineProperty(this, "statuses", {value: new Group()});
+        Object.defineProperty(this, "statuses", { value: new Group() });
 
         this.on("ready", async () => {
             await require("../handler/NonIntents/ready.js")(this);
@@ -93,7 +106,6 @@ class BaseClient extends Discord.Client {
     }
 
     loadCommands(directory, debug = true) {
-
         const loader = new LoadCommands(this);
         loader.load(this.cmd, directory, debug);
     }
@@ -101,8 +113,9 @@ class BaseClient extends Discord.Client {
     status(...statuses) {
         for (const status of statuses) {
             status.type =
-                Object.keys(ActivityTypeAvailables).includes(status.type.toLowerCase()) ||
-                Object.values(ActivityTypeAvailables).includes(status.type)
+                Object.keys(ActivityTypeAvailables).includes(
+                    status.type.toLowerCase(),
+                ) || Object.values(ActivityTypeAvailables).includes(status.type)
                     ? ActivityTypeAvailables[status.type.toLowerCase()]
                     : ActivityTypeAvailables.playing;
 
@@ -113,7 +126,7 @@ class BaseClient extends Discord.Client {
             };
 
             this.statuses.set(this.statuses.size, {
-                status: status.status || 'online',
+                status: status.status || "online",
                 time: isNaN(status.time) ? 12 : status.time,
                 activity: option,
                 afk: status.afk || false,
@@ -128,7 +141,9 @@ class BaseClient extends Discord.Client {
      */
     variables(d, table = this.db?.tables?.[0]) {
         if (this.db === undefined) {
-            throw new TypeError('A database must be provided to use the variables method.');
+            throw new TypeError(
+                "A database must be provided to use the variables method.",
+            );
         }
 
         for (const [name, value] of Object.entries(d)) {
@@ -168,15 +183,18 @@ class BaseClient extends Discord.Client {
                 ].includes(event)
                     ? require(`../shardhandler/${event}.js`)
                     : Array.isArray(file)
-                        ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
-                        : require(`../handler/${filedir}/${file}.js`);
+                    ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
+                    : require(`../handler/${filedir}/${file}.js`);
 
                 this.on(eventName, (...args) => {
-                    if (Array.isArray(func)) func.forEach((x) => x(...args, this));
+                    if (Array.isArray(func))
+                        func.forEach((x) => x(...args, this));
                     else func(...args, this);
                 });
             } catch (error) {
-                throw new TypeError(`Error loading "${event}" event, does not exist!`);
+                throw new TypeError(
+                    `Error loading "${event}" event, does not exist!`,
+                );
             }
         }
     }

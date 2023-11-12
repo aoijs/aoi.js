@@ -7,11 +7,11 @@ module.exports = async (d) => {
     let [time, id, errorObject = ""] = data.inside.splits;
     let error;
 
-    let cooldown = await d.client.db.get(d.client.db.tables[0], "cooldown", id);
+    let cooldown = await d.client.db.get("__aoijs_vars__", "cooldown", id);
     cooldown = cooldown?.value;
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
-        d.client.db.set(d.client.db.tables[0], "cooldown", id, cooldown);
+        d.client.db.set("__aoijs_vars__", "cooldown", id, cooldown);
     } else if (Date.now() < cooldown) {
         if (errorObject.trim() === "") {
         } else {
@@ -40,7 +40,7 @@ module.exports = async (d) => {
         error = true;
     } else {
         cooldown = Date.now() + Time.parse(time).ms;
-        d.client.db.set(d.client.db.tables[0], "cooldown", id, cooldown);
+        d.client.db.set("__aoijs_vars__", "cooldown", id, cooldown);
     }
 
     return {

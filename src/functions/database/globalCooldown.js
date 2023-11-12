@@ -1,6 +1,6 @@
-const {Time} = require("../../utils/helpers/customParser.js");
+const { Time } = require("../../utils/helpers/customParser.js");
 module.exports = async (d) => {
-    const {code} = d.command;
+    const { code } = d.command;
     const inside = d.unpack();
     const err = d.inside(inside);
     if (err) return d.error(err);
@@ -9,7 +9,7 @@ module.exports = async (d) => {
     let error;
 
     let cooldown = await d.client.db.get(
-        d.client.db.tables[0],
+        "__aoijs_vars__",
         "cooldown",
         `${d.command.name}_${d.author.id}`,
     );
@@ -18,7 +18,7 @@ module.exports = async (d) => {
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(
-            d.client.db.tables[0],
+            "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.author.id}`,
             cooldown,
@@ -26,7 +26,9 @@ module.exports = async (d) => {
     } else if (Date.now() < cooldown) {
         if (errorObject.trim() === "") {
         } else {
-            const {object, humanize, toString} = Time.format(cooldown - Date.now());
+            const { object, humanize, toString } = Time.format(
+                cooldown - Date.now(),
+            );
             errorObject = errorObject
                 .replaceAll("%time%", humanize())
                 .replaceAll("%year%", object.years)
@@ -45,21 +47,21 @@ module.exports = async (d) => {
                 d.channel,
                 errorObject.data ?? errorObject,
                 errorObject.options,
-                d
+                d,
             );
         }
         error = true;
     } else {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(
-            d.client.db.tables[0],
+            "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.author.id}`,
             cooldown,
         );
     }
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode({ function: d.func, code, inside }),
         error,
     };
 };
