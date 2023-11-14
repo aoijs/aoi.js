@@ -1,7 +1,6 @@
 const Interpreter = require("../core/interpreter.js");
 
 module.exports = async (client, options) => {
-
     if (client.aoiOptions.aoiLogs !== false) {
         await require("./AoiLogs.js")(client);
     }
@@ -20,7 +19,7 @@ module.exports = async (client, options) => {
             undefined,
             undefined,
             undefined,
-            true
+            true,
         );
 
         await require("./Custom/timeoutPulse.js")(
@@ -29,8 +28,12 @@ module.exports = async (client, options) => {
             undefined,
             undefined,
             undefined,
-            true
+            true,
         );
+
+        setInterval(async () => {
+            await require("./Custom/handleResidueData.js")(client);
+        }, 3.6e6);
     }
 
     if (client.cmd.loop.size) {

@@ -1,7 +1,3 @@
-const {
-    AoijsAPI
-} = require("../../classes/Database.js");
-
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
@@ -28,22 +24,41 @@ module.exports = async (d) => {
     let y = 0;
     let value;
     let content = [];
-    const all = await d.client.db.all(table, variable.addBrackets(), idLength);
+    let all = await d.client.db.all(
+        table,
+        (data) =>
+            data.key.startsWith(variable.deleteBrackets()) &&
+            data.key.split("_").length === idLength + 1,
+    );
 
-    for (const Data of all.sort((x, y) => {
-        if (d.client.db instanceof AoijsAPI) {
-            if (d.client.db.type === "aoi.db")
-                return Number(y.value) - Number(x.value);
-            else return Number(y.data.value) - Number(x.data.value);
-        }
-    })) {
+    all = all.sort((x, y) => {
+        if (d.client.db.type === "aoi.db")
+            return Number(y.value) - Number(x.value);
+        else return Number(y.data.value) - Number(x.data.value);
+    });
+
+    const getdata = async (user, Data, key) => {
+        user =
+            (type === "globalUser"
+                ? await d.util.getUser(d, Data.key.split("_")[key])
+                : type === "user"
+                ? await d.util.getMember(d.guild, Data.key.split("_")[key])
+                : type === "server"
+                ? await d.util.getGuild(d, Data.key.split("_")[key])
+                : Data.key.split("_")[key]) ?? Data.key.split("_")[key];
+        return user;
+    };
+
+    for (let i = 0; i < all.length; i++) {
+        const Data = all[i];
+
         let user;
-        if (d.client.db instanceof AoijsAPI) {
-            if (d.client.db.type === "aoi.db") value = Number(Data.value);
-            else value = Number(Data.data.value);
 
-            user = await getdata(user, Data, 1);
-        }
+        if (d.client.db.type === "aoi.db") value = Number(Data.value);
+        else value = Number(Data.data.value);
+
+        user = await getdata(user, Data, 1);
+
 
         if (user) {
             user =
@@ -51,7 +66,7 @@ module.exports = async (d) => {
                     ? type === "user"
                         ? user.user
                         : user
-                    : {id: user};
+                    : { id: user };
             y++;
 
             let text = custom
@@ -69,13 +84,15 @@ module.exports = async (d) => {
             if (text.includes("{execute:")) {
                 let ins = text.split("{execute:")[1].split("}")[0];
 
-                const awaited = d.client.cmd.awaited.find((c) => c.name === ins);
+                const awaited = d.client.cmd.awaited.find(
+                    (c) => c.name === ins,
+                );
 
                 if (!awaited)
                     return d.aoiError.fnError(
                         d,
                         "custom",
-                        {inside: data.inside},
+                        { inside: data.inside },
                         ` Invalid awaited command '${ins}' in`,
                     );
 
@@ -97,39 +114,27 @@ module.exports = async (d) => {
 
             content.push(text);
         }
-        if (order === "desc") content = content.reverse();
-
-        const px = page * list - list,
-            py = page * list;
-
-        data.result = content.slice(px, py).join("\n");
-
-        return {
-            code: d.util.setCode(data),
-        };
     }
+    if (order === "desc") content = content.reverse();
 
-    async function customarr(arr) {
-        user =
-            (type === "globalUser"
-                ? await d.util.getUser(d, arr[1])
-                : type === "user"
-                    ? await d.util.getMember(d.guild, arr[1])
-                    : type === "server"
-                        ? await d.util.getGuild(d, arr[1])
-                        : arr[1]) ?? arr[1];
-        return user;
-    }
+    const px = page * list - list,
+        py = page * list;
 
-    async function getdata(user, Data, key) {
-        user =
-            (type === "globalUser"
-                ? await d.util.getUser(d, Data.key.split("_")[key])
-                : type === "user"
-                    ? await d.util.getMember(d.guild, Data.key.split("_")[key])
-                    : type === "server"
-                        ? await d.util.getGuild(d, Data.key.split("_")[key])
-                        : Data.key.split("_")[key]) ?? Data.key.split("_")[key];
-        return user;
-    }
+    data.result = content.slice(px, py).join("\n");
+
+    return {
+        code: d.util.setCode(data),
+    };
 };
+
+async function customarr(arr) {
+    user =
+        (type === "globalUser"
+            ? await d.util.getUser(d, arr[1])
+            : type === "user"
+            ? await d.util.getMember(d.guild, arr[1])
+            : type === "server"
+            ? await d.util.getGuild(d, arr[1])
+            : arr[1]) ?? arr[1];
+    return user;
+}

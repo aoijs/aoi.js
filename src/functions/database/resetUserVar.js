@@ -1,6 +1,3 @@
-const {
-    AoijsAPI
-} = require("../../classes/Database.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -17,15 +14,14 @@ module.exports = async (d) => {
             `Variable ${varname.addBrackets()} Doesn't Exist!`,
         );
 
-    const all = await d.client.db.all(table, varname.addBrackets(), 2, [
-        1,
-        guildID,
-    ]);
-    if (d.client.db instanceof AoijsAPI) {
-        all
-            .filter(async (x) => await d.util.getUser(d, x.key.split("_")[1]))
-            .forEach(async (x) => await d.client.db.delete(table, x.key));
-    }
+    await d.client.db.deleteMany(table, (Data) => {
+        return (
+            Data.key.startsWith(`${varname}_`) &&
+            Data.key.split("_").length == 3&& 
+            Data.key.split("_").endsWith(`_${guildID}`)
+        );
+    });
+
     return {
         code: d.util.setCode(data),
     };

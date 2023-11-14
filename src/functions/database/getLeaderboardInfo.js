@@ -16,34 +16,41 @@ module.exports = async (d) => {
     let key = null;
     let cache = null;
     let user = null;
+      if (type === "guild") {
+          key = `${variable.addBrackets()}_${`${id}_${
+              d.guild?.id === "undefined" ? "dm" : d.guild?.id
+          }`}`;
+          cache = await d.util.getGuild(d, id);
+          user =
+              typeof cache === "undefined" || Object.keys(cache).length === 0
+                  ? await d.util.getUser(d, id)
+                  : undefined;
+      } else if (type === "global") {
+          key = `${variable.addBrackets()}_${id}`;
+          cache = await d.util.getGuild(d, id);
+          user =
+              typeof cache === "undefined" || Object.keys(cache).length === 0
+                  ? await d.util.getUser(d, id)
+                  : undefined;
+      } else if (type === "message" || type === "channel") {
+          key = `${variable.addBrackets()}_${id}`;
+      } else {
+          d.aoiError.fnError(d, "custom", { inside: data.inside }, `type`);
+      }
+    const all = await d.client.db.all(table, (data) =>
+      data.key.startsWith(variable.deleteBrackets()) && 
+      data.key.split("_").length === key.split("_").length && (
+        type === "guild" ? data.key.split("_")[2] === key.split("_")[2] :  true
+      )
+    );
+
+    
   
-    const all = await d.client.db.all(table, variable);
-  
-    if (type === "guild") {
-      key = `${variable.addBrackets()}_${`${id}_${
-        d.guild?.id === "undefined" ? "dm" : d.guild?.id
-      }`}`;
-      cache = await d.util.getGuild(d, id);
-      user =
-        typeof cache === "undefined" || Object.keys(cache).length === 0
-          ? await d.util.getUser(d, id)
-          : undefined;
-    } else if (type === "global") {
-      key = `${variable.addBrackets()}_${id}`;
-      cache = await d.util.getGuild(d, id);
-      user =
-        typeof cache === "undefined" || Object.keys(cache).length === 0
-          ? await d.util.getUser(d, id)
-          : undefined;
-    } else if (type === "message" || type === "channel") {
-      key = `${variable.addBrackets()}_${id}`;
-    } else {
-      d.aoiError.fnError(d, "custom", { inside: data.inside }, `type`);
-    }
+
   
     switch (format) {
       case "top":
-        data.result = all.slice().sort((a, b) => b.value - a.value).findIndex((x) => x.key === key) + 1 || 0;
+        data.result = all.sort((a, b) => b.value - a.value).findIndex((x) => x.key === key) + 1 || 0;
         break;
       case "value":
         data.result = all.find(x => x.key === key).value || 0;

@@ -1,165 +1,72 @@
+const aoidb = require("@akarui/aoi.db");
+
 class Database {
-    constructor(
-        DbModule,
-        options = {path: "./database/", tables: ["main"]},
-        promisify = false,
-    ) {
-        this.path = options.path;
-        this.tables = options.tables || ["main"];
-        this.module = DbModule;
-        this.promisify = promisify || false;
-        this.db = AoijsAPI
+    /**
+     * @type {aoidb.KeyValue | aoidb.Transmitter} db
+     * @type {boolean} ready
+     * @type {number} readyAt
+     * @type {"aoi.db"} type
+     * @type {"KeyValue" | "Transmitter"} moduleType
+     * @type {string[]} tables
+     */
+    db;
+    ready = false;
+    readyAt = 0;
+    type;
+    tables = [];
+    moduleType = "KeyValue";
+    /**
+     * Description
+     * @param {any} module
+     * @param {"KeyValue" | "Transmitter"} type
+     * @param {aoidb.KeyValueOptions | aoidb.TransmitterOptions} config
+     * @returns {any}
+     */
+    constructor(moduleType, module, type, config) {
+        this.moduleType = type;
+        this.db = new module[type](config);
+        this.tables = config.dataConfig.tables;
+        this.type = moduleType;
+        this.db.on(aoidb.DatabaseEvents.Connect, () => {
+            console.log(`[@akarui/aoi.db] Connected ${type} database`);
+            this.ready = true;
+            this.readyAt = Date.now();
+        });
+
+        this.db.connect();
     }
 
-    get ping() {
-        const start = Date.now();
-        this.db.all(this.tables[0]);
-        return Date.now() - start;
+    async set(table, key, id, value) {
+        return await this.db.set(table, id ? `${key}_${id}` : key, { value });
     }
 
-    async set(table, name, id, value) {
-        await this.db.set(table, id ? `${name}_${id}` : name, value);
+    async get(table, key, id) {
+        return await this.db.get(table, id ? `${key}_${id}` : key);
     }
 
-    get(table, name, id) {
-        if (!this.promisify) return this.db.get(table, id ? `${name}_${id}` : name);
-        else
-            return new Promise((res) =>
-                res(this.db.get(table, id ? `${name}_${id}` : name)),
-            );
+    async delete(table, key, id) {
+        return await this.db.delete(table, id ? `${key}_${id}` : key);
     }
 
-    async all(table, varname, lengthofId, funconId) {
-        if (!varname) {
-            return await this.db.all(table);
-        } else {
-            return await this.db.all(table, {
-                filter: (x) =>
-                    x.key.startsWith(`${varname}_`) &&
-                    (lengthofId
-                        ? x.key.split("_").slice(1).length === lengthofId
-                        : true) &&
-                    (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
-            });
-        }
+    async all(table, query, limit) {
+        return await this.db.all(table, query, limit);
     }
 
-    checkConditionOnId(id, position, value) {
-        id = id.split("_").slice(1);
-        return id[position] === value;
+    async has(table, key, id) {
+        return await this.db.has(table, id ? `${key}_${id}` : key);
     }
 
-    delete(table, name, id) {
-        if (!this.promisify)
-            return this.db.delete(table, id ? `${name}_${id}` : name);
-        else
-            return new Promise((res) =>
-                res(this.db.delete(table, id ? `${name}_${id}` : name)),
-            );
-    }
-}
-
-class AoijsAPI extends Database {
-    constructor(module, options = {}, db = {}, extraOptions = {}) {
-        super(module, options, db.promisify);
-        this.type = db.type || "aoi.db";
-        if (this.type === "default") this.type = "aoi.db";
-        this.extraOptions = extraOptions;
-        this.createTable(this.type);
+    async deleteMany(table, query) {
+        return await this.db.deleteMany(table, query);
     }
 
-    createTable(type) {
-        if (
-            type === "aoi.db" ||
-            type === "default" ||
-            this.type === "aoi.db-dev"
-        ) {
-            if (!this.extraOptions.dbType)
-                this.extraOptions.dbType = "KeyValue";
-            this.db = new this.module[this.extraOptions.dbType || "KeyValue"]({
-                path: this.path,
-                tables: this.tables,
-                ...(this.extraOptions ?? {}),
-            });
-            this.db.connect();
-        }
+    async findOne(table, query) {
+        return await this.db.findOne(table, query);
     }
 
-    async set(table, name, id, value) {
-        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
-            if (this.extraOptions.dbType === "KeyValue") {
-                await this.db.set(table, id ? `${name}_${id}` : name, {
-                    value,
-                });
-            } else if (this.extraOptions.dbType === "WideColumn") {
-                return await this.db.set(
-                    table,
-                    { name: name, value },
-                    { name: "id", value: id },
-                );
-            } else if (this.extraOptions.dbType === "Transmitter") {
-                if (this.extraOptions.dbOptions.databaseType === "KeyValue")
-                    return await this.db.set(table, name, id);
-                else if (
-                    this.extraOptions.dbOptions.databaseType === "WideColumn"
-                )
-                    return await this.db.set(
-                        table,
-                        { name: name, value },
-                        { name: "id", value: id },
-                    );
-            }
-        } else {
-            await super.set(table, name, id, value);
-        }
-    }
-
-    async get(table, name, id) {
-        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
-            if (this.extraOptions.dbType === "KeyValue") {
-                return await this.db.get(table, id ? `${name}_${id}` : name);
-            } else if (this.extraOptions.dbType === "WideColumn") {
-                return await this.db.get(table, name, id);
-            } else if (this.extraOptions.dbType === "Transmitter") {
-                return await this.db.get(table, name, id);
-            }
-        } else {
-            return super.get(table, name, id);
-        }
-    }
-
-    async all(table, varname, lengthofId, funconId) {
-        if (this.type === "aoi.db") {
-            return await this.db.all(
-                table,
-                (x) =>
-                    x.startsWith(`${varname}_`) &&
-                    (lengthofId ? x.split("_").slice(1).length === lengthofId : true) &&
-                    (funconId ? this.checkConditionOnId(x, ...funconId) : true),
-                Infinity,
-            );
-        } else if(this.type === "aoi.db-dev") {
-            return await this.db.all(table, (x) => 
-                 x.key.startsWith(`${varname}_`) &&
-                    (lengthofId ? x.key.split("_").slice(1).length === lengthofId : true) &&
-                    (funconId ? this.checkConditionOnId(x.key, ...funconId) : true),
-                Infinity,
-            );
-        } 
-        else {
-            return await super.all(table, varname, lengthofId, funconId);
-        }
-    }
-
-    async delete(table, name, id) {
-        if (this.type === "aoi.db" || this.type === "aoi.db-dev") {
-            return await this.db.delete(table, id ? `${name}_${id}` : name);
-        } else {
-            return super.delete(table, name, id);
-        }
+    async findMany(table, query, limit) {
+        return await this.db.findMany(table, query, limit);
     }
 }
 
-module.exports = {
-    AoijsAPI
-};
+module.exports = Database;

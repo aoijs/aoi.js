@@ -7,7 +7,7 @@ module.exports = async (d) => {
     let error;
 
     let cooldown = await d.client.db.get(
-        d.client.db.tables[0],
+        "__aoijs_vars__",
         "cooldown",
         `${d.command.name}_${d.channel.id}`,
     );
@@ -15,7 +15,7 @@ module.exports = async (d) => {
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(
-            d.client.db.tables[0],
+            "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.channel.id}`,
             cooldown,
@@ -49,7 +49,7 @@ module.exports = async (d) => {
     } else {
         cooldown = Date.now() + Time.parse(time).ms;
         d.client.db.set(
-            d.client.db.tables[0],
+            "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.channel.id}`,
             cooldown,

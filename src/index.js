@@ -4,7 +4,7 @@ const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
 const Util = require("./classes/Util.js");
-const {AoijsAPI} = require("./classes/Database.js");
+const Database = require("./classes/Database.js");
 const CacheManager = require("./classes/CacheManager.js");
 
 /**
@@ -18,6 +18,6 @@ module.exports = {
   ClientShard,
   AoiError,
   Util,
-  AoijsAPI,
+  Database,
   CacheManager,
 };
