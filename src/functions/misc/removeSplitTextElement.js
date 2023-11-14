@@ -2,13 +2,13 @@ module.exports = d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [...elements] = data.inside.splits;
+    const [name, ...elements] = data.inside.splits;
 
     for (const element of elements) {
-        const index = d.array.indexOf(element.addBrackets());
+        const index = d.array[name].indexOf(element.addBrackets());
 
         if (index !== -1) {
-            d.array.splice(index, 1);
+            d.array[name].splice(index, 1);
         }
     }
     d.data.array = d.array;

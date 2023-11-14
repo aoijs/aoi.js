@@ -3,7 +3,7 @@ const Interpreter = require("../../core/interpreter.js");
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    let commands = data.inside.splits;
+    let [name, commands] = data.inside.splits;
     const content = [];
 
     if (
@@ -21,7 +21,7 @@ module.exports = async (d) => {
             "Invalid Awaited Command In",
         );
 
-    for (const a of d.array) {
+    for (const a of d.array[name]) {
         for (const command of commands) {
             const cmd = d.client.cmd.awaited.find(
                 (y) => y.name.toLowerCase() === command.trim().toLowerCase(),

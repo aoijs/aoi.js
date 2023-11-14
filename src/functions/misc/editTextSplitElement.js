@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [index, text] = data.inside.splits;
+    let [name, index, text] = data.inside.splits;
     data.function = d.func;
     index = index - 1;
 
@@ -14,7 +14,7 @@ module.exports = async (d) => {
             "Invalid Index Provided In",
         );
 
-    d.array[index] = text;
+    d.array[name][index] = text;
 
     return {
         code: d.util.setCode(data),
