@@ -4,7 +4,7 @@ module.exports = async d => {
     const err = d.inside(inside);
     if (err) return d.error(err);
 
-    let [name, ...text] = inside.splits;
+    let [...text, name = 'main'] = inside.splits;
     text = text.map(x => x.addBrackets());
     d.array[name].concat(text)
 

@@ -2,7 +2,7 @@ module.exports = d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, element] = data.inside.splits;
+    const [element, name = 'main'] = data.inside.splits;
 
     const index = d.array[name].indexOf(element.addBrackets());
 

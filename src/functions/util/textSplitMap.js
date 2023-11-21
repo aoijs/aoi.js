@@ -3,7 +3,7 @@ const Interpreter = require("../../core/interpreter.js");
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    let [name, commands] = data.inside.splits;
+    let [commands, name = 'main'] = data.inside.splits;
     const content = [];
 
     if (

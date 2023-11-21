@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [name, query, type = "equal", separator = ","] = data.inside.splits;
+    let [query, type = "equal", separator = ",", name = 'main'] = data.inside.splits;
     if (!["equal", "starts", "ends", "includes"].includes(type)) return d.aoiError.fnError(d, "custom", {inside: data.inside}, `Invalid Type Provided In`);
 
     switch (type) {
