@@ -133,7 +133,7 @@ class LoadCommands {
 
         try {
             if (await fs.promises.stat(path).then((f) => !f.isDirectory()))
-                console.error("Error!");
+                throw new TypeError("Path is not a valid directory!");
         } catch (e) {
             throw new TypeError("Path is not a valid directory! ErrorMessage: " + e);
         }
