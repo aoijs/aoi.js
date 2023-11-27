@@ -28,7 +28,7 @@ class Database {
         this.tables = config.dataConfig.tables;
         this.type = moduleType;
         this.db.on(aoidb.DatabaseEvents.Connect, () => {
-            console.log(`[@akarui/aoi.db] Connected ${type} database`);
+            // console.log(`[@akarui/aoi.db] Connected ${type} database`);
             this.ready = true;
             this.readyAt = Date.now();
         });
