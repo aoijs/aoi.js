@@ -5,7 +5,7 @@ module.exports = async (client, options) => {
         await require("./AoiLogs.js")(client);
     }
 
-    if (client.aoiOptions.aoiWarning !== false) {
+    if (client.aoiOptions.aoiWarning !== false && client.aoiOptions.aoiAutoUpdate === false) {
         await require("./AoiWarning.js")(client);
     }
 
