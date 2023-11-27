@@ -1,22 +1,22 @@
-const BulkOptions = (d) => {
+const BulkOptions = (d, sep) => {
     return {
-        messages: d.data.bulk.map((x) => x.content).join(" , "),
-        ids: d.data.bulk.map((x) => x.id).join(" , "),
-        createdTimestamp: d.data.bulk.map((x) => x.createdTimestamp).join(" , "),
-        createdAt: d.data.bulk.map((x) => x.createdAt).join(" , "),
-        userIds: d.data.bulk.map((x) => x.author.id).join(" , "),
-        usernames: d.data.bulk.map((x) => x.author.username).join(" , "),
-        userTags: d.data.bulk.map((x) => x.author.tag).join(" , "),
-        userMentions: d.data.bulk.map((x) => x.author.toString()).join(" , "),
-        guildId: d.data.bulk.first().guildId,
+        messages: d.data.bulk.map((x) => x.content).join(sep),
+        ids: d.data.bulk.map((x) => x.id).join(sep),
+        createdTimestamp: d.data.bulk.map((x) => x.createdTimestamp).join(sep),
+        createdAt: d.data.bulk.map((x) => x.createdAt).join(sep),
+        userIds: d.data.bulk.map((x) => x.author.id).join(sep),
+        usernames: d.data.bulk.map((x) => x.author.username).join(sep),
+        userTags: d.data.bulk.map((x) => x.author.tag).join(sep),
+        userMentions: d.data.bulk.map((x) => x.author.toString()).join(sep),
+        guildId: d.data.bulk.first().guild.id,
         guildName: d.data.bulk.first().guild.name,
-        channelID: d.data.bulk.first().channelID,
+        channelID: d.data.bulk.first().channel.id,
         channelName: d.data.bulk.first().channel.name,
     };
 };
 
-const BulkData = (d, option) => {
-    return BulkOptions(d)[option];
+const BulkData = (d, sep, option) => {
+    return BulkOptions(d, sep)[option];
 };
 
 const PinData = (d) => {
