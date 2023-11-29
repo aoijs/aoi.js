@@ -134,8 +134,8 @@ class Util {
 
   static get threadTypes() {
     return {
-      public: "GUILD_PUBLIC_THREAD",
-      private: "GUILD_PRIVATE_THREAD",
+      public: Discord.ChannelType.PublicThread,
+      private: Discord.ChannelType.PrivateThread,
     };
   }
 
