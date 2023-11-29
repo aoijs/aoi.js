@@ -1,14 +1,14 @@
-module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
+module.exports = async d => {
+    const data = d.util.aoiFunc(d);
 
-  const [guildID = d.guild?.id, option = "id"] = data.inside.splits;
+    const [guildID = d.guild?.id, option = 'id'] = data.inside.splits;
 
-  const guild = await d.util.getGuild(d, guildID);
-  if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
+    const guild = await d.util.getGuild(d, guildID);
+    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
 
-  data.result = option === "mention" ? member.roles.highest.toString() : member.roles.highest[option];
+    data.result = option === "mention" ? guild.roles.highest.toString() : guild.roles.highest[option];
 
-  return {
-    code: d.util.setCode(data),
-  };
-};
+    return {
+        code: d.util.setCode(data)
+    }
+}
