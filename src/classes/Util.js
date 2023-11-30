@@ -118,17 +118,18 @@ class Util {
   static get channelTypes() {
     return {
       Text: Discord.ChannelType.GuildText,
-      DM: Discord.ChannelType.DM,
-      GroupDM: Discord.ChannelType.GroupDM,
-      Forum: Discord.ChannelType.GuildForum,
       Voice: Discord.ChannelType.GuildVoice,
       Category: Discord.ChannelType.GuildCategory,
+      DM: Discord.ChannelType.DM,
       Announcement: Discord.ChannelType.GuildAnnouncement,
       AnnouncementThread: Discord.ChannelType.AnnouncementThread,
       PublicThread: Discord.ChannelType.PublicThread,
       PrivateThread: Discord.ChannelType.PrivateThread,
       Stage: Discord.ChannelType.GuildStageVoice,
+      Forum: Discord.ChannelType.GuildForum,
+      Media: Discord.ChannelType.GuildMedia,
       GuildDirectory: Discord.ChannelType.GuildDirectory,
+      GroupDM: Discord.ChannelType.GroupDM,
     };
   }
 
