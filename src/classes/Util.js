@@ -105,9 +105,9 @@ class Util {
   static async getGuild(d, id) {
     if (d.guild?.id === id && d.guild?.id) return d.guild;
     else {
-      if (!d.client.clientShard) return d.client.guilds.cache.get(id);
+      if (!d.client.shard) return d.client.guilds.cache.get(id);
       else {
-        const arr = await d.client.clientShard.broadcastEval((client) =>
+        const arr = await d.client.shard.broadcastEval((client) =>
             client.guilds.cache.get(id)
         );
         return arr.find((x) => x);
