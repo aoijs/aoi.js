@@ -38,8 +38,7 @@
 
 <div align = "center">
 
-**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | *
-*[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
+**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
 
 </div>
 
