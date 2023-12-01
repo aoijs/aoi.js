@@ -4,7 +4,7 @@ module.exports = async d => {
 
     const [emoji] = data.inside.splits;
 
-    data.result = d.client.emojis.cache.some(x => x.id === emoji || x.toString() === emoji || x.identifier.toLowerCase() === emoji.toLowerCase())
+    data.result = !!(await d.util.getEmoji(d, emoji));
 
     return {
         code: d.util.setCode(data)

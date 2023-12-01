@@ -7,7 +7,7 @@ module.exports = async d => {
     let result;
 
     if (id === "global") {
-        result = d.client.emojis.cache.find(x => x.name.toLowerCase() === emoji.toLowerCase() || x.toString() === emoji || x.id === emoji)?.toString()
+        result = (await d.util.getEmoji(d, emoji)).toString();
     } else {
         result = d.client.guilds.cache.get(id)?.emojis.cache.find(x => x.name.toLowerCase() === emoji.toLowerCase() || x.toString() === emoji || x.id === emoji)?.toString()
     }
