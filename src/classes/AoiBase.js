@@ -48,10 +48,7 @@ class BaseClient extends Discord.Client {
 
         this.variableManager = new VariableManager(this);
 
-        if (
-            ["default", "aoi.db"].includes(options?.database?.type) ||
-            !options?.database
-        ) {
+        if (options.disableAoiDB === true && (["default", "aoi.db"].includes(options?.database?.type) || !options?.database)) {
             const dbData = options?.database;
 
             this.db = new Database(
@@ -136,8 +133,10 @@ class BaseClient extends Discord.Client {
     }
 
     /**
-     * @param  {Record<string,string | number | object >} d
-     * @param table
+     * Adds variables to the variable manager.
+     * @param {Object} d - The object containing the variables to be added.
+     * @param {Object} [table=this.db?.tables?.[0]] - The table to which the variables belong.
+     * @throws {TypeError} If a database is not provided.
      */
     variables(d, table = this.db?.tables?.[0]) {
         if (this.db === undefined) {
