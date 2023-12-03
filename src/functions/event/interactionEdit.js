@@ -6,11 +6,11 @@ module.exports = async d => {
 
     const Checker = (theparts, name) => theparts.includes("{" + name + ":");
 
-    embeds = await d.util.parsers.parsers.EmbedParser.code(d, { part: embeds, Checker });
+    embeds = await d.util.parsers.EmbedParser.code(d, { part: embeds, Checker });
 
-    components = await d.util.parsers.parsers.ComponentParser.code(d, { part: components, Checker });
+    components = await d.util.parsers.ComponentParser.code(d, { part: components, Checker });
 
-    files = await d.util.parsers.parsers.FileParser.code(d, { part: files, Checker });
+    files = await d.util.parsers.FileParser.code(d, { part: files, Checker });
 
     allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
 
