@@ -1,5 +1,5 @@
 const Util = require("./Util.js");
-const { ComponentParser, EmbedParser, FileParser, OptionParser } = Util.parsers.parsers;
+const { ComponentParser, EmbedParser, FileParser, OptionParser } = Util.parsers;
 const { Time } = require("../utils/helpers/customParser.js");
 const { BaseInteraction } = require("discord.js");
 
@@ -74,92 +74,92 @@ class AoiError {
     static async makeMessageError(
         client,
         channel,
-        message = {},
         options = {},
+        extraOptions = {},
         d,
     ) {
-        message = message.data ?? message;
+        options = options.data ?? options;
 
         const Checker = (theparts, name) => theparts.includes("{"+name+":");
         
-        if (typeof message === "object") {
-            message.content = message.content || " ";
-            if (message.embeds && typeof message.embeds === "string") {
-                message.embeds = await EmbedParser.code(d, { part: message.embeds, Checker });
+        if (typeof options === "object") {
+            options.content = options.content || " ";
+            if (options.embeds && typeof options.embeds === "string") {
+                options.embeds = await EmbedParser.code(d, { part: options.embeds, Checker });
             }
-            if (message && typeof message.files === "string") {
-                message.files = FileParser.code(d, { part: message.files, Checker });
+            if (options && typeof options.files === "string") {
+                options.files = FileParser.code(d, { part: options.files, Checker });
             }
-            if (message.components && typeof message.components === "string") {
-                message.components = await ComponentParser.code(d, { part: message.files, Checker });
+            if (options.components && typeof options.components === "string") {
+                options.components = await ComponentParser.code(d, { part: options.files, Checker });
             }
         } else {
-            message = {
+            options = {
                 content:
-                    message?.toLowerCase()?.trim() === ""
+                    options?.toLowerCase()?.trim() === ""
                         ? " "
-                        : message?.toString(),
+                        : options?.toString(),
             };
         }
-        if (options && typeof options === "string") {
-            options = await OptionParser.code(d, { part: options, Checker })
+        if (extraOptions && typeof extraOptions === "string") {
+            extraOptions = await OptionParser.code(d, { part: extraOptions, Checker })
         }
         
         let msg;
         
-        if (options.interaction) {
+        if (extraOptions.interaction) {
             if (
-                message.content === "" &&
-                message.embeds?.length === 0 &&
-                message.files?.length === 0
+                options.content === "" &&
+                options.embeds?.length === 0 &&
+                options.files?.length === 0
             )
                 return;
-            msg = await d.data.interaction.reply(message);
+            msg = await d.data.interaction.reply(options);
         } else {
             if (channel instanceof BaseInteraction) {
                 if (
-                    message.content === "" &&
-                    message.embeds?.length === 0 &&
-                    message.files?.length === 0
+                    options.content === "" &&
+                    options.embeds?.length === 0 &&
+                    options.files?.length === 0
                 )
                     return;
-                msg = await channel.reply(message).catch((err) => {
+                msg = await channel.reply(options).catch((err) => {
                     AoiError.consoleError("CreateMessageError", err);
                     return undefined;
                 });
             } else {
                 if (
-                    message.content === " " &&
-                    (message.embeds?.length ?? 0) === 0 &&
-                    (messages.files?.length ?? 0) === 0 &&
-                    (message.stickers?.length ?? 0) === 0
+                    options.content === " " &&
+                    (options.embeds?.length ?? 0) === 0 &&
+                    (options.files?.length ?? 0) === 0 &&
+                    (options.stickers?.length ?? 0) === 0
                 )
                     return;
-                msg = await channel.send(message).catch((err) => {
+                msg = await channel.send(options).catch((err) => {
                     AoiError.consoleError("CreateMessageError", err);
                     return undefined;
                 });
             }
         }
 
-        if (options.reactions?.length) {
-            options.reactions.forEach((x) => msg?.react(x).catch(e => {}));
+        if (extraOptions.reactions?.length) {
+            extraOptions.reactions.forEach((x) => msg?.react(x).catch(e => {}));
         }
-        if (options.edits) {
+        if (extraOptions.edits) {
             const editIn = setInterval(async () => {
-                if (!options.edits.messages?.length) clearInterval(editIn);
+                if (!extraOtions.edits.messages?.length) clearInterval(editIn);
                 else {
-                    const obj = options.edits.messages.shift();
+                    const obj = extraOptions.edits.messages.shift();
 
                     msg?.edit(obj);
                 }
-            }, Time.parse(options.edits.time)?.ms);
+            }, Time.parse(extraOptions.edits.time)?.ms);
         }
-        if (options.deleteIn) {
-            options.deleteIn = Time.parse(options.deleteIn)?.ms;
-            setTimeout(() => msg?.delete(), options.deleteIn);
+        if (extraOptions.deleteIn) {
+            extraOptions.deleteIn = Time.parse(extraOptions.deleteIn)?.ms;
+            setTimeout(() => msg?.delete(), extraOptions.deleteIn);
         }
-        if (options.deleteCommand) {
+        if (extraOptions.deleteCommand) {
             d.message?.delete().catch(e => {});
         }
         return msg;
