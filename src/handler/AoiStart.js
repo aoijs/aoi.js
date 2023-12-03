@@ -13,7 +13,7 @@ module.exports = async (client, options) => {
         await require("./AoiAutoUpdate.js")(client);
     }
 
-    if (client.aoiOptions.disableAoiDB === true && client.aoiOptions.database && client.aoiOptions.database) {
+    if (!(client.aoiOptions.disableAoiDB === true || (client.aoiOptions.database && client.aoiOptions.database))) {
         await require("./Custom/timeout.js")(
             { client, interpreter: Interpreter },
             undefined,
