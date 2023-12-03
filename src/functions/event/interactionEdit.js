@@ -4,27 +4,31 @@ module.exports = async d => {
 
     let [content = "", embeds = "", components = "", files = "", allowedMentions = "all"] = data.inside.splits;
 
-    embeds = await d.util.parsers.EmbedParser(embeds);
+    const Checker = (theparts, name) => theparts.includes("{" + name + ":");
 
-    components = await d.util.parsers.ComponentParser(components, d.client);
+    embeds = await d.util.parsers.parsers.EmbedParser.code(d, { part: embeds, Checker });
 
-    files = await d.util.parsers.FileParser(files);
+    components = await d.util.parsers.parsers.ComponentParser.code(d, { part: components, Checker });
 
-    allowedMentions = allowedMentions === "all" ? [ "everyone", "users", "roles" ] : (allowedMentions ? allowedMentions?.split(",") : []);
+    files = await d.util.parsers.parsers.FileParser.code(d, { part: files, Checker });
+
+    allowedMentions = allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions?.split(",") || [];
 
     await d.data.interaction?.editReply({
-        content: content.trim() === "" ? " " : content.addBrackets(),
-        embeds: embeds,
-        components: components,
-        files,
-        allowedMentions: {
-            parse: allowedMentions
+            content: content.trim() === "" ? " " : content.addBrackets(),
+            embeds: embeds,
+            components: components,
+            files,
+            allowedMentions: {
+                parse: allowedMentions
+            }
         }
-    }).catch(e => {
+    ).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     });
 
     return {
         code: d.util.setCode(data)
     }
+            
 }
