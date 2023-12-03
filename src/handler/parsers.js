@@ -1,65 +1,39 @@
 const Discord = require("discord.js");
 const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
+const Util = require("../classes/Util.js");
 const SlashOption = require("./slashOption.js");
 const { Time } = require("../utils/helpers/customParser.js");
 const { CreateObjectAST } = require("../utils/helpers/functions.js");
-const EmbedParser = async (msg) => {
-    msg = mustEscape(msg);
 
-    const embeds = [];
+const SlashOptionsParser = async (options) => {
+    options = mustEscape(options);
 
-    let msgs = msg.split("{newEmbed:").slice(1);
-    for (let rawr of msgs) {
-        rawr = rawr.slice(0, rawr.length - 1);
+    let Alloptions = [];
+    options = options.trim();
+    const Checker = (msg) => options.includes("{" + msg + ":");
 
-        const embed = {};
-        embed.fields = [];
-        const Checker = (peko) => rawr.includes(`{${peko}:`);
-        if (Checker("author")) {
-            const auth = rawr.split("{author:")[1].split("}")[0].split(":");
-            embed.author = {
-                name: auth.shift().addBrackets()?.trim() || "",
-                icon_url: auth.join(":").addBrackets()?.trim() || "",
-            };
-        }
-        if (Checker("authorURL")) {
-            if (!embed.author) return console.error("{author:} was not used");
-            embed.author.url = rawr
-                .split("{authorURL:")[1]
-                .split("}")[0]
-                .addBrackets()
-                .trim();
-        }
-        if (Checker("title")) {
-            embed.title = rawr
-                .split("{title:")[1]
-                .split("}")[0]
-                .addBrackets()
-                .trim();
-        }
-        if (Checker("url")) {
-            if (!embed.title)
-                return console.error(
-                    "Title was not provided while using {url}",
-                );
-            embed.url = rawr
-                .split("{url:")[1]
-                .split("}")[0]
-                .addBrackets()
-                .trim();
-        }
-        if (Checker("description")) {
-            embed.description = rawr
-                .split("{description:")[1]
-                .split("}")[0]
-                .addBrackets()
-                .trim();
-        }
-        if (Checker("thumbnail")) {
-            embed.thumbnail = {
-                url: rawr
-                    .split("{thumbnail:")[1]
+    if (Checker("subGroup")) {
+        Alloptions = Alloptions.concat(await SlashOption.subGroup(options));
+    }
+    if (Checker("subCommand") && !Checker("subGroup")) {
+        Alloptions = Alloptions.concat(await SlashOption.subCommand(options));
+    }
+    if (Checker("string") && !(Checker("subCommand") || Checker("subGroup"))) {
+        Alloptions = Alloptions.concat(await SlashOption.string(options));
+    }
+    if (Checker("integer") && !(Checker("subCommand") || Checker("subGroup"))) {
+        Alloptions = Alloptions.concat(await SlashOption.integer(options));
+    }
+    if (Checker("boolean") && !(Checker("subCommand") || Checker("subGroup"))) {
+        Alloptions = Alloptions.concat(await SlashOption.boolean(options));
+    }
+    if (Checker("user") && !(Checker("subCommand") || Checker("subGroup"))) {
+        Alloptions = Alloptions.concat(await SlashOption.user(options));
+    }
+    if (Checker("channel") && !(Checker("subCommand") || Checker("subGroup"))) {
+        Alloptions = Alloptions.concat(await SlashOption.channel(options));
+    }
                     .split("}")[0]
                     .addBrackets()
                     .trim(),
