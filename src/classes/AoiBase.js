@@ -132,6 +132,12 @@ class BaseClient extends Discord.Client {
         }
     }
 
+    /**
+     * Adds variables to the variable manager.
+     * @param {Object} d - The object containing the variables to be added.
+     * @param {Object} [table=this.db?.tables?.[0]] - The table to which the variables belong.
+     * @throws {TypeError} If a database is not provided.
+     */
     variables(d, table = this.db?.tables?.[0]) {
         if (this.db === undefined) {
             throw new TypeError(
