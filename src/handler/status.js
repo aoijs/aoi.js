@@ -47,6 +47,9 @@ module.exports = async (statuses, client) => {
 
     if (y < statusArray.length) {
       setTimeout(processStatus, statusArray[y]?.time * 1000 || 0);
+    } else {
+      y = 0;
+      setTimeout(processStatus, statusArray[y]?.time * 1000 || 0);
     }
   };
 
