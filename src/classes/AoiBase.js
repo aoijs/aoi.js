@@ -131,7 +131,10 @@ class BaseClient extends Discord.Client {
             });
         }
     }
-
+    /**
+      * @param  {Record<string,string | number | object >} d
+      * @param table
+    */
     variables(d, table = this.db?.tables?.[0]) {
         if (this.db === undefined) {
             throw new TypeError(
