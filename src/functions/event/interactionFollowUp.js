@@ -4,11 +4,13 @@ module.exports = async d => {
 
     let [content = "", embeds = "", components = "", files = "", ephemeral = "false"] = data.inside.splits
 
-    embeds = await d.util.parsers.EmbedParser(embeds);
+    const Checker = (theparts, name) => theparts.includes("{" + name + ":");
 
-    components = await d.util.parsers.ComponentParser(components, d.client);
+    embeds = await d.util.parsers.parsers.EmbedParser.code(d, { part: embeds, Checker });
 
-    files = await d.util.parsers.FileParser(files);
+    components = await d.util.parsers.parsers.ComponentParser.code(d, { part: components, Checker });
+
+    files = await d.util.parsers.parsers.FileParser.code(d, { part: files, Checker });
 
     await d.data.interaction?.followUp({
         content: content.trim() === "" ? " " : content.addBrackets(),
