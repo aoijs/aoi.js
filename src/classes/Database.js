@@ -18,6 +18,7 @@ class Database {
   moduleType = "KeyValue";
   /**
    * Description
+   * @param moduleType
    * @param {any} module
    * @param {"KeyValue" | "Transmitter"} type
    * @param {aoidb.KeyValueOptions | aoidb.TransmitterOptions} config
@@ -37,10 +38,8 @@ class Database {
           },
         ],
         "white",
-        { text: "@akarui/db  ", textColor: "cyan" }
+        { text: "@akarui/aoi.db  ", textColor: "cyan" }
       );
-
-      // console.log(`[@akarui/aoi.db] Connected ${type} database`);
       this.ready = true;
       this.readyAt = Date.now();
     });

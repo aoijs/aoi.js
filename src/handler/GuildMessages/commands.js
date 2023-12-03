@@ -15,7 +15,6 @@ module.exports = async (message, client) => {
     let cmds = client.cmd.default
         .allValues()
         .filter((x) => !x.nonPrefixed && x.name !== "$alwaysExecute");
-    //console.log({cmds })
     //getting arrays of prefixes
     const prefixes = Array.isArray(client.prefix)
         ? client.prefix.map(async (x) =>
@@ -58,7 +57,6 @@ module.exports = async (message, client) => {
             .filter(
                 ( x ) =>
                 {
-                    // console.log( x );
                     return ( msg.toLowerCase().startsWith( x.name.toLowerCase() ) &&
                         msg
                             .split( " " )

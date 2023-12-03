@@ -1,10 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
-//const alwaysExecuteCommands = require("./alwaysExecuteCommands")
-//const nonPrefixedCommands = require("./nonPrefixedCommands.js")
-//const testInterpreter = require("../testInterpreter")
 
 const CommandHandler = async (client, message, db) => {
-    // console.log(message)
     if (!message) return;
     if (
         message?.channel?.type === "dm" &&

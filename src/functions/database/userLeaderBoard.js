@@ -44,7 +44,6 @@ module.exports = async (d) => {
         else value = Number(Data.data.value);
 
         user = await d.util.getMember(guild, Data.key.split("_")[1]);
-        // console.log(user)
 
         let text = custom
             .replaceAll(`{top}`, y)

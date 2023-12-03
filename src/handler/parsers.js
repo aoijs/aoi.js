@@ -276,17 +276,6 @@ const ComponentParser = async (msg, client) => {
                 const min_length = textInput.shift()?.addBrackets().trim();
                 const max_length = textInput.shift()?.addBrackets().trim();
                 const value = textInput.shift()?.addBrackets().trim();
-                // console.log({
-                //   type: 4,
-                //   label,
-                //   style,
-                //   custom_id,
-                //   required,
-                //   placeholder,
-                //   min_length,
-                //   max_length,
-                //   value,
-                // });
                 buttonPart.push({
                     type: 4,
                     label,

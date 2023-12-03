@@ -54,7 +54,6 @@ module.exports = async (d) => {
                 });
             if (msg?.trim() !== "") {
                 const ticketMsg = await d.util.errorParser( msg.addBrackets(), d );
-                // console.log({ticketMsg});
                 channel?.send(ticketMsg.data ?? ticketMsg).catch((err) => {
                     d.aoiError.fnError(
                         d,

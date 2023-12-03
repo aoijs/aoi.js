@@ -345,7 +345,6 @@ module.exports = {
                 part += parser[i];
                 if (parser[i] === "{") left++;
                 else if (parser[i] === "}") right++;
-                // console.log(part);
                 i += 1;
                 if (i === parser.length) break;
                 if (left === right) break;
@@ -357,8 +356,6 @@ module.exports = {
         }
         return ans;
     },
-    // createFuncAST: createFuncAST,
-    // Block: Block,
 };
 
 module.exports.RBGtoHex = RBGtoHex;
