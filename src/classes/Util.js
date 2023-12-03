@@ -4,7 +4,7 @@ const parsers = require("../handler/parsers.js");
 
 class Util {
   static constants = Constants;
-  static parsers = parsers;
+  static parsers = { ...parsers.parsers, parsers.errorHandler };
 
   static async getUser(d, id) {
     let user = d.client.users.cache.get(id);
