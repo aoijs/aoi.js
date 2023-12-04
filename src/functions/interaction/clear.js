@@ -3,7 +3,7 @@ module.exports = async (d) => {
   const { code } = d.command;
   if (data.err) return d.error(data.err);
 
-  let [channelID = d.channel.id, amount, filters = "everyone", returnCount = false ] = data.inside.splits;
+  let [channelID = d.channel.id, amount, filters = "everyone", returnCount = "false" ] = data.inside.splits;
 
   if (isNaN(amount))
     return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Amount Provided In" );
@@ -45,7 +45,7 @@ module.exports = async (d) => {
     d.aoiError.fnError(d, "custom" ,{}, "Failed To Delete Message With Reason: " + err);
   });
 
-  result = returnCount === true ? result.size : undefined;
+  result = returnCount === "true" ? result.size : undefined;
 
   return {
     code: d.util.setCode({ function: d.func, code, inside: data.inside, result }),
