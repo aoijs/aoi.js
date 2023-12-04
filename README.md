@@ -135,10 +135,6 @@ client.loadCommands("./commands/", true);
   </a>
 </div>
 
-## Extensions by Community
-
-- **[aoi.canvas](https://aoi.js.org/extensions/aoicanvas)** - Create beautiful images with aoi.canvas.
-
 ## Contributing
 
 [Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
