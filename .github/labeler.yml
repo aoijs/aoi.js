@@ -1,18 +1,11 @@
-Client:
-  - any: ['src/structures/Client.ts', 'src/functions/discord/client/*']
+# See https://github.com/actions/labeler
+
+'Core':
+  - src/core/**
+  - src/classes/**
   
-Classes: 
-  - src/structures/*
-  
-Manager:
-  - src/manager/*
+'Function':
+  - src/functions/**
 
-Core:
-  - src/core/**/*
-
-Functions:Discord: 
-  - src/functions/discord/**/*
-
-Functions:JS:
-  - src/functions/js/**/*
-
+'Client':
+  - src/classes/AoiClient.js
