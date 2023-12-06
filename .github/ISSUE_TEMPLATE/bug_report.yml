@@ -10,8 +10,9 @@ body:
         Thanks for taking the time to fill out this bug report! Fill in the blanks by following the steps. 🙌
 
         Please **ensure the following** before reporting a bug:
-        ✅ I am using the latest versions of aoi.js (v6.6.1).
-        ✅ I am using a version of NodeJS (v20.5.1 or newer).
+        
+        - ✅ I am using the latest version of aoi.js (v6.6.1).
+        - ✅ I am using a version of NodeJS (v20.5.1 or newer).
       
   - type: dropdown
     id: type
