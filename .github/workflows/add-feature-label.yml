@@ -11,14 +11,17 @@ jobs:
         uses: actions/checkout@v2
       - name: Find new files in src directory
         run: |
-          NEW_FILES=$(git diff --name-only HEAD^ HEAD)
-          CHANGED_FILES=()
-          for file in $NEW_FILES; do
-            if [[ $file == "src/"* ]]; then
-              CHANGED_FILES+=("$file")
-            fi
-          done
-          echo "::set-output name=changed_files::${CHANGED_FILES[*]}"
+          if [ $(git rev-list --count HEAD) -gt 1 ]
+          then
+            NEW_FILES=$(git diff --name-only HEAD^ HEAD)
+            CHANGED_FILES=()
+            for file in $NEW_FILES; do
+              if [[ $file == "src/"* ]]; then
+                CHANGED_FILES+=("$file")
+              fi
+            done
+            echo "::set-output name=changed_files::${CHANGED_FILES[*]}"
+          fi
         id: find-files
       - name: Add Feature label
         if: ${{ steps.find-files.outputs.changed_files != '' }}
