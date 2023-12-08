@@ -4,9 +4,9 @@ module.exports = async d => {
 
     let [content = "", embeds = "", components = "", files = "", ephemeral = "false"] = data.inside.splits
 
-    embeds = await d.util.parsers.EmbedParser(embeds);
+    embeds = await d.util.parsers.EmbedParser(embeds, d);
 
-    components = await d.util.parsers.ComponentParser(components, d.client);
+    components = await d.util.parsers.ComponentParser(components, d);
 
     files = await d.util.parsers.FileParser(files);
 
