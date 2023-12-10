@@ -7,7 +7,7 @@ module.exports = async (d) => {
   let [time, type, cmdName, id] = data.inside.splits;
 
   time = Time.parse(time)?.ms;
-  if (!time) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Type");
+  if (!time) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Time");
 
   const types = {
     globalUser: id,
