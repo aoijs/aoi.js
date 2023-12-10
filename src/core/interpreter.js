@@ -406,17 +406,28 @@ const Interpreter = async (
                             );
                             if (client.aoiOptions.suppressAllErrors) {
                                 if (client.aoiOptions.errorMessage) {
-                                    if (!message || !message.channel) {
+                                    const msg = message;
+                                    if (!msg || !msg.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
-                                        const {
-                                            makeMessageError,
-                                        } = require("../classes/AoiError.js");
-                                        const message = await Util.errorParser(client.aoiOptions.errorMessage, d);
+                                        const { makeMessageError } = require("../classes/AoiError.js");
+
+                                        const result = await Interpreter(
+                                            client,
+                                            msg ?? data,
+                                            args ?? [],
+                                            { name: "parser", code: client.aoiOptions.errorMessage },
+                                            client.db,
+                                            true,
+                                            msg.channel ?? [],
+                                        );
+
+                                        const message = await Util.errorParser(result.code ?? client.aoiOptions.errorMessage, d); // (?) support for parser and regular functions
                                     
                                         if (!errorOccurred) {
                                             await makeMessageError(client, channel, message.data ?? message, message.options, d);
                                         }
+                                        
                                         errorOccurred = true;
                                     }
                                 }

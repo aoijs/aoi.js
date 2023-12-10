@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
     const [title, customID, components] = data.inside.splits;
 
-    const parsedComponents = await d.util.parsers.ComponentParser(components, d.client);
+    const parsedComponents = await d.util.parsers.ComponentParser(components, d);
 
     await d.data.interaction
         .showModal({
