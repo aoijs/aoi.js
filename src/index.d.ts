@@ -256,6 +256,7 @@ declare module "aoi.js" {
         constructor(options: ClientOptions);
 
         status(d: StatusOption[]): void;
+        loadCommands(directory: string, debug?: boolean): void;
         variables(data: object, table?: string): void;
     }
 
