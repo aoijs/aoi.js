@@ -83,13 +83,13 @@ class AoiError {
     if (typeof options === "object") {
       options.content = options.content?.toString()?.trim() || " ";
       if (options.embeds && typeof options.embeds === "string") {
-        options.embeds = await EmbedParser(options.embeds);
+        options.embeds = await EmbedParser(options.embeds, d);
       }
       if (options.files && typeof options.files === "string") {
-        options.files = FileParser(options.files);
+        options.files = FileParser(options.files, d);
       }
       if (options.components && typeof options.components === "string") {
-        options.components = await ComponentParser(options.components, client);
+        options.components = await ComponentParser(options.components, d);
       }
     } else {
       options = {
