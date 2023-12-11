@@ -1,24 +1,25 @@
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
+  if (data.err) return d.error(data.err);
 
   const [objectName, sep = " , "] = data.inside.splits;
   if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
-  const object = d.data.objects?.[objectName];
+  let object = d.data.objects?.[objectName];
 
-  if (!object) {
-    return d.aoiError.fnError(d, "custom", {}, "Object");
-  }
+  if (!object) return d.aoiError.fnError(d, "custom", {}, "Object");
 
   let values = [];
 
-  const stack = [object];
+  const stack = Array.isArray(object) ? [...object] : [object];
 
   while (stack.length > 0) {
     const current = stack.pop();
     for (const key in current) {
-      const value = current[key];
-      if (typeof value === "object") {
+      const value = current?.[key];
+      if (Array.isArray(value)) {
+        values.push(...value);
+      } else if (typeof value === "object") {
         stack.push(value);
       } else {
         values.push(value);
