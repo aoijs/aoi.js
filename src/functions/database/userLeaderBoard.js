@@ -1,95 +1,84 @@
-module.exports = async (d) => {
-    const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err);
+module.exports = async d => {
+  const data = d.util.aoiFunc(d);
+  if (data.err) return d.error(data.err);
 
-    const [
-        guildID = d.guild?.id,
-        variable,
-        type = "asc",
-        custom = `{top}. {username}: {value}`,
-        list = 10,
-        page = 1,
-        table = d.client.db.tables[0],
-    ] = data.inside.splits;
+  const [
+    guildID = d.guild?.id,
+    variable,
+    type = 'asc',
+    custom = `{top}. {username}: {value:,}`,
+    list = 10,
+    page = 1,
+    table = d.client.db.tables[0],
+    hideNegativeValue = false,
+    hideZeroValue = false
+  ] = data.inside.splits;
 
-    let all = await d.client.db.all(
-        table,
-        (data) =>
-            data.key.startsWith(variable.deleteBrackets()) &&
-            data.key.split("_").length === 3 &&
-            data.key.split("_")[2] === guildID,
-    );
+  const guild = await d.util.getGuild(d, guildID);
+  if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-    const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
+  if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
+  let v = d.client.variableManager.get(variable, table);
 
-    let value;
-    let content = [];
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID));
+  if (d.client.db.type === "aoi.db")
+    db.sort((a, b) => Number(a.value) - Number(b.value));
+  else db.sort((a, b) => Number(y.data.value) - Number(x.data.value));
 
-    const px = (page-1) * list,
-        py = page * list;
+  if (type === "desc") db = db.reverse();
 
-       all = all.sort((x, y) => {
-        if (d.client.db.type === "aoi.db")
-            return Number(y.value) - Number(x.value);
-        else return Number(y.data.value) - Number(x.data.value);
-    });
-    all = all.slice(px, py);
-    let y = px+1;
+  if (hideNegativeValue === "true") db = db.filter(x => x.value >= 0);
+  if (hideZeroValue === "true") db = db.filter(x => x.value != 0);
 
-    for (const Data of all  ) {
-        let user;
+  let y = 0;
+  let value;
+  let content = [];
 
-        if (d.client.db.type === "aoi.db") value = Number(Data.value);
-        else value = Number(Data.data.value);
+  for (const Data of db) {
+    let user;
+    if (d.client.db.type === "aoi.db") value = Number(Data.value);
+    else value = Number(Data.data.value);
+    user = await d.util.getMember(guild, Data.key.split('_')[1]);
 
-        user = await d.util.getMember(guild, Data.key.split("_")[1]);
+    if (user) {
+      nick = user.nickname
+      user = user.user;
+      y++;
+      let text = custom
+        .replaceAll(`{top}`, y)
+        .replaceAll("{id}", user.id)
+        .replaceAll("{tag}", user.tag)
+        .replaceAll(`{username}`, user.username.removeBrackets())
+        .replaceAll(`{value}`, value)
+        .replaceAll(`{nick}`, nick || user.username);
 
-        let text = custom
-            .replaceAll(`{top}`, y)
-            .replaceAll("{id}", user.user.id)
-            .replaceAll("{tag}", user.user.tag)
-            .replaceAll(`{username}`, user.user.username.removeBrackets())
-            .replaceAll(`{value}`, value);
+      if (text.includes("{value:")) {
+        let sep = text.split("{value:")[1].split("}")[0];
+        text = text.replaceAll(`{value:${sep}}`, value.toLocaleString().replaceAll(",", sep));
+      }
+      if (text.includes("{execute:")) {
+        let ins = text.split("{execute:")[1].split("}")[0];
 
-        if (text.includes("{execute:")) {
-            let ins = text.split("{execute:")[1].split("}")[0];
+        const awaited = d.client.cmd.awaited.find(c => c.name === ins);
 
-            const awaited = d.client.cmd.awaited.find((c) => c.name === ins);
+        if (!awaited) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, ` Invalid awaited command '${ins}' in`);
 
-            if (!awaited)
-                return d.aoiError.fnError(
-                    d,
-                    "custom",
-                    { inside: data.inside },
-                    ` Invalid awaited command '${ins}' in`,
-                );
+        const CODE = await d.interpreter(d.client, {
+          guild: guild,
+          channel: d.message.channel,
+          author: user
+        }, d.args, awaited, undefined, true);
 
-            const CODE = await d.interpreter(
-                d.client,
-                {
-                    guild: guild,
-                    channel: d.message.channel,
-                    author: user,
-                },
-                d.args,
-                awaited,
-                undefined,
-                true,
-            );
+        text = text.replace(`{execute:${ins}}`, CODE);
+      }
 
-            text = text.replace(`{execute:${ins}}`, CODE);
-        }
-
-        content.push(text);
-        y++;
+      content.push(text);
     }
+  }
 
-    if (type === "desc") content = content.reverse();
+  data.result = content.slice(page * list - list, page * list).join("\n");
 
-    data.result = content.slice(px, py).join("\n");
-
-    return {
-        code: d.util.setCode(data),
-    };
+  return {
+    code: d.util.setCode(data)
+  };
 };
