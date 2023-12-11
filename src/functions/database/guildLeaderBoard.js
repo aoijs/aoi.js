@@ -17,7 +17,8 @@ module.exports = async (d) => {
     return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
   let v = d.client.variableManager.get(variable, table);
 
-  let db = await d.client.db.all(table, variable.addBrackets(), 1);
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2);
+
   if (d.client.db.type === "aoi.db")
     db.sort((a, b) => Number(a.value) - Number(b.value));
   else db.sort((a, b) => Number(y.data.value) - Number(x.data.value));
