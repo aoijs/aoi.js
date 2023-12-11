@@ -33,15 +33,15 @@
     "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
   },
   "devDependencies": {
-    "@types/js-beautify": "^1.13.3",
-    "@types/node": "^16.18.23",
+    "@types/js-beautify": "^1.14.3",
+    "@types/node": "^20.10.3",
     "@types/uglify-js": "^3.17.1",
-    "@types/ws": "^8.5.4",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
-    "eslint": "^8.38.0",
-    "js-beautify": "^1.14.7",
-    "typescript": "^5.0.4"
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "eslint": "^8.55.0",
+    "js-beautify": "^1.14.11",
+    "typescript": "^5.3.2"
   },
   "type": "commonjs",
   "keywords": [
@@ -60,14 +60,14 @@
   },
   "dependencies": {
     "@akarui/structures": "^2.0.1",
-    "boxen": "^7.1.0",
-    "chalk": "^5.2.0",
-    "cli-spinners": "^2.9.0",
-    "dotenv": "^16.0.3",
-    "ora": "^6.3.0",
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "cli-spinners": "^2.9.2",
+    "dotenv": "^16.3.1",
+    "ora": "^7.0.1",
     "uglify-js": "^3.17.4",
-    "undici": "^5.21.0",
-    "ws": "^8.13.0",
+    "undici": "^5.28.2",
+    "ws": "^8.14.2",
     "zeneth": "^0.0.1"
   },
   "bin": {
