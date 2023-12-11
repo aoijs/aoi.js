@@ -31,9 +31,7 @@ module.exports = async (d) => {
   let y = 0;
   let value;
   let content = [];
-
-  db = db.slice(page * list - list, page * list);
-
+  
   for (const Data of db) {
     let user;
     if (d.client.db.type === "aoi.db") value = Number(Data.value);
@@ -85,7 +83,7 @@ module.exports = async (d) => {
     }
   }
 
-  data.result = content.join("\n");
+  data.result = content.slice(page * list - list, page * list).join("\n");
 
   return {
     code: d.util.setCode(data),
