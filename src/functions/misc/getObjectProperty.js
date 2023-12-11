@@ -8,7 +8,7 @@ module.exports = (d) => {
     if (!object) return d.aoiError.fnError("Object not found");
   
     try {
-      const evaled = eval(`object.${option}`);
+      const evaled = eval(`object?.${option}`);
       data.result = typeof evaled === "object"
         ? JSON.stringify(evaled, null, 2)
         : evaled ?? "undefined";
