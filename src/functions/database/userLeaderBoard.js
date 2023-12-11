@@ -20,7 +20,7 @@ module.exports = async d => {
   if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
   let v = d.client.variableManager.get(variable, table);
 
-  let db = await d.client.db.all(table, variable.addBrackets(), 2, [1, guildID]);
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID));
   if (d.client.db.type === "aoi.db")
     db.sort((a, b) => Number(a.value) - Number(b.value));
   else db.sort((a, b) => Number(y.data.value) - Number(x.data.value));
