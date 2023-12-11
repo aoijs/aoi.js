@@ -18,7 +18,7 @@ module.exports = async (d) => {
 
   let v = d.client.variableManager.get(variable, table);
 
-  const db = await d.client.db.all(table, (data) =>
+  let db = await d.client.db.all(table, (data) =>
          data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2,
      );
   if (d.client.db.type === "aoi.db")
