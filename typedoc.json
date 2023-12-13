@@ -2,11 +2,11 @@
     "entryPoints": [
         "./src/index.ts"
     ],
-    "out": "./api_docs",
+    "out": "./docs",
     "customCss": "./packers/custom.css",
     "tsconfig": "./tsconfig.json",
     "entryPointStrategy": "resolve",
-    "json": "api_docs/data.json",
+    "json": "docs/data.json",
     "commentStyle": "all",
     "jsDocCompatibility": true,
     "includeVersion": true,
