@@ -9,7 +9,7 @@ module.exports = async d => {
 
     components = await d.util.parsers.ComponentParser(components, d);
 
-    files = await d.util.parsers.FileParser(files);
+    files = await d.util.parsers.FileParser(files, d);
 
     await d.data.interaction?.update({
         content: content.trim() === "" ? " " : content.addBrackets(),
