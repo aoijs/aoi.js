@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Scope } from "../../../index.js";
-import { FunctionData, funcData } from "../../../typings/interfaces.js";
+import AoiJSFunction from "../../../structures/AoiJSFunction.js";
+import { TranspiledFuncData, funcData } from "../../../typings/interfaces.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
 
-export const $clientAvatar: FunctionData = {
-    name: "$clientAvatar",
-    type: "getter",
-    brackets: true,
-    optional: true,
-    fields: [
+const clientAvatar = new AoiJSFunction()
+    .setName("$clientAvatar")
+    .setType("getter")
+    .setBrackets(true)
+    .setOptional(true)
+    .setFields([
         {
             name: "size",
             type: "number",
@@ -26,36 +28,42 @@ export const $clientAvatar: FunctionData = {
             description: "Whether the avatar is gif or not",
             required: false,
         },
-    ],
-    version: "7.0.0",
-    default: ["void", "void", "void"],
-    returns: "string",
-    description: "Returns the Avatar of client",
-    example: `
-        $clientAvatar // returns the avatar of client
+    ])
+    .setVersion("7.0.0")
+    .setDefault(["void", "void", "void"])
+    .setReturns("string")
+    .setDescription("Returns the Avatar of client")
+    .setExample(
+        `
+$clientAvatar // returns the avatar of client
 
-        $clientAvatar[4096;true;png] // returns the avatar of client with size 4096, dynamic true and format png
+$clientAvatar[4096;true;png] // returns the avatar of client with size 4096, dynamic true and format png
     `,
-    code: (data: funcData, scope: Scope[]) => {
-        // Adding default values
-        const [size = 4096, dynamic = "true", format = "png"] = data.splits;
+    );
+clientAvatar.setCode((data: funcData, scope: Scope[], thisArg) => {
+    const [size = 4096, dynamic = "true", format = "png"] =
+        thisArg.getParams(data);
+    const currentScope = thisArg.getCurrentScope(scope);
 
-        // Getting the current scope
-        const currentScope = scope[scope.length - 1];
+    const resultString = thisArg.getResultString(
+        (discord: TranspiledFuncData) =>
+            discord.client.readyData.user.avatarUrl({
+                // @ts-ignore
+                size: "$0",
+                // @ts-ignore
+                dynamic: "$1",
+                format: "$2",
+            }),
+        [size, dynamic, `"${format}"`],
+    );
 
-        // Getting the client avatar
-        const clientAvatar = `__$DISCORD_DATA$__.client.readyData.user.avatarUrl({ size: ${size}, dynamic: ${dynamic}, format: "${format}" })`;
+    const res = escapeResult(resultString as string);
+    currentScope.update(res, data);
 
-        // Returning the result
-        const res = escapeResult(clientAvatar);
+    return {
+        code: res,
+        scope,
+    };
+}, clientAvatar);
 
-        // Updating the scope
-        currentScope.update(res, data);
-
-        // Returning the result
-        return {
-            code: res,
-            scope,
-        };
-    },
-};
+export const $clientAvatar = clientAvatar.build();

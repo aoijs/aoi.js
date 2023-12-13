@@ -1,30 +1,31 @@
-import { FunctionData } from "../../../typings/interfaces.js";
+import AoiJSFunction from "../../../structures/AoiJSFunction.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
 
-export const $clientToken: FunctionData = {
-    name: "$clientToken",
-    type: "getter",
-    brackets: false,
-    optional: false,
-    fields: [],
-    version: "7.0.0",
-    default: [],
-    returns: "string",
-    description: "Returns the token of client",
-    example: "client token is `$clientToken`",
-    code: (data, scope) => {
-        // Getting the current scope
-        const currentScope = scope[scope.length - 1];
+const clientToken = new AoiJSFunction()
+    .setName("$clientToken")
+    .setType("getter")
+    .setBrackets(false)
+    .setOptional(false)
+    .setFields([])
+    .setVersion("7.0.0")
+    .setDefault([])
+    .setReturns("string")
+    .setDescription("Returns the token of client")
+    .setExample("client token is `$clientToken`");
 
-        // Getting the client token
-        const clientToken = "__$DISCORD_DATA$__.client?.token";
+clientToken.setCode((data, scope, thisArg) => {
+    const currentScope = thisArg.getCurrentScope(scope);
+    const resultString = thisArg.getResultString(
+        (discord) => discord.client.token,
+        [],
+    );
+    const res = escapeResult(resultString as string);
+    currentScope.update(res, data);
 
-        // Returning the result
-        const res = escapeResult(clientToken);
-        currentScope.update(res, data);
-        return {
-            code: res,
-            scope,
-        };
-    }
-};
+    return {
+        code: res,
+        scope,
+    };
+}, clientToken);
+
+export const $clientToken = clientToken.build();

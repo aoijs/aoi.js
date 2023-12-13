@@ -18,6 +18,7 @@
     "exclude": [
         "src/**/*.md",
         "src/**/templates/**",
-        "dist"
+        "dist",
+        "api_docs",
     ]
 }

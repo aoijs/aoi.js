@@ -53,6 +53,7 @@ export const $createObject: FunctionData = {
                 object = parsedObj;
             }
             else {
+                if(parsedObj.startsWith("[") && parsedObj.endsWith("]")) currentObj.start = "[", currentObj.addEnd("]");
                 object = parseStringObject(parsedObj, currentObj);
             }
         } catch (e) {

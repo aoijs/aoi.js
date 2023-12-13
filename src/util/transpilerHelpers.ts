@@ -5,14 +5,36 @@ import { funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
 import { StringObject, parseStringObject } from "../index.js";
 import { Command } from "../structures/Command.js";
-
-export function areBracketsBalanced(code: string) {
+/**
+ * Checks if the brackets in the given code are balanced.
+ * @param {string} code - The code to check.
+ * @returns {boolean} - Returns true if the brackets are balanced, false otherwise.
+ * @example
+ * ```js
+ * areBracketsBalanced("[]") // true
+ * areBracketsBalanced("[[]]") // true
+ * areBracketsBalanced("[[]") // false
+ * areBracketsBalanced("[]]") // false
+ * ```
+ */
+export function areBracketsBalanced(code: string): boolean {
     const leftbracket = /\[/g;
     const rightbracket = /\]/g;
     const leftbracketCount = code.match(leftbracket)?.length ?? 0;
     const rightbracketCount = code.match(rightbracket)?.length ?? 0;
     return leftbracketCount === rightbracketCount;
 }
+
+/**
+ * Counts the number of brackets in the given code.
+ * @param {string} code - The code to count the brackets in.
+ * @returns {Object} - Returns an object containing the number of left and right brackets.
+ * @example
+ * ```js
+ * countBrackets("[]") // { leftbracketCount: 1, rightbracketCount: 1 }
+ * countBrackets("[[]]") // { leftbracketCount: 2, rightbracketCount: 2 }
+ * ```
+ */
 
 export function countBrackets(code: string) {
     const leftbracket = /\[/g;
@@ -22,6 +44,18 @@ export function countBrackets(code: string) {
     return { leftbracketCount, rightbracketCount };
 }
 
+/**
+ * parse data to its actual type
+ * @param {string} text - The string to check.
+ * @returns {any} - Returns the parsed data.
+ * @example
+ * ```js
+ * parseData("1") // 1
+ * parseData("1n") // 1n
+ * parseData("null") // null
+ * // and so on...
+ * ```
+ */
 export function parseData(text: string) {
     if (text === "") return text;
     else if (!isNaN(Number(text)) && Number.isSafeInteger(Number(text)))
@@ -54,16 +88,60 @@ export function parseData(text: string) {
         }
     }
 }
+
+/**
+ * Escapes a variable name by wrapping it with '__$' and '$__'.
+ *
+ * @param {string} name - The variable name to escape.
+ * @returns {string} The escaped variable name.
+ * @example
+ * ```js
+ * escapeVars("a") // "__$a$__"
+ * ```
+ */
+
 export function escapeVars(name: string) {
     return `__$${name}$__`;
 }
 
+/**
+ * Unescapes a variable name by removing the '__$' and '$__'.
+ * @param {string} res - The variable name to unescape.
+ * @returns {string} The unescaped variable name.
+ * @example
+ * ```js
+ * unescapeVars("__$a$__") // "a"
+ * ```
+ */
+
 export function escapeResult(res: string) {
     return `${TranspilerCustoms.FS}${res}${TranspilerCustoms.FE}`;
 }
+
+/**
+ * Escapes a math result by wrapping it with  TranspilerCustoms.MFS and TranspilerCustoms.MFE.
+ * @param {string} res - The math result to escape.
+ * @returns {string} The escaped math result.
+ * @example
+ * ```js
+ * escapeMathResult("1+1") // #MATH_FUNCTION_START#1+1#MATH_FUNCTION_END#
+ * ```
+ * @see {@link TranspilerCustoms}
+ */
+
 export function escapeMathResult(res: string) {
     return `${TranspilerCustoms.MFS}${res}${TranspilerCustoms.MFE}`;
 }
+
+/**
+ * parse the result by removing all the customs
+ * @param {string} result - The result to parse.
+ * @returns {string} The parsed result.
+ * @example
+ * ```js
+ * parseResult("#MATH_FUNCTION_START#1+1#MATH_FUNCTION_END#") // "1+1"
+ * ```
+ */
 
 export function parseResult(result: string) {
     if (typeof result !== "string") return result;
@@ -83,17 +161,64 @@ export function parseResult(result: string) {
         .replaceAll(TranspilerCustoms.MFS, "")
         .replaceAll(TranspilerCustoms.MFE, "");
 }
+
+/**
+ * remove the set function
+ * @param {string} code - The code to parse
+ * @returns {string} The parsed result.
+ * @example
+ * ```js
+ * parseResult("#FUNCTION_SETTER#i#FUNCTION_SETTER#") // "i"
+ * ```
+ */
+
 export function removeSetFunc(code: string) {
     return code
         .replaceAll(TranspilerCustoms.FSET, "")
         .replaceAll(TranspilerCustoms.FFUN, "");
 }
+
+/**
+ * Wraps a function result string with specific prefix and suffix.
+ *
+ * @param {string} result - The function result string to wrap.
+ * @returns {string} The wrapped function result string.
+ *
+ * @example
+ * ```js
+ * escapeFunctionResult("result") // #FUNCTION_FUNCTION_START##FUNCTION_START#result#FUNCTION_END##FUNCTION_FUNCTION_END#
+ * ```
+ */
+
 export function escapeFunctionResult(result: string) {
     return `${TranspilerCustoms.FFS}${TranspilerCustoms.FS}${result}${TranspilerCustoms.FE}${TranspilerCustoms.FFE}`;
 }
+
+/**
+ * Checks if the given code has a function.
+ * @param {string} code - The code to check.
+ * @returns {boolean} - Returns true if the code has a function, false otherwise.
+ * @example
+ * ```js
+ * hasFunction("$ping") // true
+ * ```
+ */
 export function hasFunction(code: string) {
     return functionFinderRegex.test(code);
 }
+
+/**
+ * Generates data of the given function in the given code.
+ * @param {string} code - The code to generate the function data in.
+ * @param {string} func - The function to generate the data of.
+ * @param {string[]} functions - The list of valid functions.
+ * @param {Command} [command] - The command that the code is in.
+ * @returns {funcData} - Returns the generated function data.
+ * @example
+ * ```js
+ * getFunctionData("$ping") // { inside: "", total: "$ping", splits: [], funcs: [], parsed: "$ping", type: "getter", code: [Function (anonymous)] }
+ * ```
+ */
 
 export function getFunctionData(
     code: string,
@@ -196,6 +321,17 @@ export function getFunctionData(
 }
 export const functionFinderRegex = /(\$[a-z]+)/gi;
 
+/**
+ * Gets the list of functions in the given code.
+ * @param {string} code - The code to get the functions in.
+ * @param {string[]} functions - The list of valid functions.
+ * @returns {string[]} - Returns the list of functions.
+ * @example
+ * ```js
+ * getFunctionList("$ping") // ["$ping"]
+ * ```
+ */
+
 export function getFunctionList(code: string, functions: string[]) {
     const raws = code.match(functionFinderRegex);
     if (!raws) return [];
@@ -219,6 +355,12 @@ export function getFunctionList(code: string, functions: string[]) {
     return res;
 }
 
+/**
+ * Deep Reverses the given array of function data.
+ * @param {funcData[]} arr - The array of function data to reverse.
+ * @returns {funcData[]} - Returns the reversed array of function data.
+ */
+
 export function reverseArray(arr: funcData[]) {
     const res: funcData[] = [];
     for (let i = arr.length - 1; i >= 0; i--) {
@@ -229,7 +371,29 @@ export function reverseArray(arr: funcData[]) {
     return res;
 }
 
-export function Reverse(code: string, funcs: funcData[]) {
+/**
+ * Reverses the given code and function data.
+ * @param {string} code - The code to reverse.
+ * @param {funcData[]} funcs - The function data to reverse.
+ * @returns {
+ * {
+ *   code: string;
+ *  funcs: funcData[];
+ * }
+ * } - Returns an object containing the reversed code and function data.
+ * @example
+ * ```js
+ * Reverse("$ping", [{ inside: "", total: "$ping", splits: [], funcs: [], parsed: "$ping", type: "getter", code: [Function (anonymous)] }]) // { code: "$ping", funcs: [{ inside: "", total: "$ping", splits: [], funcs: [], parsed: "$ping", type: "getter", code: [Function (anonymous)] }] }
+ * ```
+ */
+
+export function Reverse(
+    code: string,
+    funcs: funcData[],
+): {
+    code: string;
+    funcs: funcData[];
+} {
     let codeWithGenricFuncs = code;
 
     for (const func of funcs) {
@@ -250,6 +414,24 @@ export function Reverse(code: string, funcs: funcData[]) {
 
     return { code: codeWithGenricFuncs, funcs: reversedFuncs };
 }
+
+/**
+ * Executes the given code and function data to generate a js function.
+ * @param {string} code - The code to execute.
+ * @param {funcData[]} data - The function data to execute.
+ * @param {Scope[]} scope - The scope to execute the code in.
+ * @param {boolean} [reverse=false] - Whether to reverse the code and function data or not.
+ * @returns {
+ * {
+ *   code: string;
+ *  scope: Scope[];
+ * }
+ * } - Returns an object containing the generated js function and the scope.
+ * @example
+ * ```js
+ * ExecuteData("$ping", [{ inside: "", total: "$ping", splits: [], funcs: [], parsed: "$ping", type: "getter", code: [Function (anonymous)] }], []) // { code: "__$DISCORD_DATA$__.client.ws.data.ping", scope: [] }
+ * ```
+ */
 
 export function ExecuteData(
     code: string,
@@ -403,6 +585,12 @@ export function ExecuteData(
         scope,
     };
 }
+
+/**
+ * uh idk what this does
+ * @param {string} text - The text to parse.
+ * @returns {string} - Returns the parsed text.
+ */
 export function _parseString(text: string) {
     const reg =
         /((#FUNCTION_START#([\s$a-z.0-9?(){}[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim;
@@ -452,10 +640,27 @@ export function _parseString(text: string) {
     return text;
 }
 
+/**
+ * converts the given string to boolean
+ * @param {string} output - The string to convert.
+ * @returns {boolean} - Returns the converted boolean.
+ * @example
+ * ```js
+ * convertToBool("true") // true
+ * convertToBool("yes") // true
+ * convertToBool("false") // false
+ * convertToBool("no") // false
+ * ```
+ */
 export function convertToBool(output: string) {
     return output === "true" || output === "yes" ? true : false;
 }
 
+/**
+ * removes the FF transpiler customs
+ * @param {string} total - The string to remove the customs from.
+ * @returns {string} - Returns the string without the customs.
+ */
 export function removeFF(total: string) {
     if (!total.includes(TranspilerCustoms.FFS)) return total;
     const parts = total.split(TranspilerCustoms.FFS).slice(1);
@@ -492,10 +697,30 @@ export function removeMF(total: string) {
     return total;
 }
 
+/**
+ * Checks if the given string is a bigint.
+ * @param {string} string - The string to check.
+ * @returns {boolean} - Returns true if the string is a bigint, false otherwise.
+ * @example
+ * ```js
+ * isBigInt("1n") // true
+ * isBigInt("1") // false
+ * ```
+ */
+
 export function isBigInt(string: string) {
     return string.match(/^-?\d+n$/) !== null;
 }
 
+/**
+ * Removes the multi line comments from the given code.
+ * @param {string} code - The code to remove the comments from.
+ * @returns {string} - Returns the code without the comments.
+ * @example
+ * ```js
+ * removeMultiLineComments("/* comment *\/") // ""
+ * ```
+ */
 export function removeMultiLineComments(code: string) {
     return code.replace(/\/\*[\s\S]*?\*\//g, "");
 }

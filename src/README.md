@@ -13,20 +13,16 @@ graph RL;
   Structures ---> Aoijs
   Typings ----> Aoijs
   Utils -----> Aoijs
-
   Parsers --> Core
   Structs --> Core
-
   Discord --> Functions
   Javascript --> Functions
-
   Client --> Discord
   Guild --> Discord
   Interaction --> Discord
   Message --> Discord
   Misc --> Discord
   User --> Discord
-
   Array --> Javascript
   Condition --> Javascript
   FileSystem --> Javascript

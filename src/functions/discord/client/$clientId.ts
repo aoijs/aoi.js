@@ -1,32 +1,32 @@
-import { FunctionData } from "../../../typings/interfaces.js";
+import AoiJSFunction from "../../../structures/AoiJSFunction.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
 
-export const $clientId: FunctionData = {
-    name: "$clientId",
-    type: "getter",
-    brackets: false,
-    optional: false,
-    fields: [],
-    version: "7.0.0",
-    default: [],
-    returns: "number",
-    description: "Returns the ID of client",
-    example: `
-        $clientId // returns the ID of client
-    `,
-    code: (data, scope) => {
-        // Getting the current scope
-        const currentScope = scope[scope.length - 1];
+const clientId = new AoiJSFunction()
+    .setName("$clientId")
+    .setType("getter")
+    .setBrackets(false)
+    .setOptional(false)
+    .setFields([])
+    .setVersion("7.0.0")
+    .setDefault([])
+    .setReturns("bigint")
+    .setDescription("Returns the ID of client").setExample(`
+$clientId // returns the ID of client
+    `);
 
-        // Getting the client ID
-        const clientId = "__$DISCORD_DATA$__.client?.user.id";
+clientId.setCode((data, scope, thisArg) => {
+    const currentScope = thisArg.getCurrentScope(scope);
+    const resultString = thisArg.getResultString(
+        (discord) => discord.client.user.id,
+        [],
+    );
+    const res = escapeResult(resultString as string);
+    currentScope.update(res, data);
 
-        // Returning the result
-        const res = escapeResult(clientId);
-        currentScope.update(res, data);
-        return {
-            code: res,
-            scope,
-        };
-    },
-};
+    return {
+        code: res,
+        scope,
+    };
+}, clientId);
+
+export const $clientId = clientId.build();

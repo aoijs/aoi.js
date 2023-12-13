@@ -1,9 +1,13 @@
 import StringObject from "../core/structs/StringObject.js";
 import {
+    Channel,
     Client,
     ClientOptions,
     GatewayEventNames,
     GroupConfigOptions,
+    Guild,
+    Interaction,
+    Message,
     Snowflake,
 } from "zeneth";
 export interface TranspilerOptions {
@@ -133,7 +137,16 @@ export interface CommandOptions {
 export interface TranspiledFuncData {
     client: Client;
     bot: AoiClient;
-    [key: string]: unknown;
+    message?:Message,
+    channel?: Channel | {id:Snowflake | undefined,fetched:boolean},
+    guild?: Guild | {id:Snowflake | undefined,fetched:boolean},
+    author?: Message["author"];
+    args?: string[];
+    member?: Message["member"];
+    interaction?: Interaction;
+    data?:unknown;
+    command?: Command;
+
 }
 
 export interface Plugin {

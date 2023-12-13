@@ -120,15 +120,14 @@ bot.command({
 ## Extensions
 
 ```mermaid
-graph LR
-
-A[aoi.js] --> B[aoi.music]
-A --> C[aoi.db]
-A --> D[aoi.vsc-extension]
-A --> F[aoi.panel]
-A --> G[aoi.orms]
-A --> H[aoi.plugins]
-A --> I[zeneth]
+graph LR;
+A[aoi.js] --> B[aoi.music];
+A --> C[aoi.db];
+A --> D[aoi.vsc-extension];
+A --> F[aoi.panel];
+A --> G[aoi.orms];
+A --> H[aoi.plugins];
+A --> I[zeneth];
 ```
 
 ## Contributing
