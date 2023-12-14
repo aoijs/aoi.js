@@ -327,7 +327,7 @@ module.exports = {
         return timeoutData.__id__;
     },
     CreateObjectAST(parser) {
-        let left = 0,
+        let left = 0,   
             right = 0;
         let ans = [];
         let part = "";
@@ -340,7 +340,11 @@ module.exports = {
                     i++;
                 }
             }
-            if(i >= parser.length) break;
+            
+            if(i >= parser.length) {
+                if(part.length) ans.push(part);
+                break;
+            }
             while (left === 0 || right < left) {
                 part += parser[i];
                 if (parser[i] === "{") left++;
@@ -349,10 +353,14 @@ module.exports = {
                 if (i === parser.length) break;
                 if (left === right) break;
             }
+            if(left === right && left !== 0) {
             ans.push(part);
             right = 0;
             left = 0;
             part = "";
+            } else {
+                part += parser[i];
+            }
         }
         return ans;
     },

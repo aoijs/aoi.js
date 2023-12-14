@@ -406,18 +406,32 @@ const Interpreter = async (
                             );
                             if (client.aoiOptions.suppressAllErrors) {
                                 if (client.aoiOptions.errorMessage) {
-                                    if (!message || !message.channel) {
+                                    const msg = message;
+                                    if (!msg || !msg.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
-                                        const {
-                                            makeMessageError,
-                                        } = require("../classes/AoiError.js");
-                                        const message = await Util.errorParser(client.aoiOptions.errorMessage, d);
-                                    
                                         if (!errorOccurred) {
-                                            await makeMessageError(client, channel, message.data ?? message, message.options, d);
-                                        }
-                                        errorOccurred = true;
+                                            try {
+                                             await Interpreter(
+                                                client,
+                                                msg ?? data,
+                                                args ?? [],
+                                                { code: client.aoiOptions.errorMessage },
+                                                client.db,
+                                                false,
+                                                msg.channel ?? [],
+                                                {},
+                                                msg.channel ?? [],
+                                                false,
+                                                false,
+                                                false,
+                                                true,
+                                            );
+                                            } catch (e) {
+                                                console.error(client.aoiOptions.errorMessage.addBrackets());
+                                            }
+                                            errorOccurred = true;
+                                        }  
                                     }
                                 }
                             } else {

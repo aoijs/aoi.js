@@ -80,16 +80,17 @@ class AoiError {
     d
   ) {
     options = options.data ?? options;
+    console.log(options)
     if (typeof options === "object") {
       options.content = options.content?.toString()?.trim() || " ";
       if (options.embeds && typeof options.embeds === "string") {
-        options.embeds = await EmbedParser(options.embeds);
+        options.embeds = await EmbedParser(options.embeds, d);
       }
       if (options.files && typeof options.files === "string") {
-        options.files = FileParser(options.files);
+        options.files = FileParser(options.files, d);
       }
       if (options.components && typeof options.components === "string") {
-        options.components = await ComponentParser(options.components, client);
+        options.components = await ComponentParser(options.components, d);
       }
     } else {
       options = {
@@ -146,7 +147,7 @@ class AoiError {
       }, Time.parse(extraOptions.edits.time)?.ms);
     }
     if (extraOptions.deleteIn) {
-      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn)?.ms;
+      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn.split("}")[0])?.ms;
       setTimeout(() => msg.delete(), extraOptions.deleteIn);
     }
     if (extraOptions.deleteCommand) {
