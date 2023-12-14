@@ -410,25 +410,28 @@ const Interpreter = async (
                                     if (!msg || !msg.channel) {
                                         console.error(client.aoiOptions.errorMessage.addBrackets());
                                     } else {
-                                        const { makeMessageError } = require("../classes/AoiError.js");
-
-                                        const result = await Interpreter(
-                                            client,
-                                            msg ?? data,
-                                            args ?? [],
-                                            { name: "parser", code: client.aoiOptions.errorMessage },
-                                            client.db,
-                                            true,
-                                            msg.channel ?? [],
-                                        );
-
-                                        const message = await Util.errorParser(result.code ?? client.aoiOptions.errorMessage, d); // (?) support for parser and regular functions
-                                    
                                         if (!errorOccurred) {
-                                            await makeMessageError(client, channel, message.data ?? message, message.options, d);
-                                        }
-                                        
-                                        errorOccurred = true;
+                                            try {
+                                             await Interpreter(
+                                                client,
+                                                msg ?? data,
+                                                args ?? [],
+                                                { code: client.aoiOptions.errorMessage },
+                                                client.db,
+                                                false,
+                                                msg.channel ?? [],
+                                                {},
+                                                msg.channel ?? [],
+                                                false,
+                                                false,
+                                                false,
+                                                true,
+                                            );
+                                            } catch (e) {
+                                                console.error(client.aoiOptions.errorMessage.addBrackets());
+                                            }
+                                            errorOccurred = true;
+                                        }  
                                     }
                                 }
                             } else {
