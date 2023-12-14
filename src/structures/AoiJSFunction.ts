@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionData, Scope, TranspiledFuncData, funcData } from "../index.js";
 import { inspect } from "util";
 
@@ -105,20 +106,28 @@ export default class AoiJSFunction {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getResultString(func:(__$DISCORD_DATA$__: TranspiledFuncData)=>any, args: any[]):string {
+    getResultString(
+        func: (__$DISCORD_DATA$__: TranspiledFuncData) => any,
+        args: any[],
+    ): string {
         const body = func.toString();
         // if (!/\((\s)*__\$DISCORD_DATA\$__(\s)*\)/.test(body.trim())) {
         //     throw new Error("Function Arg must be name  __$DISCORD_DATA$__");
         // }
-        const argRegex= /\(\s*(\w)*\s*\)(?=\s*=>)/;
+        const matchWholeArgwithAsync = /(async\s*)?\(?\s*(\w)*\s*\)?(?=\s*=>)/;
+        const argRegex = /\(?\s*(\w)*\s*\)?(?=\s*=>)/;
         const getArg = body.match(argRegex);
-        if(!getArg) throw new Error("Function Arg must be present");
-        const arg = getArg[0].replace("(","").replace(")","").trim();
-        let bodyWithoutArg = body.replace(`(${arg})`, "").trim();
-        bodyWithoutArg = this.#replaceArgInFunctionStringWithDiscord(bodyWithoutArg, arg);
+        if (!getArg) throw new Error("Function Arg must be present");
+        const arg = getArg[0].replace("(", "").replace(")", "").trim();
+        let bodyWithoutArg = body.replace(matchWholeArgwithAsync, "");
+        bodyWithoutArg = this.#replaceArgInFunctionStringWithDiscord(
+            bodyWithoutArg,
+            arg,
+        );
         const removedArrow = bodyWithoutArg.replace("=>", "").trim();
 
-        const bodyWithoutBrackets = removedArrow[0] === "{" ? removedArrow.slice(1, -1) : removedArrow;
+        const bodyWithoutBrackets =
+            removedArrow[0] === "{" ? removedArrow.slice(1, -1) : removedArrow;
         const findNumbersRegex = /\$[0-9]+/g;
         const numbers = bodyWithoutBrackets.match(findNumbersRegex);
 
@@ -129,7 +138,9 @@ export default class AoiJSFunction {
         let result = bodyWithoutBrackets;
         for (const number of numbers) {
             const index = parseInt(number.replace("$", ""));
-            result = result.replaceAll(`"${number}"`, args[index]).replaceAll(`'${number}'`, args[index]);
+            result = result
+                .replaceAll(`"${number}"`, args[index])
+                .replaceAll(`'${number}'`, args[index]);
         }
         return result;
     }
@@ -149,11 +160,29 @@ export default class AoiJSFunction {
         };
     }
 
-    #replaceArgInFunctionStringWithDiscord(func:string,arg:string) {
+    #replaceArgInFunctionStringWithDiscord(func: string, arg: string) {
         // it will replace all arg with __$DISCORD_DATA$__ and wont replace same word if it is a part of another word or a property
 
-        const regex = new RegExp(`(?<![a-zA-Z0-9_.])(${arg})(?![a-zA-Z0-9_])`,"g");
+        const regex = new RegExp(
+            `(?<![a-zA-Z0-9_.])(${arg})(?![a-zA-Z0-9_])`,
+            "g",
+        );
         return func.replaceAll(regex, "__$DISCORD_DATA$__");
     }
 
+    conditionalGetResultString(
+        condition: boolean,
+        trueData: {
+            func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
+            args: unknown[];
+        },
+        falseData: {
+            func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
+            args: unknown[];
+        },
+    ): string {
+        if (condition)
+            return this.getResultString(trueData.func, trueData.args);
+        return this.getResultString(falseData.func, falseData.args);
+    }
 }

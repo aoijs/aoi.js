@@ -18,6 +18,6 @@ export * from "./structures/AoiJSFunction.js";
 export * from "./structures/Command.js";
 export * from "./structures/CustomEvent.js";
 export * from "./structures/Util.js";
-import AoiJSFunction from "./structures/AoiJSFunction.js";
+// import AoiJSFunction from "./structures/AoiJSFunction.js";
 
-export { AoiClient, functions,AoiJSFunction,JSFuncs,DiscordFuncs };
+export { AoiClient, functions,JSFuncs,DiscordFuncs };

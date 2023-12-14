@@ -1,26 +1,27 @@
-import Scope from "../../../core/structs/Scope.js";
+import { InteractionTypes, Snowflake } from "zeneth";
 import { StringObject, parseStringObject } from "../../../index.js";
-import { FunctionData, funcData } from "../../../typings/interfaces.js";
+import AoiJSFunction from "../../../structures/AoiJSFunction.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
-export const $autocompleteRespond: FunctionData = {
-    name: "$autocompleteRespond",
-    brackets: true,
-    optional: true,
-    type: "setter",
-    fields: [
+
+const autocomplete = new AoiJSFunction()
+    .setName("$autocompleteRespond")
+    .setType("setter")
+    .setBrackets(true)
+    .setOptional(true)
+    .setFields([
         {
             name: "options",
             type: "array  | object",
             description: "The options to respond with",
             required: true,
         },
-    ],
-    description:
+    ])
+    .setVersion("7.0.0")
+    .setDefault(["void"])
+    .setReturns("void")
+    .setDescription(
         "responds to the autocomplete interaction with the provided options",
-    default: ["void"],
-    returns: "void",
-    version: "7.0.0",
-    example: `
+    ).setExample(`
         $autocompleteRespond[{
             name: "Hello World",
             value: "helloworld"
@@ -30,44 +31,50 @@ export const $autocompleteRespond: FunctionData = {
         }] // responds to the autocomplete interaction with the provided options (object)
 
         $autocompleteRespond[Hello World;helloworld;Hello World 2;helloworld2] // responds to the autocomplete interaction with the provided options (array)
-    `,
-    code: (data: funcData, scope: Scope[]) => {
-        const currentScope = scope.at(-1) as Scope;
-        //code here
+    `);
 
-        const [...opts] = data.splits;
+autocomplete.setCode((data, scope, thisArg) => {
+    const currentScope = thisArg.getCurrentScope(scope);
+    const opts = thisArg.getParams(data);
+    const options = [];
+    let i = 0;
+    while (i < opts.length) {
+        const opt = opts[i].trim();
+        if (opt.startsWith("{") && opt.endsWith("}")) {
+            const currentObj = new StringObject("{");
+            currentObj.addEnd("}");
 
-        const options = [];
-        let i = 0;
-        while(i < opts.length) {
-            const opt = opts[i].trim();
-            if(opt.startsWith("{") && opt.endsWith("}")) {
-                const currentObj =  new StringObject("{");
-                currentObj.addEnd("}");
-
-                const obj = parseStringObject(opt, currentObj);
-                options.push(obj.solve());
-                i += 1;
-            }
-            else {
-                const name = opt;
-                const value = opts[i + 1];
-                options.push(`{name: "${name}", value: "${value}" }`);
-                i += 2;
-            }
+            const obj = parseStringObject(opt, currentObj);
+            options.push(obj.solve());
+            i += 1;
+        } else {
+            const name = opt;
+            const value = opts[i + 1];
+            options.push(`{name: "${name}", value: "${value}" }`);
+            i += 2;
         }
+    }
 
-        const res = escapeResult(
-            `await __$DISCORD_DATA$__.client.createInteractionResponse(__$DISCORD_DATA$__.interaction.id, __$DISCORD_DATA$__.interaction.token,8,{
-                    choices: [${options.join(",\n")}]
-                });`,
-        );
+    const resultString = thisArg.getResultString(
+        async (discord) =>
+            await discord.client.createInteractionResponse(
+                discord.interaction?.id as Snowflake,
+                discord.interaction?.token as string,
+                "$0" as unknown as InteractionTypes.ApplicationCommandAutocomplete,
+                {
+                    choices: ["$1"] as any,
+                },
+            ),
+        [InteractionTypes.ApplicationCommandAutocomplete, options.join(",\n")],
+    );
 
-        currentScope.update(res, data);
+    const res = escapeResult(resultString as string);
+    currentScope.update(res, data);
 
-        return {
-            code: res,
-            scope,
-        };
-    },
-};
+    return {
+        code: res,
+        scope,
+    };
+}, autocomplete);
+
+export const $autocompleteRespond = autocomplete.build();

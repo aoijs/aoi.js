@@ -14,10 +14,12 @@ import { AoiClientEvents } from "../typings/enums.js";
 import { onInteraction } from "../events/interactionCreate.js";
 import { onReady } from "../events/ready.js";
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface AoiClient extends AoiClientProps {
     client: Client;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class AoiClient {
     constructor(options: AoiClientOptions) {
         this.client = new Client(options);
@@ -31,10 +33,14 @@ class AoiClient {
 
         this.#bindEvents();
         this.#bindCommands();
-        this.util = Util;
-        Util.client = this;
+        this.util = new Util(this);
         this.__on__ = {};
     }
+
+    // static create() {
+    //     const file = "./config.aoi";
+
+    // }
     #bindEvents() {
         for (const event of this.options.events)
             switch (event) {
@@ -103,7 +109,7 @@ class AoiClient {
         return this.client.createGuildApplicationCommand(globalOrGuldId, data);
     }
 
-    returnComponent(name: string, dataString:string) {
+    returnComponent(name: string, dataString: string) {
         const component = this.managers.commands.component.get(name);
         if (!component) throw new Error(`Component ${name} not found`);
         const func = component.__compiled__.toString();

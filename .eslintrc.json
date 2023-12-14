@@ -4,17 +4,12 @@
         "es2021": true,
         "node": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
-    ],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
+    "plugins": ["@typescript-eslint"],
     "rules": {
         "arrow-spacing": [
             "error",
@@ -29,29 +24,12 @@
                 "properties": "always"
             }
         ],
-        "eqeqeq": [
-            "error",
-            "always"
-        ],
-        "strict": [
-            "error",
-            "global"
-        ],
-        "indent": [
-            "error",
-            4
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-trailing-spaces": [
-            "error"
-        ],
+        "eqeqeq": ["error", "always"],
+        "strict": ["error", "global"],
+        "indent": ["error", 4],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "no-trailing-spaces": ["error"],
         "no-multiple-empty-lines": [
             "error",
             {
@@ -59,42 +37,30 @@
             }
         ]
     },
-    "ignorePatterns": [
-        "node_modules/",
-        "dist/"
-    ],
+    "ignorePatterns": ["node_modules/", "dist/"],
     "overrides": [
         {
-            "files": [
-                "*.ts"
-            ],
+            "files": ["*.ts"],
             "rules": {
                 "@typescript-eslint/no-unused-vars": [
                     "error",
                     {
                         "argsIgnorePattern": "^_"
                     }
-                ]
+                ],
+                "@typescript-eslint/no-explicit-any": "off"
             }
         }
     ],
     "settings": {
         "import/resolver": {
             "node": {
-                "extensions": [
-                    ".js",
-                    ".ts"
-                ]
+                "extensions": [".js", ".ts"]
             }
         },
         "import/parsers": {
-            "@typescript-eslint/parser": [
-                ".ts"
-            ]
+            "@typescript-eslint/parser": [".ts"]
         },
-        "import/extensions": [
-            ".js",
-            ".ts"
-        ]
+        "import/extensions": [".js", ".ts"]
     }
 }
