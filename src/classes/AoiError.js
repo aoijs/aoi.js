@@ -80,6 +80,7 @@ class AoiError {
     d
   ) {
     options = options.data ?? options;
+    console.log(options)
     if (typeof options === "object") {
       options.content = options.content?.toString()?.trim() || " ";
       if (options.embeds && typeof options.embeds === "string") {
@@ -130,6 +131,7 @@ class AoiError {
           return undefined;
         });
       }
+      console.log(options)
     }
 
     if (extraOptions.reactions?.length) {
@@ -146,8 +148,9 @@ class AoiError {
       }, Time.parse(extraOptions.edits.time)?.ms);
     }
     if (extraOptions.deleteIn) {
-      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn)?.ms;
+      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn.split("}")[0])?.ms;
       setTimeout(() => msg.delete(), extraOptions.deleteIn);
+      console.log(extraOptions.deleteIn)
     }
     if (extraOptions.deleteCommand) {
       d.message.delete();

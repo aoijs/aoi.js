@@ -282,28 +282,46 @@ const FileParser = (msg, d) => {
 };
 
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
+  errorMessage = errorMessage.trim();
   const Checker = (parts, ayaya) => parts.includes("{" + ayaya + ":");
 
-  errorMessage = errorMessage.trim();
-  let suppress = false;
   let send = true;
+  let deleteCommand = false;
+  let suppress = false;
+  let interaction;
+  let deleteIn;
 
   let files = [];
+  let reactions = [];
   const embeds = [];
   const components = [];
 
+  let edits = {
+    time: "",
+    messages: [],
+  };
   const parts = CreateObjectAST(errorMessage);
+  console.log(parts);
   for (const part of parts) {
     errorMessage = errorMessage.replace(part, "");
     if (Checker(part, "newEmbed")) embeds.push(...(await EmbedParser(part, d)));
     else if (Checker(part, "actionRow"))
-      components.push(...(await ComponentParser(part, d)));
+      components.push(...(await ComponentParser(part)));
     else if (Checker(part, "attachment") || Checker(part, "file"))
-      files = FileParser(part, d);
+      files = FileParser(part);
+    else if (Checker(part, "edit")) edits = await EditParser(part);
     else if (Checker(part, "suppress")) suppress = true;
+    else if (Checker(part, "deleteCommand")) deleteCommand = true;
+    else if (Checker(part, "interaction")) interaction = true;
+    else if (Checker(part, "deleteIn"))
+      deleteIn = part.split(":")[1].trim();
+    else if (Checker(part, "reactions"))
+      reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
   }
 
-  if (!embeds.length || (send && suppress)) send = false;
+  if (!embeds.length) send = false;
+
+  if (send && suppress) send = false;
 
   if (returnMsg === true) {
     return {
@@ -312,7 +330,12 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
       content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
+        reactions: reactions.length ? reactions : undefined,
         suppress,
+        interaction,
+        edits,
+        deleteIn,
+        deleteCommand,
       },
     };
   }
@@ -333,6 +356,30 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     if (!m) return;
 
+    if (m && reactions.length) {
+      for (const reaction of reactions) {
+        await m.react(reaction).catch(console.error);
+      }
+    }
+
+    if (m && edits.timeout) {
+      for (const code of edits.messages) {
+        await new Promise((e) => setTimeout(e, edits.timeout));
+
+        const sender = await errorHandler(d, code, true);
+
+        await m.suppressEmbeds(suppress);
+
+        await m.edit(sender.message, sender.embed).catch(() => null);
+      }
+    }
+
+    if (m && deleteIn) {
+      m.delete({
+        timeout: deleteIn,
+      }).catch(() => null);
+    }
+
     if (returnMsg === "id") {
       return m.id;
     } else if (returnMsg === "object") {
@@ -340,6 +387,13 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     } else if (returnMsg === "withMessage") return m;
   }
 };
+
+const reactionParser = (reactions) => {
+  const regex = /(<a?:\w+:[0-9]+>)|\p{Extended_Pictographic}/gu;
+  const matches = reactions.match(regex);
+  if (!matches) return [];
+  return matches;
+}
 
 const SlashOptionsParser = async (options) => {
   options = mustEscape(options);
@@ -372,7 +426,10 @@ const SlashOptionsParser = async (options) => {
   if (Checker("role") && !(Checker("subCommand") || Checker("subGroup"))) {
     Alloptions = Alloptions.concat(await SlashOption.role(options));
   }
-  if (Checker("mentionable") && !(Checker("subCommand") || Checker("subGroup"))) {
+  if (
+    Checker("mentionable") &&
+    !(Checker("subCommand") || Checker("subGroup"))
+  ) {
     Alloptions = Alloptions.concat(await SlashOption.mentionable(options));
   }
   if (Checker("number") && !(Checker("subCommand") || Checker("subGroup"))) {
@@ -382,10 +439,47 @@ const SlashOptionsParser = async (options) => {
   return Alloptions;
 };
 
+const OptionParser = async (options, d) => {
+  const Checker = (msg) => options.includes(msg);
+  const optionData = {};
+  if (Checker("{edit:")) {
+    const editPart = options.split("{edit:")[1].split("}}")[0];
+    const dur = editPart.split(":")[0];
+    const msgs = editPart.split(":{").slice(1).join(":{").split("}:{");
+    const messages = [];
+    for (const msg of msgs) {
+      messages.push(await errorHandler(msg.split("}:{")[0], d));
+    }
+    optionData.edits = { time: dur, messages };
+  }
+  if (Checker("{reactions:")) {
+    const react = options.split("{reactions:")[1].split("}")[0];
+    optionData.reactions = react.split(",").map((x) => x.trim());
+  }
+  if (Checker("{delete:")) {
+    optionData.deleteIn = Time.parse(
+      options.split("{delete:")[1].split("}")[0].trim()
+    )?.ms;
+  }
+  if (Checker("{deleteIn:")) {
+    optionData.deleteIn = Time.parse(
+      options.split("{deleteIn:")[1].split("}")[0].trim()
+    )?.ms;
+  }
+  if (Checker("deletecommand")) {
+    optionData.deleteCommand = true;
+  }
+  if (Checker("interaction")) {
+    optionData.interaction = true;
+  }
+  return optionData;
+};
+
 module.exports = {
-  EmbedParser,
-  ComponentParser,
-  FileParser,
+  EmbedParser: EmbedParser,
+  ComponentParser: ComponentParser,
+  FileParser: FileParser,
   ErrorHandler: errorHandler,
-  SlashOptionsParser
+  SlashOptionsParser: SlashOptionsParser,
+  OptionParser,
 };
