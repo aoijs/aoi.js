@@ -131,7 +131,6 @@ class AoiError {
           return undefined;
         });
       }
-      console.log(options)
     }
 
     if (extraOptions.reactions?.length) {
@@ -150,7 +149,6 @@ class AoiError {
     if (extraOptions.deleteIn) {
       extraOptions.deleteIn = Time.parse(extraOptions.deleteIn.split("}")[0])?.ms;
       setTimeout(() => msg.delete(), extraOptions.deleteIn);
-      console.log(extraOptions.deleteIn)
     }
     if (extraOptions.deleteCommand) {
       d.message.delete();

@@ -301,7 +301,6 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     messages: [],
   };
   const parts = CreateObjectAST(errorMessage);
-  console.log(parts);
   for (const part of parts) {
     errorMessage = errorMessage.replace(part, "");
     if (Checker(part, "newEmbed")) embeds.push(...(await EmbedParser(part, d)));
