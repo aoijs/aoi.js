@@ -1,6 +1,6 @@
 module.exports = async (status, client) => {
   let statuses = client.statuses.allValues()
-  if (statuses.size <= 0) {
+  if (statuses.length <= 0) {
     return;
   }
 
