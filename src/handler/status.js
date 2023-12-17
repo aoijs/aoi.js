@@ -1,56 +1,46 @@
-module.exports = async (statuses, client) => {
-  if (statuses.size === 0) {
+module.exports = async (status, client) => {
+  let statuses = client.statuses.allValues()
+  if (statuses.size <= 0) {
     return;
   }
 
-  const statusArray = statuses.allValues();
   let y = 0;
 
   const processStatus = async () => {
-    if (!statusArray[y]) {
+    statuses = client.statuses.allValues()
+    if (!statuses[y]) {
       y = 0;
     }
 
     const stats = {
-      activity: {
-        type: statusArray[y].activity.type,
-        url: statusArray[y].activity.url,
-      },
+      activity: statuses[y].activity,
     };
 
-    if (statusArray[y].activity.name) {
-      if (statusArray[y].activity.name.includes("$")) {
+    if (name = stats?.activity?.name) {
+      if (name.includes("$")) {
         stats.activity.name = (
-            await client.functionManager.interpreter(
-                client,
-                {},
-                [],
-                { code: statusArray[y].activity.name },
-                client.db,
-                true
-            )
+          await client.functionManager.interpreter(
+            client,
+            {},
+            [],
+            { code: statuses[y].activity.name },
+            client.db,
+            true
+          )
         )?.code;
-      } else {
-        stats.activity.name = statusArray[y].activity.name;
       }
     } else {
       throw new TypeError(`Missing or invalid 'name' method in status[${y}]`);
     }
 
     client.user.setPresence({
-      status: statusArray[y].status,
+      status: statuses[y].status,
       activities: [stats.activity],
-      afk: statusArray[y].afk,
+      afk: statuses[y].afk,
     });
 
+    setTimeout(processStatus, statuses[y]?.time * 1000 || 0);
     y++;
-
-    if (y < statusArray.length) {
-      setTimeout(processStatus, statusArray[y]?.time * 1000 || 0);
-    } else {
-      y = 0;
-      setTimeout(processStatus, statusArray[y]?.time * 1000 || 0);
-    }
   };
 
   await processStatus();
