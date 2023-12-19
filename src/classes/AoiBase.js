@@ -34,6 +34,9 @@ class BaseClient extends Discord.Client {
 
     const aoiOptions = {};
     Object.assign(aoiOptions, options);
+    if (!options.intents) {
+      throw new TypeError("Client intents must be provided.");
+    }
     options.intents = options.intents.map((x) => IntentOptions[x] || x);
     super(options);
     this.aoiOptions = aoiOptions;
