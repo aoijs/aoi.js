@@ -1,14 +1,10 @@
-
 const {SI_SYMBOL} = require("../../utils/Constants")
 
 module.exports = async d => {
-    const {code} = d.command
-    const inside = d.unpack()
-    const err = d.inside(inside)
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    if (err) return d.error(err)
-
-    const abbrNumber = inside.inside.toUpperCase()
+    const [abbrNumber] = data.inside.toUpperCase()
 
     let abbrIndex
 
@@ -26,21 +22,16 @@ module.exports = async d => {
     if (isNaN(Number(number))) return d.aoiError.fnError(
         d,
         "custom",
-        {inside},
+        {inside: data.inside},
         "Invalid number in"
     )
 
     const num = parseFloat(number)
     const multiplier = abbrIndex ? 1e3 ** abbrIndex : 1
 
-    const expanded = num * multiplier
+    data.result = num * multiplier
 
     return {
-        code: d.util.setCode({
-            function: d.func,
-            code,
-            inside,
-            result: `${expanded}`
-        })
+        code: d.util.setCode(data)
     }
 }

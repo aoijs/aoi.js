@@ -72,8 +72,7 @@ class BaseClient extends Discord.Client {
               : ["main", "__aoijs_vars__"],
           },
           encryptionConfig: {
-            securityKey:
-              dbData?.securityKey ?? "a-32-characters-long-string-here",
+            securityKey: dbData?.securityKey ?? "a-32-characters-long-string-here",
             encriptData: dbData?.encriptData ?? false,
           },
           ...dbData?.extraOptions,
