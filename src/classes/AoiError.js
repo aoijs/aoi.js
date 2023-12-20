@@ -158,7 +158,7 @@ class AoiError {
 
   /**
    * @param  {string} name
-   * @param  {any} e
+   * @param err
    * @returns {void}
    */
   static consoleError(name, err) {
