@@ -1,7 +1,7 @@
 name: Add Feature label
 
 on:
- - pull_request_target
+  pull_request_target:
 
 jobs:
   add-feature-label:
@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Find new files in src directory
         run: |
           NEW_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
@@ -18,10 +19,10 @@ jobs:
               CHANGED_FILES+=("$file")
             fi
           done
-          echo "::set-output name=changed_files::${CHANGED_FILES[*]}"
         id: find-files
+
       - name: Add Feature label
-        if: ${{ steps.find-files.outputs.changed_files != '' }}
+        if: ${{ env.changed_files != '' }}
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
