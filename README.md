@@ -5,7 +5,7 @@
 </p>
 
 <div align="center">
-  <b>The most powerful string package to create a simple and fast Discord Bot.</b>
+  <b>The most powerful string package to create a simple fast Discord Bot.</b>
 </div>
 
 ---
