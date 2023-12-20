@@ -1,43 +1,22 @@
 {
   "name": "aoi.js",
-  "version": "5.0.0-dev",
-  "description": "aoi.js - Library that simplifies coding for Developing your Discord Bot with built-in functions.",
-  "main": "package/index.js",
-  "typings": "package/index.d.ts",
+  "version": "6.7.0",
+  "description": "A powerful package to create Discord Bots with built-in string functions.",
+  "author": "Leref <itzleref@gmail.com>",
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
   "scripts": {
-    "start": "node test.js",
-    "prettycheck": "prettier --check \"package/**/*.js\"",
-    "prettywrite": "prettier --write \"package/**/*.js\""
-  },
-  "dependencies": {
-    "@discordjs/voice": "^0.5.6",
-    "dbdjs.db": "^2.0.1",
-    "discord.js": "13.2.0",
-    "lavacoffee": "^1.3.0",
-    "soundcloud-downloader": "^1.0.0",
-    "spotify-url-info": "^2.2.0",
-    "youtube-sr": "^4.1.7",
-    "ytdl-core-discord": "^1.3.1"
-  },
-  "devDependencies": {
-    "@discordjs/opus": "^0.5.0",
-    "axios": "^0.21.1",
-    "ffmpeg-static": "^4.3.0",
-    "m3u8stream": "^0.8.4",
-    "node-fetch": "^2.6.1",
-    "prettier": "~2.2.1",
-    "prism-media": "^1.2.7",
-    "segfault-handler": "^1.3.0",
-    "tweetnacl": "^1.0.3",
-    "workerpool": "^6.1.0",
-    "ws": "^7.4.6",
-    "ytdl-core": "^4.9.0"
+    "start": "node index.js",
+    "prettycheck": "prettier --check \"src/**/*.js\"",
+    "prettywrite": "prettier --write \"src/**/*.js\""
   },
   "engines": {
-    "node": ">=16.6"
+    "node": ">=16.11.0"
   },
   "files": [
-    "package"
+    "src",
+    "LICENSE",
+    "README.md"
   ],
   "license": "Apache-2.0",
   "licenses": [
@@ -46,9 +25,10 @@
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
+  "homepage": "https://aoi.js.org",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/USERSATOSHI/aoi.js.git"
+    "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
   },
   "keywords": [
     "aoi.js",
@@ -56,12 +36,33 @@
     "aoi",
     "api",
     "dbd.js",
+    "dbdjs",
     "dbd",
     "bot",
+    "akarui",
+    "functions",
     "music",
+    "aoi.music",
+    "aoi.panel",
     "bdfd",
     "Bot Designer for Discord",
     "discord",
     "discordbot"
-  ]
+  ],
+  "dependencies": {
+    "@akarui/aoi.db": "^2.1.0",
+    "@akarui/structures": "^1.0.2",
+    "chalk": "^4.1.2",
+    "discord.js": "^14.14.1",
+    "undici": "^5.28.2"
+  },
+  "devDependencies": {
+    "aoi.js-library": "^2.0.2",
+    "discord-api-types": "^0.37.65",
+    "prettier": "^3.1.0",
+    "typescript": "^4.5.2",
+    "ws": "^8.3.0"
+  },
+  "type": "commonjs",
+  "types": "./src/index.d.ts"
 }

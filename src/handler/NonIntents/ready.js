@@ -1,0 +1,38 @@
+const Interpreter = require("../../core/interpreter.js");
+module.exports = async (client) => {
+    const cmds = client.cmd.ready.allValues();
+    let chan;
+    const data = {
+        client: client,
+    };
+    for (const cmd of cmds) {
+        if (cmd.channel?.includes("$")) {
+            const id = await Interpreter(
+                client,
+                data,
+                [],
+                { name: "ChannelParser", code: cmd.channel },
+                client.db,
+                true,
+            );
+            chan = client.channels.cache.get(id?.code);
+            data.channel = chan;
+            data.guild = chan?.guild;
+        } else {
+            chan = client.channels.cache.get(cmd.channel);
+            data.channel = chan;
+            data.guild = chan?.guild;
+        }
+        await Interpreter(
+            client,
+            data,
+            [],
+            cmd,
+            client.db,
+            false,
+            chan?.id,
+            {},
+            chan,
+        );
+    }
+};

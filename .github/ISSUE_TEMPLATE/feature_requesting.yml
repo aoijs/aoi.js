@@ -1,0 +1,42 @@
+name: Feature Request 
+description: Request a feature or suggest us what is in your mind!
+labels: "enhancement"
+assignees:
+  - enhancement 
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please explain what is in your mind, we would like to hear it from you! 🤠
+      
+  - type: dropdown
+    id: type
+    attributes:
+      label: Featuring Type
+      description: Please select a type of feature you want to request.
+      options:
+        - Function 
+        - Callback 
+        - Handler 
+        - Extensions 
+        - Others
+    validations:
+      required: true
+      
+  - type: textarea
+    id: explaining
+    attributes:
+      label: So, what is it about?
+      description: Please describe what you're requesting for. So, we Akarui Team can understand your request better and work on it faster!
+      placeholder: It's about...
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/AkaruiDevelopment/aoi.js/blob/v5/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct 
+          required: true

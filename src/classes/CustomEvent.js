@@ -1,0 +1,34 @@
+const EventExecuter = require("../handler/eventExecuter.js");
+const {EventEmitter} = require("events");
+const { Group : Collection } = require( "@akarui/structures" );
+
+class CustomEvent extends EventEmitter {
+    constructor(client) {
+        super(client);
+        this.client = client;
+        this.commands = new Collection();
+        this.client.customEvents = this;
+    }
+
+    command(d = {}) {
+        if (!d.listen) {
+            throw new TypeError(`Listen is not provided in ${d.name}`);
+        }
+        if (!d.code) {
+            throw new TypeError(`Code is not provided in ${d.name}`);
+        }
+
+        this.commands.set(d.name, d);
+    }
+
+    listen(event) {
+        this.on(event, async (...data) => {
+            const commands = this.commands.filter(
+                (x) => x.listen === event,
+            );
+            await EventExecuter(event, this.client, commands, ...data);
+        });
+    }
+}
+
+module.exports = CustomEvent;

@@ -1,76 +1,140 @@
-  <br />
-    <p>
-    <a href="https://aoi.leref.ga"><img src="https://aoi.js.org/assets/images/aoijs-new.png" alt="aoi.js" /></a>
-  </p>
+<p align="center">
+  <a href="https://aoi.js.org">
+    <img width="500" src="https://github.com/aoijs/website/blob/master/assets/images/aoijs-banner.png?raw=true" alt="aoijs">
+  </a>
+</p>
 
-# aoi.js
-[![Discord Server](https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white)](https://aoi.js.org/invite)
-[![NPM Version](https://img.shields.io/npm/v/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
-[![NPM Downloads](https://img.shields.io/npm/dt/aoi.js.svg?maxAge=3600)](https://www.npmjs.com/package/aoi.js)
+<div align="center">
+  <b>The most powerful string package to create a simple and fast Discord Bot.</b>
+</div>
+
+---
+
+<br/>
+
+<div align="center">
+
+[![NPM downloads][download-image]][download-url] &nbsp; &nbsp;
+[![AoiJS Server][aoijs-server]][aoijs-server-url] &nbsp; &nbsp;
+[![NPM version][npm-image]][npm-url] &nbsp; &nbsp;
+![License](https://img.shields.io/npm/l/aoi.js) &nbsp; &nbsp;
+![Website](https://img.shields.io/website?url=https%3A%2F%2Faoi.js.org&label=aoi.js.org) &nbsp; &nbsp;
+
+[npm-image]: https://img.shields.io/npm/v/aoi.js.svg?color=42cfff
+
+[npm-url]: https://npmjs.org/package/aoi.js
+
+[download-image]: https://img.shields.io/npm/dt/aoi.js.svg?color=3182b0
+
+[download-url]: https://npmjs.org/package/aoi.js
+
+[aoijs-server]: https://img.shields.io/discord/773352845738115102?color=5865F2&logo=discord&logoColor=white
+
+[aoijs-server-url]: https://discord.gg/HMUfMXDQsV
+
+  </div>
+
+<br />
+
+<div align = "center">
+
+**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
+
+</div>
+
+---
 
 ## About
-aoi.js is a package with customization and ready-to-use functions to make Discord Bots with ease.
 
-- Interaction Commands Support
-- Optimized and customizable 
-- 500+ functions available  
+aoi.js is a JavaScript library that is designed to make it easy to build Discord bots.
 
-The successor of [dbd.js](https://www.npmjs.com/package/dbd.js)
+It is open-source and free to use, and provides a simple, easy-to-use interface for interacting with the Discord API and
+handling events.
 
- 
-## Installation
+aoi.js is suitable for beginners who are new to building bots, as well as experienced developers who want to save time
+and streamline their workflow.
 
-**Node.JS 16.6.0 or newer is required.**  
+## Features
 
-```sh-session
-npm install aoi.js
+- **600+ Pre-built Functions:** aoi.js comes packed with over 600 pre-built functions that empower you to create dynamic
+  and interactive Discord bots with ease.
+- **Built-in Custom Local Database:** With aoi.js, you get a powerful custom local database out of the box.
+- **Extensions for Added Functionality:** Enhance your bots capabilities with aoi.js extensions like aoi.music and
+  aoi.panel. These extensions make it simple to add music playback, interactive panels, and more to your bot.
+- **Easy-to-Use and Beginner Friendly:** aoi.js boasts a user-friendly syntax that is perfect for beginners. The
+  simple `$` prefix makes it easy to write commands and get your bot up and running quickly.
+
+## Setup
+
+```javascript
+const {AoiClient} = require("aoi.js");
+
+const client = new AoiClient({
+    intents: ["MessageContent", "Guilds", "GuildMessages"],
+    events: ["onMessage", "onInteractionCreate"],
+    prefix: "Discord Bot Prefix",
+    token: "Discord Bot Token"
+});
+
+// Ping Command
+client.command({
+    name: "ping",
+    code: `Pong! $pingms`
+});
 ```
 
-### Setting up
+### Adding Database
 
-```js
-const aoijs = require("aoi.js")
+```javascript
+const {AoiClient} = require("aoi.js");
 
-const bot = new aoijs.Bot({
-token: "TOKEN", //Discord Bot Token
-prefix: "PREFIX", //Discord Bot Prefix
-intents: "all" //Discord Intents
-})
+const client = new AoiClient({
+    intents: ["MessageContent", "Guilds", "GuildMessages"],
+    events: ["onMessage", "onInteractionCreate"],
+    prefix: "Discord Bot Prefix",
+    token: "Discord Bot Token",
+    database: {
+        type: "aoi.db",
+        db: require("@akarui/aoi.db"),
+        dbType: "KeyValue",
+        tables: ["main"],
+        securityKey: "a-32-characters-long-string-here",
+    }
+});
 
-//Events
-bot.onMessage()
-
-//Command Example
-bot.command({
-name: "ping",
-code: `Pong! \`$ping\`ms`
-})
-
-//Ready Event
-bot.readyCommand({
-    channel: "",
-    code: `$log[Ready on $userTag[$clientID]]`
-})
+// Ping Command
+client.command({
+    name: "ping",
+    code: `Pong! $pingms`
+});
 ```
 
-### Optional packages
-- [ffmpeg-static](https://www.npmjs.com/package/ffmpeg-static) for allowing Music Filters to run smoothly (`npm install ffmpeg-static`)
+## Command Handler
 
-## Akarui Development
+By default, aoi.js does not have a command handler. However, you can easily add one by using the `loadCommands` method.
 
-aoi.js is made possible by Akarui Development. <br>
-A team of Developers that create packages.
+```javascript
+client.loadCommands("./commands/", true);
+```
 
-Owned by [Leref](https://leref.ga/) </br>
+- `./commands/` is the directory where your commands are located.
+- `true` allows to log the commands in console.
 
-## Links
-- [Website](https://aoi.js.org)
-- [Github](https://github.com/aoijs/aoi.js)
-- [Discord Server](https://aoi.js.org/invite)
-- [Documentation](https://aoi.leref.ga)
+## Notices
 
-## Open Source
+- **Reading Functions**: Currently it reads `$` functions from bottom to top.
 
-aoi.js is available and open source for the community to explore and contribute for future updates.
+## Official Extensions
 
-Please read [Contributing](https://github.com/aoijs/aoi.js/blob/master/.github/CONTRIBUTING.md)
+<div align="center">
+  <a href="https://aoi.js.org/extensions/aoipanel">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@akarui/aoi.panel">
+  </a>
+  <a href="https://aoi.js.org/extensions/aoimusic">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@akarui/aoi.music">
+  </a>
+</div>
+
+## Contributing
+
+[Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)

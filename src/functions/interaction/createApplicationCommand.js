@@ -1,0 +1,82 @@
+const parser = require("../../handler/slashCommandOptionsParser");
+const {SlashTypes} = require("../../utils/InteractionConstants.js");
+const {ApplicationCommandType} = require("discord.js");
+module.exports = async (d) => {
+    const {code} = d.command;
+    const inside = d.unpack();
+    const err = d.inside(inside);
+    if (err) return d.error(err);
+
+    let [
+        guildID,
+        name,
+        description,
+        defaultPermission = "true",
+        type = "slash",
+        ...opts
+    ] = inside.splits;
+    name = name.addBrackets();
+    let options;
+    let data;
+    const guild =
+        guildID === "global"
+            ? undefined
+            : guildID === "custom"
+                ? "custom"
+                : await d.util.getGuild(d, guildID);
+    if (!guild && !["global", "custom"].includes(guildID))
+        return d.aoiError.fnError(d, "guild", {inside});
+    type = SlashTypes[type] || type;
+    if (type === ApplicationCommandType.ChatInput) {
+        if (opts.length) {
+            if (opts.length === 1) {
+                try {
+                    options = JSON.parse(opts[0]);
+                    options = Array.isArray(options) ? options : [options];
+                } catch (e) {
+                    if (opts[0].startsWith("{") && opts[0].endsWith("}"))
+                        options = await d.util.parsers.SlashOptionsParser(opts[0] || "");
+                    else options = await parser(opts);
+                }
+            } else {
+                options = await parser(opts);
+            }
+        }
+    } else {
+        description = null;
+    }
+
+    if (guild === "custom") {
+        data = d.client.interactionManager.applicationData.get(name.toLowerCase());
+        if (!data)
+            return d.aoiError.fnError(
+                d,
+                "custom",
+                {},
+                "No Slash Data Present With Following Keyword: " + name.toLowerCase(),
+            );
+    } else {
+        data = {
+            data: {
+                name: name,
+                type,
+                description: description?.addBrackets(),
+                defaultMemberPermission: defaultPermission === "true" || defaultPermission === "true",
+                options,
+            },
+            guildID: guild?.id,
+        };
+    }
+    await d.client.application.commands.create(data.data, data.guildID).catch((e) => {
+        d.aoiError.fnError(
+            d,
+            "custom",
+            {},
+            "Failed To Create Application Command With Reason: " + e,
+        );
+    });
+
+    return {
+        code: d.util.setCode({function: d.func, code, inside}),
+    };
+};

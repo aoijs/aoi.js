@@ -1,0 +1,18 @@
+Client:
+  - any: ['src/structures/Client.ts', 'src/functions/discord/client/*']
+  
+Classes: 
+  - src/structures/*
+  
+Manager:
+  - src/manager/*
+
+Core:
+  - src/core/**/*
+
+Functions:Discord: 
+  - src/functions/discord/**/*
+
+Functions:JS:
+  - src/functions/js/**/*
+

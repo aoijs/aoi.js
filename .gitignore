@@ -1,7 +1,17 @@
-commands
-config.json
+#Ignore modules
 node_modules
-database
-/test.js
+
+#Ignore database files
+/database
+
+#Ignore Test Environment
+/commands
+config.json
+src/tests/
+plugins
+/index.js
 .idea
-index.js
+.vscode
+.DS_Store
+/dist
+ignore
