@@ -1,14 +1,12 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [text, ...chars] = inside.splits;
+    const [text, ...characters] = data.inside.splits;
 
-    const result = chars.some(x => text.deleteBrackets().includes(x.deleteBrackets()));
+    data.result = characters.some(x => text.deleteBrackets().includes(x.deleteBrackets()));
 
     return {
-        code: d.util.setCode({function: d.func, code, result, inside})
+        code: d.util.setCode(data)
     }
 }
