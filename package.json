@@ -1,6 +1,6 @@
 {
   "name": "aoi.js",
-  "version": "6.6.1",
+  "version": "6.7.0",
   "description": "A powerful package to create Discord Bots with built-in string functions.",
   "author": "Leref <itzleref@gmail.com>",
   "main": "src/index.js",
@@ -50,7 +50,7 @@
     "discordbot"
   ],
   "dependencies": {
-    "@akarui/aoi.db": "^2.0.0",
+    "@akarui/aoi.db": "^2.1.0",
     "@akarui/structures": "^1.0.2",
     "chalk": "^4.1.2",
     "discord.js": "^14.14.1",
