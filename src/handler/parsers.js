@@ -8,10 +8,17 @@ const { deprecate: deprecation } = require("util");
 
 let executed = {};
 function deprecate(func, newfunc) {
-    if (!executed[func]) {
-        deprecation(() => { }, `${chalk.grey(func)} will be removed in a future version of aoi.js, start using ${chalk.cyan(newfunc)} instead.`)();
-        executed[func] = true;
-    }
+  if (!executed[func]) {
+    deprecation(
+      () => {},
+      `${chalk.grey(
+        func
+      )} will be removed in a future version of aoi.js, start using ${chalk.cyan(
+        newfunc
+      )} instead.`
+    )();
+    executed[func] = true;
+  }
 }
 
 const EmbedParser = async (msg, d) => {
@@ -174,9 +181,53 @@ const ComponentParser = async (msg, d) => {
       const disabled = inside.shift() === "true";
       const options = inside.join(":").trim();
 
-      let optArray = [];
+      const selectMenuTypes = {
+        userInput: 5,
+        roleInput: 6,
+        mentionableInput: 7,
+        channelInput: 8,
+      }; // types accepted in loop
+
+      let selectMenuOptions = [];
+
+      if (options.includes("{stringInput:")) {
+        const opts = options.split("{stringInput:").slice(1);
+
+        for (let opt of opts) {
+          opt = opt.split("}")[0].split(":");
+          const label = opt.shift();
+          const value = opt.shift();
+          const desc = opt.shift();
+          const def = opt.shift() === "true";
+          let emoji;
+
+          const ind = {
+            label: label,
+            value: value,
+            description: desc,
+            default: def,
+          };
+
+          if (opt) {
+            try {
+              emoji = d.util.getEmoji(d, opt.toString().addBrackets());
+              ind.emoji = {
+                name: emoji.name,
+                id: emoji.id,
+                animated: emoji.animated,
+              };
+            } catch (e) {
+              emoji = emoji ?? opt.toString().addBrackets();
+              ind.emoji = emoji || undefined;
+            }
+          }
+
+          selectMenuOptions.push(ind);
+        }
+      }
+
       if (options.includes("{selectMenuOptions:")) {
-        deprecate("{selectMenuOptions:}", "{stringInput:}")
+        deprecate("{selectMenuOptions:}", "{stringInput:}");
         const opts = options.split("{selectMenuOptions:").slice(1);
 
         for (let opt of opts) {
@@ -208,55 +259,34 @@ const ComponentParser = async (msg, d) => {
             }
           }
 
-          optArray.push(ind);
+          selectMenuOptions.push(ind);
         }
       }
 
-      if (options.includes("{stringInput:")) {
-        const opts = options.split("{stringInput:").slice(1);
-
-        for (let opt of opts) {
-          opt = opt.split("}")[0].split(":");
-          const label = opt.shift();
-          const value = opt.shift();
-          const desc = opt.shift();
-          const def = opt.shift() === "true";
-          let emoji;
-
-          const ind = {
-            label: label,
-            value: value,
-            description: desc,
-            default: def,
-          };
-
-          if (opt) {
-            try {
-              emoji = d.util.getEmoji(d, opt.toString().addBrackets());
-              ind.emoji = {
-                name: emoji.name,
-                id: emoji.id,
-                animated: emoji.animated,
-              };
-            } catch {
-              emoji = emoji ?? opt.toString().addBrackets();
-              ind.emoji = emoji || undefined;
-            }
-          }
-
-          optArray.push(ind);
-        }
+      if (selectMenuOptions.length > 0) {
+        buttonPart.push({
+          type: 3,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+          options: selectMenuOptions,
+        });
       }
 
-      buttonPart.push({
-        type: 3,
-        custom_id: customID,
-        placeholder: placeholder,
-        min_values: minVal,
-        max_values: maxVal,
-        disabled,
-        options: optArray,
-      });
+      for (const type in selectMenuTypes) {
+        if (options.includes(`{${type}}`)) {
+          buttonPart.push({
+            type: selectMenuTypes[type],
+            custom_id: customID,
+            placeholder: placeholder,
+            min_values: minVal,
+            max_values: maxVal,
+            disabled,
+          });
+        }
+      }
     }
     if (Checker("textInput")) {
       let inside = aoi.split("{textInput:").slice(1);
@@ -360,10 +390,11 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     else if (Checker(part, "suppress")) suppress = true;
     else if (Checker(part, "deleteCommand")) deleteCommand = true;
     else if (Checker(part, "interaction")) interaction = true;
-    else if (Checker(part, "deleteIn"))
-      deleteIn = part.split(":")[1].trim();
+    else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
     else if (Checker(part, "reactions"))
-      reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
+      reactions = reactionParser(
+        part.split(":").slice(1).join(":").replace("}", "")
+      );
   }
 
   if (!embeds.length) send = false;
@@ -374,7 +405,8 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     return {
       embeds: send ? embeds : [],
       components,
-      content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      content:
+        errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
         reactions: reactions.length ? reactions : undefined,
@@ -440,7 +472,7 @@ const reactionParser = (reactions) => {
   const matches = reactions.match(regex);
   if (!matches) return [];
   return matches;
-}
+};
 
 const SlashOptionsParser = async (options) => {
   options = mustEscape(options);
