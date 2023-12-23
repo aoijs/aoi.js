@@ -1,12 +1,12 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    let [guildID, type, force = "false"] = data.inside.splits;
+    let [guildID = d.guild?.id, type = "all", force = "false"] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
     if (force === "true") {
-        guild.emojis.fetch();
+        await guild.emojis.fetch();
     }
 
     data.result = type
