@@ -388,6 +388,12 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
       files = FileParser(part);
     else if (Checker(part, "edit")) edits = await EditParser(part);
     else if (Checker(part, "suppress")) suppress = true;
+    else if (Checker(part, "execute")) {
+      let cmdname = part.split(":")[1].split("}")[0].trim();
+      const cmd = d.client.cmd.awaited.find((x) => x.name === cmdname);
+      if (!cmd) return console.error(`AoiError: Invalid awaited command '${chalk.cyan(cmdname)}' in ${chalk.grey(`{execute:${cmdname}}`)}`);
+      await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
+    } 
     else if (Checker(part, "deleteCommand")) deleteCommand = true;
     else if (Checker(part, "interaction")) interaction = true;
     else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
