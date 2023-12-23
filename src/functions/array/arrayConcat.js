@@ -6,7 +6,7 @@ module.exports = async (d) => {
   
   const name = names.shift();
 
-  if (!d.data.arrays[name]) {
+  if (!d.data.arrays?.[name]) {
     return d.aoiError.fnError(
       d,
       "custom",

@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
   const [name, query, queryType = "=="] = data.inside.splits;
 
-  if (!d.data.arrays[name]) {
+  if (!d.data.arrays?.[name]) {
     return d.aoiError.fnError(
       d,
       "custom",

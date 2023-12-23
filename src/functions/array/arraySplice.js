@@ -4,11 +4,10 @@ module.exports = async d => {
 
     const [ name, index,amount,...elements ] = data.inside.splits;
 
-    if ( !d.data.arrays[ name ] )
-    {
+    if (!d.data.arrays?.[name]) {
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
     }
-
+    
     data.result = d.arrays[ name ].splice(index,amount,...elements);
     d.data.arrays = d.arrays;
     return {

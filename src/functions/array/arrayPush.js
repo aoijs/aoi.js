@@ -5,8 +5,7 @@ module.exports = async d =>
 
     const [ name, ...elements ] = data.inside.splits;
 
-    if ( !d.data.arrays[ name ] )
-    {
+    if (!d.data.arrays?.[name]) {
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
     }
 
