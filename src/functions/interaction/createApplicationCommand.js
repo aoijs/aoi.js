@@ -12,6 +12,7 @@ module.exports = async (d) => {
         name,
         description,
         defaultPermission = "true",
+        dmPermissions = "true",
         type = "slash",
         ...opts
     ] = inside.splits;
@@ -61,7 +62,8 @@ module.exports = async (d) => {
                 name: name,
                 type,
                 description: description?.addBrackets(),
-                defaultMemberPermission: defaultPermission === "true" || defaultPermission === "true",
+                defaultMemberPermission: defaultPermission === "true",
+                dmPermissions: dmPermissions === "true",
                 options,
             },
             guildID: guild?.id,
