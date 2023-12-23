@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [content = "", embeds = "", components = "", files = "", ephemeral = "false"] = data.inside.splits
+    let [content = "", embeds = "", components = "", files = "", ephemeral = "false", returnId = "false"] = data.inside.splits
 
     embeds = await d.util.parsers.EmbedParser(embeds, d);
 
@@ -10,7 +10,7 @@ module.exports = async d => {
 
     files = await d.util.parsers.FileParser(files, d);
 
-    await d.data.interaction?.followUp({
+    const interaction = await d.data.interaction?.followUp({
         content: content.trim() === "" ? " " : content.addBrackets(),
         embeds: embeds,
         components: components,
@@ -19,6 +19,8 @@ module.exports = async d => {
     }).catch(e => {
         d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
     })
+
+    if (returnId === "true") data.result = interaction?.id ?? undefined;
 
     return {
         code: d.util.setCode(data)

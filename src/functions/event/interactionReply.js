@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [content = "", embeds = "", components = "", files = "", allowedMentions = "all", ephemeral = "false"] = data.inside.splits
+    let [content = "", embeds = "", components = "", files = "", allowedMentions = "all", ephemeral = "false", returnId = "false"] = data.inside.splits
 
     embeds = await d.util.parsers.EmbedParser(embeds, d);
 
@@ -22,6 +22,8 @@ module.exports = async d => {
         },
         ephemeral: ephemeral === "true" || ephemeral === "true"
     })
+
+    if (returnId === "true") data.result = (await d.data.interaction?.fetchReply())?.id ?? undefined;
 
     return {
         code: d.util.setCode(data)
