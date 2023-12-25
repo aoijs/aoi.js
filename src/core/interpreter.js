@@ -553,7 +553,6 @@ const Interpreter = async (
                 console.error(e);
             }
         }
-        console.log(returnData);
         return Object.keys(returnData).length ? returnData : undefined
     } catch (e) {
         console.error(e);
