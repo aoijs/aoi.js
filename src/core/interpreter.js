@@ -114,15 +114,14 @@ const Interpreter = async (
         command.codeLines =
             command.codeLines ||
             client.functionManager.serializeCode(command.code);
-        let funcs = command.functions?.length
-            ? command.functions
-            : client.functionManager.findFunctions(command.code);
+        let funcs = client.functionManager.findFunctions(command.code);
         command.__path__ = PATH.sep + command.name + ".js";
         //   debug system
         const debug = {
             code,
-            functions: command.functions,
+            functions: funcs,
         };
+
         if (command["$if"] === "old") {
             deprecateOldIfUsage();
             code = (
@@ -139,7 +138,7 @@ const Interpreter = async (
                             code: code,
                             error: command.error,
                             async: command.async || false,
-                            functions: command.functions,
+                            functions: funcs,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
                         },
@@ -254,13 +253,14 @@ const Interpreter = async (
                     data,
                     channelUsed,
                     useChannel,
-                    returnMessage,
-                    returnExecution,
-                    returnID,
-                    sendMessage,
+                    false,
+                    false,
+                    false,
+                    false,
                 );
 
-                FuncData.code = ""; // preventing aoi.js from sending the code as message
+                code = FuncData.code;
+
             } else {
                 FuncData = await client.functionManager.cache
                     .get(func.replace("$", "").replace("[", ""))
@@ -271,7 +271,7 @@ const Interpreter = async (
                             code: code,
                             error: command.error,
                             async: command.async || false,
-                            functions: command.functions,
+                            functions: funcs,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
                             funcLine: funcLine,
@@ -413,7 +413,7 @@ const Interpreter = async (
                     });
             }
 
-            code = FuncData?.code ?? code;
+            code = FuncData?.code.addBrackets() ?? code.addBrackets();
 
             if (FuncData?.randoms) {
                 randoms = FuncData.randoms;
@@ -481,6 +481,7 @@ const Interpreter = async (
         code = code.replaceAll("$executionTime", ended);
 
         code = code.trim();
+
         if (embeds?.some((x) => x === undefined)) {
             error = true;
             return AoiError.consoleError("EmbedError", "Index are not defined.");
@@ -552,7 +553,8 @@ const Interpreter = async (
                 console.error(e);
             }
         }
-        return Object.keys(returnData).length ? returnData : undefined;
+        console.log(returnData);
+        return Object.keys(returnData).length ? returnData : undefined
     } catch (e) {
         console.error(e);
     }
