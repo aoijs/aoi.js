@@ -114,14 +114,15 @@ const Interpreter = async (
         command.codeLines =
             command.codeLines ||
             client.functionManager.serializeCode(command.code);
-        let funcs = client.functionManager.findFunctions(command.code);
+        let funcs = command.functions?.length
+            ? command.functions
+            : client.functionManager.findFunctions(command.code);
         command.__path__ = PATH.sep + command.name + ".js";
         //   debug system
         const debug = {
             code,
-            functions: funcs,
+            functions: command.functions,
         };
-
         if (command["$if"] === "old") {
             deprecateOldIfUsage();
             code = (
@@ -138,7 +139,7 @@ const Interpreter = async (
                             code: code,
                             error: command.error,
                             async: command.async || false,
-                            functions: funcs,
+                            functions: command.functions,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
                         },
@@ -238,11 +239,13 @@ const Interpreter = async (
                 Object.assign(d, functionObj);
                 let param = [];
                 for (let p = functionObj.params.length - 1; p >= 0; p--) {
-                    d.code = d.code.replace(new RegExp(`\\{${functionObj.params[p]}\\}`, "g"), unpack(code, func).splits[p]);
+                    d.code = d.code.replace(
+                        `{${functionObj.params[p]}}`,
+                        unpack(code, func).splits[p]
+                    );
                     param.push(functionObj.params[p]);
                 }
-                                
-                FuncData = await Interpreter(
+                FuncData = await client.functionManager.interpreter(
                     client,
                     message,
                     args,
@@ -250,17 +253,82 @@ const Interpreter = async (
                     client.db,
                     true,
                     channelUsed,
-                    data,
-                    channelUsed,
+                    {
+                        randoms: randoms,
+                        command: {
+                            name: command.name,
+                            code: code,
+                            error: command.error,
+                            async: command.async || false,
+                            functions: command.functions,
+                            __path__: command.__path__,
+                            codeLines: command.codeLines,
+                            funcLine: funcLine,
+                        },
+                        helpers: {
+                            time: Time,
+                            checkCondition: CheckCondition,
+                            mustEscape,
+                        },
+                        args: args,
+                        aoiError: require("../classes/AoiError.js"),
+                        data: data,
+                        func: func,
+                        funcLine,
+                        util: Util,
+                        allowedMentions: allowedMentions,
+                        embeds: embeds || [],
+                        components: components,
+                        files: attachments || [],
+                        timezone: timezone,
+                        channelUsed: channelUsed,
+                        vars: letVars,
+                        object: object,
+                        disableMentions: disableMentions,
+                        returnID: returnID,
+                        array: array,
+                        arrays,
+                        reactions: reactions,
+                        message: message.message || message,
+                        msg: msg.message || msg,
+                        author: author,
+                        guild: guild,
+                        channel: channel,
+                        member: member,
+                        mentions: mentions,
+                        unpack() {
+                            const last = code.split(func.replace("[", "")).length - 1;
+                            const sliced = code.split(func.replace("[", ""))[last];
+
+                            return sliced.after();
+                        },
+                        inside(unpacked) {
+                            if (typeof unpacked.inside !== "string") {
+                                if (suppressErrors) return suppressErrors;
+                                else {
+                                    return client.aoiOptions.suppressAllErrors
+                                        ? client.aoiOptions.errorMessage
+                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                }
+                            } else return false;
+                        },
+                        noop() { },
+                        interpreter: Interpreter,
+                        client: client,
+                        embed: Discord.EmbedBuilder,
+                    },
                     useChannel,
-                    false,
-                    false,
-                    false,
-                    false,
+                    returnMessage,
+                    returnExecution,
+                    returnID,
+                    sendMessage
                 );
-
-                code = FuncData.code;
-
+                FuncData.code = code.replaceLast(
+                    functionObj.params.length
+                        ? `${func}${param.join(";")}`
+                        : func,
+                    FuncData.code
+                );
             } else {
                 FuncData = await client.functionManager.cache
                     .get(func.replace("$", "").replace("[", ""))
@@ -271,7 +339,7 @@ const Interpreter = async (
                             code: code,
                             error: command.error,
                             async: command.async || false,
-                            functions: funcs,
+                            functions: command.functions,
                             __path__: command.__path__,
                             codeLines: command.codeLines,
                             funcLine: funcLine,
@@ -413,7 +481,7 @@ const Interpreter = async (
                     });
             }
 
-            code = FuncData?.code.addBrackets() ?? code.addBrackets();
+            code = FuncData?.code ?? code;
 
             if (FuncData?.randoms) {
                 randoms = FuncData.randoms;
@@ -478,10 +546,9 @@ const Interpreter = async (
         );
 
         debug.executionTime = ended + " ms";
-        code = code.replaceAll("$executionTime", ended);
+        code = code?.replace(/\$executiontime/gi, ended);
 
         code = code.trim();
-
         if (embeds?.some((x) => x === undefined)) {
             error = true;
             return AoiError.consoleError("EmbedError", "Index are not defined.");
