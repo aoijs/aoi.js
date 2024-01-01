@@ -24,7 +24,7 @@ module.exports = async (d) => {
   messages = [...messages.values()]
     .filter((x) => {
       if (filters.includes("everyone")) return true;
-      if (filters.includes("notpinned") && x.pinned) return false;
+      if (filters.includes("notpinned") && !x.pinned) return true;
       if (filters.includes("bots") && x.author?.bot) return true;
       if (
         filters.some(
