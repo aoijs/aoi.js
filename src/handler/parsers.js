@@ -186,7 +186,7 @@ const ComponentParser = async (msg, d) => {
         roleInput: 6,
         mentionableInput: 7,
         channelInput: 8,
-      }; // types accepted in loop
+      };
 
       let selectMenuOptions = [];
 
