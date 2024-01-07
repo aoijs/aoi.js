@@ -3,6 +3,11 @@ module.exports = async d => {
     if (data.err) return d.error(data.err);
 
     const [name,separator = ","] = data.inside.splits;
+
+    if (!d.data.arrays?.[name]) {
+        return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
+    }
+
     data.result = d.arrays[name].join(separator);
 
     return {

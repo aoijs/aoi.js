@@ -1,8 +1,26 @@
 const Discord = require("discord.js");
+const chalk = require("chalk");
+const SlashOption = require("./slashOption.js");
 const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
-const SlashOption = require("./slashOption.js");
 const { CreateObjectAST } = require("../utils/helpers/functions.js");
+const { deprecate: deprecation } = require("util");
+
+let executed = {};
+function deprecate(func, newfunc) {
+  if (!executed[func]) {
+    deprecation(
+      () => {},
+      `${chalk.grey(
+        func
+      )} will be removed in a future version of aoi.js, start using ${chalk.cyan(
+        newfunc
+      )} instead.`
+    )();
+    executed[func] = true;
+  }
+}
+
 const EmbedParser = async (msg, d) => {
   msg = mustEscape(msg);
 
@@ -163,8 +181,53 @@ const ComponentParser = async (msg, d) => {
       const disabled = inside.shift() === "true";
       const options = inside.join(":").trim();
 
-      let optArray = [];
+      const selectMenuTypes = {
+        userInput: 5,
+        roleInput: 6,
+        mentionableInput: 7,
+        channelInput: 8,
+      };
+
+      let selectMenuOptions = [];
+
+      if (options.includes("{stringInput:")) {
+        const opts = options.split("{stringInput:").slice(1);
+
+        for (let opt of opts) {
+          opt = opt.split("}")[0].split(":");
+          const label = opt.shift();
+          const value = opt.shift();
+          const desc = opt.shift();
+          const def = opt.shift() === "true";
+          let emoji;
+
+          const ind = {
+            label: label,
+            value: value,
+            description: desc,
+            default: def,
+          };
+
+          if (opt) {
+            try {
+              emoji = d.util.getEmoji(d, opt.toString().addBrackets());
+              ind.emoji = {
+                name: emoji.name,
+                id: emoji.id,
+                animated: emoji.animated,
+              };
+            } catch (e) {
+              emoji = emoji ?? opt.toString().addBrackets();
+              ind.emoji = emoji || undefined;
+            }
+          }
+
+          selectMenuOptions.push(ind);
+        }
+      }
+
       if (options.includes("{selectMenuOptions:")) {
+        deprecate("{selectMenuOptions:}", "{stringInput:}");
         const opts = options.split("{selectMenuOptions:").slice(1);
 
         for (let opt of opts) {
@@ -190,25 +253,40 @@ const ComponentParser = async (msg, d) => {
                 id: emoji.id,
                 animated: emoji.animated,
               };
-            } catch {
+            } catch (e) {
               emoji = emoji ?? opt.toString().addBrackets();
               ind.emoji = emoji || undefined;
             }
           }
 
-          optArray.push(ind);
+          selectMenuOptions.push(ind);
         }
       }
 
-      buttonPart.push({
-        type: 3,
-        custom_id: customID,
-        placeholder: placeholder,
-        min_values: minVal,
-        max_values: maxVal,
-        disabled,
-        options: optArray,
-      });
+      if (selectMenuOptions.length > 0) {
+        buttonPart.push({
+          type: 3,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+          options: selectMenuOptions,
+        });
+      }
+
+      for (const type in selectMenuTypes) {
+        if (options.includes(`{${type}}`)) {
+          buttonPart.push({
+            type: selectMenuTypes[type],
+            custom_id: customID,
+            placeholder: placeholder,
+            min_values: minVal,
+            max_values: maxVal,
+            disabled,
+          });
+        }
+      }
     }
     if (Checker("textInput")) {
       let inside = aoi.split("{textInput:").slice(1);
@@ -305,17 +383,24 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     errorMessage = errorMessage.replace(part, "");
     if (Checker(part, "newEmbed")) embeds.push(...(await EmbedParser(part, d)));
     else if (Checker(part, "actionRow"))
-      components.push(...(await ComponentParser(part)));
+      components.push(...(await ComponentParser(part, d)));
     else if (Checker(part, "attachment") || Checker(part, "file"))
       files = FileParser(part);
     else if (Checker(part, "edit")) edits = await EditParser(part);
     else if (Checker(part, "suppress")) suppress = true;
+    else if (Checker(part, "execute")) {
+      let cmdname = part.split(":")[1].split("}")[0].trim();
+      const cmd = d.client.cmd.awaited.find((x) => x.name === cmdname);
+      if (!cmd) return console.error(`AoiError: Invalid awaited command '${chalk.cyan(cmdname)}' in ${chalk.grey(`{execute:${cmdname}}`)}`);
+      await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
+    } 
     else if (Checker(part, "deleteCommand")) deleteCommand = true;
     else if (Checker(part, "interaction")) interaction = true;
-    else if (Checker(part, "deleteIn"))
-      deleteIn = part.split(":")[1].trim();
+    else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
     else if (Checker(part, "reactions"))
-      reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
+      reactions = reactionParser(
+        part.split(":").slice(1).join(":").replace("}", "")
+      );
   }
 
   if (!embeds.length) send = false;
@@ -326,7 +411,8 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     return {
       embeds: send ? embeds : [],
       components,
-      content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      content:
+        errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
         reactions: reactions.length ? reactions : undefined,
@@ -392,7 +478,7 @@ const reactionParser = (reactions) => {
   const matches = reactions.match(regex);
   if (!matches) return [];
   return matches;
-}
+};
 
 const SlashOptionsParser = async (options) => {
   options = mustEscape(options);

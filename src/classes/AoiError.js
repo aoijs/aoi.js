@@ -80,7 +80,6 @@ class AoiError {
     d
   ) {
     options = options.data ?? options;
-    console.log(options)
     if (typeof options === "object") {
       options.content = options.content?.toString()?.trim() || " ";
       if (options.embeds && typeof options.embeds === "string") {

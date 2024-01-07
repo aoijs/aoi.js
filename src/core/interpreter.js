@@ -620,7 +620,7 @@ const Interpreter = async (
                 console.error(e);
             }
         }
-        return Object.keys(returnData).length ? returnData : undefined;
+        return Object.keys(returnData).length ? returnData : undefined
     } catch (e) {
         console.error(e);
     }
