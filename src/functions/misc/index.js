@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
     const i = d?.data.index;
 
-    if (!i && i !== 0) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'No loop command.');
+    if (!i && i !== 0) return d.aoiError.fnError(d, 'custom', {}, 'No loop command.');
 
     data.result = Number(i);
     
