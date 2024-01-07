@@ -16,7 +16,7 @@ module.exports = async (status, client) => {
       activity: statuses[y].activity,
     };
 
-    if (name === stats?.activity?.name) {
+    if (name = stats?.activity?.name) {
       if (name.includes("$")) {
         stats.activity.name = (
           await client.functionManager.interpreter(
