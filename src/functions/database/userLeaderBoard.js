@@ -5,7 +5,7 @@ module.exports = async d => {
   const [
     guildID = d.guild?.id,
     variable,
-    type = 'asc',
+    order = 'asc',
     custom = `{top}. {username}: {value:,}`,
     list = 10,
     page = 1,
@@ -18,20 +18,19 @@ module.exports = async d => {
   if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
   if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
-  let v = d.client.variableManager.get(variable, table);
 
-  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID));
-  if (d.client.db.type === "aoi.db")
-    db.sort((a, b) => Number(a.value) - Number(b.value));
-  else db.sort((a, b) => Number(y.data.value) - Number(x.data.value));
+  if (!order || (order.toLowerCase() !== "asc" && order.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `order must be "desc" or "asc"`)
 
-  if (type === "desc") db = db.reverse();
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID), page * list);
+
+  db.sort((a, b) => Number(a.value) - Number(b.value));
+  if (order === "desc") db = db.reverse();
 
   if (hideNegativeValue === "true") db = db.filter(x => x.value >= 0);
   if (hideZeroValue === "true") db = db.filter(x => x.value != 0);
 
   let y = 0;
-  let value;
+  let value; 
   let content = [];
 
   for (const Data of db) {
@@ -63,13 +62,13 @@ module.exports = async d => {
 
         if (!awaited) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, ` Invalid awaited command '${ins}' in`);
 
-        const CODE = await d.interpreter(d.client, {
+        const code = await d.interpreter(d.client, {
           guild: guild,
           channel: d.message.channel,
           author: user
         }, d.args, awaited, undefined, true);
 
-        text = text.replace(`{execute:${ins}}`, CODE);
+        text = text.replace(`{execute:${ins}}`, code);
       }
 
       content.push(text);

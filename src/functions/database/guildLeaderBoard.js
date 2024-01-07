@@ -13,15 +13,13 @@ module.exports = async (d) => {
     hideZeroValue = false
   ] = data.inside.splits;
 
-  if (!d.client.variableManager.has(variable, table))
-    return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
-  let v = d.client.variableManager.get(variable, table);
+  if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
+  
+  if (!order || (order.toLowerCase() !== "asc" && order.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `order must be "desc" or "asc"`)
 
-  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2);
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2, page * list);
 
-  if (d.client.db.type === "aoi.db")
-    db.sort((a, b) => Number(a.value) - Number(b.value));
-  else db.sort((a, b) => Number(y.data.value) - Number(x.data.value));
+  db.sort((a, b) => Number(a.value) - Number(b.value));
 
   if (type === "desc") db = db.reverse();
 
@@ -63,7 +61,7 @@ module.exports = async (d) => {
             ` Invalid awaited command '${ins}' in`,
           );
 
-        const CODE = await d.interpreter(
+        const code = await d.interpreter(
           d.client,
           {
             guild: guild,
@@ -75,7 +73,7 @@ module.exports = async (d) => {
           true,
         );
 
-        text = text.replaceAll(`{execute:${ins}}`, CODE);
+        text = text.replaceAll(`{execute:${ins}}`, code);
       }
 
       content.push(text);
