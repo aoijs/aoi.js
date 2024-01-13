@@ -1,39 +1,21 @@
+const { CheckCondition } = require("../../utils/helpers/checkCondition")
+const { mustEscape } = require("../../utils/helpers/mustEscape")
+
 module.exports = (d) => {
-		const data = d.util.aoiFunc(d);
-		if (data.err) return d.error(data.err);
+  const data = d.util.aoiFunc(d);
+  if (data.err) return d.error(data.err);
 
-		const conditions = data.inside.splits.map(c => c.trim());
+  const [...conditions] = data.inside.splits;
 
-		function evaluateAND(conditions) {
+  const arr = [];
 
-			return conditions.reduce((prev, current) => {
+  conditions.forEach((condition) => {
+	arr.push(CheckCondition.solve(mustEscape(condition)))
+  });
 
-				let result;
+  data.result = arr.includes("false") ? false : true;
 
-				const [left, comparator, right] = current.split(/(==|!=|>=|<=|>|<)/);
-
-				if (comparator === '==') {
-					result = left === right;
-				} else if (comparator === '!=') {
-					result = left !== right;
-				} else if (comparator === '<=') {
-					result = parseFloat(left) <= parseFloat(right);
-				} else if (comparator === '>=') {
-					result = parseFloat(left) >= parseFloat(right);
-				} else if (comparator === '>') {
-					result = parseFloat(left) > parseFloat(right);
-				} else if (comparator === '<') {
-					result = parseFloat(left) < parseFloat(right);
-				}
-
-				return prev && result;
-
-			}, true);
-
-		}
-
-	  data.result = evaluateAND(conditions);
-		return {
-			code: d.util.setCode(data)
-		};
-	}
+  return {
+    code: d.util.setCode(data),
+  };
+};
