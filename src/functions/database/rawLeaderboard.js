@@ -12,30 +12,16 @@ module.exports = async (d) => {
         table = d.client.db.tables[0],
     ] = data.inside.splits;
 
-    if (!d.client.variableManager.has(variable.addBrackets()))
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {},
-            `Variable ${variable.addBrackets()} Not Found!`,
-        );
+    if (!d.client.variableManager.has(variable.addBrackets())) return d.aoiError.fnError(d, "custom", {}, `Variable ${variable.addBrackets()} Not Found!`);
 
-    const idLength = type === "user" ? 2 : 1;
+    if (!order || (order.toLowerCase() !== "asc" && order.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `order must be "desc" or "asc"`)
+
     let y = 0;
     let value;
     let content = [];
-    let all = await d.client.db.all(
-        table,
-        (data) =>
-            data.key.startsWith(variable.deleteBrackets()) &&
-            data.key.split("_").length === idLength + 1,
-    );
+    let all = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === type === "user" ? 3 : 2, page * list);
 
-    all = all.sort((x, y) => {
-        if (d.client.db.type === "aoi.db")
-            return Number(y.value) - Number(x.value);
-        else return Number(y.data.value) - Number(x.data.value);
-    });
+    all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
 
     const getdata = async (user, Data, key) => {
         user =
@@ -96,7 +82,7 @@ module.exports = async (d) => {
                         ` Invalid awaited command '${ins}' in`,
                     );
 
-                const CODE = await d.interpreter(
+                const code = await d.interpreter(
                     d.client,
                     {
                         guild: d.message.guild,
@@ -109,32 +95,18 @@ module.exports = async (d) => {
                     true,
                 );
 
-                text = text.replace(`{execute:${ins}}`, CODE);
+                text = text.replace(`{execute:${ins}}`, code);
             }
 
             content.push(text);
         }
     }
+
     if (order === "desc") content = content.reverse();
 
-    const px = page * list - list,
-        py = page * list;
-
-    data.result = content.slice(px, py).join("\n");
+    data.result = content.slice(page * list - list, page * list).join("\n");
 
     return {
         code: d.util.setCode(data),
     };
 };
-
-async function customarr(arr) {
-    user =
-        (type === "globalUser"
-            ? await d.util.getUser(d, arr[1])
-            : type === "user"
-            ? await d.util.getMember(d.guild, arr[1])
-            : type === "server"
-            ? await d.util.getGuild(d, arr[1])
-            : arr[1]) ?? arr[1];
-    return user;
-}

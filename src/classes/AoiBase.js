@@ -71,6 +71,9 @@ class BaseClient extends Discord.Client {
               ? [...dbData?.tables, "__aoijs_vars__"]
               : ["main", "__aoijs_vars__"],
           },
+          cacheConfig: {
+            sortFunction: (a,b) => { return a.value - b.value }
+          },
           encryptionConfig: {
             securityKey: dbData?.securityKey ?? "a-32-characters-long-string-here",
             encriptData: dbData?.encriptData ?? false,

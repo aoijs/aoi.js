@@ -5,13 +5,7 @@ module.exports = async (d) => {
     const [variable, id, type = "guild", format, table = d.client.db.tables[0]] =
       data.inside.splits;
   
-    if (!d.client.variableManager.has(variable, table))
-      return d.aoiError.fnError(
-        d,
-        "custom",
-        {},
-        `Variable "${variable}" Not Found`
-      );
+    if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, "custom", {}, `Variable "${variable}" Not Found`);
   
     let key = null;
     let cache = null;
@@ -40,13 +34,9 @@ module.exports = async (d) => {
     const all = await d.client.db.all(table, (data) =>
       data.key.startsWith(variable.deleteBrackets()) && 
       data.key.split("_").length === key.split("_").length && (
-        type === "guild" ? data.key.split("_")[2] === key.split("_")[2] :  true
+        type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true
       )
     );
-
-    
-  
-
   
     switch (format) {
       case "top":
