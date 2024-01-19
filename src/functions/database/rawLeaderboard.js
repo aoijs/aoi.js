@@ -19,7 +19,7 @@ module.exports = async (d) => {
     let y = 0;
     let value;
     let content = [];
-    let all = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === type === "user" ? 3 : 2, page * list);
+    let all = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === type === "user" ? 3 : 2);
 
     all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
 

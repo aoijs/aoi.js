@@ -17,7 +17,7 @@ module.exports = async (d) => {
   
   if (!type || (type.toLowerCase() !== "asc" && type.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `type must be "desc" or "asc"`)
 
-  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2, page * list);
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2);
 
   db.sort((a, b) => Number(a.value) - Number(b.value));
 

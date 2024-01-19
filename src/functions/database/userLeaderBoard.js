@@ -21,7 +21,7 @@ module.exports = async d => {
 
   if (!order || (order.toLowerCase() !== "asc" && order.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `order must be "desc" or "asc"`)
 
-  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID), page * list);
+  let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && (data.key.split("_").length === 3) && (data.key.split("_")[2] == guildID));
 
   db.sort((a, b) => Number(a.value) - Number(b.value));
   if (order === "desc") db = db.reverse();
