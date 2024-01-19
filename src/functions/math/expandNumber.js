@@ -4,7 +4,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [abbrNumber] = data.inside.toUpperCase()
+    const [abbrNumber] = data.inside.inside.toUpperCase()
 
     let abbrIndex
 
