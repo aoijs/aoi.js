@@ -104,7 +104,11 @@ class AoiError {
         options.files?.length === 0
       )
         return;
-      msg = await d.data.interaction.reply(options);
+
+      msg = await d.data.interaction.reply({
+        ...options,
+        ephemeral: extraOptions.ephemeral,
+      });
     } else {
       if (channel instanceof BaseInteraction) {
         if (
@@ -125,10 +129,22 @@ class AoiError {
           (options.stickers?.length ?? 0) === 0
         )
           return;
-        msg = await channel.send(options).catch((e) => {
-          AoiError.consoleError("CreateMessageError", e);
-          return undefined;
-        });
+
+        if (extraOptions.reply.message) {
+          msg = await (
+            await d.util.getMessage(channel, extraOptions.reply.message)
+          )
+            .reply(options)
+            .catch((e) => {
+              AoiError.consoleError("CreateMessageError", e);
+              return undefined;
+            });
+        } else {
+          msg = await channel.send(options).catch((e) => {
+            AoiError.consoleError("CreateMessageError", e);
+            return undefined;
+          });
+        }
       }
     }
 
@@ -146,7 +162,9 @@ class AoiError {
       }, Time.parse(extraOptions.edits.time)?.ms);
     }
     if (extraOptions.deleteIn) {
-      extraOptions.deleteIn = Time.parse(extraOptions.deleteIn.split("}")[0])?.ms;
+      extraOptions.deleteIn = Time.parse(
+        extraOptions.deleteIn.split("}")[0]
+      )?.ms;
       setTimeout(() => msg.delete(), extraOptions.deleteIn);
     }
     if (extraOptions.deleteCommand) {

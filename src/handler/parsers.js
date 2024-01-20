@@ -361,13 +361,15 @@ const FileParser = (msg, d) => {
 
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
   errorMessage = errorMessage.trim();
-  const Checker = (parts, ayaya) => parts.includes("{" + ayaya + ":");
+  const Checker = (parts, part) => parts.includes("{" + part + ":");
+  const specialChecker = (parts, part) => parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
 
   let send = true;
   let deleteCommand = false;
-  let suppress = false;
-  let interaction;
   let deleteIn;
+  let suppress = false;
+  let interaction = false,
+    ephemeral = false;
 
   let files = [];
   let reactions = [];
@@ -378,6 +380,12 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     time: "",
     messages: [],
   };
+
+  let reply = {
+    message: null,
+    user: null,
+  }
+
   const parts = CreateObjectAST(errorMessage);
   for (const part of parts) {
     errorMessage = errorMessage.replace(part, "");
@@ -387,15 +395,30 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     else if (Checker(part, "attachment") || Checker(part, "file"))
       files = FileParser(part);
     else if (Checker(part, "edit")) edits = await EditParser(part);
+    else if (Checker(part, "reply")) reply = { message: part.split(":")[1].split("}")[0].trim() };
     else if (Checker(part, "suppress")) suppress = true;
     else if (Checker(part, "execute")) {
       let cmdname = part.split(":")[1].split("}")[0].trim();
       const cmd = d.client.cmd.awaited.find((x) => x.name === cmdname);
-      if (!cmd) return console.error(`AoiError: Invalid awaited command '${chalk.cyan(cmdname)}' in ${chalk.grey(`{execute:${cmdname}}`)}`);
-      await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
-    } 
-    else if (Checker(part, "deleteCommand")) deleteCommand = true;
-    else if (Checker(part, "interaction")) interaction = true;
+      if (!cmd)
+        return console.error(
+          `AoiError: Invalid awaited command '${chalk.cyan(
+            cmdname
+          )}' in ${chalk.grey(`{execute:${cmdname}}`)}`
+        );
+      await d.interpreter(
+        d.client,
+        d.message,
+        d.args,
+        cmd,
+        d.client.db,
+        false,
+        undefined,
+        d.data ?? []
+      );
+    } else if (specialChecker(part, "deleteCommand")) deleteCommand = true;
+    else if (specialChecker(part, "interaction")) interaction = true;
+    else if (specialChecker(part, "ephemeral")) ephemeral = true;
     else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
     else if (Checker(part, "reactions"))
       reactions = reactionParser(
@@ -411,11 +434,12 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     return {
       embeds: send ? embeds : [],
       components,
-      content:
-        errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
+        reply,
         reactions: reactions.length ? reactions : undefined,
+        ephemeral,
         suppress,
         interaction,
         edits,
@@ -551,10 +575,10 @@ const OptionParser = async (options, d) => {
       options.split("{deleteIn:")[1].split("}")[0].trim()
     )?.ms;
   }
-  if (Checker("deletecommand")) {
+  if (Checker("{deletecommand}")) {
     optionData.deleteCommand = true;
   }
-  if (Checker("interaction")) {
+  if (Checker("{interaction}")) {
     optionData.interaction = true;
   }
   return optionData;
