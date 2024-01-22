@@ -333,7 +333,7 @@ module.exports = {
         let part = "";
         let i = 0;
         while (i < parser.length) {
-            if (parser[0] !== "{") {
+            if (parser[i] !== "{") {
                 while ( parser[ i ] !== "{" )
                 {
                     if(i >= parser.length) break;
