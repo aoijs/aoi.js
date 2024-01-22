@@ -362,7 +362,8 @@ const FileParser = (msg, d) => {
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
   errorMessage = errorMessage.trim();
   const Checker = (parts, part) => parts.includes("{" + part + ":");
-  const specialChecker = (parts, part) => parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
+  const specialChecker = (parts, part) =>
+    parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
 
   let send = true;
   let deleteCommand = false;
@@ -382,9 +383,9 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
   };
 
   let reply = {
-    message: null,
-    user: null,
-  }
+    message: d.message?.id ?? null,
+    mention: true,
+  };
 
   const parts = CreateObjectAST(errorMessage);
   for (const part of parts) {
@@ -395,8 +396,14 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     else if (Checker(part, "attachment") || Checker(part, "file"))
       files = FileParser(part);
     else if (Checker(part, "edit")) edits = await EditParser(part);
-    else if (Checker(part, "reply")) reply = { message: part.split(":")[1].split("}")[0].trim() };
-    else if (Checker(part, "suppress")) suppress = true;
+    else if (Checker(part, "reply")) {
+      let ctn = part.split(":");
+      reply = {
+        message: ctn[1].trim(),
+        mention: ctn[2] ? ctn[2].split("}")[0].trim() === "true" : true,
+      };
+      if (!ctn[2]) reply.message = ctn[1].split("}")[0].trim();
+    } else if (Checker(part, "suppress")) suppress = true;
     else if (Checker(part, "execute")) {
       let cmdname = part.split(":")[1].split("}")[0].trim();
       const cmd = d.client.cmd.awaited.find((x) => x.name === cmdname);
@@ -434,7 +441,8 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     return {
       embeds: send ? embeds : [],
       components,
-      content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      content:
+        errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
         reply,
