@@ -130,12 +130,12 @@ class AoiError {
         )
           return;
 
-        if (extraOptions.reply.message) {
-          if (!extraOptions.reply.mention)
+        if (extraOptions.reply?.message) {
+          if (!extraOptions.reply?.mention)
             options.allowedMentions = { parse: [] };
 
           msg = await (
-            await d.util.getMessage(channel, extraOptions.reply.message)
+            await d.util.getMessage(channel, extraOptions.reply?.message)
           )
             .reply(options)
             .catch((e) => {
