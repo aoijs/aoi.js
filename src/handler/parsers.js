@@ -383,7 +383,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
   };
 
   let reply = {
-    message: null,
+    message: undefined,
     mention: true,
   };
 
