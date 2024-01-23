@@ -1,4 +1,4 @@
-const {FormatPerms:Perms} = require('../../utils/Constants.js');
+const {FormatPerms:Permissions} = require('../../utils/Constants.js');
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -11,7 +11,7 @@ module.exports = async d => {
     const member = await d.util.getMember(guild, userID);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
-    const PERMS = Object.entries(Perms);
+    const PERMS = Object.entries(Permissions);
 
     data.result = member.permissions.toArray().map(y => PERMS.find(x => x[1] === y)?.[0]).join(sep);
 

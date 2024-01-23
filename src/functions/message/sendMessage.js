@@ -1,18 +1,15 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [message, returnID = "false"] = inside.splits;
+    let [message, returnID = "false"] = data.inside.splits;
 
     message = await d.util.errorParser(message, d);
     const msg = await d.aoiError.makeMessageError(d.client, d.channel, message.data ?? message, message.options, d);
 
-
-    const result = (returnID === "true" ? msg?.id : "") || "";
+    data.reuslt = (returnID === "true" ? msg?.id : "") || "";
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 }

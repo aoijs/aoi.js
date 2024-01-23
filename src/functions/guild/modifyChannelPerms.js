@@ -1,4 +1,4 @@
-const {FormatPerms: Perms} = require('../../utils/Constants.js')
+const {FormatPerms: Permissions} = require('../../utils/Constants.js')
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -13,11 +13,11 @@ module.exports = async d => {
 
     for (const perm of perms) {
         const sign = perm.slice(0, 1);
-        objPerms[Perms[perm.slice(1)]] = sign === '+' ? true : sign === '/' ? null : false;
+        objPerms[Permissions[perm.slice(1)]] = sign === '+' ? true : sign === '/' ? null : false;
     }
 
     channel.permissionOverwrites.edit(roleoruserID, objPerms).catch(e => {
-        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Perms With Reason: ' + e);
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Permissions With Reason: ' + e);
     });
 
     return {

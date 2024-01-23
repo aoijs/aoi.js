@@ -1,4 +1,4 @@
-const {Perms} = require("../../utils/Constants.js");
+const {Permissions} = require("../../utils/Constants.js");
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -12,12 +12,12 @@ module.exports = async d => {
     const member = await d.util.getMember(guild, userID);
     if (!member) return d.aoiError.fnError(d, 'member', {inside: data.inside});
 
-    perms = perms.map(x => Perms[x]);
+    perms = perms.map(x => Permissions[x]);
     if (perms.includes(undefined)) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, "Invalid Permission Provided In");
 
     const memPerms = member.permissions;
 
-    data.result = memPerms.has(Perms.administrator) ? true : perms.some(x => memPerms.has(x));
+    data.result = memPerms.has(Permissions.administrator) ? true : perms.some(x => memPerms.has(x));
 
     return {
         code: d.util.setCode(data)

@@ -1,11 +1,4 @@
-//---------------Client------------------//
-
-const {
-    IntentsBitField,
-    ActivityType,
-    PermissionsBitField,
-    Events,
-} = require("discord.js");
+const {IntentsBitField, ActivityType, PermissionsBitField, Events} = require("discord.js");
 
 const IntentOptions = {
     ...IntentsBitField.Flags,
@@ -20,17 +13,11 @@ const ActivityTypeAvailables = {
     competing: ActivityType.Competing,
 };
 
-const DebugAvailables = {
-    interpreter: "Boolean",
-};
-
 const EventAvailables = {
     timeout: "Boolean",
     music: "Boolean",
     functionError: "Boolean",
 };
-
-//---------------Abbreviation------------//
 
 const SI_SYMBOL = [
     "",
@@ -139,8 +126,6 @@ const SI_SYMBOL = [
     "UC",
 ];
 
-//---------------Events---------------//
-
 const ApplicationCmdOptions = {
     id: "id of the slash cmd;.id",
     name: "name of the slash cmd;.name",
@@ -156,10 +141,9 @@ const ApplicationCmdOptions = {
     createdAt: "returns the date of creation of slash cmd;.createdAt",
 };
 const ChannelOptions = {
-    //text + default
     createdAt: "createdAt",
     createdTimestamp: "createdTimestamp",
-    defaultAutoArchiveDuration: "defaultAuyoArchiveDuration",
+    defaultAutoArchiveDuration: "defaultAutoArchiveDuration",
     deletable: "deletable",
     deleted: "deleted",
     guildID: "guild?.id",
@@ -242,8 +226,6 @@ const MemberOptions = {
     threadFlags: "flags?.toArray()",
 };
 
-//---------------Interactions------------//
-
 const ButtonStyleOptions = {
     primary: 1,
     secondary: 2,
@@ -259,7 +241,7 @@ const CacheOptions = {
     applicationCommands: "ApplicationCommandManager",
     applicationCommandPermissions: "ApplicationCommandPermissionManager",
     permissionOverwrites: "PermissionOverwritesManager",
-    presences: "PersenceManager",
+    presences: "PresenceManager",
     reactions: "ReactionManager",
     reactionUsers: "ReactionUserManager",
     roles: "RoleManager",
@@ -290,7 +272,7 @@ const SlashOptionTypes = {
     number: 10,
 };
 
-const Perms = {
+const Permissions = {
     createinvite: PermissionsBitField["Flags"].CreateInstantInvite,
     kickmembers: PermissionsBitField["Flags"].KickMembers,
     banmembers: PermissionsBitField["Flags"].BanMembers,
@@ -320,10 +302,9 @@ const Perms = {
     changenickname: PermissionsBitField["Flags"].ChangeNickname,
     managenicknames: PermissionsBitField["Flags"].ManageNicknames,
     manageroles: PermissionsBitField["Flags"].ManageRoles,
-    manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
+    manageguildexpressions: PermissionsBitField["Flags"].ManageGuildExpressions,
     moderatemembers: PermissionsBitField["Flags"].ModerateMembers,
     managewebhooks: PermissionsBitField["Flags"].ManageWebhooks,
-    //voice
     requesttospeak: PermissionsBitField["Flags"].RequestToSpeak,
     managethreads: PermissionsBitField["Flags"].ManageThreads,
     createpublicthreads: PermissionsBitField["Flags"].CreatePublicThreads,
@@ -331,9 +312,9 @@ const Perms = {
     useexternalsticker: PermissionsBitField["Flags"].UseExternalStickers,
     sendmessagesinthreads: PermissionsBitField["Flags"].SendMessagesInThreads,
     useembeddedactivities: PermissionsBitField["Flags"].UseEmbeddedActivities,
-    //guild
     all: Object.keys(PermissionsBitField["Flags"]),
 };
+
 const FormatPerms = {};
 for (const perm in PermissionsBitField.Flags) {
     FormatPerms[perm.toLowerCase()] = perm;
@@ -353,7 +334,7 @@ const FormatOptions = (date) => {
         "November",
         "December",
     ];
-    //days
+
     const days = [
         "Sunday",
         "Monday",
@@ -364,7 +345,6 @@ const FormatOptions = (date) => {
         "Saturday",
     ];
 
-    ////Returning Data
     return {
         YY: date.getFullYear().toString().slice(-2),
 
@@ -415,13 +395,10 @@ const Characters = [
 ].join("");
 
 const EventsToIntents = {
-    // Guild Messages
     onMessage: "GuildMessages",
     onMessageDelete: "GuildMessages",
     onMessageUpdate: "GuildMessages",
     onMessageDeleteBulk: "GuildMessages",
-
-    // Guilds
     onGuildJoin: "Guilds",
     onGuildLeave: "Guilds",
     onGuildUpdate: "Guilds",
@@ -442,60 +419,36 @@ const EventsToIntents = {
     onThreadListSync: "Guilds",
     onThreadMemberUpdate: "Guilds",
     onThreadMembersUpdate: "Guilds",
-
-    // Guild Members
     onJoin: "GuildMembers",
     onLeave: "GuildMembers",
     onMemberUpdate: "GuildMembers",
     onMemberAvailable: "GuildMembers",
     onMembersChunk: "GuildMembers",
-
-    // Guild Emojis
     onEmojiCreate: "GuildEmojis",
     onEmojiDelete: "GuildEmojis",
     onEmojiUpdate: "GuildEmojis",
     onStickerCreate: "GuildEmojis",
     onStickerDelete: "GuildEmojis",
     onStickerUpdate: "GuildEmojis",
-
-    // Guild Bans
     onBanAdd: "GuildBans",
     onBanRemove: "GuildBans",
-
-    // Guild Invites
     onInviteCreate: "GuildInvites",
     onInviteDelete: "GuildInvites",
-
-    // Guild Message Reactions
     onReactionAdd: "GuildMessageReactions",
     onReactionRemove: "GuildMessageReactions",
     onReactionRemoveAll: "GuildMessageReactions",
     onReactionRemoveEmoji: "GuildMessageReactions",
-
-    // Guild Voice States
     onVoiceStateUpdate: "GuildVoiceStates",
-
-    // Guild Presences
     onPresenceUpdate: "GuildPresences",
-
-    // Guild Message Typings
     onTypingStart: "GuildMessageTypings",
-
-    // Non-Intents
     onInteractionCreate: "NonIntents",
     onApplicationCommandPermissionsUpdate: "NonIntents",
     onUserUpdate: "NonIntents",
-
-    // Guild Webhooks
     onWebhooksUpdate: "GuildWebhooks",
-
-    //Automod
     onAutoModerationActionExecution: "AutoModerationExecution",
     onAutoModerationRuleDelete: "AutoModerationConfiguration",
-    onAutoModerationRuleCreate:"AutoModerationConfiguration",
+    onAutoModerationRuleCreate: "AutoModerationConfiguration",
     onAutoModerationRuleUpdate: "AutoModerationConfiguration",
-
-    // Custom
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
@@ -503,7 +456,6 @@ const EventsToIntents = {
 };
 
 const EventsToDjsEvents = {
-    // Guilds
     onGuildJoin: Events.GuildCreate,
     onGuildLeave: Events.GuildDelete,
     onGuildUpdate: Events.GuildUpdate,
@@ -524,66 +476,40 @@ const EventsToDjsEvents = {
     onThreadListSync: Events.ThreadListSync,
     onThreadMemberUpdate: Events.ThreadMemberUpdate,
     onThreadMembersUpdate: Events.ThreadMembersUpdate,
-
-    // Guild Members
     onJoin: Events.GuildMemberAdd,
     onLeave: Events.GuildMemberRemove,
     onMemberUpdate: Events.GuildMemberUpdate,
     onMemberAvailable: Events.GuildMemberAvailable,
     onMembersChunk: Events.GuildMembersChunk,
-
-    // Guild Emojis
     onEmojiCreate: Events.GuildEmojiCreate,
     onEmojiDelete: Events.GuildEmojiDelete,
     onEmojiUpdate: Events.GuildEmojiUpdate,
     onStickerCreate: Events.GuildStickerCreate,
     onStickerDelete: Events.GuildStickerDelete,
     onStickerUpdate: Events.GuildStickerUpdate,
-
-    // Guild Bans
     onBanAdd: Events.GuildBanAdd,
     onBanRemove: Events.GuildBanRemove,
-
-    // Guild Invites
     onInviteCreate: Events.InviteCreate,
     onInviteDelete: Events.InviteDelete,
-
-    // Guild Messages
     onMessage: Events.MessageCreate,
     onMessageDelete: Events.MessageDelete,
     onMessageUpdate: Events.MessageUpdate,
     onMessageDeleteBulk: Events.MessageBulkDelete,
-
-    // Guild Message Reactions
     onReactionAdd: Events.MessageReactionAdd,
     onReactionRemove: Events.MessageReactionRemove,
     onReactionRemoveAll: Events.MessageReactionRemoveAll,
     onReactionRemoveEmoji: Events.MessageReactionRemoveEmoji,
-
-    // Guild Voice States
     onVoiceStateUpdate: Events.VoiceStateUpdate,
-
-    // Guild Presences
     onPresenceUpdate: Events.PresenceUpdate,
-
-    // Guild Message Typings
     onTypingStart: Events.TypingStart,
-
-    // Guild Webhooks
     onWebhooksUpdate: Events.WebhooksUpdate,
-
-    // Non-Intents
     onInteractionCreate: Events.InteractionCreate,
     onApplicationCommandPermissionsUpdate: Events.ApplicationCommandPermissionsUpdate,
     onUserUpdate: Events.UserUpdate,
-
-    //Automod
     onAutoModerationActionExecution: Events.AutoModerationActionExecution,
     onAutoModerationRuleDelete: Events.AutoModerationRuleDelete,
     onAutoModerationRuleCreate: Events.AutoModerationRuleCreate,
     onAutoModerationRuleUpdate: Events.AutoModerationRuleUpdate,
-
-    // Custom
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
@@ -597,104 +523,66 @@ const EventstoFile = {
     onMessageDeleteBulk: "bulkDeleteMessage",
     onChannelPinsUpdate: "channelPinsUpdate",
     onTypingStart: "start",
-
-    // Guild events
     onGuildJoin: "guildJoin",
     onGuildLeave: "guildLeave",
     onGuildUpdate: "guildUpdate",
     onGuildUnavailable: "guildUnavailable",
-
-    // Role events
     onRoleCreate: "roleCreate",
     onRoleUpdate: "roleUpdate",
     onRoleDelete: "roleDelete",
-
-    // Channel events
     onChannelCreate: "channelCreate",
     onChannelUpdate: "channelUpdate",
     onChannelDelete: "channelDelete",
-
-    // Stage instance events
     onStageInstanceCreate: "stageInstanceCreate",
     onStageInstanceUpdate: "stageInstanceUpdate",
     onStageInstanceDelete: "stageInstanceDelete",
-
-    // Thread events
     onThreadCreate: "threadCreate",
     onThreadUpdate: "threadUpdate",
     onThreadDelete: "threadDelete",
     onThreadListSync: "threadListSync",
     onThreadMemberUpdate: "threadMemberUpdate",
     onThreadMembersUpdate: "threadMembersUpdate",
-
-    // Member events
     onJoin: "join",
     onLeave: "leave",
     onMemberUpdate: "update",
     onMemberAvailable: "available",
     onMembersChunk: "chunk",
-
-    // Invite events
     onInviteCreate: "inviteCreate",
     onInviteDelete: "inviteDelete",
-
-    // Emoji and sticker events
     onEmojiCreate: "create",
     onEmojiDelete: "delete",
     onEmojiUpdate: "update",
     onStickerCreate: "stickerCreate",
     onStickerDelete: "stickerDelete",
     onStickerUpdate: "stickerUpdate",
-
-    // Ban events
     onBanAdd: "add",
     onBanRemove: "remove",
-
-    // Reaction events
     onReactionAdd: "add",
     onReactionRemove: "remove",
     onReactionRemoveAll: "removeAll",
     onReactionRemoveEmoji: "removeEmoji",
-
-    // Voice and presence events
     onVoiceStateUpdate: "update",
     onPresenceUpdate: "update",
-
-    // Non-Intents
     onInteractionCreate: "interaction",
     onApplicationCommandPermissionsUpdate: "appCmdPermissionsUpdate",
     onUserUpdate: "userUpdate",
-
-    // Variable events
     onVariableCreate: "varCreate",
     onVariableDelete: "varDelete",
     onVariableUpdate: "varUpdate",
-
-    // Other events
     onFunctionError: "functionError",
     onWebhooksUpdate: "update",
-
-    //Automod
     onAutoModerationActionExecution: "autoModActionExecution",
     onAutoModerationRuleDelete: "autoModCreate",
     onAutoModerationRuleCreate: "autoModDelete",
     onAutoModerationRuleUpdate: "autoModUpdate",
-
 };
 
 const AllEvents = Object.keys(EventstoFile);
 
-const fetchInvitesOptions = {
-    enabled: "Boolean",
-    cacheInviters: "Boolean",
-};
-
 module.exports = {
     FormatOptions,
-    fetchInvitesOptions,
     ApplicationCmdOptions,
     ActivityTypeAvailables,
-    DebugAvailables,
     EventAvailables,
     SI_SYMBOL,
     ButtonStyleOptions,
@@ -702,7 +590,7 @@ module.exports = {
     MemberOptions,
     CacheOptions,
     SlashOptionTypes,
-    Perms,
+    Permissions,
     Characters,
     IntentOptions,
     FormatPerms,

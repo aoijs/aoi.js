@@ -1,4 +1,4 @@
-const {Perms} = require('../../utils/Constants.js');
+const {Permissions} = require('../../utils/Constants.js');
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -22,16 +22,16 @@ module.exports = async d => {
             const sign = perm.slice(0, 1);
 
             if (sign === '+') {
-                arrayPerms.add(Perms[perm.slice(1)]);
+                arrayPerms.add(Permissions[perm.slice(1)]);
             } else if (sign === '-') {
-                arrayPerms.remove(Perms[perm.slice(1)]);
+                arrayPerms.remove(Permissions[perm.slice(1)]);
             }
             arrayPerms = Array.from(arrayPerms);
         }
     }
 
     role.setPermissions(arrayPerms).catch(e => {
-        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Perms With Reason: ' + e);
+        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Permissions With Reason: ' + e);
     });
 
     return {

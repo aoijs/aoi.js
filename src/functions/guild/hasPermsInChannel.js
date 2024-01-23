@@ -1,4 +1,4 @@
-const {Perms} = require("../../utils/Constants.js");
+const {Permissions} = require("../../utils/Constants.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -10,7 +10,7 @@ module.exports = async (d) => {
     if (!channel)
         return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
-    const pms = perms.map((key) => Perms[key]);
+    const pms = perms.map((key) => Permissions[key]);
     if (pms.includes(undefined))
         return d.aoiError.fnError(
             d,
@@ -29,7 +29,7 @@ module.exports = async (d) => {
             `Role or User not found`,
         );
 
-    data.result = upms.has(Perms.administrator) ? true : upms && pms.every((p) => upms.has(p));
+    data.result = upms.has(Permissions.administrator) ? true : upms && pms.every((p) => upms.has(p));
     return {
         code: d.util.setCode(data),
     };

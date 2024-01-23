@@ -1,4 +1,4 @@
-const {FormatPerms: Perms} = require('../../utils/Constants.js');
+const {FormatPerms: Permissions} = require('../../utils/Constants.js');
 
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
@@ -13,7 +13,7 @@ module.exports = async d => {
         d.aoiError.fnError(d, 'role', {inside: data.inside});
     });
 
-    const PERMS = Object.entries(Perms);
+    const PERMS = Object.entries(Permissions);
 
     data.result = role.permissions.toArray().map(y => PERMS.find(x => x[1] === y)?.[0]).join(sep);
 

@@ -1,4 +1,4 @@
-const {Perms} = require("../../utils/Constants.js");
+const {Permissions} = require("../../utils/Constants.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -8,7 +8,7 @@ module.exports = async (d) => {
     const [...stuffs] = data.inside.splits;
     const err = stuffs.pop();
 
-    if (stuffs.some((x) => !Perms[x]))
+    if (stuffs.some((x) => !Permissions[x]))
         return d.aoiError.fnError(
             d,
             "custom",
@@ -17,8 +17,8 @@ module.exports = async (d) => {
         );
 
     const BotPerms = d.guild.members.me.permissions;
-    if (BotPerms.has(Perms.administrator)) {
-    } else if (!stuffs.every((x) => BotPerms.has(Perms[x.trim()]))) {
+    if (BotPerms.has(Permissions.administrator)) {
+    } else if (!stuffs.every((x) => BotPerms.has(Permissions[x.trim()]))) {
         error = true;
         if (err?.trim() === "") {
         } else {

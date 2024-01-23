@@ -1,26 +1,17 @@
 module.exports = async (d) => {
-    const code = d.command.code;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
-    //----------------------------------------//
-    let [
-        messageID,
-        userFilter,
-        customIDs,
-        cmds,
-        errorMsg = "",
-        uses = 1,
-        data = "",
-    ] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [messageID, userFilter, customIDs, cmds, errorMsg = "", uses = 1, awaitData = ""] = data.inside.splits;
+
     if (errorMsg?.trim !== "" && errorMsg) {
         errorMsg = await d.util.errorParser(errorMsg, d);
     }
-    if (data !== "") {
+    if (awaitData !== "") {
         try {
-            data = JSON.parse(data);
+            awaitData = JSON.parse(awaitData);
         } catch (e) {
-            d.aoiError.fnError(d, "custom", {inside}, "Invalid Data Provided In");
+            d.aoiError.fnError(d, "custom", {inside: data.inside}, "Invalid awaitData Provided In");
         }
     }
     cmds = cmds.split(",");
@@ -33,18 +24,18 @@ module.exports = async (d) => {
         }
     });
     customIDs = customIDs.split(",");
-    //---------------------------------------//
+
     const Component = new d.client.interactionManager.awaitComponents(
         {
             msgId: messageID,
             filter: userFilter,
             customIds: customIDs,
             cmds: cmds,
-            errorMessage: errorMsg.data,
+            errorMessage: errorMsg.awaitData,
             uses: uses,
         },
         d.client,
-        data,
+        awaitData,
     );
     d.client.interactionManager.on("messageComponentInteraction", interact);
     Component.on("AwaitComponent", async (interaction) => {
@@ -61,7 +52,7 @@ module.exports = async (d) => {
             d.client.db,
             false,
             undefined,
-            {awaitData: Component.data, interaction: interaction},
+            {awaitawaitData: Component.awaitData, interaction: interaction},
         );
     });
 
@@ -73,7 +64,7 @@ module.exports = async (d) => {
                 interact,
             );
         } else
-            Component.await(
+            await Component.await(
                 interaction.message.id,
                 interaction.user.id,
                 interaction.customId,
@@ -82,6 +73,6 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };

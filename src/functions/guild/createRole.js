@@ -1,4 +1,4 @@
-const {Perms: Permissions} = require('../../utils/Constants.js');
+const {Permissions: Permissions} = require('../../utils/Constants.js');
 module.exports = async d => {
     const {code} = d.command;
     const inside = d.unpack();
