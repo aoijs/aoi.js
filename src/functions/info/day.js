@@ -1,8 +1,13 @@
-module.exports = async d => {
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const {code} = d.util.aoiFunc(d);
+const {FormatOptions} = require("../../utils/Constants");
+
+module.exports = (d) => {
+    const data = d.util.aoiFunc(d);
+    const date = new Date(new Date().toLocaleString('en-us', { timeZone: d.timezone }));
+    const formattedOptions = FormatOptions(date);
+
+    data.result = formattedOptions.dddd;
 
     return {
-        code: d.util.setCode({function: d.func, code, result: days[new Date().getDay()]})
-    }
-}
+        code: d.util.setCode(data)
+    };
+};

@@ -1,7 +1,9 @@
-module.exports = async d => {
-    const {code} = d.util.aoiFunc(d);
+module.exports = (d) => {
+    const data = d.util.aoiFunc(d);
+
+    data.result = Date.now();
 
     return {
-        code: d.util.setCode({function: d.func, code, result: Date.now()})
-    }
+        code: d.util.setCode(data)
+    };
 }
