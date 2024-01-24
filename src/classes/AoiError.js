@@ -290,7 +290,4 @@ class AoiError {
   }
 }
 
-module.exports = {
-  AoiError,
-  createCustomBoxedMessage: AoiError.createCustomBoxedMessage,
-};
+module.exports = AoiError;
