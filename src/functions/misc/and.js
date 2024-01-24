@@ -13,7 +13,7 @@ module.exports = (d) => {
 	arr.push(CheckCondition.solve(mustEscape(condition)))
   });
 
-  data.result = arr.includes("false") ? false : true;
+  data.result = !arr.includes("false");
 
   return {
     code: d.util.setCode(data),
