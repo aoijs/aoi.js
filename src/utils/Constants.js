@@ -19,112 +19,30 @@ const EventAvailables = {
     functionError: "Boolean",
 };
 
-const SI_SYMBOL = [
-    "",
-    "K",
-    "M",
-    "B",
-    "T",
-    "Qa",
-    "Qi",
-    "Sx",
-    "Sp",
-    "O",
-    "N",
-    "D",
-    "UD",
-    "UD",
-    "DD",
-    "TD",
-    "QaD",
-    "QiD",
-    "SxD",
-    "SpD",
-    "OD",
-    "ND",
-    "V",
-    "UV",
-    "DV",
-    "TV",
-    "QaV",
-    "QiV",
-    "SxV",
-    "SpV",
-    "OV",
-    "NV",
-    "DT",
-    "UDT",
-    "DDT",
-    "TDT",
-    "QaDT",
-    "QiDT",
-    "SxDT",
-    "SpDT",
-    "ODT",
-    "NDT",
-    "DQa",
-    "UDQa",
-    "DDQa",
-    "TDQa",
-    "QaDQa",
-    "QiDQa",
-    "SxDQa",
-    "SpDQa",
-    "ODQa",
-    "NDQa",
-    "DQi",
-    "UDQi",
-    "DDQi",
-    "TDQi",
-    "QaDQi",
-    "QiDQi",
-    "SxDQi",
-    "SpDQi",
-    "ODQi",
-    "NDQi",
-    "DSx",
-    "UDSx",
-    "DDSx",
-    "TDSx",
-    "QaDSx",
-    "QiDSx",
-    "SxDSx",
-    "SpDSx",
-    "ODSx",
-    "NDSx",
-    "DSp",
-    "UDSp",
-    "DDSp",
-    "TDSp",
-    "QaDSp",
-    "QiDSp",
-    "SxDSp",
-    "SpDSp",
-    "ODSp",
-    "NDSp",
-    "DO",
-    "UDO",
-    "DDO",
-    "TDO",
-    "QaDO",
-    "QiDO",
-    "SxDO",
-    "SpDO",
-    "ODO",
-    "NDO",
-    "DN",
-    "UDN",
-    "DDN",
-    "TDN",
-    "QaDN",
-    "QiDN",
-    "SxDN",
-    "SpDN",
-    "ODN",
-    "NDN",
-    "C",
-    "UC",
-];
+const SI_SYMBOL = ["", "K", "M", "B", "T"];
+
+for (let i = 1; i <= 12; i++) {
+    const power = Math.pow(10, i * 3);
+    SI_SYMBOL.push(
+        power >= 1e24
+            ? SI_SYMBOL[i] + "D"
+            : power >= 1e21
+                ? SI_SYMBOL[i] + "V"
+                : power >= 1e18
+                    ? SI_SYMBOL[i] + "DT"
+                    : power >= 1e15
+                        ? SI_SYMBOL[i] + "T"
+                        : power >= 1e12
+                            ? SI_SYMBOL[i] + "Qa"
+                            : power >= 1e9
+                                ? SI_SYMBOL[i] + "B"
+                                : power >= 1e6
+                                    ? SI_SYMBOL[i] + "M"
+                                    : power >= 1e3
+                                        ? SI_SYMBOL[i] + "K"
+                                        : SI_SYMBOL[i]
+    );
+}
 
 const ApplicationCmdOptions = {
     id: "id of the slash cmd;.id",
@@ -134,10 +52,8 @@ const ApplicationCmdOptions = {
     options: "options of slash cmd;.options",
     guildID: "guildID of the slash cmd (returns null for global);.guildID",
     applicationID: "returns Application ID",
-    defaultPermission:
-        "returns default permission of the slash cmd;.defaultPermission",
-    timestamp:
-        "returns timestamp of the creation of slash cmd (in ms);.timestamp",
+    defaultPermission: "returns default permission of the slash cmd;.defaultPermission",
+    timestamp: "returns timestamp of the creation of slash cmd (in ms);.timestamp",
     createdAt: "returns the date of creation of slash cmd;.createdAt",
 };
 const ChannelOptions = {
@@ -163,22 +79,17 @@ const ChannelOptions = {
     topic: "topic?.deleteBrackets()",
     type: "type",
     viewable: "viewable",
-    permsAllowed:
-        "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\nmetion:${x.type ==='?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
-    permsDenied:
-        "permissionOverwrites?.cache?.map(x=>`type:${x.type}\ndenied:${x.deny}\nmetion:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
-    perms: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\ndenied:${x.deny}\nmetion:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
-    //category
+    permsAllowed: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\nmention:${x.type ==='?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
+    permsDenied: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\ndenied:${x.deny}\nmention:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
+    perms: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\ndenied:${x.deny}\nmention:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
     childrenID: "children?.map(x=>x.id)?.join(' , ')",
     childrenName: "children?.map(x=>x.name?.deleteBrackets())?.join(' , ')",
-    //voice
     bitrate: "bitrate",
     full: "full",
     joinable: "joinable",
     rtcRegion: "rtcRegion",
     userLimit: "userLimit",
     speakable: "speakable",
-    //threads
     archived: "archived",
     archivedAt: "archivedAt",
     archivedTimestamp: "archivedTimestamp",
@@ -187,7 +98,7 @@ const ChannelOptions = {
     messagesCount: "messagesCount",
     ownerID: "ownerId",
     sendable: "sendable",
-    unachievable: "unarchivable",
+    unarchivable: "unarchivable",
 };
 const MemberOptions = {
     id: "id",
@@ -221,7 +132,6 @@ const MemberOptions = {
     activities: "presence?.activities?.map(c => c.name).join(', ')",
     removedRoles: `roles.cache?.filter(r => ! d.data.newm?.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
     addedRoles: `roles?.cache?.filter(r => !d.data.oldm.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
-    //thread
     threadChannel: "thread?.channel?.name?.deleteBrackets()",
     threadFlags: "flags?.toArray()",
 };
@@ -321,73 +231,39 @@ for (const perm in PermissionsBitField.Flags) {
 }
 const FormatOptions = (date) => {
     const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ];
 
     const days = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
     ];
+
+    const padZero = (value) => (value.toString().length === 1 ? '0' + value : value);
+
+    const getMeridiemHour = (hour) => (hour % 12 === 0 ? 12 : hour % 12);
 
     return {
         YY: date.getFullYear().toString().slice(-2),
-
         YYYY: date.getFullYear(),
-
         M: date.getMonth() + 1,
-
-        MM:
-            (date.getMonth() + 1).toString().length === 1
-                ? 0 + (date.getMonth() + 1).toString()
-                : (date.getMonth() + 1).toString(),
-
+        MM: padZero(date.getMonth() + 1),
         MMM: months[date.getMonth()].slice(0, 3),
-
         MMMM: months[date.getMonth()],
-
         D: date.getDate(),
-
-        DD:
-            date.getDate().toString().length === 1
-                ? 0 + date.getDate().toString()
-                : date.getDate().toString(),
-
+        DD: padZero(date.getDate()),
         d: date.getDay(),
-
         dd: days[date.getDay()].slice(0, 2),
-
         ddd: days[date.getDay()].slice(0, 3),
-
         dddd: days[date.getDay()],
-
         H: date.getHours(),
-
-        HH:
-            date.getHours().toString().length === 1
-                ? 0 + date.getHours().toString()
-                : date.getHours().toString(),
-
-        h: Math.abs(date.getHours() - 12),
-
-        hh: "hi",
+        HH: padZero(date.getHours()),
+        h: getMeridiemHour(date.getHours()),
+        hh: padZero(getMeridiemHour(date.getHours())),
     };
 };
+
 const Characters = [
     "1234567890",
     "qwertyuiopalskdjfhgznmxcbv",
