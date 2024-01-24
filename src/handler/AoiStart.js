@@ -1,6 +1,6 @@
 const Interpreter = require("../core/interpreter.js");
 
-module.exports = async (client, options) => {
+module.exports = async (client) => {
     if (client.aoiOptions.aoiLogs !== false) {
         await require("./AoiLogs.js")(client);
     }
