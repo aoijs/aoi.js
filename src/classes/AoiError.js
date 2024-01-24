@@ -107,7 +107,7 @@ class AoiError {
 
       msg = await d.data.interaction.reply({
         ...options,
-        ephemeral: extraOptions.ephemeral,
+        ephemeral: extraOptions.ephemeral ?? options.ephemeral,
       });
     } else {
       if (channel instanceof BaseInteraction) {
