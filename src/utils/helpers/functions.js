@@ -1,4 +1,4 @@
-const { SI_SYMBOL, FormatOptions } = require("../Constants.js");
+const { SI_SYMBOL} = require("../Constants.js");
 const { setTimeout } = require("timers/promises");
 const {
     CategoryChannel,
@@ -7,7 +7,6 @@ const {
     VoiceState,
     Role,
 } = require("discord.js");
-const { CheckCondition } = require("./checkCondition.js");
 
 function PartToHex(d) {
     const data = d.toString(16);
