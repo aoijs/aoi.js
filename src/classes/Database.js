@@ -34,7 +34,7 @@ class Database {
         [
           {
             text: `Successfully connected ${type} database`,
-            textColor: "white",
+            textColor: "green",
           },
         ],
         "white",
