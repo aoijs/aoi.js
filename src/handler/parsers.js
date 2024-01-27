@@ -181,13 +181,6 @@ const ComponentParser = async (msg, d) => {
       const disabled = inside.shift() === "true";
       const options = inside.join(":").trim();
 
-      const selectMenuTypes = {
-        userInput: 5,
-        roleInput: 6,
-        mentionableInput: 7,
-        channelInput: 8,
-      };
-
       let selectMenuOptions = [];
 
       if (options.includes("{stringInput:")) {
@@ -275,19 +268,75 @@ const ComponentParser = async (msg, d) => {
         });
       }
 
-      for (const type in selectMenuTypes) {
-        if (options.includes(`{${type}}`)) {
-          buttonPart.push({
-            type: selectMenuTypes[type],
-            custom_id: customID,
-            placeholder: placeholder,
-            min_values: minVal,
-            max_values: maxVal,
-            disabled,
-          });
+      if (options.includes("{userInput}")) {
+        buttonPart.push({
+          type: Discord.ComponentType.UserSelect,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+        });
+      }
+
+      if (options.includes("{roleInput}")) {
+        buttonPart.push({
+          type: Discord.ComponentType.RoleSelect,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+        });
+      }
+
+      if (options.includes("{mentionableInput}")) {
+        buttonPart.push({
+          type: Discord.ComponentType.MentionableSelect,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+        });
+      }
+
+      if (options.includes("{channelInput:")) {
+        const opts = options.split("{channelInput:").slice(1);
+
+        const channel_types = [];
+
+        for (let type of opts) {
+          const opts = type.split("}")[0].split(":");
+          for (let t of opts) {
+            if (!d.util.channelTypes[t]) t = "Text";
+            channel_types.push(d.util.channelTypes[t]);
+          }
         }
+
+        buttonPart.push({
+          type: Discord.ComponentType.ChannelSelect,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          channel_types,
+          disabled,
+        });
+      }
+
+      if (options.includes("{channelInput}")) {
+        buttonPart.push({
+          type: Discord.ComponentType.ChannelSelect,
+          custom_id: customID,
+          placeholder: placeholder,
+          min_values: minVal,
+          max_values: maxVal,
+          disabled,
+        });
       }
     }
+
     if (Checker("textInput")) {
       let inside = aoi.split("{textInput:").slice(1);
       for (let textInput of inside) {
