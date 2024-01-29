@@ -23,8 +23,8 @@ module.exports = async (d) => {
         member = await d.util.getUser(d, key)
       }
 
-      if (hideNegativeValue === true && lbdata.value < 0) continue;
-      if (hideZeroValue === true && lbdata.value === 0) continue;
+      if (hideNegativeValue == true && lbdata.value < 0) continue;
+      if (hideZeroValue == true && lbdata.value == 0) continue;
 
       const replacer = {
           "{value}": lbdata.value,
