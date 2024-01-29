@@ -18,8 +18,8 @@ module.exports = async (d) => {
 
         if (!user) return d.aoiError.fnError(d, "custom", {}, `user: ${key}`);
 
-        if (hideNegativeValue === true && lbdata.value < 0) continue;
-        if (hideZeroValue === true && lbdata.value === 0) continue;
+        if (hideNegativeValue == true && lbdata.value < 0) continue;
+        if (hideZeroValue == true && lbdata.value == 0) continue;
 
         const replacer = {
             "{value}": lbdata.value,
