@@ -42,7 +42,7 @@ module.exports = async (d) => {
       i++
   }
   
-  data.result = result.join("\n");
+  data.result = result.slice(page * list - list, page * list).join("\n");
 
   return {
       code: d.util.setCode(data),

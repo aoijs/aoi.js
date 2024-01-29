@@ -26,7 +26,6 @@ module.exports = async (d) => {
     return data.key.startsWith(variable.addBrackets()) && (type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true)
   });
 
-  console.log(db);
 
   switch (format) {
     case "top":
