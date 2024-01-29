@@ -1,7 +1,7 @@
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
-    data.result = d.client.db.ping
+    data.result = d.client.cmd.default.size;
 
     return {
         code: d.util.setCode(data)
