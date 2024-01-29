@@ -17,9 +17,11 @@ module.exports = async (d) => {
   let i = 0;
   for (const lbdata of db) {
       const key = lbdata.key.split("_")[1];
-      const member = await d.util.getMember(guild, key);
+      let member = await d.util.getMember(guild, key);
 
-      if (!member) return d.aoiError.fnError(d, "custom", {}, `member: ${key}`);
+      if (!member) {
+        member = await d.util.getUser(d, key)
+      }
 
       if (hideNegativeValue === true && lbdata.value < 0) continue;
       if (hideZeroValue === true && lbdata.value === 0) continue;
@@ -27,12 +29,12 @@ module.exports = async (d) => {
       const replacer = {
           "{value}": lbdata.value,
           "{top}": i + 1,
-          "{username}": member.user.username,
-          "{nickname}": member.nickname,
-          "{displayName}": member.user.displayName,
-          "{tag}": member.user.tag,
-          "{id}": member.user.id,
-          "{mention}": member.user,
+          "{username}": member.user?.username || member.username  || "Unknown Member",
+          "{nickname}": member.nickname || "Unknown Member",
+          "{displayName}": member.user?.displayName || member.displayName || "Unknown Member",
+          "{tag}": member.user?.tag || member.tag || "Unknown Member",
+          "{id}": member.user?.id || member.id || "Unknown Member",
+          "{mention}": member.user || member || "Unknown Member",
       }
 
       let text = custom;
