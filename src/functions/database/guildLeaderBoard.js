@@ -1,107 +1,50 @@
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
+  const [variable, type = "asc", custom = `{top}. {name}: {value}`, list = 10, page = 1, table = d.client.db.tables[0], hideNegativeValue = false, hideZeroValue = false ] = data.inside.splits;
 
-  const [
-    variable,
-    type = "asc",
-    custom = `{top}. {username}: {value:,}`,
-    list = 10,
-    page = 1,
-    table = d.client.db.tables[0],
-    hideNegativeValue = false,
-    hideZeroValue = false,
-  ] = data.inside.splits;
+  if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
 
-  if (!d.client.variableManager.has(variable, table))
-    return d.aoiError.fnError(
-      d,
-      "custom",
-      {},
-      `Variable "${variable}" Not Found`
-    );
+  if (!type || (type.toLowerCase() !== "asc" && type.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `type must be "desc" or "asc"`)
 
-  if (!type || (type.toLowerCase() !== "asc" && type.toLowerCase() !== "desc"))
-    return d.aoiError.fnError(d, "custom", {}, `type must be "desc" or "asc"`);
+  const result = [];
 
-  let db = await d.client.db.all(
-    table,
-    (data) =>
-      data.key.startsWith(variable.deleteBrackets()) &&
-      data.key.split("_").length === 2
-  );
-  db = db.filter((x, i, y) => y.findIndex((e) => e.key === x.key) === i);
-  db.sort((a, b) => Number(a.value) - Number(b.value));
+  let db = await d.client.db.all(table, (data) => { return data.key.startsWith(variable.addBrackets()) && data.key.split("_").length === 2 }, list * page, type);
 
-  if (type === "desc") db = db.reverse();
+  let i = 0;
+  for (const lbdata of db) {
+      const key = lbdata.key.split("_")[1]
+      const guild = await d.util.getUser(d, key);
 
-  if (hideNegativeValue === "true") db = db.filter((x) => x.value >= 0);
-  if (hideZeroValue === "true") db = db.filter((x) => x.value != 0);
+      if (!guild) return d.aoiError.fnError(d, "custom", {}, `guild: ${key}`);
 
-  let y = 0;
-  let value;
-  let content = [];
+      if (hideNegativeValue === true && lbdata.value < 0) continue;
+      if (hideZeroValue === true && lbdata.value === 0) continue;
 
-  let lbdata = new Set();
-  for (const Data of db) {
-    let guild;
-    if (d.client.db.type === "aoi.db") value = Number(Data.value);
-    else value = Number(Data.data.value);
-    guild = await d.util.getGuild(d, Data.key.split("_")[1]);
-
-    if (guild && !lbdata.has(guild?.id)) {
-      lbdata.add(guild.id);
-      if (guild) {
-        y++;
-        let text = custom
-          .replaceAll(`{top}`, y)
-          .replaceAll("{id}", guild.id)
-          .replaceAll(`{name}`, guild.name.removeBrackets())
-          .replaceAll(`{value}`, value);
-
-        if (text.includes("{value:")) {
-          let sep = text.split("{value:")[1].split("}")[0];
-          text = text.replaceAll(
-            `{value:${sep}}`,
-            value.toLocaleString().replaceAll(",", sep)
-          );
-        }
-
-        if (text.includes("{execute:")) {
-          let ins = text.split("{execute:")[1].split("}")[0];
-          const awaited = d.client.cmd.awaited.find((c) => c.name === ins);
-
-          if (!awaited)
-            return d.aoiError.fnError(
-              d,
-              "custom",
-              { inside: data.inside },
-              ` Invalid awaited command '${ins}' in`
-            );
-
-          const code = await d.interpreter(
-            d.client,
-            {
-              guild: guild,
-              channel: d.message.channel,
-            },
-            d.args,
-            awaited,
-            undefined,
-            true
-          );
-
-          text = text.replaceAll(`{execute:${ins}}`, code);
-        }
-
-        content.push(text);
+      const replacer = {
+          "{value}": lbdata.value,
+          "{top}": i + 1,
+          "{name}": guild.username,
+          "{id}": guild.id,
       }
-    }
-  }
 
-  data.result = content.slice(page * list - list, page * list).join("\n");
+      let text = custom;
+      if (text.includes("{value:")) {
+        let sep = text.split("{value:")[1].split("}")[0];
+        text = text.replaceAll(`{value:${sep}}`, lbdata.value.toLocaleString().replaceAll(",", sep));
+      }
+
+      for (const replace in replacer) {
+          text = text.replace(new RegExp(replace, "g"), replacer[replace]);
+      }
+
+      result.push(text);
+      i++
+  }
+  
+  data.result = result.join("\n");
 
   return {
-    code: d.util.setCode(data),
+      code: d.util.setCode(data),
   };
 };

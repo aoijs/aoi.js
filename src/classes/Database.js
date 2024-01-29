@@ -59,8 +59,8 @@ class Database {
     return await this.db.delete(table, id ? `${key}_${id}` : key);
   }
 
-  async all(table, query, limit) {
-    return await this.db.all(table, query, limit);
+  async all(table, query, limit, type) {
+    return await this.db.all(table, query, limit, type);
   }
 
   async has(table, key, id) {
