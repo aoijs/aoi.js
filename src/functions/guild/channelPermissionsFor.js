@@ -1,16 +1,15 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
+    const data = d.util.aoiFunc(d);
 
     const [uorrId = d.author.id, channelID = d.channel.id, sep = " , "] =
-        inside.splits;
+        data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", {inside: data.inside});
 
-    const result = channel.permissionsFor(uorrId)?.toArray().join(sep);
+    data.result = channel.permissionsFor(uorrId)?.toArray().join(sep);
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result}),
+        code: d.util.setCode(data),
     };
 };
