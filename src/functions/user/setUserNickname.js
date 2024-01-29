@@ -1,17 +1,15 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [userID, nick, reason] = inside.splits;
+    const [userID, nickname, reason] = data.inside.splits;
 
     const member = await d.util.getMember(d.guild, userID);
-    if (!member) return d.aoiError.fnError(d, "member", {inside});
+    if (!member) return d.aoiError.fnError(d, "member", {inside: data.inside});
 
-    await member.setNickname(nick === "" ? null : nick.addBrackets(), reason);
+    await member.setNickname(nickname === "" ? null : nickname.addBrackets(), reason);
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };
