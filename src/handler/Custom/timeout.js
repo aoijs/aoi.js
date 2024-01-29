@@ -1,5 +1,5 @@
 module.exports = async (d, name, duration, timeoutData, onReady) => {
-    let cmds = d.client.cmd.timeout.allValues();
+    let cmds = d.client.cmd.timeout.V();
     if (onReady) {
         const datas = await d.client.db.all(
             "__aoijs_vars__",

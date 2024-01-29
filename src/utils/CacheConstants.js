@@ -3,8 +3,8 @@ module.exports = {
         const manager = d.client.cacheManager.caches;
         const data = {
             cache: {
-                allKeys: manager[name].allKeys,
-                allValues: manager[name].allValues,
+                K: manager[name].K(),
+                V: manager[name].V(),
                 bottom: manager[name].bottom,
                 clear: manager[name].clear,
                 concat: manager[name].concat,

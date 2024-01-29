@@ -9,7 +9,7 @@ module.exports = async (event, client, commands, ...data) => {
         member: undefined,
     };
     let EventData = {};
-    const cmds = commands.allValues();
+    const cmds = commands.V();
     for (const cmd of cmds) {
         if (cmd.channel) {
             const id = cmd.channel.includes("$")

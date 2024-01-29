@@ -1,7 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (mem, client) => {
     let chan;
-    const cmds = client.cmd.join.allValues();
+    const cmds = client.cmd.join.V();
     let data = {
         guild: mem.guild,
         author: mem.user,

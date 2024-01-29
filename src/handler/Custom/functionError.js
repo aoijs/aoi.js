@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (error, client) => {
-    const cmds = client.cmd.functionError.allValues();
+    const cmds = client.cmd.functionError.V();
     let chan;
     const data = {
         guild: error.guild,

@@ -6,7 +6,7 @@ module.exports = async (dmsg, dchannel, client) => {
         client: dmsg.client,
     };
     let chan;
-    for (const cmd of client.cmd.messageDeleteBulk.allValues()) {
+    for (const cmd of client.cmd.messageDeleteBulk.V()) {
         if (cmd.channel?.includes("$")) {
             const id = await Interpreter(
                 client,

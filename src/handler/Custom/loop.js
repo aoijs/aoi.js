@@ -3,7 +3,7 @@ const Interpreter = require("../../core/interpreter.js");
  * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (client) => {
-    const cmds = client.cmd.loop.allValues();
+    const cmds = client.cmd.loop.V();
     let chan;
     let Data = {
         client: client,

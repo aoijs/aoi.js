@@ -1,5 +1,5 @@
 module.exports = async (status, client) => {
-  let statuses = client.statuses.allValues()
+  let statuses = client.statuses.V()
   if (statuses.length <= 0) {
     return;
   }
@@ -7,7 +7,7 @@ module.exports = async (status, client) => {
   let y = 0;
 
   const processStatus = async () => {
-    statuses = client.statuses.allValues()
+    statuses = client.statuses.V()
     if (!statuses[y]) {
       y = 0;
     }

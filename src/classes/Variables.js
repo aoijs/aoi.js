@@ -82,11 +82,11 @@ class VariableManager {
   }
 
   get values() {
-    return this.cache.allValues().map((x) => x.value);
+    return this.cache.V().map((x) => x.value);
   }
 
   get vars() {
-    return this.cache.allKeys();
+    return this.cache.K();
   }
 
   add(data) {
@@ -107,8 +107,8 @@ class VariableManager {
   }
 
   toJSON() {
-    const keys = this.cache.allKeys();
-    const values = this.cache.allValues();
+    const keys = this.cache.K();
+    const values = this.cache.V();
     const json = keys.map((x) => this.cache.get(x).toJSON());
     return (
       "{\n" + keys.map((x, y) => `"${x}" : ${json[y]} `).join(",\n") + "\n}"

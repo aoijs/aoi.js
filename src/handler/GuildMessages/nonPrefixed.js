@@ -11,7 +11,7 @@ module.exports = async ( message,client) => {
             return;
     }
     const commands = client.cmd.default
-        .allValues()
+        .V()
         .filter((c) => c.nonPrefixed);
     if (!commands.length) return;
     for (const cmd of commands) {

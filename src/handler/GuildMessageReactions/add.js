@@ -6,7 +6,7 @@ const Interpreter = require("../../core/interpreter.js");
  * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (reaction, user, client) => {
-    const cmds = client.cmd.reactionAdd.allValues();
+    const cmds = client.cmd.reactionAdd.V();
     const data = {
         message: reaction.message,
         channel: reaction.message.channel,

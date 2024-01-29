@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (thread, client) => {
-    const cmds = client.cmd.threadDelete.allValues();
+    const cmds = client.cmd.threadDelete.V();
     const data = { guild: thread.guild, channel: thread, client: client };
     let chan;
     for (const cmd of cmds) {

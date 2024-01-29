@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (app, client) => {
-    const cmds = client.cmd.autoModDelete.allValues();
+    const cmds = client.cmd.autoModDelete.V();
     let chan;
     const data = {
         guild: client.guilds.cache.get(app.guildId),

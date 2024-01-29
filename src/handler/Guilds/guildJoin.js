@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (guild, client) => {
-    const cmds = client.cmd.guildJoin.allValues();
+    const cmds = client.cmd.guildJoin.V();
     const data = { guild: guild, client: client };
     let chan;
     for (const cmd of cmds) {

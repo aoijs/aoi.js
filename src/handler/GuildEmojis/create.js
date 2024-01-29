@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (newe, client) => {
-    const cmds = client.cmd.emojiCreate.allValues();
+    const cmds = client.cmd.emojiCreate.V();
 
     const data = { guild: newe.guild, client: client };
     let chan;

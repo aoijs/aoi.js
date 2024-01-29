@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (os, ns, client) => {
-    const cmds = client.cmd.voiceStateUpdate.allValues();
+    const cmds = client.cmd.voiceStateUpdate.V();
     for (const cmd of cmds) {
         let chan;
         const data = {

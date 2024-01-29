@@ -2,7 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldm, newm, client) => {
     let chan;
     
-    for (const cmd of client.cmd.messageUpdate.allValues()) {
+    for (const cmd of client.cmd.messageUpdate.V()) {
         const id = cmd.channel.includes("$")
             ? (
                   await Interpreter(

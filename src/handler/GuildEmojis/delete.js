@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (olde, client) => {
-    const cmds = client.cmd.emojiDelete.allValues();
+    const cmds = client.cmd.emojiDelete.V();
 
     const data = { guild: olde.guild, client: client };
     let chan;

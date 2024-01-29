@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldc, newc, client) => {
-    const cmds = client.cmd.channelUpdate.allValues();
+    const cmds = client.cmd.channelUpdate.V();
     const data = { guild: newc.guild, channel: newc, client: client };
     let chan;
     for (const cmd of cmds) {

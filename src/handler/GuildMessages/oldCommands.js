@@ -38,7 +38,7 @@ const CommandHandler = async (client, message, db) => {
                             ? x.aliases?.find((x) => x.toLowerCase() === cmdName)
                             : x.aliases?.toLowerCase() === cmdName),
                 )
-                .allValues();
+                .V();
             for (const command of cmd) {
                 if (command.asynchronous === true) {
                     await Interpreter(client, message, args, command);

@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oa, na, client) => {
-    const cmds = client.cmd.applicationCmdUpdate.allValues();
+    const cmds = client.cmd.applicationCmdUpdate.V();
     let chan;
     const data = {
         guild: na.guild,

@@ -38,7 +38,7 @@ module.exports = async (interaction, client) => {
                         : x.name === interaction.customId
                     : !x.name,
             )
-            .allValues();
+            .V();
 
         if (!cmds.length) return;
         const data = {
@@ -134,7 +134,7 @@ module.exports = async (interaction, client) => {
                     x.name.toLowerCase() ===
                     interaction.commandName.toLowerCase(),
             )
-            .allValues();
+            .V();
 
         if (!cmds.length) return;
         const data = {

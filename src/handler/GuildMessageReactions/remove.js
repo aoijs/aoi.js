@@ -6,7 +6,7 @@ const { MessageReaction } = require("discord.js");
  * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (reaction, user, client) => {
-    const cmds = client.cmd.reactionRemove.allValues();
+    const cmds = client.cmd.reactionRemove.V();
     const data = {
         message: reaction.message,
         channel: reaction.message.channel,
