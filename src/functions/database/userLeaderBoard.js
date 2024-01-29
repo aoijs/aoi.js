@@ -1,7 +1,7 @@
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
-  const [guildID = d.guild.id, variable, type = "asc", custom = `{top}. {username}: {value}`, list = 10, page = 1, table = d.client.db.tables[0], hideNegativeValue = false, hideZeroValue = false ] = data.inside.splits;
+  const [guildID = d.guild.id, variable, type = "asc", custom = `{top}. {username}: {value}`, list = 10, page = 1, table = d.client.db.tables[0], hideNegativeValue = "false", hideZeroValue = "false" ] = data.inside.splits;
 
   if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, 'custom', {}, `Variable "${variable}" Not Found`);
 
@@ -23,8 +23,8 @@ module.exports = async (d) => {
         member = await d.util.getUser(d, key)
       }
 
-      if (hideNegativeValue == true && lbdata.value < 0) continue;
-      if (hideZeroValue == true && lbdata.value == 0) continue;
+      if (hideNegativeValue === "true" && lbdata.value < 0) continue;
+      if (hideZeroValue === "true" && lbdata.value == 0) continue;
 
       const replacer = {
           "{value}": lbdata.value,
