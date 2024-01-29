@@ -35,7 +35,7 @@ module.exports = async (d) => {
 
         if (text.includes("{value:")) {
             let sep = text.split("{value:")[1].split("}")[0];
-            text = text.replaceAll(`{value:${sep}}`, lddata.value.toLocaleString().replaceAll(",", sep));
+            text = text.replaceAll(`{value:${sep}}`, lbdata.value.toLocaleString().replaceAll(",", sep));
         }
         
         for (const replace in replacer) {
