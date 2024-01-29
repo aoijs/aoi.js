@@ -20,9 +20,10 @@ module.exports = async (d) => {
     let value;
     let content = [];
     let all = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === type === "user" ? 3 : 2);
+    all = all.filter((x, i, y) => y.findIndex(e => e.key === x.key) === i);
 
     all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
-
+  
     const getdata = async (user, Data, key) => {
         user =
             (type === "globalUser"

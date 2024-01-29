@@ -17,7 +17,9 @@ module.exports = async (d) => {
 
   if (!type || (type.toLowerCase() !== "asc" && type.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `type must be "desc" or "asc"`)
 
+
   let db = await d.client.db.all(table, (data) => data.key.startsWith(variable.deleteBrackets()) && data.key.split("_").length === 2);
+  db = db.filter((x, i, y) => y.findIndex(e => e.key === x.key) === i);
   db.sort((a, b) => Number(a.value) - Number(b.value));
 
   if (type === "desc") db = db.reverse();
@@ -29,56 +31,59 @@ module.exports = async (d) => {
   let value;
   let content = [];
 
+  let lbdata = new Set();
   for (const Data of db) {
-    let user;
-    if (d.client.db.type === "aoi.db") value = Number(Data.value);
-    else value = Number(Data.data.value);
-    user = await d.util.getUser(d, Data.key.split("_")[1]);
-
-    if (user) {
-      y++;
-      let text = custom
-        .replaceAll(`{top}`, y)
-        .replaceAll("{id}", user.id)
-        .replaceAll("{tag}", user.tag)
-        .replaceAll(`{username}`, user.username.removeBrackets())
-        .replaceAll(`{value}`, value);
-
-      if (text.includes("{value:")) {
-        let sep = text.split("{value:")[1].split("}")[0];
-        text = text.replaceAll(`{value:${sep}}`, value.toLocaleString().replaceAll(",", sep));
+      let user;
+      if (d.client.db.type === "aoi.db") value = Number(Data.value);
+      else value = Number(Data.data.value);
+      user = await d.util.getUser(d, Data.key.split("_")[1]);
+  
+      if (user && !lbdata.has(user?.id)) { 
+          lbdata.add(user.id);
+          y++;
+          let text = custom
+              .replaceAll(`{top}`, y)
+              .replaceAll("{id}", user.id)
+              .replaceAll("{tag}", user.tag)
+              .replaceAll(`{username}`, user.username.removeBrackets())
+              .replaceAll(`{value}`, value);
+  
+          if (text.includes("{value:")) {
+              let sep = text.split("{value:")[1].split("}")[0];
+              text = text.replaceAll(`{value:${sep}}`, value.toLocaleString().replaceAll(",", sep));
+          }
+  
+          if (text.includes("{execute:")) {
+              let ins = text.split("{execute:")[1].split("}")[0];
+              const awaited = d.client.cmd.awaited.find((c) => c.name === ins);
+  
+              if (!awaited)
+                  return d.aoiError.fnError(
+                      d,
+                      "custom",
+                      { inside: data.inside },
+                      ` Invalid awaited command '${ins}' in`,
+                  );
+  
+              const code = await d.interpreter(
+                  d.client,
+                  {
+                      guild: d.message.guild,
+                      channel: d.message.channel,
+                      author: user,
+                  },
+                  d.args,
+                  awaited,
+                  undefined,
+                  true,
+              );
+              text = text.replaceAll(`{execute:${ins}}`, code);
+          }
+  
+          content.push(text);
       }
-
-      if (text.includes("{execute:")) {
-        let ins = text.split("{execute:")[1].split("}")[0];
-        const awaited = d.client.cmd.awaited.find((c) => c.name === ins);
-
-        if (!awaited)
-          return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            ` Invalid awaited command '${ins}' in`,
-          );
-
-        const code = await d.interpreter(
-          d.client,
-          {
-            guild: d.message.guild,
-            channel: d.message.channel,
-            author: user,
-          },
-          d.args,
-          awaited,
-          undefined,
-          true,
-        );
-        text = text.replaceAll(`{execute:${ins}}`, code);
-      }
-
-      content.push(text);
-    }
   }
+  
 
   data.result = content.slice(page * list - list, page * list).join("\n");
 
