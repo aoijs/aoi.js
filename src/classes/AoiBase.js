@@ -12,6 +12,7 @@ const {
 const Database = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
+const { DefaultWebSocketManagerOptions, DefaultDeviceProperty } = require("@discordjs/ws");
 const { Group } = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
 const { functions: parser } = require("../core/AoiReader.js");
@@ -34,6 +35,11 @@ class BaseClient extends Discord.Client {
 
     const aoiOptions = {};
     Object.assign(aoiOptions, options);
+    if (options?.mobilePlatform === true) {
+      DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";
+    } else {
+      DefaultWebSocketManagerOptions.identifyProperties.browser = DefaultDeviceProperty;
+    }
     if (!options.intents) {
       throw new TypeError("Client intents must be provided.");
     }

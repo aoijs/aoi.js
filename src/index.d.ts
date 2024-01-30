@@ -195,6 +195,7 @@ declare module "aoi.js" {
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: Array<AllEvents>;
+        mobilePlatform?: boolean;
         fetchInvites?: {
             enabled: boolean;
             cacheInviters?: boolean;
