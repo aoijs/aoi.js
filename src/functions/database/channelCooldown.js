@@ -14,16 +14,16 @@ module.exports = async (d) => {
 
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
-        d.client.db.set(
+        await d.client.db.set(
             "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.channel.id}`,
             cooldown,
         );
-    } else if (Date.now() > cooldown) {
+    } else if (Date.now() < cooldown?.value) {
         if (errorObject.trim() === "") {
         } else {
-            const {object, humanize, toString} = Time.format(cooldown - Date.now());
+            const {object, humanize, toString} = Time.format(cooldown.value - Date.now());
             errorObject = errorObject
                 .replaceAll("%time%", humanize())
                 .replaceAll("%year%", object.years)
@@ -48,7 +48,7 @@ module.exports = async (d) => {
         error = true;
     } else {
         cooldown = Date.now() + Time.parse(time).ms;
-        d.client.db.set(
+        await d.client.db.set(
             "__aoijs_vars__",
             "cooldown",
             `${d.command.name}_${d.channel.id}`,
