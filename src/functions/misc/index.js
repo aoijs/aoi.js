@@ -6,7 +6,7 @@ module.exports = async (d) => {
 
     if (!i && i !== 0) return d.aoiError.fnError(d, 'custom', {}, 'No loop command.');
 
-    data.result = Number(i);
+    data.result = Number(i) + 1;
     
     return {
         code: d.util.setCode(data),
