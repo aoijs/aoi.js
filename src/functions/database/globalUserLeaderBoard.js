@@ -18,11 +18,11 @@ module.exports = async (d) => {
 
         if (!user) return d.aoiError.fnError(d, "custom", {}, `user: ${key}`);
 
-        if (hideNegativeValue == true && lbdata.value < 0) continue;
-        if (hideZeroValue == true && lbdata.value == 0) continue;
-
+        if (hideNegativeValue === "true" && parseInt(lbdata.value) < 0) continue;
+        if (hideZeroValue === "true" && parseInt(lbdata.value) == 0) continue;
+  
         const replacer = {
-            "{value}": lbdata.value,
+            "{value}": parseInt(lbdata.value),
             "{top}": i,
             "{username}": user.username,
             "{displayName}": user.displayName,
@@ -35,7 +35,7 @@ module.exports = async (d) => {
 
         if (text.includes("{value:")) {
             let sep = text.split("{value:")[1].split("}")[0];
-            text = text.replaceAll(`{value:${sep}}`, lbdata.value.toLocaleString().replaceAll(",", sep));
+            text = text.replaceAll(`{value:${sep}}`, parseInt(lbdata.value).toLocaleString().replaceAll(",", sep));
         }
         
         for (const replace in replacer) {

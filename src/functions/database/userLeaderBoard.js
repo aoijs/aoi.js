@@ -23,11 +23,11 @@ module.exports = async (d) => {
         member = await d.util.getUser(d, key)
       }
 
-      if (hideNegativeValue === "true" && lbdata.value < 0) continue;
-      if (hideZeroValue === "true" && lbdata.value == 0) continue;
+      if (hideNegativeValue === "true" && parseInt(lbdata.value) < 0) continue;
+      if (hideZeroValue === "true" && parseInt(lbdata.value) == 0) continue;
 
       const replacer = {
-          "{value}": lbdata.value,
+          "{value}": parseInt(lbdata.value),
           "{top}": i + 1,
           "{username}": member.user?.username || member.username  || "Unknown Member",
           "{nickname}": member.nickname || "Unknown Member",
@@ -41,7 +41,7 @@ module.exports = async (d) => {
 
       if (text.includes("{value:")) {
         let sep = text.split("{value:")[1].split("}")[0];
-        text = text.replaceAll(`{value:${sep}}`, lbdata.value.toLocaleString().replaceAll(",", sep));
+        text = text.replaceAll(`{value:${sep}}`, parseInt(lbdata.value).toLocaleString().replaceAll(",", sep));
       }
 
       for (const replace in replacer) {
