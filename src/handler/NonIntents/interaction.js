@@ -82,9 +82,9 @@ module.exports = async (interaction, client) => {
             );
         }
     } else if (type === "modal") {
-        cmds = client.cmd.interaction.modal.filterArray(
+        cmds = client.cmd.interaction.modal.filter(
             (x) => x.name === interaction.customId,
-        );
+        ).V();
         if (!cmds.length) return;
         const data = {
             client: client,
