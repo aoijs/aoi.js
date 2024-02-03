@@ -16,9 +16,7 @@ module.exports = async (d) => {
     .filter((x) =>
       ["==", "!=", "<=", ">=", "<", ">"].includes(queryType)
         ? eval(d.helpers.checkCondition.solve(`${x}${queryType}${query}`))
-        : queryType === "startsWith"
-          ? x.startsWith(query)
-          : x[queryType](query),
+        : x[queryType](query),
     )
     .join(separator);
 
