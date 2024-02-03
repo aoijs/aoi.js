@@ -2,7 +2,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [code, returnCode = "false", sendMessage = "true", returnExecution = "false", returnID = "false"] = data.inside.splits;
+    const [code, returnCode = "false", sendMessage = "false", returnExecution = "false", returnID = "false"] = data.inside.splits;
 
     const options = {
         name: "eval",
