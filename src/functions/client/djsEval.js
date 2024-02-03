@@ -1,6 +1,7 @@
 module.exports = async d => {
     const {client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError, args} = d;
     const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
     const __fields__ = data.inside.splits;
     let __output__ = "false"
