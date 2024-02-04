@@ -58,6 +58,9 @@ const Interpreter = async (
 ) => {
     try {
         const start = performance.now();
+        if (client?.aoiOptions?.debugs?.interpreter) {
+            console.time(`interpreter-${start}`);
+        }
         //defining vars//
         let code = command.code
             ?.replaceAll("\\]", "#LEFT#")
@@ -479,6 +482,9 @@ const Interpreter = async (
                         client: client,
                         embed: Discord.EmbedBuilder,
                     });
+                if (client?.aoiOptions?.debugs?.interpreter) {
+                    debug[func].funcData = require("util").inspect(FuncData, {depth: 0});
+                }
             }
 
             code = FuncData?.code ?? code;
@@ -545,6 +551,11 @@ const Interpreter = async (
             JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended)
         );
 
+        if (client?.aoiOptions?.debugs?.interpreter) {
+            debug.executionTime = ended + " ms";
+            console.timeEnd(`interpreter-${start}`);
+        }
+
         debug.executionTime = ended + " ms";
         code = code?.replace(/\$executiontime/gi, ended);
 
@@ -588,6 +599,11 @@ const Interpreter = async (
                         msgobj = await useChannel.send(send);
                     }
                 }
+
+                if (client?.aoiOptions?.debugs?.interpreter) {
+                    console.log(debug);
+                }
+
                 if (reactions?.length) {
                     const react = setInterval(() => {
                         const r = reactions.shift();
