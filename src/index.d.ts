@@ -167,6 +167,7 @@ declare module "aoi.js" {
         tables?: Array<string>;
         extraOptions?: Record<string, any>;
         promisify?: boolean;
+        aoiOptions: Array<string>;
     };
 
     type RespondOnEditOptions = {
@@ -191,7 +192,7 @@ declare module "aoi.js" {
         aoiLogs?: boolean;
         aoiWarning?: boolean;
         aoiAutoUpdate?: boolean;
-        disableAoiDB: boolean;
+        disableAoiDB?: boolean;
         suppressAllErrors?: boolean;
         errorMessage?: Array<string>;
         events?: Array<AllEvents>;

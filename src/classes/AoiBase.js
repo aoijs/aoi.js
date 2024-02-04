@@ -85,7 +85,8 @@ class BaseClient extends Discord.Client {
             encriptData: dbData?.encriptData ?? false,
           },
           ...dbData?.extraOptions,
-        }
+        },
+        aoiOptions
       );
     }
 

@@ -24,25 +24,27 @@ class Database {
    * @param {aoidb.KeyValueOptions | aoidb.TransmitterOptions} config
    * @returns {any}
    */
-  constructor(moduleType, module, type, config) {
+  constructor(moduleType, module, type, config, aoiOptions) {
     this.moduleType = type;
     this.db = new module[type](config);
     this.tables = config.dataConfig.tables;
     this.type = moduleType;
-    this.db.on(aoidb.DatabaseEvents.Connect, () => {
-      AoiError.createCustomBoxedMessage(
-        [
-          {
-            text: `Successfully connected ${type} database`,
-            textColor: "green",
-          },
-        ],
-        "white",
-        { text: "@akarui/aoi.db  ", textColor: "cyan" }
-      );
-      this.ready = true;
-      this.readyAt = Date.now();
-    });
+    if (aoiOptions?.aoiLogs !== false) {
+      this.db.on(aoidb.DatabaseEvents.Connect, () => {
+        AoiError.createCustomBoxedMessage(
+          [
+            {
+              text: `Successfully connected ${type} database`,
+              textColor: "green",
+            },
+          ],
+          "white",
+          { text: "@akarui/aoi.db  ", textColor: "cyan" }
+        );
+        this.ready = true;
+        this.readyAt = Date.now();
+      });
+    }
 
     this.db.connect();
   }
