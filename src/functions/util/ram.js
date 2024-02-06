@@ -1,7 +1,7 @@
 module.exports = d => {
     const data = d.util.aoiFunc(d);
 
-    const [type = 'rss'] = data.inside.splits;
+    const [type = 'heapUsed'] = data.inside.splits;
 
     data.result = process.memoryUsage()[type] / 1024 / 1024;
 
