@@ -222,6 +222,12 @@ const Permissions = {
     useexternalsticker: PermissionsBitField["Flags"].UseExternalStickers,
     sendmessagesinthreads: PermissionsBitField["Flags"].SendMessagesInThreads,
     useembeddedactivities: PermissionsBitField["Flags"].UseEmbeddedActivities,
+    useapplicationcommands: PermissionsBitField["Flags"].UseApplicationCommands,
+    manageevents: PermissionsBitField["Flags"].ManageEvents,
+    viewcreatormonetizationanalytics: PermissionsBitField["Flags"].ViewCreatorMonetizationAnalytics,
+    usesoundboard: PermissionsBitField["Flags"].UseSoundboard,
+    useexternalsounds: PermissionsBitField["Flags"].UseExternalSounds,
+    sendvoicemessages: PermissionsBitField["Flags"].SendVoiceMessages,
     all: Object.keys(PermissionsBitField["Flags"]),
 };
 
