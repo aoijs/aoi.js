@@ -5,6 +5,7 @@ module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
         const datas = await d.client.db.all("__aoijs_vars__", (data) =>
             data.key.startsWith("setTimeout_"),
         );
+        if (!datas) return;
         for (const data of datas.filter((x) => x.value?.__pulseEvery__)) {
             let t = data.value;
 
