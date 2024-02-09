@@ -5,6 +5,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
             "__aoijs_vars__",
             (data) => data.key.startsWith("setTimeout_"),
         );
+        if (!datas) return;
         for (const data of datas.filter((x) => {
             return !x.value.__pulseEvery__;
         })) {
