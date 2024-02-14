@@ -443,7 +443,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     else if (Checker(part, "actionRow"))
       components.push(...(await ComponentParser(part, d)));
     else if (Checker(part, "attachment") || Checker(part, "file"))
-      files = FileParser(part);
+      files = FileParser(part, d);
     else if (Checker(part, "edit")) edits = await EditParser(part);
     else if (Checker(part, "reply")) {
       let ctn = part.split(":");
