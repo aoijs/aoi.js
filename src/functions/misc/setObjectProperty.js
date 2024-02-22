@@ -1,24 +1,24 @@
-module.exports = async (d) => {
+module.exports = async d => {
   const data = d.util.aoiFunc(d);
   const { code } = d.command;
+  if (data.err) return d.error(data.err);
 
-  const [objectName, propertyName, propertyValue] = data.inside.splits;
-
-  if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "Object");
-
-  const object = d.data.objects[objectName] || {};
+  let [name, property, value] = data.inside.splits;
+  if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object")
 
   try {
-    object[propertyName] = JSON.parse(propertyValue);
+      value = JSON.parse(value)
   } catch (e) {
-    object[propertyName] = propertyValue;
+      value = value
   }
 
-  d.data.objects[objectName] = object;
-  d.object = object;
+  const object = d.data.objects[name] || {};
+  eval(`object.${property} = value`)
+  
+  d.data.objects[name] = object;
 
   return {
-    code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
-    data: { ...d.data, objects: { ...d.data.objects } },
-  };
-};
+      code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
+      data: { ...d.data, objects: { ...d.data.objects }},
+  }
+}
