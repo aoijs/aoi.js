@@ -16,6 +16,7 @@ class Command {
     serializeFunctions() {
         const availableFunctions = this.__client__.functionManager.functions;
         let code = this.code.replace(/\\]/g, "#LEFT#").split("\\[").join("#RIGHT#").replace("\\,", "#COMMA#");
+
         const usedFunctions = [];
 
         const functionTokens = code.split("$");
@@ -98,6 +99,8 @@ class CommandManager {
 
     createCommand(data = {}) {
         data.type = data.type || "default";
+        data.code = data.code?.replace(/\$comment\[.*?\]\]+/gs, "");
+
         if (data.type === "interaction") {
             this.interaction[data.prototype].set(this.interaction[data.prototype].size, new Command(data, this.client));
         } else {
