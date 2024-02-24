@@ -10,12 +10,13 @@ const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { Command } = require("../classes/Commands.js");
 const PATH = require("path");
 const { deprecate } = require("util");
+const chalk = require("chalk");
 
 // Deprecate error for $if: old
 let isDeprecated = false;
 function deprecateOldIfUsage() {
     if (!isDeprecated) {
-        deprecate(() => { }, "Using $if: old is deprecated. Use $if")();
+        deprecate(() => { }, `${chalk.grey("$if: 'old'")} is deprecated, use ${chalk.cyan("$if")} instead`)();
         isDeprecated = true;
     }
 }
