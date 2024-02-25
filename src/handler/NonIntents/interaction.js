@@ -125,8 +125,7 @@ module.exports = async (interaction, client) => {
                 undefined,
             );
         }
-    } else
-    {
+    } else {
 
         cmds = client.cmd.interaction.slash
             .filter(
@@ -146,7 +145,12 @@ module.exports = async (interaction, client) => {
             member: interaction.member,
             isAutocomplete: interaction.isAutocomplete(),
         };
+
         for (const cmd of cmds) {
+
+            if (!!cmd.sub_command && interaction.options._subcommand !== cmd.sub_command) continue;
+            if (!!cmd.sub_command_group && interaction.options._group !== cmd.sub_command_group) continue;
+
             if (cmd.name?.includes("$")) {
                 cmd.name = (
                     await Interpreter(
@@ -161,6 +165,7 @@ module.exports = async (interaction, client) => {
                     )
                 )?.code;
             }
+
             await Interpreter(
                 client,
                 data,
