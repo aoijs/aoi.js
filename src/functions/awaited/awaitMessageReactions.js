@@ -1,104 +1,159 @@
-const {Time} = require("../../utils/helpers/customParser.js");
+const { Time } = require("../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
     let [
         channelID,
         messageID,
-        filter,
-        time,
-        reactions,
-        commands,
-        errorMsg = "",
-        data = "",
-    ] = inside.splits;
-    reactions = reactions.split(",");
+        userFilter,
+        reactionTimeout,
+        reactionEmojis,
+        awaitedCommands,
+        allowOnce = "true",
+        errorMessage = "",
+        awaitedData = "",
+    ] = data.inside.splits;
+
+    reactionEmojis = reactionEmojis.split(",");
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) d.aoiError.fnError(d, "channel", {inside});
-    const m = await d.util.getMessage(channel, messageID);
-    if (!m) d.aoiError.fnError(d, "message", {inside});
-    reactions.forEach((x) => {
-        m.react(x).catch((err) =>
-            d.aoiError.fnError(d, "custom", {}, err.addBrackets()),
+
+    if (!channel) d.aoiError.fnError(d, "channel", { inside: data.inside });
+    const message = await d.util.getMessage(channel, messageID);
+
+    if (!message) d.aoiError.fnError(d, "message", { inside: data.inside });
+
+    reactionEmojis.forEach((emoji) => {
+        message.react(emoji).catch((err) =>
+            d.aoiError.fnError(d, "custom", {}, err.addBrackets())
         );
     });
 
-    filter = (r, u) => {
+    const filter = (reaction, user) => {
         return (
-            (filter === "everyone" ? true : u.id === filter) &&
-            (reactions.includes(r._emoji.toString()) ||
-                reactions.includes(r._emoji.name) ||
-                reactions.includes(r._emoji.id))
+            (userFilter === "everyone" ? true : user.id === userFilter) &&
+            (reactionEmojis.includes(reaction._emoji.toString()) ||
+                reactionEmojis.includes(reaction._emoji.name) ||
+                reactionEmojis.includes(reaction._emoji.id))
         );
     };
-    time = Time.parse(time)?.ms;
-    if (!time)
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Time Provided In");
+    const timeout = Time.parse(reactionTimeout)?.ms;
+    if (!timeout)
+        d.aoiError.fnError(
+            d,
+            "custom",
+            { inside: data.inside },
+            "Invalid Time Provided In"
+        );
 
-    commands = commands.split(",");
-    commands.forEach((cmd) => {
+    awaitedCommands = awaitedCommands.split(",");
+    awaitedCommands.forEach((command) => {
         if (
             !d.client.cmd.awaited.find(
-                (x) => x.name.toLowerCase() === cmd.toLowerCase(),
+                (x) => x.name.toLowerCase() === command.toLowerCase()
             )
         )
             d.aoiError.fnError(
                 d,
                 "custom",
                 {},
-                "Awaited Command: " + cmd + " Doesn't Exist",
+                "Awaited Command: " + command + " Doesn't Exist"
             );
     });
 
-    if (data !== "") {
+    if (awaitedData !== "") {
         try {
-            data = JSON.parse(data);
+            awaitedData = JSON.parse(awaitedData);
         } catch (e) {
-            d.aoiError.fnError(d, "custom", {inside}, "Invalid Data Provided In");
+            d.aoiError.fnError(
+                d,
+                "custom",
+                { inside: data.inside },
+                "AwaitData"
+            );
         }
     }
-    m.awaitReactions({filter, time})
-        .then(async (collected) => {
-            collected = collected.first();
-            const index = reactions.findIndex(
-                (r) =>
-                    reactions.includes(collected.emoji.toString()) ||
-                    reactions.includes(collected.emoji.name) ||
-                    reactions.includes(collected.emoji.id),
-            );
-            const cmd = d.client.awaited.find(
-                (x) => x.name.toLowerCase() === commands[index]?.toLowerCase(),
-            );
-            if (!cmd)
-                return d.aoiError.fnError(
-                    d,
-                    "custom",
-                    {},
-                    "Invalid Await Command: " + commands[index],
-                );
-            await d.interpreter(d.client, m, [], cmd, d.client.db, false, undefined, {
-                ...d.data,
-                awaitData: data,
-            });
-        })
-        .catch(async (err) => {
-            console.error(err);
-            if (errorMsg !== "") {
-                errorMsg = await d.util.errorParser(errorMsg, d);
-                const extraOptions = errorMsg.options;
-                delete errorMsg.options;
-                d.aoiError.makeMessageError(
-                    d.client,
-                    channel,
-                    errorMsg.data ?? errorMsg,
-                    {...extraOptions},
-                );
-            } else d.aoiError.consoleError("$awaitMessageReactions", err);
+
+    let reactionCollected = false;
+    let reactionCollector;
+
+    if (allowOnce === "true") {
+        reactionCollector = message.createReactionCollector({
+            max: 1,
+            filter,
+            time: timeout,
         });
+    } else {
+        reactionCollector = message.createReactionCollector({
+            filter,
+            time: timeout,
+        });
+    }
+
+    reactionCollector.on("collect", async (collected) => {
+        reactionCollected = true;
+        const index = reactionEmojis.findIndex(
+            (emoji) =>
+                reactionEmojis.includes(collected.emoji.toString()) ||
+                reactionEmojis.includes(collected.emoji.name) ||
+                reactionEmojis.includes(collected.emoji.id)
+        );
+        const awaitedCommand = d.client.cmd.awaited.find(
+            (x) =>
+                x.name.toLowerCase() ===
+                awaitedCommands[index]?.toLowerCase()
+        );
+        if (!awaitedCommand)
+            return d.aoiError.fnError(
+                d,
+                "custom",
+                { inside: data.inside },
+                "Awaited Command: " + awaitedCommands[index]
+            );
+        await d.interpreter(
+            d.client,
+            message,
+            [],
+            awaitedCommand,
+            d.client.db,
+            false,
+            undefined,
+            {
+                ...d.data,
+                awaitData: awaitedData,
+            }
+        );
+    });
+
+    reactionCollector.on("end", async () => {
+        if (!reactionCollected) {
+            errorMessage = await d.util.errorParser(errorMessage, d);
+            const extraOptions = errorMessage.options;
+            delete errorMessage.options;
+            d.aoiError.makeMessageError(
+                d.client,
+                channel,
+                errorMessage.data ?? errorMessage,
+                { ...extraOptions }
+            );
+        }
+    });
+
+    reactionCollector.on("error", async (err) => {
+        console.error(err);
+        if (errorMessage !== "") {
+            errorMessage = await d.util.errorParser(errorMessage, d);
+            const extraOptions = errorMessage.options;
+            delete errorMessage.options;
+            d.aoiError.makeMessageError(
+                d.client,
+                channel,
+                errorMessage.data ?? errorMessage,
+                { ...extraOptions }
+            );
+        } else d.aoiError.consoleError("$awaitMessageReactions", err);
+    });
+
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };
