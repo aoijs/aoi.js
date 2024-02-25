@@ -148,8 +148,10 @@ module.exports = async (interaction, client) => {
 
         for (const cmd of cmds) {
 
-            if (!!cmd.sub_command && interaction.options._subcommand !== cmd.sub_command) continue;
-            if (!!cmd.sub_command_group && interaction.options._group !== cmd.sub_command_group) continue;
+            if (
+                (!!cmd.sub_command && interaction.options._subcommand !== cmd.sub_command) ||
+                (!!cmd.sub_command_group && interaction.options._group !== cmd.sub_command_group)
+            ) continue;
 
             if (cmd.name?.includes("$")) {
                 cmd.name = (
