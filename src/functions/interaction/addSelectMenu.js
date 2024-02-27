@@ -2,7 +2,6 @@ const { StringSelectMenuBuilder, UserSelectMenuBuilder, RoleSelectMenuBuilder, M
 
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
-  const { code } = d.command;
   if (data.err) return d.error(data.err);
 
   let [ index = 1, type, customId, placeholder, minValues = 1, maxValues = 1, disabled = "false", ...options ] = data.inside.splits;
@@ -97,11 +96,6 @@ module.exports = async (d) => {
   d.components[index].components.push(selectBuilder);
 
   return {
-    code: d.util.setCode({ function: d.func, code, inside: data.inside }),
-    data: {
-      ...d.data,
-      components: Object.assign({}, d.data.components, d.components),
-    },
-    components: d.components,
+    code: d.util.setCode(data),
   };
 };

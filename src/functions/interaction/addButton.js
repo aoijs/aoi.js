@@ -1,6 +1,5 @@
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
-  const { code } = d.command;
   if (data.err) return d.error(data.err);
 
   let [index, label, style, custom, disabled = "false", emoji] = data.inside.splits;
@@ -33,11 +32,6 @@ module.exports = async (d) => {
   d.components[index].components.push(button);
 
   return {
-    code: d.util.setCode({ function: d.func, inside: data.inside, code }),
-    data: {
-      ...d.data,
-      components: Object.assign({}, d.data.components, d.components),
-    },
-    components: d.components,
+    code: d.util.setCode(data),
   };
 };
