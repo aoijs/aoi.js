@@ -14,30 +14,50 @@ module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
             cmds = cmds.filter((x) => x.name === t.__timeoutName__);
 
             if (t.__duration__ - Date.now() > 0) {
-                for (const cmd of cmds) {
+                if (t.__duration__ - Date.now() > 2147483647) {
                     const interval = setInterval(async () => {
-                        await d.interpreter(
-                            d.client,
-                            {},
-                            [],
-                            cmd,
-                            d.client.db,
-                            false,
-                            undefined,
-                            { timeoutData: t },
-                        );
-                    }, t.__pulseEvery__);
-
+                        if (Date.now() >= t.__duration__) {
+                            clearInterval(interval);
+                            await d.client.db.delete("__aoijs_vars__", data.key);
+                        } else {
+                            await d.interpreter(
+                                d.client,
+                                {},
+                                [],
+                                cmd,
+                                d.client.db,
+                                false,
+                                undefined,
+                                { timeoutData: t },
+                            );
+                        }
+                    }, 1000 * 60 * 60);
                     t.__pulseIds__.push(interval[Symbol.toPrimitive()]());
+                } else {
+                    for (const cmd of cmds) {
+                        const interval = setInterval(async () => {
+                            await d.interpreter(
+                                d.client,
+                                {},
+                                [],
+                                cmd,
+                                d.client.db,
+                                false,
+                                undefined,
+                                { timeoutData: t },
+                            );
+                        }, t.__pulseEvery__);
 
-                    const timeout = setTimeout(async () => {
-                        clearInterval(interval);
-                        await d.client.db.delete("__aoijs_vars__", data.key);
-                    }, t.__duration__ - Date.now());
+                        t.__pulseIds__.push(interval[Symbol.toPrimitive()]());
 
-                    t.__timeoutIds__.push(timeout[Symbol.toPrimitive()]());
+                        const timeout = setTimeout(async () => {
+                            clearInterval(interval);
+                            await d.client.db.delete("__aoijs_vars__", data.key);
+                        }, t.__duration__ - Date.now());
+
+                        t.__timeoutIds__.push(timeout[Symbol.toPrimitive()]());
+                    }
                 }
-                d.client.db.set("__aoijs_vars__", "setTimeout", t.__id__, t);
             } else {
                 await d.client.db
                     .delete("__aoijs_vars__", data.key)
