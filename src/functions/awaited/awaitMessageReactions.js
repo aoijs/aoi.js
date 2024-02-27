@@ -37,27 +37,12 @@ module.exports = async (d) => {
         );
     };
     const timeout = Time.parse(reactionTimeout)?.ms;
-    if (!timeout)
-        d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            "Invalid Time Provided In"
-        );
+    if (!timeout) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Time");
 
     awaitedCommands = awaitedCommands.split(",");
     awaitedCommands.forEach((command) => {
-        if (
-            !d.client.cmd.awaited.find(
-                (x) => x.name.toLowerCase() === command.toLowerCase()
-            )
-        )
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Awaited Command: " + command + " Doesn't Exist"
-            );
+        if (!d.client.cmd.awaited.find((x) => x.name.toLowerCase() === command.toLowerCase()))
+            return d.aoiError.fnError(d, "custom", {}, "Awaited Command: " + command + " Doesn't Exist");
     });
 
     if (awaitedData !== "") {
