@@ -36,7 +36,7 @@ module.exports = async (d) => {
                 .replaceAll("%ms%", object.ms)
                 .replaceAll("%fullTime%", toString());
 
-            errorObject = await d.util.errorParser(errorObject);
+            errorObject = await d.util.errorParser(errorObject, d);
             await d.aoiError.makeMessageError(
                 d.client,
                 d.channel,
