@@ -1,38 +1,33 @@
 const {Time} = require("../../utils/helpers/customParser.js");
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
-    let [channelID, userFilter, time, replies, cmds, errorMsg = "", data = "{}", dm,] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [channelID = d.channel?.id, userFilter, time, replies, cmds, errorMsg = "", awaitData = "{}", dm = "false"] = data.inside.splits;
+
     try {
-        data = JSON.parse(data);
+        awaitData = JSON.parse(awaitData);
     } catch (e) {
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Data Provided In");
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "AwaitData");
     }
 
     userFilter = userFilter === "everyone" ? userFilter : userFilter.split(",");
+
     time = Time.parse(time)?.ms;
-    if (!time)
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid Time Provided In");
+    if (!time) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Time");
+
     cmds = cmds.split(",");
     cmds.forEach((x) => {
-        if (
-            !d.client.cmd.awaited.find(
-                (y) => y.name.toLowerCase() === x.toLowerCase(),
-            )
-        )
-            return d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Couldn't Find Awaited Command: " + x,
-            );
+        if (!d.client.cmd.awaited.find((y) => y.name.toLowerCase() === x.toLowerCase()))
+            return d.aoiError.fnError(d, "custom", {}, "Couldn't Find Awaited Command: " + x);
     });
+
     replies = replies.split(",");
+
     let channel;
-    if (dm) {
+
+    if (dm === "true") {
         const user = await d.util.getUser(d, dm);
         if (!user.dmChannel) {
             channel = await user.createDM();
@@ -42,6 +37,7 @@ module.exports = async (d) => {
     } else {
         channel = await d.util.getChannel(d, channelID);
     }
+
     const filter = (m) => {
         return (
             (userFilter === "everyone"
@@ -52,17 +48,13 @@ module.exports = async (d) => {
                 : replies.includes(m.content.toLowerCase()))
         );
     };
+
     channel
-        .awaitMessages({filter, time, max: 1, errors: ["time"]})
+        .awaitMessages({ filter, time, max: 1, errors: ["time"] })
         .then(async (collected) => {
             collected = collected.first();
-            const c =
-                cmds[
-                    replies.length === 1 && replies[0] === "everything"
-                        ? 0
-                        : replies.indexOf(collected.content.toLowerCase())
-                    ];
-            const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === c);
+            const c = cmds[replies.length === 1 && replies[0] === "everything" ? 0 : replies.indexOf(collected.content.toLowerCase())];
+            const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === c.toLowerCase());
             await Interpreter(
                 d.client,
                 collected,
@@ -85,7 +77,8 @@ module.exports = async (d) => {
                 );
             }
         });
+
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };
