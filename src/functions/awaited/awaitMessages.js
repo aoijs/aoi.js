@@ -27,7 +27,7 @@ module.exports = async (d) => {
 
     let channel;
 
-    if (dm === "true") {
+    if (dm !== "false") {
         const user = await d.util.getUser(d, dm);
         if (!user.dmChannel) {
             channel = await user.createDM();
