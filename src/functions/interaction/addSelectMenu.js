@@ -1,4 +1,10 @@
-const { StringSelectMenuBuilder, UserSelectMenuBuilder, RoleSelectMenuBuilder, MentionableSelectMenuBuilder, ChannelSelectMenuBuilder } = require("discord.js");
+const {
+  StringSelectMenuBuilder,
+  UserSelectMenuBuilder,
+  RoleSelectMenuBuilder,
+  MentionableSelectMenuBuilder,
+  ChannelSelectMenuBuilder,
+} = require("discord.js");
 
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
@@ -16,13 +22,37 @@ module.exports = async (d) => {
   minValues = Number(minValues);
   maxValues = Number(maxValues);
 
-  if (!options.length && type === "string") return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Options Are Not Provided In");
+  if (!options.length && type === "string")
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.inside },
+      "Options Are Not Provided In"
+    );
 
-  if (minValues > 25 || minValues < 0) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "minValues must be between 0 and 25 (both inclusive).");
+  if (minValues > 25 || minValues < 0)
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.inside },
+      "minValues must be between 0 and 25 (both inclusive)."
+    );
 
-  if (maxValues > 25 || maxValues < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "maxValues must be between 1 and 25 (both Inclusive).");
+  if (maxValues > 25 || maxValues < 1)
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      { inside: data.inside },
+      "maxValues must be between 1 and 25 (both Inclusive)."
+    );
 
-  if (placeholder.length > 100) return d.aoiError.fnError(d, "custom", {}, "Placeholder should be at most 100 Characters long");
+  if (placeholder.length > 100)
+    return d.aoiError.fnError(
+      d,
+      "custom",
+      {},
+      "Placeholder should be at most 100 Characters long"
+    );
 
   let selectBuilder;
 
@@ -43,7 +73,7 @@ module.exports = async (d) => {
       selectBuilder = new ChannelSelectMenuBuilder();
       break;
     default:
-      return d.aoiError.fnError(d, "custom",  { inside: data.inside }, "Invalid Select Menu Type");
+      d.aoiError.fnError(d, "custom", {}, "Invalid Select Menu Type");
   }
 
   selectBuilder
@@ -53,18 +83,27 @@ module.exports = async (d) => {
     .setMinValues(minValues)
     .setDisabled(disabled);
 
-  for (let option of options) {
-    option = option.split(":");
-    const label = option[0].addBrackets();
-    const description = option[1].addBrackets();
-    const value = option[2].addBrackets();
-    const def = option[3]?.addBrackets() === "true";
-    let emoji;
+  if (type.toLowerCase() === "channel" && options.length !== 0) {
+    for (const types of options) {
+      selectBuilder.addChannelTypes(d.util.channelTypes[types]);
+    }
+  }
 
-    try {
-      emoji = d.util.getEmoji(d, option[4]?.addBrackets()).id;
-    } catch {
-      emoji = option[4]?.addBrackets() ?? undefined;
+  let emoji, label, description, value, def;
+
+  for (let option of options) {
+    if (type.toLowerCase() !== "channel") {
+      option = option.split(":");
+      label = option[0].addBrackets();
+      description = option[1].addBrackets();
+      value = option[2].addBrackets();
+      def = option[3]?.addBrackets() === "true";
+
+      try {
+        emoji = d.util.getEmoji(d, option[4]?.addBrackets()).id;
+      } catch {
+        emoji = option[4]?.addBrackets() ?? undefined;
+      }
     }
 
     switch (type.toLowerCase()) {
@@ -81,11 +120,6 @@ module.exports = async (d) => {
       case "role":
       case "mentionable":
       case "channel":
-        selectBuilder.addOption({
-          label,
-          value,
-          type: type.toUpperCase(),
-        });
         break;
       default:
         d.aoiError.fnError(d, "custom", { inside: data.inside }, "Select Menu Type");
