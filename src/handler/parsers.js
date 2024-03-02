@@ -5,6 +5,7 @@ const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
 const { CreateObjectAST } = require("../utils/helpers/functions.js");
 const { deprecate: deprecation } = require("util");
+const { Time } = require("../utils/helpers/customParser.js");
 
 let executed = {};
 function deprecate(func, newfunc) {
@@ -411,40 +412,37 @@ const FileParser = (msg, d) => {
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
   errorMessage = errorMessage.trim();
   const Checker = (parts, part) => parts.includes("{" + part + ":");
-  const specialChecker = (parts, part) =>
-    parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
+  const specialChecker = (parts, part) => parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
 
   let send = true;
   let deleteCommand = false;
   let deleteIn;
   let suppress = false;
-  let interaction = false,
-    ephemeral = false;
+  let interaction = false;
+  let ephemeral = false;
 
   let files = [];
   let reactions = [];
   const embeds = [];
   const components = [];
 
-  let edits = {
-    time: "",
-    messages: [],
-  };
-
   let reply = {
     message: undefined,
     mention: true,
+  };
+
+  let edits = {
+    time: "",
+    messages: []
   };
 
   const parts = CreateObjectAST(errorMessage);
   for (const part of parts) {
     errorMessage = errorMessage.replace(part, "");
     if (Checker(part, "newEmbed")) embeds.push(...(await EmbedParser(part, d)));
-    else if (Checker(part, "actionRow"))
-      components.push(...(await ComponentParser(part, d)));
-    else if (Checker(part, "attachment") || Checker(part, "file"))
-      files = FileParser(part, d);
-    else if (Checker(part, "edit")) edits = await EditParser(part);
+    else if (Checker(part, "actionRow")) components.push(...(await ComponentParser(part, d)));
+    else if (Checker(part, "attachment") || Checker(part, "file")) files = FileParser(part, d);
+    else if (Checker(part, "edit")) edits = await OptionParser(part, d);
     else if (Checker(part, "reply")) {
       let ctn = part.split(":");
       reply = {
@@ -490,8 +488,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     return {
       embeds: send ? embeds : [],
       components,
-      content:
-        errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+      content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
       files,
       options: {
         reply,
@@ -499,7 +496,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         ephemeral,
         suppress,
         interaction,
-        edits,
+        edits: edits.edits,
         deleteIn,
         deleteCommand,
       },
@@ -525,18 +522,6 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     if (m && reactions.length) {
       for (const reaction of reactions) {
         await m.react(reaction).catch(console.error);
-      }
-    }
-
-    if (m && edits.timeout) {
-      for (const code of edits.messages) {
-        await new Promise((e) => setTimeout(e, edits.timeout));
-
-        const sender = await errorHandler(d, code, true);
-
-        await m.suppressEmbeds(suppress);
-
-        await m.edit(sender.message, sender.embed).catch(() => null);
       }
     }
 
@@ -609,14 +594,15 @@ const OptionParser = async (options, d) => {
   const Checker = (msg) => options.includes(msg);
   const optionData = {};
   if (Checker("{edit:")) {
-    const editPart = options.split("{edit:")[1].split("}}")[0];
-    const dur = editPart.split(":")[0];
-    const msgs = editPart.split(":{").slice(1).join(":{").split("}:{");
+    const editPart = options.split("{edit:")[1].split("}")[0];
+    const parts = editPart.split(":");
+    const dur = parts[0];
+    const messageParts = parts.slice(1);
     const messages = [];
-    for (const msg of msgs) {
-      messages.push(await errorHandler(msg.split("}:{")[0], d));
+    for (let msg of messageParts) {
+      messages.push(await errorHandler(msg, d, true))
     }
-    optionData.edits = { time: dur, messages };
+    optionData.edits = { time: Time.parse(dur)?.ms, messages: [messages] };
   }
   if (Checker("{reactions:")) {
     const react = options.split("{reactions:")[1].split("}")[0];

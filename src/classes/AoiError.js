@@ -154,16 +154,19 @@ class AoiError {
     if (extraOptions.reactions?.length) {
       extraOptions.reactions.forEach((x) => msg.react(x));
     }
-    if (extraOptions.edits) {
-      const editIn = setInterval(async () => {
-        if (!extraOptions.edits.messages?.length) clearInterval(editIn);
-        else {
-          const obj = extraOptions.edits.messages.shift();
 
-          msg.edit(obj);
+    if (extraOptions.edits) {
+      let i = 0;
+      for (const msgs of extraOptions.edits.messages) {
+        for (const msgObj of msgs) {
+          await new Promise((resolve) => setTimeout(resolve, extraOptions.edits.time));
+
+          await msg.edit(msgObj).catch(() => console.warn);
+          i++;
         }
-      }, Time.parse(extraOptions.edits.time)?.ms);
+      }
     }
+
     if (extraOptions.deleteIn) {
       extraOptions.deleteIn = Time.parse(
         extraOptions.deleteIn.split("}")[0]
