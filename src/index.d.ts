@@ -85,8 +85,6 @@ declare module "aoi.js" {
 
         static getSticker(guild: Guild, Sticker: string): any;
 
-        static findId(d: any, id: string): Promise<any>;
-
         static findMember(guild: Guild, memberResolver: string): string | undefined;
 
         static findGuildChannel(guild: Guild, ChannelResolver: string): string | undefined;

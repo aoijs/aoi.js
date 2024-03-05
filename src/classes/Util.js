@@ -199,19 +199,6 @@ class Util {
     );
   }
 
-  static async findId(d, id) {
-    return (
-        (await this.getGuild(d, id)) ||
-        (await this.getUser(d, id)) ||
-        (await this.getChannel(d, id, false)) ||
-        (await this.getMessage(d.channel, id)) ||
-        (await this.getRole(d.guild, id)) ||
-        this.getEmoji(d, id) ||
-        this.getSticker(d.guild, id) ||
-        undefined
-    );
-  }
-
   static findMember(guild, memberResolver) {
     return guild.members.cache.findKey(
         (x) =>
