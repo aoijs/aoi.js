@@ -1,5 +1,5 @@
-const {wait} = require("../../utils/helpers/functions.js");
-const {Time} = require("../../utils/helpers/customParser.js");
+const { wait } = require("../../utils/helpers/functions.js");
+const { Time } = require("../../utils/helpers/customParser.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -11,46 +11,33 @@ module.exports = async (d) => {
     try {
         awaitData = JSON.parse(awaitData);
     } catch (e) {
-        d.aoiError.fnError(
-            d,
-            "custom",
-            {inside: data.inside},
-            "Invalid Data Provided In",
-        );
+        d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Data Provided In");
     }
 
     time = isNaN(time) ? Time.parse(time).ms : Number(time);
 
     cmds.forEach((x) => {
-        if (
-            !d.client.cmd.awaited.find(
-                (y) => y.name.toLowerCase() === x.toLowerCase(),
-            )
-        ) {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Awaited Command: " + x + " Not Found",
-            );
+        if (!d.client.cmd.awaited.find((y) => y.name.toLowerCase() === x.toLowerCase())) {
+            d.aoiError.fnError(d, "custom", {}, "Awaited Command: " + x + " Not Found");
         }
     });
 
     cmds = cmds
-        .map((x) =>
-            d.client.cmd.awaited.find(
-                (y) => y.name.toLowerCase() === x.toLowerCase(),
-            ),
-        )
+        .map((x) => d.client.cmd.awaited.find((y) => y.name.toLowerCase() === x.toLowerCase()))
         .reverse();
 
-    const datas = [...d.client.guilds.cache.values()].reverse();
-
+    let datas;
+    if (d.client.shard) {
+        datas = await d.client.shard.fetchGuilds();
+        datas = datas.map(guild => guild.id);
+    } else {
+        datas = [...d.client.guilds.cache.values()];
+    }
+    datas = datas.reverse();
     let i = datas.length - 1;
 
     while (i >= 0) {
         const guild = datas[i];
-
         let u = cmds.length - 1;
 
         const loopData = {
@@ -72,24 +59,20 @@ module.exports = async (d) => {
                 d.client.db,
                 false,
                 undefined,
-                {
-                    awaitData,
-                },
+                { awaitData }
             );
 
             u--;
         }
 
         await wait(time);
-
         i--;
     }
 
     if (endCmd !== "") {
-        const cmd = d.client.cmd.awaited.find(
-            (x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase(),
-        );
+        const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
         if (!cmd) return;
+
         await d.interpreter(
             d.client,
             d.message,
@@ -98,9 +81,7 @@ module.exports = async (d) => {
             d.client.db,
             false,
             undefined,
-            {
-                awaitData,
-            },
+            { awaitData }
         );
     }
 
