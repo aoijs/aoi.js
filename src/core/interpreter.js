@@ -140,6 +140,7 @@ const Interpreter = async (
                         randoms: randoms,
                         command: {
                             name: command.name,
+                            type: command.type,
                             code: code,
                             error: command.error,
                             async: command.async || false,
@@ -193,7 +194,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
                                 }
                             } else return false;
                         },
@@ -261,6 +262,7 @@ const Interpreter = async (
                         randoms: randoms,
                         command: {
                             name: command.name,
+                            type: command.type,
                             code: code,
                             error: command.error,
                             async: command.async || false,
@@ -312,7 +314,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
                                 }
                             } else return false;
                         },
@@ -340,6 +342,7 @@ const Interpreter = async (
                         randoms: randoms,
                         command: {
                             name: command.name,
+                            type: command.type,
                             code: code,
                             error: command.error,
                             async: command.async || false,
@@ -390,7 +393,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Invalid Usage\`\`\``;
+                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
                                 }
                             } else return false;
                         },

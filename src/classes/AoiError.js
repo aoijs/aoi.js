@@ -196,46 +196,54 @@ class AoiError {
    * @returns {string}
    */
   static functionErrorResolve(d, type, data, message) {
-    let errorData = {
-      Function: `\`${d.func}\``,
-      Command: `\`${d.command.name}\``,
-      Version: require("../../package.json").version,
-    };
+    let errorData;
+        
+    if (!d.command.name) {
+      errorData = {
+        Function: d.func,
+        Type: d.command?.type,
+        Version: require("../../package.json").version,
+      };
+    } else {
+      errorData = {
+        Function: d.func,
+        Command: d.command.name,
+        Version: require("../../package.json").version,
+      };
+    }
 
     switch (type) {
       case "member":
-        errorData.type = "Member ID";
+        errorData.type = "Invalid Member ID";
         break;
       case "message":
-        errorData.type = "Message ID";
+        errorData.type = "Invalid Message ID";
         break;
       case "channel":
-        errorData.type = "Channel ID";
+        errorData.type = "Invalid Channel ID";
         break;
       case "user":
-        errorData.type = "User ID";
+        errorData.type = "Invalid User ID";
         break;
       case "role":
-        errorData.type = "Role ID";
+        errorData.type = "Invalid Role ID";
         break;
       case "guild":
-        errorData.type = "Guild ID";
+        errorData.type = "Invalid Guild ID";
         break;
       case "emoji":
-        errorData.type = "Emoji ID";
+        errorData.type = "Invalid Emoji ID";
         break;
       case "option":
-        errorData.type = "Option ID";
+        errorData.type = "Invalid Option ID";
         break;
       case "custom":
         errorData.type = message;
         break;
     }
-    return `\`\`\`js\nAoiError: Invalid ${errorData.type} ${
+    return `\`\`\`js\nAoiError: ${errorData.type} ${
       data.inside || ""
-    } \n { \n   Function : ${errorData.Function},\n   Command : ${
-      errorData.Command
-    },\n   Version : ${errorData.Version} \n }\`\`\``;
+    }\n\n{\n  Function: "${errorData.Function}",\n  ${errorData.Command ? "Command: " + `"${errorData.Command}"` : "Command Type: " + `"${errorData["Type"]}"`},\n  Version: ${errorData.Version}\n}\`\`\``;
   }
 
   /**
