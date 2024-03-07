@@ -6,7 +6,7 @@ module.exports = async (d) => {
 
   if (!d.client.variableManager.has(variable, table)) return d.aoiError.fnError(d, "custom", {}, `Variable "${variable}" Not Found`);
 
-  if (!type || (type.toLowerCase() !== "guild" && type.toLowerCase() !== "user" && type.toLowerCase !== "global")) return d.aoiError.fnError(d, "custom", {}, `type`);
+  if (!type || (type.toLowerCase() !== "guild" && type.toLowerCase() !== "user" && type.toLowerCase() !== "global")) return d.aoiError.fnError(d, "custom", {}, `type`);
 
   let key;
   let user;
