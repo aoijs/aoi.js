@@ -6,7 +6,7 @@ class Command {
         if (typeof data.code === "string") {
             this.code = data.code;
         } else {
-            throw new TypeError(`Missing or invalid 'code' property in '${data.name}' command`);
+            throw new TypeError(`Missing or invalid 'code' property in '${data.name}' command \n Path: '${data.__path__}'`);
         }
         Object.entries(data).forEach(([key, value]) => (this[key] = value));
         this.functions = this.serializeFunctions();
