@@ -7,7 +7,7 @@ const Interpreter = require("../../core/interpreter.js");
  * @param  {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (os, ns, channelData, client) => {
-    const cmds = client.cmd.webhooksUpdate.V();
+    const cmds = client.cmd?.webhooksUpdate.V();
     for (const cmd of cmds) {
         let chan;
         const data = {

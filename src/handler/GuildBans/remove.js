@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (ban, client) => {
-    const cmds = client.cmd.banRemove.V();
+    const cmds = client.cmd?.banRemove.V();
     const data = { guild: ban.guild, author: ban?.user, client: client };
 
     let chan;

@@ -1,8 +1,8 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (ban, client) => {
-    const cmds = client.cmd.banAdd.V();
+    const cmds = client.cmd?.banAdd.V();
     const data = { guild: ban.guild, author: ban?.user, client: client };
-
+    
     let chan;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {

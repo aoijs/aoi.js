@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (client) => {
-    const cmds = client.cmd.ready.V();
+    const cmds = client.cmd?.ready.V();
     let chan;
     const data = {
         client: client,

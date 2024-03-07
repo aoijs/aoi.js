@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (op, np, client) => {
-    const cmds = client.cmd.presenceUpdate.V();
+    const cmds = client.cmd?.presenceUpdate.V();
     for (const cmd of cmds) {
         let chan;
         const data = {

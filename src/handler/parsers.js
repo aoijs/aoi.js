@@ -453,7 +453,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     } else if (Checker(part, "suppress")) suppress = true;
     else if (Checker(part, "execute")) {
       let cmdname = part.split(":")[1].split("}")[0].trim();
-      const cmd = d.client.cmd.awaited.find((x) => x.name === cmdname);
+      const cmd = d.client.cmd?.awaited.find((x) => x.name === cmdname);
       if (!cmd)
         return console.error(
           `AoiError: Invalid awaited command '${chalk.cyan(

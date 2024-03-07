@@ -12,7 +12,7 @@ module.exports = async (message, client) => {
             return;
     }
     //array of cmds
-    let cmds = client.cmd.default
+    let cmds = client.cmd?.default
         .V()
         .filter((x) => !x.nonPrefixed && x.name !== "$alwaysExecute");
     //getting arrays of prefixes

@@ -8,7 +8,7 @@ module.exports = async (olddata, newdata, client) => {
         message: newdata.message,
         author: newdata.author,
     };
-    const cmds = client.cmd.variableUpdate.V();
+    const cmds = client.cmd?.variableUpdate.V();
     for (const cmd of cmds) {
         const id = cmd.channel?.includes("$")
             ? (

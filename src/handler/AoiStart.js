@@ -37,7 +37,7 @@ module.exports = async (client) => {
         }, 3.6e6);
     }
 
-    if (client.cmd.loop.size) {
+    if (client.cmd?.loop.size) {
         await require("./Custom/loop.js")(client);
     }
 };

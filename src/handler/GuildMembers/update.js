@@ -1,7 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldm, newm, client) => {
     let chan;
-    const cmds = client.cmd.memberUpdate.V();
+    const cmds = client.cmd?.memberUpdate.V();
     let data = {
         guild: newm?.guild,
         author: newm?.user,

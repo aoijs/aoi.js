@@ -1,5 +1,5 @@
 module.exports = async (d, name, duration, pulse, timeoutData, onReady) => {
-    let cmds = d.client.cmd.pulse.V();
+    let cmds = d.client.cmd?.pulse.V();
 
     if (onReady) {
         const datas = await d.client.db.all("__aoijs_vars__", (data) =>

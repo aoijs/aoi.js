@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (stageint, client) => {
-    const cmds = client.cmd.stageInstanceCreate.V();
+    const cmds = client.cmd?.stageInstanceCreate.V();
     const data = { guild: stageint.guild, channel: stageint, client: client };
     let chan;
     for (const cmd of cmds) {

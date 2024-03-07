@@ -28,7 +28,7 @@ module.exports = async (interaction, client) => {
     const type = InteractionTypes[ interaction.type ];
     
     if (type === "component") {
-        cmds = client.cmd.interaction[
+        cmds = client.cmd?.interaction[
             MessageComponentTypes[interaction.componentType]
         ]
             .filter((x) =>
@@ -82,7 +82,7 @@ module.exports = async (interaction, client) => {
             );
         }
     } else if (type === "modal") {
-        cmds = client.cmd.interaction.modal.filter(
+        cmds = client.cmd?.interaction.modal.filter(
             (x) => x.name === interaction.customId,
         ).V();
         if (!cmds.length) return;
@@ -127,7 +127,7 @@ module.exports = async (interaction, client) => {
         }
     } else {
 
-        cmds = client.cmd.interaction.slash
+        cmds = client.cmd?.interaction.slash
             .filter(
                 (x) =>
                     x.name.toLowerCase() ===

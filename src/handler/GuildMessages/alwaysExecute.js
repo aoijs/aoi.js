@@ -10,7 +10,7 @@ module.exports = async ( message,client, db) => {
         )
             return;
     }
-    const commands = client.cmd.default
+    const commands = client.cmd?.default
         .V()
         .filter((c) => c.name === "$alwaysExecute");
     if (!commands.length) return;

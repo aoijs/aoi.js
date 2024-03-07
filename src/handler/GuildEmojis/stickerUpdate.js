@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (olde, newe, client) => {
-    const cmds = client.cmd.stickerUpdate.V();
+    const cmds = client.cmd?.stickerUpdate.V();
 
     const data = { guild: newe.guild, client: client };
     let chan;

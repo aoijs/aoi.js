@@ -1,7 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (invite, client) => {
-    const cmds = client.cmd.inviteCreate.V();
+    const cmds = client.cmd?.inviteCreate.V();
     for (const cmd of cmds) {
         let chan;
         const data = {

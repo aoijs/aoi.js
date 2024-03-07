@@ -30,7 +30,7 @@ const CommandHandler = async (client, message, db) => {
         const args = message.content.slice(prefix.length).trim().split(" ");
         const cmdName = args.shift().toLowerCase();
         if (message.content.toLowerCase().startsWith(prefix.toLowerCase())) {
-            const cmd = client.cmd.default
+            const cmd = client.cmd?.default
                 .filter(
                     (x) =>
                         x.name?.toLowerCase() === cmdName ||

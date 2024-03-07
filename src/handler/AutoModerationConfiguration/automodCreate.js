@@ -1,6 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (app, client) => {
-    const cmds = client.cmd.autoModCreate.V();
+    const cmds = client.cmd?.autoModCreate.V();
+    if (!cmds) return;
     let chan;
     const data = {
         guild: client.guilds.cache.get(app.guildId),

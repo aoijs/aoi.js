@@ -10,7 +10,7 @@ module.exports = async ( message,client) => {
         )
             return;
     }
-    const commands = client.cmd.default
+    const commands = client.cmd?.default
         .V()
         .filter((c) => c.nonPrefixed);
     if (!commands.length) return;

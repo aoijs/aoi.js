@@ -1,6 +1,6 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (ou, nu, client) => {
-    const cmds = client.cmd.userUpdate.V();
+    const cmds = client.cmd?.userUpdate.V();
     let chan;
     const data = {
         author: nu,
