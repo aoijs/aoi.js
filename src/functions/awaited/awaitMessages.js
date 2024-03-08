@@ -63,7 +63,7 @@ module.exports = async (d) => {
                 d.client.db,
                 false,
                 undefined,
-                {...d.data, awaitData: data},
+                {...d.data, awaitData: awaitData},
             );
         })
         .catch(async (_) => {
