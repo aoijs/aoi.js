@@ -11,7 +11,7 @@ module.exports = async (d) => {
   const guild = await d.util.getGuild(d, guildID);
 
   let db = await d.client.db.all(table, (data) => { 
-    return data.key.startsWith(variable.addBrackets()) && data.key.split("_").length === 3 && data.key.split("_")[2] == guildID
+    return data.key.startsWith(variable.addBrackets() + "_") && data.key.split("_").length === 3 && data.key.split("_")[2] == guildID
   }, list * page, type);
 
   let i = 0;

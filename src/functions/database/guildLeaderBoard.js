@@ -9,7 +9,7 @@ module.exports = async (d) => {
 
   const result = [];
 
-  let db = await d.client.db.all(table, (data) => { return data.key.startsWith(variable.addBrackets()) && data.key.split("_").length === 2 }, list * page, type);
+  let db = await d.client.db.all(table, (data) => { return data.key.startsWith(variable.addBrackets() + "_") && data.key.split("_").length === 2 }, list * page, type);
 
   let i = 0;
   for (const lbdata of db) {

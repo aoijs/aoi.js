@@ -23,7 +23,7 @@ module.exports = async (d) => {
   }
 
   let db = await d.client.db.all(table, (data) => {
-    return data.key.startsWith(variable.addBrackets()) && (type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true)
+    return data.key.startsWith(variable.addBrackets() + "_") && (type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true)
   });
 
 
