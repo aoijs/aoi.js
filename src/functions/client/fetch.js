@@ -9,19 +9,23 @@ module.exports = async (d) => {
     try {
         switch (method) {
             case "message":
-                result = await d.util.fetchMessage(d.channel, query);
+                result = await d.util.getMessage(d.channel, query);
+                break;
+
+            case "guild":
+                result = await d.util.getGuild(d, query);
                 break;
 
             case "channel":
-                result = await d.util.fetchChannel(d.channel, query);
+                result = await d.util.getChannel(d, query, true);
                 break;
 
             case "user":
-                result = await d.util.fetchUser(d.channel, query);
+                result = await d.util.getUser(d, query);
                 break;
 
             case "invite":
-                result = await d.client.fetchInvite(d.channel, query);
+                result = await d.client.fetchInvite(d, query);
                 break;
 
             case "guildPreview":
@@ -42,7 +46,7 @@ module.exports = async (d) => {
 
             case "guildCommand":
                 const guildID = await d.util.getGuild(d, query);
-                result = await guildID.commands.fetch(properties.join(' '));
+                result = await guildID.commands.fetch(properties.join(" "));
                 break;
 
             case "webhook":
@@ -63,10 +67,9 @@ module.exports = async (d) => {
             }
         }
 
-        data.result = JSON.stringify(result, null, 2);
+        data.result = typeof result === "object" ? JSON.stringify(result, null, 2) : result;
     } catch (e) {
-        d.aoiError.fnError(d, "custom", {}, "Failed To Fetch With Reason: " + e);
-        data.result = "";
+        return d.aoiError.fnError(d, "custom", {}, "Failed To Fetch With Reason: " + e);
     }
 
     return {
