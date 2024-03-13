@@ -1,13 +1,13 @@
 module.exports = async d => {
-    const {code, inside} = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
-    const [id = d.author.id] = inside.splits;
+    const [id = d.author.id] = data.inside.splits;
 
     let dm = await d.util.getUser(d, id);
-    if (!dm) return d.aoiError.fnError(d, "user", {inside});
+    if (!dm) return d.aoiError.fnError(d, "user", { inside: data.inside });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         useChannel: dm
     }
 } 

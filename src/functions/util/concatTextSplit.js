@@ -1,15 +1,13 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [...text] = inside.splits;
+    let [...text] = data.inside.splits;
     text = text.map(x => x.addBrackets());
     d.array.concat(text)
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         data: {
             array: d.array
         }

@@ -1,14 +1,14 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [messageID, msg, channelID = d.channel.id] = inside.splits;
+    let [messageID, msg, channelID = d.channel.id] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
 
     const message = await d.util.getMessage(channel, messageID);
-    if (!message) return d.aoiError.fnError(d, "message", {inside});
+    if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
     msg = await d.util.errorParser(msg, d);
 
@@ -17,6 +17,6 @@ module.exports = async d => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 } 

@@ -1,14 +1,12 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [type, name, options] = inside.splits;
+    const [type, name, options] = data.inside.splits;
 
     d.client.cacheManager.createCache(type, name, options);
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 } 

@@ -1,13 +1,11 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [guildID, name, type, returnID = 'false', parentId] = inside.splits;
+    let [guildID, name, type, returnID = 'false', parentId] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     name = name.addBrackets();
 
@@ -21,9 +19,10 @@ module.exports = async d => {
         }).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Create Channel With Reason: " + e);
     });
-    result = returnID === 'true' ? result.id : undefined;
+    
+    data.result = returnID === 'true' ? result.id : undefined;
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 }

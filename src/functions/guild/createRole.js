@@ -1,14 +1,12 @@
 const {Permissions: Permissions} = require('../../utils/Constants.js');
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [guildID, name, color, position, icon, hoist = "false", unicodeEmoji, mentionable = "false", returnID = "false", reason, ...permissions] = inside.splits;
+    let [guildID, name, color, position, icon, hoist = "false", unicodeEmoji, mentionable = "false", returnID = "false", reason, ...permissions] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID === "" ? d.guild.id : guildID)
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     name = name.addBrackets();
     color = color === "" ? undefined : color
@@ -31,15 +29,15 @@ module.exports = async d => {
             return x
         }
     });
-    if (wrongPerms.length) d.aoiError.fnError(d, "custom", {inside}, "Invalid Permissions: " + wrongPerms.join(" , ") + " Provided In");
+    if (wrongPerms.length) d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Permissions: " + wrongPerms.join(" , ") + " Provided In");
 
     const role = await guild.roles.create({name, color, position, icon, hoist, unicodeEmoji, mentionable, reason, permissions}).catch(e => {
-        d.aoiError.fnError(d, "custom", {inside}, "Failed To Create Role With Reason: " + e);
+        d.aoiError.fnError(d, "custom", { inside: data.inside }, "Failed To Create Role With Reason: " + e);
     });
 
-    const result = returnID === "true" ? role?.id : undefined
+    data.result = returnID === "true" ? role?.id : undefined
 
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 } 

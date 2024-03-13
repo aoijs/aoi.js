@@ -1,19 +1,19 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [guildID, sticker] = inside.splits;
+    let [guildID, sticker] = data.inside.splits;
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     sticker = await d.util.getSticker(d.guild, sticker);
-    if (!sticker) return d.aoiError.fnError(d, "sticker", {inside});
+    if (!sticker) return d.aoiError.fnError(d, "sticker", { inside: data.inside });
 
     sticker.delete().catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Delete Sticker: " + sticker.name + " With Reason: " + e);
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 }

@@ -1,10 +1,10 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [id, token] = inside.splits;
+    const [id, token] = data.inside.splits;
     const webhook = await d.client.fetchWebhook(id, token).catch(e => {
-        d.aoiError.fnError(d, "custom", {inside}, "Invalid WebhookId Provided In");
+        d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid WebhookId Provided In");
     });
 
     webhook.delete().catch(e => {
@@ -12,6 +12,6 @@ module.exports = async d => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 } 

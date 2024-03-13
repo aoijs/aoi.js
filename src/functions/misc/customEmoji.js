@@ -1,8 +1,8 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [emoji, id = "global"] = inside.splits;
+    let [emoji, id = "global"] = data.inside.splits;
     emoji = emoji.addBrackets();
     let result;
 
@@ -12,7 +12,9 @@ module.exports = async d => {
         result = d.client.guilds.cache.get(id)?.emojis.cache.find(x => x.name.toLowerCase() === emoji.toLowerCase() || x.toString() === emoji || x.id === emoji)?.toString()
     }
 
+    data.result = result;
+
     return {
-        code: d.util.setCode({function: d.func, code, inside, result})
+        code: d.util.setCode(data)
     }
 }

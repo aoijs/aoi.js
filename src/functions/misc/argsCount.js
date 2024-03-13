@@ -1,7 +1,10 @@
 module.exports = async d => {
-    const {code} = d.command
+    const data = d.util.aoiFunc(d);
+
+    data.result = d.args.length;
+
     return {
-        code: d.util.setCode({function: d.func, code, result: d.args.length})
+        code: d.util.setCode(data)
 
     }
 }

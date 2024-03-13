@@ -1,11 +1,9 @@
 const {Time} = require("../../utils/helpers/customParser.js");
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [time, id, errorObject = ""] = inside.splits;
+    let [time, id, errorObject = ""] = data.inside.splits;
     let error;
 
     time = isNaN(time) ? Time.parse(time).ms : time;
@@ -14,7 +12,7 @@ module.exports = async (d) => {
         return d.aoiError.fnError(
             d,
             "custom",
-            {inside},
+            { inside: data.inside },
             "Invalid Time Provided In",
         );
 
@@ -56,7 +54,7 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         error,
     };
 };

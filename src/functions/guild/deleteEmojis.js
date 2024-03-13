@@ -1,15 +1,15 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [...emojis] = inside.splits;
+    const [...emojis] = data.inside.splits;
     const wrongEmojis = []
     const emos = []
     emojis.forEach(x => {
         if (!d.client.emojis.cache.find(y => y.name.toLowerCase() === x.toLowerCase().addBrackets() || y.id === x.id || y.toString() === x)) wrongEmojis.push(x)
         else emos.push(d.client.emojis.cache.find(y => y.name.toLowerCase() === x.toLowerCase().addBrackets() || y.id === x.id || y.toString() === x))
     })
-    if (wrongEmojis.length) return d.aoiError.fnError(d, "custom", {inside}, `Invalid Emojis : ${wrongEmojis.join(" , ")} Provided In`);
+    if (wrongEmojis.length) return d.aoiError.fnError(d, "custom", { inside: data.inside }, `Invalid Emojis : ${wrongEmojis.join(" , ")} Provided In`);
 
     for (let i = emos.length - 1; i >= 0; i--) {
         emos[i].delete().catch(e => {
@@ -19,6 +19,6 @@ module.exports = async d => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 }

@@ -20,7 +20,7 @@ module.exports = async (d) => {
     const contentType = response.headers.get("content-type");
     data.result = contentType && contentType.startsWith("image");
   } catch (error) {
-    return console.error("AoiError: Failed to fetch image with reason: ", error);
+    return console.error("AoiError: Failed to fetch image with Reason: ", error);
   }
 
   return {

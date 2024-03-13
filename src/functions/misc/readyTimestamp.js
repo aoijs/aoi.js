@@ -1,7 +1,9 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const result = d.client?.readyTimestamp
+    const data = d.util.aoiFunc(d);
+
+    data.result = d.client?.readyTimestamp
+
     return {
-        code: d.util.setCode({function: d.func, code, result})
+        code: d.util.setCode(data)
     }
 }

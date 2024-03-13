@@ -1,12 +1,13 @@
 const {Time} = require("../../utils/helpers/customParser.js");
-module.exports = async (d) => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
 
-    let [channelID, ...fields] = inside.splits;
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [channelID, ...fields] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
     if (fields.length === 1) {
         try {
             fields = JSON.parse(fields[0]);
@@ -95,6 +96,6 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };

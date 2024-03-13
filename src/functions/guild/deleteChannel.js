@@ -1,16 +1,16 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [channel] = inside.splits;
+    let [channel] = data.inside.splits;
     channel = await d.util.getChannel(d, channel);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
 
     channel.delete().catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Delete Channel: " + channel.name + " With Reason: " + e);
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 }

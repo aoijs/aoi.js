@@ -1,7 +1,9 @@
 module.exports = d => {
-    const {code} = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
+
+    data.result = d.array.length;
 
     return {
-        code: d.util.setCode({function: d.func, code, result: d.array.length})
+        code: d.util.setCode(data)
     }
 }

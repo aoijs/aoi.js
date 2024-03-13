@@ -1,5 +1,5 @@
 module.exports = d => {
-    const {code} = d.util.aoiFunc(d);
+    const { code } = d.util.aoiFunc(d);
 
     try {
         process.on("exit", () => {

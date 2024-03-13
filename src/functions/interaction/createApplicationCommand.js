@@ -2,10 +2,8 @@ const parser = require("../../handler/slashCommandOptionsParser");
 const {SlashTypes} = require("../../utils/InteractionConstants.js");
 const {ApplicationCommandType} = require("discord.js");
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
     let [
         guildID,
@@ -15,10 +13,10 @@ module.exports = async (d) => {
         dmPermissions = "true",
         type = "slash",
         ...opts
-    ] = inside.splits;
+    ] = data.inside.splits;
     name = name.addBrackets();
     let options;
-    let data;
+    let appData;
     const guild =
         guildID === "global"
             ? undefined
@@ -26,7 +24,7 @@ module.exports = async (d) => {
                 ? "custom"
                 : await d.util.getGuild(d, guildID);
     if (!guild && !["global", "custom"].includes(guildID))
-        return d.aoiError.fnError(d, "guild", {inside});
+        return d.aoiError.fnError(d, "guild", { inside: data.inside });
     type = SlashTypes[type] || type;
     if (type === ApplicationCommandType.ChatInput) {
         if (opts.length) {
@@ -48,8 +46,8 @@ module.exports = async (d) => {
     }
 
     if (guild === "custom") {
-        data = d.client.interactionManager.applicationData.get(name.toLowerCase());
-        if (!data)
+        appData = d.client.interactionManager.applicationData.get(name.toLowerCase());
+        if (!appData)
             return d.aoiError.fnError(
                 d,
                 "custom",
@@ -57,7 +55,7 @@ module.exports = async (d) => {
                 "No Slash Data Present With Following Keyword: " + name.toLowerCase(),
             );
     } else {
-        data = {
+        appData = {
             data: {
                 name: name,
                 type,
@@ -69,7 +67,7 @@ module.exports = async (d) => {
             guildID: guild?.id,
         };
     }
-    await d.client.application.commands.create(data.data, data.guildID).catch((e) => {
+    await d.client.application.commands.create(appData.data, appData.guildID).catch((e) => {
         d.aoiError.fnError(
             d,
             "custom",
@@ -79,6 +77,6 @@ module.exports = async (d) => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };

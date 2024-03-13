@@ -1,13 +1,11 @@
 module.exports = async d => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [channelID, topic, privacy = "public"] = inside.splits;
+    const [channelID, topic, privacy = "public"] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
     if (channel.type !== d.util.channelTypes.Stage) return d.aoiError.fnError(d, "custom", {}, "Provided Channel Is Not A Stage Channel");
 
     channel.createStageInstance({topic: topic.addBrackets(), privacyLevel: privacy.toUpperCase()}).catch(e => {
@@ -15,6 +13,6 @@ module.exports = async d => {
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 } 

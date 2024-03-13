@@ -1,16 +1,14 @@
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [channelID, messageID, emoji = "all"] = inside.splits;
+    const [channelID, messageID, emoji = "all"] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
-    if (!channel) return d.aoiError.fnError(d, "channel", {inside});
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
 
     const message = await d.util.getMessage(channel, messageID);
-    if (!message) return d.aoiError.fnError(d, "message", {inside});
+    if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
     if (emoji === "all") {
         message.reactions.removeAll().catch((err) => {
@@ -23,7 +21,7 @@ module.exports = async (d) => {
         });
 
         return {
-            code: d.util.setCode({function: d.func, code, inside}),
+            code: d.util.setCode(data),
         };
     } else {
         message.reactions.cache
@@ -37,6 +35,6 @@ module.exports = async (d) => {
     }
 
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
     };
 };

@@ -1,16 +1,16 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    let [emoji] = inside.splits;
+    let [emoji] = data.inside.splits;
     emoji = await d.util.getEmoji(d, emoji);
-    if (!emoji) return d.aoiError.fnError(d, "emoji", {inside});
+    if (!emoji) return d.aoiError.fnError(d, "emoji", { inside: data.inside });
 
     emoji.delete().catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Delete Emoji: " + emoji.name + " With Reason: " + e);
     });
 
     return {
-        code: d.util.setCode({function: d.func, code, inside})
+        code: d.util.setCode(data)
     }
 }

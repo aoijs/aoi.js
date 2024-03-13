@@ -1,11 +1,9 @@
 module.exports = async d => {
-    const {code} = d.util.aoiFunc(d);
+    const data = d.util.aoiFunc(d);
 
+    data.result = Math.abs(Date.now() - d.data.interaction?.createdTimestamp);
+    
     return {
-        code: d.util.setCode({
-            function: d.func,
-            code,
-            result: Math.abs(Date.now() - d.data.interaction?.createdTimestamp)
-        })
+        code: d.util.setCode(data)
     }
 }

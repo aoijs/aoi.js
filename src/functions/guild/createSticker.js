@@ -1,15 +1,13 @@
 const {AttachmentBuilder} = require("discord.js");
-module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
 
-    let [guildID, url, name, returnSticker = "false", tags, description, reason] =
-        inside.splits;
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [guildID, url, name, returnSticker = "false", tags, description, reason] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     const file = new AttachmentBuilder(url);
 
@@ -25,8 +23,9 @@ module.exports = async (d) => {
         });
 
     if (returnSticker === "true") d.stickers.push(sticker);
+    
     return {
-        code: d.util.setCode({function: d.func, code, inside, result}),
+        code: d.util.setCode(data),
         sticker: d.stickers,
     };
 };

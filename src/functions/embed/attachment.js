@@ -1,10 +1,10 @@
 const {AttachmentBuilder} = require("discord.js");
+
 module.exports = async (d) => {
-    const {code} = d.command;
-    const inside = d.unpack();
-    const err = d.inside(inside);
-    if (err) return d.error(err);
-    let [attachment, name, type = "url"] = inside.splits;
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
+
+    let [attachment, name, type = "url"] = data.inside.splits;
     const result = new AttachmentBuilder(
         type === "buffer"
             ? Buffer.from(attachment.addBrackets())
@@ -12,8 +12,9 @@ module.exports = async (d) => {
         {name: name.addBrackets()},
     );
     d.files.push(result);
+    
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode(data),
         files: d.files,
     };
 };

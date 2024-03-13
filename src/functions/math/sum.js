@@ -1,14 +1,16 @@
 module.exports = async d => {
-    const {code, inside, err} = d.util.aoiFunc(d);
-    if (err) return d.error(err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-    const [...numbers] = inside.splits;
-    if (numbers.some(x => isNaN(x))) return d.aoiError.fnError(d, 'custom', {inside: inside}, 'Invalid Number Provided In');
-    if (numbers.length < 2) return d.aoiError.fnError(d, 'custom', {inside: inside}, `At Least 2 Numbers Are Needed. Provided ${numbers.length} Numbers In`)
+    const [...numbers] = data.inside.splits;
+    if (numbers.some(x => isNaN(x))) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Invalid Number Provided In');
+    if (numbers.length < 2) return d.aoiError.fnError(d, 'custom', { inside: data.inside }, `At Least 2 Numbers Are Needed. Provided ${numbers.length} Numbers In`)
 
     const result = numbers.reduce((a, b) => Number(a) + Number(b));
+    
+    data.result = result;
 
     return {
-        code: d.util.setCode({function: d.func, inside, code, result})
+        code: d.util.setCode(data)
     }
 }
