@@ -17,7 +17,7 @@ module.exports = async (d) => {
                 d,
                 "custom",
                 {},
-                "Failed to render modals with reason: " + e,
+                "Failed to render modals with Reason: " + e,
             );
         });
 

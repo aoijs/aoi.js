@@ -2,7 +2,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
     await d.data.interaction?.deferUpdate().catch(e => {
-        d.aoiError.fnError(d, 'custom', {}, 'Failed To Reply With Reason: ' + e)
+        d.aoiError.fnError(d, "custom", {}, "Failed to Defer Update with Reason: " + e)
     });
 
     return {
