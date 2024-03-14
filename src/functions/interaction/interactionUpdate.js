@@ -11,7 +11,7 @@ module.exports = async d => {
         content: parser.content.trim() === "" ? " " : parser.content.addBrackets(),
         embeds: parser.embeds,
         components: parser.components,
-        files
+        files: parser.files
     }).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed to Reply Interaction with Reason: " + e)
     })
