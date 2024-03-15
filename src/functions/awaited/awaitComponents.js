@@ -8,7 +8,7 @@ module.exports = async (d) => {
 
     cmds = cmds.split(",");
     cmds.forEach((x) => {
-        if (!(d.client.cmd.interaction.selectMenu.find((y) => y.name.toLowerCase() === x.toLowerCase()) || d.client.cmd.interaction.button.find((y) => y.name.toLowerCase() === x.toLowerCase()))) {
+        if (!(d.client.cmd.interaction.selectMenu.find((y) => y.name?.toLowerCase() === x?.toLowerCase()) || d.client.cmd.interaction.button.find((y) => y.name?.toLowerCase() === x?.toLowerCase()))) {
             return d.aoiError.fnError(d, "custom", {}, "awaitedCommand " + x);
         }
     });
@@ -23,7 +23,7 @@ module.exports = async (d) => {
 
     collector.on("collect", async (interaction) => {
         const index = cmds[customIDs?.indexOf(interaction.customId)];
-        const cmd = d.client.cmd.interaction.selectMenu.find((y) => y.name.toLowerCase() === index.toLowerCase()) || d.client.cmd.interaction.button.find((y) => y.name.toLowerCase() === index.toLowerCase())
+        const cmd = d.client.cmd.interaction.selectMenu.find((y) => y.name?.toLowerCase() === index?.toLowerCase()) || d.client.cmd.interaction.button.find((y) => y.name?.toLowerCase() === index?.toLowerCase())
         if (!cmd) return;
 
         await d.interpreter(
