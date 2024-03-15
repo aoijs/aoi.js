@@ -1,56 +1,51 @@
-const Discord = require("discord.js");
+const { Partials, IntentsBitField, Client }  = require("discord.js");
+const { DefaultWebSocketManagerOptions } = require("@discordjs/ws");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
-const {
-  ActivityTypeAvailables,
-  IntentOptions,
-  EventsToIntents,
-  EventsToDjsEvents,
-  EventstoFile,
-} = require("../utils/Constants.js");
+const { ActivityTypeAvailables, IntentOptions, EventsToIntents, EventsToDjsEvents, EventstoFile } = require("../utils/Constants.js");
 const Database = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
-const { DefaultWebSocketManagerOptions, DefaultDeviceProperty } = require("@discordjs/ws");
 const { Group } = require("@akarui/structures");
 const AoiError = require("./AoiError.js");
 const { functions: parser } = require("../core/AoiReader.js");
 
-class BaseClient extends Discord.Client {
+class BaseClient extends Client {
   constructor(options) {
     if (options.cache) {
       options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
     }
 
     options.partials = options.partials || [
-      Discord.Partials.GuildMember,
-      Discord.Partials.Channel,
-      Discord.Partials.Message,
-      Discord.Partials.Reaction,
-      Discord.Partials.User,
-      Discord.Partials.GuildScheduledEvent,
-      Discord.Partials.ThreadMember,
+      Partials.GuildMember,
+      Partials.Channel,
+      Partials.Message,
+      Partials.Reaction,
+      Partials.User,
+      Partials.GuildScheduledEvent,
+      Partials.ThreadMember,
     ];
 
     const aoiOptions = {};
     Object.assign(aoiOptions, options);
+
     if (options?.mobilePlatform === true) {
       DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";
-    } else {
-      DefaultWebSocketManagerOptions.identifyProperties.browser = DefaultDeviceProperty;
     }
+
     if (!options.intents) {
       throw new TypeError("Client intents must be provided.");
     }
+
     options.intents = options.intents.map((x) => IntentOptions[x] || x);
+
     super(options);
+
     this.aoiOptions = aoiOptions;
-
+  
     this.cmd = new CommandManager(this);
-
     this.interactionManager = new InteractionManager(this);
-
     this.cacheManager = new CacheManager(this);
 
     this.variableManager = new VariableManager(this);
@@ -164,11 +159,11 @@ class BaseClient extends Discord.Client {
   }
 
   async _createCacheFactory(options) {
-    options.makeCache = await CacheManager._setDjsCacheManagers(options.cache);
+    options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
   }
 
   #bindEvents() {
-    const bits = new Discord.IntentsBitField(this.options.intents);
+    const bits = new IntentsBitField(this.options.intents);
     for (const event of this.aoiOptions.events ?? []) {
       let intent = EventsToIntents[event];
       const filedir = intent;
