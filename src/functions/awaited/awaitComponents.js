@@ -4,12 +4,12 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [channelID, messageID, userFilter, customIDs, cmds, errorMsg = "", uses = 1, time] = data.inside.splits;
+    let [channelID, messageID, userFilter, customIDs, cmds, awaitedCmd, uses = 1, time] = data.inside.splits;
 
     cmds = cmds.split(",");
     cmds.forEach((x) => {
         if (!(d.client.cmd.interaction.selectMenu.find((y) => y.name?.toLowerCase() === x?.toLowerCase()) || d.client.cmd.interaction.button.find((y) => y.name?.toLowerCase() === x?.toLowerCase()))) {
-            return d.aoiError.fnError(d, "custom", {}, "awaitedCommand " + x);
+            return d.aoiError.fnError(d, "custom", {}, "Invalid Interaction Command with the name " + x + " not found");
         }
     });
 
@@ -38,17 +38,21 @@ module.exports = async (d) => {
         );
     });
 
-    if (errorMsg?.trim !== "" && errorMsg) {
-        errorMsg = await d.util.errorParser(errorMsg, d);
+    if (awaitedCmd) {
+        const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === awaitedCmd.toLowerCase());
+        if (!cmd) return d.aoiError.fnError(d, "custom", {}, "Invalid Awaited Command:", awaitedCmd);
 
         collector.on("end", async (collected) => {
             if (collected.size < Number(uses)) {
-                await d.aoiError.makeMessageError(
+                await Interpreter(
                     d.client,
-                    channel,
-                    errorMsg.data ?? errorMsg,
-                    errorMsg.options,
-                    d
+                    d.message,
+                    d.args,
+                    cmd,
+                    d.client.db,
+                    false,
+                    undefined,
+                    d.data,
                 );
             }
         });
