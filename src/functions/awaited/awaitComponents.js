@@ -18,7 +18,7 @@ module.exports = async (d) => {
     const channel = await d.util.getChannel(d, channelID);
     const message = await d.util.getMessage(channel, messageID);
 
-    const filter = interaction => customIDs.includes(interaction.customId) && (userFilter.includes("everyone") || userFilter.includes(m.user.id));
+    const filter = interaction => customIDs.includes(interaction.customId) && (userFilter.includes("everyone") || userFilter.includes(interaction.user.id));
     const collector = message.createMessageComponentCollector({ filter: filter, max: uses, time: Time.parse(time)?.ms });
 
     collector.on("collect", async (interaction) => {
