@@ -44,7 +44,7 @@ module.exports = async (d) => {
 
         collector.on("end", async (collected) => {
             if (collected.size < Number(uses)) {
-                await Interpreter(
+                await d.client.functionManager.interpreter(
                     d.client,
                     d.message,
                     d.args,
