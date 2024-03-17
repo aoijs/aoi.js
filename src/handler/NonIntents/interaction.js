@@ -130,8 +130,8 @@ module.exports = async (interaction, client) => {
         cmds = client.cmd?.interaction.slash
             .filter(
                 (x) =>
-                    x.name.toLowerCase() ===
-                    interaction.commandName.toLowerCase(),
+                    x.name?.toLowerCase() ===
+                    interaction.commandName?.toLowerCase(),
             )
             .V();
 
