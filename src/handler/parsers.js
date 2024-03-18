@@ -88,8 +88,14 @@ const EmbedParser = async (msg, d) => {
     }
     if (rawr.includes("{timestamp")) {
       let t = rawr.split("{timestamp")[1].split("}")[0].replace(":", "").trim();
-      if (t === "" || t === "ms") {
+      if (t === "") {
         t = Date.now();
+      } else {
+        try {
+          t = Time.parse(t)?.ms
+        } catch {
+          t = Date.now();
+        }
       }
       embed.timestamp = new Date(t);
     }
@@ -98,9 +104,7 @@ const EmbedParser = async (msg, d) => {
       for (let fo of fi) {
         fo = fo.split("}")[0].split(":");
         const fon = fo.shift().addBrackets().trim();
-        const foi = ["yes", "no", "true", "false"].find(
-          (x) => x === fo[Number(fo.length - 1)].trim()
-        )
+        const foi = ["true", "false"].find((x) => x === fo[Number(fo.length - 1)].trim())
           ? fo.pop().trim() === "true"
           : false;
 
@@ -186,43 +190,6 @@ const ComponentParser = async (msg, d) => {
 
       if (options.includes("{stringInput:")) {
         const opts = options.split("{stringInput:").slice(1);
-
-        for (let opt of opts) {
-          opt = opt.split("}")[0].split(":");
-          const label = opt.shift();
-          const value = opt.shift();
-          const desc = opt.shift();
-          const def = opt.shift() === "true";
-          let emoji;
-
-          const ind = {
-            label: label,
-            value: value,
-            description: desc,
-            default: def,
-          };
-
-          if (opt) {
-            try {
-              emoji = d.util.getEmoji(d, opt.toString().addBrackets());
-              ind.emoji = {
-                name: emoji.name,
-                id: emoji.id,
-                animated: emoji.animated,
-              };
-            } catch (e) {
-              emoji = emoji ?? opt.toString().addBrackets();
-              ind.emoji = emoji || undefined;
-            }
-          }
-
-          selectMenuOptions.push(ind);
-        }
-      }
-
-      if (options.includes("{selectMenuOptions:")) {
-        deprecate("{selectMenuOptions:}", "{stringInput:}");
-        const opts = options.split("{selectMenuOptions:").slice(1);
 
         for (let opt of opts) {
           opt = opt.split("}")[0].split(":");
