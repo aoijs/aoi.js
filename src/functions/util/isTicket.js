@@ -3,11 +3,7 @@ module.exports = async (d) => {
 
     const [channelID = d.channel?.id] = data.inside.splits;
 
-    let isTicket = await d.client.db.get(
-        d.client.db.tables[0],
-        "ticketChannel",
-        channelID,
-    );
+    const isTicket = await d.client.db.get("__aoijs_vars__", "ticketChannel", channelID);
 
     data.result = !!isTicket;
 
