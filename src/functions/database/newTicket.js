@@ -1,133 +1,87 @@
-const {Guild} = require("discord.js");
+const { Guild } = require("discord.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, msg = "", place = d.guild?.id, returnID = "false", error] =
-        data.inside.splits;
+    const [name, message, parentId = d.guild?.id, returnID = "false", error] = data.inside.splits;
 
-    const createAt =
-        (await d.util.getChannel(d, place)) || (await d.util.getGuild(d, place));
-    if (!createAt)
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {inside: data.inside},
-            "Invalid Id Provided In",
-        );
+    if (!name) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Channel Name Provided In");
+
+    const createAt = (await d.util.getChannel(d, parentId)) || (await d.util.getGuild(d, parentId));
+    
+    if (!createAt) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid parentId Provided In");
+
+    let channel;
 
     if (createAt instanceof Guild) {
-        const channel = await createAt.channels
-            .create(name.addBrackets())
+        channel = await createAt.channels
+            .create({ name: name.addBrackets() })
             .catch(async (err) => {
                 if (error && error?.trim() !== "") {
-                    const ticketError = await d.util.errorParser(error || "", d);
-                    d.aoiError.makeMessageError(
+                    const ticketError = await d.util.errorParser(error.addBrackets(), d);
+                    await d.aoiError.makeMessageError(
                         d.client,
                         d.channel,
                         ticketError.data ?? ticketError,
                         ticketError.options,
                     );
-                } else
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {inside: data.inside},
-                        "Failed To Create Channel Wih Reason: " + err,
-                    );
+                } else {
+                    return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Failed To Create Channel Wih Reason: " + err);
+                }
             });
-        if (channel) {
-            channel.permissionOverwrites
-                .edit(d.author.id, {
-                    SendMessages: true,
-                    ViewChannel: true,
-                    ReadMessageHistory: true,
-                })
-                .catch(async (err) => {
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {},
-                        "Failed To Update Ticket Permissions With Reason: " + err,
-                    );
-                });
-            if (msg?.trim() !== "") {
-                const ticketMsg = await d.util.errorParser( msg.addBrackets(), d );
-                channel?.send(ticketMsg.data ?? ticketMsg).catch((err) => {
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {},
-                        "Failed To Send Message In Ticket With Reason: " + err,
-                    );
-                });
-            }
-        }
-        d.client.db.set(
-            d.client.db.tables[0],
-            "ticketChannel",
-            channel.id,
-            channel.id,
-        );
 
         data.result = returnID === "true" ? channel?.id : undefined;
     } else {
-        const channel = await createAt
-            .children.create( { name: name.addBrackets() } )
+        channel = await createAt
+            .children.create({ name: name.addBrackets() })
             .catch(async (err) => {
                 if (error && error?.trim() !== "") {
-                    const ticketError = await d.util.errorParser(error || "", d);
-                    d.aoiError.makeMessageError(
+                    const ticketError = await d.util.errorParser(error, d);
+                    await d.aoiError.makeMessageError(
                         d.client,
                         d.channel,
                         ticketError.data ?? ticketError,
                         ticketError.options,
                     );
-                } else
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {inside: data.inside},
-                        "Failed To Create Channel Wih Reason: " + err,
-                    );
+                } else {
+                    return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Failed To Create Channel Wih Reason: " + err);
+                }
             });
 
-        if (channel) {
-            channel.permissionOverwrites
-                .edit(d.author.id, {
-                    SendMessages: true,
-                    ViewChannel: true,
-                    ReadMessageHistory: true,
-                })
-                .catch(async (err) => {
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {},
-                        "Failed To Update Ticket Permissions With Reason: " + err,
-                    );
-                });
-            if (msg?.trim() !== "") {
-                const ticketMsg = await d.util.errorParser(msg.addBrackets(), d);
-                channel?.send(ticketMsg.data ?? ticketMsg).catch((err) => {
-                    d.aoiError.fnError(
-                        d,
-                        "custom",
-                        {},
-                        "Failed To Send Message In Ticket With Reason: " + err,
-                    );
-                });
-            }
-        }
-        d.client.db.set(
-            d.client.db.tables[0],
+        data.result = returnID === "true" ? channel?.id : undefined;
+    }
+
+    if (channel) {
+        await d.client.db.set(
+            "__aoijs_vars__",
             "ticketChannel",
             channel.id,
             channel.id,
         );
 
-        data.result = returnID === "true" ? channel?.id : undefined;
+        channel.permissionOverwrites
+            .edit(d.author.id, {
+                SendMessages: true,
+                ViewChannel: true,
+                ReadMessageHistory: true,
+            })
+            .catch((err) => {
+                return d.aoiError.fnError(d, "custom", {}, "Failed To Update Ticket Permissions With Reason: " + err);
+            });
+        if (message && message.trim() !== "") {
+            const ticketMsg = await d.util.errorParser(message.addBrackets(), d);
+            try {
+                await d.aoiError.makeMessageError(
+                    d.client,
+                    channel,
+                    ticketMsg.data ?? ticketMsg,
+                    ticketMsg.options,
+                );
+            } catch (err) {
+                return d.aoiError.fnError(d, "custom", {}, "Failed To Send Message In Ticket With Reason: " + err);
+            }
+        }
     }
 
     return {
