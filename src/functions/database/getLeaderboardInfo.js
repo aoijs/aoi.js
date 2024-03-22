@@ -23,7 +23,7 @@ module.exports = async (d) => {
   }
 
   let db = await d.client.db.findMany(table, (data) => {
-    return data.key.startsWith(variable.addBrackets() + "_") && (type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true)
+    return data.key.startsWith(key.split("_")[0]) && (type === "guild" ? data.key.split("_")[2] === key.split("_")[2] : true)
   });
 
   switch (format) {
