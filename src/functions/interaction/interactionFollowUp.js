@@ -7,7 +7,7 @@ module.exports = async d => {
     const parser = await d.util.errorParser(content, d);
 
     const interaction = await d.data.interaction?.followUp({
-        content: parser.content.trim() === "" ? " " : parser.content.addBrackets(),
+        content: parser.content?.trim() === "" || !parser.content ? " " : parser.content.addBrackets(),
         embeds: parser.embeds,
         components: parser.components,
         files: parser.files,
