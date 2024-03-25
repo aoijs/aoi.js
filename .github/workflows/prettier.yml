@@ -1,0 +1,30 @@
+name: "🚀 Prettier Check and Write"
+
+on:
+  push:
+
+jobs:
+  pretty:
+    name: "🎨 Run Prettier"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "📂 Checkout Code"
+        uses: actions/checkout@v2
+
+      - name: "⚙️ Setup Node.js"
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19'
+
+      - name: "📦 Install Dependencies"
+        run: npm ci
+
+      - name: "🕵️‍♀️ Run Prettier Check"
+        run: npm run prettycheck
+
+      - name: "✍️ Run Prettier Write"
+        run: npm run prettywrite
+
+      - name: "🕵️‍♀️ Run Prettier Check"
+        run: npm run prettycheck
