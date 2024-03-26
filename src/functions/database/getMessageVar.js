@@ -15,7 +15,7 @@ module.exports = async (d) => {
         );
 
     data.result =
-        (await d.client.db.get(table, varname, messageID))?.value ||
+        (await d.client.db.get(table, varname, messageID))?.value ??
         d.client.variableManager.get(varname, table)?.default;
 
     data.result =
