@@ -53,7 +53,7 @@ module.exports = async (d) => {
     const [numbers] = data.inside.splits;
 
     if (numbers && !isMathExpression(numbers)) {
-        return d.aoiError.fnError(d, "custom", {}, "Invalid math expression");
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
     }
 
     const regex =
@@ -61,7 +61,7 @@ module.exports = async (d) => {
     const math = numbers?.replaceAll(regex, "Math.$1").replaceAll("EULERNUM", "Math.E");
 
     if (!math) {
-        return d.aoiError.fnError(d, "custom", {}, "Invalid math expression");
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
     }
 
     data.result = eval(math);
