@@ -18,6 +18,8 @@ module.exports = (d) => {
         data.result = "undefined";
     }
 
+    data.result = typeof data.result === "object" ? JSON.stringify(data.result) : data.result;
+
     return {
         code: d.util.setCode(data)
     };
