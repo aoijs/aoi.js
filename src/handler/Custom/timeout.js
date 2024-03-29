@@ -2,6 +2,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
     let cmds = d.client.cmd?.timeout.V();
 
     if (onReady) {
+        d.client.db.db.on("connect",async () => {
         const datas = await d.client.db.all("__aoijs_vars__", (data) => data.key.startsWith("setTimeout_"));
         if (!datas) return;
         for (const data of datas.filter((x) => {
@@ -44,6 +45,7 @@ module.exports = async (d, name, duration, timeoutData, onReady) => {
                 continue;
             }
         }
+        });
     } else {
         timeoutData.__timeoutIds__ = [];
         if (name) {
