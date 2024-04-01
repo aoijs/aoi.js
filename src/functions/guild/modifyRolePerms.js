@@ -37,7 +37,7 @@ module.exports = async d => {
         }
     }
 
-   let abc = role.setPermissions(arrayPerms).catch(e => {
+    role.setPermissions(arrayPerms).catch(e => {
         d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Permissions With Reason: ' + e);
     });
 
