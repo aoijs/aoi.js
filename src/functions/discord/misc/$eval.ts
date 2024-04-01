@@ -48,6 +48,7 @@ export const $eval: FunctionData = {
             currentScope.packages += "const { Transpiler } = await import('./transpiler.js');\n";
         }
         currentScope.rest = currentScope.rest.replace(data.total, res);
+        
         data.funcs = [];
         return {
             code: res,

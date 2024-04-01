@@ -6,6 +6,7 @@ import { FunctionData, funcData } from "../../../typings/interfaces.js";
 import {
     escapeResult,
     escapeVars,
+    parseResult,
 } from "../../../util/transpilerHelpers.js";
 export const $createObject: FunctionData = {
     name: "$createObject",
@@ -60,7 +61,7 @@ export const $createObject: FunctionData = {
             throw new TranspilerError(`${data.name}: Invalid Object Provided`);
         }
         const res = escapeResult(
-            `const ${escapeVars(name)} =  ${typeof object === "string" ? object : object.solve()};`,
+            `const ${escapeVars(name)} =  ${typeof object === "string" ? object : parseResult(object.solve())};`,
         );
         currentScope.objects[name] = <StringObject>object;
         currentScope.variables.push(name);

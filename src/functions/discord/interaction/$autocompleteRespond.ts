@@ -1,4 +1,5 @@
-import { InteractionTypes, Snowflake } from "zeneth";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { InteractionResponseTypes, Snowflake } from "zeneth";
 import { StringObject, parseStringObject } from "../../../index.js";
 import AoiJSFunction from "../../../structures/AoiJSFunction.js";
 import { escapeResult } from "../../../util/transpilerHelpers.js";
@@ -60,12 +61,13 @@ autocomplete.setCode((data, scope, thisArg) => {
             await discord.client.createInteractionResponse(
                 discord.interaction?.id as Snowflake,
                 discord.interaction?.token as string,
-                "$0" as unknown as InteractionTypes.ApplicationCommandAutocomplete,
+                //@ts-ignore
+                "$0",
                 {
                     choices: ["$1"] as any,
                 },
             ),
-        [InteractionTypes.ApplicationCommandAutocomplete, options.join(",\n")],
+        [InteractionResponseTypes.ApplicationCommandAutocompleteResult, options.join(",\n")],
     );
 
     const res = escapeResult(resultString as string);

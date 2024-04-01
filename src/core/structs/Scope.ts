@@ -32,6 +32,7 @@ export default class Scope {
     hasSendData: boolean;
     sendFunction: string;
     functions: string;
+    _funcList: string[] = [];
     addReturn: boolean;
     useChannel?: bigint | string;
     embededJS: string[] = [];
@@ -290,6 +291,7 @@ export default class Scope {
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),
                 res.replaceAll("$", "$$$$"),
             );
+            // this.rest = this.replaceLast(this.rest, data.total.replaceAll(TranspilerCustoms.FSEP, ";"),res.replaceAll("$", "$$$$"));
         } else if (data.type === "scope" || data.type === "scope_getter") {
             this.rest = this.rest.replace(
                 data.total.replaceAll(TranspilerCustoms.FSEP, ";"),

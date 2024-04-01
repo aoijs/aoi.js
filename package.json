@@ -78,11 +78,7 @@
     "ws": "^8.14.2",
     "zeneth": "^0.0.1"
   },
-  "bin": {
-    "aoijs": "./bin/index.mjs"
-  },
   "files": [
-    "bin",
     "dist",
     "README.md",
     "LICENSE",

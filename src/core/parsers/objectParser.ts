@@ -142,7 +142,7 @@ export function parseStringObject(
     if (quotes) {
         quotes.forEach((x) => {
             const newx = x
-                .replaceAll(":", "#OBJECT_SEPARATER#")
+                .replaceAll(":", "#OBJECT_SEPARATOR#")
                 .replaceAll("{", "#OBJECT_STARTER#")
                 .replaceAll("}", "#OBJECT_ENDER#")
                 .replaceAll("[", "#ARRAY_STARTER#")

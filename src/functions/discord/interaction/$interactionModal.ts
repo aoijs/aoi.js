@@ -102,3 +102,19 @@ export const $interactionModal: FunctionData = {
         };
     },
 };
+
+// const interactionModal = new AoiJSFunction()
+//     .setName("$interactionModal")
+//     .setType("scope")
+//     .setBrackets(true)
+//     .setOptional(false)
+//     .setFields([
+//         {
+//             name: "msg",
+//             type: "string",
+//             description: "The message to send",
+//             required: true,
+//         },
+//     ])
+//     .setVersion("7.0.0")
+//     .setDefault(["void"])

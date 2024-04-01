@@ -56,11 +56,11 @@ export default class AoiJSFunction {
     }
     setCode(
         code: (
-            data: funcData,
-            scope: Scope[],
-            thisArg: AoiJSFunction,
-        ) => { code: string; scope: Scope[]; data?: funcData },
-        thisArg: AoiJSFunction,
+      data: funcData,
+      scope: Scope[],
+      thisArg: AoiJSFunction
+    ) => { code: string; scope: Scope[]; data?: funcData },
+        thisArg: AoiJSFunction
     ) {
         this.code = function (data, scope) {
             return code(data, scope, thisArg);
@@ -81,7 +81,11 @@ export default class AoiJSFunction {
     updateSetter(scope: Scope, value: string) {
         scope.setters += value;
     }
-    updateFunction(scope: Scope, func: (arg?: unknown[]) => unknown) {
+    updateFunction(
+        scope: Scope,
+        func: (discord: TranspiledFuncData, arg?: unknown[]) => unknown,
+        vars?: unknown[]
+    ) {
         const stringifyFunction = func.toString();
         const functionName = inspect(func)
             .replace("[Function:", "")
@@ -89,26 +93,39 @@ export default class AoiJSFunction {
             .trim();
 
         const es5Regex =
-            /^(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*\s*(?:(?:(?:async\s(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*\s*)?function|class)(?:\s|(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*)|(?:[_$\w][\w0-9_$]*\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*\()|(?:\[\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*(?:(?:['][^']+['])|(?:["][^"]+["]))\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*\]\())/;
+      /^(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*\s*(?:(?:(?:async\s(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*\s*)?function|class)(?:\s|(?:(?:\/\*[^(?:*/)]*\*\/\s*)|(?:\/\/[^\r\n]*))*)|(?:[_$\w][\w0-9_$]*\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*\()|(?:\[\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*(?:(?:['][^']+['])|(?:["][^"]+["]))\s*(?:\/\*[^(?:*/)]*\*\/\s*)*\s*\]\())/;
 
         const isEs6 = !es5Regex.test(stringifyFunction);
+        const findNumbersRegex = /\$[0-9]+/g;
         let functionToUpdate = "";
         if (isEs6) {
             functionToUpdate = `function ${functionName} ${stringifyFunction.replace(
                 "=>",
-                "",
+                ""
             )}`;
         } else {
             functionToUpdate = stringifyFunction;
         }
-
+        const numbers = functionToUpdate.match(findNumbersRegex);
+        if (numbers?.length && vars?.length) {
+            for (const number of numbers) {
+                const index = parseInt(number.replace("$", ""));
+                functionToUpdate = functionToUpdate
+                    .replaceAll(`"${number}"`, vars[index] as string)
+                    .replaceAll(`'${number}'`, vars[index] as string);
+            }
+        }
         scope.functions += functionToUpdate + "\n";
+    }
+
+    hasFunction(scope: Scope, funcName: string) {
+        return scope._funcList.includes(funcName);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getResultString(
         func: (__$DISCORD_DATA$__: TranspiledFuncData) => any,
-        args: any[],
+        args: any[]
     ): string {
         const body = func.toString();
         // if (!/\((\s)*__\$DISCORD_DATA\$__(\s)*\)/.test(body.trim())) {
@@ -122,12 +139,12 @@ export default class AoiJSFunction {
         let bodyWithoutArg = body.replace(matchWholeArgwithAsync, "");
         bodyWithoutArg = this.#replaceArgInFunctionStringWithDiscord(
             bodyWithoutArg,
-            arg,
+            arg
         );
         const removedArrow = bodyWithoutArg.replace("=>", "").trim();
 
         const bodyWithoutBrackets =
-            removedArrow[0] === "{" ? removedArrow.slice(1, -1) : removedArrow;
+      removedArrow[0] === "{" ? removedArrow.slice(1, -1) : removedArrow;
         const findNumbersRegex = /\$[0-9]+/g;
         const numbers = bodyWithoutBrackets.match(findNumbersRegex);
 
@@ -161,28 +178,24 @@ export default class AoiJSFunction {
     }
 
     #replaceArgInFunctionStringWithDiscord(func: string, arg: string) {
-        // it will replace all arg with __$DISCORD_DATA$__ and wont replace same word if it is a part of another word or a property
+    // it will replace all arg with __$DISCORD_DATA$__ and wont replace same word if it is a part of another word or a property
 
-        const regex = new RegExp(
-            `(?<![a-zA-Z0-9_.])(${arg})(?![a-zA-Z0-9_])`,
-            "g",
-        );
+        const regex = new RegExp(`(?<![a-zA-Z0-9_.])(${arg})(?![a-zA-Z0-9_])`, "g");
         return func.replaceAll(regex, "__$DISCORD_DATA$__");
     }
 
     conditionalGetResultString(
         condition: boolean,
         trueData: {
-            func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
-            args: unknown[];
-        },
+      func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
+      args: unknown[];
+    },
         falseData: {
-            func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
-            args: unknown[];
-        },
+      func: (__$DISCORD_DATA$__: TranspiledFuncData) => unknown;
+      args: unknown[];
+    }
     ): string {
-        if (condition)
-            return this.getResultString(trueData.func, trueData.args);
+        if (condition) return this.getResultString(trueData.func, trueData.args);
         return this.getResultString(falseData.func, falseData.args);
     }
 }

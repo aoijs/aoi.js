@@ -56,7 +56,8 @@ export function Transpiler(
     if (res.scope[0].sendData.content.trim() !== "") {
         const scope = res.scope[0];
         scope.hasSendData = true;
-        scope.rest = scope.rest.replace(scope.sendData.content.trim(), "");
+        // scope.rest = scope.rest.replace(scope.sendData.content.trim(), "");
+        scope.rest = scope.replaceLast(scope.rest,scope.sendData.content.trim(), "");
         res.scope[0] = scope;
     }
     res.scope[0].updateEmbedJs();

@@ -25,7 +25,7 @@ export const $comment: FunctionData = {
     code: (data: funcData, scope: Scope[]) => {
         const comment = data.inside;
         const currentScope = scope[scope.length - 1];
-        const res = escapeResult(`/*${comment}*/`);
+        const res = escapeResult(``);
         currentScope.update( res, data );
         return {
             code: res,

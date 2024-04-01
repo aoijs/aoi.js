@@ -17,6 +17,12 @@ export enum TranspilerCustoms
     MFE = "#MATH_FUNCTION_END#",
     SL = "#STRING_LITERAL#",
     NL = "#NEW_LINE#",
+    OSEP = "#OBJECT_SEPARATOR#",
+    OS = "#OBJECT_STARTER#",
+    OE = "#OBJECT_ENDER#",
+    AS = "#ARRAY_STARTER#",
+    AE = "#ARRAY_ENDER#",
+    ASEP = "#ARRAY_SEPARATOR#",
 }
 
 export enum BundlerCustoms  {

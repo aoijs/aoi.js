@@ -13,6 +13,7 @@ import { AoiClientProps, CommandTypes } from "../typings/types.js";
 import { AoiClientEvents } from "../typings/enums.js";
 import { onInteraction } from "../events/interactionCreate.js";
 import { onReady } from "../events/ready.js";
+import { readFileSync } from "fs";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface AoiClient extends AoiClientProps {
@@ -37,10 +38,12 @@ class AoiClient {
         this.__on__ = {};
     }
 
-    // static create() {
-    //     const file = "./config.aoi";
+    static create() {
+        const file = "./config.aoi";
+        const config = JSON.parse(readFileSync(file, "utf-8")) as AoiClientOptions;
+        return new AoiClient(config);
 
-    // }
+    }
     #bindEvents() {
         for (const event of this.options.events)
             switch (event) {

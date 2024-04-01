@@ -1,7 +1,7 @@
 import { TranspilerError } from "../core/error.js";
 import Scope from "../core/structs/Scope.js";
 import FUNCDATA from "../functions/index.js";
-import { funcData } from "../typings/interfaces.js";
+import { FunctionData, funcData } from "../typings/interfaces.js";
 import { TranspilerCustoms } from "../typings/enums.js";
 import { StringObject, parseStringObject } from "../index.js";
 import { Command } from "../structures/Command.js";
@@ -159,7 +159,13 @@ export function parseResult(result: string) {
         .replaceAll(TranspilerCustoms.FFS, "")
         .replaceAll(TranspilerCustoms.FFE, "")
         .replaceAll(TranspilerCustoms.MFS, "")
-        .replaceAll(TranspilerCustoms.MFE, "");
+        .replaceAll(TranspilerCustoms.MFE, "")
+        .replaceAll(TranspilerCustoms.OS, "{")
+        .replaceAll(TranspilerCustoms.OE, "}")
+        .replaceAll(TranspilerCustoms.OSEP, ":")
+        .replaceAll(TranspilerCustoms.AS, "[")
+        .replaceAll(TranspilerCustoms.AE, "]")
+        .replaceAll(TranspilerCustoms.ASEP, ",");
 }
 
 /**
@@ -226,7 +232,28 @@ export function getFunctionData(
     functions: string[],
     command?: Command,
 ): funcData {
-    const FuncD = FUNCDATA[func];
+    let FuncD = FUNCDATA[func];
+    if(func === "$EXECUTEMAINCODEFUNCTION") {
+        FuncD = {
+            name: "$EXECUTEMAINCODEFUNCTION",
+            brackets: true,
+            optional: false,
+            default: ["void"],
+            returns: undefined,
+            code: (() => {}) as unknown as FunctionData["code"],
+            type: "scope",
+            fields: [
+                {
+                    name: "code",
+                    type: "string",
+                    required: true,
+                }
+            ],
+            description: "Main Execution Function",
+            version: "7.0.0",
+            example: "N/A"
+        };
+    }
     const reg = new RegExp(`${func.replace("$", "\\$")}`, "i");
     code = code.replace(reg, func);
     code = code.replaceAll("`", TranspilerCustoms.SL);
@@ -241,7 +268,7 @@ export function getFunctionData(
     // eslint-disable-next-line no-constant-condition
     while (true) {
         if (i >= code.length) break;
-        if (!FuncD?.brackets && !code.slice(func.length).startsWith("[")) {
+        if (!FuncD?.brackets ) {
             break;
         }
         if (!FuncD?.optional && !code.slice(func.length).startsWith("[")) {
@@ -254,11 +281,6 @@ export function getFunctionData(
                 path: command?.__path__,
             });
         }
-        if (
-            areBracketsBalanced(code) &&
-            countBrackets(code).leftbracketCount === 0
-        )
-            break;
 
         if (rightCount === leftCount && rightCount !== 0) break;
         // if (!areBracketsBalanced(code)) {
