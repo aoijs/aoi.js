@@ -7,35 +7,35 @@ module.exports = async d => {
     const [guildID, roleID, ...perms] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
+    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
 
     const role = await guild.roles.fetch(roleID).catch(e => undefined);
-    if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
+    if (!role) return d.aoiError.fnError(d, 'role', { inside: data.inside });
 
-    let arrayPerms = role.permissions.toArray(); // make array array
+    let newPerms = BigInt(0);
+
     if (perms.includes('+all')) {
-        arrayPerms = ['Administrator']; 
+        newPerms = Permissions.ALL;
     } else if (perms.includes('-all')) {
-        arrayPerms = [];
+        newPerms = BigInt(0);
     } else {
         for (const perm of perms) {
             const sign = perm.slice(0, 1);
+            const permission = Permissions[perm.slice(1)];
+
             if (sign === '+') {
-                arrayPerms.push(Permissions[perm.slice(1)]); 
+                newPerms |= BigInt(permission); // big int go brr
             } else if (sign === '-') {
-                const index = arrayPerms.indexOf(Permissions[perm.slice(1)]);
-                if (index !== -1) {
-                    arrayPerms.splice(index, 1); 
-                }
+                newPerms &= ~BigInt(permission); // same abov
             }
         }
     }
 
-    role.setPermissions(arrayPerms).catch(e => {
-        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Channel Permissions With Reason: ' + e);
+    role.setPermissions(newPerms).catch(e => {
+        d.aoiError.fnError(d, 'custom', { inside: data.inside }, 'Failed To Modify Channel Permissions With Reason: ' + e);
     });
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};
