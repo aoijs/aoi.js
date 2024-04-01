@@ -24,9 +24,9 @@ module.exports = async d => {
             const permission = Permissions[perm.slice(1)];
 
             if (sign === '+') {
-                newPerms |= BigInt(permission); // big int go brr
+                newPerms |= BigInt(permission); 
             } else if (sign === '-') {
-                newPerms &= ~BigInt(permission); // same abov
+                newPerms &= ~BigInt(permission); 
             }
         }
     }
