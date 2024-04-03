@@ -23,17 +23,19 @@ module.exports = async (d) => {
         const key = lbdata.key.split("_")[1];
         const user = await d.util.getUser(d, key);
 
+        if (!user) continue;
+
         if (hideNegativeValue === "true" && parseInt(lbdata.value) < 0) continue;
         if (hideZeroValue === "true" && parseInt(lbdata.value) == 0) continue;
 
         const replacer = {
             "{value}": parseInt(lbdata.value),
             "{top}": i,
-            "{username}": user?.username || "Unknown User",
-            "{displayName}": user?.displayName || "Unknown User",
-            "{tag}": user?.tag || "Unknown User",
-            "{id}": user?.id || "Unknown User",
-            "{mention}": user || "Unknown User"
+            "{username}": user.username,
+            "{displayName}": user?.displayName,
+            "{tag}": user?.tag,
+            "{id}": user.id,
+            "{mention}": user
         };
 
         let text = custom;

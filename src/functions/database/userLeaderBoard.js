@@ -35,6 +35,7 @@ module.exports = async (d) => {
         let member = await d.util.getMember(guild, key);
 
         if (!member) member = await d.util.getUser(d, key);
+        if (!member) continue;
 
         if (hideNegativeValue === "true" && parseInt(lbdata.value) < 0) continue;
         if (hideZeroValue === "true" && parseInt(lbdata.value) == 0) continue;
@@ -42,12 +43,12 @@ module.exports = async (d) => {
         const replacer = {
             "{value}": parseInt(lbdata.value),
             "{top}": i + 1,
-            "{username}": member.user?.username || member.username || "Unknown Member",
-            "{nickname}": member.nickname || "Unknown Member",
-            "{displayName}": member.user?.displayName || member.displayName || "Unknown Member",
-            "{tag}": member.user?.tag || member.tag || "Unknown Member",
-            "{id}": member.user?.id || member.id || "Unknown Member",
-            "{mention}": member.user || member || "Unknown Member"
+            "{username}": member.user?.username || member.username,
+            "{nickname}": member.nickname || member.user?.username,
+            "{displayName}": member.user?.displayName || member.displayName,
+            "{tag}": member.user?.tag || member.tag,
+            "{id}": member.user?.id || member.id,
+            "{mention}": member.user || member
         };
 
         let text = custom;

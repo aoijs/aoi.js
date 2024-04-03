@@ -23,14 +23,16 @@ module.exports = async (d) => {
         const key = lbdata.key.split("_")[1];
         const guild = await d.util.getGuild(d, key);
 
+        if (!guild) continue;
+
         if (hideNegativeValue === "true" && parseInt(lbdata.value) < 0) continue;
         if (hideZeroValue === "true" && parseInt(lbdata.value) == 0) continue;
 
         const replacer = {
             "{value}": parseInt(lbdata.value),
             "{top}": i + 1,
-            "{name}": guild?.name || "Unknown Guild",
-            "{id}": guild.id || "Unknown Guild"
+            "{name}": guild.name,
+            "{id}": guild.id
         };
 
         let text = custom;
