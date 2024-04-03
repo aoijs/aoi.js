@@ -46,7 +46,6 @@ module.exports = async (d) => {
 
         user = await getdata(user, Data, 1);
 
-
         if (user) {
             user =
                 typeof user === "object"
