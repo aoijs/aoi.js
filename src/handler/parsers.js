@@ -113,13 +113,13 @@ const ComponentParser = async (msg, d) => {
             const inside = aoi.split("{button:").slice(1);
             for (let button of inside) {
                 button = button?.split("}")[0];
-                button = button?.split(":").map((x) => x.trim());
-
-                const label = button.shift().addBrackets();
+                button = button?.addBrackets().split(/:(?![/][/])/).map((x) => x.trim());
+        const label = button.shift();
                 let style = isNaN(button[0]) ? button.shift() : Number(button.shift());
                 style = ButtonStyleOptions[style] || style;
-                const cus = button.shift().addBrackets();
+                const cus = button.shift();
                 const disable = button.shift()?.replace("true", true)?.replace("false", false) || false;
+
                 let emoji;
                 const dInside =
                     Number(style) === 5
@@ -140,14 +140,14 @@ const ComponentParser = async (msg, d) => {
 
                 if (button) {
                     try {
-                        emoji = d.util.getEmoji(d, button.toString().addBrackets());
+                        emoji = d.util.getEmoji(d, button.toString());
                         dInside.emoji = {
                             name: emoji.name,
                             id: emoji.id,
                             animated: emoji.animated
                         };
                     } catch {
-                        emoji = emoji ?? button.toString().addBrackets();
+                        emoji = emoji ?? button.toString();
                         dInside.emoji = emoji || undefined;
                     }
                 }
@@ -186,7 +186,7 @@ const ComponentParser = async (msg, d) => {
 
                     if (opt) {
                         try {
-                            emoji = d.util.getEmoji(d, opt.toString().addBrackets());
+                            emoji = await d.util.getEmoji(d, opt.toString().addBrackets());
                             ind.emoji = {
                                 name: emoji.name,
                                 id: emoji.id,
