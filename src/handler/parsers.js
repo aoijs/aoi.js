@@ -327,7 +327,7 @@ const FileParser = (msg, d) => {
             .map((x) => x.trim());
         for (let o of e) {
             o = o.split("}")[0];
-            o = o.split(":");
+            o = o.split(/:(?![/][/])/);
 
             const attachment = new Discord.AttachmentBuilder(o.pop().addBrackets(), {
                 name: o.join(":").toString().addBrackets() ?? "attachment.png"
@@ -342,7 +342,7 @@ const FileParser = (msg, d) => {
             .map((x) => x.trim());
         for (let u of i) {
             u = u.split("}")[0];
-            u = u.split(":");
+            u = u.split(/:(?![/][/])/);
 
             const attachment = new Discord.AttachmentBuilder(Buffer.from(u.pop().addBrackets()), { name: u.join(":").toString().addBrackets() ?? "file.txt" });
             att.push(attachment);
