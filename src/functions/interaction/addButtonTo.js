@@ -1,3 +1,5 @@
+const { ActionRow } = require("discord.js");
+
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
@@ -34,14 +36,21 @@ module.exports = async (d) => {
 
     button[style === 5 ? "url" : "customId"] = custom;
 
-    const components = message.components;
+    const components = d.data.components ? [...d.data.components] : [...message.components];
 
     components[index] = components[index] || { type: 1, components: [] };
     components[index].components.push(button);
 
-    await message.edit({ components });
+    const raw = components.map((component) => (component instanceof ActionRow ? component.toJSON() : component));
+
+    await message.edit({ components: raw });
 
     return {
-        code: d.util.setCode(data)
+        code: d.util.setCode(data),
+        data: {
+            components: {
+                ...raw
+            }
+        }
     };
 };

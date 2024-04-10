@@ -97,14 +97,21 @@ module.exports = async (d) => {
         }
     }
 
-    const components = message.components;
+    const components = d.data.components ? [...d.data.components] : [...message.components];
 
     components[index] = components[index] || { type: 1, components: [] };
     components[index].components.push(selectBuilder);
 
-    await message.edit({ components });
+    const raw = components.map((component) => (component instanceof ActionRow ? component.toJSON() : component));
+
+    await message.edit({ components: raw });
 
     return {
-        code: d.util.setCode(data)
+        code: d.util.setCode(data),
+        data: {
+            components: {
+                ...raw
+            }
+        }
     };
 };
