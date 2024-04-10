@@ -4,11 +4,17 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [index = 1, type, customId, placeholder, minValues = 1, maxValues = 1, disabled = "false", ...options] = data.inside.splits;
+    let [channelId = d.channel?.id, messageId = d.channel?.id, index = 1, type, customId, placeholder, minValues = 1, maxValues = 1, disabled = "false", ...options] = data.inside.splits;
+
+    const channel = d.client.channels.cache.get(channelId);
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
+
+    const message = await channel.messages.fetch(messageId);
+    if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
     index = Number(index) - 1;
 
-    if (isNaN(index) || index < 0) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Index");
+    if (isNaN(index) || index < 0) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
 
     disabled = disabled === "true";
     placeholder = placeholder?.addBrackets();
@@ -91,8 +97,10 @@ module.exports = async (d) => {
         }
     }
 
-    d.components[index] = d.components[index] || { type: 1, components: [] };
-    d.components[index].components.push(selectBuilder);
+    message.components[index] = message.components[index] || { type: 1, components: [] };
+    message.components[index].components.push(selectBuilder);
+
+    await message.edit({ components: message.components });
 
     return {
         code: d.util.setCode(data)
