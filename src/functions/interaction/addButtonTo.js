@@ -34,10 +34,12 @@ module.exports = async (d) => {
 
     button[style === 5 ? "url" : "customId"] = custom;
 
-    message.components[index] = message.components[index] || { type: 1, components: [] };
-    message.components[index].components.push(button);
+    const components = message.components;
 
-    await message.edit({ components: message.components });
+    components[index] = components[index] || { type: 1, components: [] };
+    components[index].components.push(button);
+
+    await message.edit({ components });
 
     return {
         code: d.util.setCode(data)

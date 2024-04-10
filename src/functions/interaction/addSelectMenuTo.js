@@ -97,10 +97,12 @@ module.exports = async (d) => {
         }
     }
 
-    message.components[index] = message.components[index] || { type: 1, components: [] };
-    message.components[index].components.push(selectBuilder);
+    const components = message.components;
 
-    await message.edit({ components: message.components });
+    components[index] = components[index] || { type: 1, components: [] };
+    components[index].components.push(selectBuilder);
+
+    await message.edit({ components });
 
     return {
         code: d.util.setCode(data)
