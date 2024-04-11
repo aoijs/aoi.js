@@ -34,15 +34,15 @@ module.exports = async (d) => {
         }
     });
 
-    res = await res.text();
+    res = await res.json();
 
     try {
         data.result =
             property?.trim() === ""
                 ? JSON.stringify(res, null, 2)
-                : typeof eval(`JSON.parse(res)?.${property?.addBrackets()}`) === "object" || typeof eval(`JSON.parse(res)?.${property?.addBrackets()}`) === "array"
-                  ? JSON.stringify(eval(`JSON.parse(res)?.${property?.addBrackets()}`), null, 2)
-                  : eval(`JSON.parse(res)?.${property?.addBrackets()}`);
+                : typeof eval(`res?.${property?.addBrackets()}`) === "object" || Array.isArray(eval(`res?.${property?.addBrackets()}`))
+                  ? JSON.stringify(eval(`res?.${property?.addBrackets()}`), null, 2)
+                  : eval(`res?.${property?.addBrackets()}`);
     } catch (e) {
         data.result = res;
     }
