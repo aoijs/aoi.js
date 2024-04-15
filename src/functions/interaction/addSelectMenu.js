@@ -8,7 +8,7 @@ module.exports = async (d) => {
 
     index = Number(index) - 1;
 
-    if (isNaN(index) || index < 0) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Index");
+    if (isNaN(index) || index < 0) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
 
     disabled = disabled === "true";
     placeholder = placeholder?.addBrackets();
@@ -43,7 +43,7 @@ module.exports = async (d) => {
             selectBuilder = new ChannelSelectMenuBuilder();
             break;
         default:
-            d.aoiError.fnError(d, "custom", {}, "Invalid Select Menu Type");
+            d.aoiError.fnError(d, "custom", {}, "Invalid Select Menu Type Provided In");
     }
 
     selectBuilder.setCustomId(customId).setPlaceholder(placeholder).setMaxValues(maxValues).setMinValues(minValues).setDisabled(disabled);
