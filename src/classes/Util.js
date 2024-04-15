@@ -183,11 +183,15 @@ class Util {
   }
 
   static getEmoji(d, Emoji) {
+    if (Emoji.includes(":")) {
+      Emoji = Emoji.split(":")[2].split(">")[0];
+    }
+
     return d.client.emojis.cache.find(
-        (x) =>
-            x.name.toLowerCase() === Emoji.toLowerCase().addBrackets() ||
-            x.id === Emoji ||
-            x.toString() === Emoji
+      (x) =>
+        x.name.toLowerCase() === Emoji.toLowerCase().addBrackets() ||
+        x.id === Emoji ||
+        x.toString() === Emoji
     );
   }
 

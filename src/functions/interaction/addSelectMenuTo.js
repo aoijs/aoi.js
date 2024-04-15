@@ -4,7 +4,13 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [index = 1, type, customId, placeholder, minValues = 1, maxValues = 1, disabled = "false", ...options] = data.inside.splits;
+    let [channelId = d.channel?.id, messageId = d.channel?.id, index = 1, type, customId, placeholder, minValues = 1, maxValues = 1, disabled = "false", ...options] = data.inside.splits;
+
+    const channel = d.client.channels.cache.get(channelId);
+    if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
+
+    const message = await channel.messages.fetch(messageId);
+    if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
     index = Number(index) - 1;
 
@@ -43,7 +49,7 @@ module.exports = async (d) => {
             selectBuilder = new ChannelSelectMenuBuilder();
             break;
         default:
-            d.aoiError.fnError(d, "custom", {}, "Invalid Select Menu Type Provided In");
+            d.aoiError.fnError(d, "custom", {}, "Invalid Select Menu Type");
     }
 
     selectBuilder.setCustomId(customId).setPlaceholder(placeholder).setMaxValues(maxValues).setMinValues(minValues).setDisabled(disabled);
@@ -91,10 +97,21 @@ module.exports = async (d) => {
         }
     }
 
-    d.components[index] = d.components[index] || { type: 1, components: [] };
-    d.components[index].components.push(selectBuilder);
+    const components = d.data.components ? [...d.data.components] : [...message.components];
+
+    components[index] = components[index] || { type: 1, components: [] };
+    components[index].components.push(selectBuilder);
+
+    const raw = components.map((component) => (component instanceof ActionRow ? component.toJSON() : component));
+
+    await message.edit({ components: raw });
 
     return {
-        code: d.util.setCode(data)
+        code: d.util.setCode(data),
+        data: {
+            components: {
+                ...raw
+            }
+        }
     };
 };

@@ -8,7 +8,7 @@ module.exports = async (d) => {
 
     if (!emoji) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid emoji");
 
-    data.result = emoji.imageURL();
+    data.result = emoji.name;
 
     return {
         code: d.util.setCode(data)

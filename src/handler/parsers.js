@@ -113,8 +113,11 @@ const ComponentParser = async (msg, d) => {
             const inside = aoi.split("{button:").slice(1);
             for (let button of inside) {
                 button = button?.split("}")[0];
-                button = button?.addBrackets().split(/:(?![/][/])/).map((x) => x.trim());
-        const label = button.shift();
+                button = button
+                    ?.addBrackets()
+                    .split(/:(?![/][/])/)
+                    .map((x) => x.trim());
+                const label = button.shift();
                 let style = isNaN(button[0]) ? button.shift() : Number(button.shift());
                 style = ButtonStyleOptions[style] || style;
                 const cus = button.shift();
@@ -354,13 +357,14 @@ const FileParser = (msg, d) => {
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     errorMessage = errorMessage.trim();
     const Checker = (parts, part) => parts.includes("{" + part + ":");
-    const specialChecker = (parts, part) => parts.includes("{" + part + "}") || parts.includes("{" + part + ":");
+    const specialChecker = (parts, part) => parts.includes("{" + part + "}");
 
     let send = true;
     let deleteCommand = false;
     let deleteIn;
     let suppress = false;
     let interaction = false;
+    let defer = false;
     let ephemeral = false;
 
     let files = [];
@@ -400,7 +404,11 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
         } else if (specialChecker(part, "deleteCommand")) deleteCommand = true;
         else if (specialChecker(part, "interaction")) interaction = true;
-        else if (specialChecker(part, "ephemeral")) ephemeral = true;
+        else if (Checker(part, "interaction")) {
+            let ctn = part.split(":");
+            interaction = true;
+            defer = ctn[1] ? ctn[1].split("}")[0].trim() === "true" : false;
+        } else if (specialChecker(part, "ephemeral")) ephemeral = true;
         else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
         else if (Checker(part, "reactions")) reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
     }
@@ -421,6 +429,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
                 ephemeral,
                 suppress,
                 interaction,
+                defer,
                 edits: edits.edits,
                 deleteIn,
                 deleteCommand
@@ -541,6 +550,12 @@ const OptionParser = async (options, d) => {
     }
     if (Checker("{interaction}")) {
         optionData.interaction = true;
+        optionData.defer = false;
+    }
+    if (Checker("{interaction:")) {
+        const defer = options.split("{interaction:")[1].split("}")[0].trim();
+        optionData.interaction = true;
+        optionData.defer = defer === "true";
     }
     return optionData;
 };

@@ -1,6 +1,5 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err);
 
     const [format = "key", separator = " , "] = data.inside.splits;
 
