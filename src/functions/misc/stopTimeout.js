@@ -5,7 +5,7 @@ module.exports = async (d) => {
     const [id] = data.inside.splits;
 
     const timeout = await d.client.db.get(
-        d.client.db.tables[0],
+        "__aoijs_vars__",
         "setTimeout",
         id,
     );
@@ -14,7 +14,7 @@ module.exports = async (d) => {
     timeout.value.__timeoutIds__.forEach((x) => clearTimeout(x));
     timeout.value.__pulseIds__?.forEach((x) => clearInterval(x));
 
-    await d.client.db.delete(d.client.db.tables[0], "setTimeout", id);
+    await d.client.db.delete("__aoijs_vars__", "setTimeout", id);
 
     return {
         code: d.util.setCode(data),

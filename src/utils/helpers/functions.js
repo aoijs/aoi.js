@@ -299,7 +299,7 @@ module.exports = {
         timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
         d.client.db.set(
-            d.client.db.tables[0],
+            "__aoijs_vars__",
             "setTimeout",
             timeoutData.__id__,
             timeoutData,
