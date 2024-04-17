@@ -1,18 +1,18 @@
 Client:
-  - any: ['src/structures/Client.ts', 'src/functions/discord/client/*']
+  - any: ['lib/aoi.js/v7/src/structures/Client.ts', 'lib/aoi.js/v7/src/functions/discord/client/*']
   
 Classes: 
-  - src/structures/*
+  - lib/aoi.js/v7/src/structures/*
   
 Manager:
-  - src/manager/*
+  - lib/aoi.js/v7/src/manager/*
 
 Core:
-  - src/core/**/*
+  - lib/aoi.js/v7/src/core/**/*
 
 Functions:Discord: 
-  - src/functions/discord/**/*
+  - lib/aoi.js/v7/src/functions/discord/**/*
 
 Functions:JS:
-  - src/functions/js/**/*
+  - lib/aoi.js/v7/src/functions/js/**/*
 

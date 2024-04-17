@@ -1,0 +1,43 @@
+{
+  "name": "@akarui/structures",
+  "version": "0.0.1",
+  "description": "@akarui/structures - A Extension for Aoi.js",
+  "main": "./src/index.ts",
+  "engines": {
+    "node": ">=20.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "aoi.db",
+    "structures",
+    "dbd.js",
+    "dbdjs",
+    "dbd",
+    "aoi.js",
+    "aoi",
+    "discord"
+  ],
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aoijs/aoi.js"
+  },
+  "author": "Leref",
+  "maintainers": [
+    "USERSATOSHI"
+  ],
+  "bugs": {
+    "url": "https://github.com/Aoijs/aoi.js/issues"
+  },
+  "readme": "https://github.com/Aoijs/aoi.js/blob/main/README.md",
+  "publishConfig": {
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts"
+  }
+}

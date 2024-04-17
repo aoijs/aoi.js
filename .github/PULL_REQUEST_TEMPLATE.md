@@ -1,15 +1,17 @@
-## Type
-- [ ] Bug Fix
-- [ ] Functions: \<Function Name>
-- [ ] Callbacks: \<Callback Name>
-- [ ] Handlers: \<Handler Type>
-- [ ] Others: \______
+# Description
 
-Dependencies (Third Party Modules) needed: <Name | Github Link> (Maximum: 20MB~ size)
+> Give a brief description of the pull request.
 
-Want a credit? Discord tag or other social media link: <DiscordTag | OtherSocialMediaLink>
+## Semver Changes
 
-Referenced Issue: #NaN (Answer for an issue, if any)
+- [ ] Patch (bug fix, no new features)
+- [ ] Minor (new features, no breaking changes)
+- [ ] Major (breaking changes)
 
-## Description
-Pull Request Description Here
+## Issues
+
+> List any issues that this pull request closes.
+
+## Checklist
+
+- [ ] I have read the [Contributing Guidelines](../CONTRIBUTING.md).

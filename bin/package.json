@@ -1,0 +1,16 @@
+{
+	"name": "aoirepo",
+	"version": "1.0.0",
+	"description": "cli for managing aoijs monorepo",
+	"author": {
+		"name": "USERSATOSHI"
+	},
+	"license": "Apache-2.0",
+	"licenses": [
+		{
+			"type": "Apache-2.0",
+			"url": "https://www.apache.org/licenses/LICENSE-2.0"
+		}
+	],
+	"homepage": "https://aoi.js.org"
+}
