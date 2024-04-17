@@ -1,18 +1,106 @@
-Client:
-  - any: ['lib/aoi.js/v7/src/structures/Client.ts', 'lib/aoi.js/v7/src/functions/discord/client/*']
+# @akarui/aoi.cli:
+# @akarui/aoi.db:
+# @akarui/aoi.invite:
+# @akarui/aoi.music:
+# @akarui/aoi.panel:
+# @akarui/aoi.parser:
+# @akarui/aoi.plugins:
+# @akarui/structures:
+# @akarui/aoi.js:
+
+@akarui/aoi.cli:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.cli/*
+
+@akarui/aoi.db
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.cli/
+
+@akarui/aoi.invite:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.invite/*
   
-Classes: 
-  - lib/aoi.js/v7/src/structures/*
+@akarui/aoi.music:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.music/*
+
+@akarui/aoi.panel:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.panel/*
+
+@akarui/aoi.parser:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.parser/*
+
+@akarui/aoi.plugins:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.plugins/*
+
+@akarui/structures:
+  - changed-files:
+    - any-glob-to-any-file: lib/structures/*
+
+@akarui/aoi.js:
+  - changed-files:
+    - any-glob-to-any-file: lib/aoi.js/*
+
+Type:Callbacks:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - lib/aoi.js/**/callbacks/*
+      - lib/aoi.music/**/callbacks/*
+      - lib/aoi.plugins/**/callbacks/*
+      - lib/aoi.parser/**/callbacks/*
+      - lib/aoi.cli/**/callbacks/*
+      - lib/aoi.invite/**/callbacks/*
+      - lib/aoi.panel/**/callbacks/*
+      - lib/structures/**/callbacks/*
+
+Type:Classes:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - lib/aoi.js/**/classes/*
+      - lib/aoi.music/**/classes/*
+      - lib/aoi.plugins/**/classes/*
+      - lib/aoi.parser/**/classes/*
+      - lib/aoi.cli/**/classes/*
+      - lib/aoi.invite/**/classes/*
+      - lib/aoi.panel/**/classes/*
+      - lib/structures/**/classes/*
   
-Manager:
-  - lib/aoi.js/v7/src/manager/*
-
-Core:
-  - lib/aoi.js/v7/src/core/**/*
-
-Functions:Discord: 
-  - lib/aoi.js/v7/src/functions/discord/**/*
-
-Functions:JS:
-  - lib/aoi.js/v7/src/functions/js/**/*
-
+Type:Core:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - lib/aoi.js/**/core/*
+      - lib/aoi.music/**/core/*
+      - lib/aoi.plugins/**/core/*
+      - lib/aoi.parser/**/core/*
+      - lib/aoi.cli/**/core/*
+      - lib/aoi.invite/**/core/*
+      - lib/aoi.panel/**/core/*
+      - lib/structures/**/core/*
+  
+Type:Events:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - lib/aoi.js/**/events/*
+      - lib/aoi.music/**/events/*
+      - lib/aoi.plugins/**/events/*
+      - lib/aoi.parser/**/events/*
+      - lib/aoi.cli/**/events/*
+      - lib/aoi.invite/**/events/*
+      - lib/aoi.panel/**/events/*
+      - lib/structures/**/events/*
+  
+Type:Functions:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - lib/aoi.js/**/functions/*
+      - lib/aoi.music/**/functions/*
+      - lib/aoi.plugins/**/functions/*
+      - lib/aoi.parser/**/functions/*
+      - lib/aoi.cli/**/functions/*
+      - lib/aoi.invite/**/functions/*
+      - lib/aoi.panel/**/functions/*
+      - lib/structures/**/functions/*
+  
