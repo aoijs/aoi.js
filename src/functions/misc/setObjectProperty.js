@@ -13,10 +13,10 @@ module.exports = async (d) => {
     }
 
     const object = d.data.objects[name] || {};
-    if (property.startsWith("[")) {
-        eval(`object${property} = value`);
-    } else {
-        eval(`object.${property} = value`);
+    try {
+        object?.property = value
+    } catch(e){
+        object?.property = null
     }
     
     d.data.objects[name] = object;
