@@ -4,13 +4,13 @@ module.exports = async (d) => {
 
   let [index, label, style, custom, disabled = "false", emoji] = data.inside.splits;
 
-  if (isNaN(index) || Number(index) < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Index");
+  if (isNaN(index) || Number(index) < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
  
   index = Number(index) - 1;
   style = isNaN(style) ? d.util.constants.ButtonStyleOptions[style] : Number(style);
   disabled = disabled === "true";
 
-  if (!style || style > 5 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Style");
+  if (!style || style > 5 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Style Provided In");
 
   try {
     emoji = d.util.getEmoji(d, emoji.addBrackets()).id;
