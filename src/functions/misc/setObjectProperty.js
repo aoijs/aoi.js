@@ -4,7 +4,7 @@ module.exports = async (d) => {
     if (data.err) return d.error(data.err);
 
     let [name, property, value] = data.inside.splits;
-    if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
+    if (!d.data?.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
     try {
         value = JSON.parse(value);
@@ -12,14 +12,14 @@ module.exports = async (d) => {
         value = value;
     }
 
-    const object = d.data.objects[name] || {};
-    if (property.startsWith("[")) {
-        eval(`object${property} = value`);
-    } else {
-        eval(`object.${property} = value`);
+    const object = d.data?.objects[name] || {};
+    try {
+        object?.property = value
+    } catch(e){
+        object?.property = null
     }
     
-    d.data.objects[name] = object;
+    d.data?.objects[name] = object;
 
     return {
         code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
