@@ -13,16 +13,16 @@ module.exports = async (d) => {
     }
 
     const object = d.data.objects[name] || {};
-    if (property.startsWith("[")) {
-        eval(`object${property} = value`);
-    } else {
-        eval(`object.${property} = value`);
+    try {
+        eval(`object?.${property} = value`);
+    } catch (e) {
+        data.result = undefined;
     }
     
     d.data.objects[name] = object;
 
     return {
-        code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
-        data: { ...d.data, objects: { ...d.data.objects } }
+        code: d.util.setCode(data),
+        data:d.data,
     };
 };
