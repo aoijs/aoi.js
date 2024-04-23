@@ -1,6 +1,5 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    const { code } = d.command;
     if (data.err) return d.error(data.err);
 
     let [name, property, value] = data.inside.splits;
@@ -23,6 +22,6 @@ module.exports = async (d) => {
 
     return {
         code: d.util.setCode(data),
-        data:d.data,
+        data: d.data
     };
 };

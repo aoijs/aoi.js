@@ -1,6 +1,5 @@
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
-  const { code } = d.command;
 
   if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
@@ -21,7 +20,7 @@ module.exports = async (d) => {
   }
 
   return {
-    code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
-    data: { ...d.data, objects: { ...d.data.objects } },
+    code: d.util.setCode(data),
+    data: d.data
   };
 };
