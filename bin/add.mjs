@@ -48,10 +48,12 @@ test('log', () => {
   "description": "@akarui/${lib} - A Extension for Aoi.js",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "type": "commonjs",
   "exports": {
     "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    "require": "./dist/cjs/index.js",
+	"types": "./dist/types/index.d.ts"
   },
   "engines": {
     "node": ">=20.x"
@@ -243,6 +245,29 @@ test('log', () => {
 		"tsBuildInfoFile": "./dist/esm/.tsbuildinfo",
 		"incremental": true
 	},
+}`,
+	},
+	{
+		name: 'tsconfig.eslint.json',
+		type: 'file',
+		content: `{
+	"$schema": "https://json.schemastore.org/tsconfig.json",
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true
+	},
+	"include": [
+		"*.ts",
+		"*.js",
+		"*.cjs",
+		"*.mjs",
+		"src/**/*.ts",
+		"src/**/*.js",
+		"src/**/*.cjs",
+		"src/**/*.mjs",
+		"__tests__"
+	],
+	"exclude": ["node_modules"]
 }`,
 	},
 	{

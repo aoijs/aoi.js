@@ -2,18 +2,17 @@ import fsPromises from 'node:fs/promises';
 import fs from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 import { Group } from '@akarui/structures';
-import { DataType } from './typings.js';
+import { type DataType } from './typings.js';
 import { close, read, readLine, write } from '../utils/promisifyFd.js';
 
 export default class TextFile {
-	#file: string;
-	#tempFile: string;
+	readonly #file: string;
+	readonly #tempFile: string;
 	#locked = false;
-	#type: DataType = 'str:1024';
-	#fd: number | null = null;
+	readonly #type: DataType = 'str:1024';
+	#fd: number | undefined = undefined;
 	#lineoffsets: number[] = [];
-	#queue: { fn: () => void }[] = [];
-	#retries = 0;
+	readonly #queue: Array<{ fn: () => void }> = [];
 	constructor(path: string, type: DataType) {
 		this.#file = path;
 		this.#type = type;
@@ -26,6 +25,7 @@ export default class TextFile {
 				if (err) {
 					throw err;
 				}
+
 				this.#fd = fd;
 			},
 		);
@@ -33,24 +33,27 @@ export default class TextFile {
 
 	async write(
 		position: number,
-		data: Buffer,
+		data: Uint8Array,
 		bufferStartOffset = 0,
 		bufferEndOffset = data.length,
-	): Promise<{ written: number; buffer: Buffer }> {
+	): Promise<{ written: number; buffer: Uint8Array }> {
 		if (this.#locked) {
 			await new Promise((resolve) => {
 				this.#queue.push({
-					fn: () => {
-						this.write(
+					fn: async () => {
+						await this.write(
 							position,
 							data,
 							bufferStartOffset,
 							bufferEndOffset,
-						).then(resolve);
+						)
+							.then(resolve)
+							.catch(console.error);
 					},
 				});
 			});
 		}
+
 		this.#locked = true;
 		try {
 			const { written, buffer } = await write(
@@ -73,23 +76,24 @@ export default class TextFile {
 	async read(
 		position: number,
 		length: number,
-		buffer: Buffer,
+		buffer: Uint8Array,
 		bufferStartOffset = 0,
 	) {
 		if (this.#locked) {
-			return await new Promise((resolve) => {
+			return new Promise((resolve) => {
 				this.#queue.push({
-					fn: () => {
-						this.read(
+					fn: async () => {
+						await this.read(
 							position,
 							length,
 							buffer,
 							bufferStartOffset,
-						).then(resolve);
+						).then(resolve).catch(console.error);
 					},
 				});
 			});
 		}
+
 		this.#locked = true;
 		try {
 			return (
@@ -125,10 +129,11 @@ export default class TextFile {
 		const grp = new Group(Infinity);
 		for await (const line of readLine(this.#fd!)()) {
 			const newoffset =
-				(this.#lineoffsets.at(-1) as number) + line.length + 2;
+				(this.#lineoffsets.at(-1)!) + line.length + 2;
 			this.#lineoffsets.push(newoffset);
 
 			if (this.#type === 'bool') {
+				/* Empty line */
 			}
 		}
 	}

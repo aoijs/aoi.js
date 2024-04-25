@@ -1,6 +1,6 @@
 {
 	"extends": "../../tsconfig.json",
-	"include": ["./src/**/*.ts"],
+	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		/* Visit https://aka.ms/tsconfig to read more about this file */
 
@@ -35,6 +35,7 @@
 			"@aoirepo/*": ["../../lib/*"]
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+		"rootDir": "./src" /* Specify the root folder within your source files. */,
 		// "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
 		// "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
 		// "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
@@ -115,5 +116,5 @@
 			"path": "../structures"
 		}
 	],
-	"exclude": ["coverage","node_modules"]
+	"exclude": ["coverage","node_modules","dist"]
 }

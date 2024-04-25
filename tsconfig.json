@@ -110,10 +110,9 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 	"references": [
-		{ "path": "./lib/aoi.js/v7/" },
+		{ "path": "./lib/aoi.js/dev/" },
 		{ "path": "./lib/structures/" },
 		{ "path": "./lib/aoi.db/" }
 	],
-	"include": ["lib/**/src/**/*.ts", "bin/**/*","./"],
 	"exclude": ["node_modules", "coverage"]
 }

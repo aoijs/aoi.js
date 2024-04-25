@@ -2,7 +2,14 @@
   "name": "@akarui/structures",
   "version": "0.0.1",
   "description": "@akarui/structures - A Extension for Aoi.js",
-  "main": "./src/index.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+	"types": "./dist/types/index.d.ts"
+  },
   "engines": {
     "node": ">=20.x"
   },
@@ -34,10 +41,5 @@
   "bugs": {
     "url": "https://github.com/Aoijs/aoi.js/issues"
   },
-  "readme": "https://github.com/Aoijs/aoi.js/blob/main/README.md",
-  "publishConfig": {
-	"main": "./dist/cjs/index.js",
-	"module": "./dist/esm/index.js",
-	"types": "./dist/types/index.d.ts"
-  }
+  "readme": "https://github.com/Aoijs/aoi.js/blob/main/README.md"
 }
