@@ -5,6 +5,6 @@
 		"allowJs": true,
 		"checkJs": true
 	},
-	"include": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.cjs", "*.mjs","bin"],
+	"include": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.cjs", "*.mjs","bin","tools"],
 	"exclude": ["node_modules"]
 }
