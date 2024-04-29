@@ -1,5 +1,6 @@
 #Ignore modules
 node_modules
+coverage
 
 #Ignore database files
 /database

@@ -17,8 +17,11 @@ jobs:
         with:
           node-version: "21"
 
+      - name: "📦 Install Pnpm"
+        run: sudo npm i -g pnpm
+
       - name: "📦 Install Dependencies"
-        run: npm ci
+        run: pnpm install --no-frozen-lockfile
 
       - name: "✍️ Run Prettier Write"
-        run: npm run prettywrite
+        run: pnpm run pretty:write

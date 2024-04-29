@@ -1,0 +1,46 @@
+{
+  "name": "@akarui/aoi.panel",
+  "version": "0.0.1",
+  "description": "@akarui/aoi.panel - A Extension for Aoi.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "type": "commonjs",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js",
+	"types": "./dist/types/index.d.ts"
+  },
+  "engines": {
+    "node": ">=20.x"
+  },
+  "license": "MIT",
+  "keywords": [
+    "aoi.db",
+    "aoi.panel",
+    "dbd.js",
+    "dbdjs",
+    "dbd",
+    "aoi.js",
+    "aoi",
+    "discord"
+  ],
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aoijs/aoi.js"
+  },
+  "author": "Leref",
+  "maintainers": [
+    "USERSATOSHI"
+  ],
+  "bugs": {
+    "url": "https://github.com/Aoijs/aoi.js/issues"
+  },
+  "readme": "https://github.com/Aoijs/aoi.js/blob/main/README.md"
+}
