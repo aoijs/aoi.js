@@ -1,11 +1,10 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    const { code } = d.command;
   
     const [objectName, property, propertyValue] = data.inside.splits;
     const properties = property.split('.');
   
-    if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "Object");
+    if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "Invalid object");
   
     let object = d.data.objects[objectName] || {};
   
@@ -23,11 +22,10 @@ module.exports = async (d) => {
     }
   
     d.data.objects[objectName] = object;
-    d.object = object;
   
     return {
       code: d.util.setCode({ function: d.func, code: code, inside: data.inside }),
-      data: { ...d.data, objects: { ...d.data.objects } },
+      data: d.data,
     };
   };
   
