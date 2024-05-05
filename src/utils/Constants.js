@@ -1,7 +1,7 @@
-const {IntentsBitField, ActivityType, PermissionsBitField, Events} = require("discord.js");
+const { IntentsBitField, ActivityType, PermissionsBitField, Events } = require("discord.js");
 
 const IntentOptions = {
-    ...IntentsBitField.Flags,
+    ...IntentsBitField.Flags
 };
 
 const ActivityTypeAvailables = {
@@ -10,13 +10,13 @@ const ActivityTypeAvailables = {
     listening: ActivityType.Listening,
     watching: ActivityType.Watching,
     custom: ActivityType.Custom,
-    competing: ActivityType.Competing,
+    competing: ActivityType.Competing
 };
 
 const EventAvailables = {
     timeout: "Boolean",
     music: "Boolean",
-    functionError: "Boolean",
+    functionError: "Boolean"
 };
 
 const SI_SYMBOL = ["", "K", "M", "B", "T"];
@@ -27,20 +27,20 @@ for (let i = 1; i <= 12; i++) {
         power >= 1e24
             ? SI_SYMBOL[i] + "D"
             : power >= 1e21
-                ? SI_SYMBOL[i] + "V"
-                : power >= 1e18
-                    ? SI_SYMBOL[i] + "DT"
-                    : power >= 1e15
-                        ? SI_SYMBOL[i] + "T"
-                        : power >= 1e12
-                            ? SI_SYMBOL[i] + "Qa"
-                            : power >= 1e9
-                                ? SI_SYMBOL[i] + "B"
-                                : power >= 1e6
-                                    ? SI_SYMBOL[i] + "M"
-                                    : power >= 1e3
-                                        ? SI_SYMBOL[i] + "K"
-                                        : SI_SYMBOL[i]
+              ? SI_SYMBOL[i] + "V"
+              : power >= 1e18
+                ? SI_SYMBOL[i] + "DT"
+                : power >= 1e15
+                  ? SI_SYMBOL[i] + "T"
+                  : power >= 1e12
+                    ? SI_SYMBOL[i] + "Qa"
+                    : power >= 1e9
+                      ? SI_SYMBOL[i] + "B"
+                      : power >= 1e6
+                        ? SI_SYMBOL[i] + "M"
+                        : power >= 1e3
+                          ? SI_SYMBOL[i] + "K"
+                          : SI_SYMBOL[i]
     );
 }
 
@@ -54,7 +54,7 @@ const ApplicationCmdOptions = {
     applicationID: "returns Application ID",
     defaultPermission: "returns default permission of the slash cmd;.defaultPermission",
     timestamp: "returns timestamp of the creation of slash cmd (in ms);.timestamp",
-    createdAt: "returns the date of creation of slash cmd;.createdAt",
+    createdAt: "returns the date of creation of slash cmd;.createdAt"
 };
 const ChannelOptions = {
     createdAt: "createdAt",
@@ -98,7 +98,7 @@ const ChannelOptions = {
     messagesCount: "messagesCount",
     ownerID: "ownerId",
     sendable: "sendable",
-    unarchivable: "unarchivable",
+    unarchivable: "unarchivable"
 };
 const MemberOptions = {
     id: "id",
@@ -133,7 +133,7 @@ const MemberOptions = {
     removedRoles: `roles.cache?.filter(r => ! d.data.newm?.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
     addedRoles: `roles?.cache?.filter(r => !d.data.oldm.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
     threadChannel: "thread?.channel?.name?.deleteBrackets()",
-    threadFlags: "flags?.toArray()",
+    threadFlags: "flags?.toArray()"
 };
 
 const ButtonStyleOptions = {
@@ -141,7 +141,7 @@ const ButtonStyleOptions = {
     secondary: 2,
     success: 3,
     danger: 4,
-    link: 5,
+    link: 5
 };
 const CacheOptions = {
     guilds: "GuildManager",
@@ -167,7 +167,7 @@ const CacheOptions = {
     guildInvites: "GuildInviteManager",
     guildMembers: "GuildMemberManager",
     guildMemberRoles: "GuildMemberRoleManager",
-    guildStickers: "GuildStickerManager",
+    guildStickers: "GuildStickerManager"
 };
 const SlashOptionTypes = {
     subCommand: 1,
@@ -179,7 +179,7 @@ const SlashOptionTypes = {
     channel: 7,
     role: 8,
     mentionable: 9,
-    number: 10,
+    number: 10
 };
 
 const Permissions = {
@@ -219,7 +219,7 @@ const Permissions = {
     manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
     manageguildexpressions: PermissionsBitField["Flags"].ManageGuildExpressions,
     requesttospeak: PermissionsBitField["Flags"].RequestToSpeak,
-    manageevents: PermissionsBitField["Flags"].ManageEvents,    
+    manageevents: PermissionsBitField["Flags"].ManageEvents,
     managethreads: PermissionsBitField["Flags"].ManageThreads,
     createpublicthreads: PermissionsBitField["Flags"].CreatePublicThreads,
     createprivatethreads: PermissionsBitField["Flags"].CreatePrivateThreads,
@@ -233,7 +233,7 @@ const Permissions = {
     useexternalsounds: PermissionsBitField["Flags"].UseExternalSounds,
     sendvoicemessages: PermissionsBitField["Flags"].SendVoiceMessages,
     sendpolls: PermissionsBitField["Flags"].SendPolls,
-    all: Object.keys(PermissionsBitField["Flags"]),
+    all: Object.keys(PermissionsBitField["Flags"])
 };
 
 const FormatPerms = {};
@@ -241,17 +241,11 @@ for (const perm in PermissionsBitField.Flags) {
     FormatPerms[perm.toLowerCase()] = perm;
 }
 const FormatOptions = (date) => {
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    const days = [
-        "Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"
-    ];
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    const padZero = (value) => (value.toString().length === 1 ? '0' + value : value);
+    const padZero = (value) => (value.toString().length === 1 ? "0" + value : value);
 
     const getMeridiemHour = (hour) => (hour % 12 === 0 ? 12 : hour % 12);
 
@@ -271,15 +265,11 @@ const FormatOptions = (date) => {
         H: date.getHours(),
         HH: padZero(date.getHours()),
         h: getMeridiemHour(date.getHours()),
-        hh: padZero(getMeridiemHour(date.getHours())),
+        hh: padZero(getMeridiemHour(date.getHours()))
     };
 };
 
-const Characters = [
-    "1234567890",
-    "qwertyuiopalskdjfhgznmxcbv",
-    "qwertyuiopalskdjfhgznmxcbv".toUpperCase(),
-].join("");
+const Characters = ["1234567890", "qwertyuiopalskdjfhgznmxcbv", "qwertyuiopalskdjfhgznmxcbv".toUpperCase()].join("");
 
 const EventsToIntents = {
     onMessage: "GuildMessages",
@@ -336,10 +326,14 @@ const EventsToIntents = {
     onAutoModerationRuleDelete: "AutoModerationConfiguration",
     onAutoModerationRuleCreate: "AutoModerationConfiguration",
     onAutoModerationRuleUpdate: "AutoModerationConfiguration",
+    onGuildScheduledCreate: "GuildScheduledEvents",
+    onGuildScheduledUpdate: "GuildScheduledEvents",
+    onGuildScheduledDelete: "GuildScheduledEvents",
+    onGuildScheduledUserAdd: "GuildScheduledEvents",
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
-    onFunctionError: "Custom",
+    onFunctionError: "Custom"
 };
 
 const EventsToDjsEvents = {
@@ -397,10 +391,14 @@ const EventsToDjsEvents = {
     onAutoModerationRuleDelete: Events.AutoModerationRuleDelete,
     onAutoModerationRuleCreate: Events.AutoModerationRuleCreate,
     onAutoModerationRuleUpdate: Events.AutoModerationRuleUpdate,
+    onGuildScheduledCreate: Events.GuildScheduledEventCreate,
+    onGuildScheduledUpdate: Events.GuildScheduledEventUpdate,
+    onGuildScheduledDelete: Events.GuildScheduledEventDelete,
+    onGuildScheduledUserAdd: Events.GuildScheduledEventUserAdd,
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
-    onFunctionError: "functionError",
+    onFunctionError: "functionError"
 };
 
 const EventstoFile = {
@@ -462,6 +460,9 @@ const EventstoFile = {
     onAutoModerationRuleDelete: "autoModCreate",
     onAutoModerationRuleCreate: "autoModDelete",
     onAutoModerationRuleUpdate: "autoModUpdate",
+    onEntitlementCreate: "entitlementCreate",
+    onEntitlementDelete: "entitlementDelete",
+    onEntitlementUpdate: "entitlementUpdate"
 };
 
 const AllEvents = Object.keys(EventstoFile);
@@ -484,5 +485,5 @@ module.exports = {
     EventsToIntents,
     EventsToDjsEvents,
     AllEvents,
-    EventstoFile,
+    EventstoFile
 };
