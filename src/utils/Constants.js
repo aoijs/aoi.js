@@ -44,18 +44,7 @@ for (let i = 1; i <= 12; i++) {
     );
 }
 
-const ApplicationCmdOptions = {
-    id: "id of the slash cmd;.id",
-    name: "name of the slash cmd;.name",
-    description: "description of the slash cmd;.description",
-    version: "version of slash cmd;.version",
-    options: "options of slash cmd;.options",
-    guildID: "guildID of the slash cmd (returns null for global);.guildID",
-    applicationID: "returns Application ID",
-    defaultPermission: "returns default permission of the slash cmd;.defaultPermission",
-    timestamp: "returns timestamp of the creation of slash cmd (in ms);.timestamp",
-    createdAt: "returns the date of creation of slash cmd;.createdAt"
-};
+
 const ChannelOptions = {
     createdAt: "createdAt",
     createdTimestamp: "createdTimestamp",
@@ -326,10 +315,6 @@ const EventsToIntents = {
     onAutoModerationRuleDelete: "AutoModerationConfiguration",
     onAutoModerationRuleCreate: "AutoModerationConfiguration",
     onAutoModerationRuleUpdate: "AutoModerationConfiguration",
-    onGuildScheduledCreate: "GuildScheduledEvents",
-    onGuildScheduledUpdate: "GuildScheduledEvents",
-    onGuildScheduledDelete: "GuildScheduledEvents",
-    onGuildScheduledUserAdd: "GuildScheduledEvents",
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
@@ -391,13 +376,6 @@ const EventsToDjsEvents = {
     onAutoModerationRuleDelete: Events.AutoModerationRuleDelete,
     onAutoModerationRuleCreate: Events.AutoModerationRuleCreate,
     onAutoModerationRuleUpdate: Events.AutoModerationRuleUpdate,
-    onGuildScheduledCreate: Events.GuildScheduledEventCreate,
-    onGuildScheduledUpdate: Events.GuildScheduledEventUpdate,
-    onGuildScheduledDelete: Events.GuildScheduledEventDelete,
-    onGuildScheduledUserAdd: Events.GuildScheduledEventUserAdd,
-    onEntitlementCreate: Events.EntitlementCreate,
-    onEntitlementDelete: Events.EntitlementDelete,
-    onEntitlementUpdate: Events.EntitlementUpdate,
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
@@ -463,20 +441,12 @@ const EventstoFile = {
     onAutoModerationRuleDelete: "autoModCreate",
     onAutoModerationRuleCreate: "autoModDelete",
     onAutoModerationRuleUpdate: "autoModUpdate",
-    onGuildScheduledCreate: "guildScheduledCreate",
-    onGuildScheduledUpdate: "guildScheduledUpdate",
-    onGuildScheduledDelete: "guildScheduledDelete",
-    onGuildScheduledUserAdd: "guildScheduledUserAdd",
-    onEntitlementCreate: "entitlementCreate",
-    onEntitlementDelete: "entitlementDelete",
-    onEntitlementUpdate: "entitlementUpdate"
 };
 
 const AllEvents = Object.keys(EventstoFile);
 
 module.exports = {
     FormatOptions,
-    ApplicationCmdOptions,
     ActivityTypeAvailables,
     EventAvailables,
     SI_SYMBOL,
