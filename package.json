@@ -54,11 +54,11 @@
     "@akarui/aoi.db": "^2.2.7",
     "@akarui/structures": "^2.1.0",
     "chalk": "^4.1.2",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.1",
     "undici": "^6.9.0"
   },
   "devDependencies": {
-    "discord-api-types": "^0.37.74",
+    "discord-api-types": "^0.37.83",
     "prettier": "^3.2.5"
   },
   "type": "commonjs",
