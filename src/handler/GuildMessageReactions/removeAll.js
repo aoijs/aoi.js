@@ -11,33 +11,16 @@ module.exports = async (reactionMessage, client) => {
         guild: reactionMessage.guild,
         author: reactionMessage.author,
         channel: reactionMessage.channel,
-        member: reactionMessage.member,
+        member: reactionMessage.member
     };
     for (const cmd of cmds) {
-        let chan;
+        let guildChannel;
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels?.cache.get(id?.code);
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels?.cache.get(id?.code);
         } else {
-            chan = client.channels.cache.get(cmd.channel);
+            guildChannel = client.channels.cache.get(cmd.channel);
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            {},
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, {}, guildChannel);
     }
 };

@@ -1,13 +1,13 @@
-const {Role} = require('../../utils/helpers/functions.js');
+const { Role } = require("../../utils/helpers/functions.js");
 
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [option = 'name'] = data.inside.splits;
+    const [option = "name"] = data.inside.splits;
 
-    data.result = Role(d.data.newr)[option];
+    data.result = Role(d.data.newRole)[option];
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

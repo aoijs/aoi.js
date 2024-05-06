@@ -1,44 +1,27 @@
 const Interpreter = require("../../core/interpreter.js");
 const { MessageReaction } = require("discord.js");
 /**
- * @param  {MessageReaction} reaction
+ * @param  {MessageReaction} oldReaction
  * @param  {User} user
  * @param  {import('../../classes/AoiClient.js')} client
  */
-module.exports = async (reaction, user, client) => {
+module.exports = async (oldReaction, user, client) => {
     const cmds = client.cmd?.reactionRemove.V();
     const data = {
-        message: reaction.message,
-        channel: reaction.message.channel,
+        message: oldReaction.message,
+        channel: oldReaction.message.channel,
         client: client,
-        guild: reaction.message.guild,
-        author: user,
+        guild: oldReaction.message.guild,
+        author: user
     };
     for (const cmd of cmds) {
-        let chan;
+        let guildChannel;
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels?.cache.get(id?.code);
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels?.cache.get(id?.code);
         } else {
-            chan = client.channels.cache.get(cmd.channel);
+            guildChannel = client.channels.cache.get(cmd.channel);
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { reactionData: reaction },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { reactionData: oldReaction }, guildChannel);
     }
 };

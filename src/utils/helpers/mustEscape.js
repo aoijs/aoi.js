@@ -15,5 +15,5 @@ module.exports = {
             .replace(/\\,/g, "#COMMA#")
             .replace(/\\&&/g, "#AND#")
             .replaceAll("\\||", "#OR#");
-    },
+    }
 };

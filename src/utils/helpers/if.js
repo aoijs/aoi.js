@@ -13,10 +13,7 @@ const IF = async (d) => {
             .reverse()) {
             const r = code.toLowerCase().split("$if[").length - 1;
 
-            if (!code.toLowerCase().includes("$endif"))
-                return message.channel.send(
-                    `\`AoiError: $if: Invalid Usage: missing $endif\``,
-                );
+            if (!code.toLowerCase().includes("$endif")) return message.channel.send(`\`AoiError: $if: Invalid Usage: missing $endif\``);
 
             const everything = code.split(/\$if\[/gi)[r].split(/\$endif/gi)[0];
 
@@ -34,12 +31,12 @@ const IF = async (d) => {
                         args,
                         {
                             code: `$checkCondition[${condition}]`,
-                            name: "check",
+                            name: "check"
                         },
                         undefined,
                         true,
                         undefined,
-                        Data,
+                        Data
                     )
                 )?.code === "true";
 
@@ -49,10 +46,7 @@ const IF = async (d) => {
 
             if (elseIfAction) {
                 for (const data of statement.split(/\$elseif\[/gi).slice(1)) {
-                    if (!data.toLowerCase().includes("$endelseif"))
-                        return message.channel.send(
-                            `\`AoiError: $elseIf: Invalid Usage: missing $endelseIf\``,
-                        );
+                    if (!data.toLowerCase().includes("$endelseif")) return message.channel.send(`\`AoiError: $elseIf: Invalid Usage: missing $endelseIf\``);
 
                     const inside = data.split(/\$endelseIf/gi)[0];
 
@@ -66,13 +60,7 @@ const IF = async (d) => {
                         return string.replace(/[.*+?^${}()|[\]\\\n]/g, "\\$&");
                     }
 
-                    statement = statement.replace(
-                        new RegExp(
-                            `\\$elseif\\[${escapeRegExp(inside)}\\$endelseif`,
-                            "mi",
-                        ),
-                        "",
-                    );
+                    statement = statement.replace(new RegExp(`\\$elseif\\[${escapeRegExp(inside)}\\$endelseif`, "mi"), "");
                 }
             }
 
@@ -90,9 +78,7 @@ const IF = async (d) => {
                       .join("\n")
                       .split(/\$endif/gi)[0];
 
-            const elseCode = elseAction
-                ? statement.split(/\$else/gi)[1].split(/\$endif/gi)[0]
-                : "";
+            const elseCode = elseAction ? statement.split(/\$else/gi)[1].split(/\$endif/gi)[0] : "";
 
             let passes = false;
 
@@ -109,12 +95,12 @@ const IF = async (d) => {
                                     args,
                                     {
                                         code: `$checkCondition[${data[0]}]`,
-                                        name: "check",
+                                        name: "check"
                                     },
                                     undefined,
                                     true,
                                     undefined,
-                                    Data,
+                                    Data
                                 )
                             )?.code === "true";
 
@@ -126,13 +112,8 @@ const IF = async (d) => {
                 }
             }
 
-            code = code
-                .replace(/\$if\[/gi, "$if[")
-                .replace(/\$endif/gi, "$endif");
-            code = code.replaceLast(
-                `$if[${everything}$endif`,
-                pass ? ifCode : passes ? lastCode : elseCode,
-            );
+            code = code.replace(/\$if\[/gi, "$if[").replace(/\$endif/gi, "$endif");
+            code = code.replaceLast(`$if[${everything}$endif`, pass ? ifCode : passes ? lastCode : elseCode);
         }
     }
     return { code };

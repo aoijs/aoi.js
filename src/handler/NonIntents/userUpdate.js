@@ -1,37 +1,25 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (ou, nu, client) => {
+/**
+ * @param {import('../../classes/AoiClient.js')} client
+ * @param {import('discord.js').User} oldUser
+ * @param {import('discord.js').User} newUser
+ */
+module.exports = async (oldUser, newUser, client) => {
     const cmds = client.cmd?.userUpdate.V();
-    let chan;
+    let guildChannel;
     const data = {
-        author: nu,
-        client: client,
+        author: newUser,
+        client: client
     };
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
-            data.channel = chan;
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { olduser: ou, newuser: nu },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldUser, newUser }, guildChannel);
     }
 };

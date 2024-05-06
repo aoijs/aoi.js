@@ -1,40 +1,19 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (olddata, newdata, client) => {
-    let chan;
+    let guildChannel;
     const d = {
         client: client,
         guild: newdata.guild,
         channel: newdata.channel,
         message: newdata.message,
-        author: newdata.author,
+        author: newdata.author
     };
     const cmds = client.cmd?.variableUpdate.V();
     for (const cmd of cmds) {
-        const id = cmd.channel?.includes("$")
-            ? (
-                  await Interpreter(
-                      client,
-                      d,
-                      [],
-                      { name: "ChannelParser", code: cmd.channel },
-                      client.db,
-                      true,
-                  )
-              )?.code
-            : cmd.channel;
+        const id = cmd.channel?.includes("$") ? (await Interpreter(client, d, [], { name: "ChannelParser", code: cmd.channel }, client.db, true))?.code : cmd.channel;
 
-        chan = client.channels.cache.get(id?.code);
+        guildChannel = client.channels.cache.get(id?.code);
 
-        await Interpreter(
-            client,
-            d,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { newv: newdata, oldv: olddata },
-            chan,
-        );
+        await Interpreter(client, d, [], cmd, client.db, false, guildChannel?.id, { newVariable: newdata, oldVariable: olddata }, guildChannel);
     }
 };

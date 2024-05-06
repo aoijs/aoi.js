@@ -6,7 +6,7 @@ module.exports = (fields) => {
             name,
             description,
             type: Number(type) || 3,
-            required: required === "true",
+            required: required === "true"
         });
     }
     return object;

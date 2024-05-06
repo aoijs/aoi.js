@@ -1,28 +1,21 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (oldmCollection, newmCollection, client) => {
+
+module.exports = async (oldThreadMembers, newThreadMembers, client) => {
     const cmds = client.cmd?.threadMembersUpdate.V();
     if (!cmds) return;
     const data = {
-        guild:
-            oldmCollection.first().thread?.guild ||
-            newmCollection.first().thread?.guild,
-        channel: oldmCollection.first().thread || newmCollection.first().thread,
-        client: client,
+        guild: oldThreadMembers.first().thread?.guild || newThreadMembers.first().thread?.guild,
+        channel: oldThreadMembers.first().thread || newThreadMembers.first().thread,
+        client: client
     };
-    let chan;
+    
+    let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd?.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd?.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
         } else {
-            chan = client.channels.cache.get(cmd.channel);
+            guildChannel = client.channels.cache.get(cmd.channel);
         }
         await Interpreter(
             client,
@@ -31,12 +24,12 @@ module.exports = async (oldmCollection, newmCollection, client) => {
             cmd,
             client.db,
             false,
-            chan?.id,
+            guildChannel?.id,
             {
-                oldThreadMembers: oldmCollection,
-                newThreadMembers: newmCollection,
+                oldThreadMembers,
+                newThreadMembers
             },
-            chan,
+            guildChannel
         );
     }
 };

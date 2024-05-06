@@ -1,9 +1,9 @@
-module.exports = async d => {
-    let {code, result} = d.util.aoiFunc(d);
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
 
-    result = d.data.oldm?.content;
+    data.result = d.data.oldMessage?.content;
 
     return {
-        code: d.util.setCode({function: d.func, code, result})
-    }
-}
+        code: d.util.setCode(data)
+    };
+};

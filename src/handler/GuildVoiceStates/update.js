@@ -1,40 +1,31 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (os, ns, client) => {
+const { TextChannel, NewsChannel } = require("discord.js");
+
+/**
+ * @param oldVoiceState Old voice state event data
+ * @param newVoiceState New voice state event data
+ * @param {TextChannel | NewsChannel } channelData
+ * @param {import('../../classes/AoiClient.js')} client
+ */
+module.exports = async (oldVoiceState, newVoiceState, client) => {
     const cmds = client.cmd?.voiceStateUpdate.V();
     for (const cmd of cmds) {
-        let chan;
+        let guildChannel;
         const data = {
-            guild: os.guild,
+            guild: oldVoiceState.guild,
             client: client,
-            author: ns.member.user,
-            member: ns.member,
+            author: newVoiceState.member.user,
+            member: newVoiceState.member
         };
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
             const channel = client.channels.cache.get(id?.code);
-            chan = channel ?? undefined;
-            data.channel = chan;
+            guildChannel = channel ?? undefined;
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id || "",
-            { oldVoiceState: os, newVoiceState: ns },
-            chan || undefined,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id || "", { oldVoiceState: oldVoiceState, newVoiceState: newVoiceState }, guildChannel);
     }
 };

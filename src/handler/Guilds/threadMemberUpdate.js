@@ -1,36 +1,21 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (oldm, newm, client) => {
+
+module.exports = async (oldMember, newMember, client) => {
     const cmds = client.cmd?.threadMemberUpdate.V();
     const data = {
-        guild: oldm.thread?.guild || newm.thread?.guild,
-        channel: oldm.thread || newm.thread,
-        client: client,
+        guild: oldMember.thread?.guild || newMember.thread?.guild,
+        channel: oldMember.thread || newMember.thread,
+        client: client
     };
-    let chan;
+
+    let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd?.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd?.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
         } else {
-            chan = client.channels.cache.get(cmd.channel);
+            guildChannel = client.channels.cache.get(cmd.channel);
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { oldm: oldm, newm: newm },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldMember, newMember }, guildChannel);
     }
 };

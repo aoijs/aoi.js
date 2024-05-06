@@ -1,40 +1,23 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (op, np, client) => {
+module.exports = async (oldPresence, newPresence, client) => {
     const cmds = client.cmd?.presenceUpdate.V();
     for (const cmd of cmds) {
-        let chan;
+        let guildChannel;
         const data = {
-            guild: np.guild,
+            guild: newPresence.guild,
             client: client,
-            author: np.user,
-            member: np.member,
+            author: newPresence.user,
+            member: newPresence.member
         };
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
             const channel = client.channels.cache.get(id?.code);
-            chan = channel ?? undefined;
-            data.channel = chan;
+            guildChannel = channel ?? undefined;
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id || "",
-            { oldPresence: op, newPresence: np },
-            chan || undefined,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldPresence, newPresence }, guildChannel);
     }
 };

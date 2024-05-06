@@ -1,32 +1,20 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (oldc, client) => {
-    const cmds = client.cmd?.channelDelete.V();
-    const data = { guild: oldc.guild, channel: oldc, client: client };
-    let chan;
+
+module.exports = async (oldChannel, client) => {
+    const cmds = client.cmd?.channelCreate.V();
+    const data = { guild: oldChannel.guild, channel: oldChannel, client: client };
+
     for (const cmd of cmds) {
-        if (cmd?.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd?.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
+        let executionChannel;
+        if (cmd.channel?.includes("$")) {
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            executionChannel = client.channels.cache.get(id?.code);
         } else {
-            chan = client.channels.cache.get(cmd.channel);
+            executionChannel = client.channels.cache.get(cmd.channel);
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { oldc: oldc },
-            chan,
-        );
+
+        data.channel = executionChannel;
+
+        await Interpreter(client, data, [], cmd, client.db, false, executionChannel?.id, { oldChannel }, executionChannel);
     }
 };
