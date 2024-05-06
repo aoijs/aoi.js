@@ -68,27 +68,27 @@ const ChannelOptions = {
     type: (channel) => channel.type,
     viewable: (channel) => channel.viewable,
     oldPermsAllowed: (channel, oldChannel) => {
-        return oldChannel.permissionOverwrites?.cache
+        return oldChannel?.permissionOverwrites?.cache
             ?.map((x) => `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
     permsAllowed: (channel) => {
-        return channel.permissionOverwrites?.cache
+        return channel?.permissionOverwrites?.cache
             ?.map((x) => `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
     oldPermsDenied: (channel, oldChannel) => {
-        return oldChannel.permissionOverwrites?.cache
+        return oldChannel?.permissionOverwrites?.cache
             ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
     permsDenied: (channel) => {
-        return channel.permissionOverwrites?.cache
+        return channel?.permissionOverwrites?.cache
             ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
     oldPerms: (channel, oldChannel) => {
-        return oldChannel.permissionOverwrites?.cache
+        return oldChannel?.permissionOverwrites?.cache
         ?.map(
             (x) =>
                 `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`
@@ -96,15 +96,15 @@ const ChannelOptions = {
         .join("\n");
     },
     perms: (channel) => {
-        return channel.permissionOverwrites?.cache
+        return channel?.permissionOverwrites?.cache
             ?.map(
                 (x) =>
                     `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`
             )
             .join("\n");
     },
-    childrenID: (channel) => channel.parent.children.cache?.map((x) => x.id)?.join(", "),
-    childrenName: (channel) => channel.parent.children.cache?.map((x) => x.name?.deleteBrackets())?.join(", "),
+    childrenID: (channel) => channel.parent?.children.cache?.map((x) => x.id)?.join(", "),
+    childrenName: (channel) => channel.parent?.children.cache?.map((x) => x.name?.deleteBrackets())?.join(", "),
     bitrate: (channel) => channel.bitrate,
     full: (channel) => channel.full,
     joinable: (channel) => channel.joinable,
