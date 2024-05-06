@@ -5,7 +5,7 @@ module.exports = async (d) => {
 
     const [option = "name"] = data.inside.splits;
 
-    data.result = MemberOptions[option](d.data?.oldMember, d.data?.newMember);
+    data.result = MemberOptions[option](d.data?.newMember, d.data?.oldMember);
 
     return {
         code: d.util.setCode(data)
