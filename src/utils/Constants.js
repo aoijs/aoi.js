@@ -77,7 +77,6 @@ const ChannelOptions = {
             ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
-
     perms: (channel) => {
         return channel?.permissionOverwrites?.cache
             ?.map(
