@@ -5,7 +5,7 @@ module.exports = async (d) => {
 
     const [option = "name"] = data.inside.splits;
 
-    data.result = ChannelOptions[option](d.data?.newChannel, d.data?.oldChannel);
+    data.result = ChannelOptions[option](d.data?.oldChannel, d.data?.newChannel);
 
     return {
         code: d.util.setCode(data)

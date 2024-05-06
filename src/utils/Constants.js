@@ -67,19 +67,9 @@ const ChannelOptions = {
     topic: (channel) => channel.topic?.deleteBrackets(),
     type: (channel) => channel.type,
     viewable: (channel) => channel.viewable,
-    oldPermsAllowed: (channel, oldChannel) => {
-        return oldChannel?.permissionOverwrites?.cache
-            ?.map((x) => `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
-            .join("\n");
-    },
     permsAllowed: (channel) => {
         return channel?.permissionOverwrites?.cache
             ?.map((x) => `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
-            .join("\n");
-    },
-    oldPermsDenied: (channel, oldChannel) => {
-        return oldChannel?.permissionOverwrites?.cache
-            ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
     permsDenied: (channel) => {
@@ -87,14 +77,7 @@ const ChannelOptions = {
             ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
             .join("\n");
     },
-    oldPerms: (channel, oldChannel) => {
-        return oldChannel?.permissionOverwrites?.cache
-        ?.map(
-            (x) =>
-                `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`
-        )
-        .join("\n");
-    },
+
     perms: (channel) => {
         return channel?.permissionOverwrites?.cache
             ?.map(
