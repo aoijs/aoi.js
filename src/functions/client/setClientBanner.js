@@ -4,7 +4,7 @@ module.exports = async (d) => {
 
     const [banner] = data.inside.splits;
 
-    d.client.user.setAvatar(banner.addBrackets()).catch((err) => {
+    d.client.user.setBanner(banner.addBrackets()).catch((err) => {
         d.aoiError.fnError(d, "custom", {}, `Failed To Set Client Banner To "${banner.addBrackets()}" With Reason: ${err}`);
     });
 
