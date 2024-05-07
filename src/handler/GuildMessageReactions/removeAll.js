@@ -6,6 +6,7 @@ const { Message } = require("discord.js");
  */
 module.exports = async (reactionMessage, client) => {
     const cmds = client.cmd?.reactionRemoveAll.V();
+    if (!cmds) return;
     const data = {
         client: client,
         guild: reactionMessage.guild,

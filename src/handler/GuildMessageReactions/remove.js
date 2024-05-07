@@ -7,6 +7,7 @@ const { MessageReaction } = require("discord.js");
  */
 module.exports = async (oldReaction, user, client) => {
     const cmds = client.cmd?.reactionRemove.V();
+    if (!cmds) return;
     const data = {
         message: oldReaction.message,
         channel: oldReaction.message.channel,

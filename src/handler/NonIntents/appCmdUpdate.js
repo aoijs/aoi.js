@@ -6,6 +6,7 @@ const Interpreter = require("../../core/interpreter.js");
  */
 module.exports = async (oldApplicationCommandData, newApplicationCommandData, client) => {
     const cmds = client.cmd?.applicationCmdUpdate.V();
+    if (!cmds) return;
     let guildChannel;
     const data = {
         guild: newApplicationCommandData.guild,

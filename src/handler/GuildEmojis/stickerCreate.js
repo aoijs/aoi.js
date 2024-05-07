@@ -1,7 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (newSticker, client) => {
     const cmds = client.cmd?.stickerCreate.V();
-
+    if (!cmds) return;
     const data = { guild: newSticker.guild, client: client };
     let guildChannel;
     for (const cmd of cmds) {

@@ -3,6 +3,7 @@ const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldGuild, newGuild, client) => {
     let guildChannel;
     const cmds = client.cmd?.guildUpdate.V();
+    if (!cmds) return;
     const data = { guild: newGuild, client: client };
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {

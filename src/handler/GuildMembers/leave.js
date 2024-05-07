@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldMember, client) => {
     let guildChannel;
     const cmds = client.cmd?.leave.V();
+    if (!cmds) return;
     let data = {
         guild: oldMember?.guild,
         author: oldMember?.user,

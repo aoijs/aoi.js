@@ -9,6 +9,7 @@ module.exports = async (data, client) => {
         author: data.author
     };
     const cmds = client.cmd?.variableCreate.V();
+    if (!cmds) return;
     for (const cmd of cmds) {
         const id = cmd.channel?.includes("$") ? (await Interpreter(client, d, [], { name: "ChannelParser", code: cmd.channel }, client.db, true))?.code : cmd.channel;
 

@@ -7,6 +7,7 @@ const { MessageReaction } = require("discord.js");
  */
 module.exports = async (oldReaction, client) => {
     const cmds = client.cmd?.reactionRemoveEmoji.V();
+    if (!cmds) return;
     const data = {
         message: oldReaction.message,
         channel: oldReaction.message.channel,

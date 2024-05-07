@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (oldMember, newMember, client) => {
     const cmds = client.cmd?.threadMemberUpdate.V();
+    if (!cmds) return;
     const data = {
         guild: oldMember.thread?.guild || newMember.thread?.guild,
         channel: oldMember.thread || newMember.thread,

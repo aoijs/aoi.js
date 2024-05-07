@@ -5,6 +5,7 @@ const Interpreter = require("../../core/interpreter.js");
  */
 module.exports = async (applicationCommandData, client) => {
     const cmds = client.cmd?.applicationCmdPermissionsUpdate.V();
+    if (!cmds) return;
     let guildChannel;
     const data = {
         guild: client.guilds.cache.get(applicationCommandData.guildId),

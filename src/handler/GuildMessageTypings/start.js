@@ -1,6 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (typing, client) => {
     const cmds = client.cmd?.typingStart.V();
+    if (!cmds) return;
     let chan;
     let data = {
         guild: typing.guild,

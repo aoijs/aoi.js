@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (invite, client) => {
     const cmds = client.cmd?.inviteDelete.V();
+    if (!cmds) return;
     for (const cmd of cmds) {
         let guildChannel;
         const data = {

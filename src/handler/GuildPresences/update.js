@@ -1,6 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldPresence, newPresence, client) => {
     const cmds = client.cmd?.presenceUpdate.V();
+    if (!cmds) return;
     for (const cmd of cmds) {
         let guildChannel;
         const data = {

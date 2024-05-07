@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (oldThread, client) => {
     const cmds = client.cmd?.threadDelete.V();
+    if (!cmds) return;
     const data = { guild: oldThread.guild, channel: oldThread, client: client };
     let guildChannel;
     for (const cmd of cmds) {

@@ -1,7 +1,7 @@
 const Interpreter = require("../../core/interpreter.js");
 module.exports = async (oldEmoji, client) => {
     const cmds = client.cmd?.emojiDelete.V();
-
+    if (!cmds) return;
     const data = { guild: oldEmoji.guild, client: client };
     let guildChannel;
     for (const cmd of cmds) {

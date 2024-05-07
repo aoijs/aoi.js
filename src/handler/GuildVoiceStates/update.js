@@ -9,6 +9,7 @@ const { TextChannel, NewsChannel } = require("discord.js");
  */
 module.exports = async (oldVoiceState, newVoiceState, client) => {
     const cmds = client.cmd?.voiceStateUpdate.V();
+    if (!cmds) return;
     for (const cmd of cmds) {
         let guildChannel;
         const data = {

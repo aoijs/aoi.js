@@ -4,7 +4,7 @@ const Interpreter = require("../../core/interpreter.js");
  */
 module.exports = async (client) => {
     const cmds = client.cmd?.loop.V();
-
+    if (!cmds) return;
     let guildChannel;
     let Data = {
         client: client,

@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (guild, client) => {
     const cmds = client.cmd?.guildJoin.V();
+    if (!cmds) return;
     const data = { guild: guild, client: client };
     let chan;
     for (const cmd of cmds) {

@@ -7,6 +7,7 @@ const Interpreter = require("../../core/interpreter.js");
  */
 module.exports = async (newReaction, user, client) => {
     const cmds = client.cmd?.reactionAdd.V();
+    if (!cmds) return;
     const data = {
         message: newReaction.message,
         channel: newReaction.message.channel,

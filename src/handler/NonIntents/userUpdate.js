@@ -6,6 +6,7 @@ const Interpreter = require("../../core/interpreter.js");
  */
 module.exports = async (oldUser, newUser, client) => {
     const cmds = client.cmd?.userUpdate.V();
+    if (!cmds) return;
     let guildChannel;
     const data = {
         author: newUser,

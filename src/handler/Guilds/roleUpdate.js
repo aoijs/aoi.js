@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (oldRole, newRole, client) => {
     const cmds = client.cmd?.roleUpdate.V();
+    if (!cmds) return;
     const data = { guild: newRole.guild, client: client };
     let guildChannel;
     for (const cmd of cmds) {

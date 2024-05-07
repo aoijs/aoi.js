@@ -2,6 +2,7 @@ const Interpreter = require("../../core/interpreter.js");
 
 module.exports = async (stageInstance, client) => {
     const cmds = client.cmd?.stageInstanceCreate.V();
+    if (!cmds) return;
     const data = { guild: stageInstance.guild, channel: stageInstance, client: client };
     let guildChannel;
     for (const cmd of cmds) {
