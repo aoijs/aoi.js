@@ -1,7 +1,7 @@
-const { IntentsBitField, ActivityType, PermissionsBitField, Events } = require("discord.js");
+const {IntentsBitField, ActivityType, PermissionsBitField, Events} = require("discord.js");
 
 const IntentOptions = {
-    ...IntentsBitField.Flags
+    ...IntentsBitField.Flags,
 };
 
 const ActivityTypeAvailables = {
@@ -10,13 +10,13 @@ const ActivityTypeAvailables = {
     listening: ActivityType.Listening,
     watching: ActivityType.Watching,
     custom: ActivityType.Custom,
-    competing: ActivityType.Competing
+    competing: ActivityType.Competing,
 };
 
 const EventAvailables = {
     timeout: "Boolean",
     music: "Boolean",
-    functionError: "Boolean"
+    functionError: "Boolean",
 };
 
 const SI_SYMBOL = ["", "K", "M", "B", "T"];
@@ -27,131 +27,113 @@ for (let i = 1; i <= 12; i++) {
         power >= 1e24
             ? SI_SYMBOL[i] + "D"
             : power >= 1e21
-              ? SI_SYMBOL[i] + "V"
-              : power >= 1e18
-                ? SI_SYMBOL[i] + "DT"
-                : power >= 1e15
-                  ? SI_SYMBOL[i] + "T"
-                  : power >= 1e12
-                    ? SI_SYMBOL[i] + "Qa"
-                    : power >= 1e9
-                      ? SI_SYMBOL[i] + "B"
-                      : power >= 1e6
-                        ? SI_SYMBOL[i] + "M"
-                        : power >= 1e3
-                          ? SI_SYMBOL[i] + "K"
-                          : SI_SYMBOL[i]
+                ? SI_SYMBOL[i] + "V"
+                : power >= 1e18
+                    ? SI_SYMBOL[i] + "DT"
+                    : power >= 1e15
+                        ? SI_SYMBOL[i] + "T"
+                        : power >= 1e12
+                            ? SI_SYMBOL[i] + "Qa"
+                            : power >= 1e9
+                                ? SI_SYMBOL[i] + "B"
+                                : power >= 1e6
+                                    ? SI_SYMBOL[i] + "M"
+                                    : power >= 1e3
+                                        ? SI_SYMBOL[i] + "K"
+                                        : SI_SYMBOL[i]
     );
 }
 
-const ChannelOptions = {
-    createdAt: (channel) => channel.createdAt,
-    createdTimestamp: (channel) => channel.createdTimestamp,
-    defaultAutoArchiveDuration: (channel) => channel.defaultAutoArchiveDuration,
-    deletable: (channel) => channel.deletable,
-    deleted: (channel) => channel.deleted,
-    guildID: (channel) => channel.guild?.id,
-    id: (channel) => channel.id,
-    lastMessageContent: (channel) => channel.lastMessage?.content?.deleteBrackets(),
-    lastMessageID: (channel) => channel.lastMessageId,
-    lastPinAt: (channel) => channel.lastPinAt,
-    lastPinTimestamp: (channel) => channel.lastPinTimestamp,
-    manageable: (channel) => channel.manageable,
-    membersCount: (channel) => channel.members?.size,
-    name: (channel) => channel.name?.deleteBrackets(),
-    nsfw: (channel) => channel.nsfw,
-    parentName: (channel) => channel.parent?.name,
-    parentID: (channel) => channel.parentId,
-    position: (channel) => channel.position,
-    slowmode: (channel) => channel.rateLimitPerUser,
-    topic: (channel) => channel.topic?.deleteBrackets(),
-    type: (channel) => channel.type,
-    viewable: (channel) => channel.viewable,
-    permsAllowed: (channel) => {
-        return channel?.permissionOverwrites?.cache
-            ?.map((x) => `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
-            .join("\n");
-    },
-    permsDenied: (channel) => {
-        return channel?.permissionOverwrites?.cache
-            ?.map((x) => `type:${x.type}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`)
-            .join("\n");
-    },
-    perms: (channel) => {
-        return channel?.permissionOverwrites?.cache
-            ?.map(
-                (x) =>
-                    `type:${x.type}\nallowed:${new PermissionsBitField(x.allow).toArray().join(", ")}\ndenied:${new PermissionsBitField(x.deny).toArray().join(", ")}\nmention:${x.type === "member" ? "<@" + x.id + ">" : "<@&" + x.id + ">"}`
-            )
-            .join("\n");
-    },
-    childrenID: (channel) => channel.parent?.children.cache?.map((x) => x.id)?.join(", "),
-    childrenName: (channel) => channel.parent?.children.cache?.map((x) => x.name?.deleteBrackets())?.join(", "),
-    bitrate: (channel) => channel.bitrate,
-    full: (channel) => channel.full,
-    joinable: (channel) => channel.joinable,
-    rtcRegion: (channel) => channel.rtcRegion,
-    userLimit: (channel) => channel.userLimit,
-    speakable: (channel) => channel.speakable,
-    archived: (channel) => channel.archived,
-    archivedAt: (channel) => channel.archivedAt,
-    archivedTimestamp: (channel) => channel.archivedTimestamp,
-    autoArchiveDuration: (channel) => channel.autoArchiveDuration,
-    threadMembersCount: (channel) => channel.memberCount,
-    messagesCount: (channel) => channel.messagesCount,
-    ownerID: (channel) => channel.ownerId,
-    sendable: (channel) => channel.sendable,
-    unarchivable: (channel) => channel.unarchivable,
-    jsonOld: (channel, oldChannel) => JSON.stringify(oldChannel),
-    json: (channel) => JSON.stringify(channel) 
+const ApplicationCmdOptions = {
+    id: "id of the slash cmd;.id",
+    name: "name of the slash cmd;.name",
+    description: "description of the slash cmd;.description",
+    version: "version of slash cmd;.version",
+    options: "options of slash cmd;.options",
+    guildID: "guildID of the slash cmd (returns null for global);.guildID",
+    applicationID: "returns Application ID",
+    defaultPermission: "returns default permission of the slash cmd;.defaultPermission",
+    timestamp: "returns timestamp of the creation of slash cmd (in ms);.timestamp",
+    createdAt: "returns the date of creation of slash cmd;.createdAt",
 };
-
+const ChannelOptions = {
+    createdAt: "createdAt",
+    createdTimestamp: "createdTimestamp",
+    defaultAutoArchiveDuration: "defaultAutoArchiveDuration",
+    deletable: "deletable",
+    deleted: "deleted",
+    guildID: "guild?.id",
+    id: "id",
+    lastMessageContent: "lastMessage?.content?.deleteBrackets()",
+    lastMessageID: "lastMessageId",
+    lastPinAt: "lastPinAt",
+    lastPinTimestamp: "lastPinTimestamp",
+    manageable: "manageable",
+    membersCount: "members?.size",
+    name: "name?.deleteBrackets()",
+    nsfw: "nsfw",
+    parentName: "parent?.name",
+    parentID: "parentId",
+    position: "position",
+    slowmode: "rateLimitPerUser",
+    topic: "topic?.deleteBrackets()",
+    type: "type",
+    viewable: "viewable",
+    permsAllowed: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\nmention:${x.type ==='?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
+    permsDenied: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\ndenied:${x.deny}\nmention:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
+    perms: "permissionOverwrites?.cache?.map(x=>`type:${x.type}\nallowed:${x.allow}\ndenied:${x.deny}\nmention:${x.type ==='member'?'<@'+x.id+'>':'<@&'+x.id+'>'}`).join(`\n`)",
+    childrenID: "children?.map(x=>x.id)?.join(' , ')",
+    childrenName: "children?.map(x=>x.name?.deleteBrackets())?.join(' , ')",
+    bitrate: "bitrate",
+    full: "full",
+    joinable: "joinable",
+    rtcRegion: "rtcRegion",
+    userLimit: "userLimit",
+    speakable: "speakable",
+    archived: "archived",
+    archivedAt: "archivedAt",
+    archivedTimestamp: "archivedTimestamp",
+    autoArchiveDuration: "autoArchiveDuration",
+    threadMembersCount: "memberCount",
+    messagesCount: "messagesCount",
+    ownerID: "ownerId",
+    sendable: "sendable",
+    unarchivable: "unarchivable",
+};
 const MemberOptions = {
-    id: (member) => member.id,
-    name: (member) => member.user?.username?.deleteBrackets(),
-    guildID: (member) => member.guild.id,
-    nick: (member) => member.nickname || "",
-    roles: (member) =>
-        member.roles?.cache
-            ?.filter((r) => r.name !== "@everyone")
-            .map((r) => r?.name.deleteBrackets())
-            .join(", "),
-    partial: (member) => member.partial ?? false,
-    premiumStamp: (member) => member.premiumSinceTimestamp || "0",
-    joinedStamp: (member) => member.joinedTimestamp,
-    voiceID: (member) => member.voice.channelID || "",
-    displayHex: (member) => member.displayHexColor,
-    highestRoleID: (member) => member.roles.highest.id,
-    permissions: (member) => member.permissions.toArray().join("_"),
-    newPermissions: (member, oldMember) => {
-        const curr = member?.permissions?.toArray();
-        const old = oldMember?.permissions?.toArray();
-        return curr && old ? curr.filter((p) => !old.includes(p)).join(", ") : null;
-    },
-    removedPermissions: (member, oldMember) => {
-        const curr = member?.permissions?.toArray();
-        const old = oldMember?.permissions?.toArray();
-        return curr && old ? old.filter((p) => !curr.includes(p)).join(", ") : null;
-    },
-    bannable: (member) => member.bannable,
-    kickable: (member) => member.kickable,
-    manageable: (member) => member.manageable,
-    status: (member) => member.status,
-    activities: (member) => member.presence?.activities?.map((c) => c.name).join(", "),
-    removedRoles: (member, oldMember) =>
-        oldMember.roles.cache
-            ?.filter((r) => !member?.roles.cache.has(r.id))
-            .map((r) => r.name)
-            .join(", ")
-            .deleteBrackets(),
-    addedRoles: (member, oldMember) =>
-        member.roles?.cache
-            ?.filter((r) => !oldMember.roles.cache.has(r.id))
-            .map((r) => r.name)
-            .join(", ")
-            .deleteBrackets(),
-    threadChannel: (member) => member.thread?.channel?.name?.deleteBrackets(),
-    threadFlags: (member) => member.flags?.toArray()
+    id: "id",
+    name: "user?.username?.deleteBrackets()",
+    guildID: "guild.id",
+    nick: "nickname || ''",
+    roles: "roles?.cache?.filter(r => r.name !== '@everyone').map(r => r?.name.deleteBrackets()).join(', ')",
+    partial: "partial??false",
+    premiumStamp: "premiumSinceTimestamp || `0`",
+    joinedStamp: "joinedTimestamp",
+    voiceID: "voice.channelID || ''",
+    displayHex: "displayHexColor",
+    highestRoleID: "roles.highest.id",
+    permissions: "permissions.toArray().goof('_')",
+    newPermissions: `(() => {
+        const curr = d.data.newm?.permissions.toArray()
+        const old = d.data.oldm?.permissions.toArray() 
+        
+        return curr?.filter(p => !old.includes(p))?.goof("_")
+    })()`,
+    removedPermissions: `(() => {
+        const curr = d.data.newm?.permissions.toArray()
+        const old = d.data.oldm?.permissions.toArray() 
+        
+        return old?.filter(p => !curr.includes(p))?.goof("_")
+    })()`,
+    bannable: "bannable",
+    kickable: "kickable",
+    manageable: "manageable",
+    status: "status",
+    activities: "presence?.activities?.map(c => c.name).join(', ')",
+    removedRoles: `roles.cache?.filter(r => ! d.data.newm?.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
+    addedRoles: `roles?.cache?.filter(r => !d.data.oldm.roles.cache.has(r.id)).map(r => r.name).join(", ").deleteBrackets()`,
+    threadChannel: "thread?.channel?.name?.deleteBrackets()",
+    threadFlags: "flags?.toArray()",
 };
 
 const ButtonStyleOptions = {
@@ -159,9 +141,8 @@ const ButtonStyleOptions = {
     secondary: 2,
     success: 3,
     danger: 4,
-    link: 5
+    link: 5,
 };
-
 const CacheOptions = {
     guilds: "GuildManager",
     messages: "MessageManager",
@@ -186,9 +167,8 @@ const CacheOptions = {
     guildInvites: "GuildInviteManager",
     guildMembers: "GuildMemberManager",
     guildMemberRoles: "GuildMemberRoleManager",
-    guildStickers: "GuildStickerManager"
+    guildStickers: "GuildStickerManager",
 };
-
 const SlashOptionTypes = {
     subCommand: 1,
     subGroup: 2,
@@ -199,7 +179,7 @@ const SlashOptionTypes = {
     channel: 7,
     role: 8,
     mentionable: 9,
-    number: 10
+    number: 10,
 };
 
 const Permissions = {
@@ -239,7 +219,7 @@ const Permissions = {
     manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
     manageguildexpressions: PermissionsBitField["Flags"].ManageGuildExpressions,
     requesttospeak: PermissionsBitField["Flags"].RequestToSpeak,
-    manageevents: PermissionsBitField["Flags"].ManageEvents,
+    manageevents: PermissionsBitField["Flags"].ManageEvents,    
     managethreads: PermissionsBitField["Flags"].ManageThreads,
     createpublicthreads: PermissionsBitField["Flags"].CreatePublicThreads,
     createprivatethreads: PermissionsBitField["Flags"].CreatePrivateThreads,
@@ -252,8 +232,7 @@ const Permissions = {
     usesoundboard: PermissionsBitField["Flags"].UseSoundboard,
     useexternalsounds: PermissionsBitField["Flags"].UseExternalSounds,
     sendvoicemessages: PermissionsBitField["Flags"].SendVoiceMessages,
-    sendpolls: PermissionsBitField["Flags"].SendPolls,
-    all: Object.keys(PermissionsBitField["Flags"])
+    all: Object.keys(PermissionsBitField["Flags"]),
 };
 
 const FormatPerms = {};
@@ -261,11 +240,17 @@ for (const perm in PermissionsBitField.Flags) {
     FormatPerms[perm.toLowerCase()] = perm;
 }
 const FormatOptions = (date) => {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const days = [
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
+    ];
 
-    const padZero = (value) => (value.toString().length === 1 ? "0" + value : value);
+    const padZero = (value) => (value.toString().length === 1 ? '0' + value : value);
 
     const getMeridiemHour = (hour) => (hour % 12 === 0 ? 12 : hour % 12);
 
@@ -285,11 +270,15 @@ const FormatOptions = (date) => {
         H: date.getHours(),
         HH: padZero(date.getHours()),
         h: getMeridiemHour(date.getHours()),
-        hh: padZero(getMeridiemHour(date.getHours()))
+        hh: padZero(getMeridiemHour(date.getHours())),
     };
 };
 
-const Characters = ["1234567890", "qwertyuiopalskdjfhgznmxcbv", "qwertyuiopalskdjfhgznmxcbv".toUpperCase()].join("");
+const Characters = [
+    "1234567890",
+    "qwertyuiopalskdjfhgznmxcbv",
+    "qwertyuiopalskdjfhgznmxcbv".toUpperCase(),
+].join("");
 
 const EventsToIntents = {
     onMessage: "GuildMessages",
@@ -349,7 +338,7 @@ const EventsToIntents = {
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
-    onFunctionError: "Custom"
+    onFunctionError: "Custom",
 };
 
 const EventsToDjsEvents = {
@@ -410,7 +399,7 @@ const EventsToDjsEvents = {
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
-    onFunctionError: "functionError"
+    onFunctionError: "functionError",
 };
 
 const EventstoFile = {
@@ -446,9 +435,9 @@ const EventstoFile = {
     onMembersChunk: "chunk",
     onInviteCreate: "inviteCreate",
     onInviteDelete: "inviteDelete",
-    onEmojiCreate: "emojiCreate",
-    onEmojiDelete: "emojiDelete",
-    onEmojiUpdate: "emojiUpdate",
+    onEmojiCreate: "create",
+    onEmojiDelete: "delete",
+    onEmojiUpdate: "update",
     onStickerCreate: "stickerCreate",
     onStickerDelete: "stickerDelete",
     onStickerUpdate: "stickerUpdate",
@@ -471,13 +460,14 @@ const EventstoFile = {
     onAutoModerationActionExecution: "autoModActionExecution",
     onAutoModerationRuleDelete: "autoModCreate",
     onAutoModerationRuleCreate: "autoModDelete",
-    onAutoModerationRuleUpdate: "autoModUpdate"
+    onAutoModerationRuleUpdate: "autoModUpdate",
 };
 
 const AllEvents = Object.keys(EventstoFile);
 
 module.exports = {
     FormatOptions,
+    ApplicationCmdOptions,
     ActivityTypeAvailables,
     EventAvailables,
     SI_SYMBOL,
@@ -493,5 +483,5 @@ module.exports = {
     EventsToIntents,
     EventsToDjsEvents,
     AllEvents,
-    EventstoFile
+    EventstoFile,
 };
