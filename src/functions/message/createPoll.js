@@ -5,13 +5,12 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [channelId = d.channel?.id, question, duration, allowMultiselect = "false", ...answers] = data.inside.splits;
+    let [channelId = d.channel?.id, question, duration, allowMultiselect = "false", ...answers] = data.inside.splits;
 
-    let poll = question;
     const channel = await d.util.getChannel(d, channelId);
 
     try {
-        poll = JSON.parse(poll);
+        answers = JSON.parse(answers);
     } catch {
         const time = Time.parse(duration)?.ms / 3600000;
 
@@ -38,17 +37,17 @@ module.exports = async (d) => {
 
         if (answers.length > 10) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Poll answers must be less than or equal to 10");
 
-        poll = {
-            question: { text: question },
-            duration: time,
-            allowMultiselect: allowMultiselect === "true",
-            layout: PollLayoutType.Default,
-            answers
-        };
+        duration = time;
     }
 
     channel.send({
-        poll: poll
+        poll: {
+            question: { text: question },
+            duration,
+            allowMultiselect: allowMultiselect === "true",
+            layout: PollLayoutType.Default,
+            answers
+        }
     });
 
     return {
