@@ -1,38 +1,21 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (app, client) => {
+module.exports = async (automodAction, client) => {
     const cmds = client.cmd?.autoModActionExecution.V();
     if (!cmds) return;
-    let chan;
+    let guildChannel;
     const data = {
-        guild: client.guilds.cache.get(app.guildId),
-        client: client,
+        guild: client.guilds.cache.get(automodAction.guildId),
+        client: client
     };
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
-            data.channel = chan;
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { automodAction: app },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { newAutomodAction: automodAction }, guildChannel);
     }
 };

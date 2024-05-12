@@ -1,37 +1,25 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (app, client) => {
+/**
+ * @param {import('../../classes/AoiClient.js')} client
+ * @param {import('discord.js').ApplicationCommandPermissions} applicationCommandData
+ */
+module.exports = async (applicationCommandData, client) => {
     const cmds = client.cmd?.applicationCmdPermissionsUpdate.V();
-    let chan;
+    if (!cmds) return;
+    let guildChannel;
     const data = {
-        guild: client.guilds.cache.get(app.guildId),
-        client: client,
+        guild: client.guilds.cache.get(applicationCommandData.guildId),
+        client: client
     };
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
-            data.channel = chan;
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { newapp: app },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { newApplicationCommandData: applicationCommandData }, guildChannel);
     }
 };

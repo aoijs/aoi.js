@@ -12,12 +12,12 @@ const CacheManager = require("./classes/CacheManager.js");
  * @namespace
  */
 module.exports = {
-  AoiClient,
-  CustomEvent,
-  LoadCommands,
-  ClientShard,
-  AoiError,
-  Util,
-  Database,
-  CacheManager,
+    AoiClient,
+    CustomEvent,
+    LoadCommands,
+    ClientShard,
+    AoiError,
+    Util,
+    Database,
+    CacheManager
 };

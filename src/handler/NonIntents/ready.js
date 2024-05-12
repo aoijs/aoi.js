@@ -1,38 +1,25 @@
 const Interpreter = require("../../core/interpreter.js");
+/**
+ * @param {import('../../classes/AoiClient.js')} client
+ */
 module.exports = async (client) => {
     const cmds = client.cmd?.ready.V();
-    let chan;
+    if (!cmds) return;
+    let guildChannel;
     const data = {
-        client: client,
+        client: client
     };
     for (const cmd of cmds) {
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
-            data.channel = chan;
-            data.guild = chan?.guild;
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
+            data.channel = guildChannel;
+            data.guild = guildChannel?.guild;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
-            data.guild = chan?.guild;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
+            data.guild = guildChannel?.guild;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            {},
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, {}, guildChannel);
     }
 };

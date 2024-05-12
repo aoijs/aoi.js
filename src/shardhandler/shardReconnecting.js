@@ -9,10 +9,10 @@ module.exports = async (shardID, client, cmds) => {
                       [],
                       {
                           name: "channelParser",
-                          code: cmd.channel,
+                          code: cmd.channel
                       },
                       client.db,
-                      true,
+                      true
                   )
               )?.code
             : cmd.channel;
@@ -28,9 +28,9 @@ module.exports = async (shardID, client, cmds) => {
             false,
             undefined,
             {
-                shardID: shardID,
+                shardID
             },
-            channel,
+            channel
         );
     }
 };

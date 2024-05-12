@@ -31,7 +31,7 @@ class Database {
     this.type = moduleType;
     if (aoiOptions?.aoiLogs !== false) {
       this.db.on(aoidb.DatabaseEvents.Connect, () => {
-        AoiError.createCustomBoxedMessage(
+        AoiError.createConsoleMessage(
           [
             {
               text: `Successfully connected ${type} database`,

@@ -1,12 +1,6 @@
-const { SI_SYMBOL} = require("../Constants.js");
+const { SI_SYMBOL } = require("../Constants.js");
 const { setTimeout } = require("timers/promises");
-const {
-    CategoryChannel,
-    GuildEmoji,
-    ReactionEmoji,
-    VoiceState,
-    Role,
-} = require("discord.js");
+const { CategoryChannel, GuildEmoji, ReactionEmoji, VoiceState, Role } = require("discord.js");
 
 function PartToHex(d) {
     const data = d.toString(16);
@@ -50,8 +44,8 @@ module.exports = {
                 names: cat.map((x) => x.name),
                 ids: cat.map((x) => x.id),
                 mentions: cat.map((x) => x.toString()),
-                count: cat.size,
-            }),
+                count: cat.size
+            })
         };
     },
     Channel(channel) {
@@ -70,36 +64,27 @@ module.exports = {
      */
     Client(client) {
         const data = {
-            prefix: Array.isArray(client.prefix)
-                ? client.prefix.join(" , ")
-                : client.prefix,
+            prefix: Array.isArray(client.prefix) ? client.prefix.join(" , ") : client.prefix,
             variables: {
                 name: client.variableManager.vars.join(" , "),
                 json: client.variableManager.toJSON(),
-                object: client.variableManager.cache.object(),
+                object: client.variableManager.cache.object()
             },
             user: Object.assign(Object.create(client.user), client.user),
-            application: Object.assign(
-                Object.create(client.application),
-                client.application,
-            ),
+            application: Object.assign(Object.create(client.application), client.application)
         };
         //user property modification
         data.user.avatarUrl = client.user.displayAvatarURL();
         data.user.displayAvatarURL = undefined;
         data.user.avatarURL = undefined;
         data.user.toJSON = undefined;
-        data.user.flags = client.user.flags?.toArray().length
-            ? client.user.flags?.toArray().join(" , ")
-            : "none";
+        data.user.flags = client.user.flags?.toArray().length ? client.user.flags?.toArray().join(" , ") : "none";
         data.presence = client.status;
         delete data.user.dmChannel;
         delete data.user.client;
         //application data modification
         data.application.iconURL = client.application.iconURL();
-        data.application.flags = client.application.flags
-            ?.toArray()
-            .join(" , ");
+        data.application.flags = client.application.flags?.toArray().join(" , ");
         data.application.commands = undefined;
         data.application.client = undefined;
         data.json = JSON.stringify(Object.assign({}, data), null, 2);
@@ -137,7 +122,7 @@ module.exports = {
             footericon: embed.footer?.iconURL,
             description: embed.description,
             title: embed.title,
-            url: embed?.url,
+            url: embed?.url
         };
 
         embed.fields.forEach((x, y) => (data[`field${y + 1}`] = x));
@@ -298,50 +283,31 @@ module.exports = {
         timeoutData.__pulseEvery__ = pulse;
         timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
-        d.client.db.set(
-            "__aoijs_vars__",
-            "setTimeout",
-            timeoutData.__id__,
-            timeoutData,
-        );
+        d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, timeoutData);
 
         if (!pulse) {
-            require("../../handler/Custom/timeout.js")(
-                d,
-                name,
-                duration,
-                timeoutData,
-                false,
-            );
+            require("../../handler/Custom/timeout.js")(d, name, duration, timeoutData, false);
         } else {
-            require("../../handler/Custom/timeoutPulse.js")(
-                d,
-                name,
-                duration,
-                pulse,
-                timeoutData,
-                false,
-            );
+            require("../../handler/Custom/timeoutPulse.js")(d, name, duration, pulse, timeoutData, false);
         }
         return timeoutData.__id__;
     },
     CreateObjectAST(parser) {
-        let left = 0,   
+        let left = 0,
             right = 0;
         let ans = [];
         let part = "";
         let i = 0;
         while (i < parser.length) {
             if (parser[i] !== "{") {
-                while ( parser[ i ] !== "{" )
-                {
-                    if(i >= parser.length) break;
+                while (parser[i] !== "{") {
+                    if (i >= parser.length) break;
                     i++;
                 }
             }
-            
-            if(i >= parser.length) {
-                if(part.length) ans.push(part);
+
+            if (i >= parser.length) {
+                if (part.length) ans.push(part);
                 break;
             }
             while (left === 0 || right < left) {
@@ -352,17 +318,17 @@ module.exports = {
                 if (i === parser.length) break;
                 if (left === right) break;
             }
-            if(left === right && left !== 0) {
-            ans.push(part);
-            right = 0;
-            left = 0;
-            part = "";
+            if (left === right && left !== 0) {
+                ans.push(part);
+                right = 0;
+                left = 0;
+                part = "";
             } else {
                 part += parser[i];
             }
         }
         return ans;
-    },
+    }
 };
 
 module.exports.RBGtoHex = RBGtoHex;

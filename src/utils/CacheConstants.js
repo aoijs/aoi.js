@@ -13,8 +13,8 @@ module.exports = {
                 filter: manager[name].filter,
                 set: manager[name].set,
                 get: manager[name].get,
-                delete: manager[name].delete,
-            },
+                delete: manager[name].delete
+            }
         };
-    },
+    }
 };

@@ -37,9 +37,7 @@ String.prototype.check = function () {
 
 String.prototype.after = function () {
     const afterIndex = this.indexOf("[");
-    const after = this.replace(/(\s|\n)/gim, "").startsWith("[")
-        ? this.split("[").slice(1).join("[")
-        : undefined;
+    const after = this.replace(/(\s|\n)/gim, "").startsWith("[") ? this.split("[").slice(1).join("[") : undefined;
 
     let inside;
     let total = "";
@@ -67,7 +65,7 @@ String.prototype.after = function () {
                 while (left < right && typeof left === "number") {
                     merged.push({
                         index: left,
-                        isLeft: true,
+                        isLeft: true
                     });
 
                     left = leftIndexes[++leftIndex];
@@ -75,7 +73,7 @@ String.prototype.after = function () {
 
                 merged.push({
                     index: right,
-                    isLeft: false,
+                    isLeft: false
                 });
 
                 if (typeof left !== "number") break;
@@ -85,7 +83,7 @@ String.prototype.after = function () {
                 const left = leftIndexes[leftIndex++];
                 merged.push({
                     index: left,
-                    isLeft: true,
+                    isLeft: true
                 });
             }
 
@@ -120,7 +118,7 @@ String.prototype.after = function () {
         },
         addBrackets() {
             return inside ? inside.addBrackets() : "";
-        },
+        }
     };
 };
 
@@ -146,22 +144,18 @@ Array.prototype.goof = function (sep = "_") {
     return this.map((x) =>
         x
             .split(sep)
-            .map((w) =>
-                w.toLowerCase().replace(w[0].toLowerCase(), w[0].toUpperCase())
-            )
+            .map((w) => w.toLowerCase().replace(w[0].toLowerCase(), w[0].toUpperCase()))
             .join(" ")
     ).join(", ");
 };
 
 async function walk(path) {
-    const something = await fs.promises
-        .readdir(path, { withFileTypes: true })
-        .then((f) => {
-            return f.map((d) => {
-                d.name = `${path}/${d.name}`;
-                return d;
-            });
+    const something = await fs.promises.readdir(path, { withFileTypes: true }).then((f) => {
+        return f.map((d) => {
+            d.name = `${path}/${d.name}`;
+            return d;
         });
+    });
 
     const files = something.filter((d) => d.isFile());
     const dirs = something.filter((d) => d.isDirectory());
@@ -176,5 +170,5 @@ async function walk(path) {
 
 module.exports = {
     walk,
-    searchIndexes,
+    searchIndexes
 };

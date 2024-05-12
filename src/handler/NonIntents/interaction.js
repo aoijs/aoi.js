@@ -1,16 +1,6 @@
-const {
-    Interaction,
-    ButtonInteraction,
-    SelectMenuInteraction,
-    ContextMenuCommandInteraction,
-    CommandInteraction,
-    InteractionResponseType,
-} = require("discord.js");
+const { Interaction, ButtonInteraction, SelectMenuInteraction, ContextMenuCommandInteraction, CommandInteraction } = require("discord.js");
 const Interpreter = require("../../core/interpreter.js");
-const {
-    InteractionTypes,
-    MessageComponentTypes,
-} = require("../../utils/InteractionConstants.js");
+const { InteractionTypes, MessageComponentTypes } = require("../../utils/InteractionConstants.js");
 /**
  * @param  {Interaction | ButtonInteraction | SelectMenuInteraction | ContextMenuCommandInteraction | CommandInteraction } interaction
  * @param  {import('../../classes/AoiClient.js')} client
@@ -18,26 +8,15 @@ const {
 module.exports = async (interaction, client) => {
     client.interactionManager.resolve(interaction);
     if (interaction.isMessageComponent()) {
-        client.interactionManager.emit(
-            "messageComponentInteraction",
-            interaction,
-        );
+        client.interactionManager.emit("messageComponentInteraction", interaction);
     }
 
     let cmds;
-    const type = InteractionTypes[ interaction.type ];
-    
+    const type = InteractionTypes[interaction.type];
+
     if (type === "component") {
-        cmds = client.cmd?.interaction[
-            MessageComponentTypes[interaction.componentType]
-        ]
-            .filter((x) =>
-                x.name
-                    ? Array.isArray(x.name)
-                        ? x.name?.includes(interaction.customId)
-                        : x.name === interaction.customId
-                    : !x.name,
-            )
+        cmds = client.cmd?.interaction[MessageComponentTypes[interaction.componentType]]
+            .filter((x) => (x.name ? (Array.isArray(x.name) ? x.name?.includes(interaction.customId) : x.name === interaction.customId) : !x.name))
             .V();
 
         if (!cmds.length) return;
@@ -48,43 +27,26 @@ module.exports = async (interaction, client) => {
             channel: interaction.channel,
             author: interaction.author,
             member: interaction.member,
-            isAutocomplete: interaction.isAutocomplete(),
+            isAutocomplete: interaction.isAutocomplete()
         };
         for (const cmd of cmds) {
             if (cmd.name?.includes("$")) {
-                cmd.name = (
-                    await Interpreter(
-                        client,
-                        data,
-                        [],
-                        { code: cmd.name, name: "NameParser" },
-                        client.db,
-                        true,
-                        undefined,
-                        { interaction },
-                    )
-                )?.code;
+                cmd.name = (await Interpreter(client, data, [], { code: cmd.name, name: "NameParser" }, client.db, true, undefined, { interaction }))?.code;
             }
             await Interpreter(
                 client,
                 data,
-                interaction.values ||
-                    interaction.options?._hoistedOptions?.map(
-                        (x) => x.value,
-                    ) || [interaction.customId] ||
-                    [],
+                interaction.values || interaction.options?._hoistedOptions?.map((x) => x.value) || [interaction.customId] || [],
                 cmd,
                 client.db,
                 false,
                 undefined,
-                { interaction: interaction },
-                undefined,
+                { interaction },
+                undefined
             );
         }
     } else if (type === "modal") {
-        cmds = client.cmd?.interaction.modal.filter(
-            (x) => x.name === interaction.customId,
-        ).V();
+        cmds = client.cmd?.interaction.modal.filter((x) => x.name === interaction.customId).V();
         if (!cmds.length) return;
         const data = {
             client: client,
@@ -92,48 +54,26 @@ module.exports = async (interaction, client) => {
             message: interaction?.message,
             channel: interaction.channel,
             author: interaction.author,
-            member: interaction.member,
+            member: interaction.member
         };
         for (const cmd of cmds) {
             if (cmd.name?.includes("$")) {
-                cmd.name = (
-                    await Interpreter(
-                        client,
-                        data,
-                        [],
-                        { code: cmd.name, name: "NameParser" },
-                        client.db,
-                        true,
-                        undefined,
-                        { interaction },
-                    )
-                )?.code;
+                cmd.name = (await Interpreter(client, data, [], { code: cmd.name, name: "NameParser" }, client.db, true, undefined, { interaction }))?.code;
             }
             await Interpreter(
                 client,
                 data,
-                interaction.values ||
-                    interaction.options?._hoistedOptions?.map(
-                        (x) => x.value,
-                    ) || [interaction.customId] ||
-                    [],
+                interaction.values || interaction.options?._hoistedOptions?.map((x) => x.value) || [interaction.customId] || [],
                 cmd,
                 client.db,
                 false,
                 undefined,
                 { interaction: interaction },
-                undefined,
+                undefined
             );
         }
     } else {
-
-        cmds = client.cmd?.interaction.slash
-            .filter(
-                (x) =>
-                    x.name?.toLowerCase() ===
-                    interaction.commandName?.toLowerCase(),
-            )
-            .V();
+        cmds = client.cmd?.interaction.slash.filter((x) => x.name?.toLowerCase() === interaction.commandName?.toLowerCase()).V();
 
         if (!cmds.length) return;
         const data = {
@@ -143,45 +83,26 @@ module.exports = async (interaction, client) => {
             channel: interaction.channel,
             author: interaction.author,
             member: interaction.member,
-            isAutocomplete: interaction.isAutocomplete(),
+            isAutocomplete: interaction.isAutocomplete()
         };
 
         for (const cmd of cmds) {
-
-            if (
-                (!!cmd.sub_command && interaction.options._subcommand !== cmd.sub_command) ||
-                (!!cmd.sub_command_group && interaction.options._group !== cmd.sub_command_group)
-            ) continue;
+            if ((!!cmd.sub_command && interaction.options._subcommand !== cmd.sub_command) || (!!cmd.sub_command_group && interaction.options._group !== cmd.sub_command_group)) continue;
 
             if (cmd.name?.includes("$")) {
-                cmd.name = (
-                    await Interpreter(
-                        client,
-                        data,
-                        [],
-                        { code: cmd.name, name: "NameParser" },
-                        client.db,
-                        true,
-                        undefined,
-                        { interaction },
-                    )
-                )?.code;
+                cmd.name = (await Interpreter(client, data, [], { code: cmd.name, name: "NameParser" }, client.db, true, undefined, { interaction }))?.code;
             }
 
             await Interpreter(
                 client,
                 data,
-                interaction.values ||
-                    interaction.options?._hoistedOptions?.map(
-                        (x) => x.value,
-                    ) || [interaction.customId] ||
-                    [],
+                interaction.values || interaction.options?._hoistedOptions?.map((x) => x.value) || [interaction.customId] || [],
                 cmd,
                 client.db,
                 false,
                 undefined,
-                { interaction: interaction },
-                undefined,
+                { interaction },
+                undefined
             );
         }
     }

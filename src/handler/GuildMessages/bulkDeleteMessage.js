@@ -1,37 +1,20 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (dmsg, dchannel, client) => {
+module.exports = async (buildDeleteMessage, dchannel, client) => {
     const d = {
         guild: dchannel.guild,
         channel: dchannel,
-        client: dmsg.client,
+        client: buildDeleteMessage.client
     };
-    let chan;
+    let guildChannel;
     for (const cmd of client.cmd?.messageDeleteBulk.V()) {
         if (cmd.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                {},
-                [],
-                { command: "channelParser", code: cmd.channel },
-                client.db,
-                true,
-            );
+            const id = await Interpreter(client, {}, [], { command: "channelParser", code: cmd.channel }, client.db, true);
             let channel = client.channels.cache.get(id?.code);
             if (!channel) channel = dchannel;
-            chan = channel;
+            guildChannel = channel;
         } else {
-            chan = cmd.channel;
+            guildChannel = cmd.channel;
         }
-        await Interpreter(
-            client,
-            d,
-            [],
-            cmd,
-            client.db,
-            false,
-            undefined,
-            { bulk: dmsg },
-            chan,
-        );
+        await Interpreter(client, d, [], cmd, client.db, false, undefined, { bulk: buildDeleteMessage }, guildChannel);
     }
 };
