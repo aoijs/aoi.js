@@ -279,6 +279,7 @@ const Permissions = {
     usesoundboard: PermissionsBitField["Flags"].UseSoundboard,
     useexternalsounds: PermissionsBitField["Flags"].UseExternalSounds,
     sendvoicemessages: PermissionsBitField["Flags"].SendVoiceMessages,
+    sendpolls: PermissionsBitField["Flags"].SendPolls,
     all: Object.keys(PermissionsBitField["Flags"])
 };
 
