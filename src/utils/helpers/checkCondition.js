@@ -88,8 +88,7 @@ class CheckCondition {
             part = part.split(")")[0];
             if (this.hasOr(part)) final.push(this.solveOr(part) + has);
             else if (this.hasEqual(part)) final.push(this.solveEqual(part) + has);
-            else if (this.hasNotEqual(part))
-                final.push(this.solveNotEqual(part) + has);
+            else if (this.hasNotEqual(part)) final.push(this.solveNotEqual(part) + has);
             else if (this.hasGE(part)) final.push(this.solveGE(part) + has);
             else if (this.hasLE(part)) final.push(this.solveLE(part) + has);
             else if (this.hasGreater(part)) final.push(this.solveGreater(part) + has);
@@ -107,8 +106,7 @@ class CheckCondition {
             const has = part.includes(")") ? ")" : "";
             part = part.split(")")[0];
             if (this.hasEqual(part)) final.push(this.solveEqual(part) + has);
-            else if (this.hasNotEqual(part))
-                final.push(this.solveNotEqual(part) + has);
+            else if (this.hasNotEqual(part)) final.push(this.solveNotEqual(part) + has);
             else if (this.hasGE(part)) final.push(this.solveGE(part) + has);
             else if (this.hasLE(part)) final.push(this.solveLE(part) + has);
             else if (this.hasGreater(part)) final.push(this.solveGreater(part) + has);
@@ -133,14 +131,11 @@ class CheckCondition {
         }
 
         let result = final.join("(");
-        if (result.split("(").length !== result.split(")").length)
-            result =
-                result +
-                ")".repeat(result.split("(").length - result.split(")").length);
+        if (result.split("(").length !== result.split(")").length) result = result + ")".repeat(result.split("(").length - result.split(")").length);
         return result;
     }
 }
 
 module.exports = {
-    CheckCondition,
+    CheckCondition
 };

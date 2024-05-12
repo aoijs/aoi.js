@@ -1,9 +1,8 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (ban, client) => {
-    const cmds = client.cmd?.banAdd.V();
+module.exports = async (oldEmoji, newEmoji, client) => {
+    const cmds = client.cmd?.emojiUpdate.V();
     if (!cmds) return;
-    const data = { guild: ban.guild, author: ban?.user, client: client };
-
+    const data = { guild: newEmoji.guild, client: client };
     let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
@@ -14,6 +13,6 @@ module.exports = async (ban, client) => {
             guildChannel = client.channels.cache.get(cmd.channel);
             data.channel = guildChannel;
         }
-        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { newBan: ban }, guildChannel);
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldEmoji, newEmoji }, guildChannel);
     }
 };

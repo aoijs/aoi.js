@@ -3,7 +3,7 @@ const VoiceOptions = {
     ytdl: "YtdlOptions",
     soundcloud: "SoundCloud Client ID",
     cache: "<CacheOptions>",
-    other: "any",
+    other: "any"
 };
 const VoiceSubscriptionDefaultOptions = {
     paused: false,
@@ -11,25 +11,25 @@ const VoiceSubscriptionDefaultOptions = {
     loopSong: false,
     volume: 100,
     leaveAfter: 60000,
-    leaveWhenEmpty: false,
+    leaveWhenEmpty: false
 };
 const States = {
     queue: {
         IDLE: "idle",
         PLAYING: "playing",
-        PAUSED: "paused",
+        PAUSED: "paused"
     },
     loop: {
         NONE: "none",
         QUEUE: "queue",
-        SINGLE: "single",
-    },
+        SINGLE: "single"
+    }
 };
 const Events = {
     ERROR: "musicError",
     TRACK_START: "musicStart",
     QUEUE_END: "queueEnd",
-    TRACK_END: "trackEnd",
+    TRACK_END: "trackEnd"
 };
 const TrackTypes = ["YouTube", "SoundCloud", "File"];
 module.exports = {
@@ -37,5 +37,5 @@ module.exports = {
     VoiceSubscriptionDefaultOptions: VoiceSubscriptionDefaultOptions,
     States,
     Events: Events,
-    TrackTypes: TrackTypes,
+    TrackTypes: TrackTypes
 };

@@ -1,34 +1,19 @@
 const Interpreter = require("../../core/interpreter.js");
-module.exports = async (role, client) => {
+
+module.exports = async (oldRole, client) => {
     const cmds = client.cmd?.roleDelete.V();
-    const data = { guild: role.guild, client: client };
-    let chan;
+    if (!cmds) return;
+    const data = { guild: oldRole.guild, client: client };
+    let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
-            const id = await Interpreter(
-                client,
-                data,
-                [],
-                { name: "ChannelParser", code: cmd?.channel },
-                client.db,
-                true,
-            );
-            chan = client.channels.cache.get(id?.code);
-            data.channel = chan;
+            const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd?.channel }, client.db, true);
+            guildChannel = client.channels.cache.get(id?.code);
+            data.channel = guildChannel;
         } else {
-            chan = client.channels.cache.get(cmd.channel);
-            data.channel = chan;
+            guildChannel = client.channels.cache.get(cmd.channel);
+            data.channel = guildChannel;
         }
-        await Interpreter(
-            client,
-            data,
-            [],
-            cmd,
-            client.db,
-            false,
-            chan?.id,
-            { oldr: role },
-            chan,
-        );
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldRole }, guildChannel);
     }
 };

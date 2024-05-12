@@ -1,14 +1,26 @@
-module.exports = async (d) => {
+const { Routes } = require("discord-api-types/v10");
+const { resolveBase64, resolveFile } = require("discord.js/src/util/DataResolver");
+
+module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [banner] = data.inside.splits;
+    let [banner] = data.inside.splits;
 
-    d.client.user.setBanner(banner.addBrackets()).catch((err) => {
-        d.aoiError.fnError(d, "custom", {}, `Failed To Set Client Banner To "${banner.addBrackets()}" With Reason: ${err}`);
+    if (!banner.startsWith("data:")) {
+        const file = await resolveFile(banner);
+        banner = resolveBase64(file.data);
+    }
+
+    await d.client.rest.patch(Routes.user(), {
+        body: {
+          username: d.client.user.username,
+          avatar: d.client.user.avatar,
+          banner: banner,
+        },
     });
 
     return {
         code: d.util.setCode(data)
-    };
+    }
 };

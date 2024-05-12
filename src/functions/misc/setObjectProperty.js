@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
     const object = d.data.objects[name] || {};
     try {
-        eval(`object?.${property} = value`);
+        eval(`object.${property} = ${JSON.stringify(value)}`);
     } catch (e) {
         data.result = undefined;
     }

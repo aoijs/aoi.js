@@ -233,7 +233,7 @@ class AoiError {
      * @param {{text: string, textColor?: string}} [title] - The title of the box.
      * @returns {void}
      */
-    static createCustomBoxedMessage(messages, borderColor = "yellow", title) {
+    static createConsoleMessage(messages, borderColor = "yellow", title) {
         if (!Array.isArray(messages)) {
             messages = [messages];
         }

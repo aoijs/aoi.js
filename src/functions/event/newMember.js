@@ -1,14 +1,13 @@
-const {MemberOptions} = require('../../utils/Constants.js');
+const { MemberOptions } = require("../../utils/Constants.js");
 
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [option = 'name'] = data.inside.splits;
+    const [option = "name"] = data.inside.splits;
 
-    const Opx = MemberOptions[option];
-    data.result = eval(`d.data.newm?.${Opx}`);
+    data.result = MemberOptions[option](d.data?.newMember, d.data?.oldMember);
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};
