@@ -25,6 +25,13 @@ class AoiError {
         throw error;
     }
 
+	static AstGeneratorError(message,options) {
+		const error = new Error(`(GenerationError): ${message} `);
+		error.name = "AstGeneratorError";
+		error.options = options;
+		throw error;
+	}
+
     /**
      * @param  {string} command
      * @param  {string} type
