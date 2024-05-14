@@ -14,7 +14,6 @@ module.exports = (d) => {
             data.result = eval(`object.${option}`);
         }
     } catch (e) {
-        console.log(e);
         data.result = "undefined";
     }
 
