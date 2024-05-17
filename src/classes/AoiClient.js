@@ -208,6 +208,14 @@ class Client extends BaseClient {
         this.addCommandType("voiceStateUpdate", d);
     }
 
+    pollVoteAddCommand(d = {}) {
+        this.addCommandType("pollVoteAdd", d);
+    }
+
+    pollVoteRemoveCommand(d = {}) {
+        this.addCommandType("pollVoteRemove", d);
+    }
+
     applicationCmdCreateCommand(d = {}) {
         this.addCommandType("applicationCmdCreate", d);
     }

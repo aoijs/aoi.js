@@ -307,6 +307,8 @@ declare module "aoi.js" {
         reactionRemoveEmojiCommand(d: EventCommand): void;
         presenceUpdateCommand(d: EventCommand): void;
         voiceStateUpdateCommand(d: EventCommand): void;
+        voteAddCommand(d: EventCommand): void;
+        voteRemoveCommand(d: EventCommand): void;
         interactionCommand(d: InteractionCommand): void;
         applicationCmdCreateCommand(d: EventCommand): void;
         applicationCmdDeleteCommand(d: EventCommand): void;
