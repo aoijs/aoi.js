@@ -5,16 +5,10 @@ module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, duration, timeoutData, returnID = "false", pulse] =
+    const [name, duration, timeoutData, returnID = "false"] =
         data.inside.splits;
 
     const time = isNaN(duration) ? Time.parse(duration)?.ms : Number(duration);
-    const pulseEvery = pulse
-        ? isNaN(pulse)
-            ? Time.parse(pulse)?.ms
-            : Number(pulse)
-        : undefined;
-    const timeoutName = name.trim() === "" ? undefined : name.addBrackets();
     let tdata = {};
 
     if (timeoutData.addBrackets().startsWith("{")) {
@@ -31,7 +25,7 @@ module.exports = (d) => {
         }
     }
 
-    const timeout = Timeout(d, name.addBrackets(), time, tdata, pulseEvery);
+    const timeout = Timeout(d, name.addBrackets(), time, tdata);
 
     if (returnID === "true") {
         data.result = timeout;

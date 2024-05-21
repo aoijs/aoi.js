@@ -72,7 +72,7 @@ class CommandManager {
             "threadUpdate", "join", "leave", "inviteCreate", "inviteDelete", "memberUpdate", "memberAvailable",
             "membersChunk", "emojiCreate", "emojiUpdate", "emojiDelete", "banAdd", "banRemove", "webhooksUpdate",
             "voiceStateUpdate", "presenceUpdate", "reactionAdd", "reactionRemove", "reactionRemoveEmoji",
-            "reactionRemoveAll", "typingStart", "pollVoteAdd", "pollVoteRemove", "loop", "timeout", "pulse", "ready", "variableCreate",
+            "reactionRemoveAll", "typingStart", "pollVoteAdd", "pollVoteRemove", "loop", "timeout", "ready", "variableCreate",
             "variableDelete", "variableUpdate", "functionError", "interaction", "applicationCmdCreate",
             "applicationCmdUpdate", "applicationCmdDelete", "applicationCmdPermissionsUpdate", "userUpdate",
             "rateLimit", "shardReady", "shardResume", "shardReconnecting", "shardDisconnect", "shardError",

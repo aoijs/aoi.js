@@ -13,10 +13,8 @@ module.exports = async (client) => {
         await require("./AoiAutoUpdate.js")(client);
     }
 
-    if (!(client.aoiOptions.disableAoiDB === true) && client.aoiOptions.database) {
-        await require("./Custom/timeout.js")({ client, interpreter: Interpreter }, undefined, undefined, undefined, true);
-
-        await require("./Custom/timeoutPulse.js")({ client, interpreter: Interpreter }, undefined, undefined, undefined, undefined, true);
+    if (!(client.aoiOptions.disableAoiDB === true) && client.db?.type === "aoi.db") {
+        await require("./Custom/timeout.js")({ client, interpreter: Interpreter }, undefined, undefined, true);
 
         setInterval(async () => {
             await require("./Custom/handleResidueData.js")(client);

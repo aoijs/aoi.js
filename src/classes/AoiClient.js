@@ -264,10 +264,6 @@ class Client extends BaseClient {
         this.addCommandType("timeout", d);
     }
 
-    pulseCommand(d = {}) {
-        this.addCommandType("pulse", d);
-    }
-
     rateLimitCommand(d = {}) {
         this.addCommandType("rateLimit", d);
     }
