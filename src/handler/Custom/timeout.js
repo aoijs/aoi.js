@@ -14,7 +14,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
         await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, timeoutData);
 
         if (duration > MAX_SAFE_INTEGER) {
-            setInterval(
+            const interval = setInterval(
                 async () => {
                     if (!(timeoutData.__duration__ <= Date.now())) return;
                     cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
@@ -29,6 +29,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
                         }
                     }
                     await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+                    clearInterval(interval);
                 },
                 60 * 60 * 1000
             );
