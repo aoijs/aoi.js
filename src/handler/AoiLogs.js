@@ -10,7 +10,7 @@ module.exports = async () => {
                     textColor: "green"
                 },
                 {
-                    text: "Discord Server: https://discord.gg/HMUfMXDQsV",
+                    text: "https://discord.gg/HMUfMXDQsV",
                     textColor: "blue"
                 }
             ],
