@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { CommandManager } = require("./Commands.js");
 const PATH = require("path");
+const chalk = require("chalk");
 const AoiError = require("./AoiError");
 
 class LoadCommands {
@@ -15,96 +16,99 @@ class LoadCommands {
 
     get allColors() {
         return {
-            reset: "\x1b[0m",
-            bright: "\x1b[1m",
-            dim: "\x1b[2m",
-            underscore: "\x1b[4m",
-            blink: "\x1b[5m",
-            reverse: "\x1b[7m",
-            hidden: "\x1b[8m",
+            reset: chalk.reset,
+            bright: chalk.bold,
+            dim: chalk.dim,
+            underscore: chalk.underline,
+            blink: chalk.blink,
+            reverse: chalk.inverse,
+            hidden: chalk.hidden,
 
-            fgBlack: "\x1b[30m",
-            fgRed: "\x1b[31m",
-            fgGreen: "\x1b[32m",
-            fgYellow: "\x1b[33m",
-            fgBlue: "\x1b[34m",
-            fgMagenta: "\x1b[35m",
-            fgCyan: "\x1b[36m",
-            fgWhite: "\x1b[37m",
+            fgBlack: chalk.black,
+            fgRed: chalk.red,
+            fgGreen: chalk.green,
+            fgYellow: chalk.yellow,
+            fgBlue: chalk.blue,
+            fgMagenta: chalk.magenta,
+            fgCyan: chalk.cyan,
+            fgWhite: chalk.white,
+            fgGray: chalk.gray,
 
-            bgBlack: "\x1b[40m",
-            bgRed: "\x1b[41m",
-            bgGreen: "\x1b[42m",
-            bgYellow: "\x1b[43m",
-            bgBlue: "\x1b[44m",
-            bgMagenta: "\x1b[45m",
-            bgCyan: "\x1b[46m",
-            bgWhite: "\x1b[47m",
+            bgBlack: chalk.bgBlack,
+            bgGray: chalk.bgGray,
+            bgRed: chalk.bgRed,
+            bgGreen: chalk.bgGreen,
+            bgYellow: chalk.bgYellow,
+            bgBlue: chalk.bgBlue,
+            bgMagenta: chalk.bgMagenta,
+            bgCyan: chalk.bgCyan,
+            bgWhite: chalk.bgWhite
         };
     }
 
     get themes() {
         return {
             default: {
-                loading: ["blink", "dim", "fgWhite"],
+                loading: [chalk.blink, chalk.dim, chalk.white],
                 failedLoading: {
-                    name: ["bright", "fgYellow", "underscore"],
-                    text: ["bright", "fgRed"],
+                    name: [chalk.bold.yellow, chalk.underline],
+                    text: [chalk.bold.red]
                 },
                 typeError: {
-                    command: ["bright", "fgYellow"],
-                    type: ["fgYellow"],
-                    text: ["bright", "fgRed"],
+                    command: [chalk.bold.yellow],
+                    type: [chalk.yellow],
+                    text: [chalk.bold.red]
                 },
                 failLoad: {
-                    command: ["bright", "fgMagenta"],
-                    type: ["fgRed"],
-                    text: ["bright", "fgRed"],
+                    command: [chalk.bold.magenta],
+                    type: [chalk.red],
+                    text: [chalk.bold.red]
                 },
                 loaded: {
-                    command: ["bright", "fgCyan"],
-                    type: ["bright", "fgBlue"],
-                    text: ["bright", "fgGreen"],
-                },
+                    command: [chalk.bold.cyan],
+                    type: [chalk.bold.blue],
+                    text: [chalk.bold.green]
+                }
             },
             diff: {
-                loading: ["fgGreen"],
+                loading: [chalk.green],
                 failedLoading: {
-                    text: ["fgRed"],
-                    name: ["bright", "fgRed"],
+                    text: [chalk.red],
+                    name: [chalk.bold.red]
                 },
                 typeError: {
-                    command: ["bright", "fgRed"],
-                    type: ["fgRed"],
-                    text: ["dim", "fgRed"],
+                    command: [chalk.bold.red],
+                    type: [chalk.red],
+                    text: [chalk.dim.red]
                 },
                 failLoad: {
-                    command: ["bright", "fgRed"],
-                    type: ["fgRed"],
-                    text: ["dim", "fgRed"],
+                    command: [chalk.bold.red],
+                    type: [chalk.red],
+                    text: [chalk.dim.red]
                 },
                 loaded: {
-                    command: ["bright", "fgCyan"],
-                    type: ["fgCyan"],
-                    text: ["dim", "fgCyan"],
-                },
-            },
+                    command: [chalk.bold.cyan],
+                    type: [chalk.cyan],
+                    text: [chalk.dim.cyan]
+                }
+            }
         };
     }
 
     logMessage(message, color) {
-        console.log(`${color || ""}${message}${this.allColors.reset}`);
+        console.log(color ? color(message) : message);
     }
 
     async load(client, path, debug = true) {
         const isObject = (data) => data instanceof Object && !Buffer.isBuffer(data) && !Array.isArray(data) && !(data instanceof RegExp);
 
         const walk = async (file) => {
-            const something = await fs.promises.readdir(file, { withFileTypes: true })
-                .then((f) => f.map((d) => {
+            const something = await fs.promises.readdir(file, { withFileTypes: true }).then((f) =>
+                f.map((d) => {
                     d.name = `${file}${PATH.sep}${d.name}`;
                     return d;
-                }));
+                })
+            );
 
             const files = something.filter((d) => d.isFile());
             const dirs = something.filter((d) => d.isDirectory());
@@ -139,13 +143,13 @@ class LoadCommands {
                 path,
                 debug,
                 commandsLocation: client,
-                keys: Object.keys(client),
+                keys: Object.keys(client)
             });
         }
 
         const validCmds = Object.getOwnPropertyNames(client);
         const dirents = await walk(path);
-        const debugs = [];
+        let debugs = [];
 
         for (const { name } of dirents) {
             delete require.cache[name];
@@ -155,24 +159,27 @@ class LoadCommands {
             try {
                 cmds = require(name);
             } catch {
-                debugs.push(
-                    `${this.allColors.fgRed}✖ Failed to load ${name}${this.allColors.reset}`
-                );
+                debugs.push(`${chalk.red("✖ Failed to load")} ${name}`);
+                debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
 
             if (cmds == null) {
-                debugs.push(
-                    `${this.allColors.fgRed}✖ No data provided in ${name}${this.allColors.reset}`
-                );
+                debugs.push(`${chalk.red("✖ No data provided in")} ${name}`);
+                debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
 
             if (!Array.isArray(cmds)) cmds = [cmds];
 
             for (const cmd of cmds) {
+                const path = name.split(PATH.sep);
+                const pathName = path.length > 2 ? path.slice(-2).join(PATH.sep) : name;
+
                 if (!isObject(cmd)) {
-                    debugs.push(`${this.allColors.fgRed}✖ Provided data is not an object in ${name}${this.allColors.reset}`);
+                    const debugMessage = `${chalk.red("✖ Provided data is not an object in")} ${name}`;
+                    debugs.push(debugMessage);
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
@@ -181,8 +188,9 @@ class LoadCommands {
                 const valid = validCmds.includes(cmd.type);
 
                 if (!valid) {
-                    const debugMessage = `${this.allColors.fgRed}✖ Invalid Type Provided for ${cmd.name || cmd.channel} in ${name} | ${cmd.type}${this.allColors.reset}`;
+                    const debugMessage = `${chalk.red("✖ Invalid Type Provided for")} ${cmd.name || cmd.channel} ${chalk.red("in")} ${name} ${chalk.gray(`(${cmd.type})`)}`;
                     debugs.push(debugMessage);
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
@@ -197,22 +205,27 @@ class LoadCommands {
                     }
                 } catch (e) {
                     console.error(e);
-                    debugs.push(`${this.allColors.fgRed}✖ Failed to load '${cmd.name || cmd.channel}' in '${name}' | ${cmd.type}${this.allColors.reset}`);
+                    const debugMessage = `${chalk.red("✖ Failed to load")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
+                    debugs.push(debugMessage);
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
-                debugs.push(`${this.allColors.fgGreen}✔ Loaded '${cmd.name || cmd.channel}' | ${cmd.type}${this.allColors.reset}`);
+                const debugMessage = `${chalk.green("✔ Loaded")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
+                debugs.push(debugMessage);
             }
         }
 
         if (debug) {
             AoiError.createConsoleMessage(
                 [
-                    {
-                        text: `${debugs.join("\n  ")}`,
-                    },
+                    ...debugs.map((debug) => ({
+                        text: debug,
+                        centered: false
+                    }))
                 ],
-                "white"
+                "white",
+                { text: "LoadCommands", textColor: "cyan" }
             );
         }
     }
