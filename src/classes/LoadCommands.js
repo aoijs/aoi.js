@@ -159,13 +159,13 @@ class LoadCommands {
             try {
                 cmds = require(name);
             } catch {
-                debugs.push(`${chalk.red("\✖ Failed to load")} ${name}`);
+                debugs.push(`${chalk.red("✖ Failed to load")} ${name}`);
                 debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
 
             if (cmds == null) {
-                debugs.push(`${chalk.red("\✖ No data provided in")} ${name}`);
+                debugs.push(`${chalk.red("✖ No data provided in")} ${name}`);
                 debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
@@ -173,10 +173,13 @@ class LoadCommands {
             if (!Array.isArray(cmds)) cmds = [cmds];
 
             for (const cmd of cmds) {
+                const path = name.split(PATH.sep);
+                const pathName = path.length > 2 ? path.slice(-2).join(PATH.sep) : name;
+
                 if (!isObject(cmd)) {
-                    const debugMessage = `${chalk.red("\✖ Provided data is not an object in")} ${name}`;
+                    const debugMessage = `${chalk.red("✖ Provided data is not an object in")} ${name}`;
                     debugs.push(debugMessage);
-                    debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
@@ -185,9 +188,9 @@ class LoadCommands {
                 const valid = validCmds.includes(cmd.type);
 
                 if (!valid) {
-                    const debugMessage = `${chalk.red("\✖ Invalid Type Provided for")} ${cmd.name || cmd.channel} ${chalk.red("in")} ${name} ${chalk.gray(`(${cmd.type})`)}`;
+                    const debugMessage = `${chalk.red("✖ Invalid Type Provided for")} ${cmd.name || cmd.channel} ${chalk.red("in")} ${name} ${chalk.gray(`(${cmd.type})`)}`;
                     debugs.push(debugMessage);
-                    debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
@@ -202,13 +205,13 @@ class LoadCommands {
                     }
                 } catch (e) {
                     console.error(e);
-                    const debugMessage = `${chalk.red("\✖ Failed to load")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
+                    const debugMessage = `${chalk.red("✖ Failed to load")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
                     debugs.push(debugMessage);
-                    debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
+                    debugs.push("- " + pathName);
                     continue;
                 }
 
-                const debugMessage = `${chalk.green("\✔ Loaded")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
+                const debugMessage = `${chalk.green("✔ Loaded")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
                 debugs.push(debugMessage);
             }
         }
