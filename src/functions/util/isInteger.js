@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [number] = data.inside.splits;
 
-    data.result = number.trim() === '' ? false : Number.isInteger(number);
+    data.result = number.trim() === '' ? false : !Number.isInteger(number);
 
     return {
         code: d.util.setCode(data)
