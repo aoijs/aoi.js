@@ -274,7 +274,7 @@ class AoiError {
             const wlines = wrapText(text, msgwidth);
             const cmsg = wlines.map((line) => {
                 const padding = msgwidth - strip(line).length;
-                const padtext = msg.centered !== false ? " ".repeat(Math.floor(padding / 2)) + line + " ".repeat(Math.ceil(padding / 2)) : line + " ".repeat(padding);
+                const padtext = msg.centered !== false ? " ".repeat(Math.abs(Math.floor(padding / 2))) + line + " ".repeat(Math.abs(Math.ceil(padding / 2))) : line + " ".repeat(Math.abs(padding));
                 return `│ ${textcolor(padtext)} │`;
             });
             return cmsg;
@@ -289,7 +289,7 @@ class AoiError {
 
         msgs.forEach((line) => console.log(line));
 
-        console.log(bordercolor(`╰${"─".repeat(msgwidth + 2)}╯`));
+        console.log(bordercolor(`╰${"─".repeat(Math.abs(msgwidth) + 2)}╯`));
     }
 }
 
