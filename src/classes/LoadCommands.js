@@ -216,17 +216,13 @@ class LoadCommands {
         if (debug) {
             AoiError.createConsoleMessage(
                 [
-                    {
-                        text: "LoadCommands",
-                        textColor: "cyan"
-                    },
                     ...debugs.map((debug) => ({
                         text: debug,
-                        isLoad: debug.includes("✔") || debug.includes("✖"),
                         centered: false
                     }))
                 ],
-                "white"
+                "white",
+                { text: "LoadCommands", textColor: "cyan" }
             );
         }
     }

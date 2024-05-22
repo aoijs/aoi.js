@@ -228,51 +228,68 @@ class AoiError {
 
     /**
      * Creates a custom boxed message with optional title and border color.
-     * @param {Array<{text: string, textColor?: string}> | {text: string, textColor?: string}} messages - The messages to be displayed in the box.
-     * @param {string} [borderColor="yellow"] - The color of the box border. Default is "yellow".
+     * @param {Array<{text: string, textColor?: string, centered?: boolean}> | {text: string, textColor?: string, centered?: boolean}} messages - The messages to be displayed in the box.
+     * @param {string} [borderColor="white"] - The color of the box border. Default is "white".
      * @param {{text: string, textColor?: string}} [title] - The title of the box.
      * @returns {void}
      */
-    static createConsoleMessage(messages, borderColor = "yellow", title) {
+    static createConsoleMessage(messages, borderColor = "white", title) {
         if (!Array.isArray(messages)) {
             messages = [messages];
         }
 
-        const maxWidth = Math.max(0, process.stdout.columns - 4);
-        const titleLength = title ? title.text.length + 4 : 0;
-        const msgLength = messages.map((msg) => msg.text.length);
-        const width = Math.min(Math.max(...msgLength, titleLength), maxWidth);
+        const strip = (str) => str.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, "");
 
-        const topBorder = chalk[borderColor](`╭${"─".repeat(width + 2)}╮`);
-        const bottomBorder = chalk[borderColor](`╰${"─".repeat(width + 2)}╯`);
+        title = title && title.text ? title : { text: "", textColor: "white" };
 
-        console.log(topBorder);
+        const totalwidth = process.stdout?.columns || 40;
+        const bordercolor = chalk[borderColor] || chalk.yellow;
 
-        if (title) {
-            const titleText = wrapText(title.text, width);
-            titleText.forEach((line) => {
-                const padding = " ".repeat(Math.floor((width - line.length) / 2));
-                console.log(`${chalk[borderColor]("│")} ${padding}${chalk[title.textColor](line)}${padding} ${chalk[borderColor]("│")}`);
+        const maxwidth = Math.max(...messages.map((msg) => strip(typeof msg === "string" ? msg : msg.text).length), strip(title.text).length);
+
+        const msgwidth = Math.min(maxwidth, totalwidth - 4);
+        const bordertop = bordercolor(`╭${"─".repeat(msgwidth + 2)}╮`);
+
+        const wrapText = (text, width) => {
+            const y = text.split(" ");
+            let lines = [];
+            let x = y[0];
+
+            for (let i = 1; i < y.length; i++) {
+                if (x.length + y[i].length + 1 <= width) {
+                    x += " " + y[i];
+                } else {
+                    lines.push(x);
+                    x = y[i];
+                }
+            }
+            lines.push(x);
+
+            return lines;
+        };
+
+        const newmessage = (msg) => {
+            const text = typeof msg === "string" ? msg : msg.text;
+            const textcolor = msg.textColor ? chalk[msg.textColor] : chalk.white;
+            const wlines = wrapText(text, msgwidth);
+            const cmsg = wlines.map((line) => {
+                const padding = msgwidth - strip(line).length;
+                const padtext = msg.centered !== false ? " ".repeat(Math.floor(padding / 2)) + line + " ".repeat(Math.ceil(padding / 2)) : line + " ".repeat(padding);
+                return `│ ${textcolor(padtext)} │`;
             });
-        }
+            return cmsg;
+        };
 
-        messages.forEach((message) => {
-            const messageLines = wrapText(message.text, width);
-            messageLines.forEach((line) => {
-                const padLength = message.centered === false ? 0 : Math.round((width - line.length) / 2);
-                const leftPad = " ".repeat(Math.floor(padLength));
-                const rightPad = " ".repeat(width - line.length - Math.floor(padLength));
-                const textColor = message.textColor || "reset";
-                console.log(`${chalk[borderColor]("│")} ${leftPad}${chalk[textColor](line)}${rightPad} ${chalk[borderColor]("│")}`);
-            });
-        });
+        const titlemsg = title.text ? newmessage(title) : [];
+        const msgs = messages.flatMap(newmessage);
 
-        console.log(bottomBorder);
+        console.log(bordertop);
 
-        function wrapText(text, width) {
-            const regex = new RegExp(`.{1,${width}}`, "g");
-            return text.match(regex) || [];
-        }
+        titlemsg.forEach((line) => console.log(line));
+
+        msgs.forEach((line) => console.log(line));
+
+        console.log(bordercolor(`╰${"─".repeat(msgwidth + 2)}╯`));
     }
 }
 
