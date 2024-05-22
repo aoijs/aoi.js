@@ -277,19 +277,12 @@ module.exports = {
         ////basic defining
         let i = format.length - 1;
     },
-    Timeout(d, name, duration, timeoutData, pulse) {
+    Timeout(d, name, duration, timeoutData) {
         timeoutData.__duration__ = Date.now() + duration;
         timeoutData.__timeoutName__ = name;
-        timeoutData.__pulseEvery__ = pulse;
         timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
-        d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, timeoutData);
-
-        if (!pulse) {
-            require("../../handler/Custom/timeout.js")(d, name, duration, timeoutData, false);
-        } else {
-            require("../../handler/Custom/timeoutPulse.js")(d, name, duration, pulse, timeoutData, false);
-        }
+        require("../../handler/Custom/timeout.js")(d, duration, timeoutData, false);
         return timeoutData.__id__;
     },
     CreateObjectAST(parser) {
