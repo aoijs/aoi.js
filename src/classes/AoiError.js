@@ -238,29 +238,41 @@ class AoiError {
             messages = [messages];
         }
 
-        const maxLength = title ? Math.max(...messages.map((msg) => msg.text.length), title.text.length) : Math.max(...messages.map((msg) => msg.text.length));
+        const maxWidth = Math.max(0, process.stdout.columns - 4);
+        const titleLength = title ? title.text.length + 4 : 0;
+        const msgLength = messages.map((msg) => msg.text.length);
+        const width = Math.min(Math.max(...msgLength, titleLength), maxWidth);
 
-        const topBorder = chalk[borderColor](`╭${"─".repeat(maxLength + 2)}╮`);
-        const bottomBorder = chalk[borderColor](`╰${"─".repeat(maxLength + 2)}╯`);
+        const topBorder = chalk[borderColor](`╭${"─".repeat(width + 2)}╮`);
+        const bottomBorder = chalk[borderColor](`╰${"─".repeat(width + 2)}╯`);
 
         console.log(topBorder);
 
         if (title) {
-            const titlePadding = " ".repeat((maxLength - title.text.length) / 2);
-            const titleText = `${chalk[borderColor]("│")} ${titlePadding}${chalk[title.textColor](title.text)}${titlePadding} ${chalk[borderColor]("│")}`;
-            console.log(titleText);
+            const titleText = wrapText(title.text, width);
+            titleText.forEach((line) => {
+                const padding = " ".repeat(Math.floor((width - line.length) / 2));
+                console.log(`${chalk[borderColor]("│")} ${padding}${chalk[title.textColor](line)}${padding} ${chalk[borderColor]("│")}`);
+            });
         }
 
         messages.forEach((message) => {
-            const paddingLength = (maxLength - message.text.length) / 2;
-            const leftPadding = " ".repeat(Math.floor(paddingLength));
-            const rightPadding = " ".repeat(Math.ceil(paddingLength));
-            const textColor = message.textColor || "reset";
-            const messageText = `${chalk[borderColor]("│")} ${leftPadding}${chalk[textColor](message.text)}${rightPadding} ${chalk[borderColor]("│")}`;
-            console.log(messageText);
+            const messageLines = wrapText(message.text, width);
+            messageLines.forEach((line) => {
+                const padLength = message.centered === false ? 0 : Math.round((width - line.length) / 2);
+                const leftPad = " ".repeat(Math.floor(padLength));
+                const rightPad = " ".repeat(width - line.length - Math.floor(padLength));
+                const textColor = message.textColor || "reset";
+                console.log(`${chalk[borderColor]("│")} ${leftPad}${chalk[textColor](line)}${rightPad} ${chalk[borderColor]("│")}`);
+            });
         });
 
         console.log(bottomBorder);
+
+        function wrapText(text, width) {
+            const regex = new RegExp(`.{1,${width}}`, "g");
+            return text.match(regex) || [];
+        }
     }
 }
 
