@@ -242,8 +242,8 @@ class AoiError {
 
         title = title && title.text ? title : { text: "", textColor: "white" };
 
-        const totalwidth = process.stdout?.columns || 40;
-        const bordercolor = chalk[borderColor] || chalk.yellow;
+        const totalwidth = process.stdout?.columns || 80;
+        const bordercolor = chalk[borderColor] || chalk.white;
 
         const maxwidth = Math.max(...messages.map((msg) => strip(typeof msg === "string" ? msg : msg.text).length), strip(title.text).length);
 
@@ -251,19 +251,19 @@ class AoiError {
         const bordertop = bordercolor(`╭${"─".repeat(msgwidth + 2)}╮`);
 
         const wrapText = (text, width) => {
-            const y = text.split(" ");
+            const words = text.split(" ");
             let lines = [];
-            let x = y[0];
+            let current = words[0];
 
-            for (let i = 1; i < y.length; i++) {
-                if (x.length + y[i].length + 1 <= width) {
-                    x += " " + y[i];
+            for (let i = 1; i < words.length; i++) {
+                if (strip(current).length + strip(words[i]).length + 1 <= width) {
+                    current += " " + words[i];
                 } else {
-                    lines.push(x);
-                    x = y[i];
+                    lines.push(current);
+                    current = words[i];
                 }
             }
-            lines.push(x);
+            lines.push(current);
 
             return lines;
         };
@@ -271,13 +271,13 @@ class AoiError {
         const newmessage = (msg) => {
             const text = typeof msg === "string" ? msg : msg.text;
             const textcolor = msg.textColor ? chalk[msg.textColor] : chalk.white;
-            const wlines = wrapText(text, msgwidth);
-            const cmsg = wlines.map((line) => {
+            const wrapped = wrapText(text, msgwidth);
+            const msgs = wrapped.map((line) => {
                 const padding = msgwidth - strip(line).length;
-                const padtext = msg.centered !== false ? " ".repeat(Math.abs(Math.floor(padding / 2))) + line + " ".repeat(Math.abs(Math.ceil(padding / 2))) : line + " ".repeat(Math.abs(padding));
-                return `│ ${textcolor(padtext)} │`;
+                const padded = msg.centered !== false ? " ".repeat(Math.abs(Math.floor(padding / 2))) + line + " ".repeat(Math.abs(Math.ceil(padding / 2))) : line + " ".repeat(Math.abs(padding));
+                return `│ ${textcolor(padded)} │`;
             });
-            return cmsg;
+            return msgs;
         };
 
         const titlemsg = title.text ? newmessage(title) : [];
