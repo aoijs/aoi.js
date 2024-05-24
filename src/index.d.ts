@@ -321,7 +321,6 @@ declare module "aoi.js" {
         functionErrorCommand(d: EventCommand): void;
         loopCommand(d: LoopCommand): void;
         timeoutCommand(d: EventCommand): void;
-        pulseCommand(d: EventCommand): void;
         rateLimitCommand(d: EventCommand): void;
         webhooksUpdateCommand(d: EventCommand): void;
     }
