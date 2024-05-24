@@ -235,12 +235,22 @@ class LoadCommands {
             for (const cmd of dp.keys) {
                 try {
                     if (cmd === "interaction") {
-                        dp.commandsLocation.interaction.slash = dp.commandsLocation.interaction.slash.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.button = dp.commandsLocation.interaction.button.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.selectMenu = dp.commandsLocation.interaction.selectMenu.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.modal = dp.commandsLocation.interaction.modal.filter((x) => !x.load);
+                        if (Array.isArray(dp.commandsLocation.interaction.slash)) {
+                            dp.commandsLocation.interaction.slash = dp.commandsLocation.interaction.slash.filter((x) => !x.load);
+                        }
+                        if (Array.isArray(dp.commandsLocation.interaction.button)) {
+                            dp.commandsLocation.interaction.button = dp.commandsLocation.interaction.button.filter((x) => !x.load);
+                        }
+                        if (Array.isArray(dp.commandsLocation.interaction.selectMenu)) {
+                            dp.commandsLocation.interaction.selectMenu = dp.commandsLocation.interaction.selectMenu.filter((x) => !x.load);
+                        }
+                        if (Array.isArray(dp.commandsLocation.interaction.modal)) {
+                            dp.commandsLocation.interaction.modal = dp.commandsLocation.interaction.modal.filter((x) => !x.load);
+                        }
                     } else {
-                        dp.commandsLocation[cmd] = dp.commandsLocation[cmd].filter((x) => !x.load);
+                        if (Array.isArray(dp.commandsLocation[cmd])) {
+                            dp.commandsLocation[cmd] = dp.commandsLocation[cmd].filter((x) => !x.load);
+                        }
                     }
                     if (cmd.loopInterval) {
                         clearInterval(cmd.loopInterval);
