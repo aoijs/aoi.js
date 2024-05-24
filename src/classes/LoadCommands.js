@@ -143,7 +143,7 @@ class LoadCommands {
                 path,
                 debug,
                 commandsLocation: client,
-                keys: Object.keys(client)
+                keys: client instanceof CommandManager ? client.types : Object.keys(client)
             });
         }
 
