@@ -1,6 +1,5 @@
 const { Group } = require("@akarui/structures");
 const { functions: parser, maps, grp } = require("../core/AoiReader.js");
-const {createConsoleMessage} = require("./AoiError");
 
 class Block {
     constructor(func) {
@@ -93,10 +92,6 @@ class FunctionManager {
     }
 
     createFunction(...ds) {
-        const messages = ds.map(d => ({ text: `Created: '${d.name}'`, textColor: "green" }));
-
-        createConsoleMessage(messages, "white", { text: "Custom Function", textColor: "cyan" });
-
         ds.forEach(d => {
             const customFunc = new CustomFunction(d, this.client);
             this.cache.set(d.name.replace("$", ""), customFunc);
