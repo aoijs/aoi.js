@@ -374,13 +374,17 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     let reply = {
         message: undefined,
-        mention: true
+        mention: false
     };
 
     let edits = {
         time: "",
         messages: []
     };
+
+    let allowedMentions = {
+        parse: ["everyone", "users", "roles"]
+    }
 
     const parts = CreateObjectAST(errorMessage);
     for (const part of parts) {
@@ -411,6 +415,13 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         } else if (specialChecker(part, "ephemeral")) ephemeral = true;
         else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
         else if (Checker(part, "reactions")) reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
+        else if (Checker(part, "allowedMentions")) {
+            const parts = part.split(":")[1].split("}")[0].split(",");
+            if (parts.includes("all")) allowedMentions.parse = ["everyone", "users", "roles"];
+            else if (parts.includes("none")) allowedMentions.parse = [];
+            else if (parts.includes("")) allowedMentions.parse = [];
+            else allowedMentions.parse = [...parts];
+        }
     }
 
     if (!embeds.length) send = false;
@@ -423,6 +434,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             components,
             content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
             files,
+            allowedMentions,
             options: {
                 reply,
                 reactions: reactions.length ? reactions : undefined,
@@ -432,7 +444,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
                 defer,
                 edits: edits.edits,
                 deleteIn,
-                deleteCommand
+                deleteCommand,
             }
         };
     }
