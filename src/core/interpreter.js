@@ -105,6 +105,7 @@ const Interpreter = async (
         let embeds;
         let deleteIn;
         let suppressErrors;
+        let flags;
         let editIn = undefined;
         let error;
         let attachments = [];
@@ -509,6 +510,9 @@ const Interpreter = async (
             if (FuncData?.allowedMentions) {
                 allowedMentions = FuncData.allowedMentions;
             }
+            if (FuncData?.flags) {
+                flags = FuncData.flags;
+            }
             if (FuncData?.embeds) {
                 embeds = FuncData.embeds;
             }
@@ -584,6 +588,7 @@ const Interpreter = async (
                     embeds: embeds,
                     files: attachments,
                     components: components,
+                    flags,
                     allowedMentions: {
                         parse: allowedMentions,
                         repliedUser: reply?.user || false,

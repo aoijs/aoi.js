@@ -371,10 +371,11 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     let reactions = [];
     const embeds = [];
     const components = [];
+    const flags = [];
 
     let reply = {
         message: undefined,
-        mention: false
+        mention: true
     };
 
     let edits = {
@@ -422,6 +423,10 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             else if (parts.includes("")) allowedMentions.parse = [];
             else allowedMentions.parse = [...parts];
         }
+        else if (Checker(part, "flags")) {
+            const parts = part.split(":")[1].split("}")[0].split(",");
+            flags.push(parts.map(x => Discord.MessageFlags[x.trim()]));
+        }
     }
 
     if (!embeds.length) send = false;
@@ -435,6 +440,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
             files,
             allowedMentions,
+            flags,
             options: {
                 reply,
                 reactions: reactions.length ? reactions : undefined,
