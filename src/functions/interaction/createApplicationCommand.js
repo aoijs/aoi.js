@@ -6,12 +6,12 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [guildID, name, description, defaultPermission = "true", dmPermissions = "true", type = "slash", ...opts] = data.inside.splits;
+    let [guildID, name, description, defaultPermission = "true", dmPermission = "true", type = "slash", ...opts] = data.inside.splits;
     name = name.addBrackets();
     let options;
     let appData;
 
-    if (dmPermissions != "true" && dmPermissions != "false") return d.aoiError.fnError(d, "custom", {}, "dmPermissions expects to be boolean");
+    if (dmPermission != "true" && dmPermission != "false") return d.aoiError.fnError(d, "custom", {}, "dmPermission expects to be boolean");
     if (defaultPermission != "true" && defaultPermission != "false") return d.aoiError.fnError(d, "custom", {}, "defaultPermission expects to be boolean");
 
     const guild = guildID === "global" ? undefined : guildID === "custom" ? "custom" : await d.util.getGuild(d, guildID);
@@ -45,7 +45,7 @@ module.exports = async (d) => {
                 type,
                 description: description?.addBrackets(),
                 defaultMemberPermission: defaultPermission === "true",
-                dmPermissions: dmPermissions === "true",
+                dmPermission: dmPermission === "true",
                 options
             },
             guildID: guild?.id

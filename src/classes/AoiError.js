@@ -85,6 +85,7 @@ class AoiError {
                 content: options?.toString()?.trim() === "" ? " " : options?.toString()
             };
         }
+
         let msg;
         if (extraOptions.interaction) {
             if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0) return;
@@ -152,6 +153,7 @@ class AoiError {
         if (extraOptions.deleteCommand) {
             d.message.delete();
         }
+
         return msg;
     }
 
