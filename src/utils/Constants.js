@@ -252,7 +252,6 @@ const Permissions = {
     viewguildinsights: PermissionsBitField["Flags"].ViewGuildInsights,
     connect: PermissionsBitField["Flags"].Connect,
     speak: PermissionsBitField["Flags"].Speak,
-    mute: PermissionsBitField["Flags"].MuteMembers,
     mutemembers: PermissionsBitField["Flags"].MuteMembers,
     deafen: PermissionsBitField["Flags"].DeafenMembers,
     deafenmembers: PermissionsBitField["Flags"].MuteMembers,
