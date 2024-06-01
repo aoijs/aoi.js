@@ -3,7 +3,7 @@ const {Command} = require("./Commands");
 const {FunctionManager} = require("./Functions");
 
 const [major] = process.version.replace("v", "").split(".");
-if (isNaN(Number(major)) || Number(major) < 25) {
+if (isNaN(Number(major)) || Number(major) < 20) {
     throw new TypeError("node.js version 20 or higher is required to run aoi.js.");
 }
 
