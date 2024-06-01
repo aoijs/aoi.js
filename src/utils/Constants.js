@@ -262,7 +262,6 @@ const Permissions = {
     managenicknames: PermissionsBitField["Flags"].ManageNicknames,
     manageroles: PermissionsBitField["Flags"].ManageRoles,
     managewebhooks: PermissionsBitField["Flags"].ManageWebhooks,
-    manageemojisandstickers: PermissionsBitField["Flags"].ManageEmojisAndStickers,
     manageguildexpressions: PermissionsBitField["Flags"].ManageGuildExpressions,
     requesttospeak: PermissionsBitField["Flags"].RequestToSpeak,
     manageevents: PermissionsBitField["Flags"].ManageEvents,
