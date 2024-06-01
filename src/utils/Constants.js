@@ -230,7 +230,6 @@ const SlashOptionTypes = {
 };
 
 const Permissions = {
-    createinvite: PermissionsBitField["Flags"].CreateInstantInvite,
     createinstantinvite: PermissionsBitField["Flags"].CreateInstantInvite,
     kickmembers: PermissionsBitField["Flags"].KickMembers,
     banmembers: PermissionsBitField["Flags"].BanMembers,
