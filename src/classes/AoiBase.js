@@ -186,10 +186,10 @@ class BaseClient extends Client {
           "shardReconnecting",
           "shardResume",
         ].includes(event)
-          ? require(`../shardhandler/${event}.js`)
+          ? require(`../sharding/${event}.js`)
           : Array.isArray(file)
-            ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
-            : require(`../handler/${filedir}/${file}.js`);
+            ? file.map((x) => require(`../events/${filedir}/${x}.js`))
+            : require(`../events/${filedir}/${file}.js`);
 
         this.on(eventName, (...args) => {
           if (Array.isArray(func)) func.forEach((x) => x(...args, this));
