@@ -1,11 +1,11 @@
 const Discord = require("discord.js");
 const chalk = require("chalk");
 const SlashOption = require("./slashOption.js");
-const { mustEscape } = require("../utils/helpers/mustEscape.js");
+const { mustEscape } = require("../core/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
-const { CreateObjectAST } = require("../utils/helpers/functions.js");
+const { CreateObjectAST } = require("../core/functions.js");
 const { deprecate: deprecation } = require("util");
-const { Time } = require("../utils/helpers/customParser.js");
+const { Time } = require("../core/Time.js");
 
 let executed = {};
 function deprecate(func, newfunc) {

@@ -2,10 +2,10 @@ const Discord = require("discord.js");
 const { CustomFunction } = require("../classes/Functions.js");
 const AoiError = require("../classes/AoiError.js");
 const Util = require("../classes/Util.js");
-const IF = require("../utils/helpers/if.js");
-const { Time } = require("../utils/helpers/customParser.js");
-const { CheckCondition } = require("../utils/helpers/checkCondition.js");
-const { mustEscape } = require("../utils/helpers/mustEscape.js");
+const IF = require("./if.js");
+const { Time } = require("./Time.js");
+const { CheckCondition } = require("./CheckCondition.js");
+const { mustEscape } = require("./mustEscape.js");
 const { Command } = require("../classes/Commands.js");
 const PATH = require("path");
 

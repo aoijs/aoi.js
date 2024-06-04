@@ -297,5 +297,5 @@ class Client extends BaseClient {
     }
 }
 
-require("../utils/helpers/prototypes.js");
+require("../core/prototypes.js");
 module.exports = Client;
