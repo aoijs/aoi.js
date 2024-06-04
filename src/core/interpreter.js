@@ -3,23 +3,11 @@ const { CustomFunction } = require("../classes/Functions.js");
 const AoiError = require("../classes/AoiError.js");
 const Util = require("../classes/Util.js");
 const IF = require("../utils/helpers/if.js");
-//Helper of aoijs
 const { Time } = require("../utils/helpers/customParser.js");
 const { CheckCondition } = require("../utils/helpers/checkCondition.js");
 const { mustEscape } = require("../utils/helpers/mustEscape.js");
 const { Command } = require("../classes/Commands.js");
 const PATH = require("path");
-const { deprecate } = require("util");
-const chalk = require("chalk");
-
-// Deprecate error for $if: old
-let isDeprecated = false;
-function deprecateOldIfUsage() {
-    if (!isDeprecated) {
-        deprecate(() => { }, `${chalk.grey("$if: 'old'")} is deprecated, use ${chalk.cyan("$if")} instead`)();
-        isDeprecated = true;
-    }
-}
 
 /**
  * @param  {import('../classes/AoiClient.js')} client
@@ -129,7 +117,6 @@ const Interpreter = async (
             functions: command.functions,
         };
         if (command["$if"] === "old") {
-            deprecateOldIfUsage();
             code = (
                 await IF({
                     client,
