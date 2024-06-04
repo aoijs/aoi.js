@@ -1,6 +1,6 @@
 const { ApplicationCommandType } = require("discord.js");
 const { SlashTypes } = require("../../utils/InteractionConstants.js");
-const parser = require("../../handler/slashCommandOptionsParser");
+const parser = require("../../events/slashCommandOptionsParser");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);

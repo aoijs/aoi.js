@@ -103,9 +103,9 @@ class BaseClient extends Client {
     Object.defineProperty(this, "statuses", { value: new Group() });
 
     this.on("ready", async () => {
-      await require("../handler/NonIntents/ready.js")(this);
-      await require("../handler/status.js")(this.statuses, this);
-      await require("../handler/AoiStart.js")(this);
+      await require("../events/NonIntents/ready.js")(this);
+      await require("../events/status.js")(this.statuses, this);
+      await require("../events/AoiStart.js")(this);
     });
     this.login(options.token);
   }

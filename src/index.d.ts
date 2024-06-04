@@ -3,7 +3,7 @@ import { Group, LimitGroup, SuperSet } from "@akarui/structures";
 import { Group as Collection } from "@akarui/structures";
 import { AllEvents } from "./utils/Constants";
 import { Constants } from "./utils/Constants";
-import { parsers } from "./handler/parsers";
+import { parsers } from "./events/parsers";
 
 declare module "aoi.js" {
     import { EventEmitter } from "events";

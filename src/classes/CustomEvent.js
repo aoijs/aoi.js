@@ -1,4 +1,4 @@
-const EventExecuter = require("../handler/eventExecuter.js");
+const EventExecuter = require("../events/eventExecuter.js");
 const {EventEmitter} = require("events");
 const { Group : Collection } = require( "@akarui/structures" );
 

@@ -282,7 +282,7 @@ module.exports = {
         timeoutData.__timeoutName__ = name;
         timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
-        require("../../handler/Custom/timeout.js")(d, duration, timeoutData, false);
+        require("../../events/Custom/timeout.js")(d, duration, timeoutData, false);
         return timeoutData.__id__;
     },
     CreateObjectAST(parser) {
