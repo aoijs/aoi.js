@@ -20,20 +20,20 @@ module.exports = async () => {
 
         if (!isDevVersion && json.version !== latestVersion) {
             AoiError.createConsoleMessage(
-                [{ text: 'AoiWarning: aoi.js is outdated! Update with "npm install aoi.js@latest".', textColor: 'red' }],
+                [{ text: 'Outdated version detected, update with "npm install aoi.js@latest"', textColor: 'red' }],
                 'white',
                 { text: 'AoiWarning', textColor: 'yellow' }
             );
         } else if (isDevVersion) {
             AoiError.createConsoleMessage(
-                [{ text: 'AoiWarning: You are currently on a development version.', textColor: 'yellow' }],
+                [{ text: `Unknown version detected, currently on ${json.version} version`, textColor: 'red' }],
                 'white',
                 { text: 'AoiWarning', textColor: 'yellow' }
             );
         }
     } catch (error) {
         AoiError.createConsoleMessage(
-            [{ text: `AoiWarning: Failed to check for updates: ${error.message}`, textColor: 'white' }],
+            [{ text: `Failed to check for updates: ${error.message}`, textColor: 'red' }],
             'red',
             { text: 'AoiWarning', textColor: 'yellow' }
         );
