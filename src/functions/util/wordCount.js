@@ -4,7 +4,7 @@ module.exports = async d => {
   const [text, find] = data.inside.splits;
 
   data.result = find
-    ? (text.split(find).length - 1) * find.split(/\s+/).length
+    ? text.split(/\s+/).filter(x => x === find ).length
     : text.split(/\s+/).length;
 
   return {
