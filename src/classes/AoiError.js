@@ -1,7 +1,7 @@
 const Util = require("./Util.js");
 const chalk = require("chalk");
 const { ComponentParser, EmbedParser, FileParser } = Util.parsers;
-const { Time } = require("../utils/helpers/customParser.js");
+const { Time } = require("../core/Time.js");
 const { BaseInteraction } = require("discord.js");
 
 class AoiError {

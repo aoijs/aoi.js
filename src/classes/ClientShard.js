@@ -20,7 +20,7 @@ class ClientShard extends ShardingManager {
 
   onShardCreate() {
     this.on("shardCreate", async (shard) =>
-      require("../shardhandler/shardCreate.js")(shard, this.cmd),
+      require("../sharding/shardCreate.js")(shard, this.cmd),
     );
   }
 }

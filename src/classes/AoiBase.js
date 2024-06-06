@@ -103,9 +103,9 @@ class BaseClient extends Client {
     Object.defineProperty(this, "statuses", { value: new Group() });
 
     this.on("ready", async () => {
-      await require("../handler/NonIntents/ready.js")(this);
-      await require("../handler/status.js")(this.statuses, this);
-      await require("../handler/AoiStart.js")(this);
+      await require("../events/NonIntents/ready.js")(this);
+      await require("../events/status.js")(this.statuses, this);
+      await require("../events/AoiStart.js")(this);
     });
     this.login(options.token);
   }
@@ -186,10 +186,10 @@ class BaseClient extends Client {
           "shardReconnecting",
           "shardResume",
         ].includes(event)
-          ? require(`../shardhandler/${event}.js`)
+          ? require(`../sharding/${event}.js`)
           : Array.isArray(file)
-            ? file.map((x) => require(`../handler/${filedir}/${x}.js`))
-            : require(`../handler/${filedir}/${file}.js`);
+            ? file.map((x) => require(`../events/${filedir}/${x}.js`))
+            : require(`../events/${filedir}/${file}.js`);
 
         this.on(eventName, (...args) => {
           if (Array.isArray(func)) func.forEach((x) => x(...args, this));

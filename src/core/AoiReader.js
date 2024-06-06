@@ -7,10 +7,11 @@ const grp = new Group();
 
 const functions = fs
     .readdirSync(path.join(__dirname, "../functions"))
-    .flatMap((dir) => {
-        const files = fs.readdirSync(path.join(__dirname, `../functions/${dir}`));
-        maps[dir] = files.map((file) => file.split(".js")[0]);
-        return files.map((file) => "$" + file.split(".js")[0]);
+    .filter((file) => file.endsWith(".js"))  // Ensure only .js files are processed
+    .map((file) => {
+        const functionName = file.split(".js")[0];
+        maps[functionName] = functionName;
+        return "$" + functionName;
     });
 
 module.exports = { functions, maps, grp };
