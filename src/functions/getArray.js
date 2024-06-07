@@ -3,18 +3,11 @@ module.exports = async (d) => {
     if (data.err) return d.error(data.err);
 
     const [name] = data.inside.splits;
-    const array = d.data.arrays[name];
-    let ArrayResult;
+    const array = d.data.arrays?.[name];
 
-    if (!d.data.arrays?.[name]) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist.");
+    if (!array) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist.");
     
-    if (array.length === 0 || (array.length === 1 && array[0] === '')) {
-        ArrayResult = "[]";
-    } else {
-        ArrayResult = JSON.stringify(array);
-    }
-
-    data.result = ArrayResult;
+    data.result = (array.length === 0 || (array.length === 1 && array[0] === '')) ? "[]" : JSON.stringify(array);
 
     return {
         code: d.util.setCode(data)
