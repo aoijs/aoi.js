@@ -1,10 +1,12 @@
 {
+	"extends": "../../tsconfig.json",
+	"include": ["./src/**/*.ts"],
 	"compilerOptions": {
 		/* Visit https://aka.ms/tsconfig to read more about this file */
 
 		/* Projects */
 		"incremental": true /* Save .tsbuildinfo files to allow for incremental compilation of projects. */,
-		"composite": false /* Enable constraints that allow a TypeScript project to be used with project references. */,
+		"composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */,
 		"tsBuildInfoFile": "./.tsbuildinfo" /* Specify the path to .tsbuildinfo incremental compilation file. */,
 		// "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects. */
 		// "disableSolutionSearching": true,                 /* Opt a project out of multi-project reference checking when editing. */
@@ -25,30 +27,30 @@
 		// "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
 
 		/* Modules */
-		"module": "commonjs" /* Specify what module code is generated. */,
-		// "rootDir": "./lib" /* Specify the root folder within your source files. */,
-		"moduleResolution": "Node10" /* Specify how TypeScript looks up a file from a given module specifier. */,
+		"module": "CommonJS" /* Specify what module code is generated. */,
+		"moduleResolution": "node10" /* Specify how TypeScript looks up a file from a given module specifier. */,
 		"baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
 		"paths": {
-			"@aoirepo/*": ["lib/*"],
-			"@bin/*": ["bin/*"]
+			"@aoi.js/*": ["./src/*"],
+			"@aoirepo/*": ["../../*"]
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+		"rootDir": "./src" /* Specify the root folder within your source files. */,
 		// "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
 		// "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
 		// "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
 		// "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
-		"allowImportingTsExtensions": true /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */,
+		"allowImportingTsExtensions": false,               /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
 		// "resolvePackageJsonExports": true,                /* Use the package.json 'exports' field when resolving package imports. */
 		// "resolvePackageJsonImports": true,                /* Use the package.json 'imports' field when resolving imports. */
 		// "customConditions": [],                           /* Conditions to set in addition to the resolver-specific defaults when resolving imports. */
-		"resolveJsonModule": true /* Enable importing .json files. */,
+		// "resolveJsonModule": true,                        /* Enable importing .json files. */
 		// "allowArbitraryExtensions": true,                 /* Enable importing files with any extension, provided a declaration file is present. */
 		// "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
 
 		/* JavaScript Support */
-		"allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-		// "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+		"allowJs": false,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+		"checkJs": false,                                  /* Enable error reporting in type-checked JavaScript files. */
 		// "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
 		/* Emit */
@@ -58,10 +60,10 @@
 		// "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
 		// "inlineSourceMap": true,                          /* Include sourcemap files inside the emitted JavaScript. */
 		// "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-		"outDir": "./dist" /* Specify an output folder for all emitted files. */,
+		"outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
 		// "removeComments": true,                           /* Disable emitting comments. */
-		"noEmit": true /* Disable emitting files from a compilation. */,
-		"importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
+		"noEmit": false,                                   /* Disable emitting files from a compilation. */
+		// "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
 		// "importsNotUsedAsValues": "remove",               /* Specify emit/checking behavior for imports that are only used for types. */
 		// "downlevelIteration": true,                       /* Emit more compliant, but verbose and less performant JavaScript for iteration. */
 		// "sourceRoot": "",                                 /* Specify the root path for debuggers to find the reference source code. */
@@ -73,15 +75,15 @@
 		// "noEmitHelpers": true,                            /* Disable generating custom helper functions like '__extends' in compiled output. */
 		// "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
 		// "preserveConstEnums": true,                       /* Disable erasing 'const enum' declarations in generated code. */
-		// "declarationDir": "./dist/types",                           /* Specify the output directory for generated declaration files. */
+		"declarationDir": "./dist/types",                           /* Specify the output directory for generated declaration files. */
 		// "preserveValueImports": true,                     /* Preserve unused imported values in the JavaScript output that would otherwise be removed. */
 
 		/* Interop Constraints */
 		// "isolatedModules": true,                          /* Ensure that each file can be safely transpiled without relying on other imports. */
 		// "verbatimModuleSyntax": true,                     /* Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting. */
-		"allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
+		// "allowSyntheticDefaultImports": true,             /* Allow 'import x from y' when a module doesn't have a default export. */
 		"esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-		"preserveSymlinks": true /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */,
+		// "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
 		"forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
 		/* Type Checking */
@@ -106,13 +108,8 @@
 		// "allowUnreachableCode": true,                     /* Disable error reporting for unreachable code. */
 
 		/* Completeness */
-		"skipDefaultLibCheck": true /* Skip type checking .d.ts files that are included with TypeScript. */,
+		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
-	"references": [
-		{ "path": "./lib/aoi.js/" },
-		{ "path": "./lib/structures/" },
-		{ "path": "./lib/aoi.db/" }
-	],
-	"exclude": ["node_modules", "coverage"]
+	"exclude": ["coverage","node_modules"]
 }

@@ -20,7 +20,7 @@ const compat = new FlatCompat({
 export default [
 	// jsdoc.configs['flat/recommended'],
 	{ files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
-	
+
 	...compat.extends('xo-typescript'),
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	...tseslint.configs.stylisticTypeChecked,
@@ -28,6 +28,26 @@ export default [
 		// enable object curly spacing
 		rules: {
 			'@typescript-eslint/object-curly-spacing': ['error', 'always'],
+			'@typescript-eslint/consistent-type-definitions': [
+				'error',
+				'interface',
+			],
+			'@typescript-eslint/naming-convention': [
+				'error',
+				{
+					selector: 'variable',
+					format: ['camelCase'],
+					leadingUnderscore: 'allow',
+				},
+				{
+					selector: 'classProperty',
+					format: [''],
+					leadingUnderscore: 'allow',
+					trailingUnderscore: 'allow',
+				},
+				{ selector: 'parameter', format: ['camelCase'] },
+				{ selector: 'typeLike', format: ['PascalCase'] },
+			],
 		},
 	},
 	{
@@ -45,8 +65,7 @@ export default [
 			tsdoc,
 		},
 		rules: {
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'tsdoc/syntax': 'warn',
+			'tsdoc/syntax': 'error',
 		},
 	},
 	{
