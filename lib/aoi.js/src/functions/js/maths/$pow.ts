@@ -54,7 +54,3 @@ const pow = new AoiJSFunction()
 	});
 
 export const $pow = pow.build();
-
-
-	
-				
