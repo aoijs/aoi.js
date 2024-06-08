@@ -14,7 +14,7 @@ module.exports = async (d) => {
   const message = await d.util.getMessage(channel, messageID);
   if (!message)
     return d.aoiError.fnError(d, "message", {}, { inside: data.inside });
-  if (!isNaN(index))
+  if (isNaN(index))
     return d.aoiError.fnError(d, "custom", {}, "Invalid Index");
   if (!content)
     return d.aoiError.fnError(d, "custom", {}, "No Content Provided");
