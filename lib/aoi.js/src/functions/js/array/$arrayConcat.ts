@@ -62,7 +62,7 @@ const arrayConcat = new AoiJSFunction()
 		currentScope.variables.push(name);
 		const parsedValues = values.map((v) => escapeVars(v));
 
-        const resultStirng = `const ${escapeVars(name)} = [...${parsedValues.join(', ...')}];`
+        const resultStirng = `const ${escapeVars(name)} = ${parsedValues[0]}.concat(${parsedValues.slice(1).join(',')}) ;`
 		const res = escapeResult(
             resultStirng
 		);
