@@ -33,7 +33,8 @@ const abs = new AoiJSFunction()
     }
     if (!numbers) throw new Error(`${data.name} requires at least 1 argument`);
     const abs = numbers.includes(TranspilerCustoms.FS) ||
-      numbers.includes(discord) ||
+     numbers.includes('__$DISCORD_DATA$__') ||
+ 
       numbers.includes(TranspilerCustoms.MFS)
         ? parseResult(numbers.trim())
         : Number(numbers);
