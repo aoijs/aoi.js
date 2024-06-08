@@ -1,18 +1,20 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
 import { StringObject, parseStringObject } from '../../../index.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
 	parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayCreate: FunctionData = {
-	name: '$arrayCreate',
-	brackets: true,
-	optional: false,
-	type: 'setter',
-	fields: [
+
+const arrayCreate = new AoiJSFunction()
+	.setName('$arrayCreate')
+	.setType('setter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'name',
 			type: 'string',
@@ -25,22 +27,19 @@ export const $arrayCreate: FunctionData = {
 			description: 'The values to create the array with',
 			required: true,
 		},
-	],
-	description: 'creates an array with the specified values',
-	default: ['void', 'void'],
-	returns: 'void',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
-        $arrayCreate[myNextArray;1;2;3]
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const [name, ...values] = data.splits;
+	],)
+	.setVersion('7.0.0')
+	.setDefault([])
+	.setReturns('void')
+	.setDescription('creates an array with the specified values')
+	.setExample(`$arrayCreate[myArray;hello;world;nya]
+        $arrayCreate[myNextArray;1;2;3]`);
+
+ arrayCreate.setCode((data: FuncData, scope: Scope[], thisArg) => {
+    const [name, ...values] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
-			currentScope.objects[name] &&
-            !currentScope.name.startsWith('$try_') &&
-            !currentScope.name.startsWith('$catch_')
+			currentScope.objects[name]
 		)
 			throw new TranspilerError(
 				`${data.name}: Variable ${name} already exists`,
@@ -57,14 +56,16 @@ export const $arrayCreate: FunctionData = {
 		currentScope.objects[name] = array;
 		currentScope.variables.push(name);
 
+        const resultStirng = `const ${escapeVars(name)} = ${array.solve()};`
 		const res = escapeResult(
-			`const ${escapeVars(name)} = ${array.solve()};`,
+            resultStirng
 		);
 		currentScope.update(res, data);
 
-		return {
-			code: '',
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayCreate);
+
+export const $arrayCreate = arrayCreate.build();
