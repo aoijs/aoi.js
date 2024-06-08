@@ -29,7 +29,7 @@ const arrayCreate = new AoiJSFunction()
 		},
 	],)
 	.setVersion('7.0.0')
-	.setDefault([])
+	.setDefault(["void", "void"])
 	.setReturns('void')
 	.setDescription('creates an array with the specified values')
 	.setExample(`$arrayCreate[myArray;hello;world;nya]
@@ -39,7 +39,9 @@ const arrayCreate = new AoiJSFunction()
     const [name, ...values] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
-			currentScope.objects[name]
+			currentScope.objects[name] &&
+			!currentScope.name.startsWith('$try_') &&
+            !currentScope.name.startsWith('$catch_')
 		)
 			throw new TranspilerError(
 				`${data.name}: Variable ${name} already exists`,

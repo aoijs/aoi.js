@@ -1,19 +1,24 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { Transpiler, conditionLexer, functions } from '../../../index.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
-	getFunctionList,
-	parseResult,
+    getFunctionList,
+    parseResult,
+	//parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayForEach: FunctionData = {
-	name: '$arrayForEach',
-	brackets: true,
-	optional: false,
-	type: 'scope',
-	fields: [
+import { conditionLexer, transpiler } from '@aoi.js/core/index.js';
+import functions from '@aoi.js/functions/index.js';
+
+const arrayForEach = new AoiJSFunction()
+	.setName('$arrayForEach')
+	.setType('scope')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'name',
 			type: 'string',
@@ -26,17 +31,16 @@ export const $arrayForEach: FunctionData = {
 			description: 'The code to execute',
 			required: true,
 		},
-	],
-	description: 'for each element in the array, execute the condition',
-	default: ['void', 'void'],
-	returns: 'void',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
-        $arrayForEach[myArray;$log[$env[array_element]]] // logs "hello", "world", "nya"
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const [name, ...values] = data.splits;
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('void')
+	.setDescription('for each element in the array, execute the condition')
+	.setExample(` $arrayCreate[myArray;hello;world;nya]
+        $arrayForEach[myArray;$log[$env[array_element]]] // logs "hello", "world", "nya"`);
+
+        arrayForEach.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const [name, ...values] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
 			!currentScope.variables.includes(name) &&
@@ -54,7 +58,7 @@ export const $arrayForEach: FunctionData = {
 		);
 		let executedCondition;
 		if (conditionFunctionList.length) {
-			executedCondition = Transpiler(condition, {
+			executedCondition = transpiler(condition, {
 				sendMessage: false,
 				scopeData: {
 					variables: currentScope.variables,
@@ -76,17 +80,18 @@ export const $arrayForEach: FunctionData = {
 
 		executedCondition = executedCondition.solve();
 
+        const resultStirng = `${escapeVars(name)}.forEach(async array_element => { ${parseResult(executedCondition)} })`
 		const res = escapeResult(
-			`${escapeVars(name)}.forEach(async array_element => {
-                ${parseResult(executedCondition)}
-            })`,
+			resultStirng
 		);
 
-		currentScope.update(res, data);
-		return {
-			code: res,
-			scope,
-			data,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+        data
+	};
+}, arrayForEach);
+
+export const $arrayForEach = arrayForEach.build();
+
+

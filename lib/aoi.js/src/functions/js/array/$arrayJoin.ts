@@ -1,13 +1,22 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
-import { escapeResult, escapeVars } from '../../../util/transpilerHelpers.js';
-export const $arrayJoin: FunctionData = {
-	name: '$arrayJoin',
-	brackets: true,
-	optional: false,
-	type: 'getter',
-	fields: [
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
+import {
+	escapeResult,
+	escapeVars,
+    //getFunctionList,
+   //parseResult,
+	//parseData,
+} from '../../../util/transpilerHelpers.js';
+
+const arrayJoin = new AoiJSFunction()
+	.setName('$arrayJoin')
+	.setType('getter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'array',
 			type: 'string',
@@ -15,24 +24,23 @@ export const $arrayJoin: FunctionData = {
 			required: true,
 		},
 		{
-			name: 'separator',
+			name: 'seperator',
 			type: 'string',
 			description: 'The separator to join the array with',
 			required: false,
 		},
-	],
-	description: 'Joins all elements of an array into a string.',
-	default: ['void', ', '],
-	returns: 'string',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", ","])
+	.setReturns('string')
+	.setDescription('Joins all elements of an array into a string.')
+	.setExample(` $arrayCreate[myArray;hello;world;nya]
         $arrayJoin[myArray] // returns hello, world, nya
     
-        $arrayJoin[myArray; | ] // returns hello | world | nya
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
+        $arrayJoin[myArray; | ] // returns hello | world | nya`);
+
+        arrayJoin.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const currentScope = scope[scope.length - 1];
 		const [name, separator = ', '] = data.splits;
 
 		if (
@@ -44,12 +52,16 @@ export const $arrayJoin: FunctionData = {
 				`${data.name}: Array ${name} does not exist`,
 			);
 
-		const res = escapeResult(`${escapeVars(name)}.join(${separator})`);
+            const resultStirng = `${escapeVars(name)}.join(${separator})`
+		const res = escapeResult(resultStirng);
 		currentScope.update(res, data);
 
-		return {
-			code: res,
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayJoin);
+
+export const $arrayJoin = arrayJoin.build();
+
+

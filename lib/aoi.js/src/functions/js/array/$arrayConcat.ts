@@ -1,16 +1,20 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
+	//parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayConcat: FunctionData = {
-	name: '$arrayConcat',
-	brackets: true,
-	optional: false,
-	type: 'setter',
-	fields: [
+
+const arrayConcat = new AoiJSFunction()
+	.setName('$arrayConcat')
+	.setType('setter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'name',
 			type: 'string',
@@ -23,19 +27,18 @@ export const $arrayConcat: FunctionData = {
 			description: 'The arrays to concatenate',
 			required: true,
 		},
-	],
-	description: 'concatenates the specified values to the array',
-	default: ['void', 'void'],
-	returns: 'void',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('void')
+	.setDescription('concatenates the specified values to the array')
+	.setExample(`$arrayCreate[myArray;hello;world]
         $arrayCreate[myNextArray;nya]
 
-        $arrayConcat[myArray;myNextArray] // myArray is now ["hello", "world", "nya"]
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const [name, ...values] = data.splits;
+        $arrayConcat[myArray;myNextArray] // myArray is now ["hello", "world", "nya"]`);
+
+   arrayConcat.setCode((data: FuncData, scope: Scope[], thisArg) => {
+    const [name, ...values] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
 			currentScope.objects[name] &&
@@ -58,14 +61,17 @@ export const $arrayConcat: FunctionData = {
 
 		currentScope.variables.push(name);
 		const parsedValues = values.map((v) => escapeVars(v));
+
+        const resultStirng = `const ${escapeVars(name)} = [...${parsedValues.join(', ...')}];`
 		const res = escapeResult(
-			`const ${escapeVars(name)} = [...${parsedValues.join(', ...')}];`,
+            resultStirng
 		);
 		currentScope.update(res, data);
 
-		return {
-			code: '',
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayConcat);
+
+export const $arrayConcat = arrayConcat.build();

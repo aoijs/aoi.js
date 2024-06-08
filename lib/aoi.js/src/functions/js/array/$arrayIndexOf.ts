@@ -1,16 +1,22 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
+    //getFunctionList,
+    //parseResult,
+	//parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayIndexOf: FunctionData = {
-	name: '$arrayIndexOf',
-	brackets: true,
-	optional: false,
-	type: 'getter',
-	fields: [
+
+const arrayIndexOf = new AoiJSFunction()
+	.setName('$arrayIndexOf')
+	.setType('getter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'array',
 			type: 'string',
@@ -23,20 +29,18 @@ export const $arrayIndexOf: FunctionData = {
 			description: 'The value to check',
 			required: true,
 		},
-	],
-	description:
-        'Returns the index of the first occurrence of a value in an array, or 0 if it is not present.',
-	default: ['void', 'void'],
-	returns: 'number',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('number')
+	.setDescription('filters the array based on the condition')
+	.setExample(`$arrayCreate[myArray;hello;world;nya]
         $arrayIndexOf[myArray;hello] // returns 1
 
-        $arrayIndexOf[myArray;hi] // returns 0
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
+        $arrayIndexOf[myArray;hi] // returns 0`);
+
+        arrayIndexOf.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const currentScope = scope[scope.length - 1];
 		const [name, value] = data.splits;
 
 		if (
@@ -53,9 +57,12 @@ export const $arrayIndexOf: FunctionData = {
 		);
 		currentScope.update(res, data);
 
-		return {
-			code: res,
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayIndexOf);
+
+export const $arrayIndexOf = arrayIndexOf.build();
+
+
