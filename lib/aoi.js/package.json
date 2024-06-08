@@ -1,0 +1,93 @@
+{
+  "name": "aoi.js",
+  "version": "7.0.0-dev",
+  "description": "A next generation package to create Discord Bots with built-in string functions.",
+  "main": "./dist/cjs/index.js",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "browser": "./browser/index.js",
+  "scripts": {
+    "test": "node tests",
+    "start": "node index.js",
+    "build": "npx tsc -p tsconfig.esm.json && npx tsc -p tsconfig.cjs.json && npm run createpack",
+    "build:utils": "npx tsc -p tsconfig.utils.json && node ./utils/.interals/addpkgjson.js",
+    "createpack": "node src/pack.js",
+    "lint": "eslint . --ext .ts --fix ",
+    "buildStart": "npm run build && npm start",
+    "genmd": "node generators/readme.js",
+    "docgen": " npx typedoc --plugin typedoc-theme-hierarchy --plugin typedoc-plugin-mermaid --plugin typedoc-plugin-extras --footerLastModified --customCss ./packers/custom.css"
+  },
+  "contributors": [
+    "leref",
+    "USERSATOSHI"
+  ],
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.0.0",
+    "@types/js-beautify": "^1.14.3",
+    "@types/node": "^20.10.3",
+    "@types/uglify-js": "^3.17.1",
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "csso": "^5.0.5",
+    "eslint": "^8.57.0",
+    "eslint-config-xo-typescript": "^4.0.0",
+    "globals": "^15.0.0",
+    "js-beautify": "^1.14.11",
+    "typedoc": "^0.25.4",
+    "typedoc-github-wiki-theme": "^1.1.0",
+    "typedoc-plugin-extras": "^3.0.0",
+    "typedoc-plugin-markdown": "^3.17.1",
+    "typedoc-plugin-mermaid": "^1.10.0",
+    "typedoc-theme-hierarchy": "^4.1.2",
+    "typescript": "^5.4.4",
+    "typescript-eslint": "^7.5.0",
+    "uglify-js": "^3.17.4"
+  },
+  "type": "commonjs",
+  "keywords": [
+    "aoi.js",
+    "aoi.js-next",
+    "aoijs",
+    "aoi",
+    "typescript",
+    "api",
+    "bot",
+    "discord",
+    "discordbot"
+  ],
+  "engines": {
+    "node": ">=18.x"
+  },
+  "dependencies": {
+    "@akarui/structures": "^2.0.1",
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "cli-spinners": "^2.9.2",
+    "dotenv": "^16.3.1",
+    "ora": "^7.0.1",
+    "undici": "^5.28.2",
+    "ws": "^8.14.2",
+    "zeneth": "^0.0.1"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ]
+}

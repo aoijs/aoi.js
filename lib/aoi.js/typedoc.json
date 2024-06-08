@@ -1,0 +1,17 @@
+{
+    "entryPoints": [
+        "./src/index.ts"
+    ],
+    "out": "./docs",
+    "customCss": "./packers/custom.css",
+    "tsconfig": "./tsconfig.json",
+    "entryPointStrategy": "resolve",
+    "json": "docs/data.json",
+    "commentStyle": "all",
+    "jsDocCompatibility": true,
+    "includeVersion": true,
+    "categorizeByGroup": true,
+    "darkHighlightTheme": "material-theme-palenight",
+    "navigation": true,
+    "theme": "hierarchy"
+}

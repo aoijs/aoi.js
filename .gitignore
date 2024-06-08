@@ -16,3 +16,4 @@ plugins
 .DS_Store
 /dist
 ignore
+/lib/**/index.js
