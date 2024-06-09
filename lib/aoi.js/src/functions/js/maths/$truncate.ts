@@ -43,7 +43,7 @@ const truncate = new AoiJSFunction()
 				? parseResult(number.trim())
 				: Number(number);
 
-		truncate = `(Math.trunc(${truncate}))`;
+		truncate = thisArg.getResultString(() => Math.trunc('$0'), [truncate]);
 
 		const res = escapeMathResult(`(${truncate})`);
 		currentScope.update(res, data);
