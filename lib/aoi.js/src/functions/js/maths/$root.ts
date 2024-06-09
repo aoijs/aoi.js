@@ -25,7 +25,7 @@ const root = new AoiJSFunction()
 
 		$root[625;4;2] // returns 5
 	`)
-	.setCode((data, scope, thisArg) => {
+	root.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -79,6 +79,6 @@ thisArg.updateFunction(currentScope, nthRoot, [])
 			code: res,
 			scope,
 		};
-	});
+	},root);
 
 export const $root = root.build();
