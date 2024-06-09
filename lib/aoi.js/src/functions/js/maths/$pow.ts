@@ -23,7 +23,7 @@ const pow = new AoiJSFunction()
 		$pow[1;2] // returns 1
 		$pow[7;4;3] // returns 2401
 	`)
-	.setCode((data, scope, thisArg) => {
+	pow.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -51,6 +51,6 @@ const pow = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},pow);
 
 export const $pow = pow.build();
