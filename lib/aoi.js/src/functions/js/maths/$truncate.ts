@@ -22,7 +22,7 @@ const truncate = new AoiJSFunction()
 	.setExample(`
 		$truncate[1.22342] // returns 1
 	`)
-	.setCode((data, scope, thisArg) => {
+	truncate.setCode((data, scope, thisArg) => {
 		const number = data.inside ?? '';
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -52,7 +52,7 @@ const truncate = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},truncate);
 
 export const $truncate = truncate.build();
 	
