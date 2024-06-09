@@ -56,7 +56,9 @@ const round = new AoiJSFunction()
 				? parseResult(decimal.trim())
 				: Number(decimal);
 
-		round = `((${round}).toFixed(${rounddecimal}))`;
+	
+         thisArg.getResultString( () => (('$0').toFixed('$1')), [round, rounddecimal] )
+
 
 		const res = escapeMathResult(`(${round})`);
 		currentScope.update(res, data);
