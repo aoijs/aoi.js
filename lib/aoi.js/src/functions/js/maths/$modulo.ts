@@ -23,7 +23,7 @@ const modulo = new AoiJSFunction()
 		$modulo[1;2] // returns 1
 		$modulo[7;4;3] // returns 0
 	`)
-	.setCode((data, scope, thisArg) => {
+	modulo.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -51,7 +51,7 @@ const modulo = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},modulo);
 
 export const $modulo = modulo.build();
 
