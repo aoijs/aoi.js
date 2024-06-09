@@ -23,7 +23,7 @@ const divide = new AoiJSFunction()
     $divide[1;2] // returns 0.5
     $divide[1;2;3] // returns 0.16666666666666666
   `)
-  .setCode((data, scope, thisArg) => {
+  divide.setCode((data, scope, thisArg) => {
     const numbers = data.splits;
     const currentScope = scope[scope.length - 1];
     if (
@@ -51,6 +51,6 @@ const divide = new AoiJSFunction()
       code: res,
       scope,
     };
-  });
+  },divide);
 
 export const $divide = divide.build();
