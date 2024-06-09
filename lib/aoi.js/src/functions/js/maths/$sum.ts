@@ -23,7 +23,7 @@ const sum = new AoiJSFunction()
 		$sum[1;2] // returns 3
 		$sum[7;4;3] // returns 14
 	`)
-	.setCode((data, scope, thisArg) => {
+	sum.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -51,6 +51,6 @@ const sum = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},sum);
 
 export const $sum = sum.build();
