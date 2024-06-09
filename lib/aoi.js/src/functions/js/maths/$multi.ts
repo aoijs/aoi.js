@@ -23,7 +23,7 @@ const multi = new AoiJSFunction()
 		$multi[1;2] // returns 2
 		$multi[1;2;3] // returns 6
 	`)
-	.setCode((data, scope, thisArg) => {
+	multi.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -50,7 +50,7 @@ const multi = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},multi);
 
 export const $multi = multi.build();
 	
