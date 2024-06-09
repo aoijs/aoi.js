@@ -23,7 +23,7 @@ const sub = new AoiJSFunction()
 		$sub[1;2] // returns -1
 		$sub[7;4;3] // returns 0
 	`)
-	.setCode((data, scope, thisArg) => {
+	sub.setCode((data, scope, thisArg) => {
 		const numbers = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -51,7 +51,7 @@ const sub = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},sub);
 
 export const $sub = sub.build();
 
