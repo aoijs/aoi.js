@@ -63,7 +63,7 @@ thisArg.updateFunction(currentScope, nthRoot, [])
 			let ans = '';
 			let i = 2;
 			while (i <= root.length) {
-				ans = `nthRoot(${a}, ${b})`;
+				ans = thisArg.getResultString(() => nthRoot('$0','$1'), [ a, b])
 				i += 1;
 				a = ans;
 				b = root[i - 1];
