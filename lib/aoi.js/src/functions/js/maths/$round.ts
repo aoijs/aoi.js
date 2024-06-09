@@ -29,7 +29,7 @@ const round = new AoiJSFunction()
 		$round[1;2] // returns 1.00
 		$round[1.2;0] // returns 1
 	`)
-	.setCode((data, scope, thisArg) => {
+	round.setCode((data, scope, thisArg) => {
 		const [number, decimal = '0'] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -67,6 +67,6 @@ const round = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},round);
 
 export const $round = round.build();
