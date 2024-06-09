@@ -35,7 +35,7 @@ const arrayConcat = new AoiJSFunction()
 	.setExample(`$arrayCreate[myArray;hello;world]
         $arrayCreate[myNextArray;nya]
 
-        $arrayConcat[myArray;myNextArray] // myArray is now ["hello", "world", "nya"]`);
+        $arrayConcat[myconcatArray;myNextArray;myNextArray] // myArray is now ["hello", "world", "nya"]`);
 
    arrayConcat.setCode((data: FuncData, scope: Scope[], thisArg) => {
     const [name, ...values] = data.splits;
