@@ -88,7 +88,7 @@ const math = new AoiJSFunction()
 
 		$math[sin(1) + cos(1)] // returns 1.3817732906760363
 	`)
-	.setCode((data, scope, thisArg) => {
+	maths.setCode((data, scope, thisArg) => {
 		const numbers = data.inside;
 		const currentScope = scope[scope.length - 1];
 		if (
@@ -118,6 +118,6 @@ const math = new AoiJSFunction()
 			code: res,
 			scope,
 		};
-	});
+	},maths);
 
 export const $math = math.build();
