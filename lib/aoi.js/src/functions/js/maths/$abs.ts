@@ -21,7 +21,7 @@ const abs = new AoiJSFunction()
     $abs[1] // returns 1
     $abs[-1] // returns 1
   `)
-  .setCode((data, scope, thisArg) => {
+  abs.setCode((data, scope, thisArg) => {
     const numbers = data.inside;
     const currentScope = scope[scope.length - 1];
     if (
@@ -46,5 +46,5 @@ const abs = new AoiJSFunction()
       code: res,
       scope,
     };
-  });
+  },abs);
 export const $abs = abs.build();
