@@ -1,37 +1,44 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
-import { escapeResult, escapeVars } from '../../../util/transpilerHelpers.js';
-export const $arrayIncludes: FunctionData = {
-	name: '$arrayIncludes',
-	brackets: true,
-	optional: false,
-	type: 'getter',
-	fields: [
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
+import {
+	escapeResult,
+	escapeVars,
+    //getFunctionList,
+    //parseResult,
+	//parseData,
+} from '../../../util/transpilerHelpers.js';
+
+const arrayIncludes = new AoiJSFunction()
+	.setName('$arrayIncludes')
+	.setType('scope')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'array',
 			type: 'string',
-			description: 'The name of the array',
+			description: 'The value to check',
 			required: true,
 		},
 		{
 			name: 'value',
 			type: 'string',
-			description: 'The value to check',
+			description: 'The code to execute',
 			required: true,
 		},
-	],
-	description: 'Checks if array includes value',
-	default: ['void', 'void'],
-	returns: 'boolean',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('boolean')
+	.setDescription(`$arrayCreate[myArray;hello;world;nya]
         $arrayIncludes[myArray;hello] // returns true
-        $arrayIncludes[myArray;hi] // returns false
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
+        $arrayIncludes[myArray;hi] // returns false`);
+
+        arrayIncludes.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const currentScope = scope[scope.length - 1];
 		const [name, value] = data.splits;
 
 		if (
@@ -46,9 +53,12 @@ export const $arrayIncludes: FunctionData = {
 		const res = escapeResult(`${escapeVars(name)}.includes(${value})`);
 		currentScope.update(res, data);
 
-		return {
-			code: res,
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayIncludes);
+
+export const $arrayIncludes = arrayIncludes.build();
+
+

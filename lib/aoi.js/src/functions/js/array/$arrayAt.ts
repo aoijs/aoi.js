@@ -1,16 +1,20 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
+	//parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayAt: FunctionData = {
-	name: '$arrayAt',
-	brackets: true,
-	optional: false,
-	type: 'getter',
-	fields: [
+
+const arrayAt = new AoiJSFunction()
+	.setName('$arrayAt')
+	.setType('getter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'name',
 			type: 'string',
@@ -23,19 +27,18 @@ export const $arrayAt: FunctionData = {
 			description: 'The index of the array',
 			required: true,
 		},
-	],
-	description: 'returns the value of the array at the specified index',
-	default: ['void', 'void'],
-	returns: 'any',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('any')
+	.setDescription('returns the value of the array at the specified index')
+	.setExample(`$arrayCreate[myArray;hello;world;nya]
         $arrayAt[myArray;1] // returns "hello"
         $arrayAt[myArray;2] // returns "world"
-        $arrayAt[myArray;-1] // returns "nya"
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const [name, index] = data.splits;
+        $arrayAt[myArray;-1] // returns "nya"`);
+
+    arrayAt.setCode((data: FuncData, scope: Scope[], thisArg) => {
+        const [name, index] = data.splits;
 		const currentScope = scope[scope.length - 1];
 		if (
 			!currentScope.variables.includes(name) &&
@@ -54,12 +57,14 @@ export const $arrayAt: FunctionData = {
 		)
 			throw new TranspilerError(`${data.name}: Index must be a number`);
 
-		const res = escapeResult(`${escapeVars(name)}?.at(${parsedIndex})`);
+            const resultStirng = `${escapeVars(name)}?.at(${parsedIndex})`
+		const res = escapeResult(resultStirng);
 		currentScope.update(res, data);
 
-		return {
-			code: res,
-			scope,
-		};
-	},
-};
+	return {
+		code: res,
+		scope,
+	};
+}, arrayAt);
+
+export const $arrayAt = arrayAt.build();

@@ -1,30 +1,38 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
-import { escapeResult, escapeVars } from '../../../util/transpilerHelpers.js';
-export const $arrayLength: FunctionData = {
-	name: '$arrayLength',
-	brackets: true,
-	optional: false,
-	type: 'getter',
-	fields: [
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
+import {
+	escapeResult,
+	escapeVars,
+    //getFunctionList,
+    //parseResult,
+	//parseData,
+} from '../../../util/transpilerHelpers.js';
+
+const arrayLength = new AoiJSFunction()
+	.setName('$arrayLength')
+	.setType('scope_getter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'array',
 			type: 'string',
 			description: 'The name of the array',
 			required: true,
 		},
-	],
-	description: 'Returns the length of an array.',
-	default: ['void'],
-	returns: 'number',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;hello;world;nya]
-        $arrayLength[myArray] // returns 3
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('number')
+	.setDescription('Returns the length of an array')
+	.setExample(`$arrayCreate[myArray;hello;world;nya]
+        $arrayLength[myArray] // returns 3`);
+
+        arrayLength.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const currentScope = scope[scope.length - 1];
 		const name = data.inside!;
 
 		if (
@@ -36,11 +44,16 @@ export const $arrayLength: FunctionData = {
 				`${data.name}: Array ${name} does not exist`,
 			);
 
-		const res = escapeResult(`${escapeVars(name)}.length`);
+            const resultStirng = `${escapeVars(name)}.length`
+		const res = escapeResult(resultStirng);
 		currentScope.update(res, data);
-		return {
-			code: res,
-			scope,
-		};
-	},
-};
+
+	return {
+		code: res,
+		scope,
+	};
+}, arrayLength);
+
+export const $arrayLength = arrayLength.build();
+
+

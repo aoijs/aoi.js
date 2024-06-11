@@ -1,19 +1,24 @@
+import AoiJSFunction from '../../../structures/AoiJSFunction.js';
 import { TranspilerError } from '../../../core/error.js';
 import type Scope from '../../../core/structs/Scope.js';
-import { Transpiler, conditionLexer, functions } from '../../../index.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
+//import { StringObject, parseStringObject } from '../../../index.js';
+import { type FuncData } from '../../../typings/interfaces.js';
 import {
 	escapeResult,
 	escapeVars,
-	getFunctionList,
-	parseResult,
+    getFunctionList,
+    parseResult,
+	//parseData,
 } from '../../../util/transpilerHelpers.js';
-export const $arrayEvery: FunctionData = {
-	name: '$arrayEvery',
-	brackets: true,
-	optional: false,
-	type: 'scope_getter',
-	fields: [
+import { conditionLexer, transpiler } from '@aoi.js/core/index.js';
+import functions from '@aoi.js/functions/index.js';
+
+const arrayEvery = new AoiJSFunction()
+	.setName('$arrayEvery')
+	.setType('scope_getter')
+	.setBrackets(true)
+	.setOptional(false)
+	.setFields( [
 		{
 			name: 'name',
 			type: 'string',
@@ -26,68 +31,69 @@ export const $arrayEvery: FunctionData = {
 			description: 'The query to check',
 			required: true,
 		},
-	],
-	description: 'checks if every element in the array passes the test',
-	default: ['void', 'void'],
-	returns: 'boolean',
-	version: '7.0.0',
-	example: `
-        $arrayCreate[myArray;1;2;3;4;5]
+	],)
+	.setVersion('7.0.0')
+	.setDefault(["void", "void"])
+	.setReturns('boolean')
+	.setDescription('checks if every element in the array passes the test')
+	.setExample(`$arrayCreate[myArray;1;2;3;4;5]
         $arrayEvery[myArray;$env[array_element]<=;5] // returns true
-        $arrayEvery[myArray;$env[array_element]>=;5] // returns false
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const [name, ...values] = data.splits;
-		const currentScope = scope[scope.length - 1];
-		if (
-			!currentScope.variables.includes(name) &&
-            !currentScope.name.startsWith('$try_') &&
-            !currentScope.name.startsWith('$catch_')
-		)
-			throw new TranspilerError(
-				`${data.name}: Variable ${name} does not exists`,
-			);
+        $arrayEvery[myArray;$env[array_element]>=;5] // returns false`);
 
-		const condition = values.join(';');
-		const conditionFunctionList = getFunctionList(
-			condition,
-			Object.keys(functions),
-		);
-		let executedCondition;
-		if (conditionFunctionList.length) {
-			executedCondition = Transpiler(condition, {
-				sendMessage: false,
-				scopeData: {
-					variables: currentScope.variables,
-					name: currentScope.name,
-					objects: currentScope.objects,
-					env: [...currentScope.env, 'array_element'],
-				},
-				client: currentScope.client,
-			});
-			currentScope.functions +=
-                executedCondition.scope[0].functions + '\n';
-			currentScope.packages += executedCondition.scope[0].packages;
-			executedCondition = executedCondition.code;
-		} else {
-			executedCondition = condition;
-		}
+        arrayEvery.setCode((data: FuncData, scope: Scope[], thisArg) => {
+            const [name, ...values] = data.splits;
+            const currentScope = scope[scope.length - 1];
+            if (
+                !currentScope.variables.includes(name) &&
+                !currentScope.name.startsWith('$try_') &&
+                !currentScope.name.startsWith('$catch_')
+            )
+                throw new TranspilerError(
+                    `${data.name}: Variable ${name} does not exists`,
+                );
+    
+            const condition = values.join(';');
+            const conditionFunctionList = getFunctionList(
+                condition,
+                Object.keys(functions),
+            );
+            let executedCondition;
+            if (conditionFunctionList.length) {
+                executedCondition = transpiler(condition, {
+                    sendMessage: false,
+                    scopeData: {
+                        variables: currentScope.variables,
+                        name: currentScope.name,
+                        objects: currentScope.objects,
+                        env: [...currentScope.env, 'array_element'],
+                    },
+                    client: currentScope.client,
+                });
+                currentScope.functions +=
+                    executedCondition.scope[0].functions + '\n';
+                currentScope.packages += executedCondition.scope[0].packages;
+                executedCondition = executedCondition.code;
+            } else {
+                executedCondition = condition;
+            }
+    
+            executedCondition = conditionLexer(executedCondition);
+    
+            executedCondition = executedCondition.solve();
 
-		executedCondition = conditionLexer(executedCondition);
+            const resultStirng = `${escapeVars(name)}.every(array_element => ${parseResult( executedCondition, )})`
+            const res = escapeResult(
+                resultStirng
+            );
+            currentScope.update(res, data);
 
-		executedCondition = executedCondition.solve();
+	return {
+		code: res,
+		scope,
+        data
+	};
+}, arrayEvery);
 
-		const res = escapeResult(
-			`${escapeVars(name)}.every(array_element => ${parseResult(
-				executedCondition,
-			)})`,
-		);
-		currentScope.update(res, data);
+export const $arrayEvery = arrayEvery.build();
 
-		return {
-			code: res,
-			scope,
-			data,
-		};
-	},
-};
+
