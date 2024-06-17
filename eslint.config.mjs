@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import jsdoc from 'eslint-plugin-jsdoc';
@@ -32,6 +33,7 @@ export default [
 				'error',
 				'interface',
 			],
+			'@typescript-eslint/parameter-properties': 'off',
 			'@typescript-eslint/naming-convention': [
 				'error',
 				{
@@ -41,7 +43,7 @@ export default [
 				},
 				{
 					selector: 'classProperty',
-					format: [''],
+					format: ['camelCase'],
 					leadingUnderscore: 'allow',
 					trailingUnderscore: 'allow',
 				},
