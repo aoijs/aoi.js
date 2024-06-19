@@ -50,15 +50,14 @@
     "discordbot"
   ],
   "dependencies": {
-    "@akarui/aoi.cli": "^2.1.2",
-    "@akarui/aoi.db": "^2.3.2",
-    "@akarui/structures": "^2.1.0",
+    "@aoijs/aoi.db": "^0.0.0",
+    "@aoijs/aoi.structures": "^1.0.0",
     "chalk": "^4.1.2",
-    "discord.js": "^14.15.2",
+    "discord.js": "^14.15.3",
     "undici": "^6.9.0"
   },
   "devDependencies": {
-    "discord-api-types": "^0.37.83",
+    "discord-api-types": "^0.37.90",
     "prettier": "^3.2.5"
   },
   "type": "commonjs",

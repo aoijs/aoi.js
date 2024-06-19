@@ -7,7 +7,7 @@ const grp = new Group();
 
 const functions = fs
     .readdirSync(path.join(__dirname, "../functions"))
-    .filter((file) => file.endsWith(".js"))  // Ensure only .js files are processed
+    .filter((file) => file.endsWith(".js"))
     .map((file) => {
         const functionName = file.split(".js")[0];
         maps[functionName] = functionName;
