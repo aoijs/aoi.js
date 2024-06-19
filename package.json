@@ -28,7 +28,7 @@
   "homepage": "https://aoi.js.org",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AkaruiDevelopment/aoi.js.git"
+    "url": "https://github.com/aoijs/aoi.js.git"
   },
   "keywords": [
     "aoi.js",
