@@ -1,4 +1,4 @@
-const aoidb = require("@akarui/aoi.db");
+const aoidb = require("@aoijs/aoi.db");
 const AoiError = require("../classes/AoiError.js");
 
 class Database {
@@ -39,7 +39,7 @@ class Database {
             },
           ],
           "white",
-          { text: "@akarui/aoi.db  ", textColor: "cyan" }
+          { text: "@aoijs/aoi.db  ", textColor: "cyan" }
         );
         this.ready = true;
         this.readyAt = Date.now();

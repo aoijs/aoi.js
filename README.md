@@ -38,7 +38,7 @@
 
 <div align = "center">
 
-**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/akaruidevelopment/aoi.js)**
+**[ Documentation ](https://aoi.js.org/)** | **[ Support Server ](https://discord.gg/HMUfMXDQsV)** | **[ NPM ](https://npmjs.org/package/aoi.js)** | **[ GitHub ](https://github.com/aoijs/aoi.js)**
 
 </div>
 
@@ -95,7 +95,7 @@ const client = new AoiClient({
     token: "Discord Bot Token",
     database: {
         type: "aoi.db",
-        db: require("@akarui/aoi.db"),
+        db: require("@aoijs/aoi.db"),
         dbType: "KeyValue",
         tables: ["main"],
         securityKey: "a-32-characters-long-string-here",
@@ -127,14 +127,14 @@ client.loadCommands("./commands/", true);
 ## Official Extensions
 
 <div align="center">
-  <a href="https://aoi.js.org/extensions/aoipanel">
-    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@akarui/aoi.panel">
+  <a href="https://aoi.js.org/extensions/aoijs/aoipanel/">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoipanel.png?raw=true" alt="@aoijs/aoi.panel">
   </a>
-  <a href="https://aoi.js.org/extensions/aoimusic">
-    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@akarui/aoi.music">
+  <a href="https://aoi.js.org/extensions/aoijs/aoimusic/">
+    <img width="100" src="https://github.com/aoijs/website/blob/master/assets/images/aoimusic.png?raw=true" alt="@aoijs/aoi.music">
   </a>
 </div>
 
 ## Contributing
 
-[Refer to contribution documentation for more information](https://github.com/AkaruiDevelopment/aoi.js/blob/v6/.github/CONTRIBUTING.md)
+[Refer to contribution documentation for more information](https://github.com/aoijs/aoi.js/blob/v6/.github/CONTRIBUTING.md)

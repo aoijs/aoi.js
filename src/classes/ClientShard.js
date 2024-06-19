@@ -1,5 +1,5 @@
 const { ShardingManager } = require("discord.js");
-const { Group : Collection } = require( "@akarui/structures" );
+const { Group : Collection } = require( "@aoijs/aoi.structures" );
 
 class ClientShard extends ShardingManager {
   constructor(file, options = {}, spawnOptions) {

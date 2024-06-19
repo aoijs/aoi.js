@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Group } = require("@akarui/structures");
+const { Group } = require("@aoijs/aoi.structures");
 const path = require("path");
 
 const maps = {};

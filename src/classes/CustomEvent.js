@@ -1,6 +1,6 @@
 const EventExecuter = require("../events/eventExecuter.js");
 const {EventEmitter} = require("events");
-const { Group : Collection } = require( "@akarui/structures" );
+const { Group : Collection } = require( "@aoijs/aoi.structures" );
 
 class CustomEvent extends EventEmitter {
     constructor(client) {
