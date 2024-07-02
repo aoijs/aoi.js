@@ -10,7 +10,7 @@ module.exports = async (d) => {
         "setTimeout",
         id,
     );
-    if (!timeout) return d.error(`AoiError: Timeout ID ${id} not found.`);
+    if (!timeout) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Timeout ID Provided In");
 
     if ((timeout.value.__duration__ - Date.now()) <= MAX_SAFE_INTEGER) {
         clearTimeout(timeout.value.__id__);
