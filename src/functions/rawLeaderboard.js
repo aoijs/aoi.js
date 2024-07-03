@@ -19,7 +19,7 @@ module.exports = async (d) => {
     let y = 0;
     let value;
     let content = [];
-    let all = await d.client.db.findMany(table, (data) => data.key.startsWith(variable.deleteBrackets() + "_") && data.key.split("_").length === type === "user" ? 3 : 2);
+    let all = await d.client.db.findMany(table, (data) => data.key.startsWith(variable.deleteBrackets() + "_") && data.key.split("_").length === (type === "user" ? 3 : 2));
     all = all.filter((x, i, y) => y.findIndex(e => e.key === x.key) === i);
 
     all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
