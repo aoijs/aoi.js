@@ -9,11 +9,11 @@ module.exports = async d =>
         return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
     }
 
-    data.result = d.arrays[ name ].push( ...elements );
+    d.arrays[ name ].push( ...elements );
     d.data.arrays = d.arrays;
     return {
       code: d.util.setCode(data),
       arrays: d.arrays,
-        data: d.data,
+      data: d.data,
     };
 };
