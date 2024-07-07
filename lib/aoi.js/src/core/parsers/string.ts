@@ -51,6 +51,10 @@ export function createStringAST(text: string) {
 		i++;
 	}
 
+	while (block.parent) {
+		block = block.parent;
+	}
+
 	return block;
 }
 

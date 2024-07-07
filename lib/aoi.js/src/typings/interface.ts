@@ -41,18 +41,19 @@ export interface IFunctionData {
 
 export interface ICodeFunctionData extends IFunctionData {
 	inside?: string;
-	parent?: IFunctionData;
+	parent?: ICodeFunctionData;
 	total: string;
-	splits: string[];
+	splits: () => string[];
 	funcs: ICodeFunctionData[];
-	parsed: string;
+	parsed?: string;
+	executed: string;
 }
 
 export interface IFunctionField {
 	name: string;
 	type: ReturnType;
 	required: boolean;
-	deascripton?: string;
+	description?: string;
 }
 
 type Snowflake = bigint;
@@ -66,4 +67,8 @@ export interface ICommandOptions {
 	reverseRead?: boolean;
 	executeAt?: 'guild' | 'dm' | 'both';
 	__path__: string;
+}
+
+export interface ITranspilerData {
+	bot: AoiClient;
 }

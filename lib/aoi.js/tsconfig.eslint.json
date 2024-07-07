@@ -13,7 +13,7 @@
 		"src/**/*.js",
 		"src/**/*.cjs",
 		"src/**/*.mjs",
-		"__tests__"
+		"tests"
 	],
 	"exclude": ["node_modules"]
 }

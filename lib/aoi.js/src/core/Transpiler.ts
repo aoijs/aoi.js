@@ -2,43 +2,130 @@ import {
 	type ITranspilerOptions,
 	type IFunctionData,
 	type IScopeData,
+	type ICodeFunctionData,
 } from '@aoi.js/typings/interface.js';
 import Scope from './builders/Scope.js';
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import type Command from '@aoi.js/classes/Command.js';
-import { FunctionType, ReturnType, TranspilerCustoms } from '@aoi.js/typings/enum.js';
+import {
+	FunctionType,
+	ReturnType,
+	TranspilerCustoms,
+} from '@aoi.js/typings/enum.js';
 import { TranspilerError } from './Error.js';
+import { parseString } from './parsers/string.js';
 
 const allFunctions: Record<string, IFunctionData> = {
+	$ping: {
+		name: '$ping',
+		brackets: false,
+		optional: false,
+		returns: ReturnType.Number,
+		code: (data, scopes) => {
+			return {
+				code: 'ping',
+				scope: scopes,
+			};
+		},
+		type: FunctionType.Getter,
+		fields: [],
+	},
+	$title: {
+		name: '$title',
+		brackets: true,
+		optional: false,
+		returns: ReturnType.String,
+		code: (data, scopes) => {
+			const text = data.executed;
+			return { 
+				code: 'title(' + parseString(text) + ')',
+				scope: scopes,
+			};
+		},
+		type: FunctionType.Setter,
+		fields: [
+			{
+				name: 'text',
+				type: ReturnType.String,
+				required: true,
+			},
+		],
+	},
+	$let: {
+		name: '$let',
+		brackets: true,
+		optional: false,
+		returns: ReturnType.Void,
+		code: (data, scopes) => {
+			const [name, value] = data.splits();
+			return {
+				code: `let ${name} = ${value};`,
+				scope: scopes,
+			};
+		},
+		type: FunctionType.Setter,
+		fields: [
+			{
+				name: 'text',
+				type: ReturnType.String,
+				required: true,
+			},
+		],
+	},
+	$wait: {
+		name: '$wait',
+		brackets: true,
+		optional: false,
+		returns: ReturnType.Void,
+		code: (data, scopes) => {
+			const [time] = data.splits();
+			return {
+				code: `await new Promise((r) => setTimeout(r, ${time}))`,
+				scope: scopes,
+			};
+		},
+		type: FunctionType.Setter,
+		fields: [
+			{
+				name: 'time',
+				type: ReturnType.Number,
+				required: true,
+			},
+		],
+	},
 };
 
 export default class Transpiler {
-	scopeData: IScopeData;
-	sendMessage: boolean;
-	minify: boolean;
-	customFunctions: Record<string, IFunctionData>;
-	code: string;
-	client: AoiClient;
+
+	static instance: Transpiler | undefined = undefined;
+
+	scopeData!: IScopeData;
+	sendMessage!: boolean;
+	minify!: boolean;
+	functions!: Record<string, IFunctionData>;
+	client!: AoiClient;
 
 	functionFinderRegex = /(\$[a-z]+)/gi;
 	mainFunction = '$AOIJSMAINFUNCTION';
 
-	constructor(code: string, options: ITranspilerOptions, client: AoiClient) {
+	constructor( options: ITranspilerOptions, client: AoiClient) {
+
+		if (Transpiler.instance) return Transpiler.instance;
 		this.scopeData = options.scopeData ?? {};
 		this.sendMessage = options.sendMessage;
 		this.minify = options.minify ?? true;
-		this.customFunctions = options.customFunctions;
-		this.code = code;
+		this.functions = { ...allFunctions, ...options.customFunctions };
 		this.client = client;
-	}
-	
+		Transpiler.instance = this;
 
-	_createGlobalScope() {
+	}
+
+	_createGlobalScope(ast: ICodeFunctionData) {
 		const scope = new Scope(
 			this.scopeData.name ?? 'global',
 			this.client,
 			undefined,
-			this.code,
+			ast,
 		);
 
 		scope.addVariables(this.scopeData.vars ?? []);
@@ -52,15 +139,16 @@ export default class Transpiler {
 		return scope;
 	}
 
-	getFunctionList(code: string, functions: string[]) {
-		const raws = this.functionFinderRegex.exec(code);
+	_getFunctionList(code: string, functions: string[]) {
+		// eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
+		const raws = code.match(this.functionFinderRegex);
 		if (!raws) return [];
 		const functionsThatExists = functions.filter((x) =>
 			code.toLowerCase().includes(x.toLowerCase()),
 		);
-	
+
 		const res = [];
-	
+
 		for (const raw of raws) {
 			const func = functionsThatExists.filter(
 				(x) => x.toLowerCase() === raw.toLowerCase().slice(0, x.length),
@@ -76,9 +164,23 @@ export default class Transpiler {
 		return res;
 	}
 
-	getFunctionData( code: string, func: string, functions: string[], command?: Command) {
+	_getFunctionData(
+		code: string,
+		func: string,
+		functions: string[],
+		command?: Command,
+	): ICodeFunctionData {
+		let funcD: IFunctionData = this.functions[func];
 
-		let funcD: IFunctionData = allFunctions[func];
+		const codeFuncData: ICodeFunctionData = {
+			...funcD,
+			total: code,
+			inside: undefined,
+			splits: () => [],
+			funcs: [],
+			parsed: '',
+			executed: '',
+		};
 
 		if (func === this.mainFunction) {
 			funcD = {
@@ -86,7 +188,12 @@ export default class Transpiler {
 				brackets: true,
 				optional: false,
 				returns: ReturnType.Void,
-				code: (() => { /** Empty */}) as unknown as IFunctionData['code'],
+				code: (data, scope) => {
+					return {
+						code: data.executed,
+						scope: scope,
+					};
+				},
 				type: FunctionType.Scope,
 				fields: [
 					{
@@ -105,11 +212,13 @@ export default class Transpiler {
 		const functionPosition = code.indexOf(func);
 		code = code.slice(functionPosition, code.length);
 
-		let leftCount = 0, rightCount = 0, i = 0;
+		let leftCount = 0,
+			rightCount = 0,
+			i = 0;
 
 		let rawTotal = '';
 
-		while ( i < code.length ) {
+		while (i < code.length) {
 			if (!funcD.brackets) break;
 
 			if (!funcD.optional && code[func.length] !== '[') {
@@ -123,7 +232,7 @@ export default class Transpiler {
 				});
 			}
 
-			if ( rightCount === leftCount && rightCount !== 0) break;
+			if (rightCount === leftCount && rightCount !== 0) break;
 
 			if (code[func.length] !== '[') break;
 
@@ -136,7 +245,10 @@ export default class Transpiler {
 
 		if (rawTotal === '') rawTotal = func;
 
-		if (!this.areBracketsBalanced(rawTotal) && func !== this.mainFunction) { 
+		if (
+			!this._areBracketsBalanced(rawTotal) &&
+			func !== this.mainFunction
+		) {
 			throw new TranspilerError('Brackets are not balanced', {
 				function: {
 					name: func,
@@ -144,33 +256,58 @@ export default class Transpiler {
 				},
 				cmd: command?.name,
 				path: command?.__path__,
-			}); 
+			});
 		}
 
 		const funcs = [];
-		let inside = rawTotal.endsWith(']') && rawTotal.startsWith(`${func}[`) ? rawTotal.slice(func.length + 1, rawTotal.length - 1) : undefined;
+		let inside =
+			rawTotal.endsWith(']') && rawTotal.startsWith(`${func}[`)
+				? rawTotal.slice(func.length + 1, rawTotal.length - 1)
+				: undefined;
 
-		const list = this.getFunctionList(inside ?? '', functions);
-
-		functions.splice(0, functions.length);
+		const list = this._getFunctionList(inside ?? '', functions);
+		functions.splice(0, list.length);
 
 		let newinside = inside ?? '';
-
+		let idx = 0;
 		while (list.length) {
 			const func = list.shift()!;
 
-			const funcData = this.getFunctionData(newinside, func, functions, command);
+			const funcData = this._getFunctionData(
+				newinside,
+				func,
+				list,
+				command,
+			);
 
 			inside = inside?.replace(
 				funcData.inside?.replaceAll(TranspilerCustoms.FSEP, ';') ?? '',
-				funcData.parsed,
-			); 
+				funcData.parsed!,
+			);
 
+			newinside = newinside.replace(
+				funcData.total,
+				`#FUNCTION_${idx++}#`,
+			);
 
+			funcData.parent = codeFuncData;
+
+			funcs.push(funcData);
 		}
+
+		const parsed = inside?.replaceAll(';', TranspilerCustoms.FSEP) ?? '';
+		const executed = newinside.replaceAll(TranspilerCustoms.FSEP, ';');
+		codeFuncData.total = rawTotal;
+		codeFuncData.inside = inside;
+		codeFuncData.splits = () => codeFuncData.executed.split(';');
+		codeFuncData.parsed = parsed;
+		codeFuncData.executed = executed;
+		codeFuncData.funcs = funcs;
+
+		return codeFuncData;
 	}
 
-	areBracketsBalanced(code: string) {
+	_areBracketsBalanced(code: string) {
 		const leftBracketRegex = /\[/g;
 		const rightBracketRegex = /\]/g;
 
@@ -179,4 +316,82 @@ export default class Transpiler {
 
 		return leftBrackets.length === rightBrackets.length;
 	}
+
+	_compile(ast: ICodeFunctionData, scopes: Scope[], reverse = false) {
+		if (reverse) {
+			ast.funcs = ast.funcs.reverse();
+		}
+
+		let i = 0;
+		while (i < ast.funcs.length) {
+			const node = ast.funcs[i];
+
+			if (
+				node.type === FunctionType.Scope ||
+				node.type === FunctionType.ScopeGetter
+			) {
+				const executed = node.code(node, scopes);
+				node.funcs = [];
+				if (node.parent) {
+					node.parent.executed = node.parent.executed.replace(
+						`#FUNCTION_${i}#`,
+						executed.code,
+					);
+				}
+
+				if (node.type === FunctionType.ScopeGetter) {
+					scopes.at(-1)!.content = scopes
+						.at(-1)!
+						.content.replace(`#FUNCTION_${i}#`, executed.code);
+					
+					scopes.at(-1)!.updateContentParts(`#FUNCTION_${i}#`, executed.code);
+				}
+			} else {
+				if (node.funcs.length) {
+					this._compile(node, scopes, reverse);
+				}
+
+				const executed = node.code(node, scopes);
+				scopes = executed.scope;
+
+				ast.executed = ast.executed.replace(
+					`#FUNCTION_${i}#`,
+					executed.code,
+				);
+
+				if (
+					node.type === FunctionType.Getter ||
+					node.type === FunctionType.FunctionGetter
+				) {
+					scopes.at(-1)!.content = scopes
+						.at(-1)!
+						.content.replace(`#FUNCTION_${i}#`, executed.code);
+					
+					scopes.at(-1)!.updateContentParts(`#FUNCTION_${i}#`, executed.code);
+				}
+			}
+
+			i++;
+		}
+
+		const scope = scopes.at(-1)!;
+		for (const part of scope._contentParts) {
+			ast.executed = ast.executed.replace(part, '');
+		}
+
+		return scope.generate(ast.executed);
+	}
+
+	// updateEmbedJs() {
+	// 	const embeds = [...this.embeddedJS.reverse()];
+	// 	for (const embed of embeds) {
+	// 		const old = this.rest;
+	// 		this.rest = this.replaceLast(this.rest, BundlerCustoms.EJS, embed);
+	// 		if (this.rest === old) {
+	// 			this.packages = this.embeddedJS.shift() + '\n' + this.packages;
+	// 		} else {
+	// 			this.embeddedJS.shift();
+	// 		}
+	// 	}
+	// }
 }

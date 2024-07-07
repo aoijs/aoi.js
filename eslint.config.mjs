@@ -38,7 +38,7 @@ export default [
 				'error',
 				{
 					selector: 'variable',
-					format: ['camelCase'],
+					format: ['camelCase', 'UPPER_CASE'],
 					leadingUnderscore: 'allow',
 				},
 				{

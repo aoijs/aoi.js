@@ -1,4 +1,13 @@
 export class TranspilerError extends Error {
+
+	static CompileError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
+		return new TranspilerError(`CompileError: ${msg}`, data);
+	}
+
+	static RunTimeError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
+		return new TranspilerError(`RunTimeError: ${msg}`, data);
+	}
+
 	cause: TranspilerError;
 	function?: { name: string; code: string };
 	cmd?: string;
@@ -26,7 +35,7 @@ export class TranspilerError extends Error {
 	}
 
 	toString() {
-		return `TranspilerError: ${this.message} {
+		return `[TranspilerError]|> ${this.message} {
 ${
 	this.function
 		? `function: {

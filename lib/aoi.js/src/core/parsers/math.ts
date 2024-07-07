@@ -13,8 +13,8 @@ export function fixMath(code: string) {
 		res = res.replace(
 			match,
 			`\${ ${match
-				.replaceAll(TranspilerCustoms.MFS, '')
-				.replaceAll(TranspilerCustoms.MFE, '')} }`,
+				.replaceAll(TranspilerCustoms.MFS, '(')
+				.replaceAll(TranspilerCustoms.MFE, ')')} }`,
 		);
 	}
 
