@@ -7,7 +7,7 @@ const { ActivityTypeAvailables, IntentOptions, EventsToIntents, EventsToDjsEvent
 const Database = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
-const { Group } = require("@akarui/structures");
+const { Group } = require("@aoijs/aoi.structures");
 const AoiError = require("./AoiError.js");
 const { functions: parser } = require("../core/AoiReader.js");
 
@@ -63,7 +63,7 @@ class BaseClient extends Client {
             ? "aoi.db"
             : dbData?.type
           : "aoi.db",
-        dbData?.db ?? require("@akarui/aoi.db"),
+        dbData?.db ?? require("@aoijs/aoi.db"),
         dbData?.dbType ?? "KeyValue",
         {
           dataConfig: {
