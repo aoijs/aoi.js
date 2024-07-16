@@ -26,12 +26,12 @@ module.exports = async (d) => {
             option = option.replaceAll("image", "image.url").replaceAll("thumbnail", "thumbnail.url");
         }
     }
-    try {
-        if (!embed.data[option]) return d.aoiError.fnError(d, "custom", {}, "Invalid Option Provided");
-        embed.data[option] = content.addBrackets();
-    } catch {
-        return d.aoiError.fnError(d, "custom", {}, "Option/Index Not Found");
-    }
+try {
+  eval(`embed.data.${option} = content.trim().addBrackets()`);
+}
+catch {
+  return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Option Provided In");
+}
     message.edit({ embeds: [embed] }).catch((e) => {
         d.aoiError.fnError(d, "custom", {}, e);
     });
