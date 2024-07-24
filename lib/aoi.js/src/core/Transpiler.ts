@@ -128,7 +128,7 @@ export default class Transpiler {
 			ast,
 		);
 
-		scope.addVariables(this.scopeData.vars ?? []);
+		scope.addVariables( ...(this.scopeData.vars ?? []) );
 		scope.addEmbeds(this.scopeData.embeds ?? []);
 		scope.env.push(...(this.scopeData.env ?? []));
 		scope.objects = { ...scope.objects, ...this.scopeData.object };
@@ -381,17 +381,4 @@ export default class Transpiler {
 
 		return scope.generate(ast.executed);
 	}
-
-	// updateEmbedJs() {
-	// 	const embeds = [...this.embeddedJS.reverse()];
-	// 	for (const embed of embeds) {
-	// 		const old = this.rest;
-	// 		this.rest = this.replaceLast(this.rest, BundlerCustoms.EJS, embed);
-	// 		if (this.rest === old) {
-	// 			this.packages = this.embeddedJS.shift() + '\n' + this.packages;
-	// 		} else {
-	// 			this.embeddedJS.shift();
-	// 		}
-	// 	}
-	// }
 }

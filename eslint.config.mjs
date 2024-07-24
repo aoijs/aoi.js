@@ -50,6 +50,15 @@ export default [
 				{ selector: 'parameter', format: ['camelCase'] },
 				{ selector: 'typeLike', format: ['PascalCase'] },
 			],
+			'@typescript-eslint/prefer-literal-enum-member': [
+				'error',
+				[
+					'error',
+					{
+						allowBitwiseExpressions: true,
+					},
+				],
+			],
 		},
 	},
 	{

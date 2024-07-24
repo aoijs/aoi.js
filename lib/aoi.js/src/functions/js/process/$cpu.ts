@@ -4,6 +4,19 @@ import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult } from '@aoi.js/utils/helpers.js';
 import type os from 'os';
 
+/**
+ * Returns the CPU usage of the process or the OS.
+ * @example
+ * ```aoi
+ * ---
+ * name: cpu
+ * type: basic
+ * ---
+ * 
+ * $cpu // returns the CPU usage of the process
+ * $cpu[os] // returns the CPU usage of the OS
+ * ```
+ */
 const $cpu = new FunctionBuilder()
 	.setName('$cpu')
 	.setBrackets(true)

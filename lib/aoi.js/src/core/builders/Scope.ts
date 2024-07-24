@@ -93,8 +93,12 @@ export default class Scope {
 		);
 	}
 
-	addVariables(scopeVars: string[]) {
+	addVariables(...scopeVars: string[]) {
 		this.variables.push(...scopeVars);
+	}
+
+	hasVariable(name: string) {
+		return this.variables.includes(name);
 	}
 
 	addEmbeds(embeds: unknown[]) {

@@ -8,13 +8,13 @@ export enum FunctionType {
 }
 
 export enum ReturnType {
-	Void,
-	Any,
-	Number,
-	String,
-	Boolean,
-	Object,
-	Array,
+	Void = 1 << 0,
+	Any = 1 << 1,
+	Number = 1 << 2,
+	String = 1 << 3,
+	Boolean = 1 << 4,
+	Object = 1 << 5,
+	Array = 1 << 6,
 }
 
 export enum TranspilerCustoms {
@@ -41,9 +41,11 @@ export enum TranspilerCustoms {
 	AS = '#ARRAY_STARTER#',
 	AE = '#ARRAY_ENDER#',
 	ASEP = '#ARRAY_SEPARATOR#',
+	SBL = '#SMOOTH_BRACKET_LEFT#',
+	SBR = '#SMOOTH_BRACKET_RIGHT#',
 }
 
-export enum BundlerCustoms  {
+export enum BundlerCustoms {
 	LB = '#LEFT_BRACKET#',
 	RB = '#RIGHT_BRACKET#',
 	EJS = '#EMBEDDED_JS#',

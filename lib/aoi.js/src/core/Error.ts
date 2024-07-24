@@ -8,6 +8,10 @@ export class TranspilerError extends Error {
 		return new TranspilerError(`RunTimeError: ${msg}`, data);
 	}
 
+	static AoiReaderError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
+		return new TranspilerError(`AoiReaderError: ${msg}`, data);
+	}
+
 	cause: TranspilerError;
 	function?: { name: string; code: string };
 	cmd?: string;

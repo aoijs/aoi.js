@@ -1,3 +1,5 @@
+import StringObject from '@aoi.js/core/builders/StringObject';
+import { parseStringObject } from '@aoi.js/core/parsers/object';
 import { TranspilerCustoms } from '@aoi.js/typings/enum.js';
 
 /**
@@ -91,4 +93,79 @@ export function removeSetFunc(code: string) {
  */
 export function removeMultiLineComments(code: string) {
 	return code.replace(/\/\*[\s\S]*?\*\//g, '');
+}
+
+/**
+ * parse data to its actual type
+ * @param text - The string to check.
+ * @returns - Returns the parsed data.
+ * @example
+ * ```js
+ * parseData("1") // 1
+ * parseData("1n") // 1n
+ * parseData("null") // null
+ * // and so on...
+ * ```
+ */
+export function parseData(text: string) {
+	if (text === '') return text;
+	else if (!isNaN(Number(text)) && Number.isSafeInteger(Number(text)))
+		return Number(text);
+	else if (
+		(!isNaN(Number(text)) && !Number.isSafeInteger(text)) ||
+		isBigInt(text)
+	)
+		return BigInt(text.replace('n', ''));
+	else if (text === 'null') return null;
+	else if (text === 'undefined') return undefined;
+	else if (text === 'true' || text === 'false') return text === 'true';
+	else {
+		try {
+			return JSON.parse(text) as Record<string, unknown>;
+		} catch {
+			if (text.startsWith('{') && text.endsWith('}')) {
+				const so = new StringObject('{');
+				so.addEnd('}');
+				let e: Record<string, unknown>;
+				eval(`e = ${parseStringObject(text, so).solve()}`);
+				// @ts-expect-error - we use eval here
+				return e;
+			} else if (text.startsWith('[') && text.endsWith(']')) {
+				const so = new StringObject('[');
+				so.addEnd(']');
+				let e: unknown[];
+				eval(`e = ${parseStringObject(text, so).solve()}`);
+				// @ts-expect-error - we use eval here
+				return e;
+			} else return text;
+		}
+	}
+}
+
+/**
+ * Checks if the given string is a bigint.
+ * @param string - The string to check.
+ * @returns - Returns true if the string is a bigint, false otherwise.
+ * @example
+ * ```js
+ * isBigInt("1n") // true
+ * isBigInt("1") // false
+ * ```
+ */
+
+export function isBigInt(string: string) {
+	return (/^-?\d+n$/.exec(string)) !== null;
+}
+
+export function stringify(data: any): string {
+	switch (typeof data) {
+		case 'bigint':
+			return data + 'n';
+		case 'object':
+			return JSON.stringify(data);
+		case 'undefined': 
+			return 'undefined';
+		default:
+			return data.toString();
+	}
 }

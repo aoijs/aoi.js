@@ -193,9 +193,9 @@ export default class FunctionBuilder implements IFunctionData {
 
 	defineVar(name: string, value: string, redefined = false) {
 		if (redefined) {
-			return `${escapeVars(name)} = ${value};`;
+			return `${escapeVars(name)} = ${value};\n`;
 		} else {
-			return `let ${escapeVars(name)} = ${value}`;
+			return `let ${escapeVars(name)} = ${value};\n`;
 		}
 	}
 
