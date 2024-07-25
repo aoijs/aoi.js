@@ -7,6 +7,9 @@ module.exports = async (d) => {
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
 
+    const member = await d.util.getUser(guild, userID);
+    if (!member) return d.aoiError.fnError(d, 'user', {inside: data.inside});
+
     const deleteMessageDays = parseInt(deleteMessageSeconds);
     if (isNaN(deleteMessageDays) || deleteMessageDays > 7 || deleteMessageDays < 0)
         return d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Invalid Day Provided In');
