@@ -7,7 +7,7 @@ module.exports = async d => {
     if (!member) return d.aoiError.fnError(d, "member", { inside: data.inside });
 
     const voiceState = member.voice;
-    if (!voiceState.channelID) return d.aoiError.fnError(d, "custom", {}, "Provided Member Is Not In A Voice/Stage Channel");
+    if (!voiceState.channelId) return d.aoiError.fnError(d, "custom", {}, "Provided Member Is Not In A Voice/Stage Channel");
 
     voiceState.setDeaf(deaf === "true")
 
