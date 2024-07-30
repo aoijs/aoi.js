@@ -5,7 +5,7 @@ module.exports = async (oldMember, newMember, client) => {
     if (!cmds) return;
     let data = {
         guild: oldMember?.guild || newMember?.guild,
-        author: oldMember?.author || newMember?.user,
+        author: oldMember?.user || newMember?.user,
         member: oldMember?.member || newMember,
         client: client
     };
