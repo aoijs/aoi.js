@@ -4,9 +4,9 @@ module.exports = async (oldMember, newMember, client) => {
     const cmds = client.cmd?.memberUpdate.V();
     if (!cmds) return;
     let data = {
-        guild: newMember?.guild,
-        author: newMember?.user,
-        member: newMember,
+        guild: oldMember?.guild || newMember?.guild,
+        author: oldMember?.author || newMember?.user,
+        member: oldMember?.member || newMember,
         client: client
     };
     for (const cmd of cmds) {
