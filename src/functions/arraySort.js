@@ -9,7 +9,7 @@ module.exports = async (d) => {
   }
 
   d.arrays[name] = d.arrays[name].sort((a, b) =>
-    type === "asc" ? a - b : b - a,
+    type === "asc" ? (a < b ? -1 : a > b ? 1 : 0) : (a < b ? 1 : a > b ? -1 : 0),
   );
     d.data.arrays = d.arrays;
   return {
