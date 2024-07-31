@@ -182,7 +182,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
+                                        : `AoiError: ${this.func}: Missing Brackets`;
                                 }
                             } else return false;
                         },
@@ -302,7 +302,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
+                                        : `AoiError: ${this.func}: Missing Brackets`;
                                 }
                             } else return false;
                         },
@@ -381,7 +381,7 @@ const Interpreter = async (
                                 else {
                                     return client.aoiOptions.suppressAllErrors
                                         ? client.aoiOptions.errorMessage
-                                        : `\`\`\`js\nAoiError: ${this.func}: Missing Brackets\`\`\``;
+                                        : `AoiError: \`${this.func}\`: Missing Brackets`;
                                 }
                             } else return false;
                         },

@@ -219,9 +219,7 @@ class AoiError {
                 errorData.type = message;
                 break;
         }
-        return `\`\`\`js\nAoiError: ${errorData.type} ${
-            data.inside || ""
-        }\n\n{\n  Function: "${errorData.Function}",\n  ${errorData.Command ? "Command: " + `"${errorData.Command}"` : "Command Type: " + `"${errorData["Type"]}"`},\n  Version: ${errorData.Version}\n}\`\`\``;
+        return `AoiError: \`${errorData.Function}\` in \`${data.inside}\` (${errorData.type})`;
     }
 
     /**
