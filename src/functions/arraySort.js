@@ -20,4 +20,3 @@ module.exports = async (d) => {
     data: d.data,
   };
 };
-Array.prototype.sort
