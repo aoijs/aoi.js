@@ -9,7 +9,7 @@ module.exports = async d => {
 
     const role = roleID.trim() === '' ? false : await guild.roles.fetch(roleID).catch(err => undefined);
 
-    data.result = role ? true : false;
+    data.result = !!role;
 
     return {
         code: d.util.setCode(data)
