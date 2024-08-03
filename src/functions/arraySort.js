@@ -9,12 +9,15 @@ module.exports = async (d) => {
   }
 
   d.arrays[name] = d.arrays[name].sort((a, b) =>
-    type === "asc" ? (a < b ? -1 : a > b ? 1 : 0) : (a < b ? 1 : a > b ? -1 : 0),
+    String(a).localeCompare(String(b))
   );
-    d.data.arrays = d.arrays;
+  if (type === "dsc" || type === "desc") d.arrays[name] = d.arrays[name].reverse();
+
+  d.data.arrays = d.arrays;
   return {
     code: d.util.setCode(data),
     arrays: d.arrays,
     data: d.data,
   };
 };
+Array.prototype.sort
