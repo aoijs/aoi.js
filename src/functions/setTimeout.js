@@ -1,12 +1,13 @@
-const {Time} = require("../core/Time.js");
-const {Timeout} = require("../core/functions.js");
+const { Time } = require("../core/Time.js");
+const { Timeout } = require("../core/functions.js");
 
 module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, duration, timeoutData, returnID = "false"] =
-        data.inside.splits;
+    const [name, duration, timeoutData, returnID = "false"] = data.inside.splits;
+
+    if (!name) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Timeout Name Provided");
 
     const time = isNaN(duration) ? Time.parse(duration)?.ms : Number(duration);
     let tdata = {};
@@ -15,7 +16,7 @@ module.exports = (d) => {
         try {
             tdata = JSON.parse(timeoutData.addBrackets());
         } catch (e) {
-            d.aoiError.fnError(d, "custom", {inside: data.inside});
+            d.aoiError.fnError(d, "custom", { inside: data.inside });
         }
     } else {
         for (let timeData of timeoutData.split("\n")) {
@@ -32,6 +33,6 @@ module.exports = (d) => {
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };
