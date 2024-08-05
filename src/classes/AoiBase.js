@@ -189,7 +189,9 @@ class BaseClient extends Client {
                     "shardDisconnect",
                     "shardError",
                     "shardReconnecting",
-                    "shardResume"
+                    "shardResume",
+                    "shardReady",
+                    "shardCreate"
                 ].includes(event)
                     ? require(`../sharding/${event}.js`)
                     : Array.isArray(file)
