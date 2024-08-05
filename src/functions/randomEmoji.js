@@ -1,14 +1,19 @@
-module.exports = d => {
-    let {code, result} = d.util.aoiFunc(d);
+module.exports = (d) => {
+    const data = d.util.aoiFunc(d);
+    const [guild = d.guild?.id, toString = "false"] = data.inside.splits;
 
-    result = d.client.emojis.cache.random()?.id;
-    if (!d.randoms.randomEmoji) {
-        d.randoms.randomEmoji = result
-    } else {
-        result = d.randoms.randomEmoji;
-    }
+    let emojis = d.client.emojis.cache;
+
+    if (guild && guild !== "global") emojis = emojis.filter((x) => x.guild.id === guild);
+
+    const randomEmoji = emojis.random();
+    const result = toString === "true" ? randomEmoji.toString() : randomEmoji.id;
+
+    if (!d.randoms.randomEmoji) d.randoms.randomEmoji = result;
+
+    data.result = result;
 
     return {
-        code: d.util.setCode({function: d.func, code, result})
-    }
-}
+        code: d.util.setCode(data)
+    };
+};
