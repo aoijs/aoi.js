@@ -9,7 +9,7 @@ module.exports = async (d) => {
     const message = await d.util.getMessage(channel, messageID);
     if (!message) return d.aoiError.fnError(d, 'message', {inside: data.inside});
 
-    data.result = message.attachments.size ? true : false;
+    data.result = !!message.attachments.size;
 
     return {
         code: d.util.setCode(data)

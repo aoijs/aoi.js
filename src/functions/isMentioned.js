@@ -4,7 +4,7 @@ module.exports = d => {
 
     const [opt] = data.inside.splits;
 
-    data.result = (d.mentions[opt] || d.mentions.users.has(opt) || d.mentions.roles.has(opt) || d.mentions.channels.has(opt)) ? true : false;
+    data.result = !!(d.mentions[opt] || d.mentions.users.has(opt) || d.mentions.roles.has(opt) || d.mentions.channels.has(opt));
 
     return {
         code: d.util.setCode(data)

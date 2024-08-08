@@ -24,9 +24,8 @@ module.exports = async (d) => {
         if (bots === "true" && !x.author.bot) return false;
         if (unpinned === "true" && x.pinned) return false;
         if (words && !words.split(",").some((word) => x.content.includes(word))) return false;
-        if (users && !users.split(",").some((user) => x.author.id === user)) return false;
-        
-        return true;
+        return !(users && !users.split(",").some((user) => x.author.id === user));
+
     });
 
     const result = await channel.bulkDelete(messages, true).catch((err) => {
