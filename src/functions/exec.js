@@ -3,7 +3,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
 
     try {
-        data.result = await cld.execSync(data.inside.inside?.addBrackets()).toString();
+        data.result = cld.execSync(data.inside.inside?.addBrackets()).toString();
     } catch (e) {
         data.result = e
     }

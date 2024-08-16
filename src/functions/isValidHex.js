@@ -5,7 +5,7 @@ module.exports = d => {
     let [hex] = data.inside.splits;
     hex = hex.addBrackets().replace('#', '');
 
-    data.result = isNaN(parseInt(hex, 16)) ? false : true;
+    data.result = !isNaN(parseInt(hex, 16));
 
     return {
         code: d.util.setCode(data)

@@ -10,9 +10,7 @@ module.exports = async (d) => {
 
   data.result = !role
     ? guild?.roles.everyone.id
-    : role === undefined
-      ? guild.id
-      : role?.[option.toLowerCase()];
+    : role?.[option.toLowerCase()];
 
   return { code: d.util.setCode(data) };
 };

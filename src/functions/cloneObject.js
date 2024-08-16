@@ -7,9 +7,7 @@ module.exports = async (d) => {
   if (!objects || !objects[objectName]) {
     return d.aoiError.fnError(d, "custom", {}, "Invalid object");
   }
-
-  const clonedObject = JSON.parse(JSON.stringify(objects[objectName]));
-  d.data.objects[newObjectName] = clonedObject;
+  d.data.objects[newObjectName] = JSON.parse(JSON.stringify(objects[objectName]));
 
   return {
     code: d.util.setCode(data),

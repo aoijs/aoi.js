@@ -7,7 +7,7 @@ module.exports = async d => {
     const guild = await d.util.getGuild(d, guildID);
     if (!guild) return d.aoiError.fnError(d, 'custom', {inside: data.inside});
 
-    data.result = userID.trim() === '' ? false : await d.util.getMember(guild, userID) ? true : false;
+    data.result = userID.trim() === '' ? false : !!(await d.util.getMember(guild, userID));
 
     return {
         code: d.util.setCode(data)

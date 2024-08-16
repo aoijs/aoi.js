@@ -16,11 +16,10 @@ module.exports = async (d) => {
             } else if (format === "id") {
                 return x.value.__id__;
             } else {
-                let timeout = format
+                return format
                     .replaceAll("{duration}", x.value.__duration__)
                     .replaceAll("{key}", x.key)
                     .replaceAll("{id}", x.value.__id__);
-                return timeout;
             }
         });
 
