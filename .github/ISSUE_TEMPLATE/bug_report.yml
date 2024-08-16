@@ -1,5 +1,6 @@
 name: Reporting Bug
 description: Report us the issue, and leave it to us! 🤗
+assignees: "Leref"
 title: "Bug: "
 labels: "bug"
 body:
@@ -47,7 +48,8 @@ body:
       options:
         - v6.8.x
         - v6.7.x
-        - v6.5.x
+        - v6.6.x
+        - Older
     validations:
       required: true
       
