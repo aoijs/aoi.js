@@ -8,7 +8,7 @@ module.exports = async (d) => {
     try {
         value = JSON.parse(value);
     } catch (e) {
-        value = value;
+        data.result = undefined;
     }
 
     const object = d.data.objects[name] || {};

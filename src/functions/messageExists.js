@@ -7,7 +7,7 @@ module.exports = async d => {
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
 
-    data.result = (await d.util.getMessage(channel, messageID)) ? true : false;
+    data.result = !!(await d.util.getMessage(channel, messageID));
 
     return {
         code: d.util.setCode(data)

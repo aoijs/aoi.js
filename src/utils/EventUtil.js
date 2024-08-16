@@ -31,6 +31,7 @@ const PinData = (d) => {
         messageContent: d.data.channel.messages.last()?.content
     };
 };
+
 const RateLimitOptions = [
     "timeout",
     "limit", //.limit",
@@ -38,6 +39,7 @@ const RateLimitOptions = [
     "path", // "The path to the api endpoint that triggered the rate limit;.path",
     "route" // "The route that triggered this event;.route",
 ];
+
 const WebhookUpdateOptions = [
     "id", //"id",
     "name", // "name.deleteBrackets()",

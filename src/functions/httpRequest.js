@@ -4,10 +4,17 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [url, method = 'get', body = '', property, error = 'default', ...header] =
-        data.inside.splits;
+    let [
+        url,
+        method = 'get',
+        body = '',
+        property,
+        error = 'default',
+        ...header
+    ] = data.inside.splits;
 
-    body = body?.trim() === '' ? undefined : body
+    body = body?.trim() === '' ? undefined : body;
+    
     let headers = {};
     if (header.length === 1) {
         try {
@@ -34,9 +41,15 @@ module.exports = async (d) => {
         });
 
         const responseBody = await response.text();
-        data.result = property
-            ? eval(`JSON.parse(responseBody)?.${property}`)
-            : responseBody;
+        const contentType = response.headers.get("content-type")?.split(/;/)[0];
+
+        if (property && /content(-|\s)?type/gi.test(property)) {
+            data.result = contentType;
+        } else if (property && contentType.includes("json")) {
+            data.result = eval(`JSON.parse(responseBody)?.${property}`)
+        } else {
+            data.result = responseBody;
+        }
     } catch (err) {
         console.error(err);
         if (error === 'default') {
