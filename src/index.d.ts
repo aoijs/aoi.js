@@ -25,10 +25,6 @@ declare module "aoi.js" {
             };
             addBrackets(): string;
         }
-
-        interface Array<T> {
-            goof(sep?: string): string;
-        }
     }
 
     class Util {
@@ -378,16 +374,17 @@ declare module "aoi.js" {
 
     class CommandManager {
         client: AoiClient;
-        customCmds?: Array<string>;
+        isClientCommand: boolean;
+        types: string[];
+        customCmds?: string[];
 
         constructor(client: AoiClient, formCommand?: boolean, customCmds?: string[]);
 
-        get types(): string[];
-
-        createCommand(d: any): void;
         formCommand(): void;
+        createCommand(data: Record<string, any>): void;
         formCustomCommand(customCmds: string[]): void;
     }
+}
 
     // FunctionManager
     class FunctionManager {
@@ -481,4 +478,3 @@ declare module "aoi.js" {
         resolveSelectMenuOptionData(options: object[]): string;
         get buttonDataLength(): number;
     }
-}

@@ -1,9 +1,15 @@
-const { Partials, IntentsBitField, Client }  = require("discord.js");
+const { Partials, IntentsBitField, Client } = require("discord.js");
 const { DefaultWebSocketManagerOptions } = require("@discordjs/ws");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
-const { ActivityTypeAvailables, IntentOptions, EventsToIntents, EventsToDjsEvents, EventstoFile } = require("../utils/Constants.js");
+const {
+    ActivityTypeAvailables,
+    IntentOptions,
+    EventsToIntents,
+    EventsToDjsEvents,
+    EventstoFile
+} = require("../utils/Constants.js");
 const Database = require("./Database.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
@@ -12,194 +18,194 @@ const AoiError = require("./AoiError.js");
 const { functions: parser } = require("../core/AoiReader.js");
 
 class BaseClient extends Client {
-  constructor(options) {
-    if (options.cache) {
-      options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
-    }
-
-    options.partials = options.partials || [
-      Partials.GuildMember,
-      Partials.Channel,
-      Partials.Message,
-      Partials.Reaction,
-      Partials.User,
-      Partials.GuildScheduledEvent,
-      Partials.ThreadMember,
-    ];
-
-    const aoiOptions = {};
-    Object.assign(aoiOptions, options);
-
-    if (options?.mobilePlatform === true) {
-      DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";
-    }
-
-    if (!options.intents) {
-      throw new TypeError("Client intents must be provided.");
-    }
-
-    options.intents = options.intents.map((x) => IntentOptions[x] || x);
-
-    super(options);
-
-    this.aoiOptions = aoiOptions;
-  
-    this.cmd = new CommandManager(this);
-    this.interactionManager = new InteractionManager(this);
-    this.cacheManager = new CacheManager(this);
-
-    this.variableManager = new VariableManager(this);
-
-    if (
-      options.disableAoiDB !== true &&
-      (["default", "aoi.db"].includes(options?.database?.type) ||
-        !options?.database)
-    ) {
-      const dbData = options?.database;
-
-      this.db = new Database(
-        dbData?.type
-          ? dbData?.type === "default"
-            ? "aoi.db"
-            : dbData?.type
-          : "aoi.db",
-        dbData?.db ?? require("@aoijs/aoi.db"),
-        dbData?.dbType ?? "KeyValue",
-        {
-          dataConfig: {
-            path: dbData?.path ?? "./database",
-            tables: dbData?.tables?.length
-              ? [...dbData?.tables, "__aoijs_vars__"]
-              : ["main", "__aoijs_vars__"],
-          },
-          cacheConfig: {
-            sortFunction: (a,b) => { return a.value - b.value }
-          },
-          encryptionConfig: {
-            securityKey: dbData?.securityKey ?? "a-32-characters-long-string-here",
-            encriptData: dbData?.encriptData ?? false,
-          },
-          ...dbData?.extraOptions,
-        },
-        aoiOptions
-      );
-    }
-
-    if (
-      Array.isArray(options?.disableFunctions) &&
-      options?.disableFunctions.length
-    ) {
-      options?.disableFunctions.forEach((func) => {
-        const index = parser.findIndex((f) => f === func);
-        if (index !== -1) {
-          parser.splice(index, 1);
+    constructor(options) {
+        if (options.cache) {
+            options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
         }
-      });
-    }
 
-    this.prefix = options.prefix;
-    this.#bindEvents();
+        options.partials = options.partials || [
+            Partials.GuildMember,
+            Partials.Channel,
+            Partials.Message,
+            Partials.Reaction,
+            Partials.User,
+            Partials.GuildScheduledEvent,
+            Partials.ThreadMember
+        ];
 
-    Object.defineProperty(this, "statuses", { value: new Group() });
+        const aoiOptions = {};
+        Object.assign(aoiOptions, options);
 
-    this.on("ready", async () => {
-      await require("../events/NonIntents/ready.js")(this);
-      await require("../events/status.js")(this.statuses, this);
-      await require("../events/AoiStart.js")(this);
-    });
-    this.login(options.token);
-  }
+        if (options?.mobilePlatform === true) {
+            DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";
+        }
 
-  loadCommands(directory, debug = true) {
-    const loader = new LoadCommands(this);
-    loader.load(this.cmd, directory, debug);
-  }
+        if (!options.intents) {
+            throw new TypeError("Client intents must be provided.");
+        }
 
-  status(...statuses) {
-    for (const status of statuses) {
-      status.type =
-        Object.keys(ActivityTypeAvailables).includes(
-          status.type.toLowerCase()
-        ) || Object.values(ActivityTypeAvailables).includes(status.type)
-          ? ActivityTypeAvailables[status.type.toLowerCase()]
-          : ActivityTypeAvailables.playing;
+        options.intents = options.intents.map((x) => IntentOptions[x] || x);
 
-      const option = {
-        name: status.name,
-        type: status.type,
-        url: status.url,
-      };
+        super(options);
 
-      this.statuses.set(this.statuses.size, {
-        status: status.status || "online",
-        time: isNaN(status.time) ? 12 : status.time,
-        activity: option,
-        afk: status.afk || false,
-        shardID: status.shardId || 0,
-      });
-    }
-  }
+        this.aoiOptions = aoiOptions;
 
-  /**
-   * Adds variables to the variable manager.
-   * @param {Object} d - The object containing the variables to be added.
-   * @param {Object} [table=this.db?.tables?.[0]] - The table to which the variables belong.
-   * @throws {TypeError} If a database is not provided.
-   */
-  variables(d, table = this.db?.tables?.[0]) {
-    if (this.db === undefined) {
-      throw new TypeError(
-        "A database must be provided to use the variables method."
-      );
-    }
+        this.cmd = new CommandManager(this);
+        this.interactionManager = new InteractionManager(this);
+        this.cacheManager = new CacheManager(this);
 
-    for (const [name, value] of Object.entries(d)) {
-      this.variableManager.add({ name, value, table });
-    }
-  }
+        this.variableManager = new VariableManager(this);
 
-  async _createCacheFactory(options) {
-    options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
-  }
+        if (
+            options.disableAoiDB !== true &&
+            (["default", "aoi.db"].includes(options?.database?.type) ||
+                !options?.database)
+        ) {
+            const dbData = options?.database;
 
-  #bindEvents() {
-    const bits = new IntentsBitField(this.options.intents);
-    for (const event of this.aoiOptions.events ?? []) {
-      let intent = EventsToIntents[event];
-      const filedir = intent;
-      const eventName = EventsToDjsEvents[event];
-      const file = EventstoFile[event];
-      if (intent === "GuildEmojis") intent = "GuildEmojisAndStickers";
-      if (intent === "GuildMessageTypings") intent = "GuildMessageTyping";
-      if (
-        intent &&
-        !["Custom", "NonIntents"].includes(intent) &&
-        !bits.has(intent[0].toUpperCase() + intent.slice(1))
-      ) {
-        return AoiError.EventError(event, intent, 357);
-      }
+            this.db = new Database(
+                dbData?.type ?? "aoi.db",
+                dbData?.db ?? require("@aoijs/aoi.db"),
+                dbData?.dbType ?? "KeyValue",
+                {
+                    dataConfig: {
+                        path: dbData?.path ?? "./database",
+                        tables: dbData?.tables?.length
+                            ? [...dbData?.tables, "__aoijs_vars__"]
+                            : ["main", "__aoijs_vars__"]
+                    },
+                    cacheConfig: {
+                        sortFunction: (a, b) => {
+                            return a.value - b.value;
+                        }
+                    },
+                    encryptionConfig: {
+                        securityKey: dbData?.securityKey ?? "a-32-characters-long-string-here",
+                        encriptData: dbData?.encriptData ?? false
+                    },
+                    ...dbData?.extraOptions
+                },
+                aoiOptions
+            );
+        }
 
-      try {
-        const func = [
-          "shardDisconnect",
-          "shardError",
-          "shardReconnecting",
-          "shardResume",
-        ].includes(event)
-          ? require(`../sharding/${event}.js`)
-          : Array.isArray(file)
-            ? file.map((x) => require(`../events/${filedir}/${x}.js`))
-            : require(`../events/${filedir}/${file}.js`);
+        if (
+            Array.isArray(options?.disableFunctions) &&
+            options?.disableFunctions.length
+        ) {
+            options?.disableFunctions.forEach((func) => {
+                const index = parser.findIndex((f) => f === func);
+                if (index !== -1) {
+                    parser.splice(index, 1);
+                }
+            });
+        }
 
-        this.on(eventName, (...args) => {
-          if (Array.isArray(func)) func.forEach((x) => x(...args, this));
-          else func(...args, this);
+        this.prefix = options.prefix;
+        this.#bindEvents();
+
+        Object.defineProperty(this, "statuses", { value: new Group() });
+
+        this.on("ready", async () => {
+            await require("../events/NonIntents/ready.js")(this);
+            await require("../events/status.js")(this.statuses, this);
+            await require("../events/AoiStart.js")(this);
         });
-      } catch (error) {
-        throw new TypeError(`Error loading "${event}" event, does not exist!`);
-      }
+        this.login(options.token);
     }
-  }
+
+    loadCommands(directory, debug = true) {
+        const loader = new LoadCommands(this);
+        loader.load(this.cmd, directory, debug);
+    }
+
+    status(...statuses) {
+        for (const status of statuses) {
+            status.type =
+                Object.keys(ActivityTypeAvailables).includes(
+                    status.type.toLowerCase()
+                ) || Object.values(ActivityTypeAvailables).includes(status.type)
+                    ? ActivityTypeAvailables[status.type.toLowerCase()]
+                    : ActivityTypeAvailables.playing;
+
+            const option = {
+                name: status.name,
+                type: status.type,
+                url: status.url
+            };
+
+            this.statuses.set(this.statuses.size, {
+                status: status.status || "online",
+                time: isNaN(status.time) ? 12 : status.time,
+                activity: option,
+                afk: status.afk || false,
+                shardID: status.shardId || 0
+            });
+        }
+    }
+
+    /**
+     * Adds variables to the variable manager.
+     * @param {Object} d - The object containing the variables to be added.
+     * @param {Object} [table=this.db?.tables?.[0]] - The table to which the variables belong.
+     * @throws {TypeError} If a database is not provided.
+     */
+    variables(d, table = this.db?.tables?.[0]) {
+        if (this.db === undefined) {
+            throw new TypeError(
+                "A database must be provided to use the variables method."
+            );
+        }
+
+        for (const [name, value] of Object.entries(d)) {
+            this.variableManager.add({ name, value, table });
+        }
+    }
+
+    async _createCacheFactory(options) {
+        options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
+    }
+
+    #bindEvents() {
+        const bits = new IntentsBitField(this.options.intents);
+        for (const event of this.aoiOptions.events ?? []) {
+            let intent = EventsToIntents[event];
+            const filedir = intent;
+            const eventName = EventsToDjsEvents[event];
+            const file = EventstoFile[event];
+            if (intent === "GuildEmojis") intent = "GuildEmojisAndStickers";
+            if (intent === "GuildMessageTypings") intent = "GuildMessageTyping";
+            if (
+                intent &&
+                !["Custom", "NonIntents"].includes(intent) &&
+                !bits.has(intent[0].toUpperCase() + intent.slice(1))
+            ) {
+                return AoiError.EventError(event, intent, 357);
+            }
+
+            try {
+                const func = [
+                    "shardDisconnect",
+                    "shardError",
+                    "shardReconnecting",
+                    "shardResume",
+                    "shardReady",
+                    "shardCreate"
+                ].includes(event)
+                    ? require(`../sharding/${event}.js`)
+                    : Array.isArray(file)
+                        ? file.map((x) => require(`../events/${filedir}/${x}.js`))
+                        : require(`../events/${filedir}/${file}.js`);
+
+                this.on(eventName, (...args) => {
+                    if (Array.isArray(func)) func.forEach((x) => x(...args, this));
+                    else func(...args, this);
+                });
+            } catch (error) {
+                throw new TypeError(`Error loading "${event}" event, does not exist!`);
+            }
+        }
+    }
 }
 
 module.exports = BaseClient;

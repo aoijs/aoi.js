@@ -10,6 +10,17 @@ const { Command } = require("../classes/Commands.js");
 const PATH = require("path");
 
 /**
+ * Description
+ * @param {string[]} functionList
+ * @param {import('../classes/AoiClient.js')} client
+ * @returns {boolean}
+ */
+function hasAoijsCustomFunction(functionList, client) {
+    const allAoijsCustomFunctions = client.functionManager.cache.filter((x) => x instanceof CustomFunction && x.type === "aoi.js");
+    return allAoijsCustomFunctions.some((_, x) => functionList.some((y) => y === "$" + x));
+}
+
+/**
  * @param  {import('../classes/AoiClient.js')} client
  * @param  {Discord.Message | {
  * message?:Discord.Message,
@@ -30,65 +41,31 @@ const PATH = require("path");
  * @param  {boolean} returnID
  * @param  {boolean} sendMessage=false
  */
-const Interpreter = async (
-    client,
-    message,
-    args,
-    command,
-    _db,
-    returnCode = false,
-    channelUsed,
-    data = {},
-    useChannel,
-    returnMessage,
-    returnExecution,
-    returnID,
-    sendMessage = false
-) => {
+const Interpreter = async (client, message, args, command, _db, returnCode = false, channelUsed, data = {}, useChannel, returnMessage, returnExecution, returnID, sendMessage = false) => {
     try {
         const start = performance.now();
         if (client?.aoiOptions?.debugs?.interpreter) {
             console.time(`interpreter-${start}`);
         }
         //defining vars//
-        let code = command.code
-            ?.replaceAll("\\]", "#LEFT#")
-            .split("\\[")
-            .join("#RIGHT#")
-            .replaceAll("\\,", "#COMMA#")
-            .replaceAll("\\;", "#SEMI#");
+        let code = command.code?.replaceAll("\\]", "#LEFT#").split("\\[").join("#RIGHT#").replaceAll("\\,", "#COMMA#").replaceAll("\\;", "#SEMI#");
 
-        let [
-            randoms,
-            timezone,
-            letVars,
-            object,
-            disableMentions,
-            array,
-            arrays,
-            reactions,
-            channel,
-            author,
-            guild,
-            mentions,
-            member,
-            msg,
-        ] = [
-                data.randoms || {},
-                "UTC",
-                data.vars || {},
-                data.object || {},
-                ["roles", "users", "everyone"],
-                data.array || [],
-                data.arrays || [],
-                [],
-                message.channel,
-                message.author,
-                message.guild,
-                message.mentions,
-                message.member,
-                message,
-            ];
+        let [randoms, timezone, letVars, object, disableMentions, array, arrays, reactions, channel, author, guild, mentions, member, msg] = [
+            data.randoms || {},
+            "UTC",
+            data.vars || {},
+            data.object || {},
+            ["roles", "users", "everyone"],
+            data.array || [],
+            data.arrays || [],
+            [],
+            message.channel,
+            message.author,
+            message.guild,
+            message.mentions,
+            message.member,
+            message
+        ];
         let errorOccurred;
         let embeds;
         let deleteIn;
@@ -104,18 +81,51 @@ const Interpreter = async (
         let msgobj;
         let funcLine;
         let returnData = {};
-        command.codeLines =
-            command.codeLines ||
-            client.functionManager.serializeCode(command.code);
-        let funcs = command.functions?.length
-            ? command.functions
-            : client.functionManager.findFunctions(command.code);
+        command.codeLines = command.codeLines || client.functionManager.serializeCode(command.code);
+        let funcs = command.functions?.length ? command.functions : client.functionManager.findFunctions(command.code);
         command.__path__ = PATH.sep + command.name + ".js";
         //   debug system
         const debug = {
             code,
-            functions: command.functions,
+            functions: command.functions
         };
+
+        // get all aoi.js type custom function
+        while (hasAoijsCustomFunction(funcs, client)) {
+            let hadCustomAoijsFunction = false;
+            for (const func of funcs) {
+                const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
+
+                code = code.replace(regex, func);
+                const codeData = client.functionManager.cache.get(func.replace("$", ""));
+                if (codeData instanceof CustomFunction && codeData.type === "aoi.js") {
+                    const d = {};
+                    Object.assign(d, codeData);
+                    let param = [];
+					const unpacked = unpack(code, func);
+
+					if (!unpacked.inside && codeData.params.length) {
+						throw new Error(`${func} needs params, provided none`);
+					}
+                    for (let p = codeData.params.length - 1; p >= 0; p--) {
+                        d.code = d.code.replace(`{${codeData.params[p]}}`, unpacked.splits[p]);
+                        param.push(unpacked.splits[p]);
+                    }
+					param.reverse();
+	
+                    hadCustomAoijsFunction = true;
+                    code = code.replaceLast(codeData.params.length ? `${func}[${param.join(";")}]` : func, d.code);
+                }
+            }
+            if (hadCustomAoijsFunction) {
+                funcs = client.functionManager.findFunctions(code);
+                command.functions = funcs;
+				command.code = code;
+            }
+
+
+        }
+
         if (command["$if"] === "old") {
             code = (
                 await IF({
@@ -134,12 +144,12 @@ const Interpreter = async (
                             async: command.async || false,
                             functions: command.functions,
                             __path__: command.__path__,
-                            codeLines: command.codeLines,
+                            codeLines: command.codeLines
                         },
                         helpers: {
                             time: Time,
                             checkCondition: CheckCondition,
-                            mustEscape,
+                            mustEscape
                         },
                         args: args,
                         aoiError: require("../classes/AoiError.js"),
@@ -168,11 +178,8 @@ const Interpreter = async (
                         member: member,
                         mentions: mentions,
                         unpack() {
-                            const last =
-                                code.split(this.func.replace("[", "")).length - 1;
-                            const sliced = code.split(
-                                this.func.replace("[", "")
-                            )[last];
+                            const last = code.split(this.func.replace("[", "")).length - 1;
+                            const sliced = code.split(this.func.replace("[", ""))[last];
 
                             return sliced.after();
                         },
@@ -180,22 +187,21 @@ const Interpreter = async (
                             if (typeof unpacked.inside !== "string") {
                                 if (suppressErrors) return suppressErrors;
                                 else {
-                                    return client.aoiOptions.suppressAllErrors
-                                        ? client.aoiOptions.errorMessage
-                                        : `AoiError: ${this.func}: Missing Brackets`;
+                                    return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: ${this.func}: Missing Brackets`;
                                 }
                             } else return false;
                         },
-                        noop() { },
+                        noop() {},
                         interpreter: Interpreter,
                         client: client,
-                        embed: Discord.EmbedBuilder,
-                    },
+                        embed: Discord.EmbedBuilder
+                    }
                 })
             ).code;
             funcs = client.functionManager.findFunctions(code);
         }
         //parsing functions (dont touch)
+
         for (let i = funcs.length; i > 0; i--) {
             if (!funcs.length) break;
 
@@ -204,210 +210,182 @@ const Interpreter = async (
             let func = funcs[i - 1];
 
             if (error) break;
-            const regex = new RegExp(
-                "\\" + func.replace("[", "\\["),
-                "gi"
-            );
+            const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
 
             code = code.replace(regex, func);
             //more debug
             debug[func] = { regex, func };
             command.codeLines?.map((x) => x.replace(regex, func));
-            funcLine =
-                command.codeLines.length -
-                command.codeLines
-                    ?.reverse()
-                    .findIndex((x) =>
-                        x.toLowerCase().split(" ").includes(func.toLowerCase())
-                    );
+            funcLine = command.codeLines.length - command.codeLines?.reverse().findIndex((x) => x.toLowerCase().split(" ").includes(func.toLowerCase()));
 
-            const functionObj = client.functionManager.cache.get(
-                func.replace("$", "").replace("[", "")
-            );
-            if (
-                functionObj instanceof CustomFunction &&
-                functionObj.type === "aoi.js"
-            ) {
-                const d = {};
-                Object.assign(d, functionObj);
-                let param = [];
-                for (let p = functionObj.params.length - 1; p >= 0; p--) {
-                    d.code = d.code.replace(
-                        `{${functionObj.params[p]}}`,
-                        unpack(code, func).splits[p]
-                    );
-                    param.push(functionObj.params[p]);
-                }
-                FuncData = await client.functionManager.interpreter(
-                    client,
-                    message,
-                    args,
-                    d,
-                    client.db,
-                    true,
-                    channelUsed,
-                    {
-                        randoms: randoms,
-                        command: {
-                            name: command.name,
-                            type: command.type,
-                            code: code,
-                            error: command.error,
-                            async: command.async || false,
-                            functions: command.functions,
-                            __path__: command.__path__,
-                            codeLines: command.codeLines,
-                            funcLine: funcLine,
-                        },
-                        helpers: {
-                            time: Time,
-                            checkCondition: CheckCondition,
-                            mustEscape,
-                        },
-                        args: args,
-                        aoiError: require("../classes/AoiError.js"),
-                        data: data,
-                        func: func,
-                        funcLine,
-                        util: Util,
-                        allowedMentions: allowedMentions,
-                        embeds: embeds || [],
-                        components: components,
-                        files: attachments || [],
-                        timezone: timezone,
-                        channelUsed: channelUsed,
-                        vars: letVars,
-                        object: object,
-                        disableMentions: disableMentions,
-                        returnID: returnID,
-                        array: array,
-                        arrays,
-                        reactions: reactions,
-                        message: message.message || message,
-                        msg: msg.message || msg,
-                        author: author,
-                        guild: guild,
-                        channel: channel,
-                        member: member,
-                        mentions: mentions,
-                        unpack() {
-                            const last = code.split(func.replace("[", "")).length - 1;
-                            const sliced = code.split(func.replace("[", ""))[last];
+            const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""));
+            // if (functionObj instanceof CustomFunction && functionObj.type === "aoi.js") {
+            //     const d = {};
+            //     Object.assign(d, functionObj);
+            //     let param = [];
+            //     for (let p = functionObj.params.length - 1; p >= 0; p--) {
+            //         d.code = d.code.replace(`{${functionObj.params[p]}}`, unpack(code, func).splits[p]);
+            //         param.push(functionObj.params[p]);
+            //     }
+            //     FuncData = await client.functionManager.interpreter(
+            //         client,
+            //         message,
+            //         args,
+            //         d,
+            //         client.db,
+            //         true,
+            //         channelUsed,
+            //         {
+            //             randoms: randoms,
+            //             command: {
+            //                 name: command.name,
+            //                 type: command.type,
+            //                 code: code,
+            //                 error: command.error,
+            //                 async: command.async || false,
+            //                 functions: command.functions,
+            //                 __path__: command.__path__,
+            //                 codeLines: command.codeLines,
+            //                 funcLine: funcLine
+            //             },
+            //             helpers: {
+            //                 time: Time,
+            //                 checkCondition: CheckCondition,
+            //                 mustEscape
+            //             },
+            //             args: args,
+            //             aoiError: require("../classes/AoiError.js"),
+            //             data: data,
+            //             func: func,
+            //             funcLine,
+            //             util: Util,
+            //             allowedMentions: allowedMentions,
+            //             embeds: embeds || [],
+            //             components: components,
+            //             files: attachments || [],
+            //             timezone: timezone,
+            //             channelUsed: channelUsed,
+            //             vars: letVars,
+            //             object: object,
+            //             disableMentions: disableMentions,
+            //             returnID: returnID,
+            //             array: array,
+            //             arrays,
+            //             reactions: reactions,
+            //             message: message.message || message,
+            //             msg: msg.message || msg,
+            //             author: author,
+            //             guild: guild,
+            //             channel: channel,
+            //             member: member,
+            //             mentions: mentions,
+            //             unpack() {
+            //                 const last = code.split(func.replace("[", "")).length - 1;
+            //                 const sliced = code.split(func.replace("[", ""))[last];
 
-                            return sliced.after();
-                        },
-                        inside(unpacked) {
-                            if (typeof unpacked.inside !== "string") {
-                                if (suppressErrors) return suppressErrors;
-                                else {
-                                    return client.aoiOptions.suppressAllErrors
-                                        ? client.aoiOptions.errorMessage
-                                        : `AoiError: ${this.func}: Missing Brackets`;
-                                }
-                            } else return false;
-                        },
-                        noop() { },
-                        interpreter: Interpreter,
-                        client: client,
-                        embed: Discord.EmbedBuilder,
+            //                 return sliced.after();
+            //             },
+            //             inside(unpacked) {
+            //                 if (typeof unpacked.inside !== "string") {
+            //                     if (suppressErrors) return suppressErrors;
+            //                     else {
+            //                         return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: ${this.func}: Missing Brackets`;
+            //                     }
+            //                 } else return false;
+            //             },
+            //             noop() {},
+            //             interpreter: Interpreter,
+            //             client: client,
+            //             embed: Discord.EmbedBuilder
+            //         },
+            //         useChannel,
+            //         returnMessage,
+            //         returnExecution,
+            //         returnID,
+            //         sendMessage
+            //     );
+            //     FuncData.code = code.replaceLast(functionObj.params.length ? `${func}${param.join(";")}` : func, FuncData.code);
+            // } else {
+                FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
+                    randoms: randoms,
+                    command: {
+                        name: command.name,
+                        type: command.type,
+                        code: code,
+                        error: command.error,
+                        async: command.async || false,
+                        functions: command.functions,
+                        __path__: command.__path__,
+                        codeLines: command.codeLines,
+                        funcLine: funcLine
                     },
-                    useChannel,
-                    returnMessage,
-                    returnExecution,
-                    returnID,
-                    sendMessage
-                );
-                FuncData.code = code.replaceLast(
-                    functionObj.params.length
-                        ? `${func}${param.join(";")}`
-                        : func,
-                    FuncData.code
-                );
-            } else {
-                FuncData = await client.functionManager.cache
-                    .get(func.replace("$", "").replace("[", ""))
-                    ?.code({
-                        randoms: randoms,
-                        command: {
-                            name: command.name,
-                            type: command.type,
-                            code: code,
-                            error: command.error,
-                            async: command.async || false,
-                            functions: command.functions,
-                            __path__: command.__path__,
-                            codeLines: command.codeLines,
-                            funcLine: funcLine,
-                        },
-                        helpers: {
-                            time: Time,
-                            checkCondition: CheckCondition,
-                            mustEscape,
-                        },
-                        args: args,
-                        aoiError: require("../classes/AoiError.js"),
-                        data: data,
-                        func: func,
-                        funcLine,
-                        util: Util,
-                        allowedMentions: allowedMentions,
-                        embeds: embeds || [],
-                        components: components,
-                        files: attachments || [],
-                        timezone: timezone,
-                        channelUsed: channelUsed,
-                        vars: letVars,
-                        object: object,
-                        disableMentions: disableMentions,
-                        array: array,
-                        arrays,
-                        reactions: reactions,
-                        message: message.message || message,
-                        msg: msg.message || msg,
-                        author: author,
-                        guild: guild,
-                        channel: channel,
-                        member: member,
-                        mentions: mentions, //cleanup (ignore)
-                        unpack() {
-                            const last = code.split(func.replace("[", "")).length - 1;
-                            const sliced = code.split(func.replace("[", ""))[last];
+                    helpers: {
+                        time: Time,
+                        checkCondition: CheckCondition,
+                        mustEscape
+                    },
+                    args: args,
+                    aoiError: require("../classes/AoiError.js"),
+                    data: data,
+                    func: func,
+                    funcLine,
+                    util: Util,
+                    allowedMentions: allowedMentions,
+                    embeds: embeds || [],
+                    components: components,
+                    files: attachments || [],
+                    timezone: timezone,
+                    channelUsed: channelUsed,
+                    vars: letVars,
+                    object: object,
+                    disableMentions: disableMentions,
+                    array: array,
+                    arrays,
+                    reactions: reactions,
+                    message: message.message || message,
+                    msg: msg.message || msg,
+                    author: author,
+                    guild: guild,
+                    channel: channel,
+                    member: member,
+                    mentions: mentions, //cleanup (ignore)
+                    unpack() {
+                        const last = code.split(func.replace("[", "")).length - 1;
+                        const sliced = code.split(func.replace("[", ""))[last];
 
-                            return sliced.after();
-                        },
-                        inside(unpacked) {
-                            if (typeof unpacked.inside !== "string") {
-                                if (suppressErrors) return suppressErrors;
-                                else {
-                                    return client.aoiOptions.suppressAllErrors
-                                        ? client.aoiOptions.errorMessage
-                                        : `AoiError: \`${this.func}\`: Missing Brackets`;
-                                }
-                            } else return false;
-                        },
-                        noop() { },
-                        async error(err, d) {
-                            error = true;
-                            client.emit(
-                                "functionError",
-                                {
-                                    error: err?.addBrackets(),
-                                    function: func,
-                                    command: command.name,
-                                    channel,
-                                    guild,
-                                },
-                                client
-                            );
-                            if (client.aoiOptions.suppressAllErrors) {
-                                if (client.aoiOptions.errorMessage) {
-                                    const msg = message;
-                                    if (!msg || !msg.channel) {
-                                        console.error(client.aoiOptions.errorMessage.addBrackets());
-                                    } else {
-                                        if (!errorOccurred) {
-                                            try {
-                                             await Interpreter(
+                        return sliced.after();
+                    },
+                    inside(unpacked) {
+                        if (typeof unpacked.inside !== "string") {
+                            if (suppressErrors) return suppressErrors;
+                            else {
+                                return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: \`${this.func}\`: Missing Brackets`;
+                            }
+                        } else return false;
+                    },
+                    noop() {},
+                    async error(err, d) {
+                        error = true;
+                        client.emit(
+                            "functionError",
+                            {
+                                error: err?.addBrackets(),
+                                function: func,
+                                command: command.name,
+                                channel,
+                                guild
+                            },
+                            client
+                        );
+                        if (client.aoiOptions.suppressAllErrors) {
+                            if (client.aoiOptions.errorMessage) {
+                                const msg = message;
+                                if (!msg || !msg.channel) {
+                                    console.error(client.aoiOptions.errorMessage.addBrackets());
+                                } else {
+                                    if (!errorOccurred) {
+                                        try {
+                                            await Interpreter(
                                                 client,
                                                 msg ?? data,
                                                 args ?? [],
@@ -420,64 +398,49 @@ const Interpreter = async (
                                                 false,
                                                 false,
                                                 false,
-                                                true,
+                                                true
                                             );
-                                            } catch (e) {
-                                                console.error(client.aoiOptions.errorMessage.addBrackets());
-                                            }
-                                            errorOccurred = true;
-                                        }  
+                                        } catch (e) {
+                                            console.error(client.aoiOptions.errorMessage.addBrackets());
+                                        }
+                                        errorOccurred = true;
                                     }
+                                }
+                            }
+                        } else {
+                            if (!message || !message.channel) {
+                                console.error(err.addBrackets());
+                            } else if (suppressErrors && !errorOccurred) {
+                                if (suppressErrors.trim() !== "") {
+                                    const { makeMessageError } = require("../classes/AoiError.js");
+                                    const msg = await Util.errorParser(suppressErrors?.split("{error}").join(err.addBrackets()), {
+                                        channel: channel,
+                                        message: message,
+                                        guild: guild,
+                                        author: author
+                                    });
+                                    await makeMessageError(client, channel, msg.data ?? msg, msg.options, {
+                                        channel: channel,
+                                        message: message,
+                                        guild: guild,
+                                        author: author,
+                                        data: data
+                                    });
                                 }
                             } else {
-                                if (!message || !message.channel) {
-                                    console.error(err.addBrackets());
-                                } else if (suppressErrors && !errorOccurred) {
-                                    if (suppressErrors.trim() !== "") {
-                                        const {
-                                            makeMessageError,
-                                        } = require("../classes/AoiError.js");
-                                        const msg = await Util.errorParser(
-                                            suppressErrors
-                                                ?.split("{error}")
-                                                .join(err.addBrackets()),
-                                            {
-                                                channel: channel,
-                                                message: message,
-                                                guild: guild,
-                                                author: author,
-                                            }
-                                        );
-                                        await makeMessageError(
-                                            client,
-                                            channel,
-                                            msg.data ?? msg,
-                                            msg.options,
-                                            {
-                                                channel: channel,
-                                                message: message,
-                                                guild: guild,
-                                                author: author,
-                                                data: data,
-                                            }
-                                        );
-                                    }
-                                } else {
-                                    await message.channel.send(
-                                        typeof err === "object" ? err : err?.addBrackets()
-                                    );
-                                }
-                                errorOccurred = true;
+                                await message.channel.send(typeof err === "object" ? err : err?.addBrackets());
                             }
-                        },
-                        interpreter: Interpreter,
-                        client: client,
-                        embed: Discord.EmbedBuilder,
-                    });
+                            errorOccurred = true;
+                        }
+                    },
+                    interpreter: Interpreter,
+                    client: client,
+                    embed: Discord.EmbedBuilder
+                });
                 if (client?.aoiOptions?.debugs?.interpreter) {
-                    debug[func].funcData = require("util").inspect(FuncData, {depth: 0});
+                    debug[func].funcData = require("util").inspect(FuncData, { depth: 0 });
                 }
-            }
+            // }
 
             code = FuncData?.code ?? code;
 
@@ -541,10 +504,9 @@ const Interpreter = async (
             }
         }
 
+
         const ended = (performance.now() - start).toFixed(3);
-        embeds = JSON.parse(
-            JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended)
-        );
+        embeds = JSON.parse(JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended));
 
         if (client?.aoiOptions?.debugs?.interpreter) {
             debug.executionTime = ended + " ms";
@@ -560,16 +522,13 @@ const Interpreter = async (
             return AoiError.consoleError("EmbedError", "Index are not defined.");
         }
         if (returnCode) {
-            returnData.code = code;
+            returnData.code = !error ?code : null;
         }
         if (returnExecution) {
             returnData.data = data;
         }
-        if (
-            (code.length || embeds?.length || attachments?.length) &&
-            !errorOccurred &&
-            !error
-        ) {
+	
+        if ((code.length || embeds?.length || attachments?.length) && !errorOccurred && !error) {
             try {
                 const send = {
                     embeds: embeds,
@@ -578,13 +537,13 @@ const Interpreter = async (
                     flags,
                     allowedMentions: {
                         parse: allowedMentions,
-                        repliedUser: reply?.user || false,
+                        repliedUser: reply?.user || false
                     },
                     reply: {
-                        messageReference: reply?.message,
-                    },
+                        messageReference: reply?.message
+                    }
                 };
-                if (code.trim() !== "") {
+                if (code.trim() !== "" && !error) {
                     send.content = code.addBrackets() === "" ? " " : code.addBrackets();
                 }
                 if (returnCode && !sendMessage) {
@@ -632,7 +591,7 @@ const Interpreter = async (
                 console.error(e);
             }
         }
-        return Object.keys(returnData).length ? returnData : undefined
+        return Object.keys(returnData).length ? returnData : undefined;
     } catch (e) {
         console.error(e);
     }

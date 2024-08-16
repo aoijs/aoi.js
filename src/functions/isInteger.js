@@ -1,12 +1,17 @@
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [number] = data.inside.splits;
+    let [number] = data.inside.splits;
 
-    data.result = number.trim() === '' ? false : !Number.isInteger(number);
-
+    if (isNaN(number)) {
+        data.result = false;
+    } else {
+        number = Number(number);
+        data.result = Number.isInteger(number);
+    }
+    
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

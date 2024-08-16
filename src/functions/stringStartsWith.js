@@ -3,8 +3,7 @@ module.exports = async d => {
     if (data.err) return d.error(data.err);
 
     const [text, ...checks] = data.inside.splits;
-    const result = checks.some(check => text.addBrackets().startsWith(check.addBrackets()));
-    data.result = result
+    data.result = checks.some(check => text.addBrackets().startsWith(check.addBrackets()))
 
     return {
       code: d.util.setCode(data)
