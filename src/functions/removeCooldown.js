@@ -10,8 +10,8 @@ module.exports = async (d) => {
         channel: id[0] || d.message.channel.id
     };
     if (!types[type]) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Type In");
-    if (await d.client.db.get(type == "guild" ? d.client.db.tables[0] : "__aoijs_vars__", "cooldown", command + "_" + types[type])) {
-        await d.client.db.delete(type == "guild" ? d.client.db.tables[0] : "__aoijs_vars__", "cooldown", command + "_" + types[type]);
+    if (await d.client.db.get("__aoijs_vars__", "cooldown", command + "_" + types[type])) {
+        await d.client.db.delete("__aoijs_vars__", "cooldown", command + "_" + types[type]);
     } else {
         d.aoiError.fnError(d, "custom", {}, "No Such Cooldown Exists");
     }
