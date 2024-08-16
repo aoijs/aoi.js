@@ -140,15 +140,6 @@ String.prototype.addBrackets = function () {
         .replace(/#OR#/g, "||");
 };
 
-Array.prototype.goof = function (sep = "_") {
-    return this.map((x) =>
-        x
-            .split(sep)
-            .map((w) => w.toLowerCase().replace(w[0].toLowerCase(), w[0].toUpperCase()))
-            .join(" ")
-    ).join(", ");
-};
-
 async function walk(path) {
     const something = await fs.promises.readdir(path, { withFileTypes: true }).then((f) => {
         return f.map((d) => {

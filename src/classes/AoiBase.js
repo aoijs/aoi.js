@@ -62,10 +62,9 @@ class BaseClient extends Client {
                 !options?.database)
         ) {
             const dbData = options?.database;
-            dbData.type = "aoi.db";
 
             this.db = new Database(
-                dbData.type,
+                dbData?.type ?? "aoi.db",
                 dbData?.db ?? require("@aoijs/aoi.db"),
                 dbData?.dbType ?? "KeyValue",
                 {
@@ -189,7 +188,9 @@ class BaseClient extends Client {
                     "shardDisconnect",
                     "shardError",
                     "shardReconnecting",
-                    "shardResume"
+                    "shardResume",
+                    "shardReady",
+                    "shardCreate"
                 ].includes(event)
                     ? require(`../sharding/${event}.js`)
                     : Array.isArray(file)

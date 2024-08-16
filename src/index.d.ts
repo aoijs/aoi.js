@@ -25,10 +25,6 @@ declare module "aoi.js" {
             };
             addBrackets(): string;
         }
-
-        interface Array<T> {
-            goof(sep?: string): string;
-        }
     }
 
     class Util {
