@@ -1,8 +1,8 @@
 name: Reporting Bug
 description: Report us the issue, and leave it to us! 🤗
+assignees: "Leref"
 title: "Bug: "
 labels: "bug"
-assignees: "Leref"
 body:
   - type: markdown
     attributes:
@@ -18,14 +18,14 @@ body:
         - Function 
         - Callback 
         - Handler 
-        - Extensions 
+        - Other
     validations:
       required: true
       
   - type: textarea
     id: code
     attributes:
-      label: Bugged Function
+      label: Bugged Behavior 
       render: js
       description: Please type usage of your code
       placeholder: |
@@ -46,9 +46,10 @@ body:
       label: Version of aoi.js
       description: What version of aoi.js are you using?
       options:
-        - v6.7.1
-        - v6.7.0
-        - v6.6.1
+        - v6.8.x
+        - v6.7.x
+        - v6.6.x
+        - Older
     validations:
       required: true
       
@@ -59,8 +60,8 @@ body:
       description: Also, what version of Node.js are you using? 
       options:
         - v16.11.0 (Lowest)
-        - v20.10.0 (LTS)
-        - v21.4.0 (Current)
+        - v20.16.0 (LTS)
+        - v22.5.1 (Current)
     validations:
       required: true
       
@@ -74,8 +75,7 @@ body:
     id: logs
     attributes:
       label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      description: Please copy and paste any relevant log output.
       
   - type: checkboxes
     id: terms
