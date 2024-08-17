@@ -49,8 +49,8 @@ module.exports = async (d) => {
     if (contentType.match(/application\/json/)) {
         d.data.http.result = await response.json()
     } else if (contentType.match(/image\//)) {
-        const buffer = await response.arrayBuffer()
-        d.data.http.result = Buffer.from(buffer).toString("base64")
+        d.data.http.result = await response.arrayBuffer()
+        .then(a => Buffer.from(a).toString("base64"));
     } else {
         d.data.http.result = await response.text()
     }
