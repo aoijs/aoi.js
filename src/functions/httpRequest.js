@@ -1,78 +1,62 @@
-const { Agent, fetch } = require('undici');
-
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err);
-
+    
     let [
         url,
         method = 'get',
-        body = '',
-        property,
-        error = 'default',
-        ...header
+        body = ''
     ] = data.inside.splits;
 
-    body = body?.trim() === '' ? undefined : body;
+    body = body !== '' ? body.trim() : body;
+
+    // Getting the user-defined headers and content type.
+    const headers = {};
+    if (d.data.http?.contentType) {
+        Object.assign(headers, {
+            ['Content-Type']: d.data.http.contentType
+        });
+    }
+    if (d.data.http?.headers) {
+        Object.assign(headers, d.data.http.headers);
+    }
+
+    // Making the request.
+    const response = await fetch(url.addBrackets(), {
+        body: body === '' ? undefined : body.addBrackets(),
+        headers,
+        method
+    });
+
+    // Defining response headers.
+    (d.data.http??={})["headers"] = {};
+    for (const [name, value] of response.headers.entries()) {
+        if (/content-type/.test(name)) continue;
+        d.data.http.headers[name] = value;
+    }
+
+    // Get the response content type.
+    const contentType = response.headers.get("content-type")?.split(/;/)[0];
+
+    // Defining response content type.
+    (d.data.http ??= {})['contentType'] = contentType;
+    d.data.http.statusCode = response.status;
+
+    // Additional response data.
+    d.data.http.redirected = response.redirected;
+    d.data.http.ok = response.ok;
+
+    // Saving the result.
+    if (contentType.match(/application\/json/)) {
+        d.data.http.result = await response.json()
+    } else if (contentType.match(/image\//)) {
+        const buffer = await response.arrayBuffer()
+        d.data.http.result = Buffer.from(buffer).toString("base64")
+    } else {
+        d.data.http.result = await response.text()
+    }
     
-    let headers = {};
-    if (header.length === 1) {
-        try {
-            headers = JSON.parse(header);
-        } catch (e) {
-            header.forEach((x) => {
-                const split = x.split(':');
-                headers[split[0]] = split[1];
-            });
-        }
-    } else if (header.length > 1) {
-        header.forEach((x) => {
-            const split = x.split(':');
-            headers[split[0]] = split[1];
-        });
-    }
-
-    try {
-        const response = await fetch(url.addBrackets(), {
-            method,
-            headers,
-            body,
-            agent: new Agent(),
-        });
-
-        const responseBody = await response.text();
-        const contentType = response.headers.get("content-type")?.split(/;/)[0];
-
-        if (property && /content(-|\s)?type/gi.test(property)) {
-            data.result = contentType;
-        } else if (property && contentType.includes("json")) {
-            data.result = eval(`JSON.parse(responseBody)?.${property}`)
-        } else {
-            data.result = responseBody;
-        }
-    } catch (err) {
-        console.error(err);
-        if (error === 'default') {
-            return d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                { content: err },
-                {},
-                d
-            );
-        } else {
-            const parsedError = await d.util.errorParser(error, d);
-            return d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                parsedError.data ?? parsedError,
-                parsedError.options,
-                d
-            );
-        }
-    }
-
     return {
         code: d.util.setCode(data),
-    };
-};
+        data: d.data
+    }
+}
