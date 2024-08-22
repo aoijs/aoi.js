@@ -4,18 +4,14 @@ module.exports = async (d) => {
     let [
         url,
         method = 'get',
-        body = ''
+        body = '',
+        encoding = 'utf-8'
     ] = data.inside.splits;
 
     body = body !== '' ? body.trim() : body;
 
-    // Getting the user-defined headers and content type.
+    // Getting the user-defined headers.
     const headers = {};
-    if (d.data.http?.contentType) {
-        Object.assign(headers, {
-            ['Content-Type']: d.data.http.contentType
-        });
-    }
     if (d.data.http?.headers) {
         Object.assign(headers, d.data.http.headers);
     }
@@ -30,7 +26,6 @@ module.exports = async (d) => {
     // Defining response headers.
     (d.data.http??={})["headers"] = {};
     for (const [name, value] of response.headers.entries()) {
-        if (/content-type/.test(name)) continue;
         d.data.http.headers[name] = value;
     }
 
@@ -38,7 +33,6 @@ module.exports = async (d) => {
     const contentType = response.headers.get("content-type")?.split(/;/)[0];
 
     // Defining response content type.
-    (d.data.http ??= {})['contentType'] = contentType;
     d.data.http.statusCode = response.status;
 
     // Additional response data.
@@ -50,7 +44,7 @@ module.exports = async (d) => {
         d.data.http.result = await response.json()
     } else if (contentType.match(/image\//)) {
         d.data.http.result = await response.arrayBuffer()
-        .then(a => Buffer.from(a).toString("base64"));
+        .then(a => Buffer.from(a).toString(encoding));
     } else {
         d.data.http.result = await response.text()
     }

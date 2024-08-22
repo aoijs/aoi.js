@@ -1,7 +1,7 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    data.result = d.data.http?.statusCode ?? Infinity;
+    data.result = d.data.http?.statusCode;
 
     return {
         code: d.util.setCode(data),
