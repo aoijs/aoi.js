@@ -68,7 +68,7 @@ class AoiError {
      * @returns {Promise<import('discord.js').Message>}
      */
     static async makeMessageError(client, channel, options = {}, extraOptions = {}, d) {
-        options = options.data ?? options;
+        options = options?.data ?? options;
         if (typeof options === "object") {
             options.content = options.content?.toString()?.trim() || " ";
             if (options.embeds && typeof options.embeds === "string") {
