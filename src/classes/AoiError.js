@@ -73,12 +73,14 @@ class AoiError {
             options.content = options.content?.toString()?.trim() || " ";
             if (options.embeds && typeof options.embeds === "string") {
                 options.embeds = await EmbedParser(options.embeds, d);
+                console.log(options.embeds);
             }
             if (options.files && typeof options.files === "string") {
                 options.files = FileParser(options.files, d);
             }
             if (options.components && typeof options.components === "string") {
                 options.components = await ComponentParser(options.components, d);
+                console.log(options.components);
             }
         } else {
             options = {

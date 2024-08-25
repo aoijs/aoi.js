@@ -97,18 +97,27 @@ const EmbedParser = async (message) => {
         }
 
         // Timestamp
-        // {timestamp:time?}
+        // {timestamp:time}
         if (Checker(content, "timestamp")) {
             let timestampField = extractParser(content, "timestamp");
-            if (timestampField.trim() === "") {
+            try {
+                timestampField = Time.parse(t)?.ms;
+            } catch {
                 timestampField = Date.now();
-            } else {
-                try {
-                    timestampField = Time.parse(t)?.ms;
-                } catch {
-                    timestampField = Date.now();
-                }
             }
+
+            embed.timestamp = new Date(timestampField);
+        }
+
+        // {timestamp}
+        if (SingleChecker(content, "timestamp")) {
+            let timestampField = Date.now();
+            try {
+                timestampField = Time.parse(t)?.ms;
+            } catch {
+                timestampField = Date.now();
+            }
+
             embed.timestamp = new Date(timestampField);
         }
 
@@ -117,15 +126,23 @@ const EmbedParser = async (message) => {
         if (Checker(content, "field")) {
             const fieldContent = content.split("{field:").slice(1);
             for (let fieldInner of fieldContent) {
-                fieldInner = fieldInner.split("}")[0].split(":");
-                const name = fieldInner.shift().addBrackets().trim();
-                const inline = ["true", "false"].find((x) => x === fieldInner[Number(fo.length - 1)].trim()) ? fieldInner.pop().trim() === "true" : false;
-                const value = fieldInner.join(":").addBrackets().trim();
+                fieldInner = fieldInner?.split("}")[0];
+                fieldInner = fieldInner
+                    ?.addBrackets()
+                    .split(/:(?![/][/])/)
+                    .map((x) => x.trim());
 
-                embed.fields.push({ name, value, inline });
+                if (fieldInner.length < 2) {
+                    return console.error("Missing title or description in the {field:} parser", fieldInner);
+                }
+
+                const fieldName = fieldInner.shift();
+                const fieldValue = fieldInner.shift();
+                const fieldInline = fieldInner.pop()?.addBrackets().trim() === "true";
+
+                embed.fields.push({ name: fieldName, value: fieldValue, inline: fieldInline });
             }
         }
-
         embeds.push(embed);
     }
     return embeds;
@@ -156,8 +173,10 @@ const ComponentParser = async (message, d) => {
         } catch {
             emoji = part.toString();
             emoji = emoji.addBrackets().trim() || undefined;
+        } finally {
+            if (!emoji) return null;
+            return emoji;
         }
-        return emoji;
     }
 
     for (let content of actionRow) {
@@ -229,17 +248,22 @@ const ComponentParser = async (message, d) => {
                 const opts = options.split("{stringInput:").slice(1);
 
                 for (let opt of opts) {
-                    opt = opt.split("}")[0].split(":");
+                    opt = opt?.split("}")[0];
+                    opt = opt
+                        ?.addBrackets()
+                        .split(/:(?![/][/])/)
+                        .map((x) => x.trim());
+
                     const label = opt.shift();
                     const value = opt.shift();
-                    const desc = opt.shift();
-                    const def = opt.shift() === "true";
+                    const description = opt.shift();
+                    const defaultOption = opt.shift()?.addBrackets().trim() === "true";
 
                     const selectMenuInner = {
                         label: label,
                         value: value,
-                        description: desc,
-                        default: def
+                        description: description,
+                        default: defaultOption
                     };
 
                     if (opt) {
@@ -491,22 +515,21 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     function parseInteraction(part) {
         let content = part.split(":");
-        options.interaction = {
-            interaction: true,
-            defer: content[1] ? content[1].split("}")[0].trim() === "true" : false
-        };
+        options.interaction.interaction = true;
+        options.interaction.defer = content[1] ? content[1].split("}")[0].trim() === "true" : false;
     }
 
     function parseAllowedMentions(part) {
-        const parts = part.split(":")[1].split("}")[0].split(",");
+        const parts = part.split("}")[0].split(":").slice(1);
+        console.log(parts);
         if (parts.includes("all")) options.allowedMentions.parse = ["everyone", "users", "roles"];
         else if (parts.includes("none")) options.allowedMentions.parse = [];
         else if (parts.includes("")) options.allowedMentions.parse = [];
-        else return (options.allowedMentions.parse = [...parts]);
+        else options.allowedMentions.parse = [...parts];
     }
 
     function parseFlags(part) {
-        const parts = part.split(":")[1].split("}")[0].split(",");
+        const parts = part.split("}")[0].split(":").slice(1);
         options.flags.push(parts.map((x) => MessageFlags[x.trim()]));
     }
 
@@ -530,7 +553,7 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         else if (SingleChecker(part, "deleteCommand")) options.context.deleteCommand = true;
         else if (SingleChecker(part, "interaction")) options.interaction.interaction = true;
         else if (Checker(part, "interaction")) parseInteraction(part);
-        else if (specialChecker(part, "ephemeral")) options.interaction.ephemeral = true;
+        else if (SingleChecker(part, "ephemeral")) options.interaction.ephemeral = true;
         else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
         else if (Checker(part, "reactions")) options.reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
         else if (Checker(part, "allowedMentions")) parseAllowedMentions(part);
