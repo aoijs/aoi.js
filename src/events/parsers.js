@@ -521,7 +521,6 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     function parseAllowedMentions(part) {
         const parts = part.split("}")[0].split(":").slice(1);
-        console.log(parts);
         if (parts.includes("all")) options.allowedMentions.parse = ["everyone", "users", "roles"];
         else if (parts.includes("none")) options.allowedMentions.parse = [];
         else if (parts.includes("")) options.allowedMentions.parse = [];
