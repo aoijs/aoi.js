@@ -111,13 +111,7 @@ const EmbedParser = async (message) => {
 
         // {timestamp}
         if (SingleChecker(content, "timestamp")) {
-            let timestampField = Date.now();
-            try {
-                timestampField = Time.parse(t)?.ms;
-            } catch {
-                timestampField = Date.now();
-            }
-
+            const timestampField = Date.now();
             embed.timestamp = new Date(timestampField);
         }
 
@@ -497,13 +491,11 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     }
 
     function parseReply(part) {
-        let content = part.split(":");
-        let reply = {
-            message: content[1].trim(),
-            mention: content[2] ? content[2].split("}")[0].trim() === "true" : true
+        let content = extractParser(part, "reply", true);
+        options.reply = {
+            message: content[0].trim(),
+            mention: content[1]?.trim() === "true"
         };
-        if (!content[2]) reply.message = ctn[1].split("}")[0].trim();
-        options.reply = reply;
     }
 
     async function parseExecute(part, d) {

@@ -116,6 +116,7 @@ class AoiError {
 
                 if (extraOptions.reply?.message) {
                     if (!extraOptions.reply?.mention) options.allowedMentions = { parse: [] };
+                    else if (!options.allowedMentions) options.allowedMentions = { parse: ["users"] };
 
                     msg = await (await d.util.getMessage(channel, extraOptions.reply?.message)).reply(options).catch((e) => {
                         AoiError.consoleError("CreateMessageError", e);
