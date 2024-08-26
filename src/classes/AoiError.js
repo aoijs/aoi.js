@@ -25,12 +25,12 @@ class AoiError {
         throw error;
     }
 
-	static AstGeneratorError(message,options) {
-		const error = new Error(`(GenerationError): ${message} `);
-		error.name = "AstGeneratorError";
-		error.options = options;
-		throw error;
-	}
+    static AstGeneratorError(message, options) {
+        const error = new Error(`(GenerationError): ${message} `);
+        error.name = "AstGeneratorError";
+        error.options = options;
+        throw error;
+    }
 
     /**
      * @param  {string} command
@@ -115,8 +115,7 @@ class AoiError {
                 if (options.content === " " && (options.embeds?.length ?? 0) === 0 && (options.files?.length ?? 0) === 0 && (options.stickers?.length ?? 0) === 0) return;
 
                 if (extraOptions.reply?.message) {
-                    if (!extraOptions.reply?.mention) options.allowedMentions = { parse: [] };
-                    else if (!options.allowedMentions) options.allowedMentions = { parse: ["users"] };
+                    if (extraOptions.reply?.mention) options.allowedMentions.repliedUser = true;
 
                     msg = await (await d.util.getMessage(channel, extraOptions.reply?.message)).reply(options).catch((e) => {
                         AoiError.consoleError("CreateMessageError", e);
@@ -148,7 +147,6 @@ class AoiError {
         }
 
         if (extraOptions.deleteIn) {
-            extraOptions.deleteIn = Time.parse(extraOptions.deleteIn.split("}")[0])?.ms;
             setTimeout(() => msg.delete(), extraOptions.deleteIn);
         }
         if (extraOptions.deleteCommand) {

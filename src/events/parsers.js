@@ -401,7 +401,7 @@ const FileParser = (message) => {
 
     // Attachment
     // {attachment:name:content}
-    if (Checker(content, "attachment")) {
+    if (Checker(message, "attachment")) {
         const content = message
             ?.split("{attachment:")
             ?.slice(1)
@@ -410,9 +410,10 @@ const FileParser = (message) => {
             attachmentInner = attachmentInner.split("}")[0];
             attachmentInner = attachmentInner.split(/:(?![/][/])/);
 
+            const content = attachmentInner.pop().addBrackets();
             const name = attachmentInner.join(":").toString().addBrackets() ?? "attachment.png";
 
-            const attachment = new AttachmentBuilder(attachmentInner.pop().addBrackets(), {
+            const attachment = new AttachmentBuilder(content, {
                 name
             });
 
@@ -422,7 +423,7 @@ const FileParser = (message) => {
 
     // File
     // {file:name:content}
-    if (Checker(content, "file")) {
+    if (Checker(message, "file")) {
         const content = message
             .split("{file:")
             ?.slice(1)
@@ -431,9 +432,10 @@ const FileParser = (message) => {
             fileInner = fileInner.split("}")[0];
             fileInner = fileInner.split(/:(?![/][/])/);
 
+            const content = fileInner.pop().addBrackets();
             const name = fileInner.join(":").toString().addBrackets() ?? "file.txt";
 
-            const attachment = new AttachmentBuilder(Buffer.from(fileInner.pop().addBrackets()), { name });
+            const attachment = new AttachmentBuilder(Buffer.from(content), { name });
 
             attachments.push(attachment);
         }
@@ -461,11 +463,12 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             mention: true
         },
         edits: {
-            time: "",
+            time: null,
             messages: []
         },
         allowedMentions: {
-            parse: ["everyone", "users", "roles"]
+            parse: ["everyone", "users", "roles"],
+            repliedUser: false
         },
         files: [],
         reactions: [],
@@ -486,12 +489,16 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         options.files.push(...FileParser(part));
     }
 
-    async function parseEdit(part, d) {
-        options.edits = await OptionParser(part, d);
+    async function parseOptions(part, d) {
+        const optionData = await OptionParser(part, d);
+        if (optionData.edits !== undefined) options.edits = optionData.edits;
+        if (optionData.reactions !== undefined) options.reactions = optionData.reactions;
+        if (optionData.deleteIn !== undefined) options.context.deleteIn = optionData.deleteIn;
+        if (optionData.deleteCommand !== undefined) options.context.deleteCommand = optionData.deleteCommand;
     }
 
     function parseReply(part) {
-        let content = extractParser(part, "reply", true);
+        const content = extractParser(part, "reply", true);
         options.reply = {
             message: content[0].trim(),
             mention: content[1]?.trim() === "true"
@@ -524,20 +531,13 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         options.flags.push(parts.map((x) => MessageFlags[x.trim()]));
     }
 
-    const reactionParser = (reactions) => {
-        const regex = /(<a?:\w+:[0-9]+>)|\p{Extended_Pictographic}/gu;
-        const matches = reactions.match(regex);
-        if (!matches) return [];
-        return matches;
-    };
-
     const parts = CreateObjectAST(errorMessage);
     for (const part of parts) {
         errorMessage = errorMessage.replace(part, "");
         if (Checker(part, "newEmbed")) await parseEmbeds(part, d);
         else if (Checker(part, "actionRow")) await parseComponents(part, d);
         else if (Checker(part, "attachment") || Checker(part, "file")) await parseFiles(part);
-        else if (Checker(part, "edit")) await parseEdit(part, d);
+        else if (Checker(part, "edit") || Checker(part, "deleteIn") || Checker(part, "reactions")) await parseOptions(part, d);
         else if (Checker(part, "reply")) parseReply(part);
         else if (Checker(part, "suppress")) options.context.suppress = true;
         else if (Checker(part, "execute")) await parseExecute(part, d);
@@ -545,8 +545,6 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         else if (SingleChecker(part, "interaction")) options.interaction.interaction = true;
         else if (Checker(part, "interaction")) parseInteraction(part);
         else if (SingleChecker(part, "ephemeral")) options.interaction.ephemeral = true;
-        else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
-        else if (Checker(part, "reactions")) options.reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
         else if (Checker(part, "allowedMentions")) parseAllowedMentions(part);
         else if (Checker(part, "flags")) parseFlags(part);
     }
@@ -656,39 +654,51 @@ const SlashOptionsParser = async (options) => {
 
 const OptionParser = async (options, d) => {
     const optionData = {};
+
+    // Edit
+    // {edit:time:messages}
     if (Checker(options, "edit")) {
         const editPart = options.split("{edit:")[1].split("}")[0];
         const parts = editPart.split(":");
         const dur = parts[0];
         const messageParts = parts.slice(1);
         const messages = [];
+
         for (let msg of messageParts) {
             messages.push(await errorHandler(msg, d, true));
         }
-        optionData.edits = { time: Time.parse(dur)?.ms, messages: [messages] };
+
+        optionData.edits = {
+            time: Time.parse(dur)?.ms,
+            messages: [messages]
+        };
     }
+
+    // Reactions
+    // {reactions:...emojis}
+    const reactionParser = (reactions) => {
+        const regex = /(<a?:\w+:[0-9]+>)|\p{Extended_Pictographic}/gu;
+        const matches = reactions.match(regex);
+        if (!matches) return [];
+        return matches;
+    };
+
     if (Checker(options, "reactions")) {
-        const react = options.split("{reactions:")[1].split("}")[0];
-        optionData.reactions = react.split(",").map((x) => x.trim());
+        const reactions = reactionParser(options.split(":").slice(1).join(":").replace("}", ""));
+        optionData.reactions = reactions;
     }
-    if (Checker(options, "delete")) {
-        optionData.deleteIn = Time.parse(options.split("{delete:")[1].split("}")[0].trim())?.ms;
-    }
+
+    // DeleteIn
+    // {deleteIn:time}
     if (Checker(options, "deleteIn")) {
-        optionData.deleteIn = Time.parse(options.split("{deleteIn:")[1].split("}")[0].trim())?.ms;
+        const time = extractParser(options, "deleteIn");
+        optionData.deleteIn = Time.parse(time)?.ms;
     }
+
     if (SingleChecker(options, "deletecommand")) {
         optionData.deleteCommand = true;
     }
-    if (SingleChecker(options, "interaction")) {
-        optionData.interaction = true;
-        optionData.defer = false;
-    }
-    if (Checker(options, "interaction")) {
-        const defer = options.split("{interaction:")[1].split("}")[0].trim();
-        optionData.interaction = true;
-        optionData.defer = defer === "true";
-    }
+
     return optionData;
 };
 
