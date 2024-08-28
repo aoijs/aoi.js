@@ -1,9 +1,10 @@
-import { Client, ShardingManager } from "discord.js";
+import { Client, DMChannel, GatewayIntentsString, Guild, GuildMember, Message, MessageMentions, NewsChannel, PartialDMChannel, ShardingManager, Snowflake, TextChannel, ThreadChannel, User } from "discord.js";
 import { Group, LimitGroup, SuperSet } from "@aoijs/aoi.structures";
 import { Group as Collection } from "@aoijs/aoi.structures";
-import { AllEvents } from "./utils/Constants";
+import { EventstoFile } from "./utils/Constants";
 import { Constants } from "./utils/Constants";
 import { parsers } from "./events/parsers";
+import { KeyValue } from "@aoijs/aoi.db";
 
 declare module "aoi.js" {
     import { EventEmitter } from "events";
@@ -149,19 +150,14 @@ declare module "aoi.js" {
         ): void;
     }
 
-    type IntentOptions = string[];
+    type IntentOptions = (GatewayIntentsString | "GuildEmojis" | "GuildMessageTypings")[];
 
-    type DatabaseOption<Database> = {
-        type:
-            | "default"
-            | "aoi.db"
-            | "custom";
-        db: Database;
-        path?: string;
-        tables?: Array<string>;
-        extraOptions?: Record<string, any>;
-        promisify?: boolean;
-        aoiOptions: Array<string>;
+    type DatabaseOptions = {
+        type: "aoi.db",
+        db: typeof import("@aoijs/aoi.db"),
+        dbType: "KeyValue" | "Transmitter",
+        tables: string[],
+        securityKey: string
     };
 
     type RespondOnEditOptions = {
@@ -177,19 +173,19 @@ declare module "aoi.js" {
         token: string;
         prefix: string | Array<string>;
         intents: IntentOptions;
-        database?: DatabaseOption<any>;
+        database?: DatabaseOptions;
         respondOnEdit?: RespondOnEditOptions;
         disableFunctions?: Array<string>;
-        respondToBots: boolean;
-        guildOnly: boolean;
+        respondToBots?: boolean;
+        guildOnly?: boolean;
         cache: CacheOptions;
         aoiLogs?: boolean;
         aoiWarning?: boolean;
         aoiAutoUpdate?: boolean;
         disableAoiDB?: boolean;
         suppressAllErrors?: boolean;
-        errorMessage?: Array<string>;
-        events?: Array<AllEvents>;
+        errorMessage?: string;
+        events?: Array<keyof typeof EventstoFile>;
         mobilePlatform?: boolean;
         fetchInvites?: {
             enabled: boolean;
@@ -246,7 +242,7 @@ declare module "aoi.js" {
         cacheManager: CacheManager;
         variableManager: any;
         prefix: string | string[];
-        db: any;
+        db: KeyValue;
         statuses: Group;
 
         constructor(options: ClientOptions);
@@ -384,7 +380,36 @@ declare module "aoi.js" {
         createCommand(data: Record<string, any>): void;
         formCustomCommand(customCmds: string[]): void;
     }
-}
+
+    // Interpreter
+    type InterpreterReturn = {
+        code?: string;
+        data?: Record<string, unknown>;
+        id?: Snowflake;
+        message?: Message;
+    }
+    type Interpreter = (
+        client: AoiClient,
+        message: Message | {
+            message?: Message;
+            channel?: PartialDMChannel | DMChannel | NewsChannel | TextChannel | ThreadChannel;
+            guild?: Guild | null;
+            author?: User;
+            member?: GuildMember;
+            mentions?: MessageMentions;
+        },
+        args: string[],
+        command: BaseCommand | Command | EventCommand | AwaitCommand | InteractionCommand | LoopCommand,
+        _db: KeyValue,
+        returnCode?: boolean,
+        channelUsed?: string,
+        data?: Record<string, unknown>,
+        useChannel?: TextChannel,
+        returnMessage?: boolean,
+        returnExecution?: boolean,
+        returnID?: boolean,
+        sendMessage?: boolean
+    ) => Promise<InterpreterReturn>
 
     // FunctionManager
     class FunctionManager {
@@ -392,7 +417,7 @@ declare module "aoi.js" {
         maps: Record<string, string[]>;
         functions: string[];
         cache: Group;
-        interpreter: unknown;
+        interpreter: Interpreter;
 
         constructor(client: AoiClient);
 
@@ -478,3 +503,4 @@ declare module "aoi.js" {
         resolveSelectMenuOptionData(options: object[]): string;
         get buttonDataLength(): number;
     }
+}
