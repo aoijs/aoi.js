@@ -19,7 +19,7 @@ const EmbedParser = async (message) => {
     message = mustEscape(message);
 
     const embeds = [];
-
+    
     let messages = message.split("{newEmbed:").slice(1);
     for (let content of messages) {
         content = content.slice(0, content.length - 1);
@@ -238,6 +238,8 @@ const ComponentParser = async (message, d) => {
 
             let selectMenuOptions = [];
 
+            // String Input
+            // {stringInput:label:value:description:defaultOption?}
             if (options.includes("{stringInput:")) {
                 const opts = options.split("{stringInput:").slice(1);
 
@@ -360,7 +362,7 @@ const ComponentParser = async (message, d) => {
 
         // Text Input
         // {textInput:label:style:custom_id:required?:placeholder?:min_length?:max_length?:value?}
-        if (Checker("textInput")) {
+        if (Checker(content, "textInput")) {
             let inside = content.split("{textInput:").slice(1);
             for (let textInput of inside) {
                 textInput = textInput.split("}")[0].split(":");
