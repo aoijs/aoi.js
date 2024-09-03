@@ -4,15 +4,25 @@ module.exports = (d) => {
 
     const [...words] = data.inside.splits;
 
-    data.result = words[Math.floor(Math.random() * words.length)];
-    const randoms = d.randoms;
-    if (!randoms[`randomText${data.inside}`]) {
-        randoms[`randomText${data.inside}`] = data.result;
+    const returnRandom = words[0] == "true";
+    if (returnRandom) words.shift();
+
+    let randomWord = words[Math.floor(Math.random() * words.length)];
+
+    if (returnRandom) {
+        data.result = randomWord;
     } else {
-        data.result = randoms[`randomText${data.inside}`];
+        const randoms = d.randoms;
+        if (!randoms[`randomText${data.inside}`]) {
+            randoms[`randomText${data.inside}`] = randomWord;
+        } else {
+            randomWord = randoms[`randomText${data.inside}`];
+        }
+
+        data.result = randomWord;
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

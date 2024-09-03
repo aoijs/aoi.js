@@ -18,7 +18,6 @@ module.exports = async (d) => {
 
   return {
     code: d.util.setCode(data),
-    data: { ...d.data, embeds: Object.assign({}, d.data.embeds, d.embeds) },
     embeds: d.embeds,
   };
 };

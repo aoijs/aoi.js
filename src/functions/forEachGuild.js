@@ -22,14 +22,12 @@ module.exports = async (d) => {
         }
     });
 
-    cmds = cmds
-        .map((x) => d.client.cmd.awaited.find((y) => y.name.toLowerCase() === x.toLowerCase()))
-        .reverse();
+    cmds = cmds.map((x) => d.client.cmd.awaited.find((y) => y.name.toLowerCase() === x.toLowerCase())).reverse();
 
     let datas;
     if (d.client.shard) {
         datas = await d.client.shard.fetchGuilds();
-        datas = datas.map(guild => guild.id);
+        datas = datas.map((guild) => guild.id);
     } else {
         datas = [...d.client.guilds.cache.values()];
     }
@@ -46,21 +44,12 @@ module.exports = async (d) => {
             guild,
             client: d.client,
             author: d.author,
-            member: d.member,
+            member: d.member
         };
 
         while (u >= 0) {
             const cmd = cmds[u];
-            await d.interpreter(
-                d.client,
-                loopData,
-                d.args,
-                cmd,
-                d.client.db,
-                false,
-                undefined,
-                { awaitData }
-            );
+            await d.interpreter(d.client, loopData, d.args, cmd, d.client.db, false, undefined, { awaitData, index: i });
 
             u--;
         }
@@ -73,19 +62,10 @@ module.exports = async (d) => {
         const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
         if (!cmd) return;
 
-        await d.interpreter(
-            d.client,
-            d.message,
-            d.args,
-            cmd,
-            d.client.db,
-            false,
-            undefined,
-            { awaitData }
-        );
+        await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, { awaitData, index: i });
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };
