@@ -1,16 +1,17 @@
-const { SlashTypes, ContextTypes } = require("../utils/InteractionConstants.js");
+const { SlashTypes, ContextTypes, IntegrationTypes } = require("../utils/InteractionConstants.js");
 const { Permissions } = require("../utils/Constants.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [guildID, name, description, defaultMemberPermissions = "", contexts = "all", type = "slash", options] = data.inside.splits;
+    const [guildID, name, description, defaultMemberPermissions = "", integrationType = "", contexts = "all", type = "slash", options] = data.inside.splits;
 
     const guild = guildID === "global" ? undefined : await d.util.getGuild(d, guildID);
     if (!guild && guildID !== "global") return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     const appContext = contexts === "all" ? [ContextTypes.botdm, ContextTypes.dm, ContextTypes.guild] : contexts.split(",").map((x) => ContextTypes[x]);
+    const appIntegrationType = integrationType === "all" ? [IntegrationTypes.guild, IntegrationTypes.user] : integrationType.split(",").map((x) => IntegrationTypes[x]);
 
     if (appContext.includes(undefined)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Context, valid options: " + Object.keys(ContextTypes).join(","));
 
@@ -23,6 +24,7 @@ module.exports = async (d) => {
             description: description?.addBrackets(),
             defaultMemberPermissions: appPermissions.includes(undefined) ? null : appPermissions,
             contexts: appContext,
+            integrationTypes: appIntegrationType,
             options: options ? JSON.parse(options) : []
         },
         guildID: guild?.id

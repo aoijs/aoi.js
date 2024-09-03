@@ -1,4 +1,4 @@
-const { ApplicationCommandType, InteractionContextType, InteractionType, ComponentType } = require("discord.js");
+const { ApplicationCommandType, ApplicationIntegrationType, InteractionContextType, InteractionType, ComponentType } = require("discord.js");
 
 const InteractionTypes = {
     [InteractionType.Ping]: "ping",
@@ -31,9 +31,15 @@ const ContextTypes = {
     guild: InteractionContextType.Guild
 };
 
+const IntegrationTypes = {
+    guild: ApplicationIntegrationType.GuildInstall,
+    user: ApplicationIntegrationType.UserInstall
+}
+
 module.exports = {
     InteractionTypes: InteractionTypes,
     MessageComponentTypes: MessageComponentTypes,
     SlashTypes,
-    ContextTypes
+    ContextTypes,
+    IntegrationTypes
 };
