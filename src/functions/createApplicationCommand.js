@@ -1,56 +1,33 @@
-const { ApplicationCommandType } = require("discord.js");
-const { SlashTypes } = require("../utils/InteractionConstants.js");
-const parser = require("../events/slashCommandOptionsParser");
+const { SlashTypes, ContextTypes } = require("../utils/InteractionConstants.js");
+const { Permissions } = require("../utils/Constants.js");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [guildID, name, description, defaultPermission = "true", dmPermission = "true", type = "slash", ...opts] = data.inside.splits;
-    name = name.addBrackets();
-    let options;
-    let appData;
+    const [guildID, name, description, defaultMemberPermissions = "", contexts = "all", type = "slash", options] = data.inside.splits;
 
-    if (dmPermission != "true" && dmPermission != "false") return d.aoiError.fnError(d, "custom", {}, "dmPermission expects to be boolean");
-    if (defaultPermission != "true" && defaultPermission != "false") return d.aoiError.fnError(d, "custom", {}, "defaultPermission expects to be boolean");
+    const guild = guildID === "global" ? undefined : await d.util.getGuild(d, guildID);
+    if (!guild && guildID !== "global") return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-    const guild = guildID === "global" ? undefined : guildID === "custom" ? "custom" : await d.util.getGuild(d, guildID);
-    if (!guild && !["global", "custom"].includes(guildID)) return d.aoiError.fnError(d, "guild", { inside: data.inside });
-    type = SlashTypes[type] || type;
-    if (type === ApplicationCommandType.ChatInput) {
-        if (opts.length) {
-            if (opts.length === 1) {
-                try {
-                    options = JSON.parse(opts[0]);
-                    options = Array.isArray(options) ? options : [options];
-                } catch (e) {
-                    if (opts[0].startsWith("{") && opts[0].endsWith("}")) options = await d.util.parsers.SlashOptionsParser(opts[0] || "");
-                    else options = await parser(opts);
-                }
-            } else {
-                options = await parser(opts);
-            }
-        }
-    } else {
-        description = null;
-    }
+    const appContext = contexts === "all" ? [ContextTypes.botdm, ContextTypes.dm, ContextTypes.guild] : contexts.split(",").map((x) => ContextTypes[x]);
 
-    if (guild === "custom") {
-        appData = d.client.interactionManager.applicationData.get(name.toLowerCase());
-        if (!appData) return d.aoiError.fnError(d, "custom", {}, "No Slash Data Present With Following Keyword: " + name.toLowerCase());
-    } else {
-        appData = {
-            data: {
-                name: name,
-                type,
-                description: description?.addBrackets(),
-                defaultMemberPermission: defaultPermission === "true",
-                dmPermission: dmPermission === "true",
-                options
-            },
-            guildID: guild?.id
-        };
-    }
+    if (appContext.includes(undefined)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Context, valid options: " + Object.keys(ContextTypes).join(","));
+
+    const appPermissions = defaultMemberPermissions.split(",").map((x) => Permissions[x]);
+
+    const appData = {
+        data: {
+            name: name,
+            type: SlashTypes[type] || type,
+            description: description?.addBrackets(),
+            defaultMemberPermissions: appPermissions.includes(undefined) ? null : appPermissions,
+            contexts: appContext,
+            options: options ? JSON.parse(options) : []
+        },
+        guildID: guild?.id
+    };
+
     await d.client.application.commands.create(appData.data, appData.guildID).catch((e) => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Create Application Command With Reason: " + e);
     });
