@@ -10,8 +10,10 @@ module.exports = async (d) => {
     const guild = guildID === "global" ? undefined : await d.util.getGuild(d, guildID);
     if (!guild && guildID !== "global") return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-    const appContext = contexts === "all" ? [ContextTypes.botdm, ContextTypes.dm, ContextTypes.guild] : contexts.split(",").map((x) => ContextTypes[x]);
-    const appIntegrationType = integrationType === "all" ? [IntegrationTypes.guild, IntegrationTypes.user] : integrationType.split(",").map((x) => IntegrationTypes[x]);
+    const appContext = contexts === "all" || contexts.trim() === "" ? [ContextTypes.botdm, ContextTypes.dm, ContextTypes.guild] : contexts.split(",").map((x) => ContextTypes[x]);
+
+    const appIntegrationType =
+        integrationType === "all" || integrationType.trim() === "" ? [IntegrationTypes.guild, IntegrationTypes.user] : integrationType.split(",").map((x) => IntegrationTypes[x]);
 
     if (appContext.includes(undefined)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Context, valid options: " + Object.keys(ContextTypes).join(","));
 
