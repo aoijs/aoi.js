@@ -53,11 +53,11 @@
     "@aoijs/aoi.db": "^0.0.0",
     "@aoijs/aoi.structures": "^1.0.0",
     "chalk": "^4.1.2",
-    "discord.js": "^14.15.3",
+    "discord.js": "^14.16.1",
     "undici": "^6.9.0"
   },
   "devDependencies": {
-    "discord-api-types": "^0.37.90",
+    "discord-api-types": "^0.37.99",
     "prettier": "^3.2.5"
   },
   "type": "commonjs",

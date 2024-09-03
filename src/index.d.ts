@@ -93,17 +93,6 @@ declare module "aoi.js" {
         static findUser(client: Client, UserResolver: string): string | undefined;
 
         static findRoles(guild: Guild, options: { type: string; query: string; limit: number }): Collection<Snowflake, Role>;
-
-        static searchType: string[];
-        static audioFilters: {
-            nightcore: (value: number) => any;
-            bassboost: (value: number) => any;
-            "8d": () => any;
-            pitch: (value: number) => any;
-            karaoke: (value: number) => any;
-            slowed: (value: number) => any;
-            deep: (value: number) => any;
-        };
     }
 
     class CustomEvent extends EventEmitter {
@@ -218,7 +207,7 @@ declare module "aoi.js" {
 
     interface InteractionCommand extends BaseCommand {
         name: string | Array<string>;
-        prototype: "application" | "button" | "selectMenu";
+        prototype: "modal" | "button" | "selectMenu";
     }
 
     interface LoopCommand extends BaseCommand {
