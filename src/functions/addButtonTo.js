@@ -18,7 +18,7 @@ module.exports = async (d) => {
     style = isNaN(style) ? d.util.constants.ButtonStyleOptions[style] : Number(style);
     disabled = disabled === "true";
 
-    if (!style || style > 5 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Button Style Provided In");
+    if (!style || style > 6 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Button Style Provided In");
 
     try {
         emoji = d.util.getEmoji(d, emoji.addBrackets()).id;

@@ -1,166 +1,235 @@
-const Discord = require("discord.js");
-const chalk = require("chalk");
+const { resolveColor, MessageFlags, AttachmentBuilder, ComponentType } = require("discord.js");
 const SlashOption = require("./slashOption.js");
 const { mustEscape } = require("../core/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
 const { CreateObjectAST } = require("../core/functions.js");
-const { deprecate: deprecation } = require("util");
 const { Time } = require("../core/Time.js");
 
-let executed = {};
-function deprecate(func, newfunc) {
-    if (!executed[func]) {
-        deprecation(() => {}, `${chalk.grey(func)} will be removed in a future version of aoi.js, start using ${chalk.cyan(newfunc)} instead.`)();
-        executed[func] = true;
-    }
-}
+// Matches parser with args
+// {parser:...}
+const Checker = (content, parser) => content.includes(`{${parser}:`);
 
-const EmbedParser = async (msg, d) => {
-    msg = mustEscape(msg);
+// Matches single parser
+// {parser}
+const SingleChecker = (content, parser) => content.includes("{" + parser + "}");
+
+const extractParser = (content, parser, more) => (more ? content.split(`{${parser}:`)[1].split("}")[0].split(":") : content.split(`{${parser}:`)[1].split("}")[0].addBrackets().trim());
+
+const EmbedParser = async (message) => {
+    message = mustEscape(message);
 
     const embeds = [];
-
-    let msgs = msg.split("{newEmbed:").slice(1);
-    for (let rawr of msgs) {
-        rawr = rawr.slice(0, rawr.length - 1);
+    
+    let messages = message.split("{newEmbed:").slice(1);
+    for (let content of messages) {
+        content = content.slice(0, content.length - 1);
 
         const embed = {};
         embed.fields = [];
-        const Checker = (peko) => rawr.includes(`{${peko}:`);
-        if (Checker("author")) {
-            const auth = rawr.split("{author:")[1].split("}")[0].split(":");
+
+        // Author
+        // {author:Name:IconURL?}
+        if (Checker(content, "author")) {
+            const authorField = extractParser(content, "author", true);
             embed.author = {
-                name: auth.shift().addBrackets()?.trim() || "",
-                icon_url: auth.join(":").addBrackets()?.trim() || ""
+                name: authorField.shift().addBrackets()?.trim() || "",
+                icon_url: authorField.join(":").addBrackets()?.trim() || ""
             };
         }
-        if (Checker("authorURL")) {
+
+        // Author URL
+        // {authorURL:URL}
+        if (Checker(content, "authorURL")) {
             if (!embed.author) return console.error("{author:} was not used");
-            embed.author.url = rawr.split("{authorURL:")[1].split("}")[0].addBrackets().trim();
+            embed.author.url = extractParser(content, "authorURL");
         }
-        if (Checker("title")) {
-            embed.title = rawr.split("{title:")[1].split("}")[0].addBrackets().trim();
+
+        // Title
+        // {title:Text}
+        if (Checker(content, "title")) {
+            embed.title = extractParser(content, "title");
         }
-        if (Checker("url")) {
+
+        // Title URL
+        // {url:URL}
+        if (Checker(content, "url")) {
             if (!embed.title) return console.error("Title was not provided while using {url}");
-            embed.url = rawr.split("{url:")[1].split("}")[0].addBrackets().trim();
+            embed.url = extractParser(content, "url");
         }
-        if (Checker("description")) {
-            embed.description = rawr.split("{description:")[1].split("}")[0].addBrackets().trim();
+
+        // Description
+        // {description:Text}
+        if (Checker(content, "description")) {
+            embed.description = extractParser(content, "description");
         }
-        if (Checker("thumbnail")) {
+
+        // Thumbnail
+        // {thumbnail:URL}
+        if (Checker(content, "thumbnail")) {
             embed.thumbnail = {
-                url: rawr.split("{thumbnail:")[1].split("}")[0].addBrackets().trim()
+                url: extractParser(content, "thumbnail")
             };
         }
-        if (Checker("image")) {
+
+        // Image
+        // {image:URL}
+        if (Checker(content, "image")) {
             embed.image = {
-                url: rawr.split("{image:")[1].split("}")[0].addBrackets().trim()
+                url: extractParser(content, "image")
             };
         }
-        if (Checker("footer")) {
-            const f = rawr.split("{footer:")[1].split("}")[0].split(":");
+
+        // Footer
+        // {footer:Text:IconURL?}
+        if (Checker(content, "footer")) {
+            const footerField = extractParser(content, "footer", true);
             embed.footer = {
-                text: f.shift().addBrackets().trim() || "",
-                icon_url: f.join(":").addBrackets().trim() || ""
+                text: footerField.shift().addBrackets().trim() || "",
+                icon_url: footerField.join(":").addBrackets().trim() || ""
             };
         }
-        if (Checker("color")) {
-            embed.color = Discord.resolveColor(rawr.split("{color:")[1].split("}")[0].addBrackets().trim());
+
+        // Color
+        // {color:DiscordResolvableColor}
+        if (Checker(content, "color")) {
+            const color = extractParser(content, "color");
+            embed.color = resolveColor(color);
         }
-        if (rawr.includes("{timestamp")) {
-            let t = rawr.split("{timestamp")[1].split("}")[0].replace(":", "").trim();
-            if (t === "") {
-                t = Date.now();
-            } else {
-                try {
-                    t = Time.parse(t)?.ms;
-                } catch {
-                    t = Date.now();
+
+        // Timestamp
+        // {timestamp:time}
+        if (Checker(content, "timestamp")) {
+            let timestampField = extractParser(content, "timestamp");
+            try {
+                timestampField = Time.parse(t)?.ms;
+            } catch {
+                timestampField = Date.now();
+            }
+
+            embed.timestamp = new Date(timestampField);
+        }
+
+        // {timestamp}
+        if (SingleChecker(content, "timestamp")) {
+            const timestampField = Date.now();
+            embed.timestamp = new Date(timestampField);
+        }
+
+        // Fields
+        // {field:Title:Description:Inline?}
+        if (Checker(content, "field")) {
+            const fieldContent = content.split("{field:").slice(1);
+            for (let fieldInner of fieldContent) {
+                fieldInner = fieldInner?.split("}")[0];
+                fieldInner = fieldInner
+                    ?.addBrackets()
+                    .split(/:(?![/][/])/)
+                    .map((x) => x.trim());
+
+                if (fieldInner.length < 2) {
+                    return console.error("Missing title or description in the {field:} parser", fieldInner);
                 }
-            }
-            embed.timestamp = new Date(t);
-        }
-        if (Checker("field")) {
-            const fi = rawr.split("{field:").slice(1);
-            for (let fo of fi) {
-                fo = fo.split("}")[0].split(":");
-                const fon = fo.shift().addBrackets().trim();
-                const foi = ["true", "false"].find((x) => x === fo[Number(fo.length - 1)].trim()) ? fo.pop().trim() === "true" : false;
 
-                const fov = fo.join(":").addBrackets().trim();
-                embed.fields.push({ name: fon, value: fov, inline: foi });
+                const fieldName = fieldInner.shift();
+                const fieldValue = fieldInner.shift();
+                const fieldInline = fieldInner.pop()?.addBrackets().trim() === "true";
+
+                embed.fields.push({ name: fieldName, value: fieldValue, inline: fieldInline });
             }
         }
-
         embeds.push(embed);
     }
     return embeds;
 };
 
-const ComponentParser = async (msg, d) => {
-    msg = mustEscape(msg);
-    let msgs = msg.split("{actionRow:").slice(1);
+const ComponentParser = async (message, d) => {
+    message = mustEscape(message);
+
+    let actionRow = message.split("{actionRow:").slice(1);
+
     const actionRows = [];
 
-    for (let aoi of msgs) {
-        const index = aoi.lastIndexOf("}");
-        aoi = aoi.slice(0, index);
+    async function extractEmoji(part, d) {
+        if (!part) return null;
+        let emoji;
 
-        const buttonPart = [];
-        const Checker = (checker) => aoi.includes("{" + checker + ":");
-        if (Checker("button")) {
-            const inside = aoi.split("{button:").slice(1);
+        if (part.length === 3) {
+            return part.join(":").trim();
+        }
+
+        try {
+            emoji = await d.util.getEmoji(d, part.toString());
+            emoji = {
+                name: emoji.name,
+                id: emoji.id,
+                animated: emoji.animated
+            };
+        } catch {
+            emoji = part.toString();
+            emoji = emoji.addBrackets().trim() || undefined;
+        } finally {
+            if (!emoji) return null;
+            return emoji;
+        }
+    }
+
+    for (let content of actionRow) {
+        const index = content.lastIndexOf("}");
+        content = content.slice(0, index);
+
+        const actionRowInner = [];
+
+        // Button
+        // {button:label:style:custom_id:disabled?:emoji?}
+        if (Checker(content, "button")) {
+            const inside = content.split("{button:").slice(1);
+
             for (let button of inside) {
                 button = button?.split("}")[0];
                 button = button
                     ?.addBrackets()
                     .split(/:(?![/][/])/)
                     .map((x) => x.trim());
+
                 const label = button.shift();
                 let style = isNaN(button[0]) ? button.shift() : Number(button.shift());
                 style = ButtonStyleOptions[style] || style;
-                const cus = button.shift();
-                const disable = button.shift()?.replace("true", true)?.replace("false", false) || false;
+                const customId = button.shift();
+                const disabled = button.shift()?.addBrackets().trim() === "true";
 
-                let emoji;
-                const dInside =
+                const buttonInner =
                     Number(style) === 5
                         ? {
                               label: label,
                               type: 2,
                               style: style,
-                              url: cus,
-                              disabled: disable
+                              url: customId,
+                              disabled
                           }
                         : {
                               label: label,
                               type: 2,
                               style: style,
-                              custom_id: cus,
-                              disabled: disable
+                              custom_id: customId,
+                              disabled
                           };
 
                 if (button) {
-                    try {
-                        emoji = d.util.getEmoji(d, button.toString());
-                        dInside.emoji = {
-                            name: emoji.name,
-                            id: emoji.id,
-                            animated: emoji.animated
-                        };
-                    } catch {
-                        emoji = emoji ?? button.toString();
-                        dInside.emoji = emoji || undefined;
-                    }
+                    const emoji = await extractEmoji(button, d);
+                    buttonInner.emoji = emoji;
                 }
-                buttonPart.push(dInside);
+
+                actionRowInner.push(buttonInner);
             }
         }
-        if (Checker("selectMenu")) {
-            let inside = aoi.split("{selectMenu:").slice(1).join("");
+
+        // Select Menu
+        // {selectMenu:custom_id:placeholder:minValues:maxValues:disabled?:...options}
+        if (Checker(content, "selectMenu")) {
+            let inside = content.split("{selectMenu:").slice(1).join("");
             inside = inside.split(":").map((c) => c.trim());
-            const customID = inside.shift();
+
+            const customId = inside.shift();
             const placeholder = inside.shift();
             const minVal = inside[0] === "" ? 0 : Number(inside.shift());
             const maxVal = inside[0] === "" ? 1 : Number(inside.shift());
@@ -169,46 +238,44 @@ const ComponentParser = async (msg, d) => {
 
             let selectMenuOptions = [];
 
+            // String Input
+            // {stringInput:label:value:description:defaultOption?}
             if (options.includes("{stringInput:")) {
                 const opts = options.split("{stringInput:").slice(1);
 
                 for (let opt of opts) {
-                    opt = opt.split("}")[0].split(":");
+                    opt = opt?.split("}")[0];
+                    opt = opt
+                        ?.addBrackets()
+                        .split(/:(?![/][/])/)
+                        .map((x) => x.trim());
+
                     const label = opt.shift();
                     const value = opt.shift();
-                    const desc = opt.shift();
-                    const def = opt.shift() === "true";
-                    let emoji;
+                    const description = opt.shift();
+                    const defaultOption = opt.shift()?.addBrackets().trim() === "true";
 
-                    const ind = {
+                    const selectMenuInner = {
                         label: label,
                         value: value,
-                        description: desc,
-                        default: def
+                        description: description,
+                        default: defaultOption
                     };
 
                     if (opt) {
-                        try {
-                            emoji = await d.util.getEmoji(d, opt.toString().addBrackets());
-                            ind.emoji = {
-                                name: emoji.name,
-                                id: emoji.id,
-                                animated: emoji.animated
-                            };
-                        } catch (e) {
-                            emoji = emoji ?? opt.toString().addBrackets();
-                            ind.emoji = emoji || undefined;
-                        }
+                        const emoji = await extractEmoji(opt, d);
+                        selectMenuInner.emoji = emoji;
                     }
 
-                    selectMenuOptions.push(ind);
+                    selectMenuOptions.push(selectMenuInner);
                 }
             }
 
+            // Default
             if (selectMenuOptions.length > 0) {
-                buttonPart.push({
+                actionRowInner.push({
                     type: 3,
-                    custom_id: customID,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -217,10 +284,11 @@ const ComponentParser = async (msg, d) => {
                 });
             }
 
+            // User Input
             if (options.includes("{userInput}")) {
-                buttonPart.push({
-                    type: Discord.ComponentType.UserSelect,
-                    custom_id: customID,
+                actionRowInner.push({
+                    type: ComponentType.UserSelect,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -228,10 +296,11 @@ const ComponentParser = async (msg, d) => {
                 });
             }
 
+            // Role Input
             if (options.includes("{roleInput}")) {
-                buttonPart.push({
-                    type: Discord.ComponentType.RoleSelect,
-                    custom_id: customID,
+                actionRowInner.push({
+                    type: ComponentType.RoleSelect,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -239,10 +308,11 @@ const ComponentParser = async (msg, d) => {
                 });
             }
 
+            // Mentionable Input
             if (options.includes("{mentionableInput}")) {
-                buttonPart.push({
-                    type: Discord.ComponentType.MentionableSelect,
-                    custom_id: customID,
+                actionRowInner.push({
+                    type: ComponentType.MentionableSelect,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -250,6 +320,8 @@ const ComponentParser = async (msg, d) => {
                 });
             }
 
+            // Channel Input
+            // {channelInput:Text:Voice:...}
             if (options.includes("{channelInput:")) {
                 const opts = options.split("{channelInput:").slice(1);
 
@@ -263,9 +335,9 @@ const ComponentParser = async (msg, d) => {
                     }
                 }
 
-                buttonPart.push({
-                    type: Discord.ComponentType.ChannelSelect,
-                    custom_id: customID,
+                actionRowInner.push({
+                    type: ComponentType.ChannelSelect,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -274,10 +346,12 @@ const ComponentParser = async (msg, d) => {
                 });
             }
 
+            // Channel Input (default)
+            // {channelInput}
             if (options.includes("{channelInput}")) {
-                buttonPart.push({
-                    type: Discord.ComponentType.ChannelSelect,
-                    custom_id: customID,
+                actionRowInner.push({
+                    type: ComponentType.ChannelSelect,
+                    custom_id: customId,
                     placeholder: placeholder,
                     min_values: minVal,
                     max_values: maxVal,
@@ -286,24 +360,29 @@ const ComponentParser = async (msg, d) => {
             }
         }
 
-        if (Checker("textInput")) {
-            let inside = aoi.split("{textInput:").slice(1);
+        // Text Input
+        // {textInput:label:style:custom_id:required?:placeholder?:min_length?:max_length?:value?}
+        if (Checker(content, "textInput")) {
+            let inside = content.split("{textInput:").slice(1);
             for (let textInput of inside) {
                 textInput = textInput.split("}")[0].split(":");
+
                 const label = textInput.shift().addBrackets().trim();
                 let style = textInput.shift().addBrackets().trim();
                 style = isNaN(style) ? style : Number(style);
-                const custom_id = textInput.shift().addBrackets().trim();
+
+                const customId = textInput.shift().addBrackets().trim();
                 const required = textInput.shift()?.addBrackets().trim() === "true";
                 const placeholder = textInput.shift()?.addBrackets().trim();
                 const min_length = textInput.shift()?.addBrackets().trim();
                 const max_length = textInput.shift()?.addBrackets().trim();
                 const value = textInput.shift()?.addBrackets().trim();
-                buttonPart.push({
+
+                actionRowInner.push({
                     type: 4,
                     label,
                     style,
-                    custom_id,
+                    custom_id: customId,
                     required,
                     placeholder,
                     min_length,
@@ -312,190 +391,227 @@ const ComponentParser = async (msg, d) => {
                 });
             }
         }
-        actionRows.push({ type: 1, components: buttonPart });
+        actionRows.push({ type: 1, components: actionRowInner });
     }
     return actionRows;
 };
 
-const FileParser = (msg, d) => {
-    if (!msg) return;
-    msg = mustEscape(msg);
-    const Checker = (ayaya) => msg.includes("{" + ayaya + ":");
+const FileParser = (message) => {
+    message = mustEscape(message);
 
-    const att = [];
-    if (Checker("attachment")) {
-        const e = msg
+    const attachments = [];
+
+    // Attachment
+    // {attachment:name:content}
+    if (Checker(message, "attachment")) {
+        const content = message
             ?.split("{attachment:")
             ?.slice(1)
             .map((x) => x.trim());
-        for (let o of e) {
-            o = o.split("}")[0];
-            o = o.split(/:(?![/][/])/);
+        for (let attachmentInner of content) {
+            attachmentInner = attachmentInner.split("}")[0];
+            attachmentInner = attachmentInner.split(/:(?![/][/])/);
 
-            const attachment = new Discord.AttachmentBuilder(o.pop().addBrackets(), {
-                name: o.join(":").toString().addBrackets() ?? "attachment.png"
+            const content = attachmentInner.pop().addBrackets();
+            const name = attachmentInner.join(":").toString().addBrackets() ?? "attachment.png";
+
+            const attachment = new AttachmentBuilder(content, {
+                name
             });
-            att.push(attachment);
+
+            attachments.push(attachment);
         }
     }
-    if (Checker("file")) {
-        const i = msg
+
+    // File
+    // {file:name:content}
+    if (Checker(message, "file")) {
+        const content = message
             .split("{file:")
             ?.slice(1)
             .map((x) => x.trim());
-        for (let u of i) {
-            u = u.split("}")[0];
-            u = u.split(/:(?![/][/])/);
+        for (let fileInner of content) {
+            fileInner = fileInner.split("}")[0];
+            fileInner = fileInner.split(/:(?![/][/])/);
 
-            const attachment = new Discord.AttachmentBuilder(Buffer.from(u.pop().addBrackets()), { name: u.join(":").toString().addBrackets() ?? "file.txt" });
-            att.push(attachment);
+            const content = fileInner.pop().addBrackets();
+            const name = fileInner.join(":").toString().addBrackets() ?? "file.txt";
+
+            const attachment = new AttachmentBuilder(Buffer.from(content), { name });
+
+            attachments.push(attachment);
         }
     }
-    return att;
+    return attachments;
 };
 
 const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     errorMessage = errorMessage.trim();
-    const Checker = (parts, part) => parts.includes("{" + part + ":");
-    const specialChecker = (parts, part) => parts.includes("{" + part + "}");
 
-    let send = true;
-    let deleteCommand = false;
-    let deleteIn;
-    let suppress = false;
-    let interaction = false;
-    let defer = false;
-    let ephemeral = false;
-
-    let files = [];
-    let reactions = [];
-    const embeds = [];
-    const components = [];
-    const flags = [];
-
-    let reply = {
-        message: undefined,
-        mention: true
+    let options = {
+        context: {
+            send: true,
+            deleteCommand: false,
+            deleteIn: undefined,
+            suppress: false
+        },
+        interaction: {
+            interaction: false,
+            defer: false,
+            ephemeral: false
+        },
+        reply: {
+            message: undefined,
+            mention: true
+        },
+        edits: {
+            time: null,
+            messages: []
+        },
+        allowedMentions: {
+            parse: ["everyone", "users", "roles"],
+            repliedUser: false
+        },
+        files: [],
+        reactions: [],
+        embeds: [],
+        components: [],
+        flags: []
     };
 
-    let edits = {
-        time: "",
-        messages: []
-    };
+    async function parseEmbeds(part, d) {
+        options.embeds.push(...(await EmbedParser(part, d)));
+    }
 
-    let allowedMentions = {
-        parse: ["everyone", "users", "roles"]
+    async function parseComponents(part, d) {
+        options.components.push(...(await ComponentParser(part, d)));
+    }
+
+    function parseFiles(part) {
+        options.files.push(...FileParser(part));
+    }
+
+    async function parseOptions(part, d) {
+        const optionData = await OptionParser(part, d);
+        if (optionData.edits !== undefined) options.edits = optionData.edits;
+        if (optionData.reactions !== undefined) options.reactions = optionData.reactions;
+        if (optionData.deleteIn !== undefined) options.context.deleteIn = optionData.deleteIn;
+        if (optionData.deleteCommand !== undefined) options.context.deleteCommand = optionData.deleteCommand;
+    }
+
+    function parseReply(part) {
+        const content = extractParser(part, "reply", true);
+        options.reply = {
+            message: content[0].trim(),
+            mention: content[1]?.trim() === "true"
+        };
+    }
+
+    async function parseExecute(part, d) {
+        let cmdname = part.split(":")[1].split("}")[0].trim();
+        const cmd = d.client.cmd?.awaited.find((x) => x.name === cmdname);
+        if (!cmd) return console.error(`AoiError: Invalid awaited command '${cmdname}' in '{execute:${cmdname}}'`);
+        await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
+    }
+
+    function parseInteraction(part) {
+        let content = part.split(":");
+        options.interaction.interaction = true;
+        options.interaction.defer = content[1] ? content[1].split("}")[0].trim() === "true" : false;
+    }
+
+    function parseAllowedMentions(part) {
+        const parts = part.split("}")[0].split(":").slice(1);
+        if (parts.includes("all")) options.allowedMentions.parse = ["everyone", "users", "roles"];
+        else if (parts.includes("none")) options.allowedMentions.parse = [];
+        else if (parts.includes("")) options.allowedMentions.parse = [];
+        else options.allowedMentions.parse = [...parts];
+    }
+
+    function parseFlags(part) {
+        const parts = part.split("}")[0].split(":").slice(1);
+        options.flags.push(parts.map((x) => MessageFlags[x.trim()]));
     }
 
     const parts = CreateObjectAST(errorMessage);
     for (const part of parts) {
         errorMessage = errorMessage.replace(part, "");
-        if (Checker(part, "newEmbed")) embeds.push(...(await EmbedParser(part, d)));
-        else if (Checker(part, "actionRow")) components.push(...(await ComponentParser(part, d)));
-        else if (Checker(part, "attachment") || Checker(part, "file")) files = FileParser(part, d);
-        else if (Checker(part, "edit")) edits = await OptionParser(part, d);
-        else if (Checker(part, "reply")) {
-            let ctn = part.split(":");
-            reply = {
-                message: ctn[1].trim(),
-                mention: ctn[2] ? ctn[2].split("}")[0].trim() === "true" : true
-            };
-            if (!ctn[2]) reply.message = ctn[1].split("}")[0].trim();
-        } else if (Checker(part, "suppress")) suppress = true;
-        else if (Checker(part, "execute")) {
-            let cmdname = part.split(":")[1].split("}")[0].trim();
-            const cmd = d.client.cmd?.awaited.find((x) => x.name === cmdname);
-            if (!cmd) return console.error(`AoiError: Invalid awaited command '${chalk.cyan(cmdname)}' in ${chalk.grey(`{execute:${cmdname}}`)}`);
-            await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
-        } else if (specialChecker(part, "deleteCommand")) deleteCommand = true;
-        else if (specialChecker(part, "interaction")) interaction = true;
-        else if (Checker(part, "interaction")) {
-            let ctn = part.split(":");
-            interaction = true;
-            defer = ctn[1] ? ctn[1].split("}")[0].trim() === "true" : false;
-        } else if (specialChecker(part, "ephemeral")) ephemeral = true;
-        else if (Checker(part, "deleteIn")) deleteIn = part.split(":")[1].trim();
-        else if (Checker(part, "reactions")) reactions = reactionParser(part.split(":").slice(1).join(":").replace("}", ""));
-        else if (Checker(part, "allowedMentions")) {
-            const parts = part.split(":")[1].split("}")[0].split(",");
-            if (parts.includes("all")) allowedMentions.parse = ["everyone", "users", "roles"];
-            else if (parts.includes("none")) allowedMentions.parse = [];
-            else if (parts.includes("")) allowedMentions.parse = [];
-            else allowedMentions.parse = [...parts];
-        }
-        else if (Checker(part, "flags")) {
-            const parts = part.split(":")[1].split("}")[0].split(",");
-            flags.push(parts.map(x => Discord.MessageFlags[x.trim()]));
-        }
+        if (Checker(part, "newEmbed")) await parseEmbeds(part, d);
+        else if (Checker(part, "actionRow")) await parseComponents(part, d);
+        else if (Checker(part, "attachment") || Checker(part, "file")) await parseFiles(part);
+        else if (Checker(part, "edit") || Checker(part, "deleteIn") || Checker(part, "reactions")) await parseOptions(part, d);
+        else if (Checker(part, "reply")) parseReply(part);
+        else if (Checker(part, "suppress")) options.context.suppress = true;
+        else if (Checker(part, "execute")) await parseExecute(part, d);
+        else if (SingleChecker(part, "deleteCommand")) options.context.deleteCommand = true;
+        else if (SingleChecker(part, "interaction")) options.interaction.interaction = true;
+        else if (Checker(part, "interaction")) parseInteraction(part);
+        else if (SingleChecker(part, "ephemeral")) options.interaction.ephemeral = true;
+        else if (Checker(part, "allowedMentions")) parseAllowedMentions(part);
+        else if (Checker(part, "flags")) parseFlags(part);
     }
 
-    if (!embeds.length) send = false;
-
-    if (send && suppress) send = false;
+    if (!options.embeds.length) send = false;
+    if (options.context.send && options.context.suppress) send = false;
 
     if (returnMsg === true) {
         return {
-            embeds: send ? embeds : [],
-            components,
+            embeds: options.context.send ? options.embeds : [],
+            components: options.components,
             content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
-            files,
-            allowedMentions,
-            flags,
+            files: options.files,
+            allowedMentions: options.allowedMentions,
+            flags: options.flags,
             options: {
-                reply,
-                reactions: reactions.length ? reactions : undefined,
-                ephemeral,
-                suppress,
-                interaction,
-                defer,
-                edits: edits.edits,
-                deleteIn,
-                deleteCommand,
+                reply: options.reply,
+                reactions: options.reactions.length ? options.reactions : undefined,
+                ephemeral: options.interaction.ephemeral,
+                suppress: options.context.suppress,
+                interaction: options.interaction.interaction,
+                defer: options.interaction.defer,
+                edits: options.edits.edits,
+                deleteIn: options.context.deleteIn,
+                deleteCommand: options.context.deleteCommand
             }
         };
     }
 
     errorMessage = errorMessage.addBrackets().trim();
-    if (!(errorMessage.length || send || files.length)) return;
+    if (!(errorMessage.length || options.context.send || options.files.length)) return;
 
-    const ch = channel || d.channel;
+    const targetChannel = channel || d.channel;
 
-    if ((errorMessage.length || send || files.length) && d && ch && !returnMsg) {
-        const m = await ch
+    if ((errorMessage.length || options.context.send || options.files.length) && d && targetChannel && !returnMsg) {
+        const message = await targetChannel
             .send({
                 content: errorMessage.addBrackets(),
-                embeds: send ? embeds : [],
-                files: files?.length ? files : []
+                embeds: options.context.send ? options.embeds : [],
+                files: options.files?.length ? options.files : []
             })
             .catch(() => {});
 
-        if (!m) return;
+        if (!message) return;
 
-        if (m && reactions.length) {
-            for (const reaction of reactions) {
-                await m.react(reaction).catch(console.error);
+        if (message && reactions.length) {
+            for (const reaction of options.reactions) {
+                await message.react(reaction).catch(console.error);
             }
         }
 
-        if (m && deleteIn) {
-            m.delete({
-                timeout: deleteIn
-            }).catch(() => null);
+        if (message && deleteIn) {
+            message
+                .delete({
+                    timeout: options.context.deleteIn
+                })
+                .catch(() => null);
         }
 
         if (returnMsg === "id") {
-            return m.id;
-        } else if (returnMsg === "object") {
-            return m;
-        } else if (returnMsg === "withMessage") return m;
+            return message.id;
+        } else if (["withMessage", "object"].includes(returnMsg)) {
+            return message;
+        }
     }
-};
-
-const reactionParser = (reactions) => {
-    const regex = /(<a?:\w+:[0-9]+>)|\p{Extended_Pictographic}/gu;
-    const matches = reactions.match(regex);
-    if (!matches) return [];
-    return matches;
 };
 
 const SlashOptionsParser = async (options) => {
@@ -503,36 +619,35 @@ const SlashOptionsParser = async (options) => {
 
     let Alloptions = [];
     options = options.trim();
-    const Checker = (msg) => options.includes("{" + msg + ":");
 
-    if (Checker("subGroup")) {
+    if (Checker(options, "subGroup")) {
         Alloptions = Alloptions.concat(await SlashOption.subGroup(options));
     }
-    if (Checker("subCommand") && !Checker("subGroup")) {
+    if (Checker(options, "subCommand") && !Checker(options, "subGroup")) {
         Alloptions = Alloptions.concat(await SlashOption.subCommand(options));
     }
-    if (Checker("string") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "string") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.string(options));
     }
-    if (Checker("integer") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "integer") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.integer(options));
     }
-    if (Checker("boolean") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "boolean") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.boolean(options));
     }
-    if (Checker("user") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "user") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.user(options));
     }
-    if (Checker("channel") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "channel") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.channel(options));
     }
-    if (Checker("role") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "role") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.role(options));
     }
-    if (Checker("mentionable") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "mentionable") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.mentionable(options));
     }
-    if (Checker("number") && !(Checker("subCommand") || Checker("subGroup"))) {
+    if (Checker(options, "number") && !(Checker(options, "subCommand") || Checker("subGroup"))) {
         Alloptions = Alloptions.concat(await SlashOption.number(options));
     }
 
@@ -540,49 +655,60 @@ const SlashOptionsParser = async (options) => {
 };
 
 const OptionParser = async (options, d) => {
-    const Checker = (msg) => options.includes(msg);
     const optionData = {};
-    if (Checker("{edit:")) {
+
+    // Edit
+    // {edit:time:messages}
+    if (Checker(options, "edit")) {
         const editPart = options.split("{edit:")[1].split("}")[0];
         const parts = editPart.split(":");
         const dur = parts[0];
         const messageParts = parts.slice(1);
         const messages = [];
+
         for (let msg of messageParts) {
             messages.push(await errorHandler(msg, d, true));
         }
-        optionData.edits = { time: Time.parse(dur)?.ms, messages: [messages] };
+
+        optionData.edits = {
+            time: Time.parse(dur)?.ms,
+            messages: [messages]
+        };
     }
-    if (Checker("{reactions:")) {
-        const react = options.split("{reactions:")[1].split("}")[0];
-        optionData.reactions = react.split(",").map((x) => x.trim());
+
+    // Reactions
+    // {reactions:...emojis}
+    const reactionParser = (reactions) => {
+        const regex = /(<a?:\w+:[0-9]+>)|\p{Extended_Pictographic}/gu;
+        const matches = reactions.match(regex);
+        if (!matches) return [];
+        return matches;
+    };
+
+    if (Checker(options, "reactions")) {
+        const reactions = reactionParser(options.split(":").slice(1).join(":").replace("}", ""));
+        optionData.reactions = reactions;
     }
-    if (Checker("{delete:")) {
-        optionData.deleteIn = Time.parse(options.split("{delete:")[1].split("}")[0].trim())?.ms;
+
+    // DeleteIn
+    // {deleteIn:time}
+    if (Checker(options, "deleteIn")) {
+        const time = extractParser(options, "deleteIn");
+        optionData.deleteIn = Time.parse(time)?.ms;
     }
-    if (Checker("{deleteIn:")) {
-        optionData.deleteIn = Time.parse(options.split("{deleteIn:")[1].split("}")[0].trim())?.ms;
-    }
-    if (Checker("{deletecommand}")) {
+
+    if (SingleChecker(options, "deletecommand")) {
         optionData.deleteCommand = true;
     }
-    if (Checker("{interaction}")) {
-        optionData.interaction = true;
-        optionData.defer = false;
-    }
-    if (Checker("{interaction:")) {
-        const defer = options.split("{interaction:")[1].split("}")[0].trim();
-        optionData.interaction = true;
-        optionData.defer = defer === "true";
-    }
+
     return optionData;
 };
 
 module.exports = {
-    EmbedParser: EmbedParser,
-    ComponentParser: ComponentParser,
-    FileParser: FileParser,
+    EmbedParser,
+    ComponentParser,
+    FileParser,
     ErrorHandler: errorHandler,
-    SlashOptionsParser: SlashOptionsParser,
+    SlashOptionsParser,
     OptionParser
 };

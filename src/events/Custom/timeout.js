@@ -1,6 +1,6 @@
 module.exports = async (d, duration, timeoutData, onReady) => {
     let cmds = d.client.cmd?.timeout.V();
-    const MAX_SAFE_INTEGER = 0x7FFFFFFF;
+    const MAX_SAFE_TIMEOUT_DURATION = 0x7FFFFFFF;
 
     if (onReady) {
         if (d.client?.db?.db?.readyAt) {
@@ -13,7 +13,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
     } else {
         await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, timeoutData);
 
-        if (duration > MAX_SAFE_INTEGER) {
+        if (duration > MAX_SAFE_TIMEOUT_DURATION) {
             const interval = setInterval(
                 async () => {
                     if (!(timeoutData.__duration__ <= Date.now())) return;
@@ -55,12 +55,12 @@ module.exports = async (d, duration, timeoutData, onReady) => {
 async function handleResidueData(d) {
     const td = await d.client.db.all("__aoijs_vars__", (data) => data.key.startsWith("setTimeout_"));
     let cmds = d.client.cmd?.timeout.V();
-    const MAX_SAFE_INTEGER = 0x7FFFFFFF;
+    const MAX_SAFE_TIMEOUT_DURATION = 0x7FFFFFFF;
 
     for (const data of td) {
         const timeoutData = data.value;
         if (Date.now() <= timeoutData.__duration__) {
-            if (timeoutData.__duration__ > MAX_SAFE_INTEGER) {
+            if ((timeoutData.__duration__ - Date.now()) > MAX_SAFE_TIMEOUT_DURATION) {
                 const interval = setInterval(
                     async () => {
                         if (!(timeoutData.__duration__ <= Date.now())) return;
