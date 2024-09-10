@@ -119,7 +119,6 @@ const EmbedParser = async (message) => {
         // {field:Title:Description:Inline?}
         if (Checker(content, "field")) {
             const fieldContent = content.split("{field:").slice(1);
-            console.log("hello 1");
             for (let fieldInner of fieldContent) {
                 fieldInner = fieldInner.split("}")[0].match(/(?:<[^>]+>|[^:])+/g);
         
