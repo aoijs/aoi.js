@@ -7,6 +7,10 @@ module.exports = async d => {
     data.result = d.client.cacheManager.caches[type]?.[name].get(key);
     data.result = option === '$default' ? data.result : eval(`data.result?.${option}`);
 
+    if (typeof data.result === 'object' && data.result !== null) {
+        data.result = JSON.stringify(data.result);
+    }
+
     return {
         code: d.util.setCode(data)
     }
