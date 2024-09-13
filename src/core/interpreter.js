@@ -415,11 +415,6 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             )?.code;
         }
 
-        if (command["$if"]) {
-            // show log of deprecation
-            console.log("$if: 'old' and such is deprecated and will be removed in future versions. Use $if[] or $ternary[] instead");
-        }
-
         const ended = (performance.now() - start).toFixed(3);
         embeds = JSON.parse(JSON.stringify(embeds || [])?.replaceAll("$executionTime", ended));
 
