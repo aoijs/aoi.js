@@ -1,5 +1,3 @@
-// TODO: remove this function
-
 const { CheckCondition } = require("../core/CheckCondition.js");
 const { mustEscape } = require("../core/mustEscape.js");
 module.exports = async (d) => {
