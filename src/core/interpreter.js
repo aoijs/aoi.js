@@ -341,7 +341,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-        if (code.includes("$if[")) {
+        // only execute this if '$if[]' is actually present in the code
+        if (command["$if"] === "old" && code.includes("$if[")) {
             code = (
                 await IF({
                     client,
