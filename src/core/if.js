@@ -113,7 +113,22 @@ const IF = async (d) => {
             }
 
             code = code.replace(/\$if\[/gi, "$if[").replace(/\$endif/gi, "$endif");
-            code = code.replaceLast(`$if[${everything}$endif`, pass ? ifCode : passes ? lastCode : elseCode);
+            const result = (
+                await interpreter(
+                    client,
+                    message,
+                    args,
+                    {
+                        code: pass ? ifCode : passes ? lastCode : elseCode,
+                        name: "executeStatement"
+                    },
+                    undefined,
+                    true,
+                    undefined,
+                    Data
+                )
+            )?.code;
+            code = code.replaceLast(`$if[${everything}$endif`, result);
         }
     }
     return { code };

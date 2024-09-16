@@ -80,6 +80,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
         let FuncData;
         let msgobj;
         let funcLine;
+        let insideIf = false;
         let returnData = {};
         command.codeLines = command.codeLines || client.functionManager.serializeCode(command.code);
         let funcs = command.functions?.length ? command.functions : client.functionManager.findFunctions(command.code);
@@ -125,7 +126,6 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
         }
 
         //parsing functions (dont touch)
-
         for (let i = funcs.length; i > 0; i--) {
             if (!funcs.length) break;
 
@@ -142,8 +142,16 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             command.codeLines?.map((x) => x.replace(regex, func));
             funcLine = command.codeLines.length - command.codeLines?.reverse().findIndex((x) => x.toLowerCase().split(" ").includes(func.toLowerCase()));
 
-            if (command["$if"] === "old" && func.replace("$", "").replace("[", "") === "if") continue;
-            FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
+            const current = func.replace("$", "").replace("[", "");
+
+            // skip functions inside $if
+            if (command["$if"] === "old") {
+                if (current === "endif") insideIf = true;
+                if (insideIf) continue;
+                if (current === "if") insideIf = false;
+            }
+
+            FuncData = await client.functionManager.cache.get(current)?.code({
                 randoms: randoms,
                 command: {
                     name: command.name,
@@ -341,7 +349,6 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-        // only execute this if '$if[]' is actually present in the code
         if (command["$if"] === "old" && code.includes("$if[")) {
             code = (
                 await IF({
