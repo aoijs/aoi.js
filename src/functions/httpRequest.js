@@ -3,54 +3,59 @@ module.exports = async (d) => {
     
     let [
         url,
-        method = 'get',
-        body = '',
-        encoding = 'utf-8'
+        method = "get",
+        body = "",
+        encoding = "utf-8",
+        name = "res"
     ] = data.inside.splits;
 
-    body = body !== '' ? body.trim() : body;
+    // Creating the aoijs response object.
+    d.requests[name] ??= {};
+
+    body = body !== "" ? body.trim() : d.requests[name].body !== undefined ? d.requests[name].body : body;
 
     // Getting the user-defined headers.
     const headers = {};
-    if (d.data.http?.headers) {
-        Object.assign(headers, d.data.http.headers);
+    if (d.requests[name].headers) {
+        Object.assign(headers, d.requests[name].headers);
     }
 
     // Making the request.
     const response = await fetch(url.addBrackets(), {
-        body: body === '' ? undefined : body.addBrackets(),
+        body: body === "" ? undefined : body.addBrackets(),
         headers,
-        method
+        method,
+        credentials: d.requests[name]?.credentials
     });
 
     // Defining response headers.
-    (d.data.http??={})["headers"] = {};
-    for (const [name, value] of response.headers.entries()) {
-        d.data.http.headers[name] = value;
+    (d.requests[name]??={})["headers"] = {};
+    for (const [headerName, value] of response.headers.entries()) {
+        d.requests[name].headers[headerName] = value;
     }
 
     // Get the response content type.
     const contentType = response.headers.get("content-type")?.split(/;/)[0];
 
     // Defining response content type.
-    d.data.http.statusCode = response.status;
+    d.requests[name].statusCode = response.status;
 
     // Additional response data.
-    d.data.http.redirected = response.redirected;
-    d.data.http.ok = response.ok;
+    d.requests[name].redirected = response.redirected;
+    d.requests[name].ok = response.ok;
 
     // Saving the result.
     if (contentType.match(/application\/json/)) {
-        d.data.http.result = await response.json()
+        d.requests[name].result = await response.json()
     } else if (contentType.match(/image\//)) {
-        d.data.http.result = await response.arrayBuffer()
+        d.requests[name].result = await response.arrayBuffer()
         .then(a => Buffer.from(a).toString(encoding));
     } else {
-        d.data.http.result = await response.text()
+        d.requests[name].result = await response.text()
     }
     
     return {
         code: d.util.setCode(data),
-        data: d.data
+        requests: d.requests
     }
 }

@@ -2,8 +2,15 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [name] = data.inside.splits;
-    if (!name) return d.aoiError.fnError(d, "custom", {
+    let [headerName, name = "res"] = data.inside.splits;
+
+    if (!d.requests[name]) {
+        return d.aoiError.fnError(d, "custom", {
+            inside: data.inside
+        }, `Invalid request name "${name}"!`)
+    }
+
+    if (!headerName) return d.aoiError.fnError(d, "custom", {
         inside: data.inside
     }, "Missing header name!");
 
@@ -11,6 +18,6 @@ module.exports = async (d) => {
 
     return {
         code: d.util.setCode(data),
-        data: d.data
+        requests: d.requests
     }
 }

@@ -1,10 +1,17 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
+    const name = data.inside.splits[0] || "res";
 
-    d.data.http = {};
+    if (!d.requests[name]) {
+        return d.aoiError.fnError(d, "custom", {
+            inside: data.inside
+        }, `Invalid request name "${name}"!`)
+    }
+
+    d.requests[name] = {};
 
     return {
         code: d.util.setCode(data),
-        data: d.data
+        requests: d.requests
     }
 }
