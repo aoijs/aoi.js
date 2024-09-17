@@ -123,6 +123,7 @@ const ChannelOptions = {
     jsonOld: (channel, oldChannel) => JSON.stringify(oldChannel),
     json: (channel) => JSON.stringify(channel)
 };
+
 const MemberOptions = {
     id: (member) => member.id,
     name: (member) => member.user?.username?.deleteBrackets(),
@@ -132,43 +133,43 @@ const MemberOptions = {
         member.roles?.cache
             ?.filter((r) => r.name !== "@everyone")
             .map((r) => r?.name.deleteBrackets())
-            .join(", "),
+            .join(", ") || "",
     partial: (member) => member.partial ?? false,
     premiumStamp: (member) => member.premiumSinceTimestamp || "0",
     joinedStamp: (member) => member.joinedTimestamp,
     voiceID: (member) => member.voice.channelID || "",
     displayHex: (member) => member.displayHexColor,
-    highestRoleID: (member) => member.roles.highest.id,
-    permissions: (member) => member.permissions.toArray().join("_"),
+    highestRoleID: (member) => member.roles?.highest?.id || "",
+    permissions: (member) => member.permissions?.toArray().join("_") || "",
     newPermissions: (member, oldMember) => {
-        const curr = member?.permissions?.toArray();
-        const old = oldMember?.permissions?.toArray();
-        return curr && old ? curr.filter((p) => !old.includes(p)).join(", ") : null;
+        const curr = member?.permissions?.toArray() || [];
+        const old = oldMember?.permissions?.toArray() || [];
+        return curr.filter((p) => !old.includes(p)).join(", ");
     },
     removedPermissions: (member, oldMember) => {
-        const curr = member?.permissions?.toArray();
-        const old = oldMember?.permissions?.toArray();
-        return curr && old ? old.filter((p) => !curr.includes(p)).join(", ") : null;
+        const curr = member?.permissions?.toArray() || [];
+        const old = oldMember?.permissions?.toArray() || [];
+        return old.filter((p) => !curr.includes(p)).join(", ");
     },
     bannable: (member) => member.bannable,
     kickable: (member) => member.kickable,
     manageable: (member) => member.manageable,
     status: (member) => member.status,
-    activities: (member) => member.presence?.activities?.map((c) => c.name).join(", "),
+    activities: (member) => member.presence?.activities?.map((c) => c.name).join(", ") || "",
     removedRoles: (member, oldMember) =>
-        oldMember.roles.cache
-            ?.filter((r) => !member?.roles.cache.has(r.id))
+        oldMember.roles?.cache
+            ?.filter((r) => !member?.roles?.cache?.has(r.id))
             .map((r) => r.name)
             .join(", ")
-            .deleteBrackets(),
+            .deleteBrackets() || "",
     addedRoles: (member, oldMember) =>
         member.roles?.cache
-            ?.filter((r) => !oldMember.roles.cache.has(r.id))
+            ?.filter((r) => !oldMember.roles?.cache?.has(r.id))
             .map((r) => r.name)
             .join(", ")
-            .deleteBrackets(),
-    threadChannel: (member) => member.thread?.channel?.name?.deleteBrackets(),
-    threadFlags: (member) => member.flags?.toArray()
+            .deleteBrackets() || "",
+    threadChannel: (member) => member.thread?.channel?.name?.deleteBrackets() || "",
+    threadFlags: (member) => member.flags?.toArray() || []
 };
 
 const ButtonStyleOptions = {

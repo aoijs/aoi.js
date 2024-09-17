@@ -74,6 +74,7 @@ module.exports = async (d) => {
                 undefined,
                 {
                     awaitData,
+                    index: i
                 },
             );
             u--;
