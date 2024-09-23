@@ -216,6 +216,18 @@ class Client extends BaseClient {
         this.addCommandType("pollVoteRemove", d);
     }
 
+    entitlementCreateCommand(d = {}) {
+        this.addCommandType("entitlementCreate", d);
+    }
+    
+    entitlementUpdateCommand(d = {}) {
+        this.addCommandType("entitlementUpdate", d);
+    }
+
+    entitlementDeleteCommand(d = {}) {
+        this.addCommandType("entitlementDelete", d);
+    }
+
     applicationCmdCreateCommand(d = {}) {
         this.addCommandType("applicationCmdCreate", d);
     }

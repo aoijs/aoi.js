@@ -76,7 +76,7 @@ class CommandManager {
             "variableDelete", "variableUpdate", "functionError", "interaction", "applicationCmdCreate",
             "applicationCmdUpdate", "applicationCmdDelete", "applicationCmdPermissionsUpdate", "userUpdate",
             "rateLimit", "shardReady", "shardResume", "shardReconnecting", "shardDisconnect", "shardError",
-            "autoModActionExecution", "autoModCreate", "autoModDelete", "autoModUpdate"
+            "autoModActionExecution", "autoModCreate", "autoModDelete", "autoModUpdate", "entitlementCreate", "entitlementDelete", "entitlementUpdate"
         ];
 
         if (formCommand) {

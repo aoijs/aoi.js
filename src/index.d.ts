@@ -208,6 +208,7 @@ declare module "aoi.js" {
     interface InteractionCommand extends BaseCommand {
         name: string | Array<string>;
         prototype: "modal" | "button" | "selectMenu";
+        premiumOnly?: boolean;
     }
 
     interface LoopCommand extends BaseCommand {
@@ -221,7 +222,7 @@ declare module "aoi.js" {
         url: string;
         time: number;
         shardID: number;
-        type: "Playing" | "Listening" | "Watching" | "Streaming";
+        type: "Playing" | "Listening" | "Watching" | "Streaming" | "Custom";
         status: string;
     };
 
@@ -298,6 +299,9 @@ declare module "aoi.js" {
         variableCreateCommand(d: EventCommand): void;
         variableDeleteCommand(d: EventCommand): void;
         variableUpdateCommand(d: EventCommand): void;
+        entitlementCreateCommand(d: EventCommand): void;
+        entitlementUpdateCommand(d: EventCommand): void;
+        entitlementDeleteCommand(d: EventCommand): void;
         readyCommand(d: EventCommand): void;
         functionErrorCommand(d: EventCommand): void;
         loopCommand(d: LoopCommand): void;
