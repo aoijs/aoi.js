@@ -93,17 +93,6 @@ declare module "aoi.js" {
         static findUser(client: Client, UserResolver: string): string | undefined;
 
         static findRoles(guild: Guild, options: { type: string; query: string; limit: number }): Collection<Snowflake, Role>;
-
-        static searchType: string[];
-        static audioFilters: {
-            nightcore: (value: number) => any;
-            bassboost: (value: number) => any;
-            "8d": () => any;
-            pitch: (value: number) => any;
-            karaoke: (value: number) => any;
-            slowed: (value: number) => any;
-            deep: (value: number) => any;
-        };
     }
 
     class CustomEvent extends EventEmitter {
@@ -218,7 +207,8 @@ declare module "aoi.js" {
 
     interface InteractionCommand extends BaseCommand {
         name: string | Array<string>;
-        prototype: "application" | "button" | "selectMenu";
+        prototype: "modal" | "button" | "selectMenu";
+        premiumOnly?: boolean;
     }
 
     interface LoopCommand extends BaseCommand {
@@ -232,7 +222,7 @@ declare module "aoi.js" {
         url: string;
         time: number;
         shardID: number;
-        type: "Playing" | "Listening" | "Watching" | "Streaming";
+        type: "Playing" | "Listening" | "Watching" | "Streaming" | "Custom";
         status: string;
     };
 
@@ -309,6 +299,9 @@ declare module "aoi.js" {
         variableCreateCommand(d: EventCommand): void;
         variableDeleteCommand(d: EventCommand): void;
         variableUpdateCommand(d: EventCommand): void;
+        entitlementCreateCommand(d: EventCommand): void;
+        entitlementUpdateCommand(d: EventCommand): void;
+        entitlementDeleteCommand(d: EventCommand): void;
         readyCommand(d: EventCommand): void;
         functionErrorCommand(d: EventCommand): void;
         loopCommand(d: LoopCommand): void;
