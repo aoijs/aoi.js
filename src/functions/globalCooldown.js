@@ -1,4 +1,7 @@
 const { Time } = require("../core/Time.js");
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const { code } = d.command;
     const inside = d.unpack();

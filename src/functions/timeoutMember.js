@@ -1,4 +1,7 @@
 const {Time} = require("../core/Time.js");
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 

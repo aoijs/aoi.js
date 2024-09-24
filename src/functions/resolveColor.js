@@ -1,5 +1,8 @@
 const {Util} = require("discord.js");
 const {RBGtoHex} = require("../core/functions.js");
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);

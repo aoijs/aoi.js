@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = d => {
     let {code, result} = d.util.aoiFunc(d);
 

@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     let [ channel = d.channel.id, message = d.message.id ] = data.inside.splits
