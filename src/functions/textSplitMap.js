@@ -1,5 +1,8 @@
 const Interpreter = require("../core/interpreter.js");
 
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 

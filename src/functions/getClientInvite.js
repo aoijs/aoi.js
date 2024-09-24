@@ -1,6 +1,9 @@
 const {Permissions} = require('../utils/Constants.js');
 const {PermissionFlagsBits, OAuth2Scopes} = require('discord.js');
 
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     let [...perms] = data.inside.splits;

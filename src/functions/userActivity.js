@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     const [guildID = d.guild?.id, userID = d.author?.id] = data.inside.splits;

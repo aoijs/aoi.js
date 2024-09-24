@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     const [channelID = d.channel?.id, response = "{mention} ({type}):\nAllowed Permissions: {allow}\nDenied Permissions: {deny}", sep = " , "] = data.inside.splits;

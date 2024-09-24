@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     let data = d.util.aoiFunc(d);
 

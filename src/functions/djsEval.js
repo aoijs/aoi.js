@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const {client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError, args} = d;
     const data = d.util.aoiFunc(d);

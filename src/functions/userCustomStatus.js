@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const {ActivityType} = require("discord.js");
     const data = d.util.aoiFunc(d);
