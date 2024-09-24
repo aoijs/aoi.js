@@ -56,13 +56,7 @@ declare global {
 interface SetCodeOptions {
     code: string;
     function?: string;
-    inside?: {
-        inside: string;
-        total: string;
-        splits: string[];
-        toString(): string;
-        addBrackets(): string;
-    };
+    inside?: ReturnType<String["after"]>;
     result?: string;
 }
 
@@ -392,14 +386,6 @@ export type Interpreter = (
     sendMessage?: boolean
 ) => Promise<InterpreterReturn>;
 
-export interface UnpackedAoiFunction {
-    inside: string;
-    total: string;
-    splits: string[];
-    toString(): string;
-    addBrackets(): string;
-}
-
 // FunctionManager
 export declare class FunctionManager {
     client: AoiClient;
@@ -513,8 +499,8 @@ export interface Data<T extends Record<string, unknown> = Record<string, unknown
     channel: BaseChannel | undefined;
     member: GuildMember | undefined;
     mentions: MessageMentions;
-    unpack(): UnpackedAoiFunction;
-    inside(unpacked: UnpackedAoiFunction): string | false | undefined;
+    unpack(): ReturnType<String["after"]>;
+    inside(unpacked: ReturnType<String["after"]>): string | false | undefined;
     noop(): void;
     error(err: string, d: Data): Promise<void>;
     interpreter: Interpreter;
