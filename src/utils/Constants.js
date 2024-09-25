@@ -162,7 +162,7 @@ const MemberOptions = {
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
-    addedRoles: (oldMember, member) =>
+    addedRoles: (member, oldMember) =>
         member.roles?.cache
             ?.filter((r) => !oldMember.roles?.cache?.has(r.id))
             .map((r) => r.name)
