@@ -15,7 +15,7 @@ module.exports = async (d) => {
     const value = fields[i + 2].addBrackets();
     const inline = fields[i + 3] === "true";
 
-    if (!value) return d.aoiError.fnError(d, "custom", { inside: data.inside }, `The field[i] value cannot be empty`)
+    if (!value) return d.aoiError.fnError(d, "custom", { inside: data.inside }, `The field[${i}] value cannot be empty`)
 
     if (!d.embeds[index]) d.embeds[index] = new d.embed();
 
