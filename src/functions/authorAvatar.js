@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     const [size = 4096, dynamic = "true", extension = "webp"] = data.inside.splits;

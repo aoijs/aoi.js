@@ -162,7 +162,7 @@ const MemberOptions = {
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
-    addedRoles: (member, oldMember) =>
+    addedRoles: (oldMember, member) =>
         member.roles?.cache
             ?.filter((r) => !oldMember.roles?.cache?.has(r.id))
             .map((r) => r.name)
@@ -177,8 +177,10 @@ const ButtonStyleOptions = {
     secondary: 2,
     success: 3,
     danger: 4,
-    link: 5
+    link: 5,
+    premium: 6
 };
+
 const CacheOptions = {
     guilds: "GuildManager",
     messages: "MessageManager",
@@ -360,6 +362,9 @@ const EventsToIntents = {
     onAutoModerationRuleUpdate: "AutoModerationConfiguration",
     onPollVoteAdd: "GuildMessagePolls",
     onPollVoteRemove: "GuildMessagePolls",
+    onEntitlementCreate: "NonIntents",
+    onEntitlementUpdate: "NonIntents",
+    onEntitlementDelete: "NonIntents",
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",
@@ -423,6 +428,9 @@ const EventsToDjsEvents = {
     onAutoModerationRuleUpdate: Events.AutoModerationRuleUpdate,
     onPollVoteAdd: Events.MessagePollVoteAdd,
     onPollVoteRemove: Events.MessagePollVoteRemove,
+    onEntitlementCreate: Events.EntitlementCreate,
+    onEntitlementUpdate: Events.EntitlementUpdate,
+    onEntitlementDelete: Events.EntitlementDelete,
     onVariableCreate: "variableCreate",
     onVariableDelete: "variableDelete",
     onVariableUpdate: "variableUpdate",
@@ -489,7 +497,10 @@ const EventstoFile = {
     onAutoModerationActionExecution: "autoModActionExecution",
     onAutoModerationRuleDelete: "autoModCreate",
     onAutoModerationRuleCreate: "autoModDelete",
-    onAutoModerationRuleUpdate: "autoModUpdate"
+    onAutoModerationRuleUpdate: "autoModUpdate",
+    onEntitlementCreate: "entitlementCreate",
+    onEntitlementUpdate: "entitlementUpdate",
+    onEntitlementDelete: "entitlementDelete"
 };
 
 const AllEvents = Object.keys(EventstoFile);

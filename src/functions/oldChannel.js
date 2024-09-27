@@ -1,5 +1,8 @@
 const { ChannelOptions } = require("../utils/Constants.js");
 
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 

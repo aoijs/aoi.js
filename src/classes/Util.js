@@ -182,17 +182,32 @@ class Util {
     return data;
   }
 
-  static getEmoji(d, Emoji) {
+  static async getEmoji(d, Emoji) {
     if (Emoji.includes(":")) {
       Emoji = Emoji.split(":")[2].split(">")[0];
     }
-
-    return d.client.emojis.cache.find(
+    
+    const clientEmojis = d.client.emojis.cache.find(
       (x) =>
         x.name.toLowerCase() === Emoji.toLowerCase().addBrackets() ||
         x.id === Emoji ||
         x.toString() === Emoji
     );
+
+    if (clientEmojis) return clientEmojis;
+
+    // https://discord.js.org/docs/packages/discord.js/14.16.1/ApplicationEmojiManager:Class#fetch
+    const application = d.client.application;
+    if (!application.emojis.cache.size) await application.emojis.fetch();
+
+    const appEmojis = application.emojis.cache.find(
+      (x) =>
+        x.name.toLowerCase() === Emoji.toLowerCase().addBrackets() ||
+        x.id === Emoji ||
+        x.toString() === Emoji
+    );
+
+    return appEmojis;
   }
 
   static getSticker(guild, Sticker) {

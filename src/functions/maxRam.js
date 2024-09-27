@@ -1,5 +1,8 @@
 const os = require('os');
 
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = d => {
     const data = d.util.aoiFunc(d);
 

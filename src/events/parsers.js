@@ -1,4 +1,4 @@
-const { resolveColor, MessageFlags, AttachmentBuilder, ComponentType } = require("discord.js");
+const { resolveColor, MessageFlags, AttachmentBuilder, ComponentType, ButtonStyle } = require("discord.js");
 const SlashOption = require("./slashOption.js");
 const { mustEscape } = require("../core/mustEscape.js");
 const { ButtonStyleOptions } = require("../utils/Constants.js");
@@ -19,7 +19,7 @@ const EmbedParser = async (message) => {
     message = mustEscape(message);
 
     const embeds = [];
-    
+
     let messages = message.split("{newEmbed:").slice(1);
     for (let content of messages) {
         content = content.slice(0, content.length - 1);
@@ -120,21 +120,13 @@ const EmbedParser = async (message) => {
         if (Checker(content, "field")) {
             const fieldContent = content.split("{field:").slice(1);
             for (let fieldInner of fieldContent) {
-                fieldInner = fieldInner?.split("}")[0];
-                fieldInner = fieldInner
-                    ?.addBrackets()
-                    .split(/:(?![/][/])/)
-                    .map((x) => x.trim());
+                fieldInner = fieldInner.split("}")[0].match(/(?:<[^>]+>|[^:])+/g);
 
-                if (fieldInner.length < 2) {
-                    return console.error("Missing title or description in the {field:} parser", fieldInner);
-                }
+                const fieldTitle = fieldInner.shift().addBrackets().trim();
+                const fieldInline = ["true", "false"].find((x) => x === fieldInner[Number(fieldInner.length - 1)].trim()) ? fieldInner.pop().trim() === "true" : false;
+                const fieldValue = fieldInner.join(":").addBrackets().trim();
 
-                const fieldName = fieldInner.shift();
-                const fieldValue = fieldInner.shift();
-                const fieldInline = fieldInner.pop()?.addBrackets().trim() === "true";
-
-                embed.fields.push({ name: fieldName, value: fieldValue, inline: fieldInline });
+                embed.fields.push({ name: fieldTitle, value: fieldValue, inline: fieldInline });
             }
         }
         embeds.push(embed);
@@ -197,24 +189,38 @@ const ComponentParser = async (message, d) => {
                 const customId = button.shift();
                 const disabled = button.shift()?.addBrackets().trim() === "true";
 
-                const buttonInner =
-                    Number(style) === 5
-                        ? {
-                              label: label,
-                              type: 2,
-                              style: style,
-                              url: customId,
-                              disabled
-                          }
-                        : {
-                              label: label,
-                              type: 2,
-                              style: style,
-                              custom_id: customId,
-                              disabled
-                          };
+                let buttonInner;
 
-                if (button) {
+                switch (Number(style)) {
+                    case 5:
+                        buttonInner = {
+                            label: label,
+                            type: 2,
+                            style: ButtonStyle.Link,
+                            url: customId,
+                            disabled: disabled
+                        };
+                        break;
+                    case 6:
+                        buttonInner = {
+                            type: 2,
+                            style: ButtonStyle.Premium,
+                            sku_id: customId,
+                            disabled: disabled
+                        };
+                        break;
+                    default:
+                        buttonInner = {
+                            label: label,
+                            type: 2,
+                            style: style,
+                            custom_id: customId,
+                            disabled: disabled
+                        };
+                        break;
+                }
+
+                if (button && Number(style) !== 6) {
                     const emoji = await extractEmoji(button, d);
                     buttonInner.emoji = emoji;
                 }

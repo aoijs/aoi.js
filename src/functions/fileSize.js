@@ -13,6 +13,9 @@ const units = {
 [units.B, units.KB, units.MB, units.GB, units.b, units.kb, units.mb, units.gb] = Object.values(units);
 
 const {statSync} = require('fs');
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);

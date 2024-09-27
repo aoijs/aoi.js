@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     const [ephemeral = "false"] = data.inside.splits;

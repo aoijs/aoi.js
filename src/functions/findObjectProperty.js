@@ -1,3 +1,6 @@
+/**
+ * @param {import("..").Data} d
+ */
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
