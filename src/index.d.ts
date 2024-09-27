@@ -491,6 +491,15 @@ export interface Data<T extends Record<string, unknown> = Record<string, unknown
     disableMentions: string;
     array: string[];
     arrays: string[][];
+    requests: Record<string, {
+        body?: string;
+        credentials?: string;
+        headers?: Record<string, string>;
+        ok: boolean;
+        redirected: boolean;
+        statusCode: number;
+        result: string | object;
+    }>;
     reactions: string[];
     message: Message | undefined;
     msg: Message | undefined;
