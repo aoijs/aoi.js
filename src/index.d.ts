@@ -395,6 +395,7 @@ export type CustomFunctionTypes = "aoi.js" | "djs";
  * Base custom function interface.
  */
 export interface BaseCustomFunction<T extends CustomFunctionTypes> {
+    name: `$${string}`;
     type: T;
 }
 
@@ -402,8 +403,6 @@ export interface BaseCustomFunction<T extends CustomFunctionTypes> {
  * Represents the structure for an aoi.js custom function type.
  */
 export interface CustomAoiJSFunction<Type = "aoi.js"> extends BaseCustomFunction<Type> {
-    name: `$${string}`;
-    type: Type;
     params?: string[];
     code: string;
 }
@@ -412,8 +411,6 @@ export interface CustomAoiJSFunction<Type = "aoi.js"> extends BaseCustomFunction
  * Represents the structure for a discord.js custom function type.
  */
 export interface CustomDiscordJSFunction<Type = "djs"> extends BaseCustomFunction<Type> {
-    name: `$${string}`;
-    type: Type;
     code(d: Data): Promise<Record<string, any>> | Record<string, any>
 }
 
@@ -426,7 +423,7 @@ export declare class FunctionManager {
     interpreter: Interpreter;
     constructor(client: AoiClient);
     cacheFunctions(): void;
-    createFunction<T extends CustomFunctionTypes = CustomFunctionTypes>(...data: (T extends "aoi.js" ? CustomAoiJSFunction : CustomDiscordJSFunction)[]): void;
+    createFunction(...data: (CustomAoiJSFunction | CustomDiscordJSFunction)[]): void;
     findFunctions(code: string): string[];
     serializeCode(code: string): string[];
 }
