@@ -1,5 +1,3 @@
-const { Time } = require("../core/Time.js");
-
 /**
  * @param {import("..").Data} d
  */
@@ -7,10 +5,7 @@ module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
-  let [time, type, cmdName, id] = data.inside.splits;
-
-  time = Time.parse(time)?.ms;
-  if (!time) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Time");
+  let [type, cmdName, id] = data.inside.splits;
 
   const types = {
     globalUser: id,
