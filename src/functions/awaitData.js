@@ -13,6 +13,7 @@ module.exports = (d) => {
             data.result = eval(`d.data.awaitData`);
         }
     } catch (e){
+        return d.aoiError.fnError(d, "custom", {}, e);
     }
     return {
         code: d.util.setCode(data),
