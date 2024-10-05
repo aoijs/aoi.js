@@ -22,24 +22,19 @@ module.exports = async (d) => {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Awaited Command With Name '" + awaitedCmd + "' Does Not Exist.");
     }
 
-    let parsedData = {};
-    for (const key in d.data.objects[name]) {
-        if (Array.isArray(d.data.objects[name][key])) {
-            parsedData[key] = d.data.objects[name][key]
-        }
-    }
-
+    let el = {};
     let i = 0;
     for (const key in d.data.objects[name]) {
         if (d.data.objects[name].hasOwnProperty(key)) {
-    
-            const el = d.data.objects[name][key]; 
+
+            el[key] = d.data.objects[name][key]; 
             const c = { ...cmd }; 
             c.code = c.code.replaceAll("{value}", el); 
 
-            if(Array.isArray(el)){
-                let parsedResult = JSON.stringify(parsedData[property][i])
-            const result = await Interpreter(
+            if(!Array.isArray(el[key])) continue;
+            el[key] = d.data.objects[name][key]
+            let parsedResult = JSON.stringify(el[property][i])
+            await Interpreter(
                 d.client,
                 d.message,
                 d.args,
@@ -50,7 +45,6 @@ module.exports = async (d) => {
                 { ...d.data, awaitData: parsedResult, index: i }
             );
             i++;
-        }
     }
 }
 

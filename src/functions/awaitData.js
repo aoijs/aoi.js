@@ -7,9 +7,12 @@ module.exports = (d) => {
     const [option] = data.inside.splits;
 
     try {
-        data.result = eval(`d.data.awaitData?.${option.addBrackets()}`);
-    } finally{
-        data.result = eval(`d.data.awaitData`);
+        if(option){
+            data.result = eval(`d.data.awaitData?.${option}`);
+        } else {
+            data.result = eval(`d.data.awaitData`);
+        }
+    } catch (e){
     }
     return {
         code: d.util.setCode(data),
