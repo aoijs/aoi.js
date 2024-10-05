@@ -8,8 +8,8 @@ module.exports = (d) => {
 
     try {
         data.result = eval(`d.data.awaitData?.${option.addBrackets()}`);
-    } catch (e) {
-        data.result = undefined;
+    } finally{
+        data.result = eval(`d.data.awaitData`);
     }
     return {
         code: d.util.setCode(data),

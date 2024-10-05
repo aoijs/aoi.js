@@ -6,7 +6,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name, property, awaitedCmd, awaitData = "{}", endCmd] = data.inside.splits;
+    const [name, property, awaitedCmd, endCmd] = data.inside.splits;
 
     if (!d.data.objects?.[name]) {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array With Name '" + name + "' Does Not Exist.");
@@ -21,37 +21,46 @@ module.exports = async (d) => {
     if (!cmd) {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Awaited Command With Name '" + awaitedCmd + "' Does Not Exist.");
     }
-    let parsedData;
-    try {
-        parsedData = JSON.parse(awaitData);
-    } catch (e) {
-        return d.aoiError.fnError(d, "custom", {}, `Failed To Parse Data With Reason: ${e.message}`);
+
+    let parsedData = {};
+    for (const key in d.data.objects[name]) {
+        if (Array.isArray(d.data.objects[name][key])) {
+            parsedData[key] = d.data.objects[name][key]
+        }
     }
-
-    for (const key in property) {
-        console.log(`Key: ${key}`);
-
-        property[key].forEach((value) => {
-          console.log(value);
-        });
-      }      
 
     let i = 0;
-    for (const el of d.arrays[name]) {
-        const c = { ...cmd };
-        c.code = c.code.replaceAll("{value}", el);
-        await Interpreter(d.client, d.message, d.args, c, d.client.db, true, undefined, { ...d.data, awaitData: parsedData, index: i });
-        i++;
-    }
+    for (const key in d.data.objects[name]) {
+        if (d.data.objects[name].hasOwnProperty(key)) {
+    
+            const el = d.data.objects[name][key]; 
+            const c = { ...cmd }; 
+            c.code = c.code.replaceAll("{value}", el); 
 
-    if (endCmd.trim() !== "") {
-        const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
-        if (!cmd) return;
-        await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {
-            awaitData,
-            index: i
-        });
+            if(Array.isArray(el)){
+                let parsedResult = JSON.stringify(parsedData[property][i])
+            const result = await Interpreter(
+                d.client,
+                d.message,
+                d.args,
+                c,
+                d.client.db,
+                true,
+                undefined,
+                { ...d.data, awaitData: parsedResult, index: i }
+            );
+            i++;
+        }
     }
+}
+
+if (endCmd.trim() !== "") {
+    const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
+    if (!cmd) return;
+    await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {
+        index: i-1
+    });
+}
 
     return {
         code: d.util.setCode(data)
