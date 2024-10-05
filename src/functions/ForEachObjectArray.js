@@ -9,7 +9,7 @@ module.exports = async (d) => {
     const [name, property, awaitedCmd, endCmd] = data.inside.splits;
 
     if (!d.data.objects?.[name]) {
-        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array With Name '" + name + "' Does Not Exist.");
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Object With Name '" + name + "' Does Not Exist.");
     }
     
     if (!property) {
