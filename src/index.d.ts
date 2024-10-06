@@ -386,6 +386,34 @@ export type Interpreter = (
     sendMessage?: boolean
 ) => Promise<InterpreterReturn>;
 
+/**
+ * Available custom function types that FunctionManager supports.
+ */
+export type CustomFunctionTypes = "aoi.js" | "djs";
+
+/**
+ * Base custom function interface.
+ */
+export interface BaseCustomFunction<T extends CustomFunctionTypes> {
+    name: `$${string}`;
+    type: T;
+}
+
+/**
+ * Represents the structure for an aoi.js custom function type.
+ */
+export interface CustomAoiJSFunction<Type = "aoi.js"> extends BaseCustomFunction<Type> {
+    params?: string[];
+    code: string;
+}
+
+/**
+ * Represents the structure for a discord.js custom function type.
+ */
+export interface CustomDiscordJSFunction<Type = "djs"> extends BaseCustomFunction<Type> {
+    code(d: Data): Promise<Record<string, any>> | Record<string, any>
+}
+
 // FunctionManager
 export declare class FunctionManager {
     client: AoiClient;
@@ -395,7 +423,7 @@ export declare class FunctionManager {
     interpreter: Interpreter;
     constructor(client: AoiClient);
     cacheFunctions(): void;
-    createFunction(data: Array<Record<string, any>>): void;
+    createFunction(...data: (CustomAoiJSFunction | CustomDiscordJSFunction)[]): void;
     findFunctions(code: string): string[];
     serializeCode(code: string): string[];
 }
