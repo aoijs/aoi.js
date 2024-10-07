@@ -13,19 +13,14 @@ module.exports = async (d) => {
     const message = await d.util.getMessage(channel, messageID);
     if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
-    let emoji;
+    let emoji = (await d.util.getEmoji(d, emojiResolver))?.id;
+    if (!emoji) emoji = emojiResolver.addBrackets().trim();
 
-    try {
-        emoji = message.reactions.cache.find((x) => x.emoji.id === d.util.getEmoji(d, emojiResolver).id)?.count;
-    } catch {
-        emoji = message.reactions.cache.find((x) => x.emoji.toString().toLowerCase() === emojiResolver.toLowerCase())?.count;
-    } finally {
-        emoji = emoji ?? 0;
-    }
+    emoji = message.reactions.cache.find((x) => x.emoji.id === emoji || x.emoji.toString().toLowerCase() === emoji.toLowerCase())?.count ?? 0;
 
     data.result = emoji;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

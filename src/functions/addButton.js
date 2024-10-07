@@ -2,49 +2,49 @@
  * @param {import("..").Data} d
  */
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
-  if (data.err) return d.error(data.err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-  let [index, label, style, custom, disabled = "false", emoji] = data.inside.splits;
+    let [index, label, style, custom, disabled = "false", emoji] = data.inside.splits;
 
-  if (isNaN(index) || Number(index) < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
- 
-  index = Number(index) - 1;
-  style = isNaN(style) ? d.util.constants.ButtonStyleOptions[style] : Number(style);
-  disabled = disabled === "true";
+    if (isNaN(index) || Number(index) < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
 
-  if (!style || style > 6 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Style Provided In");
-  
-  try {
-    emoji = d.util.getEmoji(d, emoji.addBrackets()).id;
-  } catch {
-    emoji = emoji?.addBrackets() ?? undefined;
-  }
+    index = Number(index) - 1;
+    style = isNaN(style) ? d.util.constants.ButtonStyleOptions[style] : Number(style);
+    disabled = disabled === "true";
 
-  const button = {
-    label,
-    type: 2,
-    style,
-    disabled,
-    emoji,
-  };
+    if (!style || style > 6 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Style Provided In");
 
-  // premium
-  if (style === 6) {
-    delete button.label;
-    delete button.emoji;
-    button["sku_id"] = custom;
-  // url
-  } else if (style === 5) {
-    button["url"] = custom;
-  } else {
-    button["customId"] = custom;
-  }
+    let emojiString;
+    if (emoji) {
+        emojiString = await d.util.getEmoji(d, emoji.addBrackets()).id;
+        if (!emojiString) emojiString = emoji?.addBrackets().trim();
+    }
 
-  if (!d.components[index]) d.components[index] = { type: 1, components: [] };
-  d.components[index].components.push(button);
+    const button = {
+        label,
+        type: 2,
+        style,
+        disabled,
+        emoji: emojiString
+    };
 
-  return {
-    code: d.util.setCode(data),
-  };
+    // premium
+    if (style === 6) {
+        delete button.label;
+        delete button.emoji;
+        button["sku_id"] = custom;
+        // url
+    } else if (style === 5) {
+        button["url"] = custom;
+    } else {
+        button["customId"] = custom;
+    }
+
+    if (!d.components[index]) d.components[index] = { type: 1, components: [] };
+    d.components[index].components.push(button);
+
+    return {
+        code: d.util.setCode(data)
+    };
 };

@@ -69,15 +69,15 @@ module.exports = async (d) => {
 
             if (option.length > 4) {
                 const emojiString = option.slice(4).join(":");
-                try {
-                    emoji = d.util.getEmoji(d, emojiString);
+                emoji = await d.util.getEmoji(d, emojiString);
+                if (!emoji) {
+                    emoji = emojiString;
+                } else {
                     emoji = {
                         name: emoji.name,
                         id: emoji.id,
                         animated: emoji.animated
                     };
-                } catch {
-                    emoji = emojiString.addBrackets().trim() || undefined;
                 }
             }
         }
