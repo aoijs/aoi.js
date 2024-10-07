@@ -127,6 +127,7 @@ const ChannelOptions = {
 const MemberOptions = {
     id: (member) => member.id,
     name: (member) => member.user?.username?.deleteBrackets(),
+    avatarUrl: (member) => member.user.displayAvatarURL(),
     guildID: (member) => member.guild.id,
     nick: (member) => member.nickname || "",
     roles: (member) =>
