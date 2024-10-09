@@ -8,7 +8,7 @@ module.exports = async d => {
   const [name] = data.inside.splits;
 
   if (!d.data?.vars?.hasOwnProperty(name.addBrackets())) {
-    return d.aoiError.fnError(d, "custom", { inside: d.data.inside }, "Invalid variable name");
+    return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid variable name");
   }
 
   data.result = d.data.vars[name.addBrackets()];
