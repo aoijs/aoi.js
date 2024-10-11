@@ -173,6 +173,18 @@ const MemberOptions = {
     threadFlags: (member) => member.flags?.toArray() || []
 };
 
+const ReactionOptions = {
+    channelId: (reaction) => reaction.message.channel.id,
+    guildId: (reaction) => reaction.message.guild.id,
+    messageId: (reaction) => reaction.message.id,
+    name: (reaction) => reaction._emoji.name,
+    id: (reaction) => reaction._emoji.id,
+    emoji: (reaction) => reaction._emoji.toString(),
+    count: (reaction) => reaction.count,
+    usernames: (reaction) => reaction.users.cache.map(y => y.username.deleteBrackets()).join(" , "),
+    userIds: (reaction) => reaction.users.cache.map(y => y.id).join(" , "),
+}
+
 const ButtonStyleOptions = {
     primary: 1,
     secondary: 2,
@@ -514,6 +526,7 @@ module.exports = {
     ButtonStyleOptions,
     ChannelOptions,
     MemberOptions,
+    ReactionOptions,
     CacheOptions,
     SlashOptionTypes,
     Permissions,
