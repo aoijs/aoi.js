@@ -25,7 +25,13 @@ module.exports = (d) => {
         );
     }
 
-    cache.delete(cacheKey.addBrackets());
+    if (cacheKey) {
+        cache.delete(cacheKey.addBrackets());
+    } else {
+        for (const key of cache.keys()) {
+            cache.delete(key);
+        }
+    }
 
     return {
         code: d.util.setCode(data),
