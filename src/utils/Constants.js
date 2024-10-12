@@ -137,7 +137,7 @@ const MemberOptions = {
     partial: (member) => member.partial ?? false,
     premiumStamp: (member) => member.premiumSinceTimestamp || "0",
     joinedStamp: (member) => member.joinedTimestamp,
-    voiceID: (member) => member.voice.channelID || "",
+    voiceID: (member) => member.voice?.channelID || "",
     displayHex: (member) => member.displayHexColor,
     highestRoleID: (member) => member.roles?.highest?.id || "",
     permissions: (member) => member.permissions?.toArray().join("_") || "",
@@ -154,7 +154,7 @@ const MemberOptions = {
     bannable: (member) => member.bannable,
     kickable: (member) => member.kickable,
     manageable: (member) => member.manageable,
-    status: (member) => member.status,
+    status: (member) => member.status || "",
     activities: (member) => member.presence?.activities?.map((c) => c.name).join(", ") || "",
     removedRoles: (member, oldMember) =>
         oldMember.roles?.cache
@@ -162,9 +162,9 @@ const MemberOptions = {
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
-    addedRoles: (oldMember, member) =>
+    addedRoles: (member, oldMember) =>
         member.roles?.cache
-            ?.filter((r) => !oldMember.roles?.cache?.has(r.id))
+            ?.filter((r) => !oldMember?.roles?.cache?.has(r.id))
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
