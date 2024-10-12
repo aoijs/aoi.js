@@ -77,6 +77,7 @@ module.exports = async (d) => {
                     channel,
                     errorMsg.data ?? errorMsg,
                     errorMsg.options,
+                    d,
                 );
             }
         });
