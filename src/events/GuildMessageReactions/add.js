@@ -5,7 +5,7 @@ const Interpreter = require("../../core/interpreter.js");
  * @param  {User} user
  * @param  {import('../../classes/AoiClient.js')} client
  */
-module.exports = async (newReaction, user, client) => {
+module.exports = async (newReaction, user, burst, client) => {
     const cmds = client.cmd?.reactionAdd.V();
     if (!cmds) return;
     const data = {

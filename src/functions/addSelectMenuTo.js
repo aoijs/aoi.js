@@ -73,10 +73,18 @@ module.exports = async (d) => {
             value = option[2].addBrackets();
             def = option[3]?.addBrackets() === "true";
 
-            try {
-                emoji = d.util.getEmoji(d, option[4]?.addBrackets()).id;
-            } catch {
-                emoji = option[4]?.addBrackets() ?? undefined;
+            if (option.length > 4) {
+                const emojiString = option.slice(4).join(":");
+                emoji = await d.util.getEmoji(d, emojiString);
+                if (!emoji) {
+                    emoji = emojiString;
+                } else {
+                    emoji = {
+                        name: emoji.name,
+                        id: emoji.id,
+                        animated: emoji.animated
+                    };
+                }
             }
         }
 

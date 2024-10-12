@@ -7,7 +7,7 @@ module.exports = async (d) => {
 
     const emoji = data.inside.inside;
 
-    data.result = (await d.util.getEmoji(d, emoji))?.id ?? "";
+    data.result = (await d.util.getEmoji(d, emoji))?.id ?? null;
 
     return {
         code: d.util.setCode(data),

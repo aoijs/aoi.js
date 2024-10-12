@@ -149,20 +149,17 @@ const ComponentParser = async (message, d) => {
             return part.join(":").trim();
         }
 
-        try {
-            emoji = await d.util.getEmoji(d, part.toString());
+        emoji = await d.util.getEmoji(d, part.toString());
+        if (!emoji) {
+            emoji = part.toString().addBrackets().trim();
+        } else {
             emoji = {
                 name: emoji.name,
                 id: emoji.id,
                 animated: emoji.animated
             };
-        } catch {
-            emoji = part.toString();
-            emoji = emoji.addBrackets().trim() || undefined;
-        } finally {
-            if (!emoji) return null;
-            return emoji;
         }
+        return emoji;
     }
 
     for (let content of actionRow) {
@@ -222,7 +219,7 @@ const ComponentParser = async (message, d) => {
 
                 if (button && Number(style) !== 6) {
                     const emoji = await extractEmoji(button, d);
-                    buttonInner.emoji = emoji;
+                    if (emoji) buttonInner.emoji = emoji;
                 }
 
                 actionRowInner.push(buttonInner);
@@ -270,7 +267,7 @@ const ComponentParser = async (message, d) => {
 
                     if (opt) {
                         const emoji = await extractEmoji(opt, d);
-                        selectMenuInner.emoji = emoji;
+                        if (emoji) selectMenuInner.emoji = emoji;
                     }
 
                     selectMenuOptions.push(selectMenuInner);
