@@ -12,7 +12,7 @@ module.exports = async d => {
         if (!emoji) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Emoji");
         data.result = emoji.toString();
     } else {
-        data.result = d.client.guilds.cache.get(id)?.emojis.cache.find(x => x.name.toLowerCase() === emoji.toLowerCase() || x.toString() === emoji || x.id === emoji)?.toString()
+        data.result = d.client.guilds.cache.get(id)?.emojis.cache.find(x => x.name.toLowerCase() === name.toLowerCase() || x.toString() === name || x.id === name)?.toString()
     }
 
     return {
