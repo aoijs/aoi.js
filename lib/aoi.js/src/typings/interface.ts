@@ -1,19 +1,22 @@
 import type AoiClient from '@aoi.js/classes/AoiClient';
 import { type ReturnType, type FunctionType } from './enum.js';
-import { type CommandTypes, type FunctionCode } from './type.js';
+import { type AsyncFunction, type CommandTypes, type FunctionCode } from './type.js';
 import type StringObject from '../core/builders/StringObject.js';
 import type Command from '@aoi.js/classes/Command.js';
+import { type Channel, type Client, type ClientOptions, type Guild, type Message } from 'discord.js';
 
 export interface ITranspilerOptions {
 	customFunctions: Record<string, IFunctionData>;
-	sendMessage: boolean;
-	client: AoiClient;
+	minify: boolean;
+}
 
-	scopeData?: IScopeData;
+export interface ITranspileOptions {
 	reverse?: boolean;
-	minify?: boolean;
 	parsedStringOnly?: boolean;
 	command?: Command;
+	sendMessage?: boolean;
+	scopeData?: IScopeData;
+	asFunction?: boolean;
 }
 
 export interface IScopeData {
@@ -47,6 +50,7 @@ export interface ICodeFunctionData extends IFunctionData {
 	funcs: ICodeFunctionData[];
 	parsed?: string;
 	executed: string;
+	cmd?: Command;
 }
 
 export interface IFunctionField {
@@ -62,7 +66,7 @@ export interface ICommandOptions {
 	[key: string]: unknown;
 	name: string;
 	type: CommandTypes;
-	code: string | (() => Promise<void>);
+	code: string | AsyncFunction;
 	aliases?: string[];
 	reverseRead?: boolean;
 	executeAt?: 'guild' | 'dm' | 'both';
@@ -71,4 +75,34 @@ export interface ICommandOptions {
 
 export interface ITranspilerData {
 	bot: AoiClient;
+	client: Client;
+	message: Message;
+	guild: Guild;
+	channel: Channel;
+	command: Command;
+}
+
+export interface IAoiClientOptions {
+	token: `${string}.${string}.${string}`;
+	intents: number;
+	prefix: string | string[];
+	respond?: {
+		toBot?: boolean;
+		onEdit?: {
+			commands?: boolean;
+			alwaysExecute?: boolean;
+			nonPrefixed?: boolean;
+			time?: number;
+		};
+	};
+	cache?: Record<string, number | undefined  >;
+	djsClientOptions?: ClientOptions;
+	transpilerOptions?: ITranspilerOptions;
+	testMode?: boolean;
+}
+
+export interface IAoiLoggerOptions {
+	logs?: boolean;
+	warnings?: boolean;
+	errors?: boolean;
 }

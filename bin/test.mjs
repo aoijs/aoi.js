@@ -2,17 +2,16 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 
 /**
- * run all tests for the given library
- * @param {object} options - the options object
- * @param {string} options.library - the library to test
+ * Run all tests for the given library
+ * @param {object} options - The options object
+ * @param {string} options.library - The library to test
  * @returns {Promise<void>}
  */
 const test = async ({ library }) => {
 	console.log(`Running tests for ${library}`);
 
-	// find all test files in the library
-	// recursively check all folders for test files
-	const mainFolder = path.resolve(process.cwd(), `lib/${library}`);
+	// Resolve paths in a cross-platform way
+	const mainFolder = path.join(process.cwd(), 'lib', library);
 
 	const spwn = spawn(
 		'npx',
@@ -22,12 +21,15 @@ const test = async ({ library }) => {
 			'--color',
 			'--coverage',
 			'--coverageProvider=v8',
-			`--config=${process.cwd()}/jest.config.js`,
+			`--config=${path.join(process.cwd(), 'jest.config.js')}`,
+			// Specify the folder where Jest should look for tests
 			`${mainFolder}`,
 		],
 		{
 			stdio: 'inherit',
+			// Set cwd to the project root
 			cwd: mainFolder,
+			shell: true,
 		},
 	);
 
@@ -45,10 +47,6 @@ const test = async ({ library }) => {
 
 	spwn.on('close', () => {
 		console.log(`Tested ${library}`);
-	});
-
-	spwn.on('disconnect', () => {
-		console.log('Disconnected');
 	});
 };
 

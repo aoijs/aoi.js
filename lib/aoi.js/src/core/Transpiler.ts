@@ -3,6 +3,7 @@ import {
 	type IFunctionData,
 	type IScopeData,
 	type ICodeFunctionData,
+	type ITranspileOptions,
 } from '@aoi.js/typings/interface.js';
 import Scope from './builders/Scope.js';
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
@@ -13,134 +14,51 @@ import {
 	TranspilerCustoms,
 } from '@aoi.js/typings/enum.js';
 import { TranspilerError } from './Error.js';
-import { parseString } from './parsers/string.js';
+import * as allFunctions from '@aoi.js/functions/index.js';
+import { parseResult } from '@aoi.js/utils/Helpers/core.js';
 
-const allFunctions: Record<string, IFunctionData> = {
-	$ping: {
-		name: '$ping',
-		brackets: false,
-		optional: false,
-		returns: ReturnType.Number,
-		code: (data, scopes) => {
-			return {
-				code: 'ping',
-				scope: scopes,
-			};
-		},
-		type: FunctionType.Getter,
-		fields: [],
-	},
-	$title: {
-		name: '$title',
-		brackets: true,
-		optional: false,
-		returns: ReturnType.String,
-		code: (data, scopes) => {
-			const text = data.executed;
-			return { 
-				code: 'title(' + parseString(text) + ')',
-				scope: scopes,
-			};
-		},
-		type: FunctionType.Setter,
-		fields: [
-			{
-				name: 'text',
-				type: ReturnType.String,
-				required: true,
-			},
-		],
-	},
-	$let: {
-		name: '$let',
-		brackets: true,
-		optional: false,
-		returns: ReturnType.Void,
-		code: (data, scopes) => {
-			const [name, value] = data.splits();
-			return {
-				code: `let ${name} = ${value};`,
-				scope: scopes,
-			};
-		},
-		type: FunctionType.Setter,
-		fields: [
-			{
-				name: 'text',
-				type: ReturnType.String,
-				required: true,
-			},
-		],
-	},
-	$wait: {
-		name: '$wait',
-		brackets: true,
-		optional: false,
-		returns: ReturnType.Void,
-		code: (data, scopes) => {
-			const [time] = data.splits();
-			return {
-				code: `await new Promise((r) => setTimeout(r, ${time}))`,
-				scope: scopes,
-			};
-		},
-		type: FunctionType.Setter,
-		fields: [
-			{
-				name: 'time',
-				type: ReturnType.Number,
-				required: true,
-			},
-		],
-	},
-};
+import { type MinifyOutput, minify } from 'uglify-js';
+import { type AsyncFunction } from '@aoi.js/typings/type.js';
+import { fixMath } from './parsers/math.js';
 
 export default class Transpiler {
-
 	static instance: Transpiler | undefined = undefined;
 
-	scopeData!: IScopeData;
-	sendMessage!: boolean;
 	minify!: boolean;
 	functions!: Record<string, IFunctionData>;
 	client!: AoiClient;
-
 	functionFinderRegex = /(\$[a-z]+)/gi;
 	mainFunction = '$AOIJSMAINFUNCTION';
 
-	constructor( options: ITranspilerOptions, client: AoiClient) {
-
+	constructor(options: ITranspilerOptions, client: AoiClient) {
 		if (Transpiler.instance) return Transpiler.instance;
-		this.scopeData = options.scopeData ?? {};
-		this.sendMessage = options.sendMessage;
+
 		this.minify = options.minify ?? true;
 		this.functions = { ...allFunctions, ...options.customFunctions };
 		this.client = client;
 		Transpiler.instance = this;
-
 	}
 
-	_createGlobalScope(ast: ICodeFunctionData) {
+	_createGlobalScope(ast: ICodeFunctionData, scopeData: Partial<IScopeData>) {
 		const scope = new Scope(
-			this.scopeData.name ?? 'global',
+			scopeData.name ?? 'global',
 			this.client,
 			undefined,
 			ast,
 		);
 
-		scope.addVariables( ...(this.scopeData.vars ?? []) );
-		scope.addEmbeds(this.scopeData.embeds ?? []);
-		scope.env.push(...(this.scopeData.env ?? []));
-		scope.objects = { ...scope.objects, ...this.scopeData.object };
-		scope.embeddedJS = this.scopeData.embeddedJS ?? [];
-		scope.sendFunction = this.scopeData.sendFunction ?? scope.sendFunction;
-		scope.useChannel = this.scopeData?.useChannel;
+		scope.addVariables(...(scopeData.vars ?? []));
+		scope.addEmbeds(scopeData.embeds ?? []);
+		scope.env.push(...(scopeData.env ?? []));
+		scope.objects = { ...(scope.objects ?? {}), ...scopeData.object };
+		scope.embeddedJS = scopeData.embeddedJS ?? [];
+		scope.sendFunction = scopeData.sendFunction ?? scope.sendFunction;
+		scope.useChannel = scopeData?.useChannel;
 
 		return scope;
 	}
 
 	_getFunctionList(code: string, functions: string[]) {
-		// eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
 		const raws = code.match(this.functionFinderRegex);
 		if (!raws) return [];
 		const functionsThatExists = functions.filter((x) =>
@@ -180,6 +98,7 @@ export default class Transpiler {
 			funcs: [],
 			parsed: '',
 			executed: '',
+			cmd: command,
 		};
 
 		if (func === this.mainFunction) {
@@ -317,7 +236,13 @@ export default class Transpiler {
 		return leftBrackets.length === rightBrackets.length;
 	}
 
-	_compile(ast: ICodeFunctionData, scopes: Scope[], reverse = false) {
+	_compile(
+		ast: ICodeFunctionData,
+		scopes: Scope[],
+		reverse = false,
+		sendMessage = true,
+		asFunction = true,
+	) {
 		if (reverse) {
 			ast.funcs = ast.funcs.reverse();
 		}
@@ -343,12 +268,14 @@ export default class Transpiler {
 					scopes.at(-1)!.content = scopes
 						.at(-1)!
 						.content.replace(`#FUNCTION_${i}#`, executed.code);
-					
-					scopes.at(-1)!.updateContentParts(`#FUNCTION_${i}#`, executed.code);
+
+					scopes
+						.at(-1)!
+						.updateContentParts(`#FUNCTION_${i}#`, executed.code);
 				}
 			} else {
 				if (node.funcs.length) {
-					this._compile(node, scopes, reverse);
+					this._compile(node, scopes, reverse, sendMessage);
 				}
 
 				const executed = node.code(node, scopes);
@@ -366,8 +293,10 @@ export default class Transpiler {
 					scopes.at(-1)!.content = scopes
 						.at(-1)!
 						.content.replace(`#FUNCTION_${i}#`, executed.code);
-					
-					scopes.at(-1)!.updateContentParts(`#FUNCTION_${i}#`, executed.code);
+
+					scopes
+						.at(-1)!
+						.updateContentParts(`#FUNCTION_${i}#`, executed.code);
 				}
 			}
 
@@ -375,10 +304,91 @@ export default class Transpiler {
 		}
 
 		const scope = scopes.at(-1)!;
-		for (const part of scope._contentParts) {
-			ast.executed = ast.executed.replace(part, '');
+		if (sendMessage )
+			for (const part of scope._contentParts) {
+				ast.executed = ast.executed.replace(part, '');
+			}
+
+		return scope.generate(ast.executed, sendMessage, asFunction);
+	}
+
+	transpile(code: string, options: ITranspileOptions) {
+		const functions = Object.keys(this.functions);
+		const functionList = this._getFunctionList(code, functions);
+		// console.log({code ,options})
+
+		if (options.asFunction === undefined) {
+			options.asFunction = true;
+		}
+		
+		functionList.forEach((func) => {
+			const reg = new RegExp(`${func.replace('$', '\\$')}`, 'gi');
+			code = parseResult(code);
+			code = code.replace(reg, func);
+		});
+
+		const tempCode = `${this.mainFunction}[${code}]`;
+
+		const ast = this._getFunctionData(
+			tempCode,
+			this.mainFunction,
+			functionList,
+			options.command,
+		);
+		const globalScope = this._createGlobalScope(
+			ast,
+			options.scopeData ?? {},
+		);
+
+		let result = this._compile(
+			ast,
+			[globalScope],
+			options.reverse,
+			options.sendMessage,
+			options.asFunction ?? true,
+		);
+		result = fixMath(result);
+
+		const functionString = this.minify ? minify(result) : result;
+
+		if (this.minify && (functionString as MinifyOutput).error) {
+			throw new TranspilerError(
+				`Failed To Transpile Code with error ${
+					(functionString as MinifyOutput).error?.message
+				}`,
+				{
+					code: result,
+					cmd: options.command?.name,
+					path: options.command?.__path__,
+				},
+			);
 		}
 
-		return scope.generate(ast.executed);
+		let func: AsyncFunction;
+		
+		try {
+			const minified = this.minify
+				? (functionString as MinifyOutput).code
+				: (functionString as string);
+			
+			if (!options.asFunction) {
+				// return non minified code
+				return { result, ast, scope: globalScope, functionList };
+			}
+
+			func = eval(`const f = ${minified}; f`) as AsyncFunction;
+		} catch (e) {
+			throw new TranspilerError(e as string, {
+				code: result,
+				cmd: options.command?.name,
+				path: options.command?.__path__,
+			});
+		}
+
+		return { func, ast, result, scope: globalScope, functionList };
+	}
+
+	addFunctions(functions: Record<string, IFunctionData>) {
+		this.functions = { ...this.functions, ...functions };
 	}
 }

@@ -1,7 +1,7 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { TranspilerError } from '@aoi.js/core/Error.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/helpers.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 import type os from 'os';
 
 /**
@@ -12,7 +12,7 @@ import type os from 'os';
  * name: cpu
  * type: basic
  * ---
- * 
+ *
  * $cpu // returns the CPU usage of the process
  * $cpu[os] // returns the CPU usage of the OS
  * ```
@@ -40,13 +40,10 @@ const $cpu = new FunctionBuilder()
 		}
 
 		if (
-			![ 'process', 'os'].includes(type) &&
+			!['process', 'os'].includes(type) &&
 			!thisArg.canSuppressAtComp(data, currentScope)
 		) {
-			throw TranspilerError.CompileError(
-				`Invalid CPU type: ${type}`,
-				{ function: { name: '$cpu', code: data.total } },
-			);
+			throw TranspilerError.CompileError(`Invalid CPU type: ${type}`, data);
 		}
 
 		if (!currentScope.hasPkg('OS')) {
@@ -54,16 +51,18 @@ const $cpu = new FunctionBuilder()
 		}
 
 		if (!currentScope.hasPkg('TRANSPILE_ERROR')) {
-			currentScope.addPkg('TRANSPILE_ERROR', 'const TRANSPILE_ERROR = await import("aoi.js/core/Error.js")');
+			currentScope.addPkg(
+				'TRANSPILE_ERROR',
+				'const TRANSPILE_ERROR = await import("aoi.js/core/Error.js")',
+			);
 		}
 
 		// placeholder for the actual module
 		const OS = thisArg.as<typeof os>('OS');
-		const TRANSPILE_ERROR = thisArg.as<typeof TranspilerError>('TRANSPILE_ERROR');
+		const TRANSPILE_ERROR =
+			thisArg.as<typeof TranspilerError>('TRANSPILE_ERROR');
 
-		function secNSec2ms(
-			secNSec: number | number[],
-		) {
+		function secNSec2ms(secNSec: number | number[]) {
 			if (Array.isArray(secNSec)) {
 				return secNSec[0] * 1000 + secNSec[1] / 1000000;
 			}
@@ -71,7 +70,7 @@ const $cpu = new FunctionBuilder()
 			return secNSec / 1000;
 		}
 
-		function __$getCPUUsage$__( type: string) {
+		function __$getCPUUsage$__(type: string) {
 			if (type === 'process') {
 				const startTime = process.hrtime();
 				const startUsage = process.cpuUsage();
@@ -82,9 +81,9 @@ const $cpu = new FunctionBuilder()
 				const elapTime = process.hrtime(startTime);
 				const elapUsage = process.cpuUsage(startUsage);
 
-				const elapTimeMS = secNSec2ms( elapTime);
-				const elapUserMS = secNSec2ms( elapUsage.user);
-				const elapSystMS = secNSec2ms( elapUsage.system);
+				const elapTimeMS = secNSec2ms(elapTime);
+				const elapUserMS = secNSec2ms(elapUsage.user);
+				const elapSystMS = secNSec2ms(elapUsage.system);
 				const cpuPercent = (
 					(100 * (elapUserMS + elapSystMS)) /
 					elapTimeMS
@@ -95,7 +94,7 @@ const $cpu = new FunctionBuilder()
 			} else {
 				throw TRANSPILE_ERROR.RunTimeError(
 					`Invalid CPU type: ${type}`,
-					{ function: { name: '$cpu', code: data.total } },
+					data,
 				) as TranspilerError;
 			}
 		}
@@ -104,7 +103,8 @@ const $cpu = new FunctionBuilder()
 		thisArg.addFunction(currentScope, __$getCPUUsage$__);
 
 		const result = thisArg.getResultString(
-			() => __$getCPUUsage$__(type),
+			() => __$getCPUUsage$__('$0'),
+			[type],
 		);
 
 		const escaped = escapeResult(result);

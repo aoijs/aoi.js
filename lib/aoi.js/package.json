@@ -57,6 +57,15 @@
 	},
 	"readme": "https://github.com/Aoijs/aoi.js/blob/monorepo/README.md",
 	"dependencies": {
+		"@aoijs/structures": "workspace:^",
+		"@discordjs/collection": "^2.1.1",
+		"@discordjs/ws": "^2.0.0",
+		"discord.js": "^14.16.2",
 		"uglify-js": "^3.18.0"
+	},
+	"devDependencies": {
+		"@types/uglify-js": "^3.17.5",
+		"@vladfrangu/async_event_emitter": "^2.4.6",
+		"discord-api-types": "^0.37.100"
 	}
 }

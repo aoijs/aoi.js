@@ -1,18 +1,37 @@
+import { type ICodeFunctionData } from '@aoi.js/typings/interface.js';
+
 export class TranspilerError extends Error {
 
-	static CompileError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
-		return new TranspilerError(`CompileError: ${msg}`, data);
+	static CompileError(msg: string, data: ICodeFunctionData) {
+		return new TranspilerError(`CompileError: ${msg}`, {
+			function: {
+				name: data.name,
+				code: data.inside ?? '',
+			},
+			cmd: data.cmd?.name,
+			path: data.cmd?.__path__,
+			code: data.cmd?.code.toString(),
+		});
 	}
 
-	static RunTimeError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
-		return new TranspilerError(`RunTimeError: ${msg}`, data);
+	static RunTimeError(msg: string, data: ICodeFunctionData) {
+		return new TranspilerError(`RunTimeError: ${msg}`, {
+			function: {
+				name: data.name,
+				code: data.inside ?? '',
+			},
+			cmd: data.cmd?.name,
+			path: data.cmd?.__path__,
+			code: data.cmd?.code.toString(),
+		});
 	}
 
-	static AoiReaderError(msg: string, data?: { function?: { name: string; code: string }; cmd?: string; path?: string; code?: string }) {
-		return new TranspilerError(`AoiReaderError: ${msg}`, data);
+	static AoiReaderError(msg: string, code: string) {
+		return new TranspilerError(`AoiReaderError: ${msg}`, {
+			code,
+		});
 	}
 
-	cause: TranspilerError;
 	function?: { name: string; code: string };
 	cmd?: string;
 	path?: string;
@@ -31,7 +50,7 @@ export class TranspilerError extends Error {
 	) {
 		super(msg);
 		this.name = 'TranspilerError';
-		this.cause = this;
+		// this.cause = this;
 		this.function = data?.function;
 		this.cmd = data?.cmd;
 		this.path = data?.path;

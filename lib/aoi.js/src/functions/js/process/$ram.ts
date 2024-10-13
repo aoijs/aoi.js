@@ -1,7 +1,7 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { TranspilerError } from '@aoi.js/core/Error.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/helpers';
+import { escapeResult } from '@aoi.js/utils/Helpers/core';
 
 /**
  * Returns the memory usage of the process for given type.
@@ -46,7 +46,7 @@ const $ram = new FunctionBuilder()
 			!['heapUsed', 'heapTotal', 'rss', 'external', 'arrayBuffers'].includes(type) && 
 			!thisArg.canSuppressAtComp(data, currentScope)
 		) {
-			throw TranspilerError.CompileError(`Invalid memory type: ${type}`, { function: { name: '$ram', code: data.total } });
+			throw TranspilerError.CompileError(`Invalid memory type: ${type}`, data);
 		}
 
 		const result = thisArg.getResultString(

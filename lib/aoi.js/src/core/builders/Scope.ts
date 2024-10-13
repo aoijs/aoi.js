@@ -9,7 +9,7 @@ import {
 	escapeResult,
 	escapeVars,
 	parseResult,
-} from '@aoi.js/utils/helpers.js';
+} from '@aoi.js/utils/Helpers/core.js';
 import { fixMath } from '@aoi.js/core/parsers/math.js';
 import { parseString } from '@aoi.js/core/parsers/string.js';
 import type StringObject from './StringObject.js';
@@ -205,10 +205,11 @@ export default class Scope {
 		this.packages += scope.packages;
 	}
 
-	generate(code: string, sendMessage = true) {
-		for (const part of this._contentParts) {
-			code = code.replace(part, '');
-		}
+	generate(code: string, sendMessage = true, asFunction = true) {
+		if (sendMessage)
+			for (const part of this._contentParts) {
+				code = code.replace(part, '');
+			}
 
 		const sendData = {
 			content: this.content
@@ -270,18 +271,28 @@ export default class Scope {
 }`
 				: '';
 
-		return parseResult(`
-	  async function ${this.name === 'global' ? 'main' : this.name}(__$DISCORD_DATA$__) {
+		const initialVars = sendMessage ? `	  
 			const ${escapeVars(`${this.name}_embeds`)} = [];
 			const ${escapeVars(`${this.name}_components`)} = [];
 			const ${escapeVars(`${this.name}_files`)} = [];
 			const ${escapeVars(`${this.name}_stickers`)} = [];
+		` : '';
 
+		return parseResult( asFunction ? `
+	  async function ${this.name === 'global' ? 'main' : this.name}(__$DISCORD_DATA$__) {
+			${initialVars}
 			${this.packages}
 			${this.functions}
 			${code}
 			${sent}
 	}
+		`.replaceAll(TranspilerCustoms.SL, '\\`') : 
+			`
+			${initialVars}
+			${this.packages}
+			${this.functions}
+			${code}
+			${sent}
 		`.replaceAll(TranspilerCustoms.SL, '\\`')).trim();
 	}
 }

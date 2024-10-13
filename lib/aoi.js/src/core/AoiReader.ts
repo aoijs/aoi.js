@@ -1,17 +1,18 @@
-import { BundlerCustoms } from "@aoi.js/typings/enum";
-import { TranspilerError } from "./Error";
-import Transpiler from "./Transpiler.js";
+import { BundlerCustoms } from '@aoi.js/typings/enum.js';
+import { TranspilerError } from './Error.js';
+import { type ICommandOptions } from '@aoi.js/typings/interface.js';
+import { type Optional } from '@aoi.js/typings/type.js';
+import type AoiClient from '@aoi.js/classes/AoiClient.js';
 
 export default class AoiReader {
-
 	_parseEmbeddedJS(code: string) {
-		let cntr = 0, isPotentialStart = false, tmp = '';
+		let cntr = 0,
+			isPotentialStart = false,
+			tmp = '';
 		const embeds = [];
-		
-		for (let i = 0; i < code.length; i++) {
-			const char = code[i];
 
-			if ( char === '$') {
+		for (const char of code) {
+			if (char === '$') {
 				if (cntr) {
 					tmp += char;
 				}
@@ -48,7 +49,7 @@ export default class AoiReader {
 		}
 
 		if (cntr) {
-			throw TranspilerError.AoiReaderError('Invalid embedded JS', { code });
+			throw TranspilerError.AoiReaderError('Invalid embedded JS', code);
 		}
 
 		return embeds;
@@ -71,4 +72,94 @@ export default class AoiReader {
 
 		return str.slice(0, index) + replace + str.slice(index + find.length);
 	}
+
+	_parseMetadata(metadataLines: string[]) {
+		const metadata: Record<string, unknown> = {};
+		let currentKey: string | undefined = undefined;
+		let currentValue: unknown = undefined;
+		let isObjectBlock = false;
+
+		metadataLines.forEach((line) => {
+			line = line.trim();
+
+			if (line.includes('|')) {
+				const [key, value] = line.split(':').map((s) => s.trim());
+				metadata[key] = value.split('|').map((item) => item.trim());
+			} else if (line.endsWith('>') && isObjectBlock) {
+				isObjectBlock = false;
+				metadata[currentKey!] = currentValue;
+				currentKey = undefined;
+			} else if (isObjectBlock) {
+				const [key, value] = line.split(':').map((s) => s.trim());
+				(currentValue as Record<string, unknown>)[key] = value;
+			} else {
+				const [key, value] = line.split(':').map((s) => s.trim());
+				if (value.startsWith('<')) {
+					currentKey = key;
+					currentValue = {};
+					isObjectBlock = true;
+				} else {
+					metadata[key] = value;
+				}
+			}
+		});
+
+		return metadata;
+	}
+
+	_parseCmd(cmdString: string) {
+		const sections = cmdString.split('---');
+
+		if (sections.length < 3) {
+			throw new SyntaxError(
+				'Invalid command format provided:\n\n' + cmdString,
+			);
+		}
+
+		let result: Optional<ICommandOptions, '__path__'>;
+
+		const metadataLines = sections[1].trim().split('\n');
+		result = this._parseMetadata(metadataLines) as Optional<
+		ICommandOptions,
+		'__path__'
+		>;
+
+		result.code = sections.slice(2).join('---').trim();
+		return result;
+	}
+
+	parse(code: string, client: AoiClient) {
+		const embeddedJS = this._parseEmbeddedJS(code);
+
+		for (const ejs of embeddedJS) {
+			code = code.replace(`\${${ejs}}`, BundlerCustoms.EJS);
+		}
+
+		const cmd = this._parseCmd(code);
+		cmd.code = client.transpiler.transpile(cmd.code as string, {
+			scopeData: {
+				embeddedJS: embeddedJS,
+			},
+			sendMessage: true,
+			reverse: cmd.reverseRead ?? false,
+		}).func!;
+
+		return cmd;
+	}
 }
+
+/*
+```aoi
+---
+name: ping
+type: basic
+alias: ms | latency | pong
+info: < 
+	usage: !ping
+	description: returns ping
+	>
+---
+
+Pong! current ping is $pingms!
+```
+*/

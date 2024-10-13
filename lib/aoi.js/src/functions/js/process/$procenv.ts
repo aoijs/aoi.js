@@ -1,6 +1,6 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/helpers.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
 /**
  * Returns the environment variable of the process for given key.
@@ -30,7 +30,7 @@ const $procenv = new FunctionBuilder()
 	])
 	.setReturns(ReturnType.String | ReturnType.Object)
 	.setCode((data, scopes, thisArg) => {
-		let [key] = thisArg.getParams(data);
+		const [key] = thisArg.getParams(data);
 
 		if (!key) {
 			const result = thisArg.getResultString(() => process.env);
@@ -43,7 +43,7 @@ const $procenv = new FunctionBuilder()
 			};
 		}
 
-		const result = thisArg.getResultString(() => process.env['$0'], [key]);
+		const result = thisArg.getResultString(() => process.env.$0, [key]);
 
 		const escaped = escapeResult(result);
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
+// import tseslint from 'typescript-eslint';
 import jsdoc from 'eslint-plugin-jsdoc';
 import tsdoc from 'eslint-plugin-tsdoc';
 
@@ -24,7 +24,7 @@ export default [
 
 	...compat.extends('xo-typescript'),
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	...tseslint.configs.stylisticTypeChecked,
+	// ...tseslint.configs.stylisticTypeChecked,
 	{
 		// enable object curly spacing
 		rules: {
@@ -52,12 +52,9 @@ export default [
 			],
 			'@typescript-eslint/prefer-literal-enum-member': [
 				'error',
-				[
-					'error',
-					{
-						allowBitwiseExpressions: true,
-					},
-				],
+				{
+					allowBitwiseExpressions: true,
+				},
 			],
 		},
 	},

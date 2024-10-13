@@ -1,4 +1,4 @@
-import { parseData } from '@aoi.js/utils/helpers.js';
+import { parseData } from '@aoi.js/utils/Helpers/core.js';
 import StringObject from '../builders/StringObject.js';
 import { parseString } from './string.js';
 import { TranspilerCustoms } from '@aoi.js/typings/enum.js';

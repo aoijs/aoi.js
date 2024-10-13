@@ -9,7 +9,7 @@ import { type ProxyType, type FunctionCode } from '@aoi.js/typings/type.js';
 import type Scope from './Scope.js';
 import { inspect } from 'node:util';
 import proxyBuilder from './typeProxy.js';
-import {  escapeVars } from '@aoi.js/utils/helpers.js';
+import {  escapeVars } from '@aoi.js/utils/Helpers/core.js';
 
 export default class FunctionBuilder implements IFunctionData {
 	name!: string;

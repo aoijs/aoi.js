@@ -20,7 +20,7 @@ export function escapeVars(name: string) {
  * Escapes a result by wrapping it with TranspilerCustoms.FS and TranspilerCustoms.FE.
  * @param res - The result to escape.
  * @returns The escaped result.
- * 
+ *
  * @example
  * ```js
  * escapeResult("a") // "#FUNCTION_START#a#FUNCTION_END#"
@@ -30,7 +30,6 @@ export function escapeVars(name: string) {
 export function escapeResult(res: string) {
 	return `${TranspilerCustoms.FS}${res}${TranspilerCustoms.FE}`;
 }
-
 
 /**
  * parse the result by removing all the customs
@@ -154,7 +153,7 @@ export function parseData(text: string) {
  */
 
 export function isBigInt(string: string) {
-	return (/^-?\d+n$/.exec(string)) !== null;
+	return /^-?\d+n$/.exec(string) !== null;
 }
 
 export function stringify(data: any): string {
@@ -163,9 +162,10 @@ export function stringify(data: any): string {
 			return data + 'n';
 		case 'object':
 			return JSON.stringify(data);
-		case 'undefined': 
+		case 'undefined':
 			return 'undefined';
 		default:
-			return data.toString();
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			return data.toString() as string;
 	}
 }

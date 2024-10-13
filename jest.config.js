@@ -22,6 +22,8 @@ export default {
 					isolatedModules: true,
 				},
 			},
+			// Ensure the testMatch pattern works cross-platform
+			testMatch: ['<rootDir>/src/**/*.test.ts'],
 		},
 		// Add more libraries as needed
 	],

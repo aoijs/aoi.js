@@ -1,5 +1,5 @@
 import { inspect } from 'util';
-import { parseData } from '@aoi.js/utils/helpers.js';
+import { parseData } from '@aoi.js/utils/Helpers/core.js';
 import { parseString } from '../parsers/string.js';
 import { BundlerCustoms, TranspilerCustoms } from '@aoi.js/typings/enum.js';
 

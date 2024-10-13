@@ -1,8 +1,8 @@
-import FunctionBuilder from "@aoi.js/core/builders/Function.js";
-import { TranspilerError } from "@aoi.js/core/Error";
-import { parseString } from "@aoi.js/core/parsers/string";
-import { FunctionType, ReturnType } from "@aoi.js/typings/enum.js";
-import { escapeResult, parseData, stringify } from "@aoi.js/utils/helpers";
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { TranspilerError } from '@aoi.js/core/Error';
+import { parseString } from '@aoi.js/core/parsers/string';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult, parseData, stringify } from '@aoi.js/utils/Helpers/core';
 
 /**
  * define a variable with a value
@@ -18,7 +18,7 @@ import { escapeResult, parseData, stringify } from "@aoi.js/utils/helpers";
  * ```
  */
 const $let = new FunctionBuilder()
-	.setName("$let")
+	.setName('$let')
 	.setBrackets(true)
 	.setOptional(true)
 	.setFields([
@@ -26,14 +26,14 @@ const $let = new FunctionBuilder()
 			name: 'variable',
 			type: ReturnType.String,
 			required: true,
-			description: "The variable name to store the value in."
+			description: 'The variable name to store the value in.',
 		},
 		{
 			name: 'value',
 			type: ReturnType.Any,
 			required: true,
-			description: "The value to store."
-		}
+			description: 'The value to store.',
+		},
 	])
 	.setReturns(ReturnType.Void)
 	.setType(FunctionType.Setter)
@@ -41,21 +41,17 @@ const $let = new FunctionBuilder()
 		const currentScope = thisArg.getCurrentScope(scopes);
 		const [variable, value] = data.splits();
 
-		if (!variable && !thisArg.canSuppressAtComp(data,currentScope)) {
-			throw TranspilerError.CompileError("Variable name not provided.", {
-				function: { name: "$let", code: data.total },
-			});
+		if (!variable && !thisArg.canSuppressAtComp(data, currentScope)) {
+			throw TranspilerError.CompileError('Variable name not provided.', data);
 		}
 
-		if (!value && !thisArg.canSuppressAtComp(data,currentScope)) {
-			throw TranspilerError.CompileError("Value not provided.", {
-				function: { name: "$let", code: data.total },
-			});
+		if (!value && !thisArg.canSuppressAtComp(data, currentScope)) {
+			throw TranspilerError.CompileError('Value not provided.', data);
 		}
 
 		let parsedValue = parseData(value);
 
-		if (typeof parsedValue === "string") {
+		if (typeof parsedValue === 'string') {
 			parsedValue = parseString(parsedValue);
 		} else {
 			parsedValue = stringify(parsedValue);
@@ -71,7 +67,7 @@ const $let = new FunctionBuilder()
 
 		return {
 			code: escaped,
-			scope: scopes
+			scope: scopes,
 		};
 	})
 	.build();
