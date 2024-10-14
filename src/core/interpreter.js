@@ -124,6 +124,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
+		let splitedCode = code.split('\n');
+
         //parsing functions (dont touch)
 
         for (let i = funcs.length; i > 0; i--) {
@@ -140,7 +142,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             //more debug
             debug[func] = { regex, func };
 
-			const splitedCode = code.split('\n');
+
 
             funcLine = splitedCode?.findLastIndex((x) => {
 				const y = x.toLowerCase().split(" ").map(x => x.trim());
@@ -248,6 +250,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                 );
 
 				funcs = client.functionManager.findFunctions(code);
+				splitedCode = code.split('\n');
             }
 
             FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
