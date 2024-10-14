@@ -139,23 +139,28 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             code = code.replace(regex, func);
             //more debug
             debug[func] = { regex, func };
-            command.codeLines?.map((x) => x.replace(regex, func));
 
-            funcLine = command.codeLines?.findIndex((x) => {
+			const splitedCode = code.split('\n');
+
+            funcLine = splitedCode?.findLastIndex((x) => {
 				const y = x.toLowerCase().split(" ").map(x => x.trim());
+				// console.log(y, func, y.includes(func));	
 				return y.includes(func);
 			});
 
             // if the function is endif we find the corresponding if using valid parenthesis method and use the code between them to pass it to the if function
             if (func.replace("$", "").replace("[", "") === "endif") {
+			// console.log(splitedCode);
+
                 let count = 0, started = false;
                 let start = funcLine;
                 let end = funcLine;
                 
-				while (count !== 0 || !started) {
+				while (count !== 0 || !started && start >= 0) {
 					// increment count if we find an endif and decrement if we find an if
-					if (command.codeLines[start].includes("$endif")) count++;
-					if (command.codeLines[start].includes("$if[")) count--;
+					// console.log(start, splitedCode[start]);
+					if (splitedCode[start].includes("$endif")) count++;
+					if (splitedCode[start].includes("$if[")) count--;
 
 					if (!started) {
 						started = true;
@@ -165,8 +170,10 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
 				}
 
 				start = Math.max(0, start);
+				// console.log(start, end);
 
-                const ifCode = command.codeLines.slice(start, end+1).join("\n");
+                const ifCode = splitedCode.slice(start, end+1).join("\n");
+				// console.log(ifCode);
                 // use the if code and pass it to IF function
 
                 code = code.replace(
