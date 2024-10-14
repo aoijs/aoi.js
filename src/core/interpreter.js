@@ -124,80 +124,6 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-        if (command["$if"] === "old") {
-            code = (
-                await IF({
-                    client,
-                    code,
-                    message,
-                    channel,
-                    args,
-                    data: {
-                        randoms: randoms,
-                        command: {
-                            name: command.name,
-                            type: command.type,
-                            code: code,
-                            error: command.error,
-                            async: command.async || false,
-                            functions: command.functions,
-                            __path__: command.__path__,
-                            codeLines: command.codeLines
-                        },
-                        helpers: {
-                            time: Time,
-                            checkCondition: CheckCondition,
-                            mustEscape
-                        },
-                        args: args,
-                        aoiError: require("../classes/AoiError.js"),
-                        data: data,
-                        func: undefined,
-                        funcLine: undefined,
-                        util: Util,
-                        allowedMentions: allowedMentions,
-                        embeds: embeds || [],
-                        components: components,
-                        files: attachments || [],
-                        timezone: timezone,
-                        channelUsed: channelUsed,
-                        vars: letVars,
-                        object: object,
-                        disableMentions: disableMentions,
-                        returnID: returnID,
-                        array: array,
-                        arrays,
-                        reactions: reactions,
-                        message: message.message || message,
-                        msg: msg.message || msg,
-                        author: author,
-                        guild: guild,
-                        channel: channel,
-                        member: member,
-                        mentions: mentions,
-                        unpack() {
-                            const last = code.split(this.func.replace("[", "")).length - 1;
-                            const sliced = code.split(this.func.replace("[", ""))[last];
-
-                            return sliced.after();
-                        },
-                        inside(unpacked) {
-                            if (typeof unpacked.inside !== "string") {
-                                if (suppressErrors) return suppressErrors;
-                                else {
-                                    return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: ${this.func}: Missing Brackets`;
-                                }
-                            } else return false;
-                        },
-                        noop() {},
-                        interpreter: Interpreter,
-                        client: client,
-                        embed: Discord.EmbedBuilder
-                    }
-                })
-            ).code;
-            funcs = client.functionManager.findFunctions(code);
-        }
         //parsing functions (dont touch)
 
         for (let i = funcs.length; i > 0; i--) {
@@ -214,96 +140,113 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             //more debug
             debug[func] = { regex, func };
             command.codeLines?.map((x) => x.replace(regex, func));
-            funcLine = command.codeLines.length - command.codeLines?.reverse().findIndex((x) => x.toLowerCase().split(" ").includes(func.toLowerCase()));
 
-            const functionObj = client.functionManager.cache.get(func.replace("$", "").replace("[", ""));
-            // if (functionObj instanceof CustomFunction && functionObj.type === "aoi.js") {
-            //     const d = {};
-            //     Object.assign(d, functionObj);
-            //     let param = [];
-            //     for (let p = functionObj.params.length - 1; p >= 0; p--) {
-            //         d.code = d.code.replace(`{${functionObj.params[p]}}`, unpack(code, func).splits[p]);
-            //         param.push(functionObj.params[p]);
-            //     }
-            //     FuncData = await client.functionManager.interpreter(
-            //         client,
-            //         message,
-            //         args,
-            //         d,
-            //         client.db,
-            //         true,
-            //         channelUsed,
-            //         {
-            //             randoms: randoms,
-            //             command: {
-            //                 name: command.name,
-            //                 type: command.type,
-            //                 code: code,
-            //                 error: command.error,
-            //                 async: command.async || false,
-            //                 functions: command.functions,
-            //                 __path__: command.__path__,
-            //                 codeLines: command.codeLines,
-            //                 funcLine: funcLine
-            //             },
-            //             helpers: {
-            //                 time: Time,
-            //                 checkCondition: CheckCondition,
-            //                 mustEscape
-            //             },
-            //             args: args,
-            //             aoiError: require("../classes/AoiError.js"),
-            //             data: data,
-            //             func: func,
-            //             funcLine,
-            //             util: Util,
-            //             allowedMentions: allowedMentions,
-            //             embeds: embeds || [],
-            //             components: components,
-            //             files: attachments || [],
-            //             timezone: timezone,
-            //             channelUsed: channelUsed,
-            //             vars: letVars,
-            //             object: object,
-            //             disableMentions: disableMentions,
-            //             returnID: returnID,
-            //             array: array,
-            //             arrays,
-            //             reactions: reactions,
-            //             message: message.message || message,
-            //             msg: msg.message || msg,
-            //             author: author,
-            //             guild: guild,
-            //             channel: channel,
-            //             member: member,
-            //             mentions: mentions,
-            //             unpack() {
-            //                 const last = code.split(func.replace("[", "")).length - 1;
-            //                 const sliced = code.split(func.replace("[", ""))[last];
+            funcLine = command.codeLines?.findIndex((x) => {
+				const y = x.toLowerCase().split(" ").map(x => x.trim());
+				return y.includes(func);
+			});
 
-            //                 return sliced.after();
-            //             },
-            //             inside(unpacked) {
-            //                 if (typeof unpacked.inside !== "string") {
-            //                     if (suppressErrors) return suppressErrors;
-            //                     else {
-            //                         return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: ${this.func}: Missing Brackets`;
-            //                     }
-            //                 } else return false;
-            //             },
-            //             noop() {},
-            //             interpreter: Interpreter,
-            //             client: client,
-            //             embed: Discord.EmbedBuilder
-            //         },
-            //         useChannel,
-            //         returnMessage,
-            //         returnExecution,
-            //         returnID,
-            //         sendMessage
-            //     );
-            //     FuncData.code = code.replaceLast(functionObj.params.length ? `${func}${param.join(";")}` : func, FuncData.code);
-            // } else {
+            // if the function is endif we find the corresponding if using valid parenthesis method and use the code between them to pass it to the if function
+            if (func.replace("$", "").replace("[", "") === "endif") {
+                let count = 0, started = false;
+                let start = funcLine;
+                let end = funcLine;
+                
+				while (count !== 0 || !started) {
+					// increment count if we find an endif and decrement if we find an if
+					if (command.codeLines[start].includes("$endif")) count++;
+					if (command.codeLines[start].includes("$if[")) count--;
+
+					if (!started) {
+						started = true;
+					}
+
+					start--;
+				}
+
+				start = Math.max(0, start);
+
+                const ifCode = command.codeLines.slice(start, end+1).join("\n");
+                // use the if code and pass it to IF function
+
+                code = code.replace(
+                    ifCode,
+                    (
+                        await IF({
+                            client,
+                            code: ifCode,
+                            message,
+                            channel,
+                            args,
+                            data: {
+                                randoms: randoms,
+                                command: {
+                                    name: command.name,
+                                    type: command.type,
+                                    code: code,
+                                    error: command.error,
+                                    async: command.async || false,
+                                    functions: command.functions,
+                                    __path__: command.__path__,
+                                    codeLines: command.codeLines
+                                },
+                                helpers: {
+                                    time: Time,
+                                    checkCondition: CheckCondition,
+                                    mustEscape
+                                },
+                                args: args,
+                                aoiError: require("../classes/AoiError.js"),
+                                data: data,
+                                func: func,
+                                funcLine: funcLine,
+                                util: Util,
+                                allowedMentions: allowedMentions,
+                                embeds: embeds || [],
+                                components: components,
+                                files: attachments || [],
+                                timezone: timezone,
+                                channelUsed: channelUsed,
+                                vars: letVars,
+                                object: object,
+                                disableMentions: disableMentions,
+                                returnID: returnID,
+                                array: array,
+                                arrays,
+                                reactions: reactions,
+                                message: message.message || message,
+                                msg: msg.message || msg,
+                                author: author,
+                                guild: guild,
+                                channel: channel,
+                                member: member,
+                                mentions: mentions,
+                                unpack() {
+                                    const last = code.split(this.func.replace("[", "")).length - 1;
+                                    const sliced = code.split(this.func.replace("[", ""))[last];
+
+                                    return sliced.after();
+                                },
+                                inside(unpacked) {
+                                    if (typeof unpacked.inside !== "string") {
+                                        if (suppressErrors) return suppressErrors;
+                                        else {
+                                            return client.aoiOptions.suppressAllErrors ? client.aoiOptions.errorMessage : `AoiError: ${this.func}: Missing Brackets`;
+                                        }
+                                    } else return false;
+                                },
+                                noop() {},
+                                interpreter: Interpreter,
+                                client: client,
+                                embed: Discord.EmbedBuilder
+                            }
+                        })
+                    ).code
+                );
+
+				funcs = client.functionManager.findFunctions(code);
+            }
+
             FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
                 randoms: randoms,
                 command: {
@@ -438,7 +381,6 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             if (client?.aoiOptions?.debugs?.interpreter) {
                 debug[func].funcData = require("util").inspect(FuncData, { depth: 0 });
             }
-            // }
 
             code = FuncData?.code ?? code;
 
