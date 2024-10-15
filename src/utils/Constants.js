@@ -127,6 +127,7 @@ const ChannelOptions = {
 const MemberOptions = {
     id: (member) => member.id,
     name: (member) => member.user?.username?.deleteBrackets(),
+    avatarUrl: (member) => member.user.displayAvatarURL(),
     guildID: (member) => member.guild.id,
     nick: (member) => member.nickname || "",
     roles: (member) =>
@@ -137,7 +138,7 @@ const MemberOptions = {
     partial: (member) => member.partial ?? false,
     premiumStamp: (member) => member.premiumSinceTimestamp || "0",
     joinedStamp: (member) => member.joinedTimestamp,
-    voiceID: (member) => member.voice.channelID || "",
+    voiceID: (member) => member.voice?.channelID || "",
     displayHex: (member) => member.displayHexColor,
     highestRoleID: (member) => member.roles?.highest?.id || "",
     permissions: (member) => member.permissions?.toArray().join("_") || "",
@@ -154,7 +155,7 @@ const MemberOptions = {
     bannable: (member) => member.bannable,
     kickable: (member) => member.kickable,
     manageable: (member) => member.manageable,
-    status: (member) => member.status,
+    status: (member) => member.status || "",
     activities: (member) => member.presence?.activities?.map((c) => c.name).join(", ") || "",
     removedRoles: (member, oldMember) =>
         oldMember.roles?.cache
@@ -162,15 +163,27 @@ const MemberOptions = {
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
-    addedRoles: (oldMember, member) =>
+    addedRoles: (member, oldMember) =>
         member.roles?.cache
-            ?.filter((r) => !oldMember.roles?.cache?.has(r.id))
+            ?.filter((r) => !oldMember?.roles?.cache?.has(r.id))
             .map((r) => r.name)
             .join(", ")
             .deleteBrackets() || "",
     threadChannel: (member) => member.thread?.channel?.name?.deleteBrackets() || "",
     threadFlags: (member) => member.flags?.toArray() || []
 };
+
+const ReactionOptions = {
+    channelId: (reaction) => reaction.message.channel.id,
+    guildId: (reaction) => reaction.message.guild.id,
+    messageId: (reaction) => reaction.message.id,
+    name: (reaction) => reaction._emoji.name,
+    id: (reaction) => reaction._emoji.id,
+    emoji: (reaction) => reaction._emoji.toString(),
+    count: (reaction) => reaction.count,
+    usernames: (reaction) => reaction.users.cache.map(y => y.username.deleteBrackets()).join(" , "),
+    userIds: (reaction) => reaction.users.cache.map(y => y.id).join(" , "),
+}
 
 const ButtonStyleOptions = {
     primary: 1,
@@ -513,6 +526,7 @@ module.exports = {
     ButtonStyleOptions,
     ChannelOptions,
     MemberOptions,
+    ReactionOptions,
     CacheOptions,
     SlashOptionTypes,
     Permissions,

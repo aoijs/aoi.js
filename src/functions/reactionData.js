@@ -1,20 +1,17 @@
-const {Emoji} = require('../core/functions.js');
+const { ReactionOptions } = require("../utils/Constants");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
     const [option = "name"] = data.inside.splits;
 
-    const reactionData = Emoji(d.data.reactionData.emoji);
-    reactionData.usernames = d.data.reactionData.users.cache.map(y => y.username.deleteBrackets()).join(" , ");
-    reactionData.userIds = d.data.reactionData.users.cache.map(y => y.id).join(" , ");
-    reactionData.tags = d.data.reactionData.users.cache.map(y => y.tag.deleteBrackets()).join(" , ");
+    const reactionData = ReactionOptions[option](d.data.reactionData);
 
-    data.result = reactionData?.[option].deleteBrackets();
+    data.result = reactionData ?? null;
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

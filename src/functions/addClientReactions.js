@@ -1,28 +1,26 @@
+const { GuildEmoji, ReactionEmoji } = require("discord.js");
+
 /**
  * @param {import("..").Data} d
  */
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
-  if (data.err) return d.error(data.err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-  let [...reactions] = data.inside.splits;
+    let [...reactions] = data.inside.splits;
 
-  reactions = reactions.map((x) => {
-    try {
-      let emoji = d.util.getEmoji(d, x.addBrackets());
-      x = emoji.id ? `:${emoji.name}:${emoji.id}` : emoji.name;
-    } catch {
-      x = x?.addBrackets() ?? undefined;
-    } finally {
-      if (x === undefined) return d.util.aoiError.fnError(d, "custom", { inside: data.inside }, "Emoji");
-    }
-    return x;
-  });
+    reactions = await Promise.all(
+        reactions.map(async (x) => {
+            const reaction = x.addBrackets().trim();
+            let emoji = await d.util.getEmoji(d, reaction);
+            if (!emoji) emoji = reaction;
 
-  data.result = "";
+            return emoji;
+        })
+    );
 
-  return {
-    code: d.util.setCode(data),
-    reactions,
-  };
+    return {
+        code: d.util.setCode(data),
+        reactions
+    };
 };

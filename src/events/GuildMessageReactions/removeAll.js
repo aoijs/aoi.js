@@ -4,7 +4,7 @@ const { Message } = require("discord.js");
  * @param  {Message} reactionMessage
  * @param  {import('../../classes/AoiClient.js')} client
  */
-module.exports = async (reactionMessage, client) => {
+module.exports = async (reactionMessage, burst, client) => {
     const cmds = client.cmd?.reactionRemoveAll.V();
     if (!cmds) return;
     const data = {

@@ -1,3 +1,5 @@
+const { GuildEmoji } = require("discord.js");
+
 /**
  * @param {import("..").Data} d
  */
@@ -5,24 +7,16 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [emoji] = data.inside.splits;
+    const [emoji] = data.inside.splits;
 
-    try {
-        emoji = d.util.getEmoji(d, emoji.addBrackets()).id;
-        data.result = true;
-    } catch {
-        emoji = emoji?.addBrackets() ?? undefined;
-    }
+    let emojiString = (await d.util.getEmoji(d, emoji.addBrackets()));
+    if (!emojiString) emojiString = emoji.toString().addBrackets();
 
-    if (data.result === true) {
+    if (!(emojiString instanceof GuildEmoji)) {
         data.result = true;
     } else {
-        if (!emoji) {
-            data.result = false;
-        } else {
-            const regex = /\p{Extended_Pictographic}/gu;
-            data.result = regex.test(emoji);
-        }
+        const regex = /\p{Extended_Pictographic}/gu;
+        data.result = regex.test(emojiId);
     }
 
     return {
