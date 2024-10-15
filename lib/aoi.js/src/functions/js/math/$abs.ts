@@ -1,7 +1,7 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { TranspilerError } from '@aoi.js/core/Error.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/Helpers/core';
+import { escapeMathResult, escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
 const $abs = new FunctionBuilder()
 	.setName('$abs')
@@ -38,7 +38,7 @@ const $abs = new FunctionBuilder()
 			[parsedNumber.toString()],
 		);
 
-		const escaped = escapeResult(resultString);
+		const escaped = escapeMathResult(resultString);
 
 		return {
 			code: escaped,

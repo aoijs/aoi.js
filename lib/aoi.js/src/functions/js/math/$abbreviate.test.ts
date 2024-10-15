@@ -1,59 +1,82 @@
-import Transpiler from '@aoi.js/core/Transpiler.js';
-import TestClient from '@aoi.js/testing/testClient.js';
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
 
+import TestClient from '@aoi.js/testing/testClient.js';
 import { $abbreviate } from './$abbreviate.js';
-import { type AsyncFunction } from '@aoi.js/typings/type.js';
 
 const client = new TestClient();
+client.transpiler.addFunctions({ $abbreviate });
 
-const transpiler = new Transpiler(
-	{
-		client: client,
-		scopeData: {
-			name: 'global',
-			vars: [],
-			embeds: [],
-			env: [],
-			object: {},
-			embeddedJS: [],
-			sendFunction: 'send',
-		},
-		customFunctions: { $abbreviate },
-		sendMessage: true,
+const transpilerOptions = {
+	scopeData: {
+		name: 'global',
+		vars: [],
+		embeds: [],
+		env: [],
+		object: {},
+		embeddedJS: [],
+		sendFunction: 'console.log',
 	},
-	client,
-);
+};
 
-describe('$abbreviate', () => {
-	it('should fail to compile successfully without arg', () => {
-		const code =  `${transpiler.mainFunction}[$abbreviate]`;
-		
+const codeToFail = '$abbreviate';
+const codeToPass = '$abbreviate[2000]';
+const codeToValue = '$abbreviate[2000]';
+const codeToValueWithDecimal = '$abbreviate[2000;0]';
 
-		expect(() => transpiler._getFunctionData(code, transpiler.mainFunction, Object.keys(transpiler.functions))).toThrow();
+
+void describe('$abbreviate', () => {
+	void it('should not compile successfully without arg', () => {
+
+		// expect this to throw an error
+		assert.throws(() => {
+			client.transpiler.transpile(codeToFail, transpilerOptions);
+		});
 	});
 
-	it('should compile successfully with arg', () => {
-		const code =  `${transpiler.mainFunction}[$abbreviate[10000;2]]`;
-		const ast = transpiler._getFunctionData(code, transpiler.mainFunction, Object.keys(transpiler.functions));
-
-		expect(ast).toBeDefined();
-
-		const globalScope = transpiler._createGlobalScope(ast);
-		const result = transpiler._compile(ast, [globalScope]);
-
-		expect(result).toBeDefined();
-
-		const func = new Function(`return ${result}`)() as AsyncFunction;
-		expect(func).toBeInstanceOf(Function);
+	void it('should compile successfully with arg', () => {
+		const func = client.transpiler.transpile(codeToPass, transpilerOptions);
+		assert.ok(func);
+		assert.strictEqual(typeof func.func, 'function');
 	});
 
-	it('should fail to compile with invalid arg', () => {
-		const code =  `${transpiler.mainFunction}[$abbreviate[invalid]]`;
-		const ast = transpiler._getFunctionData(code, transpiler.mainFunction, Object.keys(transpiler.functions));
+	void it('should return 2.00K', async () => {
+		// logs true
+		const orignalLog = console.log;
+		let logged: Record<string, string> = { content: 'hi' };
 
-		expect(ast).toBeDefined();
+		console.log = (log: Record<string, string>) => {
+			logged = log;
+			// orignalLog(log);
+		};
 
-		const globalScope = transpiler._createGlobalScope(ast);
-		expect(() => transpiler._compile(ast, [globalScope])).toThrow();
+		const { func } = client.transpiler.transpile(codeToValue, transpilerOptions);
+
+		// @ts-expect-error: func is a function
+		await func?.();
+
+		console.log = orignalLog;
+
+		assert.strictEqual(logged.content.toString(), '2.00K');
+	});
+
+	void it('should return 2K', async () => {
+		// logs false
+		const orignalLog = console.log;
+		let logged: Record<string, string> = { content: 'hi' };
+
+		console.log = (log: Record<string, string>) => {
+			logged = log;
+			// orignalLog(log);
+		};
+
+		const { func } = client.transpiler.transpile(codeToValueWithDecimal, transpilerOptions);
+
+		// @ts-expect-error: func is a function
+		await func?.();
+
+		console.log = orignalLog;
+
+		assert.strictEqual(logged.content.toString(), '2K');
 	});
 });

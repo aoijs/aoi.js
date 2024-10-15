@@ -1,43 +1,93 @@
-export function _abbreviate(number: number, decimal: number) {
-	const SI_SYMBOLS = [
-		'',
-		'K',
-		'M',
-		'B',
-		'T',
-		'Qa',
-		'Qi',
-		'Sx',
-		'Sp',
-		'Oc',
-		'No',
-		'Dc',
-		'Udc',
-		'Ddc',
-		'Tdc',
-		'Qadc',
-		'Qidc',
-		'Sxdc',
-		'Spdc',
-		'Ocdc',
-		'Nmdc',
-		'Vg',
-		'Uvg',
-		'Dvg',
-		'Tvg',
-		'Qavg',
-		'Qvg',
-		'Sxvg',
-		'Spvg',
-		'Ovg',
-		'Nvg',
-		'Tg',
-	] as const;
+import { parseResult } from './core.js';
 
-	const tier = Math.floor(Math.log10(Math.abs(number || 1)) / 3);
-	if (tier === 0) return number;
-	const suffix = SI_SYMBOLS[tier];
-	const scale = Math.pow(10, tier * 3);
-	const scaled = number / scale;
-	return scaled.toFixed(decimal) + suffix;
-};
+export function isMathExpression(expression: string): boolean {
+	expression = parseResult(expression.trim());
+	const numbers = [
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'.',
+		',',
+	];
+	const mathOperators = [
+		'+',
+		'-',
+		'*',
+		'/',
+		'%',
+		'**',
+		'(',
+		')',
+		'^',
+		'|',
+		'&',
+		'>>',
+		'<<',
+	];
+	const mathClassFunctions = [
+		'abs',
+		'acos',
+		'acosh',
+		'asin',
+		'asinh',
+		'atan',
+		'atan2',
+		'atanh',
+		'cbrt',
+		'ceil',
+		'clz32',
+		'cos',
+		'cosh',
+		'exp',
+		'expm1',
+		'floor',
+		'fround',
+		'hypot',
+		'imul',
+		'log',
+		'log10',
+		'log1p',
+		'log2',
+		'max',
+		'min',
+		'pow',
+		'random',
+		'round',
+		'sign',
+		'sin',
+		'sinh',
+		'sqrt',
+		'tan',
+		'tanh',
+		'trunc',
+	];
+	const mathClassProperties = [
+		'EULERNUM',
+		'LN10',
+		'LN2',
+		'LOG10E',
+		'LOG2E',
+		'PI',
+		'SQRT1_2',
+		'SQRT2',
+	];
+	const ops = [
+		...numbers,
+		...mathOperators,
+		...mathClassFunctions,
+		...mathClassProperties,
+	];
+
+	for (const op of ops) {
+		expression = expression.replaceAll(op, '');
+	}
+
+	return expression.trim() === '';
+}

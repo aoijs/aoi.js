@@ -52,5 +52,5 @@ export enum BundlerCustoms {
 }
 
 export enum AoiClientEvents {
-	Error = 'error',
+	Error = 'AoiError',
 }

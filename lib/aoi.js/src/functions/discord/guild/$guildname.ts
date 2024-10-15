@@ -1,6 +1,6 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum';
-import { escapeResult } from '@aoi.js/utils/Helpers/core';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
 const $guildName = new FunctionBuilder()
 	.setName('$guildid')

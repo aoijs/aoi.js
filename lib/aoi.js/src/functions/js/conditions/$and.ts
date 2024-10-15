@@ -1,7 +1,7 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { parseCondition } from '@aoi.js/core/parsers/condition';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum';
-import { escapeResult, parseResult } from '@aoi.js/utils/Helpers/core';
+import { parseCondition } from '@aoi.js/core/parsers/condition.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
 
 const $and = new FunctionBuilder()
 	.setName('$and')
@@ -11,7 +11,7 @@ const $and = new FunctionBuilder()
 	.setFields([
 		{
 			name: 'conditions',
-			type: ReturnType.Any,
+			type: ReturnType.Array,
 			required: true,
 			description: 'conditions to check',
 		},

@@ -90,7 +90,7 @@ export default class Transpiler {
 	): ICodeFunctionData {
 		let funcD: IFunctionData = this.functions[func];
 
-		const codeFuncData: ICodeFunctionData = {
+		let codeFuncData: ICodeFunctionData = {
 			...funcD,
 			total: code,
 			inside: undefined,
@@ -121,6 +121,17 @@ export default class Transpiler {
 						required: true,
 					},
 				],
+			};
+
+			codeFuncData = {
+				...funcD,
+				total: code,
+				inside: undefined,
+				splits: () => [],
+				funcs: [],
+				parsed: '',
+				executed: '',
+				cmd: command,
 			};
 		}
 
@@ -275,7 +286,13 @@ export default class Transpiler {
 				}
 			} else {
 				if (node.funcs.length) {
-					this._compile(node, scopes, reverse, sendMessage);
+					this._compile(
+						node,
+						scopes,
+						reverse,
+						sendMessage,
+						asFunction,
+					);
 				}
 
 				const executed = node.code(node, scopes);
@@ -287,8 +304,9 @@ export default class Transpiler {
 				);
 
 				if (
-					node.type === FunctionType.Getter ||
-					node.type === FunctionType.FunctionGetter
+					(node.type === FunctionType.Getter ||
+						node.type === FunctionType.FunctionGetter) &&
+					node.parent?.name === this.mainFunction
 				) {
 					scopes.at(-1)!.content = scopes
 						.at(-1)!
@@ -304,7 +322,7 @@ export default class Transpiler {
 		}
 
 		const scope = scopes.at(-1)!;
-		if (sendMessage )
+		if (sendMessage)
 			for (const part of scope._contentParts) {
 				ast.executed = ast.executed.replace(part, '');
 			}
@@ -320,7 +338,7 @@ export default class Transpiler {
 		if (options.asFunction === undefined) {
 			options.asFunction = true;
 		}
-		
+
 		functionList.forEach((func) => {
 			const reg = new RegExp(`${func.replace('$', '\\$')}`, 'gi');
 			code = parseResult(code);
@@ -365,12 +383,12 @@ export default class Transpiler {
 		}
 
 		let func: AsyncFunction;
-		
+
 		try {
 			const minified = this.minify
 				? (functionString as MinifyOutput).code
 				: (functionString as string);
-			
+
 			if (!options.asFunction) {
 				// return non minified code
 				return { result, ast, scope: globalScope, functionList };

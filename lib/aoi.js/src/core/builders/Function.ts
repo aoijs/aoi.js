@@ -1,4 +1,8 @@
-import { TranspilerCustoms, type FunctionType, type ReturnType } from '@aoi.js/typings/enum.js';
+import {
+	ReturnType,
+	TranspilerCustoms,
+	type FunctionType,
+} from '@aoi.js/typings/enum.js';
 import {
 	type IFunctionField,
 	type IFunctionData,
@@ -9,7 +13,7 @@ import { type ProxyType, type FunctionCode } from '@aoi.js/typings/type.js';
 import type Scope from './Scope.js';
 import { inspect } from 'node:util';
 import proxyBuilder from './typeProxy.js';
-import {  escapeVars } from '@aoi.js/utils/Helpers/core.js';
+import { escapeVars } from '@aoi.js/utils/Helpers/core.js';
 
 export default class FunctionBuilder implements IFunctionData {
 	name!: string;
@@ -93,12 +97,15 @@ export default class FunctionBuilder implements IFunctionData {
 	}
 
 	getParams(data: ICodeFunctionData): string[] {
-		return data.fields.length === 1 ? [data.executed] : data.splits();
+		return data.fields.length === 1 &&
+			![ReturnType.Any, ReturnType.Array].includes(data.fields[0].type)
+			? [data.executed]
+			: data.splits();
 	}
 
 	addFunction(
 		scope: Scope,
-		func: ( ...args: any[]) => any,
+		func: (...args: any[]) => any,
 		vars: string[] = [],
 	): void {
 		const stringified = func.toString();
@@ -200,7 +207,11 @@ export default class FunctionBuilder implements IFunctionData {
 	}
 
 	canSuppressAtComp(data: ICodeFunctionData, scope: Scope): boolean {
-		if (data.executed.startsWith(TranspilerCustoms.FS) || scope.name.startsWith('$try') || scope.name.startsWith('$catch')) {
+		if (
+			data.executed.startsWith(TranspilerCustoms.FS) ||
+			scope.name.startsWith('$try') ||
+			scope.name.startsWith('$catch')
+		) {
 			return true;
 		} else {
 			return false;

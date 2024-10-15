@@ -2,10 +2,10 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
-import { $and } from './$and.js';
+import { $or } from './$or.js';
 
 const client = new TestClient();
-client.transpiler.addFunctions({ $and });
+client.transpiler.addFunctions({ $or });
 
 const transpilerOptions = {
 	scopeData: {
@@ -19,13 +19,13 @@ const transpilerOptions = {
 	},
 };
 
-const codeToFail = '$and';
-const codeToPass = '$and[1==1;2==2]';
-const codeToTrue = '$and[1==1;2==2]';
-const codeToFalse = '$and[1==1;2==3]';
+const codeToFail = '$or';
+const codeToPass = '$or[1==1;2==2]';
+const codeToTrue = '$or[1==1;2==2]';
+const codeToFalse = '$or[1==2;2==3]';
 
 
-void describe('$and', () => {
+void describe('$or', () => {
 	void it('should not compile successfully without arg', () => {
 
 		// expect this to throw an error

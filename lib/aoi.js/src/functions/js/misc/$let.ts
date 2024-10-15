@@ -1,8 +1,8 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { TranspilerError } from '@aoi.js/core/Error';
-import { parseString } from '@aoi.js/core/parsers/string';
+import { TranspilerError } from '@aoi.js/core/Error.js';
+import { parseString } from '@aoi.js/core/parsers/string.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult, parseData, stringify } from '@aoi.js/utils/Helpers/core';
+import { escapeResult, parseData, stringify } from '@aoi.js/utils/Helpers/core.js';
 
 /**
  * define a variable with a value

@@ -184,7 +184,7 @@ export class CommandManager {
 		filter,
 	}: {
 		type: CommandTypes;
-		data: ITranspilerData;
+		data: Optional<ITranspilerData, 'command'>;
 		filter: (cmd: Command) => boolean;
 	}) {
 		 

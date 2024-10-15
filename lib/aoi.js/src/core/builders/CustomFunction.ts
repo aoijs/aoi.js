@@ -10,7 +10,7 @@ import {
 	type FunctionCode,
 } from '@aoi.js/typings/type.js';
 import FunctionBuilder from './Function.js';
-import type AoiClient from '@aoi.js/classes/AoiClient';
+import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import type Scope from './Scope.js';
 import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 

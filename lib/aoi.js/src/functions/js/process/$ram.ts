@@ -1,7 +1,7 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { TranspilerError } from '@aoi.js/core/Error.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/Helpers/core';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
 /**
  * Returns the memory usage of the process for given type.
@@ -53,7 +53,7 @@ const $ram = new FunctionBuilder()
 			// eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			// eslint-disable-next-line @typescript-eslint/dot-notation, @typescript-eslint/no-unsafe-return
-			() => process.memoryUsage()['$0'],
+			() => process.memoryUsage()['"$0"'],
 			[type],
 		);
 

@@ -47,7 +47,7 @@ export default class Scope {
 		addReturn?: boolean,
 	) {
 		this.name = name;
-		this.sendFunction = 'await __$DISCORD_DATA$__.client.createMessage';
+		this.sendFunction = 'await __$DISCORD_DATA$__.channel.send';
 		this.parent = parent;
 		this.hasSendData = false;
 		this.content = ast ? this.getContent(ast) : ' ';
@@ -254,31 +254,32 @@ export default class Scope {
 		  flags: ${this.ephemeral ? 64 : 0},
 		}`.replaceAll(TranspilerCustoms.NL, '\\\\n');
 
+		const channelSendFunction = this.useChannel
+			? `__$DISCORD_DATA$__.client.channels.cache.get(${parseString(
+				typeof this.useChannel === 'bigint'
+					? this.useChannel.toString() + 'n'
+					: this.useChannel.toString(),
+			)}).send`
+			: this.sendFunction;
+
 		const sent =
 			this.hasSendData && sendMessage
 				? `
-		${this.addReturn ? 'return ' : ''} await ${
-	this.sendFunction +
-			`(${
-				this.useChannel
-					? parseString(
-						typeof this.useChannel === 'bigint'
-							? this.useChannel.toString() + 'n'
-							: this.useChannel.toString(),
-					)
-					: '__$DISCORD_DATA$__.message.channelId'
-			},${payload});`
-}`
+		${this.addReturn ? 'return ' : ''} await ${channelSendFunction}( ${payload} );`
 				: '';
 
-		const initialVars = sendMessage ? `	  
+		const initialVars = sendMessage
+			? `	  
 			const ${escapeVars(`${this.name}_embeds`)} = [];
 			const ${escapeVars(`${this.name}_components`)} = [];
 			const ${escapeVars(`${this.name}_files`)} = [];
 			const ${escapeVars(`${this.name}_stickers`)} = [];
-		` : '';
+		`
+			: '';
 
-		return parseResult( asFunction ? `
+		return parseResult(
+			asFunction
+				? `
 	  async function ${this.name === 'global' ? 'main' : this.name}(__$DISCORD_DATA$__) {
 			${initialVars}
 			${this.packages}
@@ -286,13 +287,14 @@ export default class Scope {
 			${code}
 			${sent}
 	}
-		`.replaceAll(TranspilerCustoms.SL, '\\`') : 
-			`
+		`.replaceAll(TranspilerCustoms.SL, '\\`')
+				: `
 			${initialVars}
 			${this.packages}
 			${this.functions}
 			${code}
 			${sent}
-		`.replaceAll(TranspilerCustoms.SL, '\\`')).trim();
+		`.replaceAll(TranspilerCustoms.SL, '\\`'),
+		).trim();
 	}
 }

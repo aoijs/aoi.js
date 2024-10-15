@@ -1,20 +1,20 @@
 import Transpiler from '@aoi.js/core/Transpiler.js';
 import { CommandManager } from '@aoi.js/managers/Command.js';
 import FunctionManager from '@aoi.js/managers/Function.js';
-import { type IAoiClientOptions } from '@aoi.js/typings/interface.js';
-import { type AoiClientProps } from '@aoi.js/typings/type.js';
-import { Client, DefaultWebSocketManagerOptions, Partials, type ClientOptions } from 'discord.js';
+import {
+	type ICommandOptions,
+	type IAoiClientOptions,
+} from '@aoi.js/typings/interface.js';
+import {
+	type Optional,
+	type CommandTypes,
+} from '@aoi.js/typings/type.js';
+import { Client, Partials, type ClientOptions } from 'discord.js';
+import * as Events from '@aoi.js/events/index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-interface AoiClient extends AoiClientProps {
-	client: Client;
-}
-
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class AoiClient {
 	client!: Client;
-	
+
 	transpiler: Transpiler;
 	database = null;
 	managers!: {
@@ -24,11 +24,10 @@ class AoiClient {
 
 	readonly #options: IAoiClientOptions;
 
-
 	constructor(options: IAoiClientOptions) {
 		this.#validateOptions(options);
 		this.#options = options;
-		
+
 		const transpilerOptions = {
 			minify: options.transpilerOptions?.minify ?? true,
 			customFunctions: {},
@@ -39,10 +38,12 @@ class AoiClient {
 			commands: new CommandManager(this),
 			functions: new FunctionManager(this),
 		};
-
 		if (options.testMode) return;
 
-		const djsOptions: ClientOptions = options.djsClientOptions ?? { intents: 0 };
+		const djsOptions: ClientOptions = options.djsClientOptions ?? {
+			intents: 0,
+		};
+
 		djsOptions.partials ||= [
 			Partials.GuildMember,
 			Partials.Channel,
@@ -53,17 +54,28 @@ class AoiClient {
 			Partials.ThreadMember,
 		];
 		djsOptions.intents = options.intents;
-		
+
 		this.client = new Client(djsOptions);
+		this.#bindEvents();
 	}
 
 	async start() {
 		await this.client.login(this.#options.token);
 	}
 
+	command(data: Optional<ICommandOptions, '__path__' | 'type'> ) {
+		if (!data.type) data.type = 'basic' as CommandTypes;
+		data.__path__ = data.__path__ ?? 'root';
+
+		this.managers.commands.add(data as ICommandOptions);
+		return this;
+	}
+
 	#validateOptions(options: IAoiClientOptions) {
 		if (options.intents === undefined) {
-			throw new SyntaxError('Intents not provided, "Guilds" intent is required');
+			throw new SyntaxError(
+				'Intents not provided, "Guilds" intent is required',
+			);
 		}
 
 		if (isNaN(options.intents)) {
@@ -77,6 +89,12 @@ class AoiClient {
 		if (!options.prefix?.length) {
 			throw new SyntaxError('Prefix not provided');
 		}
+	}
+
+	#bindEvents() {
+		this.#options.events.forEach((event) => {
+			Events[event]?.(this);
+		});
 	}
 
 	get prefix() {

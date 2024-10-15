@@ -1,13 +1,14 @@
 import { type AsyncFunction, type CommandTypes } from '@aoi.js/typings/type.js';
-import type AoiClient from './AoiClient';
+import type AoiClient from './AoiClient.js';
 import { type ICommandOptions } from '@aoi.js/typings/interface.js';
 import { type Snowflake } from 'discord.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
 export default class Command {
 	[key: string]: unknown;
 	name!: string;
 	type!: CommandTypes;
-	code!: string | (() => Promise<void>);
+	code!: string | AsyncFunction;
 	aliases?: string[];
 	channel?: string;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -45,7 +46,7 @@ export default class Command {
 
 		if (this.code instanceof Function) this.__compiled__ = this.code;
 		else {
-			let channelId: Snowflake | undefined | AsyncFunction;
+			let channelId: Snowflake | undefined;
 			if (this.channel) {
 				if (
 					typeof this.channel === 'string' &&
@@ -56,7 +57,8 @@ export default class Command {
 						scopeData: {
 							name: 'GLOBAL_CHANNEL',
 						},
-					}).func;
+						asFunction: false,
+					}).result;
 				} else channelId = this.channel;
 			}
 
@@ -64,15 +66,10 @@ export default class Command {
 				sendMessage: true,
 				reverse: this.reverseRead,
 				scopeData: {
-					functions:
-						typeof channelId === 'function'
-							? [channelId.toString()]
-							: undefined,
-					useChannel:
-						typeof channelId === 'function' ? `${channelId.name}()` : channelId,
+					useChannel: channelId?.includes('__$DISCORD_DATA$__') ? escapeResult(channelId) : channelId,
 				},
 			});
-			this.__compiled__ = func.func;
+			this.__compiled__ = func.func!;
 		}
 	}
 }

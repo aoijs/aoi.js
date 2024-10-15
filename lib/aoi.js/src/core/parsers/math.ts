@@ -1,4 +1,4 @@
-import { TranspilerCustoms } from '@aoi.js/typings/enum';
+import { TranspilerCustoms } from '@aoi.js/typings/enum.js';
 
 const mathRegex =
 	/#MATH_FUNCTION_START#[#$._0-9a-\s*+-/%^&|?()]*#MATH_FUNCTION_END#/gi;

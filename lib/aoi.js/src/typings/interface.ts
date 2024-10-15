@@ -1,9 +1,9 @@
-import type AoiClient from '@aoi.js/classes/AoiClient';
+import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import { type ReturnType, type FunctionType } from './enum.js';
-import { type AsyncFunction, type CommandTypes, type FunctionCode } from './type.js';
+import { type AoiEventNames, type AsyncFunction, type CommandTypes, type FunctionCode } from './type.js';
 import type StringObject from '../core/builders/StringObject.js';
 import type Command from '@aoi.js/classes/Command.js';
-import { type Channel, type Client, type ClientOptions, type Guild, type Message } from 'discord.js';
+import { type User, type Channel, type Client, type ClientOptions, type Guild, type Message, type GuildMember } from 'discord.js';
 
 export interface ITranspilerOptions {
 	customFunctions: Record<string, IFunctionData>;
@@ -76,15 +76,20 @@ export interface ICommandOptions {
 export interface ITranspilerData {
 	bot: AoiClient;
 	client: Client;
-	message: Message;
-	guild: Guild;
-	channel: Channel;
+	message?: Message;
+	guild?: Guild;
+	channel?: Channel;
+	author?: User;
+	member?: GuildMember;
 	command: Command;
+	args?: string[];
+	data?: Record<string, unknown>;
 }
 
 export interface IAoiClientOptions {
 	token: `${string}.${string}.${string}`;
 	intents: number;
+	events: AoiEventNames[];
 	prefix: string | string[];
 	respond?: {
 		toBot?: boolean;
