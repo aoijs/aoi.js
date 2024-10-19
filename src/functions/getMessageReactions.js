@@ -8,7 +8,7 @@ module.exports = async d => {
 
     const channel = await d.util.getChannel(d, channelID);
     
-    const message = await d.util.getMessage(d.channel, messageID);
+    const message = await d.util.getMessage(channel, messageID);
     
     if (!message) {
       return d.aoiError.fnError(d, "custom", {}, `Message ${messageID} not found!`);
