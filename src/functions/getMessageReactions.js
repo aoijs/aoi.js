@@ -19,15 +19,18 @@ module.exports = async d => {
 
       let emoji;
 
-      switch type {
-        case "emoji":
-          emoji = curemoji.id
-          ? `<:${curemoji.name}:${curemoji.id}>`
-          : curemoji.name;
-        case "name":
-          emoji = curemoji.name;
-        case "id":
-          emoji = curemoji.id;
+      switch (type) {
+          case "emoji":
+              emoji = curemoji.id ? `<:${curemoji.name}:${curemoji.id}>` : curemoji.name;
+              break;
+          case "name":
+              emoji = curemoji.name;
+              break;
+          case "id":
+              emoji = curemoji.id;
+              break;
+          default:
+              return d.aoiError.fnError(d, "custom", {}, `Type ${type} doesn't exist!`)
       }
 
       return `${emoji}`;
