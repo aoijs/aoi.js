@@ -22,8 +22,8 @@ module.exports = async (d) => {
         d.embeds.push(embeds[index - 1]);
     }
 
-    if (!returnJSON) d.embeds = d.embeds.filter((embed) => embed);
-    else data.result = d.embeds
+    d.embeds = d.embeds.filter((embed) => embed);
+    if (returnJSON === "true") data.result = d.embeds
 
     return {
         code: d.util.setCode(data),
