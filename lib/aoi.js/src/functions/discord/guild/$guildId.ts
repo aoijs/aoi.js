@@ -1,29 +1,43 @@
-import AoiJSFunction from '../../../structures/AoiJSFunction.js';
-import { escapeResult } from '../../../util/transpilerHelpers.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
-const guildId = new AoiJSFunction()
-	.setName('$guildId')
-	.setType('getter')
-	.setBrackets(false)
-	.setOptional(false)
-	.setFields([])
-	.setVersion('7.0.0')
-	.setDefault([])
-	.setReturns('bigint')
-	.setDescription('Returns the guildId of current guild')
-	.setExample('current guild id is `$guildId`');
+const $guildId = new FunctionBuilder()
+	.setName('$guildid')
+	.setBrackets(true)
+	.setOptional(true)
+	.setFields([
+		{
+			name: 'guild name',
+			type: ReturnType.String,
+			required: true,
+			description: 'Name of the guild',
+		},
+	])
+	.setReturns(ReturnType.String)
+	.setType(FunctionType.Getter)
+	.setCode((data, scopes, thisArg) => {
+		const [name] = thisArg.getParams(data);
 
-guildId.setCode((data, scope, thisArg) => {
-	const currentScope = scope[scope.length - 1];
+		let resultString: string; 
+		if ( name ) {
+			resultString = thisArg.getResultString(
+				(discordData) => discordData.client.guilds.cache.find( guild => guild.name === '$0')?.id,
+				[name],
+			);
+		} else {
+			resultString = thisArg.getResultString(
+				(discordData) => discordData.guild?.name,
+			);
+		}
 
-	const guildId = thisArg.getResultString((discord) => discord.guild?.id, []);
+		const escaped = escapeResult(resultString);
 
-	const res = escapeResult(`(${guildId})`);
-	currentScope.update(res, data);
-	return {
-		code: res,
-		scope,
-	};
-}, guildId);
+		return {
+			code: escaped,
+			scope: scopes,
+		};
+	})
+	.build();
 
-export const $guildId = guildId;
+export { $guildId };

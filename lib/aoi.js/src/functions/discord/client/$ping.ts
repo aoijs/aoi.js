@@ -1,31 +1,24 @@
-import AoiJSFunction from '../../../structures/AoiJSFunction.js';
-import { escapeResult } from '../../../util/transpilerHelpers.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
-const ping = new AoiJSFunction()
+const $ping = new FunctionBuilder()
 	.setName('$ping')
-	.setType('getter')
 	.setBrackets(false)
-	.setOptional(false)
 	.setFields([])
-	.setVersion('7.0.0')
-	.setDefault([])
-	.setReturns('number')
-	.setDescription('Returns the Ping of client')
-	.setExample('client ping is `$pingms`');
+	.setOptional(false)
+	.setType(FunctionType.Getter)
+	.setReturns(ReturnType.Number)
+	.setCode((data, scopes, thisArg) => {
+		const resultString = thisArg.getResultString(
+			(discordData) => discordData.client.ws.ping,
+		);
+		const escaped = escapeResult(resultString);
+		return {
+			code: escaped,
+			scope: scopes,
+		};
+	})
+	.build();
 
-ping.setCode((data, scope, thisArg) => {
-	const currentScope = thisArg.getCurrentScope(scope);
-	const resultString = thisArg.getResultString(
-		(discord) => discord.client.ws.data.ping,
-		[],
-	);
-	const res = escapeResult(resultString);
-	currentScope.update(res, data);
-
-	return {
-		code: res,
-		scope,
-	};
-}, ping);
-
-export const $ping = ping.build();
+export { $ping };
