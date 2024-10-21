@@ -43,9 +43,9 @@ test('log', () => {
 		name: 'package.json',
 		type: 'file',
 		content: `{
-  "name": "@akarui/${lib}",
+  "name": "@aoijs/${lib}",
   "version": "0.0.1",
-  "description": "@akarui/${lib} - A Extension for Aoi.js",
+  "description": "@aoijs/${lib} - A Extension for Aoi.js",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",

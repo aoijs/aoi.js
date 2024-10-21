@@ -1,7 +1,7 @@
 {
-  "name": "@akarui/aoi.db",
+  "name": "@aoijs/aoi.db",
   "version": "0.0.1",
-  "description": "@akarui/aoi.db - A Extension for Aoi.js",
+  "description": "@aoijs/aoi.db - A Extension for Aoi.js",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
@@ -44,6 +44,6 @@
   },
   "readme": "https://github.com/Aoijs/aoi.js/blob/main/README.md",
   "dependencies": {
-    "@akarui/structures": "workspace:^"
+    "@aoijs/structures": "workspace:^"
   }
 }

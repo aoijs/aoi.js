@@ -12,4 +12,5 @@
 		"tsBuildInfoFile": "./dist/esm/.tsbuildinfo",
 		"incremental": true
 	},
+	"exclude": ["src/**/*.test.ts"]
 }

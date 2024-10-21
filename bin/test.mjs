@@ -1,33 +1,39 @@
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-
+import { pathToFileURL } from 'node:url';
+import chalk from 'chalk';
 /**
- * run all tests for the given library
- * @param {object} options - the options object
- * @param {string} options.library - the library to test
+ * Run all tests for the given library
+ * @param {object} options - The options object
+ * @param {string} options.library - The library to test
  * @returns {Promise<void>}
  */
-const test = async ({ library }) => {
+const test = async ({ library, folder, reporter }) => {
+	const start = performance.now();
 	console.log(`Running tests for ${library}`);
 
-	// find all test files in the library
-	// recursively check all folders for test files
-	const mainFolder = path.resolve(process.cwd(), `lib/${library}`);
-
+	// Resolve paths in a cross-platform way
+	const mainFolder = path.join(process.cwd(), 'lib', library);
+	const reporterPath = pathToFileURL(
+		path.join(process.cwd(), 'tools', 'testing', 'testReporter.mjs'),
+	);
+	const flags = folder ? `--folder=${folder}` : '';
+	const runnerPath = path.join(
+		process.cwd(),
+		'tools',
+		'testing',
+		'testRunner.mjs',
+	);
+	// "glob -c \"tsx --test\" \"./src/**/*.test.ts\""
 	const spwn = spawn(
-		'npx',
-		[
-			'jest',
-			'--verbose',
-			'--color',
-			'--coverage',
-			'--coverageProvider=v8',
-			`--config=${process.cwd()}/jest.config.js`,
-			`${mainFolder}`,
-		],
+		// `npx glob -c  "tsx --test-reporter="${reporterPath.toString()}" --test" "./src/**/*.test.ts"`,
+		`node --import tsx "${runnerPath.toString()}" -- ${flags}`,
+		[],
 		{
 			stdio: 'inherit',
-			cwd: mainFolder,
+			// Set cwd to the project root
+			cwd: `${mainFolder}`,
+			shell: true,
 		},
 	);
 
@@ -45,10 +51,11 @@ const test = async ({ library }) => {
 
 	spwn.on('close', () => {
 		console.log(`Tested ${library}`);
-	});
-
-	spwn.on('disconnect', () => {
-		console.log('Disconnected');
+		console.log(
+			chalk.gray(
+				`Duration: ${((performance.now() - start) / 1000).toFixed(2)}s`,
+			),
+		);
 	});
 };
 
