@@ -50,7 +50,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
         //defining vars//
         let code = command.code?.replaceAll("\\]", "#LEFT#").split("\\[").join("#RIGHT#").replaceAll("\\,", "#COMMA#").replaceAll("\\;", "#SEMI#");
 
-        let [randoms, timezone, letVars, object, disableMentions, array, arrays, reactions, channel, author, guild, mentions, member, msg] = [
+        let [randoms, timezone, letVars, object, disableMentions, array, arrays, reactions, channel, author, guild, mentions, member, msg, requests] = [
             data.randoms || {},
             "UTC",
             data.vars || {},
@@ -64,7 +64,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             message.guild,
             message.mentions,
             message.member,
-            message
+            message,
+            data.requests || {}
         ];
         let errorOccurred;
         let embeds;
@@ -226,6 +227,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                                 channel: channel,
                                 member: member,
                                 mentions: mentions,
+                                requests,
                                 unpack() {
                                     const last = code.split(this.func.replace("[", "")).length - 1;
                                     const sliced = code.split(this.func.replace("[", ""))[last];
@@ -296,6 +298,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                 channel: channel,
                 member: member,
                 mentions: mentions, //cleanup (ignore)
+                requests,
                 unpack() {
                     const last = code.split(func.replace("[", "")).length - 1;
                     const sliced = code.split(func.replace("[", ""))[last];
@@ -447,6 +450,9 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
             if (FuncData?.arrays) {
                 arrays = FuncData?.arrays;
+            }
+            if (FuncData?.requests) {
+                requests = FuncData.requests;
             }
         }
 
