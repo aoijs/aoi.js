@@ -12,4 +12,5 @@
 		"tsBuildInfoFile": "./dist/cjs/.tsbuildinfo",
 		"incremental": true
 	},
+	"exclude": ["src/**/*.test.ts"]
 }

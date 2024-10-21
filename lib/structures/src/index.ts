@@ -14,7 +14,7 @@
 	limitations under the License.
 */
 
-import Group from "./Group/index.js";
-import LinkedList from "./LinkedList/index.js";
-import PriorityQueue from "./PriorityQueue/index.js";
-export { Group, LinkedList,PriorityQueue };
+import Group from './Group/index.js';
+import LinkedList from './LinkedList/index.js';
+import PriorityQueue from './PriorityQueue/index.js';
+export { Group, LinkedList, PriorityQueue };
