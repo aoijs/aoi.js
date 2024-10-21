@@ -1,76 +1,119 @@
-import { type FunctionData, type funcData, type Scope, parseString } from '../../../index.js';
-import { escapeResult } from '../../../util/transpilerHelpers.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { TranspilerError } from '@aoi.js/core/Error.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
+import type os from 'os';
 
-export const $cpu: FunctionData = {
-	name: '$cpu',
-	brackets: true,
-	optional: true,
-	version: '7.0.0',
-	type: 'function_getter',
-	fields: [
+/**
+ * Returns the CPU usage of the process or the OS.
+ * @example
+ * ```aoi
+ * ---
+ * name: cpu
+ * type: basic
+ * ---
+ *
+ * $cpu // returns the CPU usage of the process
+ * $cpu[os] // returns the CPU usage of the OS
+ * ```
+ */
+const $cpu = new FunctionBuilder()
+	.setName('$cpu')
+	.setBrackets(true)
+	.setOptional(true)
+	.setType(FunctionType.FunctionGetter)
+	.setFields([
 		{
 			name: 'type',
-			type: 'process|os',
-			description: 'The type of cpu usage to get',
+			type: ReturnType.String,
 			required: false,
+			description: 'The type of CPU to get. Can be `process` or `os`.',
 		},
-	],
-	default: ['process'],
-	returns: 'number',
-	description: 'Returns the CPU usage',
-	example: `
-    $cpu // returns the cpu usage of the process    
-    $cpu[os] // returns the cpu usage of the os
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
-		const type = parseString(data.inside ?? 'process');
-		let res = escapeResult(`function secNSec2ms (secNSec) {
-  if (Array.isArray(secNSec)) { 
-    return secNSec[0] * 1000 + secNSec[1] / 1000000; 
-  }
-  return secNSec / 1000; 
-}
+	])
+	.setReturns(ReturnType.String)
+	.setCode((data, scopes, thisArg) => {
+		const currentScope = thisArg.getCurrentScope(scopes);
+		let [type] = thisArg.getParams(data);
 
-function __$get_cpu_usage$__(type) {
-        if (type === "process") {
-const startTime  = process.hrtime()
-const startUsage = process.cpuUsage()
-
-const now = Date.now()
-while (Date.now() - now < 100) {}
-
-const elapTime = process.hrtime(startTime)
-var elapUsage = process.cpuUsage(startUsage)
-
-const elapTimeMS = secNSec2ms(elapTime)
-const elapUserMS = secNSec2ms(elapUsage.user)
-const elapSystMS = secNSec2ms(elapUsage.system)
-const cpuPercent = (100 * (elapUserMS + elapSystMS) / elapTimeMS).toFixed(2)
-return cpuPercent
-        } else if (type === "os") {
-            return ((OS.loadavg()[0] * 100)/OS.cpus().length).toFixed(2)
-        } else {
-            throw new Error(\`${data.name}: Invalid Type \${type}\`);
-        }
-}`);
-		if (!currentScope.packages.includes('const OS = await import("os")')) {
-			currentScope.packages += 'const OS = await import("os")\n';
+		if (!type) {
+			type = 'process';
 		}
 
 		if (
-			!currentScope.functions.includes(
-				'function __$get_cpu_usage$__(type) {',
-			)
+			!['process', 'os'].includes(type) &&
+			!thisArg.canSuppressAtComp(data, currentScope)
 		) {
-			currentScope.functions += res + '\n';
+			throw TranspilerError.CompileError(`Invalid CPU type: ${type}`, data);
 		}
 
-		res = escapeResult(`__$get_cpu_usage$__(${type})`);
-		currentScope.rest = currentScope.rest.replace(data.total, res);
+		if (!currentScope.hasPkg('OS')) {
+			currentScope.addPkg('OS', 'const OS = await import("os")');
+		}
+
+		if (!currentScope.hasPkg('TRANSPILE_ERROR')) {
+			currentScope.addPkg(
+				'TRANSPILE_ERROR',
+				'const TRANSPILE_ERROR = await import("aoi.js/core/Error.js")',
+			);
+		}
+
+		// placeholder for the actual module
+		const OS = thisArg.as<typeof os>('OS');
+		const TRANSPILE_ERROR =
+			thisArg.as<typeof TranspilerError>('TRANSPILE_ERROR');
+
+		function secNSec2ms(secNSec: number | number[]) {
+			if (Array.isArray(secNSec)) {
+				return secNSec[0] * 1000 + secNSec[1] / 1000000;
+			}
+
+			return secNSec / 1000;
+		}
+
+		function __$getCPUUsage$__(type: string) {
+			if (type === 'process') {
+				const startTime = process.hrtime();
+				const startUsage = process.cpuUsage();
+
+				const now = Date.now();
+				while (Date.now() - now < 100) {}
+
+				const elapTime = process.hrtime(startTime);
+				const elapUsage = process.cpuUsage(startUsage);
+
+				const elapTimeMS = secNSec2ms(elapTime);
+				const elapUserMS = secNSec2ms(elapUsage.user);
+				const elapSystMS = secNSec2ms(elapUsage.system);
+				const cpuPercent = (
+					(100 * (elapUserMS + elapSystMS)) /
+					elapTimeMS
+				).toFixed(2);
+				return cpuPercent;
+			} else if (type === 'os') {
+				return ((OS.loadavg()[0] * 100) / OS.cpus().length).toFixed(2);
+			} else {
+				throw TRANSPILE_ERROR.RunTimeError(
+					`Invalid CPU type: ${type}`,
+					data,
+				) as TranspilerError;
+			}
+		}
+
+		thisArg.addFunction(currentScope, secNSec2ms);
+		thisArg.addFunction(currentScope, __$getCPUUsage$__);
+
+		const result = thisArg.getResultString(
+			() => __$getCPUUsage$__('$0'),
+			[type],
+		);
+
+		const escaped = escapeResult(result);
+
 		return {
-			code: res,
-			scope: scope,
+			code: escaped,
+			scope: scopes,
 		};
-	},
-};
+	})
+	.build();
+
+export { $cpu };

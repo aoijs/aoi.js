@@ -1,129 +1,76 @@
-import { TranspilerError } from '../../../core/error.js';
-import { parseString } from '../../../core/parsers/stringParser.js';
-import type Scope from '../../../core/structs/Scope.js';
-import { TranspilerCustoms } from '../../../typings/enums.js';
-import { type FunctionData, type funcData } from '../../../typings/interfaces.js';
-import {
-	escapeVars,
-	parseData,
-	parseResult,
-	removeSetFunc,
-} from '../../../util/transpilerHelpers.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { TranspilerError } from '@aoi.js/core/Error.js';
+import { parseString } from '@aoi.js/core/parsers/string.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult, parseData, stringify } from '@aoi.js/utils/Helpers/core.js';
 
-export const $let: FunctionData = {
-	name: '$let',
-	brackets: true,
-	optional: false,
-	type: 'setter',
-	fields: [
+/**
+ * define a variable with a value
+ * @example
+ * ```aoi
+ * ---
+ * name: let
+ * type: basic
+ * ---
+ * 
+ * $let[variable;value]
+ * $get[variable] // value
+ * ```
+ */
+const $let = new FunctionBuilder()
+	.setName('$let')
+	.setBrackets(true)
+	.setOptional(true)
+	.setFields([
 		{
-			name: 'name',
-			type: 'string',
-			description: 'The name of the variable to set',
+			name: 'variable',
+			type: ReturnType.String,
 			required: true,
+			description: 'The variable name to store the value in.',
 		},
 		{
 			name: 'value',
-			type: 'string',
-			description: 'The value to set the variable to',
+			type: ReturnType.Any,
 			required: true,
+			description: 'The value to store.',
 		},
-	],
-	version: '7.0.0',
-	default: ['void', 'void'],
-	returns: 'void',
-	description: 'Sets the value of the variable',
-	example: `
-        $let[hello;world] // sets the variable hello to world
-    `,
-	code: (data: funcData, scope: Scope[]) => {
-		let res;
-		const splits = data.splits;
-		const currentScope = scope[ scope.length - 1 ];
-		// Initial Error Handling
-		if ($let.brackets) {
-			if (
-				!data.total.startsWith($let.name + '[') &&
-                (!currentScope.name.startsWith('$try_') ||
-                    !currentScope.name.startsWith('$catch_'))
-			) {
-				throw new TranspilerError(
-					`${data.name} requires closure brackets`,
-				);
-			}
+	])
+	.setReturns(ReturnType.Void)
+	.setType(FunctionType.Setter)
+	.setCode((data, scopes, thisArg) => {
+		const currentScope = thisArg.getCurrentScope(scopes);
+		const [variable, value] = data.splits();
+
+		if (!variable && !thisArg.canSuppressAtComp(data, currentScope)) {
+			throw TranspilerError.CompileError('Variable name not provided.', data);
 		}
 
-		if (
-			splits.length < 2 &&
-            !currentScope.name.startsWith('$try_') &&
-            !currentScope.name.startsWith('$catch_')
-		) {
-			throw new TranspilerError(`${data.name} requires 2 arguments`);
+		if (!value && !thisArg.canSuppressAtComp(data, currentScope)) {
+			throw TranspilerError.CompileError('Value not provided.', data);
 		}
 
-		const name = removeSetFunc(splits[0]);
-		let value = parseData(removeSetFunc(splits.slice(1).join(';')));
-		if (
-			typeof value === 'string' &&
-            value.includes(TranspilerCustoms.FS) &&
-            !value.includes(TranspilerCustoms.MFS) &&
-            !(!value.split(TranspilerCustoms.FS)[0] && !value.split(TranspilerCustoms.FE)[1])
-		) {
-			value = parseString(value);
-		}
+		let parsedValue = parseData(value);
 
-		// Error handling for name and value
-		if (
-			name === '' &&
-            !currentScope.name.startsWith('$try_') &&
-            !currentScope.name.startsWith('$catch_')
-		) {
-			throw new TranspilerError(`${data.name} requires a name`);
-		}
-
-		if (
-			name === value &&
-            !currentScope.name.startsWith('$try_') &&
-            !currentScope.name.startsWith('$catch_')
-		) {
-			throw new TranspilerError(
-				`${data.name} cannot be used to set itself`,
-			);
-		}
-
-		if (currentScope.variables.includes(name)) {
-			if (
-				currentScope.variables.includes(parseResult(value)) ||
-                value.toString().startsWith(TranspilerCustoms.FS) ||
-                (value.toString().startsWith('`') &&
-                    value.toString().endsWith('`')) ||
-                value.toString().includes(TranspilerCustoms.MFS)
-			) {
-				res = `${escapeVars(name)} = ${value};`;
-			} else {
-				res = `${escapeVars(name)} = \`${value}\`;`;
-			}
+		if (typeof parsedValue === 'string') {
+			parsedValue = parseString(parsedValue);
 		} else {
-			if (
-				typeof value !== 'string' ||
-                currentScope.variables.includes(
-                	parseResult(value.toString()),
-                ) ||
-                value.toString().startsWith(TranspilerCustoms.FS) ||
-                (value.toString().startsWith('`') &&
-                    value.toString().endsWith('`')) ||
-                value.includes(TranspilerCustoms.MFS)
-			) {
-				res = `let ${escapeVars(name)} = ${value};`;
-			} else {
-				res = `let ${escapeVars(name)} = \`${value}\`;`;
-			}
+			parsedValue = stringify(parsedValue);
 		}
 
-		currentScope.variables.push(name);
-		currentScope.update(res, data);
-		scope[scope.length - 1] = currentScope;
+		const result = thisArg.defineVar(variable, parsedValue, currentScope.hasVariable(variable));
 
-		return { code: '', scope: scope };
-	},
-};
+		if (!currentScope.hasVariable(variable)) {
+			currentScope.addVariables(variable);
+		}
+
+		const escaped = escapeResult(result);
+
+		return {
+			code: escaped,
+			scope: scopes,
+		};
+	})
+	.build();
+
+export { $let };
+	

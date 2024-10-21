@@ -1,3 +1,3 @@
-# @aoijs/aoi.js
+# @akarui/aoi.js
 
-dev version for Aoi.js
+A Extension for Aoi.js

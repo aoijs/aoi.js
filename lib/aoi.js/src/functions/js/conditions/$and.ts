@@ -1,38 +1,32 @@
-import { conditionLexer } from '../../../index.js';
-import { type FunctionData } from '../../../typings/interfaces.js';
-import { escapeFunctionResult, parseResult } from '../../../util/transpilerHelpers.js';
-export const $and: FunctionData = {
-	name: '$and',
-	type: 'getter',
-	brackets: true,
-	optional: false,
-	version: '7.0.0',
-	fields: [
-		{
-			name: 'condition',
-			type: 'string',
-			description: 'The condition to check',
-			required: true,
-		},
-	],
-	default: ['void'],
-	returns: 'boolean',
-	description: 'Returns true if all conditions are true ( function version of && )',
-	example: `
-    $and[$isNumber[1];$isNumber[2]] // returns true 
-    $and[$isNumber[1];$isNumber[hello]] // returns false
-    `,
-	code: (data, scope) => {
-		const conditions = data.splits;
-		const currentScope = scope[scope.length - 1];
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { parseCondition } from '@aoi.js/core/parsers/condition.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
 
-		const solved = conditionLexer( conditions.join( '&&' ) ).solve( );
-		const res = escapeFunctionResult( parseResult(solved) );
-		currentScope.update( res, data );
+const $and = new FunctionBuilder()
+	.setName('$and')
+	.setBrackets(true)
+	.setOptional(false)
+	.setType(FunctionType.Getter)
+	.setFields([
+		{
+			name: 'conditions',
+			type: ReturnType.Array,
+			required: true,
+			description: 'conditions to check',
+		},
+	])
+	.setReturns(ReturnType.Boolean)
+	.setCode((data, scopes, thisArg) => {
+		const conditions = thisArg.getParams(data);
+		const solved = parseCondition(conditions.join(' && ')).solve();
+		const escaped = escapeResult( parseResult(solved) );
+
 		return {
-			code: res,
-			scope,
-			data,
+			code: escaped,
+			scope: scopes,
 		};
-	},
-};
+	})
+	.build();
+
+export { $and };

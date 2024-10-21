@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-process.removeAllListeners('warning');
+#!/usr/bin/env -S node --no-warnings=ExperimentalWarning
 
 import { program } from 'commander';
 import test from './test.mjs';
@@ -12,11 +10,13 @@ import pkg from './package.json' assert { type: 'json' };
 import chalk from 'chalk';
 import add from './add.mjs';
 import addLicense from './addLicense.mjs';
+import run from './run.mjs';
 
 program
 	.command('test')
 	.description('run all tests for the given library')
 	.requiredOption('-l, --library <library>', 'the library to test')
+	.option('-f, --folder <folder>', 'the folder to test in the library')
 	.action(test);
 
 program
@@ -55,6 +55,13 @@ program
 	.description('add a license to the given library')
 	.requiredOption('-l, --library <library>', 'the library to license')
 	.action(addLicense);
+
+program
+	.command('run')
+	.description('run a file for the given library')
+	.requiredOption('-l, --library <library>', 'the library to run')
+	.requiredOption('-f, --file <file>', 'the file to run')
+	.action(run);
 
 program
 	.name(pkg.name)

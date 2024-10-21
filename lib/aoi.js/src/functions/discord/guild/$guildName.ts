@@ -1,59 +1,43 @@
- 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { type Guild, type Snowflake } from 'zeneth';
-import AoiJSFunction from '../../../structures/AoiJSFunction.js';
-import { escapeResult } from '../../../util/transpilerHelpers.js';
-import { parseString } from '../../../index.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
-const guildName = new AoiJSFunction()
-	.setName('$guildName')
-	.setType('getter')
+const $guildName = new FunctionBuilder()
+	.setName('$guildid')
 	.setBrackets(true)
 	.setOptional(true)
 	.setFields([
 		{
-			name: 'guildId',
-			type: 'number',
-			description: 'The guild id to get the name from',
-			required: false,
+			name: 'guild id',
+			type: ReturnType.String,
+			required: true,
+			description: 'id of the guild',
 		},
 	])
-	.setVersion('7.0.0')
-	.setDefault(['__$DISCORD_DATA$__.guild?.id'])
-	.setReturns('string')
-	.setDescription('Returns the name of current guild').setExample(`
-        $guildName // returns the name of current guild
+	.setReturns(ReturnType.String)
+	.setType(FunctionType.Getter)
+	.setCode((data, scopes, thisArg) => {
+		const [id] = thisArg.getParams(data);
 
-        $guildName[some id here] // returns the name of guild with provided id
-        `);
+		let resultString: string; 
+		if ( id ) {
+			resultString = thisArg.getResultString(
+				(discordData) => discordData.client.guilds.cache.find( guild => guild.id === '$0')?.name,
+				[id],
+			);
+		} else {
+			resultString = thisArg.getResultString(
+				(discordData) => discordData.guild?.name,
+			);
+		}
 
-guildName.setCode((data, scope, thisArg) => {
-	const currentScope = thisArg.getCurrentScope(scope);
-	const id = data.inside;
-	const resultString = thisArg.conditionalGetResultString(
-		!!id,
-		{
-			func: async (discord) =>
-				(
-					(await discord.bot.util.getGuild(
-						'$0' as unknown as Snowflake,
-					))
-				)?.name,
-			args: [parseString(id)],
-		},
-		{
-			func: (discord) => discord.guild?.name,
-			args: [],
-		},
-	);
-	const res = escapeResult(resultString);
-	currentScope.update(res, data);
+		const escaped = escapeResult(resultString);
 
-	return {
-		code: res,
-		scope,
-	};
-}, guildName);
+		return {
+			code: escaped,
+			scope: scopes,
+		};
+	})
+	.build();
 
-export const $guildName = guildName.build();
+export { $guildName };

@@ -1,41 +1,69 @@
-import { type FunctionData, type funcData, type Scope } from '../../../index.js';
-import { escapeResult } from '../../../util/transpilerHelpers.js';
+import FunctionBuilder from '@aoi.js/core/builders/Function.js';
+import { TranspilerError } from '@aoi.js/core/Error.js';
+import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
-export const $ram: FunctionData = {
-	name: '$ram',
-	brackets: true,
-	optional: true,
-	type: 'getter',
-	fields: [
+/**
+ * Returns the memory usage of the process for given type.
+ * @example
+ * ```aoi
+ * ---
+ * name: ram
+ * type: basic
+ * ---
+ * 
+ * $ram // returns heapUsed
+ * $ram[heapTotal] // returns heapTotal
+ * $ram[rss] // returns rss
+ * $ram[external] // returns external
+ * $ram[arrayBuffers] // returns arrayBuffers
+ * ```
+ */
+const $ram = new FunctionBuilder()
+	.setName('$ram')
+	.setBrackets(true)
+	.setOptional(true)
+	.setType(FunctionType.Getter)
+	.setFields([
 		{
 			name: 'type',
-			type: 'rss|heapUsed|heapTotal|external|arrayBuffer',
-			description: 'The type of ram to get',
+			type: ReturnType.String,
 			required: false,
-		},
-	],
-	version: '7.0.0',
-	default: ['rss'],
-	returns: 'number',
-	description: 'Returns the bot\'s ram usage',
-	example: `
-        $ram // returns the rss ram usage
-        $ram[heapUsed] // returns the heapUsed ram usage
-        $ram[heapTotal] // returns the heapTotal ram usage
-        $ram[external] // returns the external ram usage
-        $ram[arrayBuffer] // returns the arrayBuffer ram usage
-        `,
-	code: (data: funcData, scope: Scope[]) => {
-		const currentScope = scope[scope.length - 1];
-		const type = data.inside ?? 'rss';
+			description: 'The type of memory to get. Can be `heapUsed`, `heapTotal`, `rss`, `external`, `arrayBuffers`.',
 
-		const res = escapeResult(
-			`(process.memoryUsage().${type} / 1024 / 1024).toFixed(2)`,
+		},
+	])
+	.setReturns(ReturnType.String)
+	.setCode((data, scopes, thisArg) => {
+		const currentScope = thisArg.getCurrentScope(scopes);
+		let [type] = thisArg.getParams(data);
+
+		if (!type) {
+			type = 'heapUsed';
+		}
+
+		if (
+			!['heapUsed', 'heapTotal', 'rss', 'external', 'arrayBuffers'].includes(type) && 
+			!thisArg.canSuppressAtComp(data, currentScope)
+		) {
+			throw TranspilerError.CompileError(`Invalid memory type: ${type}`, data);
+		}
+
+		const result = thisArg.getResultString(
+			// eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			// eslint-disable-next-line @typescript-eslint/dot-notation, @typescript-eslint/no-unsafe-return
+			() => process.memoryUsage()['"$0"'],
+			[type],
 		);
-		currentScope.rest = currentScope.rest.replace(data.total, res);
+
+		const escaped = escapeResult(result);
+
 		return {
-			code: res,
-			scope: scope,
+			code: escaped,
+			scope: scopes,
 		};
-	},
-};
+	})
+	.build();
+
+export { $ram };
