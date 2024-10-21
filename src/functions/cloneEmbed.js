@@ -6,7 +6,7 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [index = 1, messageId = d.message.id, channelId = d.message.channel.id] = data.inside.splits;
+    const [index = 1, messageId = d.message.id, channelId = d.message.channel.id, returnJSON = "false"] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelId);
     const message = await d.util.getMessage(channel, messageId);
@@ -23,6 +23,7 @@ module.exports = async (d) => {
     }
 
     d.embeds = d.embeds.filter((embed) => embed);
+    if (returnJSON === "true") data.result = d.embeds
 
     return {
         code: d.util.setCode(data),
