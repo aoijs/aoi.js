@@ -1,7 +1,6 @@
 import { run } from 'node:test';
 import process from 'node:process';
 import customReporter from './testReporter.mjs';
-import * as reporters from 'node:test/reporters';
 import * as glob from 'glob';
 
 const argvs = process.argv.slice(3);

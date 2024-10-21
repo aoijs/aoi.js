@@ -15,7 +15,7 @@ const spinner = ora({
 	text: 'Running tests...',
 }).start();
 let output = '';
-// Jest-like Custom Reporter
+
 const customReporter = new Transform({
 	writableObjectMode: true,
 	transform(event, _encoding, callback) {
