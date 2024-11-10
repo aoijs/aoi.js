@@ -1,13 +1,25 @@
+const { hasMacros, resolveMacros } = require("./Macros");
 const { Group } = require("@aoijs/aoi.structures");
 
 class Command {
+    /**
+     * Creates a new instance of the `Command` class.
+     * @param {import("..").BaseCommand} data - The command data.
+     * @param {import("..").AoiClient} client - The AoiClient instance.
+     */
     constructor(data = {}, client) {
-        this.__client__ = client;
-        if (typeof data.code === "string") {
-            this.code = data.code;
-        } else {
+        if (typeof data.code !== "string") {
             throw new TypeError(`Missing or invalid 'code' property in '${data.name}' command \n Path: '${data.__path__}'`);
         }
+
+        this.__client__ = client;
+        
+        if (hasMacros(client.macros.list(), data.code)) {
+            data.code = resolveMacros(client.macros.toArray(), data.code);
+        }
+
+        this.code = data.code;
+        
         Object.entries(data).forEach(([key, value]) => (this[key] = value));
         this.functions = this.serializeFunctions();
         this.codeLines = this.serializeCode();

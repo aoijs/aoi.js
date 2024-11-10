@@ -226,10 +226,12 @@ export declare class BaseClient extends Client {
     interactionManager: InteractionManager;
     cacheManager: CacheManager;
     variableManager: any;
+    macros: MacrosManager;
     prefix: string | string[];
     db: KeyValue | Transmitter;
     statuses: Group;
     constructor(options: ClientOptions);
+    macro(...macros: MacroOptions[]): void;
     status(...statuses: StatusOption[]): void;
     loadCommands(directory: string, debug?: boolean): void;
     variables(data: Record<string, unknown>, table?: string): void;
@@ -534,4 +536,42 @@ export interface Data<T extends Record<string, unknown> = Record<string, unknown
     interpreter: Interpreter;
     client: AoiClient;
     embed: EmbedBuilder;
+}
+
+/**
+ * An structure representing a macro.
+ */
+export interface MacroOptions {
+    /**
+     * The name of this macro (without #).
+     */
+    name: string;
+    /**
+     * The code of this macro.
+     */
+    code: string;
+}
+
+export declare class MacrosManager {
+    cache: Map<string, MacroOptions>;
+    /**
+     * Adds a macro to the manager.
+     */
+    add(macro: MacroOptions): this;
+    /**
+     * Adds many macros to the manager.
+     */
+    addMany(macros: MacroOptions[]): this;
+    /**
+     * Get a macro.
+     */
+    get(name: string | ((macro: MacroOptions) => boolean)): MacroOptions | null;
+    /**
+     * Return the list of cached macro names.
+     */
+    list(): string[];
+    /**
+     * Return an array of cached macros.
+     */
+    toArray(): MacroOptions[];
 }
