@@ -36,7 +36,10 @@ const IF = async (d) => {
                         undefined,
                         true,
                         undefined,
-                        Data
+                        {
+							...Data,
+							...Data.data
+						}
                     )
                 )?.code === "true";
 
@@ -100,7 +103,10 @@ const IF = async (d) => {
                                     undefined,
                                     true,
                                     undefined,
-                                    Data
+                                    {
+										...Data,
+										...Data.data
+									}
                                 )
                             )?.code === "true";
 

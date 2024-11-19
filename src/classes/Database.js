@@ -22,6 +22,7 @@ class Database {
    * @param {any} module
    * @param {"KeyValue" | "Transmitter"} type
    * @param {aoidb.KeyValueOptions | aoidb.TransmitterOptions} config
+   * @param aoiOptions
    * @returns {any}
    */
   constructor(moduleType, module, type, config, aoiOptions) {

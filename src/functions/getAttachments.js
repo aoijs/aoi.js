@@ -5,7 +5,7 @@ module.exports = async d => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [channelID, messageID, index = 1, option = 'url'] = data.inside.splits;
+    const [channelID, messageID, index = 1, option = 'url', sep = ', '] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelID);
     if (!channel) return d.aoiError.fnError(d, 'channel', {inside: data.inside});
@@ -16,7 +16,11 @@ module.exports = async d => {
     const attachments = [...message.attachments.values()];
     if (!attachments.length) return d.aoiError.fnError(d, 'custom', {}, "Message Doesn't Have Any Attachments");
 
-    data.result = attachments[index - 1][option];
+    if (!isNaN(parseInt(index))) {
+        data.result = attachments[index - 1][option];
+    } else {
+        data.result = attachments.map(x => x?.[option])?.join(sep);
+    };
 
     return {
         code: d.util.setCode(data)

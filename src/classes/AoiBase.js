@@ -11,6 +11,7 @@ const {
     EventstoFile
 } = require("../utils/Constants.js");
 const Database = require("./Database.js");
+const { MacrosManager } = require("./Macros.js");
 const CacheManager = require("./CacheManager.js");
 const { CommandManager } = require("./Commands.js");
 const { Group } = require("@aoijs/aoi.structures");
@@ -55,6 +56,7 @@ class BaseClient extends Client {
         this.cacheManager = new CacheManager(this);
 
         this.variableManager = new VariableManager(this);
+        this.macros = new MacrosManager();
 
         if (
             options.disableAoiDB !== true &&
@@ -117,6 +119,15 @@ class BaseClient extends Client {
     loadCommands(directory, debug = true) {
         const loader = new LoadCommands(this);
         loader.load(this.cmd, directory, debug);
+    }
+
+    /**
+     * Adds many macros to the manager.
+     * @param {import("..").MacroOptions[]} macros - The macros to be added.
+     * @returns {void}
+     */
+    macro(...macros) {
+        this.macros.addMany([...macros]);
     }
 
     status(...statuses) {
