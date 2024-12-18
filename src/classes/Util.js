@@ -171,8 +171,15 @@ class Util {
         if (Emoji.includes(":")) {
             Emoji = Emoji.split(":")[2].split(">")[0];
         }
-
-        const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        
+        if(d.client.shard) {
+            const arr =  await d.client.shard.broadcastEval((client, Emoji) => {
+                client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji)
+                }, { context: Emoji });
+            const clientEmojis = arr.find((x) => x);
+        } else {
+            const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        }
 
         if (clientEmojis) return clientEmojis;
 
