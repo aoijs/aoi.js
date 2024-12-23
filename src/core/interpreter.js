@@ -473,7 +473,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             returnData.data = data;
         }
 
-        if ((code.length || embeds?.length || attachments?.length) && !errorOccurred && !error) {
+        if ((code.length || embeds?.length || attachments?.length || components?.length) && !errorOccurred && !error) {
             try {
                 const send = {
                     embeds: embeds,
