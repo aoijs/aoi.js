@@ -88,7 +88,7 @@ class AoiError {
 
         let msg;
         if (extraOptions.interaction) {
-            if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0) return;
+            if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
             if (extraOptions?.defer) {
                 await d.data.interaction.deferReply({
                     ephemeral: extraOptions.ephemeral ?? options.ephemeral
@@ -106,13 +106,13 @@ class AoiError {
             }
         } else {
             if (channel instanceof BaseInteraction) {
-                if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0) return;
+                if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
                 msg = await channel.reply(options).catch((e) => {
                     AoiError.consoleError("CreateMessageError", e);
                     return undefined;
                 });
             } else {
-                if (options.content === " " && (options.embeds?.length ?? 0) === 0 && (options.files?.length ?? 0) === 0 && (options.stickers?.length ?? 0) === 0) return;
+                if (options.content === " " && (options.embeds?.length ?? 0) === 0 && (options.files?.length ?? 0) === 0 && (options.stickers?.length ?? 0) === 0 && (options.components?.length ?? 0) === 0) return;
 
                 if (extraOptions.reply?.message) {
                     if (extraOptions.reply?.mention) options.allowedMentions.repliedUser = true;
