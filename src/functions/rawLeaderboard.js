@@ -27,16 +27,22 @@ module.exports = async (d) => {
     all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
   
     const getdata = async (user, Data, key) => {
-        user = (type === "globalUser"
-                ? await d.util.getUser(d, Data.key.split("_")[key])
-                : (type === "user"
-                   ? await d.util.getMember(d.guild, Data.key.split("_")[key])
-                   : (type === "server"
-                      ? await d.util.getGuild(d, Data.key.split("_")[key])
-                      : (type === 'channel'
-                         ? d.util.getChannel(d, Data.key.split("_")[key])
-                         : null))));
-        return user;
+        switch (type) {
+            case "globalUser":
+                user = await d.util.getUser(d, Data.key.split("_")[key]);
+                break;
+            case "user":
+                user = await d.util.getMember(d.guild, Data.key.split("_")[key]);
+                break;
+            case "server":
+                user = await d.util.getGuild(d, Data.key.split("_")[key]);
+                break;
+            case "channel":
+                user = await d.util.getChannel(d, Data.key.split("_")[key]);
+                break;
+        };
+        
+        return (user ? user || null);
     };
 
     for (let i = 0; i < all.length; i++) {
@@ -49,9 +55,7 @@ module.exports = async (d) => {
 
         if (user) {
             user = typeof user === "object"
-                ? (type === "user"
-                   ? user?.user
-                   : user)
+                ? (type === "user" ? user?.user : user)
                 : { id: user };
             y++;
 
@@ -61,8 +65,8 @@ module.exports = async (d) => {
                 .replaceAll("{tag}", user?.tag?.removeBrackets())
                 .replaceAll(`{value}`, value)
                 .replaceAll(`{name}`, ["user", "globalUser"].includes(type)
-                            ? user.username?.removeBrackets()
-                            : user.name?.removeBrackets(),
+                    ? user.username?.removeBrackets()
+                    : user.name?.removeBrackets()
                 );
 
             if (text.includes("{execute:")) {
