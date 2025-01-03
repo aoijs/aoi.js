@@ -42,7 +42,7 @@ module.exports = async (d) => {
                 break;
         };
         
-        return (user ? user || null);
+        return (user ? user : null);
     };
 
     for (let i = 0; i < all.length; i++) {
