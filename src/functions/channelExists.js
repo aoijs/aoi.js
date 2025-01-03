@@ -7,7 +7,7 @@ module.exports = async d => {
 
     let [channel] = data.inside.splits;
 
-    channel = d.client.channels.cache.find(x => x.name.toLowerCase() === channel.toLowerCase().addBrackets() || x.id === channel)
+    channel = d.client.channels.cache.find(x => x.name.toLowerCase() === channel?.toLowerCase().addBrackets() || x.id === channel)
 
     data.result = !!channel
 
