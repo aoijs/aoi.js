@@ -2,4 +2,11 @@ node_modules
 dist
 coverage
 index.mjs
+<<<<<<< HEAD
+bin/index.mjs
 index.js
+.tsbuildinfo
+pnpm-lock.yaml
+=======
+index.js
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb

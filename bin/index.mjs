@@ -6,11 +6,16 @@ import build from './build.mjs';
 import publish from './publish.mjs';
 import version from './version.mjs';
 import docs from './docs.mjs';
-import pkg from './package.json' assert { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 import chalk from 'chalk';
 import add from './add.mjs';
 import addLicense from './addLicense.mjs';
 import run from './run.mjs';
+<<<<<<< HEAD
+import genTest from './genTest.mjs';
+import { init } from './init.mjs';
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 program
 	.command('test')
@@ -64,6 +69,22 @@ program
 	.action(run);
 
 program
+<<<<<<< HEAD
+	.command('genTest')
+	.description('generate all tests for the given library')
+	.requiredOption('-l, --library <library>', 'the library to test')
+	.requiredOption('-f, --folder <folder>', 'the folder to test')
+	.action(genTest);
+
+program
+	.command('init')
+	.description('initialize the given library')
+	.requiredOption('-l, --library <library>', 'the library to initialize')
+	.action(init);
+
+program
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	.name(pkg.name)
 	.version(pkg.version)
 	.description(pkg.description)

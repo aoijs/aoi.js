@@ -1,0 +1,1909 @@
+[
+  {
+    "description": "Returns the id of the channel.\n",
+    "example": "```aoi\n---\nname: channelid\ntype: basic\n---\n\n$channelid // returns the id of the current channel\n$channelid[channel name] // returns the id of the channel with the given name\n```",
+    "name": "$channelid",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channel name",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Name of the channel"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the ping of the bot.\n",
+    "example": "```aoi\n---\nname: ping\ntype: basic\n---\n\n$ping // Returns the ping of the bot\n```",
+    "name": "$ping",
+    "brackets": false,
+    "optional": false,
+    "type": "Getter",
+    "fields": [],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the id of the guild.\n",
+    "example": "```aoi\n---\nname: guildid\ntype: basic\n---\n\n$guildid // returns the id of the current guild\n$guildid[guild name] // returns the id of the guild with the given name\n```",
+    "name": "$guildid",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "guild name",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Name of the guild"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the name of the guild.\n",
+    "example": "```aoi\n---\nname: guildname\ntype: basic\n---\n\n$guildname // returns the name of the current guild\n$guildname[guild id] // returns the name of the guild with the given id\n```",
+    "name": "$guildid",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "guild id",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "id of the guild"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {},
+  {
+    "description": "Returns the message content\n",
+    "example": "```aoi\n---\nname: message\ntype: basic\n---\n\n$message // returns the whole message\n$message[1] // returns the first argument\n```",
+    "name": "$message",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "index",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "The index of the argument to get. If not provided, it will return the whole message."
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "check if the message exist\n",
+    "example": "```aoi\n---\nname: messageexists\ntype: basic\n---\n\n$messageexists // checks if the message exist\n```",
+    "name": "$messageexists",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the message flags\n",
+    "example": "```aoi\n---\nname: messageflags\ntype: basic\n---\n\n$messageflags // returns the message flags\n```",
+    "name": "$messageflags",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "sep",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "seperator to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the message id\n",
+    "example": "```aoi\n---\nname: messageId\ntype: basic\n---\n\n$messageId // returns the messageId\n```"
+  },
+  {
+    "description": "Published the announcement in a channel\n",
+    "example": "```aoi\n---\nname: messagepublish\ntype: basic\n---\n\n$messagepublish // publishes the announcement in a channel\n```",
+    "name": "$messagepublish",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "slices a message\n",
+    "example": "```aoi\n---\nname: messageslice\ntype: basic\n---\n\n$messageslice // slices a message\n```",
+    "name": "$messageslice",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "from",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "where to start"
+      },
+      {
+        "name": "to",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "where to end"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the message type\n",
+    "example": "```aoi\n---\nname: messagetype\ntype: basic\n---\n\n$messagetype // returns the message type\n```",
+    "name": "$messagetype",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the message url\n",
+    "example": "```aoi\n---\nname: messageurl\ntype: basic\n---\n\n$messageurl // returns the message url\n```",
+    "name": "$messageurl",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the messagewebhook id\n",
+    "example": "```aoi\n---\nname: messagewebhookid\ntype: basic\n---\n\n$messagewebhookid // returns the messagewebhookid\n```",
+    "name": "$messagewebhookid",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "channelId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "channelId to use"
+      },
+      {
+        "name": "messageId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "messageId to check"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the banner of the author.\n",
+    "example": "```aoi\n---\nname: authoravatar\ntype: basic\n---\n\n$authoravatar // returns the banner of the author\n```",
+    "name": "$authoravatar",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "size",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "Size of the banner"
+      },
+      {
+        "name": "dynamic",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "no clue"
+      },
+      {
+        "name": "extention",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The file extention"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the banner of the author.\n",
+    "example": "```aoi\n---\nname: authorBanner\ntype: basic\n---\n\n$authorBanner // returns the banner of the author\n```",
+    "name": "$authorbanner",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "size",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "Size of the banner"
+      },
+      {
+        "name": "dynamic",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "no clue"
+      },
+      {
+        "name": "extention",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The file extention"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the banner color of the author.\n",
+    "example": "```aoi\n---\nname: authorbannercolor\ntype: basic\n---\n\n$authorbannercolor // returns the banner color of the author\n```",
+    "name": "$authorbannercolor",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "default",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "Size of the banner"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the id of the author.\n",
+    "example": "```aoi\n---\nname: authorid\ntype: basic\n---\n\n$authorid // returns the id of the author\n```",
+    "name": "$authorid",
+    "brackets": false,
+    "optional": false,
+    "type": "Getter",
+    "fields": [],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the userId of the user.\n",
+    "example": "```aoi\n---\nname: findUser\ntype: basic\n---\n\n$findUser[$authorid] // returns the userId of the current user\n$findUser[supremesupreme] // returns the userId of the specified user\n```",
+    "name": "$findUser",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "userResolver",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "User to search for"
+      },
+      {
+        "name": "returnSelf",
+        "type": [
+          "Void"
+        ],
+        "required": false,
+        "description": "Returns author id"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the username of the user.\n",
+    "example": "```aoi\n---\nname: username\ntype: basic\n---\n\n$username // returns the username of the current user\n$username[userid] // returns the username of the specified user\n```",
+    "name": "$username",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "userId",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "UserId to search for"
+      }
+    ],
+    "returns": [
+      "Void",
+      "String"
+    ]
+  },
+  {
+    "description": "returns true if all conditions are true\n",
+    "example": "```aoi\n---\nname: and\ntype: basic\n---\n\n$and[1==1;2==2] // returns true\n$and[1==1;2==3] // returns false\n```",
+    "name": "$and",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "conditions",
+        "type": [
+          "Boolean",
+          "Array"
+        ],
+        "required": true,
+        "description": "conditions to check"
+      }
+    ],
+    "returns": [
+      "Boolean"
+    ]
+  },
+  {
+    "description": "Checks if the message argument length meets the condition\n",
+    "example": "```aoi\n---\nname: argcheck\ntype: basic\n---\n\n$argcheck[>1;stop] // stops the code if the message argument length is less than 2\n```",
+    "name": "$argcheck",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "args condition",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The condition to check on the arguments."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to run if the condition is false."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the code if the case is true\n",
+    "example": "```aoi\n---\nname: switch\ntype: basic\n---\n\n$switch[$message[1];\n$case[hi; hello]\n$case[bye; goodbye]\n$default[good day]\n]\n```",
+    "name": "$case",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "case",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The case to match."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute case the condition is true."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Checks if the condition is true\n",
+    "example": "```aoi\n---\nname: checkcondition\ntype: basic\n---\n\n$checkcondition[1==1 || 1 == 2] // returns true\n$checkcondition[1==2] // returns false\n```",
+    "name": "$checkcondition",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      }
+    ],
+    "returns": [
+      "Boolean"
+    ]
+  },
+  {
+    "description": "Executes the code if all cases are false\n",
+    "example": "```aoi\n---\nname: switch\ntype: basic\n---\n\n$switch[$message[1];\n$case[hi; hello]\n$case[bye; goodbye]\n$default[good day]\n]\n```",
+    "name": "$default",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute on default case."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the else block if the condition is false\n",
+    "example": "```aoi\n---\nname: if\ntype: basic\n---\n\n$if[$message[1]==hi; hello]\n$elseif[$message[1]==bye; goodbye]\n$else[good day]\n```",
+    "name": "$else",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute else the condition is true."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the else if block if the condition is true\n",
+    "example": "```aoi\n---\nname: elseif\ntype: basic\n---\n\n$if[$message[1]==hi; hello]\n$elseif[$message[1]==bye; goodbye]\n$else[good day]\n```",
+    "name": "$elseif",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute elseif the condition is true."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the if block if the condition is true\n",
+    "example": "```aoi\n---\nname: if\ntype: basic\n---\n\n$if[$message[1]==hi; hello]\n$elseif[$message[1]==bye; goodbye]\n$else[good day]\n```",
+    "name": "$if",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute if the condition is true."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the code onlyif the condition is true\n",
+    "example": "```aoi\n---\nname: onlyif\ntype: basic\n---\n\n$onlyif[$message[1]==hi; say hi to me :(]\nhi\n```",
+    "name": "$onlyif",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to run if the condition is false."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Checks if any of the conditions are true\n",
+    "example": "```aoi\n---\nname: or\ntype: basic\n---\n\n$or[1 == 1; 2 == 3] // Returns true\n$or[1 == 2; 2 == 3] // Returns false\n```",
+    "name": "$or",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "conditions",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "conditions to check"
+      }
+    ],
+    "returns": [
+      "Boolean"
+    ]
+  },
+  {
+    "description": "Creates a switch statement\n",
+    "example": "```aoi\n---\nname: switch\ntype: basic\n---\n\n$switch[$message[1];\n$case[hi; hello]\n$case[bye; goodbye]\n$default[good day]\n]\n```",
+    "name": "$switch",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute switch the condition is true."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Executes the code based on the condition\n",
+    "example": "```aoi\n---\nname: ternary\ntype: basic\n---\n\n$ternary[$message[1]==hi; hello; goodbye] // returns hello if the message is hi, otherwise goodbye\n```",
+    "name": "$ternary",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "The condition to check."
+      },
+      {
+        "name": "trueCode",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute if the condition is true."
+      },
+      {
+        "name": "falseCode",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The code to execute if the condition is false."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "name": "$tobigint",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "value",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Value to convert to bigint"
+      }
+    ],
+    "returns": [
+      "BigInt"
+    ]
+  },
+  {
+    "name": "$tobool",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "value",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Value to convert to boolean"
+      }
+    ],
+    "returns": [
+      "Boolean"
+    ]
+  },
+  {
+    "name": "$tonumber",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "value",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Value to convert to number"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "name": "$tostring",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "value",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Value to convert to string"
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {},
+  {
+    "name": "$for",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "start",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "Start value"
+      },
+      {
+        "name": "end",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "End value"
+      },
+      {
+        "name": "increment",
+        "type": [
+          "Fn"
+        ],
+        "required": true,
+        "description": "Increment value"
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Code to execute"
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Loops through an object\n",
+    "example": "```aoi\n---\nname: forin\ntype: basic\n---\n\n$forin[key;hi;\n$log[\nkey -\\> $env[key]\nvalue -\\> $getObjectProperty[hi; $env[key]]\n]\n] // logs the key and value of the object\n$createObject[hi;\\{ a: b, c: d \\}]\n```",
+    "name": "$forin",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "variable name",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Name of the variable"
+      },
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Object to loop through"
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Code to execute"
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Loops through an object\n",
+    "example": "```aoi\n---\nname: forof\ntype: basic\n---\n\n$arrayCreate[hi;1;2;3;4]\n$forof[key;hi;\n$log[\n$env[key]\n]\n] // logs the key and value of the object\n```",
+    "name": "$forof",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "variable name",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Name of the variable"
+      },
+      {
+        "name": "ArrayName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "Array to loop through"
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Code to execute"
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "loops through a code for a certain amount of times\n",
+    "example": "```aoi\n---\nname: loop\ntype: basic\n---\n$loop[5;{ number:1 };$log[looping: $env[loop_number]]]\n```",
+    "name": "$loop",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "times",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "Number of times to loop"
+      },
+      {
+        "name": "data to pass",
+        "type": [
+          "Object"
+        ],
+        "required": false,
+        "description": "Data to loop through. leave empty to not send any data"
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Code to execute"
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "name": "$while",
+    "brackets": true,
+    "optional": false,
+    "type": "Scope",
+    "fields": [
+      {
+        "name": "condition",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "Condition to check"
+      },
+      {
+        "name": "code",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "Code to execute"
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Returns the abbreviation of provided value to decimal place\n",
+    "example": "```aoi\n---\nname: abbreviate\ntype: basic\n---\n\n$abbreviate[20000;2] // returns 2.00K\n```",
+    "name": "$abbreviate",
+    "brackets": true,
+    "optional": false,
+    "type": "FunctionGetter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "The number to abbreviate."
+      },
+      {
+        "name": "decimals",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "The number of decimals to keep. Defaults to 2."
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the absolute value of a number\n",
+    "example": "```aoi\n---\nname: abs\ntype: basic\n---\n\n$abs[-5] // Returns 5\n$abs[5] // Returns 5\n```",
+    "name": "$abs",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "the number to get absolute value"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the average of numbers\n",
+    "example": "```aoi\n---\nname: avg\ntype: basic\n---\n\n$avg[1;2;3] // Returns 6\n$avg[1;2;3;4;5] // Returns 3\n```",
+    "name": "$avg",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get average of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the ceiling of a number\n",
+    "example": "```aoi\n---\nname: ceil\ntype: basic\n---\n\n$ceil[1.1] // Returns 2\n$ceil[1.9] // Returns 2\n$ceil[-1.1] // Returns -1\n```",
+    "name": "$ceil",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "the number to get ceiling of, ie. 1.1 -> 2"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Divides the numbers\n",
+    "example": "```aoi\n---\nname: divide\ntype: basic\n---\n\n$divide[10;5] // Returns 2\n$divide[10;5;2] // Returns 1\n```",
+    "name": "$divide",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to divide."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the floored value of a number\n",
+    "example": "```aoi\n---\nname: floor\ntype: basic\n---\n\n$floor[1.9] // Returns 1\n$floor[1.1] // Returns 1\n$floor[-1.1] // Returns -2\n```",
+    "name": "$floor",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "the number to get floored of, ie. 1.9 -> 1"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the result of a math expression\n",
+    "example": "```aoi\n---\nname: math\ntype: basic\n---\n\n$math[1 + 1] // Returns 2\n$math[ sin(90) ] // Returns 1\n```",
+    "name": "$math",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "math",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The math to calculate."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the maximum number from the given numbers\n",
+    "example": "```aoi\n---\nname: max\ntype: basic\n---\n\n$max[1;2;3] // Returns 3\n$max[1;2;3;4] // Returns 4\n```",
+    "name": "$max",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "Numbers to compare"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the minimum number from the given numbers\n",
+    "example": "```aoi\n---\nname: min\ntype: basic\n---\n\n$min[1;2;3] // Returns 1\n$min[1;2;3;4] // Returns 1\n```",
+    "name": "$min",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "Numbers to compare"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the modulo of the numbers\n",
+    "example": "```aoi\n---\nname: modulo\ntype: basic\n---\n\n$modulo[10;5] // Returns 0\n$modulo[10;3] // Returns 1\n```",
+    "name": "$modulo",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get modulo of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Multiplies the numbers\n",
+    "example": "```aoi\n---\nname: multi\ntype: basic\n---\n\n$multi[10;5] // Returns 50\n$multi[10;5;2] // Returns 100\n```",
+    "name": "$multi",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get multiplication of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the exponential of a number\n",
+    "example": "```aoi\n---\nname: pow\ntype: basic\n---\n\n$pow[2;3] // Returns 8\n$pow[2;3;2] // Returns 512\n```",
+    "name": "$pow",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get exponential of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns a random number between the provided range\n",
+    "example": "```aoi\n---\nname: random\ntype: basic\n---\n\n$random[1;10] // Returns a random number between 1 and 10\n$random[1;10;true] // Returns a random decimal number between 1 and 10\n```",
+    "name": "$random",
+    "brackets": true,
+    "optional": false,
+    "type": "FunctionGetter",
+    "fields": [
+      {
+        "name": "min",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "the minimum number to generate"
+      },
+      {
+        "name": "max",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "the maximum number to generate"
+      },
+      {
+        "name": "allowDecimal",
+        "type": [
+          "Boolean"
+        ],
+        "required": false,
+        "description": "allow the number to be a decimal"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the nth root of a number\n",
+    "example": "```aoi\n---\nname: root\ntype: basic\n---\n\n$root[8;3] // Returns 2\n$root[27;3] // Returns 3\n```",
+    "name": "$root",
+    "brackets": true,
+    "optional": false,
+    "type": "FunctionGetter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get nth root of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Rounds the number to the nearest integer or to the specified number of decimals\n",
+    "example": "```aoi\n---\nname: round\ntype: basic\n---\n\n$round[5.5] // Returns 6\n$round[5.47;1] // Returns 5.5\n```",
+    "name": "$round",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "the number to get rounded of"
+      },
+      {
+        "name": "decimals",
+        "type": [
+          "Number"
+        ],
+        "required": false,
+        "description": "The number of decimals to keep. Defaults to 0."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Subtracts the numbers\n",
+    "example": "```aoi\n---\nname: sub\ntype: basic\n---\n\n$sub[10;5] // Returns 5\n$sub[10;5;2] // Returns 3\n```",
+    "name": "$sub",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get subtraction of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the sum of numbers\n",
+    "example": "```aoi\n---\nname: sum\ntype: basic\n---\n\n$sum[1;2;3] // Returns 6\n$sum[1;2;3;4] // Returns 10\n```",
+    "name": "$sum",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "numbers",
+        "type": [
+          "Number",
+          "Array"
+        ],
+        "required": true,
+        "description": "The numbers to get sumation of."
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "description": "Returns the truncated value of a number\n",
+    "example": "```aoi\n---\nname: truncate\ntype: basic\n---\n\n$truncate[5.5] // Returns 5\n$truncate[-5.5] // Returns -5\n```",
+    "name": "$truncate",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "number",
+        "type": [
+          "Number"
+        ],
+        "required": true,
+        "description": "the number to get truncated of"
+      }
+    ],
+    "returns": [
+      "Number"
+    ]
+  },
+  {
+    "name": "$env",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "env",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The env of the environment variable to get."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "name": "$get",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "variable",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The variable to get."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "name": "$jseval",
+    "brackets": true,
+    "optional": false,
+    "type": "FunctionGetter",
+    "fields": [
+      {
+        "name": "return Output",
+        "type": [
+          "Boolean"
+        ],
+        "required": true,
+        "description": "Whether to return the output of the code."
+      },
+      {
+        "name": "code",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The JavaScript code to evaluate."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "description": "define a variable with a value\n",
+    "example": "```aoi\n---\nname: let\ntype: basic\n---\n\n$let[variable;value]\n$get[variable] // value\n```",
+    "name": "$let",
+    "brackets": true,
+    "optional": true,
+    "type": "Setter",
+    "fields": [
+      {
+        "name": "variable",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The variable name to store the value in."
+      },
+      {
+        "name": "value",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The value to store."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Logs the message to the console\n",
+    "example": "```aoi\n---\nname: log\ntype: basic\n---\n\n$log[Hello World] // Logs Hello World to the console\n```",
+    "name": "$log",
+    "brackets": true,
+    "optional": false,
+    "type": "Function",
+    "fields": [
+      {
+        "name": "message",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The message to log."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Clones an object\n",
+    "example": "```aoi\n---\nname: cloneObject\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$cloneObject[object;newObject]\n$getObject[newObject] // \\{key:value\\}\n```",
+    "name": "$cloneobject",
+    "brackets": true,
+    "optional": false,
+    "type": "Setter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to clone."
+      },
+      {
+        "name": "newObjectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the new object."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Creates an object\n",
+    "example": "```aoi\n---\nname: createObject\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$getObject[object] // \\{key:value\\}\n```",
+    "name": "$createobject",
+    "brackets": true,
+    "optional": false,
+    "type": "Setter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to create."
+      },
+      {
+        "name": "objectData",
+        "type": [
+          "Object"
+        ],
+        "required": true,
+        "description": "The data to set for the object."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Gets an object\n",
+    "example": "```aoi\n$createObject[object;\\{key:value\\}]\n$getObject[object] // \\{key:value\\}\n```",
+    "name": "$getobject",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to get."
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Gets the keys of an object\n",
+    "example": "```aoi\n---\nname: getObjectKeys\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$toString[$getObjectKeys[object]] // key\n```",
+    "name": "$getobjectkeys",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to get the keys from."
+      }
+    ],
+    "returns": [
+      "Array"
+    ]
+  },
+  {
+    "description": "Gets the property of an object\n",
+    "example": "```aoi\n---\nname: getObjectProperty\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$getObjectProperty[object;key] // value\n```",
+    "name": "$getobjectproperty",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to get the property from."
+      },
+      {
+        "name": "propertyName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the property to get."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "description": "Gets the values of an object\n",
+    "example": "```aoi\n---\nname: getObjectValues\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$toString[$getObjectValues[object]] // value\n```",
+    "name": "$getobjectvalues",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to get the values from."
+      }
+    ],
+    "returns": [
+      "Array"
+    ]
+  },
+  {
+    "description": "Checks if an object exists\n",
+    "example": "```aoi\n---\nname: objectExists\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$objectExists[object] // true\n```",
+    "name": "$objectexists",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to create."
+      }
+    ],
+    "returns": [
+      "Boolean"
+    ]
+  },
+  {
+    "description": "Removes a property from an object\n",
+    "example": "```aoi\n---\nname: removeObjectProperty\ntype: basic\n---\n\n$createObject[object;\\{key:value\\}]\n$removeObjectProperty[object;key]\n$getObject[object] // \\{\\}\n```",
+    "name": "$removeobjectproperty",
+    "brackets": true,
+    "optional": false,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to get the property from."
+      },
+      {
+        "name": "propertyName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the property to remove."
+      }
+    ],
+    "returns": [
+      "Any"
+    ]
+  },
+  {
+    "description": "Sets a property in an object\n",
+    "example": "```aoi\n---\nname: setObjectProperty\ntype: basic\n---\n\n$createObject[object;\\{\\}]\n$setObjectProperty[object;key;value]\n$getObjectProperty[object;key] // value\n```",
+    "name": "$setobjectproperty",
+    "brackets": true,
+    "optional": false,
+    "type": "Setter",
+    "fields": [
+      {
+        "name": "objectName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the object to set the property in."
+      },
+      {
+        "name": "propertyName",
+        "type": [
+          "String"
+        ],
+        "required": true,
+        "description": "The name of the property to set."
+      },
+      {
+        "name": "propertyValue",
+        "type": [
+          "Any"
+        ],
+        "required": true,
+        "description": "The value to set for the property."
+      }
+    ],
+    "returns": [
+      "Void"
+    ]
+  },
+  {
+    "description": "Returns the CPU usage of the process or the OS.\n",
+    "example": "```aoi\n---\nname: cpu\ntype: basic\n---\n\n$cpu // returns the CPU usage of the process\n$cpu[os] // returns the CPU usage of the OS\n```",
+    "name": "$cpu",
+    "brackets": true,
+    "optional": true,
+    "type": "FunctionGetter",
+    "fields": [
+      {
+        "name": "type",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The type of CPU to get. Can be `process` or `os`."
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the current working directory of the process.\n",
+    "example": "```aoi\n---\nname: cwd\ntype: basic\n---\n\n$cwd // <RootDir>/<indexFile>.js\n```",
+    "name": "$cwd",
+    "brackets": false,
+    "optional": false,
+    "type": "Getter",
+    "fields": [],
+    "returns": [
+      "String"
+    ]
+  },
+  {
+    "description": "Returns the environment variable of the process for given key.\n",
+    "example": "```aoi\n---\nname: procenv\ntype: basic\n---\n\n$procenv // returns all environment variables as an object\n$procenv[KEY] // returns the value of the environment variable\n```",
+    "name": "$procenv",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "key",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The key of the environment variable to get."
+      }
+    ],
+    "returns": [
+      "String",
+      "Object"
+    ]
+  },
+  {
+    "description": "Returns the memory usage of the process for given type.\n",
+    "example": "```aoi\n---\nname: ram\ntype: basic\n---\n\n$ram // returns heapUsed\n$ram[heapTotal] // returns heapTotal\n$ram[rss] // returns rss\n$ram[external] // returns external\n$ram[arrayBuffers] // returns arrayBuffers\n```",
+    "name": "$ram",
+    "brackets": true,
+    "optional": true,
+    "type": "Getter",
+    "fields": [
+      {
+        "name": "type",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The type of memory to get. Can be `heapUsed`, `heapTotal`, `rss`, `external`, `arrayBuffers`."
+      },
+      {
+        "name": "unit",
+        "type": [
+          "String"
+        ],
+        "required": false,
+        "description": "The unit to return the memory in. default is b."
+      }
+    ],
+    "returns": [
+      "String"
+    ]
+  }
+]

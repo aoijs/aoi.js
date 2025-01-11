@@ -27,7 +27,11 @@ export default class TextBlock {
 			this.text = this.text.replace(child.parsed, res);
 		}
 
+<<<<<<< HEAD
+		return this.isMain ? `\`${this.text}\`` : this.parent?.isMain ? `\${${this.text}}` : this.text;
+=======
 		return this.isMain ? `\`${this.text}\`` : `\${${this.text}}`;
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	}
 
 	get parsed() {

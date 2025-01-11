@@ -66,6 +66,11 @@
 	"devDependencies": {
 		"@types/uglify-js": "^3.17.5",
 		"@vladfrangu/async_event_emitter": "^2.4.6",
+<<<<<<< HEAD
+		"discord-api-types": "^0.37.100",
+		"json5": "^2.2.3"
+=======
 		"discord-api-types": "^0.37.100"
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	}
 }

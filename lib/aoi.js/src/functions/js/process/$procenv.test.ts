@@ -3,11 +3,20 @@ import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
 import { $procenv } from './$procenv.js';
+<<<<<<< HEAD
+import type { ITranspileOptions } from '@aoi.js/typings/interface.js';
+import TestCommand from '@aoi.js/testing/testCommand.js';
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 const client = new TestClient();
 client.transpiler.addFunctions({ $procenv });
 
+<<<<<<< HEAD
+const transpilerOptions: ITranspileOptions = {
+=======
 const transpilerOptions = {
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	scopeData: {
 		name: 'global',
 		vars: [],
@@ -17,6 +26,10 @@ const transpilerOptions = {
 		embeddedJS: [],
 		sendFunction: 'console.log',
 	},
+<<<<<<< HEAD
+	command: new TestCommand(client),
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 };
 
 const codeToPassWithoutArg = '$procenv';

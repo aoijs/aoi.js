@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+import { BundlerCustoms, ErrorCode } from '@aoi.js/typings/enum.js';
+import AoiError from './Error.js';
+import { type ICommandOptions } from '@aoi.js/typings/interface.js';
+import { type Optional } from '@aoi.js/typings/type.js';
+import type AoiClient from '@aoi.js/classes/AoiClient.js';
+import Command from '@aoi.js/classes/Command.js';
+=======
 import { BundlerCustoms } from '@aoi.js/typings/enum.js';
 import { TranspilerError } from './Error.js';
 import { type ICommandOptions } from '@aoi.js/typings/interface.js';
 import { type Optional } from '@aoi.js/typings/type.js';
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 export default class AoiReader {
 	_parseEmbeddedJS(code: string) {
@@ -49,7 +58,15 @@ export default class AoiReader {
 		}
 
 		if (cntr) {
+<<<<<<< HEAD
+			throw AoiError.ReaderError(
+				ErrorCode.EmbedBracketsMismatch,
+				'Invalid embedded JS',
+				code,
+			);
+=======
 			throw TranspilerError.AoiReaderError('Invalid embedded JS', code);
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		}
 
 		return embeds;
@@ -135,13 +152,24 @@ export default class AoiReader {
 			code = code.replace(`\${${ejs}}`, BundlerCustoms.EJS);
 		}
 
+<<<<<<< HEAD
+		const cmd = new Command(
+			{ ...this._parseCmd(code), __path__: 'root' },
+			client,
+		);
+=======
 		const cmd = this._parseCmd(code);
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		cmd.code = client.transpiler.transpile(cmd.code as string, {
 			scopeData: {
 				embeddedJS: embeddedJS,
 			},
 			sendMessage: true,
 			reverse: cmd.reverseRead ?? false,
+<<<<<<< HEAD
+			command: cmd,
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		}).func!;
 
 		return cmd;

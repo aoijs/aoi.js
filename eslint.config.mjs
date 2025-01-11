@@ -20,10 +20,14 @@ const compat = new FlatCompat({
 
 export default [
 	// jsdoc.configs['flat/recommended'],
-	{ files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+	{ files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' }, ignorePatterns: ['**/node_modules/**', '**/dist/**'] },
 
 	...compat.extends('xo-typescript'),
+<<<<<<< HEAD
+	 
+=======
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	// ...tseslint.configs.stylisticTypeChecked,
 	{
 		// enable object curly spacing
@@ -49,6 +53,15 @@ export default [
 				},
 				{ selector: 'parameter', format: ['camelCase'] },
 				{ selector: 'typeLike', format: ['PascalCase'] },
+				// all interfaces should be prefixed with I
+				{
+					selector: 'interface',
+					format: ['PascalCase'],
+					custom: {
+						regex: '^I[A-Z]+',
+						match: true,
+					},
+				},
 			],
 			'@typescript-eslint/prefer-literal-enum-member': [
 				'error',
@@ -56,6 +69,10 @@ export default [
 					allowBitwiseExpressions: true,
 				},
 			],
+<<<<<<< HEAD
+			'@typescript-eslint/prefer-ts-expect-error': 'off',
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		},
 	},
 	{

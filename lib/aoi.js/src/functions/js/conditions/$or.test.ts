@@ -3,11 +3,20 @@ import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
 import { $or } from './$or.js';
+<<<<<<< HEAD
+import type { ITranspileOptions } from '@aoi.js/typings/interface.js';
+import TestCommand from '@aoi.js/testing/testCommand.js';
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 const client = new TestClient();
 client.transpiler.addFunctions({ $or });
 
+<<<<<<< HEAD
+const transpilerOptions: ITranspileOptions = {
+=======
 const transpilerOptions = {
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	scopeData: {
 		name: 'global',
 		vars: [],
@@ -17,6 +26,10 @@ const transpilerOptions = {
 		embeddedJS: [],
 		sendFunction: 'console.log',
 	},
+<<<<<<< HEAD
+	command: new TestCommand(client),
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 };
 
 const codeToFail = '$or';
@@ -27,7 +40,10 @@ const codeToFalse = '$or[1==2;2==3]';
 
 void describe('$or', () => {
 	void it('should not compile successfully without arg', () => {
+<<<<<<< HEAD
+=======
 
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		// expect this to throw an error
 		assert.throws(() => {
 			client.transpiler.transpile(codeToFail, transpilerOptions);

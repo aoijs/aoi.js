@@ -2,6 +2,21 @@ import FunctionBuilder from '@aoi.js/core/builders/Function.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
+<<<<<<< HEAD
+/**
+ * Returns the ping of the bot.
+ * @example
+ * ```aoi
+ * ---
+ * name: ping
+ * type: basic
+ * ---
+ * 
+ * $ping // Returns the ping of the bot
+ * ```
+ */
+=======
+>>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 const $ping = new FunctionBuilder()
 	.setName('$ping')
 	.setBrackets(false)
