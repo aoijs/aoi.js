@@ -8,13 +8,8 @@ export default function proxyBuilder<T>(variableName: string) {
 				if (propKey === 'build') {
 					return () => state;
 				}
-<<<<<<< HEAD
 				
 				// Dynamically handle method calls			
-=======
-
-				// Dynamically handle method calls
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				return function (...args: any[]) {
 					const argsStr = args
 						.map((arg) => JSON.stringify(arg))

@@ -15,11 +15,8 @@ export enum ReturnType {
 	Boolean = 1 << 4,
 	Object = 1 << 5,
 	Array = 1 << 6,
-<<<<<<< HEAD
 	Fn = 1 << 7,
 	BigInt = 1 << 8,
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 }
 
 export enum TranspilerCustoms {
@@ -58,7 +55,6 @@ export enum BundlerCustoms {
 
 export enum AoiClientEvents {
 	Error = 'AoiError',
-<<<<<<< HEAD
 }
 
 export enum AoiErrorType {
@@ -109,6 +105,3 @@ export enum ErrorCode {
 	VariableNotFound,
 	InvalidTimeZone,
 }
-=======
-}
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb

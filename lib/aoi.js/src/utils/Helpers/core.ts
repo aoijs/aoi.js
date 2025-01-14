@@ -1,10 +1,6 @@
 import StringObject from '@aoi.js/core/builders/StringObject.js';
 import { parseStringObject } from '@aoi.js/core/parsers/object.js';
 import { TranspilerCustoms } from '@aoi.js/typings/enum.js';
-<<<<<<< HEAD
-import type { IOk } from '@aoi.js/typings/interface.js';
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 import { type Safe } from '@aoi.js/typings/type.js';
 
 /**
@@ -191,7 +187,6 @@ export function stringify(data: any): string {
 /**
  * Safely resolves a promise.
  * @param promise - The promise to resolve.
-<<<<<<< HEAD
  * @returns - Returns a promise that resolves to an object with a success property.
  */
 export async function safeAsync<T, E>(
@@ -216,31 +211,10 @@ export function safeSync<T, E>(fn: () => T): Safe<T, E> {
 		return { success: true, data: fn() };
 	} catch (error: unknown) {
 		return { success: false, error: error as E };
-=======
- * @returns - Returns a tuple with the error and the data.
- */
-export async function safeAsync<T>(promise: Promise<T>): Promise<Safe<T>> {
-	return promise
-		.then((data) => [undefined, data])
-		.catch((error) => [error, undefined]) as Promise<Safe<T>>;
-}
-
-/**
- * Safely executes a function.
- * @param fn - The function to execute.
- * @returns - Returns a tuple with the error and the data.
- */
-export function safeSync<T>(fn: () => T): Safe<T> {
-	try {
-		return [undefined, fn()];
-	} catch (error) {
-		return [error as Error, undefined];
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	}
 }
 
 /**
-<<<<<<< HEAD
  * Safely executes a Promise or a function.
  * @param promiseOrFn - The promise or function to execute.
  * @returns - Returns an object with a success property.
@@ -256,16 +230,4 @@ export function safe<T, E>(
 	} else {
 		return safeAsync<T, E>(promiseOrFn);
 	}
-=======
- * Safely executes a function or a promise.
- * @param promise - The promise to resolve.
- * @returns - Returns a tuple with the error and the data.
- */
-export function safe<T>( promise: Promise<T>): Promise<Safe<T>>;
-export function safe<T>(fn: () => T): Safe<T>;
-// eslint-disable-next-line @typescript-eslint/promise-function-async
-export function safe<T>(funcOrPromise: Promise<T> | (() => T)): Safe<T> | Promise<Safe<T>> {
-	if (funcOrPromise instanceof Promise) return safeAsync(funcOrPromise);
-	else return safeSync(funcOrPromise);
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 }

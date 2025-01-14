@@ -4,11 +4,7 @@ import {
 	FunctionType,
 	TranspilerCustoms,
 } from '@aoi.js/typings/enum.js';
-<<<<<<< HEAD
 import { type ICodeFunctionData, type IDateTimeOptions } from '@aoi.js/typings/interface.js';
-=======
-import { type ICodeFunctionData } from '@aoi.js/typings/interface.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 import {
 	escapeResult,
 	escapeVars,
@@ -29,10 +25,7 @@ export default class Scope {
 	stickers: unknown[] = [];
 	env: string[];
 	ephemeral = false;
-<<<<<<< HEAD
 	addExecutionTime = false;
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	variables: string[];
 	setters: string;
 	objects: Record<string, StringObject>;
@@ -46,15 +39,12 @@ export default class Scope {
 	useChannel?: bigint | string;
 	embeddedJS: string[] = [];
 	packages = '';
-<<<<<<< HEAD
 	dateTimeOptions: IDateTimeOptions = {
 		timezone: 'UTC',
 		locale: 'en-US',
 		hour12: false,
 	};
 
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	client: AoiClient;
 	constructor(
 		name: string,
@@ -201,10 +191,7 @@ export default class Scope {
 		scope.useChannel = this.useChannel;
 		scope.embeddedJS = this.embeddedJS;
 		scope.packages = this.packages;
-<<<<<<< HEAD
 		scope.dateTimeOptions = this.dateTimeOptions;
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		return scope;
 	}
 
@@ -223,20 +210,14 @@ export default class Scope {
 		this.addReturn = this.addReturn || scope.addReturn;
 		this.useChannel = scope.useChannel ?? this.useChannel;
 		this.embeddedJS.push(...scope.embeddedJS);
-<<<<<<< HEAD
 		this.dateTimeOptions = { ...this.dateTimeOptions, ...scope.dateTimeOptions };
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		this.packages += scope.packages;
 	}
 
 	generate(code: string, sendMessage = true, asFunction = true) {
 		if (sendMessage)
 			for (const part of this._contentParts) {
-<<<<<<< HEAD
 				if (part.trim() === '') continue;
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				code = code.replace(part, '');
 			}
 
@@ -295,11 +276,7 @@ export default class Scope {
 			this.hasSendData && sendMessage
 				? `
 		${this.addReturn ? 'return ' : ''} await ${channelSendFunction}( ${payload} );`
-<<<<<<< HEAD
 				: `${this.addReturn ? 'return;' : ''}`;
-=======
-				: '';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 		const initialVars = sendMessage
 			? `	  
@@ -310,21 +287,15 @@ export default class Scope {
 		`
 			: '';
 
-<<<<<<< HEAD
 		const addExecution = this.addExecutionTime
 			? `let __$${this.name}_EXECUTION_TIME$__ = performance.now();`
 			: '';
 
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		return parseResult(
 			asFunction
 				? `
 	  async function ${this.name === 'global' ? 'main' : this.name}(__$DISCORD_DATA$__) {
-<<<<<<< HEAD
 			${addExecution}
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			${initialVars}
 			${this.packages}
 			${this.functions}
@@ -333,10 +304,7 @@ export default class Scope {
 	}
 		`.replaceAll(TranspilerCustoms.SL, '\\`')
 				: `
-<<<<<<< HEAD
 			${addExecution}
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			${initialVars}
 			${this.packages}
 			${this.functions}

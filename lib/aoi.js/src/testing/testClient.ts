@@ -1,5 +1,4 @@
 import AoiClient from '@aoi.js/classes/AoiClient.js';
-<<<<<<< HEAD
 import { ReturnType } from '@aoi.js/typings/enum.js';
 import JSON5 from 'json5';
 
@@ -21,14 +20,6 @@ class TestClient extends AoiClient {
 			default: return output;
 		}
 	} 
-=======
-
-class TestClient extends AoiClient {
-	constructor() {
-		super({ testMode: true, token: 'token.a.b', 'intents': 0, prefix: '!', events: [] });
-	// code...
-	}
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 }
 
 export default TestClient;

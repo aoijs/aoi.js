@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { parseData, stringify } from '@aoi.js/utils/Helpers/core.js';
-=======
-import { parseData } from '@aoi.js/utils/Helpers/core.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 import StringObject from '../builders/StringObject.js';
 import { parseString } from './string.js';
 import { TranspilerCustoms } from '@aoi.js/typings/enum.js';
@@ -28,7 +24,6 @@ export function _handleStringData(text: string, object: StringObject) {
 	object.addValue(text);
 }
 
-<<<<<<< HEAD
 export function _handleNonStringData(text: unknown, object: StringObject) {
 	switch (typeof text) {
 		case 'number':
@@ -57,8 +52,6 @@ export function _handleNonStringData(text: unknown, object: StringObject) {
 	}
 }
 
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 export function _getObjectAst(
 	objectString: string,
 	currentObject: StringObject,
@@ -75,20 +68,13 @@ export function _getObjectAst(
 			currentObject = newObject;
 		} else if (char === '}' || char === ']') {
 			currentObject.addEnd(char);
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			if (text.trim() !== '') {
 				const t = parseData(text.trim());
 				if (typeof t === 'string') {
 					_handleStringData(t, currentObject);
 					text = '';
-<<<<<<< HEAD
 				} else {
 					_handleNonStringData(t, currentObject);
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				}
 			}
 
@@ -108,11 +94,8 @@ export function _getObjectAst(
 				const t = parseData(text.trim());
 				if (typeof t === 'string') {
 					_handleStringData(t, currentObject);
-<<<<<<< HEAD
 				} else {
 					_handleNonStringData(t, currentObject);
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				}
 
 				text = '';
@@ -120,7 +103,6 @@ export function _getObjectAst(
 		} else {
 			text += char;
 		}
-<<<<<<< HEAD
 
 		i++;
 	}
@@ -138,11 +120,6 @@ export function _getObjectAst(
 
 	while (currentObject.parent) {
 		currentObject.parent?.pushChild(currentObject);
-=======
-	}
-
-	while (currentObject.parent) {
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		currentObject = currentObject.parent;
 	}
 

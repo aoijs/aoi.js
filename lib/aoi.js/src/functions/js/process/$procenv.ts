@@ -43,11 +43,7 @@ const $procenv = new FunctionBuilder()
 			};
 		}
 
-<<<<<<< HEAD
 		const result = thisArg.getResultString(() => process.env['"$0"'], [key]);
-=======
-		const result = thisArg.getResultString(() => process.env.$0, [key]);
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 		const escaped = escapeResult(result);
 

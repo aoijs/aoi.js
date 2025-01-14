@@ -1,5 +1,4 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-<<<<<<< HEAD
 import AoiError from '@aoi.js/core/Error.js';
 import { ErrorCode, FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
@@ -16,12 +15,6 @@ const units = {
 	yb: 1024 ** 8,
 } as const;
 
-=======
-import { TranspilerError } from '@aoi.js/core/Error.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
-
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 /**
  * Returns the memory usage of the process for given type.
  * @example
@@ -30,11 +23,7 @@ import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
  * name: ram
  * type: basic
  * ---
-<<<<<<< HEAD
  *
-=======
- * 
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
  * $ram // returns heapUsed
  * $ram[heapTotal] // returns heapTotal
  * $ram[rss] // returns rss
@@ -52,7 +41,6 @@ const $ram = new FunctionBuilder()
 			name: 'type',
 			type: ReturnType.String,
 			required: false,
-<<<<<<< HEAD
 			description:
 				'The type of memory to get. Can be `heapUsed`, `heapTotal`, `rss`, `external`, `arrayBuffers`.',
 		},
@@ -68,23 +56,11 @@ const $ram = new FunctionBuilder()
 		const currentScope = thisArg.getCurrentScope(scopes);
 		let [type, unit] = thisArg.getParams(data);
 
-=======
-			description: 'The type of memory to get. Can be `heapUsed`, `heapTotal`, `rss`, `external`, `arrayBuffers`.',
-
-		},
-	])
-	.setReturns(ReturnType.String)
-	.setCode((data, scopes, thisArg) => {
-		const currentScope = thisArg.getCurrentScope(scopes);
-		let [type] = thisArg.getParams(data);
-
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		if (!type) {
 			type = 'heapUsed';
 		}
 
 		if (
-<<<<<<< HEAD
 			![
 				'heapUsed',
 				'heapTotal',
@@ -121,20 +97,6 @@ const $ram = new FunctionBuilder()
 			// @ts-ignore
 			() => process.memoryUsage()['"$0"'] / '$1',
 			[type, units[unit as keyof typeof units ].toString()],
-=======
-			!['heapUsed', 'heapTotal', 'rss', 'external', 'arrayBuffers'].includes(type) && 
-			!thisArg.canSuppressAtComp(data, currentScope)
-		) {
-			throw TranspilerError.CompileError(`Invalid memory type: ${type}`, data);
-		}
-
-		const result = thisArg.getResultString(
-			// eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			// eslint-disable-next-line @typescript-eslint/dot-notation, @typescript-eslint/no-unsafe-return
-			() => process.memoryUsage()['"$0"'],
-			[type],
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		);
 
 		const escaped = escapeResult(result);
@@ -146,8 +108,4 @@ const $ram = new FunctionBuilder()
 	})
 	.build();
 
-<<<<<<< HEAD
 export { $ram };
-=======
-export { $ram };
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb

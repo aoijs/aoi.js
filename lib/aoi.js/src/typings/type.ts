@@ -1,9 +1,5 @@
 import type Scope from '@aoi.js/core/builders/Scope.js';
-<<<<<<< HEAD
 import { type ITranspilerData, type ICodeFunctionData, type IFunctionData, type IOk, type IErr } from './interface.js';
-=======
-import { type ITranspilerData, type ICodeFunctionData, type IFunctionData } from './interface.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 import type * as Events from '@aoi.js/events/index.js';
 
 export type FunctionCode = (
@@ -18,12 +14,7 @@ export type CommandTypes =
 	| 'basic'
 	| 'interaction'
 	| 'ready'
-<<<<<<< HEAD
 	| 'debug';
-=======
-	| 'debug'
-	| 'component';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 // export type AsyncFunction = (arg: ITranspiledFuncData) => Promise<unknown>;
 
 export type AutoFetchDataTypes =
@@ -71,10 +62,6 @@ export type CustomFunctionProps = IFunctionData & {
 	_code?: string;
 };
 
-<<<<<<< HEAD
 export type Safe<T, E> = IOk<T> | IErr<E>;
-=======
-export type Safe<T> = [Error, undefined] | [undefined, T];
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 export type AoiEventNames = keyof typeof Events;

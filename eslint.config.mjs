@@ -23,11 +23,7 @@ export default [
 	{ files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' }, ignorePatterns: ['**/node_modules/**', '**/dist/**'] },
 
 	...compat.extends('xo-typescript'),
-<<<<<<< HEAD
 	 
-=======
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	// ...tseslint.configs.stylisticTypeChecked,
 	{
 		// enable object curly spacing
@@ -69,10 +65,7 @@ export default [
 					allowBitwiseExpressions: true,
 				},
 			],
-<<<<<<< HEAD
 			'@typescript-eslint/prefer-ts-expect-error': 'off',
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		},
 	},
 	{

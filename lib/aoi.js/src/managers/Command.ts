@@ -9,11 +9,8 @@ import fs, { readFile } from 'fs/promises';
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import Path from 'path';
 import AoiReader from '@aoi.js/core/AoiReader.js';
-<<<<<<< HEAD
 import AoijsErrorHandler from '@aoi.js/core/Error.js';
 import { ErrorCode } from '@aoi.js/typings/enum.js';
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 export class CommandManager {
 	static cmdTypes() {
@@ -24,10 +21,6 @@ export class CommandManager {
 	interaction: Group<number, Command> = new Group<number, Command>(Infinity);
 	ready: Group<number, Command> = new Group<number, Command>(Infinity);
 	debug: Group<number, Command> = new Group<number, Command>(Infinity);
-<<<<<<< HEAD
-=======
-	component: Group<string, Command> = new Group<string, Command>(Infinity);
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 	readonly #client: AoiClient;
 	readonly #reader: AoiReader;
@@ -49,7 +42,6 @@ export class CommandManager {
 		if (!command.type) throw new Error('Command type is required');
 		if (!command.__path__) command.__path__ = 'root';
 		const cmd = new Command(command as ICommandOptions, this.#client);
-<<<<<<< HEAD
 		if (this.isValidType(command.type)) {
 			this[command.type].set(this[command.type].size, cmd);
 		} else {
@@ -58,22 +50,6 @@ export class CommandManager {
 				'Invalid command type provided',
 				cmd,
 			);
-=======
-		if (this.isValidType(command.type) && command.type !== 'component') {
-			 
-			this[command.type].set(this[command.type].size, cmd);
-		} else {
-			if (command.type === 'component')
-				 
-				this.component.set(command.name, cmd);
-			else {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				//@ts-expect-error
-				throw new Error('Invalid command type provided', {
-					...command,
-				});
-			}
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		}
 	}
 
@@ -147,14 +123,10 @@ export class CommandManager {
 					) {
 						const command = await readFile(filePath, 'utf-8');
 						try {
-<<<<<<< HEAD
 							const cmd = this.#reader.parse(
 								command,
 								this.#client,
 							);
-=======
-							const cmd = this.#reader.parse(command, this.#client);
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 							cmd.__path__ = filePath;
 							this.add(cmd as ICommandOptions);
 							commands.push({
@@ -178,7 +150,6 @@ export class CommandManager {
 		}
 
 		const box = boxen(
-<<<<<<< HEAD
 			`${commands
 				.map((cmd) => {
 					return `∷ ${chalk.cyanBright(
@@ -188,15 +159,6 @@ export class CommandManager {
 					)}`;
 				})
 				.join('\n')}
-=======
-			`${commands.map((cmd) => {
-				return `∷ ${chalk.cyanBright(
-					cmd.loaded ? 'Loaded' : 'Failed',
-				)} ${chalk.greenBright(cmd.path)} ${chalk.redBright(
-					cmd.loaded ? '' : cmd.reason,
-				)}`;
-			}).join('\n')}
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
         `,
 			{
 				title: `∴ Loading ${chalk.blueBright(
@@ -237,15 +199,11 @@ export class CommandManager {
 	}
 
 	async loadFile(filePath: string) {
-<<<<<<< HEAD
 		let command: {
 			default:
 			| Optional<ICommandOptions, '__path__'>
 			| Array<Optional<ICommandOptions, '__path__'>>;
 		};
-=======
-		let command: { default: Optional<ICommandOptions, '__path__'> | Array<Optional<ICommandOptions, '__path__'>> };
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		try {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
 			command = require(filePath);

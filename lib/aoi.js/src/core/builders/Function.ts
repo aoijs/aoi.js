@@ -9,23 +9,16 @@ import {
 	type ICodeFunctionData,
 	type ITranspilerData,
 } from '@aoi.js/typings/interface.js';
-<<<<<<< HEAD
 import {
 	type ProxyType,
 	type FunctionCode,
 	type CommandTypes,
 } from '@aoi.js/typings/type.js';
-=======
-import { type ProxyType, type FunctionCode } from '@aoi.js/typings/type.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 import type Scope from './Scope.js';
 import { inspect } from 'node:util';
 import proxyBuilder from './typeProxy.js';
 import { escapeVars } from '@aoi.js/utils/Helpers/core.js';
-<<<<<<< HEAD
 import type StringObject from './StringObject.js';
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 export default class FunctionBuilder implements IFunctionData {
 	name!: string;
@@ -109,14 +102,9 @@ export default class FunctionBuilder implements IFunctionData {
 	}
 
 	getParams(data: ICodeFunctionData): string[] {
-<<<<<<< HEAD
 		if (data.executed === '') return [];
 		return data.fields.length === 1 &&
 			!this.#isReturnAnyOrArray(data.fields[0].type)
-=======
-		return data.fields.length === 1 &&
-			![ReturnType.Any, ReturnType.Array].includes(data.fields[0].type)
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			? [data.executed]
 			: data.splits();
 	}
@@ -182,16 +170,11 @@ export default class FunctionBuilder implements IFunctionData {
 
 		let bodyWithoutArg = body.replace(matchWholeArgwithAsync, '');
 
-<<<<<<< HEAD
 		// remove all //comments
 		bodyWithoutArg = bodyWithoutArg.replace(/\/\/.*/g, '');
 
 		if (arg !== '') {
 			bodyWithoutArg = this.#replaceArgInFunctionStringWithVar(
-=======
-		if (arg !== '') {
-			bodyWithoutArg = this.#replaceArgInFunctionStringWithDiscord(
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				bodyWithoutArg,
 				arg,
 			);
@@ -206,11 +189,7 @@ export default class FunctionBuilder implements IFunctionData {
 		const numbers = bodyWithoutBrackets.match(findNumbersRegex);
 
 		if (!numbers) {
-<<<<<<< HEAD
 			return bodyWithoutBrackets.trim();
-=======
-			return bodyWithoutBrackets;
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		}
 
 		let result = bodyWithoutBrackets;
@@ -248,7 +227,6 @@ export default class FunctionBuilder implements IFunctionData {
 		}
 	}
 
-<<<<<<< HEAD
 	for(
 		start: number,
 		end: number,
@@ -369,15 +347,5 @@ export default class FunctionBuilder implements IFunctionData {
 			((returnType & ReturnType.Any) as ReturnType) === ReturnType.Any ||
 			((returnType & ReturnType.Array) as ReturnType) === ReturnType.Array
 		);
-=======
-	#replaceArgInFunctionStringWithDiscord(func: string, arg: string) {
-		// it will replace all arg with __$DISCORD_DATA$__ and wont replace same word if it is a part of another word or a property
-
-		const regex = new RegExp(
-			`(?<![a-zA-Z0-9_.])(${arg})(?![a-zA-Z0-9_])`,
-			'g',
-		);
-		return func.replaceAll(regex, '__$DISCORD_DATA$__');
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 	}
 }

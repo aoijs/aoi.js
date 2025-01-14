@@ -20,11 +20,6 @@ const customReporter = new Transform({
 	writableObjectMode: true,
 	transform(event, _encoding, callback) {
 		try {
-<<<<<<< HEAD
-=======
-	
-
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			if (event.type === 'test:start') {
 				if (event.data.nesting === 0) {
 					groups[event.data.name] = {
@@ -43,10 +38,7 @@ const customReporter = new Transform({
 				}
 			}
 
-<<<<<<< HEAD
 			// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			switch (event.type) {
 				case 'test:enqueue':
 					// output = chalk.blue(
@@ -64,55 +56,34 @@ const customReporter = new Transform({
 				case 'test:pass':
 					if (event.data.nesting === 0) {
 						groups[event.data.name].end = performance.now();
-<<<<<<< HEAD
 						groups[event.data.name].status = event.data.todo ? 'todo' : event.data.skip ? 'skipped' : 'passed';
-=======
-						groups[event.data.name].status = 'passed';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 					} else {
 						groups[parent].subtests[event.data.name].end =
 							performance.now();
 						groups[parent].subtests[event.data.name].status =
-<<<<<<< HEAD
 							event.data.todo ? 'todo' : event.data.skip ? 'skipped' : 'passed';
-=======
-							'passed';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 					}
 
 					break;
 				case 'test:fail':
 					if (event.data.nesting === 0) {
 						groups[event.data.name].end = performance.now();
-<<<<<<< HEAD
 						groups[event.data.name].status = event.data.todo ? 'todo' : event.data.skip ? 'skipped' : 'failed';
-=======
-						groups[event.data.name].status = 'failed';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 					} else {
 						groups[parent].subtests[event.data.name].end =
 							performance.now();
 						groups[parent].subtests[event.data.name].status =
-<<<<<<< HEAD
 							event.data.todo ? 'todo' : event.data.skip ? 'skipped' : 'failed';
-=======
-							'failed';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 					}
 
 					break;
 				case 'test:plan':
 					// output = chalk.magenta('Test plan executed');
 					break;
-<<<<<<< HEAD
 				case 'test:watch:drained': {
 					process.exit(0);
 				}
 
-=======
-				case 'test:watch:drained':
-					break;
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				case 'test:coverage': {
 					break;
 				}
@@ -122,14 +93,8 @@ const customReporter = new Transform({
 				case 'test:stdout':
 					output += chalk.gray(event.data.message) + '\n';
 					break;
-<<<<<<< HEAD
 				case 'test:summary':
 					break;
-=======
-				default: {
-					throw new Error('default case');
-				}
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 			}
 
 			if (output) {
@@ -144,7 +109,6 @@ const customReporter = new Transform({
 						Object.keys(subtests).forEach((subtest) => {
 							const { start, end, status } = subtests[subtest];
 							const duration = (end - start).toFixed(2);
-<<<<<<< HEAD
 							subtestoutput += `${
 								status === 'passed'
 									? chalk.green('✔')
@@ -168,13 +132,6 @@ const customReporter = new Transform({
 											// skip emoji / fonticon
 											: chalk.blue('>>')
 							} ${group} (${duration}ms)`,
-=======
-							subtestoutput += `${status === 'passed' ? chalk.green('✔') : chalk.red('✘')} ${subtest} (${duration}ms)\n`;
-						});
-						boxoutput += boxen(`${subtestoutput}`, {
-							padding: { left: 2, right: 8 },
-							title: `${status === 'passed' ? chalk.green('✔') : chalk.red('✘')} ${group} (${duration}ms)`,
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 						});
 						boxoutput += '\n';
 					});
@@ -183,11 +140,8 @@ const customReporter = new Transform({
 					this.push('\n');
 					this.push(output + '\n');
 
-<<<<<<< HEAD
 					output = '';
 
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 					setTimeout(() => {
 						spinner.stopAndPersist({
 							symbol: '★',

@@ -1,5 +1,4 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-<<<<<<< HEAD
 import AoiError from '@aoi.js/core/Error.js';
 import { ErrorCode, FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeMathResult, escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
@@ -18,13 +17,6 @@ import { isMathExpression } from '@aoi.js/utils/Helpers/functions.js';
  * $math[ sin(90) ] // Returns 1
  * ```
  */
-=======
-import { TranspilerError } from '@aoi.js/core/Error.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
-import { escapeMathResult, escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
-import { isMathExpression } from '@aoi.js/utils/Helpers/functions.js';
-
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 const $math = new FunctionBuilder()
 	.setName('$math')
 	.setType(FunctionType.Getter)
@@ -47,12 +39,8 @@ const $math = new FunctionBuilder()
 			!mathExpression &&
 			!thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))
 		) {
-<<<<<<< HEAD
 			throw AoiError.FunctionError(
 				ErrorCode.MissingParameter,
-=======
-			throw TranspilerError.CompileError(
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				'No math expression provided.',
 				data,
 			);
@@ -62,12 +50,8 @@ const $math = new FunctionBuilder()
 			!isMathExpression(mathExpression) &&
 			!thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))
 		) {
-<<<<<<< HEAD
 			throw AoiError.FunctionError(
 				ErrorCode.InvalidArgumentType,
-=======
-			throw TranspilerError.CompileError(
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				'Invalid math expression provided.',
 				data,
 			);
@@ -81,12 +65,8 @@ const $math = new FunctionBuilder()
 			.replaceAll('EULERNUM', 'Math.E');
 		
 		if (!math && !thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))) {
-<<<<<<< HEAD
 			throw AoiError.FunctionError(
 				ErrorCode.InvalidArgumentType,
-=======
-			throw TranspilerError.CompileError(
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 				'Invalid math expression provided.',
 				data,
 			);

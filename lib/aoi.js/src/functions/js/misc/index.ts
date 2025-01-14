@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 export * from './$let.js';
 export * from './$log.js';
 export * from './$env.js';
@@ -19,6 +18,3 @@ export * from './$executiontime.js';
 export * from './$inc.js';
 export * from './$passeddata.js';
 export * from './$execute.js';
-=======
-export * from './$let.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb

@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 import type { AsyncFunction, Safe } from '@aoi.js/typings/type.js';
 import { parseResult, safe } from './core.js';
 import * as UTIL from 'node:util';
 import type { IErr, IOk } from '@aoi.js/typings/interface.js';
-=======
-import { parseResult } from './core.js';
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 
 export function isMathExpression(expression: string): boolean {
 	expression = parseResult(expression.trim());
@@ -98,7 +94,6 @@ export function isMathExpression(expression: string): boolean {
 
 	return expression.trim() === '';
 }
-<<<<<<< HEAD
 
 export function abbreviate(number: number, decimal: number) {
 	const SI_SYMBOLS = [
@@ -224,5 +219,3 @@ export async function wrap<T, E>(promise: Promise<T>): Promise<Safe<T, E>> {
 			} satisfies IErr<E>;
 		});
 }
-=======
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb

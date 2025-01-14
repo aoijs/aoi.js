@@ -20,11 +20,7 @@ export function _areSmoothBracketsBalanced(condition: string) {
 export function parseCondition(condition: string) {
 	if (condition.includes(TranspilerCustoms.FS)) {
 		const matches = condition.match(
-<<<<<<< HEAD
 			/((#FUNCTION_START#([$a-z.0-9\s?(){}[\]._:'"`;=><,!\-`@/]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim,
-=======
-			/((#FUNCTION_START#([$a-z.0-9\s?(){}[\]._:'"`;=><,!-]|\n)+#FUNCTION_END#)|(__\$[a-z_?.()]+\$__))/gim,
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		);
 
 		if (matches) {

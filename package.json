@@ -39,11 +39,7 @@
 		"@types/eslint": "^8.56.10",
 		"@types/eslint__eslintrc": "^2.1.1",
 		"@types/eslint__js": "^8.42.3",
-<<<<<<< HEAD
 		"@types/node": "^22.8.2",
-=======
-		"@types/node": "^20.12.7",
->>>>>>> 9d1637b2e80d4bcbd055ccc60a53aa9f1c178bcb
 		"@typescript-eslint/eslint-plugin": "^7.6.0",
 		"@typescript-eslint/parser": ">=7.0.2",
 		"acorn": "^8.11.3",
