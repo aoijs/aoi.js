@@ -9,17 +9,19 @@ import Scope from './builders/Scope.js';
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import type Command from '@aoi.js/classes/Command.js';
 import {
+	ErrorCode,
 	FunctionType,
 	ReturnType,
 	TranspilerCustoms,
 } from '@aoi.js/typings/enum.js';
-import { TranspilerError } from './Error.js';
+import AoijsErrorHandler from './Error.js';
 import * as allFunctions from '@aoi.js/functions/index.js';
 import { parseResult } from '@aoi.js/utils/Helpers/core.js';
 
 import { type MinifyOutput, minify } from 'uglify-js';
 import { type AsyncFunction } from '@aoi.js/typings/type.js';
 import { fixMath } from './parsers/math.js';
+import { parseFnBlock } from './parsers/fnblock.js';
 
 export default class Transpiler {
 	static instance: Transpiler | undefined = undefined;
@@ -28,6 +30,7 @@ export default class Transpiler {
 	functions!: Record<string, IFunctionData>;
 	client!: AoiClient;
 	functionFinderRegex = /(\$[a-z]+)/gi;
+	macroFinderRegex = /(#[a-z]+)/gi;
 	mainFunction = '$AOIJSMAINFUNCTION';
 
 	constructor(options: ITranspilerOptions, client: AoiClient) {
@@ -86,10 +89,9 @@ export default class Transpiler {
 		code: string,
 		func: string,
 		functions: string[],
-		command?: Command,
+		command: Command,
 	): ICodeFunctionData {
 		let funcD: IFunctionData = this.functions[func];
-
 		let codeFuncData: ICodeFunctionData = {
 			...funcD,
 			total: code,
@@ -152,14 +154,11 @@ export default class Transpiler {
 			if (!funcD.brackets) break;
 
 			if (!funcD.optional && code[func.length] !== '[') {
-				throw new TranspilerError('Function requires brackets', {
-					function: {
-						name: func,
-						code: func,
-					},
-					cmd: command?.name,
-					path: command?.__path__,
-				});
+				throw AoijsErrorHandler.FunctionError(
+					ErrorCode.BracketsRequired,
+					'Function requires brackets',
+					codeFuncData,
+				);
 			}
 
 			if (rightCount === leftCount && rightCount !== 0) break;
@@ -179,14 +178,11 @@ export default class Transpiler {
 			!this._areBracketsBalanced(rawTotal) &&
 			func !== this.mainFunction
 		) {
-			throw new TranspilerError('Brackets are not balanced', {
-				function: {
-					name: func,
-					code: rawTotal,
-				},
-				cmd: command?.name,
-				path: command?.__path__,
-			});
+			throw AoijsErrorHandler.FunctionError(
+				ErrorCode.BracketsMismatch,
+				'Brackets are not balanced',
+				codeFuncData,
+			);
 		}
 
 		const funcs = [];
@@ -195,34 +191,41 @@ export default class Transpiler {
 				? rawTotal.slice(func.length + 1, rawTotal.length - 1)
 				: undefined;
 
+		let newinside = inside ?? '';
 		const list = this._getFunctionList(inside ?? '', functions);
 		functions.splice(0, list.length);
 
-		let newinside = inside ?? '';
-		let idx = 0;
-		while (list.length) {
-			const func = list.shift()!;
+		if (
+			(codeFuncData.type !== FunctionType.Scope &&
+				codeFuncData.type !== FunctionType.ScopeGetter) ||
+			codeFuncData.name === this.mainFunction
+		) {
+			let idx = 0;
+			while (list.length) {
+				const func = list.shift()!;
 
-			const funcData = this._getFunctionData(
-				newinside,
-				func,
-				list,
-				command,
-			);
+				const funcData = this._getFunctionData(
+					newinside,
+					func,
+					list,
+					command,
+				);
 
-			inside = inside?.replace(
-				funcData.inside?.replaceAll(TranspilerCustoms.FSEP, ';') ?? '',
-				funcData.parsed!,
-			);
+				inside = inside?.replace(
+					funcData.inside?.replaceAll(TranspilerCustoms.FSEP, ';') ??
+						'',
+					funcData.parsed!,
+				);
 
-			newinside = newinside.replace(
-				funcData.total,
-				`#FUNCTION_${idx++}#`,
-			);
+				newinside = newinside.replace(
+					funcData.total,
+					`#FUNCTION_${idx++}#`,
+				);
 
-			funcData.parent = codeFuncData;
+				funcData.parent = codeFuncData;
 
-			funcs.push(funcData);
+				funcs.push(funcData);
+			}
 		}
 
 		const parsed = inside?.replaceAll(';', TranspilerCustoms.FSEP) ?? '';
@@ -254,10 +257,6 @@ export default class Transpiler {
 		sendMessage = true,
 		asFunction = true,
 	) {
-		if (reverse) {
-			ast.funcs = ast.funcs.reverse();
-		}
-
 		let i = 0;
 		while (i < ast.funcs.length) {
 			const node = ast.funcs[i];
@@ -322,18 +321,60 @@ export default class Transpiler {
 		}
 
 		const scope = scopes.at(-1)!;
-		if (sendMessage)
+		if (sendMessage) {
 			for (const part of scope._contentParts) {
+				if (part.trim() === '') continue;
 				ast.executed = ast.executed.replace(part, '');
 			}
+		}
+
+		if (reverse) {
+			ast.executed = parseFnBlock(ast.executed);
+		}
 
 		return scope.generate(ast.executed, sendMessage, asFunction);
 	}
 
+	_getMacroList(code: string, macros: string[]) {
+		const list = code.match(this.macroFinderRegex);
+		// get all valid macros
+		if (!list) return [];
+		const existingMacros = macros.filter((x) =>
+			code.toLowerCase().includes(x.toLowerCase()),
+		);
+
+		const res = [];
+
+		for (const m of list) {
+			const macro = existingMacros.filter(
+				(x) => x.toLowerCase() === m.toLowerCase().slice(1, m.length),
+			);
+			if (macro.length === 1) res.push(macro[0]);
+			else if (macro.length > 1) {
+				res.push(macro.sort((a, b) => b.length - a.length)[0]);
+			} else {
+				continue;
+			}
+		}
+
+		return res;
+	}
+
 	transpile(code: string, options: ITranspileOptions) {
 		const functions = Object.keys(this.functions);
+		const macros = this.client.managers.macros.list();
+
+		const macrosList = this._getMacroList(code, macros);
+		// replace All macros with their respective values
+		macrosList.forEach((macro) => {
+			const reg = new RegExp(`#${macro}`, 'gi');
+			code = code.replaceAll(
+				reg,
+				this.client.managers.macros.get(macro)!.code,
+			);
+		});
+
 		const functionList = this._getFunctionList(code, functions);
-		// console.log({code ,options})
 
 		if (options.asFunction === undefined) {
 			options.asFunction = true;
@@ -353,6 +394,7 @@ export default class Transpiler {
 			functionList,
 			options.command,
 		);
+
 		const globalScope = this._createGlobalScope(
 			ast,
 			options.scopeData ?? {},
@@ -366,19 +408,21 @@ export default class Transpiler {
 			options.asFunction ?? true,
 		);
 		result = fixMath(result);
-
 		const functionString = this.minify ? minify(result) : result;
 
+		if (!options.asFunction) {
+			// return non minified code
+			return { result, ast, scope: globalScope, functionList };
+		}
+
 		if (this.minify && (functionString as MinifyOutput).error) {
-			throw new TranspilerError(
+			throw AoijsErrorHandler.CompilerError(
+				ErrorCode.MinificationError,
 				`Failed To Transpile Code with error ${
 					(functionString as MinifyOutput).error?.message
 				}`,
-				{
-					code: result,
-					cmd: options.command?.name,
-					path: options.command?.__path__,
-				},
+				options.command,
+				result,
 			);
 		}
 
@@ -389,21 +433,17 @@ export default class Transpiler {
 				? (functionString as MinifyOutput).code
 				: (functionString as string);
 
-			if (!options.asFunction) {
-				// return non minified code
-				return { result, ast, scope: globalScope, functionList };
-			}
-
 			func = eval(`const f = ${minified}; f`) as AsyncFunction;
 		} catch (e) {
-			throw new TranspilerError(e as string, {
-				code: result,
-				cmd: options.command?.name,
-				path: options.command?.__path__,
-			});
+			throw AoijsErrorHandler.CompilerError(
+				ErrorCode.FunctionGenerationError,
+				e as string,
+				options.command,
+				result,
+			);
 		}
 
-		return { func, ast, result, scope: globalScope, functionList };
+		return { func, ast, result, scope: globalScope };
 	}
 
 	addFunctions(functions: Record<string, IFunctionData>) {
