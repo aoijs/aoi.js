@@ -14,7 +14,7 @@ class Command {
 
         this.__client__ = client;
         
-        if (hasMacros(client.macros.list(), data.code)) {
+        if (client.macros.list().length > 0 && hasMacros(client.macros.list(), data.code)) {
             data.code = resolveMacros(client.macros.toArray(), data.code);
         }
 

@@ -65,7 +65,7 @@ class MacrosManager {
  * @returns {RegExp}
  */
 function createMacrosPattern(names) {
-    return new RegExp(`#(${names.join("|")})`, "g");
+    return new RegExp(`(${names.map(name => `#${name}`).join("|")})`, "g");
 };
 
 /**
@@ -85,17 +85,20 @@ function hasMacros(names, code) {
  * @returns {string}
  */
 function resolveMacros(macros, code) {
+    if (macros.length === 0) return code;
+
     const matchedMacros = [...new Set(code.match(createMacrosPattern(macros.map(m => m.name))) ?? [])];
     let newCode = code;
 
     for (const matchedMacro of matchedMacros) {
+        const gotMacro = macros.find(macro => macro.name === matchedMacro.slice(1))
+        if (!gotMacro) continue;
+
         newCode = newCode.replace(
             createMacrosPattern(
                 [matchedMacro.slice(1)]
             ),
-            macros.find(
-                macro => macro.name === matchedMacro.slice(1)
-            )?.code || ""
+            gotMacro.code
         );
     }
 

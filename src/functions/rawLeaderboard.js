@@ -16,63 +16,61 @@ module.exports = async (d) => {
     ] = data.inside.splits;
 
     if (!d.client.variableManager.has(variable.addBrackets())) return d.aoiError.fnError(d, "custom", {}, `Variable ${variable.addBrackets()} Not Found!`);
-
     if (!order || (order.toLowerCase() !== "asc" && order.toLowerCase() !== "desc")) return d.aoiError.fnError(d, 'custom', {}, `Invalid order must be "desc" or "asc"`)
 
     let y = 0;
     let value;
     let content = [];
-    let all = await d.client.db.findMany(table, (data) => data.key.startsWith(variable.deleteBrackets() + "_") && data.key.split("_").length === type === "user" ? 3 : 2);
+    let all = await d.client.db.findMany(table, (data) => data.key.startsWith(variable.deleteBrackets() + "_") && data.key.split("_").length === (type === "user" ? 3 : 2));
+    
     all = all.filter((x, i, y) => y.findIndex(e => e.key === x.key) === i);
-
     all = all.sort((x, y) => { return Number(y.value) - Number(x.value)});
   
     const getdata = async (user, Data, key) => {
-        user =
-            (type === "globalUser"
-                ? await d.util.getUser(d, Data.key.split("_")[key])
-                : type === "user"
-                ? await d.util.getMember(d.guild, Data.key.split("_")[key])
-                : type === "server"
-                ? await d.util.getGuild(d, Data.key.split("_")[key])
-                : Data.key.split("_")[key]) ?? Data.key.split("_")[key];
-        return user;
+        switch (type) {
+            case "globalUser":
+                user = await d.util.getUser(d, Data.key.split("_")[key]);
+                break;
+            case "user":
+                user = await d.util.getMember(d.guild, Data.key.split("_")[key]);
+                break;
+            case "server":
+                user = await d.util.getGuild(d, Data.key.split("_")[key]);
+                break;
+            case "channel":
+                user = await d.util.getChannel(d, Data.key.split("_")[key]);
+                break;
+        };
+        
+        return (user ? user : null);
     };
 
     for (let i = 0; i < all.length; i++) {
         const Data = all[i];
-
         let user;
 
         if (d.client.db.type === "aoi.db") value = Number(Data.value);
         else value = Number(Data.data.value);
-
         user = await getdata(user, Data, 1);
 
         if (user) {
-            user =
-                typeof user === "object"
-                    ? type === "user"
-                        ? user.user
-                        : user
-                    : { id: user };
+            user = typeof user === "object"
+                ? (type === "user" ? user?.user : user)
+                : { id: user };
             y++;
 
             let text = custom
                 .replaceAll(`{top}`, y)
                 .replaceAll("{id}", user.id)
                 .replaceAll("{tag}", user?.tag?.removeBrackets())
-                .replaceAll(
-                    `{name}`,
-                    ["user", "globalUser"].includes(type)
-                        ? user.username?.removeBrackets()
-                        : user.name?.removeBrackets(),
-                )
-                .replaceAll(`{value}`, value);
+                .replaceAll(`{value}`, value)
+                .replaceAll(`{name}`, ["user", "globalUser"].includes(type)
+                    ? user.username?.removeBrackets()
+                    : user.name?.removeBrackets()
+                );
 
             if (text.includes("{execute:")) {
                 let ins = text.split("{execute:")[1].split("}")[0];
-
                 const awaited = d.client.cmd.awaited.find(
                     (c) => c.name === ins,
                 );
@@ -97,16 +95,13 @@ module.exports = async (d) => {
                     undefined,
                     true,
                 );
-
                 text = text.replace(`{execute:${ins}}`, code);
             }
-
             content.push(text);
         }
     }
 
     if (order === "desc") content = content.reverse();
-
     data.result = content.slice(page * list - list, page * list).join("\n");
 
     return {

@@ -8,7 +8,7 @@ module.exports = async (d) => {
   const inside = d.unpack();
   if (data.err) return d.error(data.err);
 
-  let [customId, label, style, disabled, emoji, messageID, channelID = d.channel.id] = data.inside.splits;
+  let [customId, label, style, disabled, emoji, messageID = d.message.id, channelID = d.channel.id] = data.inside.splits;
 
   const channel = await d.util.getChannel(d, channelID);
   if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
