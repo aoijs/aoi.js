@@ -1,9 +1,22 @@
 import type AoiClient from '@aoi.js/classes/AoiClient.js';
 import { type ReturnType, type FunctionType } from './enum.js';
-import { type AoiEventNames, type AsyncFunction, type CommandTypes, type FunctionCode } from './type.js';
+import {
+	type AoiEventNames,
+	type AsyncFunction,
+	type CommandTypes,
+	type FunctionCode,
+} from './type.js';
 import type StringObject from '../core/builders/StringObject.js';
 import type Command from '@aoi.js/classes/Command.js';
-import { type User, type Channel, type Client, type ClientOptions, type Guild, type Message, type GuildMember } from 'discord.js';
+import {
+	type User,
+	type Channel,
+	type Client,
+	type ClientOptions,
+	type Guild,
+	type Message,
+	type GuildMember,
+} from 'discord.js';
 
 export interface ITranspilerOptions {
 	customFunctions: Record<string, IFunctionData>;
@@ -13,7 +26,7 @@ export interface ITranspilerOptions {
 export interface ITranspileOptions {
 	reverse?: boolean;
 	parsedStringOnly?: boolean;
-	command?: Command;
+	command: Command;
 	sendMessage?: boolean;
 	scopeData?: IScopeData;
 	asFunction?: boolean;
@@ -29,6 +42,7 @@ export interface IScopeData {
 	object?: Record<string, StringObject>;
 	embeddedJS?: string[];
 	useChannel?: Snowflake | string;
+	addReturn?: boolean;
 }
 
 export interface IFunctionData {
@@ -50,7 +64,7 @@ export interface ICodeFunctionData extends IFunctionData {
 	funcs: ICodeFunctionData[];
 	parsed?: string;
 	executed: string;
-	cmd?: Command;
+	cmd: Command;
 }
 
 export interface IFunctionField {
@@ -100,7 +114,7 @@ export interface IAoiClientOptions {
 			time?: number;
 		};
 	};
-	cache?: Record<string, number | undefined  >;
+	cache?: Record<string, number | undefined>;
 	djsClientOptions?: ClientOptions;
 	transpilerOptions?: ITranspilerOptions;
 	testMode?: boolean;
@@ -110,4 +124,31 @@ export interface IAoiLoggerOptions {
 	logs?: boolean;
 	warnings?: boolean;
 	errors?: boolean;
+}
+
+export interface IFnBlock {
+	text: string;
+	children: IFnBlock[];
+	parent: IFnBlock | undefined;
+}
+
+export interface IOk<T> {
+	success: true;
+	data: T;
+}
+
+export interface IErr<E> {
+	success: false;
+	error: E;
+}
+
+export interface IMacroOptions {
+	name: string;
+	code: string | AsyncFunction;
+}
+
+export interface IDateTimeOptions {
+	hour12: boolean;
+	timezone: string;
+	locale: string;
 }

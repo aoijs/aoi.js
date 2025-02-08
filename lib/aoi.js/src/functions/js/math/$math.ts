@@ -1,9 +1,22 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { TranspilerError } from '@aoi.js/core/Error.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import AoiError from '@aoi.js/core/Error.js';
+import { ErrorCode, FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeMathResult, escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
 import { isMathExpression } from '@aoi.js/utils/Helpers/functions.js';
 
+/**
+ * Returns the result of a math expression
+ * @example
+ * ```aoi
+ * ---
+ * name: math
+ * type: basic
+ * ---
+ * 
+ * $math[1 + 1] // Returns 2
+ * $math[ sin(90) ] // Returns 1
+ * ```
+ */
 const $math = new FunctionBuilder()
 	.setName('$math')
 	.setType(FunctionType.Getter)
@@ -26,7 +39,8 @@ const $math = new FunctionBuilder()
 			!mathExpression &&
 			!thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))
 		) {
-			throw TranspilerError.CompileError(
+			throw AoiError.FunctionError(
+				ErrorCode.MissingParameter,
 				'No math expression provided.',
 				data,
 			);
@@ -36,7 +50,8 @@ const $math = new FunctionBuilder()
 			!isMathExpression(mathExpression) &&
 			!thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))
 		) {
-			throw TranspilerError.CompileError(
+			throw AoiError.FunctionError(
+				ErrorCode.InvalidArgumentType,
 				'Invalid math expression provided.',
 				data,
 			);
@@ -50,7 +65,8 @@ const $math = new FunctionBuilder()
 			.replaceAll('EULERNUM', 'Math.E');
 		
 		if (!math && !thisArg.canSuppressAtComp(data, thisArg.getCurrentScope(scopes))) {
-			throw TranspilerError.CompileError(
+			throw AoiError.FunctionError(
+				ErrorCode.InvalidArgumentType,
 				'Invalid math expression provided.',
 				data,
 			);

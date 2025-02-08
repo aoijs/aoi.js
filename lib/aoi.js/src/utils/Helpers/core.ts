@@ -187,36 +187,47 @@ export function stringify(data: any): string {
 /**
  * Safely resolves a promise.
  * @param promise - The promise to resolve.
- * @returns - Returns a tuple with the error and the data.
+ * @returns - Returns a promise that resolves to an object with a success property.
  */
-export async function safeAsync<T>(promise: Promise<T>): Promise<Safe<T>> {
-	return promise
-		.then((data) => [undefined, data])
-		.catch((error) => [error, undefined]) as Promise<Safe<T>>;
+export async function safeAsync<T, E>(
+	promise: Promise<T>,
+): Promise<Safe<T, E>> {
+	return Promise.allSettled([promise]).then(res => {
+		if (res[0].status === 'fulfilled') {
+			return { success: true, data: res[0].value };
+		} else { 
+			return { success: false, error: res[0].reason as E };
+		}
+	});
 }
 
 /**
- * Safely executes a function.
+ * Safely executes a sync function.
  * @param fn - The function to execute.
- * @returns - Returns a tuple with the error and the data.
+ * @returns - Returns an object with a success property.
  */
-export function safeSync<T>(fn: () => T): Safe<T> {
+export function safeSync<T, E>(fn: () => T): Safe<T, E> {
 	try {
-		return [undefined, fn()];
-	} catch (error) {
-		return [error as Error, undefined];
+		return { success: true, data: fn() };
+	} catch (error: unknown) {
+		return { success: false, error: error as E };
 	}
 }
 
 /**
- * Safely executes a function or a promise.
- * @param promise - The promise to resolve.
- * @returns - Returns a tuple with the error and the data.
+ * Safely executes a Promise or a function.
+ * @param promiseOrFn - The promise or function to execute.
+ * @returns - Returns an object with a success property.
  */
-export function safe<T>( promise: Promise<T>): Promise<Safe<T>>;
-export function safe<T>(fn: () => T): Safe<T>;
+export function safe<T, E>(promise: Promise<T>): Promise<Safe<T, E>>;
+export function safe<T, E>(fn: () => T): Safe<T, E>;
 // eslint-disable-next-line @typescript-eslint/promise-function-async
-export function safe<T>(funcOrPromise: Promise<T> | (() => T)): Safe<T> | Promise<Safe<T>> {
-	if (funcOrPromise instanceof Promise) return safeAsync(funcOrPromise);
-	else return safeSync(funcOrPromise);
+export function safe<T, E>(
+	promiseOrFn: Promise<T> | (() => T),
+): Promise<Safe<T, E>> | Safe<T, E> {
+	if (typeof promiseOrFn === 'function') {
+		return safeSync<T, E>(promiseOrFn);
+	} else {
+		return safeAsync<T, E>(promiseOrFn);
+	}
 }

@@ -1,4 +1,4 @@
-import { parseData } from '@aoi.js/utils/Helpers/core.js';
+import { parseData, stringify } from '@aoi.js/utils/Helpers/core.js';
 import StringObject from '../builders/StringObject.js';
 import { parseString } from './string.js';
 import { TranspilerCustoms } from '@aoi.js/typings/enum.js';
@@ -24,6 +24,34 @@ export function _handleStringData(text: string, object: StringObject) {
 	object.addValue(text);
 }
 
+export function _handleNonStringData(text: unknown, object: StringObject) {
+	switch (typeof text) {
+		case 'number':
+			object.addValue(text.toString());
+			break;
+		case 'boolean':
+			object.addValue(`${text}`);
+			break;
+		case 'object':
+			if (text === null) {
+				object.addValue('null');
+			} else {
+				object.addValue(stringify(text));
+			}
+
+			break;
+		case 'bigint':
+			object.addValue(`${text}n`);
+			break;
+		case 'undefined':
+			object.addValue('undefined');
+			break;
+		default:
+			object.addValue(text as string);
+			break;
+	}
+}
+
 export function _getObjectAst(
 	objectString: string,
 	currentObject: StringObject,
@@ -40,12 +68,13 @@ export function _getObjectAst(
 			currentObject = newObject;
 		} else if (char === '}' || char === ']') {
 			currentObject.addEnd(char);
-
 			if (text.trim() !== '') {
 				const t = parseData(text.trim());
 				if (typeof t === 'string') {
 					_handleStringData(t, currentObject);
 					text = '';
+				} else {
+					_handleNonStringData(t, currentObject);
 				}
 			}
 
@@ -65,6 +94,8 @@ export function _getObjectAst(
 				const t = parseData(text.trim());
 				if (typeof t === 'string') {
 					_handleStringData(t, currentObject);
+				} else {
+					_handleNonStringData(t, currentObject);
 				}
 
 				text = '';
@@ -72,9 +103,23 @@ export function _getObjectAst(
 		} else {
 			text += char;
 		}
+
+		i++;
+	}
+
+	if (text.trim() !== '') {
+		const t = parseData(text.trim());
+		if (typeof t === 'string') {
+			_handleStringData(t, currentObject);
+		} else {
+			_handleNonStringData(t, currentObject);
+		}
+
+		text = '';
 	}
 
 	while (currentObject.parent) {
+		currentObject.parent?.pushChild(currentObject);
 		currentObject = currentObject.parent;
 	}
 

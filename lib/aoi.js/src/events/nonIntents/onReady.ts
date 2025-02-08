@@ -15,9 +15,9 @@ export async function _ready(bot: AoiClient) {
 
 export default function onReady(bot: AoiClient) {
 	bot.client.on('ready', async () => {
-		const [error] = await safe(_ready(bot));
+		const res = await safe(_ready(bot));
 
-		if (error) {
+		if (!res.success) {
 			bot.client.emit(AoiClientEvents.Error, 'An error occurred while executing the ready event');
 		}
 	});

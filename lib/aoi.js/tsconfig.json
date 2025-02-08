@@ -1,13 +1,13 @@
 {
 	"extends": "../../tsconfig.json",
-	"include": ["./src/**/*.ts"],
+	"include": ["./src/**/*.ts", "../../.ignore/testGenerator.ts"],
 	"compilerOptions": {
 		"incremental": true,
 		"composite": true,
 		"tsBuildInfoFile": "./.tsbuildinfo",
 		"target": "ESNext",
-		"module": "CommonJS",
-		"moduleResolution": "node10",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"baseUrl": ".",
 		"paths": {
 			"@aoi.js/*": ["./src/*"],

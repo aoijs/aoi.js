@@ -6,7 +6,7 @@ export function createStringAST(text: string) {
 	let i = 0;
 	let res = '';
 
-	while (i < text.length) {
+	while (i <= text.length) {
 		if (res.includes(TranspilerCustoms.FS)) {
 			const child = new TextBlock(block.children.length, false, block);
 
@@ -44,6 +44,7 @@ export function createStringAST(text: string) {
 
 			res = text[i] ?? '';
 		} else {
+			if (i === text.length)  break;
 			res += text[i] ?? '';
 			block.addText(text[i] ?? '');
 		}

@@ -15,6 +15,8 @@ export enum ReturnType {
 	Boolean = 1 << 4,
 	Object = 1 << 5,
 	Array = 1 << 6,
+	Fn = 1 << 7,
+	BigInt = 1 << 8,
 }
 
 export enum TranspilerCustoms {
@@ -53,4 +55,53 @@ export enum BundlerCustoms {
 
 export enum AoiClientEvents {
 	Error = 'AoiError',
+}
+
+export enum AoiErrorType {
+	FunctionError,
+	CommandError,
+	EventError,
+	CompilerError,
+	ReaderError,
+	MacroError,
+	TestError,
+}
+
+export enum ErrorCode {
+	// all error code related to aoijs functions
+	InvalidParameter,
+	MissingParameter,
+	InvalidArgumentLength,
+	InvalidArgumentType,
+
+	// all error code related to aoijs commands
+	CommandNotFound,
+	CommandAlreadyExists,
+	InvalidCommand,
+	InvalidCommandType,
+	CommandNameNotFound,
+	CommandChannelNotFound,
+
+	// all error code related to compiler
+	BracketsRequired,
+	BracketsMismatch,
+	MinificationError,
+	FunctionGenerationError,
+
+	// all error code related to reader
+	EmbedBracketsMismatch,
+
+	// all error code related to macro
+	MacroNotFound,
+	MacroAlreadyExists,
+	MissingMacroName,
+	MissingMacroCode,
+	FileNotFound,
+
+
+	ObjectAlreadyExists,
+	ObjectDoesNotExist,
+	InvalidEnv,
+	VariableNotFound,
+	InvalidTimeZone,
 }

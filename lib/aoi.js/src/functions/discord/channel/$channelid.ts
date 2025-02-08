@@ -3,7 +3,20 @@ import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 import { ChannelType } from 'discord.js';
 
-const $channelId = new FunctionBuilder()
+/**
+ * Returns the id of the channel.
+ * @example
+ * ```aoi
+ * ---
+ * name: channelid
+ * type: basic
+ * ---
+ * 
+ * $channelid // returns the id of the current channel
+ * $channelid[channel name] // returns the id of the channel with the given name
+ * ```
+ */
+const $channelid = new FunctionBuilder()
 	.setName('$channelid')
 	.setType(FunctionType.Getter)
 	.setReturns(ReturnType.String | ReturnType.Void)
@@ -48,4 +61,4 @@ const $channelId = new FunctionBuilder()
 	})
 	.build();
 
-export { $channelId };
+export { $channelid };

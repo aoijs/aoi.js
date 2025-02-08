@@ -1,8 +1,21 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { TranspilerError } from '@aoi.js/core/Error.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import AoiError from '@aoi.js/core/Error.js';
+import { ErrorCode, FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeMathResult, escapeResult } from '@aoi.js/utils/Helpers/core.js';
 
+/**
+ * Returns the absolute value of a number
+ * @example
+ * ```aoi
+ * ---
+ * name: abs
+ * type: basic
+ * ---
+ * 
+ * $abs[-5] // Returns 5
+ * $abs[5] // Returns 5
+ * ```
+ */
 const $abs = new FunctionBuilder()
 	.setName('$abs')
 	.setBrackets(true)
@@ -27,8 +40,9 @@ const $abs = new FunctionBuilder()
 			isNaN(parsedNumber) &&
 			!thisArg.canSuppressAtComp(data, currentScope)
 		) {
-			throw TranspilerError.CompileError(
-				`Provided number is not a number, received ${number}`,
+			throw AoiError.FunctionError(
+				ErrorCode.InvalidArgumentType,
+				`Provided argument is not a number, received ${number}`,
 				data,
 			);
 		}

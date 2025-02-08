@@ -34,10 +34,12 @@
 		"@stylistic/eslint-plugin": "^1.7.2",
 		"@stylistic/eslint-plugin-js": "^1.7.2",
 		"@stylistic/eslint-plugin-ts": "^1.7.2",
+		"@swc/cli": "0.4.1-nightly.20240914",
+		"@swc/core": "^1.7.40",
 		"@types/eslint": "^8.56.10",
 		"@types/eslint__eslintrc": "^2.1.1",
 		"@types/eslint__js": "^8.42.3",
-		"@types/node": "^20.12.7",
+		"@types/node": "^22.8.2",
 		"@typescript-eslint/eslint-plugin": "^7.6.0",
 		"@typescript-eslint/parser": ">=7.0.2",
 		"acorn": "^8.11.3",
@@ -62,7 +64,8 @@
 		"cli-spinners": "^2.9.2",
 		"commander": "^12.0.0",
 		"enquirer": "^2.4.1",
-		"ora": "^8.0.1"
+		"ora": "^8.0.1",
+		"ts-node": "^10.9.2"
 	},
 	"bin": {
 		"aoirepo": "./bin/index.mjs"

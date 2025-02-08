@@ -3,11 +3,13 @@ import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
 import { $abbreviate } from './$abbreviate.js';
+import type { ITranspileOptions } from '@aoi.js/typings/interface.js';
+import TestCommand from '@aoi.js/testing/testCommand.js';
 
 const client = new TestClient();
 client.transpiler.addFunctions({ $abbreviate });
 
-const transpilerOptions = {
+const transpilerOptions: ITranspileOptions = {
 	scopeData: {
 		name: 'global',
 		vars: [],
@@ -17,6 +19,7 @@ const transpilerOptions = {
 		embeddedJS: [],
 		sendFunction: 'console.log',
 	},
+	command: new TestCommand(client),
 };
 
 const codeToFail = '$abbreviate';
@@ -43,11 +46,10 @@ void describe('$abbreviate', () => {
 	void it('should return 2.00K', async () => {
 		// logs true
 		const orignalLog = console.log;
-		let logged: Record<string, string> = { content: 'hi' };
+		let logged: unknown;
 
 		console.log = (log: Record<string, string>) => {
-			logged = log;
-			// orignalLog(log);
+			logged = client.parseData(log.content, $abbreviate.returns);
 		};
 
 		const { func } = client.transpiler.transpile(codeToValue, transpilerOptions);
@@ -57,16 +59,16 @@ void describe('$abbreviate', () => {
 
 		console.log = orignalLog;
 
-		assert.strictEqual(logged.content.toString(), '2.00K');
+		assert.strictEqual(logged, '2.00K');
 	});
 
 	void it('should return 2K', async () => {
 		// logs false
 		const orignalLog = console.log;
-		let logged: Record<string, string> = { content: 'hi' };
+		let logged: unknown;
 
 		console.log = (log: Record<string, string>) => {
-			logged = log;
+			logged = client.parseData(log.content, $abbreviate.returns);
 			// orignalLog(log);
 		};
 
@@ -77,6 +79,6 @@ void describe('$abbreviate', () => {
 
 		console.log = orignalLog;
 
-		assert.strictEqual(logged.content.toString(), '2K');
+		assert.strictEqual(logged, '2K');
 	});
 });

@@ -6,11 +6,8 @@ import { safe } from '@aoi.js/utils/Helpers/core.js';
 export async function _messageCreate(message: Message, bot: AoiClient) {
 	let prefix: string | undefined;
 	if (bot.options.prefix instanceof Array) {
-		prefix = bot.options.prefix.find((p) =>
-			message.content.startsWith(p),
-		);
+		prefix = bot.options.prefix.find((p) => message.content.startsWith(p));
 	} else prefix = bot.options.prefix;
-	
 
 	if (!prefix) return;
 	if (!message.content.startsWith(prefix)) return;
@@ -35,19 +32,20 @@ export async function _messageCreate(message: Message, bot: AoiClient) {
 				member: message.member ?? undefined,
 			},
 		})
-
-		.catch((e) => {
-			if (e.component && !e.success) return;
-			else bot.client.emit(AoiClientEvents.Error, e);
+		.catch((err: unknown) => {
+			return new Error(err as string);
 		});
 }
 
 export default function onMessageCreate(bot: AoiClient) {
 	bot.client.on('messageCreate', async (message) => {
-		const [error] = await safe(_messageCreate(message, bot));
+		const res = await safe(_messageCreate(message, bot));
 
-		if (error) {
-			bot.client.emit(AoiClientEvents.Error, 'An error occurred while executing the message event');
+		if (!res.success) {
+			bot.client.emit(
+				AoiClientEvents.Error,
+				`An error occurred while executing the message event:${res.error as string}`,
+			);
 		}
 	});
 }

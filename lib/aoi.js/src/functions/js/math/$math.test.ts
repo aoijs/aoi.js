@@ -3,11 +3,13 @@ import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
 import { $math } from './$math.js';
+import TestCommand from '@aoi.js/testing/testCommand.js';
+import type { ITranspileOptions } from '@aoi.js/typings/interface.js';
 
 const client = new TestClient();
 client.transpiler.addFunctions({ $math });
 
-const transpilerOptions = {
+const transpilerOptions: ITranspileOptions = {
 	scopeData: {
 		name: 'global',
 		vars: [],
@@ -17,6 +19,7 @@ const transpilerOptions = {
 		embeddedJS: [],
 		sendFunction: 'console.log',
 	},
+	command: new TestCommand(client),
 };
 
 const codeToFail = '$math';
@@ -52,10 +55,10 @@ void describe('$math', () => {
 	void it('should return 998 for 2000/2+2-2*2', async () => {
 		// logs true
 		const orignalLog = console.log;
-		let logged: Record<string, string> = { content: 'hi' };
+		let logged: unknown;
 
 		console.log = (log: Record<string, string>) => {
-			logged = log;
+			logged = client.parseData(log.content, $math.returns);
 			// orignalLog(log);
 		};
 
@@ -66,16 +69,16 @@ void describe('$math', () => {
 
 		console.log = orignalLog;
 
-		assert.strictEqual(logged.content.toString(), '998');
+		assert.strictEqual(logged, 998);
 	});
 
 	void it('should return 1 for pow(sin(90), 2) + pow(cos(90), 2)', async () => {
 		// logs false
 		const orignalLog = console.log;
-		let logged: Record<string, string> = { content: 'hi' };
+		let logged: unknown;
 
 		console.log = (log: Record<string, string>) => {
-			logged = log;
+			logged = client.parseData(log.content, $math.returns);
 			// orignalLog(log);
 		};
 
@@ -86,6 +89,6 @@ void describe('$math', () => {
 
 		console.log = orignalLog;
 
-		assert.strictEqual(logged.content.toString(), '1');
+		assert.strictEqual(logged, 1);
 	});
 });

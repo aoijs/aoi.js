@@ -5,12 +5,10 @@ import {
 	type ICommandOptions,
 	type IAoiClientOptions,
 } from '@aoi.js/typings/interface.js';
-import {
-	type Optional,
-	type CommandTypes,
-} from '@aoi.js/typings/type.js';
+import { type Optional, type CommandTypes, type AsyncFunction } from '@aoi.js/typings/type.js';
 import { Client, Partials, type ClientOptions } from 'discord.js';
 import * as Events from '@aoi.js/events/index.js';
+import { MacrosManager } from '@aoi.js/managers/Macro.js';
 
 class AoiClient {
 	client!: Client;
@@ -20,6 +18,7 @@ class AoiClient {
 	managers!: {
 		commands: CommandManager;
 		functions: FunctionManager;
+		macros: MacrosManager;
 	};
 
 	readonly #options: IAoiClientOptions;
@@ -37,6 +36,7 @@ class AoiClient {
 		this.managers = {
 			commands: new CommandManager(this),
 			functions: new FunctionManager(this),
+			macros: new MacrosManager(this),
 		};
 		if (options.testMode) return;
 
@@ -63,13 +63,32 @@ class AoiClient {
 		await this.client.login(this.#options.token);
 	}
 
-	command(data: Optional<ICommandOptions, '__path__' | 'type'> ) {
+	command(data: Optional<ICommandOptions, '__path__' | 'type'>) {
 		if (!data.type) data.type = 'basic' as CommandTypes;
 		data.__path__ = data.__path__ ?? 'root';
 
 		this.managers.commands.add(data as ICommandOptions);
 		return this;
 	}
+
+	macro(name: string, code: string | AsyncFunction) {
+		this.managers.macros.add({ name, code });
+		return this;
+	}
+
+	// returnComponent(name: string, dataString: string) {
+	// 	const func = this.managers.commands.component.get(name);
+	// 	if (!func) return '';
+
+	// 	const code = func.__rawFnString__;
+
+	// 	return `
+	// 	{
+	// 		const ${name}_data = ${dataString};
+	// 		${code}
+	// 	}
+	// 	`;
+	// }
 
 	#validateOptions(options: IAoiClientOptions) {
 		if (options.intents === undefined) {

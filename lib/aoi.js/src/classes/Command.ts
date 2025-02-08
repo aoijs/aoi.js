@@ -17,6 +17,8 @@ export default class Command {
 	executeAt?: 'guild' | 'dm' | 'both';
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	__compiled__!: AsyncFunction;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	__rawFnString__!: string;
 
 	constructor(data: ICommandOptions, client: AoiClient) {
 		this.name = data.name;
@@ -44,8 +46,13 @@ export default class Command {
 				this[key] = data[key];
 		}
 
-		if (this.code instanceof Function) this.__compiled__ = this.code;
-		else {
+		if (this.code instanceof Function) {
+			this.__compiled__ = this.code;
+			// get string representation of the function with the function name
+			this.__rawFnString__ = `const ${this.name}_func = ${this.code.toString()}
+			${this.name}_func(__$DISCORD_DATA$__);
+			`;
+		} else {
 			let channelId: Snowflake | undefined;
 			if (this.channel) {
 				if (
@@ -58,18 +65,28 @@ export default class Command {
 							name: 'GLOBAL_CHANNEL',
 						},
 						asFunction: false,
+						command: this,
 					}).result;
 				} else channelId = this.channel;
 			}
+
+
 
 			const func = transpiler.transpile(this.code, {
 				sendMessage: true,
 				reverse: this.reverseRead,
 				scopeData: {
-					useChannel: channelId?.includes('__$DISCORD_DATA$__') ? escapeResult(channelId) : channelId,
+					useChannel: channelId?.includes('__$DISCORD_DATA$__')
+						? escapeResult(channelId)
+						: channelId,
 				},
+				command: this,
 			});
+
+			
+
 			this.__compiled__ = func.func!;
+			this.__rawFnString__ = func.result;
 		}
 	}
 }

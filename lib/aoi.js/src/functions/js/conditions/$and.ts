@@ -3,6 +3,19 @@ import { parseCondition } from '@aoi.js/core/parsers/condition.js';
 import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult, parseResult } from '@aoi.js/utils/Helpers/core.js';
 
+/**
+ * returns true if all conditions are true
+ * @example
+ * ```aoi
+ * ---
+ * name: and
+ * type: basic
+ * ---
+ * 
+ * $and[1==1;2==2] // returns true
+ * $and[1==1;2==3] // returns false
+ * ```
+ */
 const $and = new FunctionBuilder()
 	.setName('$and')
 	.setBrackets(true)
@@ -11,7 +24,7 @@ const $and = new FunctionBuilder()
 	.setFields([
 		{
 			name: 'conditions',
-			type: ReturnType.Array,
+			type: ReturnType.Array | ReturnType.Boolean,
 			required: true,
 			description: 'conditions to check',
 		},

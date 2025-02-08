@@ -1,6 +1,6 @@
 import FunctionBuilder from '@aoi.js/core/builders/Function.js';
-import { TranspilerError } from '@aoi.js/core/Error.js';
-import { FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
+import AoiError from '@aoi.js/core/Error.js';
+import { ErrorCode, FunctionType, ReturnType } from '@aoi.js/typings/enum.js';
 import { escapeResult } from '@aoi.js/utils/Helpers/core.js';
 import type os from 'os';
 
@@ -43,25 +43,15 @@ const $cpu = new FunctionBuilder()
 			!['process', 'os'].includes(type) &&
 			!thisArg.canSuppressAtComp(data, currentScope)
 		) {
-			throw TranspilerError.CompileError(`Invalid CPU type: ${type}`, data);
+			throw AoiError.FunctionError(ErrorCode.InvalidArgumentType, `Invalid CPU type: ${type}`, data);
 		}
 
 		if (!currentScope.hasPkg('OS')) {
 			currentScope.addPkg('OS', 'const OS = await import("os")');
 		}
-
-		if (!currentScope.hasPkg('TRANSPILE_ERROR')) {
-			currentScope.addPkg(
-				'TRANSPILE_ERROR',
-				'const TRANSPILE_ERROR = await import("aoi.js/core/Error.js")',
-			);
-		}
-
+		
 		// placeholder for the actual module
 		const OS = thisArg.as<typeof os>('OS');
-		const TRANSPILE_ERROR =
-			thisArg.as<typeof TranspilerError>('TRANSPILE_ERROR');
-
 		function secNSec2ms(secNSec: number | number[]) {
 			if (Array.isArray(secNSec)) {
 				return secNSec[0] * 1000 + secNSec[1] / 1000000;
@@ -91,11 +81,6 @@ const $cpu = new FunctionBuilder()
 				return cpuPercent;
 			} else if (type === 'os') {
 				return ((OS.loadavg()[0] * 100) / OS.cpus().length).toFixed(2);
-			} else {
-				throw TRANSPILE_ERROR.RunTimeError(
-					`Invalid CPU type: ${type}`,
-					data,
-				) as TranspilerError;
 			}
 		}
 

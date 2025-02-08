@@ -3,11 +3,13 @@ import assert from 'node:assert';
 
 import TestClient from '@aoi.js/testing/testClient.js';
 import { $cwd } from './$cwd.js';
+import type { ITranspileOptions } from '@aoi.js/typings/interface.js';
+import TestCommand from '@aoi.js/testing/testCommand.js';
 
 const client = new TestClient();
 client.transpiler.addFunctions({ $cwd });
 
-const transpilerOptions = {
+const transpilerOptions: ITranspileOptions = {
 	scopeData: {
 		name: 'global',
 		vars: [],
@@ -17,8 +19,8 @@ const transpilerOptions = {
 		embeddedJS: [],
 		sendFunction: 'console.log',
 	},
+	command: new TestCommand(client),
 };
-
 const codeToPassWithoutArg = '$cwd';
 
 

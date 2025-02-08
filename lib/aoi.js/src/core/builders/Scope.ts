@@ -4,7 +4,7 @@ import {
 	FunctionType,
 	TranspilerCustoms,
 } from '@aoi.js/typings/enum.js';
-import { type ICodeFunctionData } from '@aoi.js/typings/interface.js';
+import { type ICodeFunctionData, type IDateTimeOptions } from '@aoi.js/typings/interface.js';
 import {
 	escapeResult,
 	escapeVars,
@@ -25,6 +25,7 @@ export default class Scope {
 	stickers: unknown[] = [];
 	env: string[];
 	ephemeral = false;
+	addExecutionTime = false;
 	variables: string[];
 	setters: string;
 	objects: Record<string, StringObject>;
@@ -38,6 +39,12 @@ export default class Scope {
 	useChannel?: bigint | string;
 	embeddedJS: string[] = [];
 	packages = '';
+	dateTimeOptions: IDateTimeOptions = {
+		timezone: 'UTC',
+		locale: 'en-US',
+		hour12: false,
+	};
+
 	client: AoiClient;
 	constructor(
 		name: string,
@@ -184,6 +191,7 @@ export default class Scope {
 		scope.useChannel = this.useChannel;
 		scope.embeddedJS = this.embeddedJS;
 		scope.packages = this.packages;
+		scope.dateTimeOptions = this.dateTimeOptions;
 		return scope;
 	}
 
@@ -202,12 +210,14 @@ export default class Scope {
 		this.addReturn = this.addReturn || scope.addReturn;
 		this.useChannel = scope.useChannel ?? this.useChannel;
 		this.embeddedJS.push(...scope.embeddedJS);
+		this.dateTimeOptions = { ...this.dateTimeOptions, ...scope.dateTimeOptions };
 		this.packages += scope.packages;
 	}
 
 	generate(code: string, sendMessage = true, asFunction = true) {
 		if (sendMessage)
 			for (const part of this._contentParts) {
+				if (part.trim() === '') continue;
 				code = code.replace(part, '');
 			}
 
@@ -266,7 +276,7 @@ export default class Scope {
 			this.hasSendData && sendMessage
 				? `
 		${this.addReturn ? 'return ' : ''} await ${channelSendFunction}( ${payload} );`
-				: '';
+				: `${this.addReturn ? 'return;' : ''}`;
 
 		const initialVars = sendMessage
 			? `	  
@@ -277,10 +287,15 @@ export default class Scope {
 		`
 			: '';
 
+		const addExecution = this.addExecutionTime
+			? `let __$${this.name}_EXECUTION_TIME$__ = performance.now();`
+			: '';
+
 		return parseResult(
 			asFunction
 				? `
 	  async function ${this.name === 'global' ? 'main' : this.name}(__$DISCORD_DATA$__) {
+			${addExecution}
 			${initialVars}
 			${this.packages}
 			${this.functions}
@@ -289,6 +304,7 @@ export default class Scope {
 	}
 		`.replaceAll(TranspilerCustoms.SL, '\\`')
 				: `
+			${addExecution}
 			${initialVars}
 			${this.packages}
 			${this.functions}

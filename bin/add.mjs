@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import ora from 'ora';
 import addLicense from './addLicense.mjs';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const folderStructure = (lib) => [
@@ -273,7 +274,7 @@ test('log', () => {
 	{
 		name: 'README.md',
 		type: 'file',
-		content: `# @akarui/${lib}
+		content: `# @aoijs/${lib}
 
 A Extension for Aoi.js
 `,
@@ -489,6 +490,44 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 `,
+	},
+	{
+		name: '.swcrc',
+		type: 'file',
+		content: `{
+	"$schema": "https://swc.rs/schema.json",
+	"module": {
+		"type": "es6",
+		"resolveFully": true
+	},
+	"jsc": {
+	  "parser": {
+		"syntax": "typescript",
+		"jsx": false,
+		"dynamicImport": true,
+		"privateMethod": true,
+		"functionBind": true,
+		"exportDefaultFrom": true,
+		"exportNamespaceFrom": true,
+		"decorators": true,
+		"decoratorsBeforeExport": true,
+		"topLevelAwait": true,
+		"importMeta": true
+	  },
+	  "target": "esnext",
+	  "baseUrl": "./",
+	  "paths": {
+		"@${lib}/*": ["./src/*"],
+		"@aoirepo/*": ["../../*"]
+	  },
+	  "loose": false,
+	  "externalHelpers": false,
+	  // Requires v1.2.50 or upper and requires target to be es2016 or upper.
+	  "keepClassNames": true,
+	  "preserveAllComments": true
+	},
+	"minify": false
+  }`,
 	},
 ];
 

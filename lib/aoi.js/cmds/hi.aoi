@@ -1,0 +1,12 @@
+---
+name: aoi
+type: basic
+---
+
+$let[ping;$pingms]
+$let[ram;$round[$ram[heapUsed;mb];2]]
+
+ping: $get[ping] | ram: $get[ram]mb
+
+
+
