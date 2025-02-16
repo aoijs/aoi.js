@@ -53,7 +53,7 @@
     "@aoijs/aoi.db": "^0.0.0",
     "@aoijs/aoi.structures": "^1.0.0",
     "chalk": "^4.1.2",
-    "discord.js": "^14.16.1",
+    "discord.js": "^14.18.0",
     "undici": "^6.9.0"
   },
   "devDependencies": {
