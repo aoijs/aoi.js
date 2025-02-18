@@ -9,6 +9,7 @@ module.exports = async (d) => {
 
     const options = {
         name: "eval",
+        $if: d.command["$if"],
         code: code.addBrackets(),
     };
 

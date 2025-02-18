@@ -191,7 +191,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                                     async: command.async || false,
                                     functions: command.functions,
                                     __path__: command.__path__,
-                                    codeLines: command.codeLines
+                                    codeLines: command.codeLines,
+                                    $if: command["$if"]
                                 },
                                 helpers: {
                                     time: Time,
@@ -263,7 +264,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                     functions: command.functions,
                     __path__: command.__path__,
                     codeLines: command.codeLines,
-                    funcLine: funcLine
+                    funcLine: funcLine,
+                    $if: command["$if"]
                 },
                 helpers: {
                     time: Time,
