@@ -90,13 +90,8 @@ class Util {
 
     static async getGuild(d, id) {
         if (d.guild?.id === id && d.guild?.id) return d.guild;
-        else {
-            if (!d.client.shard) return d.client.guilds.cache.get(id);
-            else {
-                const arr = await d.client.shard.broadcastEval((client) => client.guilds.cache.get(id));
-                return arr.find((x) => x);
-            }
-        }
+    
+        return d.client.guilds.cache.get(id) || await d.client.guilds.fetch(id, { force: true });
     }
 
     static get channelTypes() {
