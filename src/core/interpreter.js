@@ -125,7 +125,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-		let splitedCode = code.split('\n');
+        let splitedCode = code.split("\n");
 
         //parsing functions (dont touch)
 
@@ -143,37 +143,34 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             //more debug
             debug[func] = { regex, func };
 
-
-
             funcLine = splitedCode?.findLastIndex((x) => {
-				const y = x.toLowerCase().split(" ").map(x => x.trim());
-				return y.some((z) => z.includes(func));
-			});
+                const y = x
+                    .toLowerCase()
+                    .split(" ")
+                    .map((x) => x.trim());
+                return y.some((z) => z.includes(func));
+            });
 
             // if the function is endif we find the corresponding if using valid parenthesis method and use the code between them to pass it to the if function
-            if (func.replace("$", "").replace("[", "") === "endif") {
-
-                let count = 0, started = false;
+            if (func.match(/\$endif(\[)?$/i) && command["$if"] === "old") {
+                let count = 0;
+                let started = false;
                 let start = funcLine;
                 let end = funcLine;
-                
-				while (count !== 0 || !started && start >= 0) {
-					// increment count if we find an endif and decrement if we find an if
 
-					if (splitedCode[start].includes("$endif")) count++;
-					if (splitedCode[start].includes("$if[")) count--;
+                while (start >= 0) {
+                    if (!started) started = true;
+                    if (splitedCode[start].match(/\$endif/gi)) count++;
+                    if (splitedCode[start].match(/\$if\[/gi)) {
+                        count--;
+                        if (count === 0 && started) break;
+                    }
 
-					if (!started) {
-						started = true;
-					}
+                    start--;
+                }
 
-					start--;
-				}
-
-				start = Math.max(0, start);
-
-                const ifCode = splitedCode.slice(start, end+1).join("\n");
-                // use the if code and pass it to IF function
+                start = Math.max(0, start);
+                const ifCode = splitedCode.slice(start, end + 1).join("\n");
 
                 code = code.replace(
                     ifCode,
@@ -194,7 +191,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                                     async: command.async || false,
                                     functions: command.functions,
                                     __path__: command.__path__,
-                                    codeLines: command.codeLines
+                                    codeLines: command.codeLines,
+                                    $if: command["$if"]
                                 },
                                 helpers: {
                                     time: Time,
@@ -251,8 +249,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                     ).code
                 );
 
-				funcs = client.functionManager.findFunctions(code);
-				splitedCode = code.split('\n');
+                funcs = client.functionManager.findFunctions(code);
+                splitedCode = code.split("\n");
             }
 
             FuncData = await client.functionManager.cache.get(func.replace("$", "").replace("[", ""))?.code({
@@ -266,7 +264,8 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                     functions: command.functions,
                     __path__: command.__path__,
                     codeLines: command.codeLines,
-                    funcLine: funcLine
+                    funcLine: funcLine,
+                    $if: command["$if"]
                 },
                 helpers: {
                     time: Time,

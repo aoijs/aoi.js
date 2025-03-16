@@ -26,7 +26,7 @@ module.exports = async (d) => {
         data: {
             name: name,
             type: SlashTypes[type] || type,
-            description: description?.addBrackets(),
+            ...(type === "slash" ? { description: description?.addBrackets() } : {}),
             defaultMemberPermissions: appPermissions.includes(undefined) ? null : appPermissions,
             contexts: appContext,
             integrationTypes: appIntegrationType,

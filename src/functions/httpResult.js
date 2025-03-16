@@ -11,6 +11,8 @@ module.exports = async (d) => {
         }, `Invalid request name "${name}"!`)
     }
 
+    const isObject = !!d.requests[name].result && typeof d.requests[name].result === "object";
+
     if (!properties.length) {
         data.result = typeof d.requests[name].result === "object"
             ? JSON.stringify(d.requests[name].result)
