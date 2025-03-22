@@ -63,6 +63,6 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode(data),
-        data: { components: row }
+        data: { ...d.data, components: row }
     };
 };
