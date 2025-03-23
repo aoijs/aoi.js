@@ -122,7 +122,8 @@ module.exports = {
             footericon: embed.footer?.iconURL,
             description: embed.description,
             title: embed.title,
-            url: embed?.url
+            url: embed?.url,
+            timestamp: embed.timestamp? new Date(embed.timestamp).toISOString() : null
         };
 
         embed.fields.forEach((x, y) => (data[`field${y + 1}`] = x));
