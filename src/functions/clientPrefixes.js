@@ -8,11 +8,7 @@ module.exports = async (d) => {
     let [separator = ',', includeSpaces = true] = data.inside.splits;
     
     if (Array.isArray(d.client.prefix)) {
-        if (includeSpaces == false) {
-            data.result = d.client.prefix.join(separator);
-        } else if (includeSpaces == true) {
-            data.result = d.client.prefix.join(" " + separator + " ");
-        }
+        data.result = d.client.prefix.join(" " + separator + " ");
     } else {
         data.result = d.client.prefix;
     }
