@@ -8,8 +8,9 @@ module.exports = async (d) => {
   
     let [separator = ','] = data.inside.splits;  
     try {  
-        const slashCommands = await client.application.commands.fetch();  
+        const slashCommands = await d.client.application.commands.fetch();  
         const formattedSlashCommands = slashCommands.map(command => command.name).join(` ${separator} `)  
+        data.result = formattedSlashCommands;
    } catch (e) {  
          return d.aoiError.fnError(d, 'custom', {}, `Failed to fetch all slash commands with the reason: ${e}`);  
     }  
