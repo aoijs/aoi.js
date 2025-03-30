@@ -17,7 +17,7 @@ module.exports = async (d) => {
         inside: data.inside
     }, "Missing header name!");
 
-    delete d.requests[name].headers?.[headerName];
+    delete d.data.http?.headers[name];
 
     return {
         code: d.util.setCode(data),
