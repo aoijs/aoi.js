@@ -8,7 +8,7 @@ module.exports = async (d) => {
     let [separator = ','] = data.inside.splits;
     
     if (Array.isArray(d.client.prefix)) {
-        data.result = d.client.prefix.join(` ${separator} `);
+        data.result = d.client.prefix.join(separator);
     } else {
         data.result = d.client.prefix;
     }
