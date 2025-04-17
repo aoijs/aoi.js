@@ -5,14 +5,22 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [...reactions] = data.inside.splits;
-    reactions = reactions.reverse();
+    const reactions = data.inside.splits;
 
     for (let i = reactions.length - 1; i >= 0; i--) {
-        let reaction;
-        reaction = await d.util.getEmoji(d, reactions[i].addBrackets().trim());
-        if (!reaction) reaction = reactions[i].addBrackets().trim();
-        await d.message.react(reaction).catch((err) => d.aoiError.fnError(d, "custom", {}, err.message));
+        const raw = reactions[i].trim();
+        const content = raw.includes("$") ? raw.addBrackets() : raw;
+
+        const emoji = await d.util.getEmoji(d, content) || content;
+
+        await d.message.react(emoji).catch((err) =>
+            d.aoiError.fnError(
+                d,
+                "custom",
+                {},
+                `Failed to react with "${raw}": ${err.message}`
+            )
+        );
     }
 
     return {
