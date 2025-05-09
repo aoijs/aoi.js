@@ -13,14 +13,47 @@ const Checker = (content, parser) => content.includes(`{${parser}:`);
 // {parser}
 const SingleChecker = (content, parser) => content.includes("{" + parser + "}");
 
-const extractParser = (content, parser, more) => (more ? content.split(`{${parser}:`)[1].split("}")[0].split(":") : content.split(`{${parser}:`)[1].split("}")[0].addBrackets().trim());
+const extractParser = (content, parser, more) => more
+    ? content.split(`{${parser}:`)[1].split("}")[0].split(":")
+    : content.split(`{${parser}:`)[1].split("}")[0].addBrackets().trim();
 
-const EmbedParser = async (message) => {
+async function extractEmoji(part, d) {
+    if (!part) return null;
+    if (Array.isArray(part))
+        part = part.join(":").trim().addBrackets();
+
+    let emoji;
+
+    if (part.startsWith(":") && part.endsWith(":"))
+        return {
+            id: null,
+            name: part.slice(1, -1)
+        };
+
+    emoji = await d.util.getEmoji(d, part);
+    if (!emoji) {
+        emoji = part.toString().addBrackets().trim();
+    } else {
+        emoji = {
+            name: emoji.name,
+            id: emoji.id,
+            animated: emoji.animated
+        };
+    }
+    return emoji;
+}
+
+/**
+ * The Embed Parser.
+ * @param {string} message The message to parse.
+ * @returns {Promise<Array<import('discord.js').EmbedData>>}
+ */
+let EmbedParser = async (message) => {
     message = mustEscape(message);
 
     const embeds = [];
 
-    let messages = message.split("{newEmbed:").slice(1);
+    const messages = message.split("{newEmbed:").slice(1);
     for (let content of messages) {
         content = content.slice(0, content.length - 1);
 
@@ -134,33 +167,18 @@ const EmbedParser = async (message) => {
     return embeds;
 };
 
-const ComponentParser = async (message, d) => {
+/**
+ * The Component Parser.
+ * @param {string} message The message to parse.
+ * @param {import('../index.d.ts').Data} d
+ * @returns {Promise<Array<import('discord.js').ActionRowData>>}
+ */
+let ComponentParser = async (message, d) => {
     message = mustEscape(message);
 
-    let actionRow = message.split("{actionRow:").slice(1);
+    const actionRow = message.split("{actionRow:").slice(1);
 
     const actionRows = [];
-
-    async function extractEmoji(part, d) {
-        if (!part) return null;
-        let emoji;
-
-        if (part.length === 3) {
-            return part.join(":").trim();
-        }
-
-        emoji = await d.util.getEmoji(d, part.toString());
-        if (!emoji) {
-            emoji = part.toString().addBrackets().trim();
-        } else {
-            emoji = {
-                name: emoji.name,
-                id: emoji.id,
-                animated: emoji.animated
-            };
-        }
-        return emoji;
-    }
 
     for (let content of actionRow) {
         const index = content.lastIndexOf("}");
@@ -185,35 +203,22 @@ const ComponentParser = async (message, d) => {
                 const customId = button.shift();
                 const disabled = button.shift()?.addBrackets().trim() === "true";
 
-                let buttonInner;
+                let buttonInner = {
+                    type: 2,
+                    style: style,
+                    label: label,
+                    url: Number(style) === 5 ? customId : undefined,
+                    custom_id: Number(style) !== 5 ? customId : undefined,
+                    disabled: disabled
+                };
 
-                switch (Number(style)) {
-                    case 5:
-                        buttonInner = {
-                            label: label,
-                            type: 2,
-                            style: ButtonStyle.Link,
-                            url: customId,
-                            disabled: disabled
-                        };
-                        break;
-                    case 6:
-                        buttonInner = {
-                            type: 2,
-                            style: ButtonStyle.Premium,
-                            sku_id: customId,
-                            disabled: disabled
-                        };
-                        break;
-                    default:
-                        buttonInner = {
-                            label: label,
-                            type: 2,
-                            style: style,
-                            custom_id: customId,
-                            disabled: disabled
-                        };
-                        break;
+                if (Number(style) === 6) {
+                    buttonInner = {
+                        type: 2,
+                        style: ButtonStyle.Premium,
+                        sku_id: customId,
+                        disabled: disabled
+                    }
                 }
 
                 if (button && Number(style) !== 6) {
@@ -238,7 +243,7 @@ const ComponentParser = async (message, d) => {
             const disabled = inside.shift() === "true";
             const options = inside.join(":").trim();
 
-            let selectMenuOptions = [];
+            const selectMenuOptions = [];
 
             // String Input
             // {stringInput:label:value:description:defaultOption?}
@@ -329,7 +334,7 @@ const ComponentParser = async (message, d) => {
 
                 const channel_types = [];
 
-                for (let type of opts) {
+                for (const type of opts) {
                     const opts = type.split("}")[0].split(":");
                     for (let t of opts) {
                         if (!d.util.channelTypes[t]) t = "Text";
@@ -365,7 +370,7 @@ const ComponentParser = async (message, d) => {
         // Text Input
         // {textInput:label:style:custom_id:required?:placeholder?:min_length?:max_length?:value?}
         if (Checker(content, "textInput")) {
-            let inside = content.split("{textInput:").slice(1);
+            const inside = content.split("{textInput:").slice(1);
             for (let textInput of inside) {
                 textInput = textInput.split("}")[0].split(":");
 
@@ -398,7 +403,267 @@ const ComponentParser = async (message, d) => {
     return actionRows;
 };
 
-const FileParser = (message) => {
+/**
+ * The Components V2 Parser.
+ * @param {string} message The message to parse.
+ * @param {import('../index.d.ts').Data} d
+ * @returns {Promise<Array<
+ *   import('discord.js').APIContainerComponent    |
+ *   import('discord.js').APISectionComponent      |
+ *   import('discord.js').APIMediaGalleryComponent |
+ *   import('discord.js').APITextDisplayComponent  |
+ *   import('discord.js').APISeparatorComponent
+ * >>}
+*/
+let ComponentV2Parser = async (message, d) => {
+    message = mustEscape(message);
+
+    let comps = [];
+
+    // Container Parser
+    if (Checker(message, "newContainer")) {
+        const contents = message.split("{newContainer:").slice(1);
+
+        const containers = [];
+    
+        for (let content of contents) {
+            content = content.slice(0, content.lastIndexOf("}"));
+    
+            const container = {
+                type: 17,
+                accent_color: null,
+                spoiler: false,
+                components: []
+            };
+    
+            // Accent Color
+            // {color:DiscordResolvableColor}
+            if (Checker(content, "color")) {
+                const color = extractParser(content, "color");
+                container.accent_color = resolveColor(color);
+            }
+    
+            // Spoiler?
+            // {spoiler:boolean}
+            if (Checker(content, "spoiler")) {
+                const spoiler = extractParser(content, "spoiler");
+                container.spoiler = spoiler?.toLowerCase()?.trim() === 'true';
+            }
+    
+            const components = CreateObjectAST(content);
+            for (const component of components) {
+                // Media Gallery
+                // {gallery:...items}
+                if (Checker(component, "gallery")) {
+                    const gallery = parseGallery(component);
+                    container.components.push(gallery);
+                }
+
+                // Action Row
+                // {actionRow:...}
+                if (Checker(component, "actionRow")) {
+                    const rows = await ComponentParser(component, d);
+                    container.components.push(...rows);
+                }
+
+                // Section
+                // {section:...}
+                if (Checker(component, "newSection")) {
+                    const section = await parseSection(component, d);
+                    container.components.push(section);
+                } else if (Checker(component, "text")) {
+                    const text = extractParser(component, "text");
+
+                    container.components.push({
+                        type: 10,
+                        content: text
+                    });
+                }
+        
+                // Separator
+                // {separator:divider?:spacing?}
+                if (Checker(component, "separator")) {
+                    const separator = extractParser(component, "separator");
+                    container.components.push(parseSeparator(separator));
+                }
+        
+                // File
+                // {file:attachmentName:spoiler?}
+                if (Checker(component, "file")) {
+                    const file = extractParser(component, "file", true);
+                    const spoiler = ["true", "false"].find(
+                        (x) => x === file[file.length - 1]?.trim()
+                    ) ? file.pop()?.trim() === "true" : false;
+                    const filename = file.join(":").trim();
+        
+                    container.components.push({
+                        type: 13,
+                        file: { url: `attachment://${filename}` },
+                        spoiler
+                    });
+                }
+            }
+            containers.push(container);
+        }
+        comps = containers;
+    } else {
+        // Determine the parser
+        const parser = ["newSection", "gallery", "text", "separator"]
+            .find(x => Checker(message, x));
+        const contents = message.split(`{${parser}:`).slice(1);
+
+        const components = [];
+
+        for (let content of contents) {
+            content = content.slice(0, content.lastIndexOf("}"));
+
+            // Run the determined parser and add the response to the components
+            components.push(
+                parser === "text"
+                    ? { type: 10, content }
+                : parser === "separator"
+                    ? parseSeparator(content)
+                : parser === "section"
+                    ? await parseSection(content, d)
+                : parseGallery(content)
+            );
+        }
+
+        comps = components;
+    }
+
+    function parseSeparator(inside) {
+        const args = inside.split(":");
+        const divider = (args.shift() || "true")
+            ?.toLowerCase()?.trim() === 'true';
+        const spacing = Number(args.shift()?.trim());
+
+        return {
+            type: 14,
+            divider,
+            spacing
+        };
+    }
+
+    function parseGallery(str) {
+        const gallery = {
+            type: 12,
+            items: []
+        };
+
+        // Media Item
+        // {media:URL:spoiler?:description?}
+        if (Checker(str, "media")) {
+            const inside = str.split("{media:").slice(1);
+
+            for (const media of inside) {
+                const insides = media.split("}")[0]
+                    ?.split(/:(?![/][/])/)
+                    .map((x) => x.trim().addBrackets());
+
+                const url = insides.shift();
+                const spoiler = insides.shift()?.toLowerCase() === "true";
+                const description = insides.join(":");
+
+                gallery.items.push({
+                    media: { url },
+                    description: description.length ? description : undefined,
+                    spoiler
+                });
+            }
+        }
+        return gallery;
+    }
+
+    async function parseSection(str, d) {
+        const section = {
+            type: 9,
+            components: []
+        };
+
+        // Text Display
+        // {text:content}
+        if (Checker(str, "text")) {
+            const textDisplays = str.split("{text:").slice(1);
+
+            for (const display of textDisplays) {
+                const text = display.split("}")[0]?.trim()?.addBrackets();
+                section.components.push({
+                    type: 10,
+                    content: text
+                });
+            }
+        }
+
+        // Thumbnail Accessory
+        // {thumbnail:URL:spoiler?:description?}
+        if (Checker(str, "thumbnail")) {
+            const thumbnail = extractParser(str, "thumbnail")
+                ?.split(/:(?![/][/])/)
+                .map((x) => x.trim().addBrackets());
+
+            const url = thumbnail.shift();
+            const spoiler = thumbnail.shift()?.toLowerCase() === "true";
+            const description = thumbnail.join(":");
+
+            section.accessory = {
+                type: 11,
+                description: description.length ? description : undefined,
+                media: { url },
+                spoiler
+            };
+        }
+
+        // Button Accessory
+        // {button:label:style:custom_id:disabled?:emoji?}
+        if (Checker(str, "button")) {
+            const button = extractParser(str, "button")
+                ?.split(/:(?![/][/])/)
+                .map((x) => x.trim().addBrackets());
+
+            const label = button.shift();
+            let style = isNaN(button[0]) ? button.shift() : Number(button.shift());
+            style = ButtonStyleOptions[style] || style;
+            const customId = button.shift();
+            const disabled = button.shift()?.addBrackets().trim() === "true";
+
+            let buttonInner = {
+                type: 2,
+                style: style,
+                label: label,
+                url: Number(style) === 5 ? customId : undefined,
+                custom_id: Number(style) !== 5 ? customId : undefined,
+                disabled: disabled
+            };
+
+            if (Number(style) === 6) {
+                buttonInner = {
+                    type: 2,
+                    style: ButtonStyle.Premium,
+                    sku_id: customId,
+                    disabled: disabled
+                }
+            }
+
+            if (button && Number(style) !== 6) {
+                const emoji = await extractEmoji(button.join(":"), d);
+                if (emoji) buttonInner.emoji = emoji;
+            }
+
+            section.accessory = buttonInner;
+        }
+        return section;
+    }
+
+    return comps;
+};
+
+/**
+ * The File Parser.
+ * @param {string} message The message to parse.
+ * @returns {Array<import('discord.js').AttachmentBuilder>}
+ */
+let FileParser = (message) => {
     message = mustEscape(message);
 
     const attachments = [];
@@ -417,9 +682,9 @@ const FileParser = (message) => {
             const content = attachmentInner.pop().addBrackets();
             const name = attachmentInner.join(":").toString().addBrackets() ?? "attachment.png";
 
-            const attachment = new AttachmentBuilder(content, {
-                name
-            });
+            const attachment = new AttachmentBuilder(
+                content, { name }
+            );
 
             attachments.push(attachment);
         }
@@ -447,10 +712,16 @@ const FileParser = (message) => {
     return attachments;
 };
 
-const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
+/**
+ * @param {string} errorMessage The message to parse.
+ * @param {import('../index.d.ts').Data} d
+ * @param {boolean | undefined} returnMsg
+ * @param {import('discord.js').Channel} channel
+ */
+let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     errorMessage = errorMessage.trim();
 
-    let options = {
+    const options = {
         context: {
             send: true,
             deleteCommand: false,
@@ -476,17 +747,23 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         },
         files: [],
         reactions: [],
+        content: "",
         embeds: [],
         components: [],
         flags: []
     };
 
-    async function parseEmbeds(part, d) {
-        options.embeds.push(...(await EmbedParser(part, d)));
+    async function parseEmbeds(part) {
+        options.embeds.push(...(await EmbedParser(part)));
     }
 
     async function parseComponents(part, d) {
         options.components.push(...(await ComponentParser(part, d)));
+    }
+
+    async function parseComponentsV2(part, d) {
+        options.components.push(...(await ComponentV2Parser(part, d)));
+        options.flags.push(MessageFlags.IsComponentsV2);
     }
 
     function parseFiles(part) {
@@ -510,14 +787,14 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     }
 
     async function parseExecute(part, d) {
-        let cmdname = part.split(":")[1].split("}")[0].trim();
+        const cmdname = part.split(":")[1].split("}")[0].trim();
         const cmd = d.client.cmd?.awaited.find((x) => x.name === cmdname);
         if (!cmd) return console.error(`AoiError: Invalid awaited command '${cmdname}' in '{execute:${cmdname}}'`);
         await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, d.data ?? []);
     }
 
     function parseInteraction(part) {
-        let content = part.split(":");
+        const content = part.split(":");
         options.interaction.interaction = true;
         options.interaction.defer = content[1] ? content[1].split("}")[0].trim() === "true" : false;
     }
@@ -538,10 +815,11 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     const parts = CreateObjectAST(errorMessage);
     for (const part of parts) {
         errorMessage = errorMessage.replace(part, "");
-        if (Checker(part, "newEmbed")) await parseEmbeds(part, d);
+        if (Checker(part, "newEmbed")) await parseEmbeds(part);
+        else if (["newContainer", "newSection", "gallery", "text"].find(x => Checker(part, x))) await parseComponentsV2(part, d);
         else if (Checker(part, "actionRow")) await parseComponents(part, d);
         else if (Checker(part, "attachment") || Checker(part, "file")) await parseFiles(part);
-        else if (Checker(part, "edit") || Checker(part, "deleteIn") || Checker(part, "reactions")) await parseOptions(part, d);
+        else if (["edit", "deleteIn", "reactions"].find(x => Checker(part, x))) await parseOptions(part, d);
         else if (Checker(part, "reply")) parseReply(part);
         else if (Checker(part, "suppress")) options.context.suppress = true;
         else if (Checker(part, "execute")) await parseExecute(part, d);
@@ -553,14 +831,23 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         else if (Checker(part, "flags")) parseFlags(part);
     }
 
-    if (!options.embeds.length) send = false;
-    if (options.context.send && options.context.suppress) send = false;
+    if (!options.embeds.length) options.context.send = false;
+    if (options.context.send && options.context.suppress) options.context.send = false;
+
+    const isCV2 = options.flags.includes(MessageFlags.IsComponentsV2);
+    options.content = errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets();
 
     if (returnMsg === true) {
         return {
             embeds: options.context.send ? options.embeds : [],
-            components: options.components,
-            content: errorMessage.addBrackets() === "" ? " " : errorMessage.addBrackets(),
+            components: [
+                (isCV2 ? {
+                    type: 10,
+                    content: options.content
+                } : undefined),
+                ...options.components
+            ],
+            content: !isCV2 ? options.content : undefined,
             files: options.files,
             allowedMentions: options.allowedMentions,
             flags: options.flags,
@@ -586,11 +873,10 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     if ((errorMessage.length || options.context.send || options.files.length) && d && targetChannel && !returnMsg) {
         const message = await targetChannel
             .send({
-                content: errorMessage.addBrackets(),
+                content: !isCV2 ? options.content : undefined,
                 embeds: options.context.send ? options.embeds : [],
                 files: options.files?.length ? options.files : []
-            })
-            .catch(() => {});
+            }).catch(() => {});
 
         if (!message) return;
 
@@ -601,22 +887,23 @@ const errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         }
 
         if (message && deleteIn) {
-            message
-                .delete({
-                    timeout: options.context.deleteIn
-                })
-                .catch(() => null);
+            message.delete({
+                timeout: options.context.deleteIn
+            }).catch(() => null);
         }
 
-        if (returnMsg === "id") {
-            return message.id;
-        } else if (["withMessage", "object"].includes(returnMsg)) {
+        if (returnMsg === "id") return message.id;
+        if (["withMessage", "object"].includes(returnMsg)) {
             return message;
         }
     }
 };
 
-const SlashOptionsParser = async (options) => {
+/**
+ * @param {string} options The options to parse.
+ * @returns {Promise<Array<import('discord.js').APIApplicationCommandOption>>}
+ */
+let SlashOptionsParser = async (options) => {
     options = mustEscape(options);
 
     let Alloptions = [];
@@ -656,7 +943,20 @@ const SlashOptionsParser = async (options) => {
     return Alloptions;
 };
 
-const OptionParser = async (options, d) => {
+/**
+ * @param {string} options The options to parse.
+ * @param {import('../index.d.ts').Data} d 
+ * @returns {Promise<{
+ *   edits: {
+ *     time: number;
+ *     messages: Array<Array<(import('discord.js').Message | undefined)>>;
+ *   } | undefined;
+ *   reactions: RegExpMatchArray | undefined;
+ *   deleteIn: number | undefined;
+ *   deleteCommand: boolean | undefined;
+ * }>}
+ */
+let OptionParser = async (options, d) => {
     const optionData = {};
 
     // Edit
@@ -668,7 +968,7 @@ const OptionParser = async (options, d) => {
         const messageParts = parts.slice(1);
         const messages = [];
 
-        for (let msg of messageParts) {
+        for (const msg of messageParts) {
             messages.push(await errorHandler(msg, d, true));
         }
 
