@@ -26,12 +26,13 @@ module.exports = async (d, duration, timeoutData, onReady) => {
                             await d.interpreter(d.client, {}, [], cmd, d.client.db, false, undefined, { timeoutData });
                         }
                     }
-                    await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+                    await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.id}`);
                     clearInterval(interval);
                 },
                 60 * 60 * 1000
             );
-            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __nodeJSTimeoutID__: interval[Symbol.toPrimitive]() });
+            // Store the timeout ID in the database under the "__id__" property.
+            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.id, { ...timeoutData, __id__: interval[Symbol.toPrimitive]() });
         } else {
             const timeout = setTimeout(async () => {
                 cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
@@ -45,9 +46,10 @@ module.exports = async (d, duration, timeoutData, onReady) => {
                         await d.interpreter(d.client, {}, [], cmd, d.client.db, false, undefined, { timeoutData });
                     }
                 }
-                await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+                await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.id}`);
             }, duration);
-            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __nodeJSTimeoutID__: timeout[Symbol.toPrimitive]() });
+            // Store the timeout ID in the database under the "__id__" property.
+            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.id, { ...timeoutData, __id__: timeout[Symbol.toPrimitive]() });
         }
     }
 };
@@ -75,12 +77,13 @@ async function handleResidueData(d) {
                                 await d.interpreter(d.client, {}, [], cmd, d.client.db, false, undefined, { timeoutData });
                             }
                         }
-                        await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+                        await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.id}`);
                         clearInterval(interval);
                     },
                     60 * 60 * 1000
                 );
-                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __nodeJSTimeoutID__: interval[Symbol.toPrimitive]() });
+                // Store the timeout ID in the database under the "__id__" property.
+                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.id, { ...timeoutData, __id__: interval[Symbol.toPrimitive]() });
             } else {
                 const timeout = setTimeout(async () => {
                     cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
@@ -94,9 +97,10 @@ async function handleResidueData(d) {
                             await d.interpreter(d.client, {}, [], cmd, d.client.db, false, undefined, { timeoutData });
                         }
                     }
-                    await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+                    await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.id}`);
                 }, timeoutData.__duration__ - Date.now());
-                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __nodeJSTimeoutID__: timeout[Symbol.toPrimitive]() });
+                // Store the timeout ID in the database under the "__id__" property.
+                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.id, { ...timeoutData, __id__: timeout[Symbol.toPrimitive]() });
             }
         } else {
             cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
@@ -109,7 +113,7 @@ async function handleResidueData(d) {
                     await d.interpreter(d.client, {}, [], cmd, d.client.db, false, undefined, { timeoutData });
                 }
             }
-            await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
+            await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.id}`);
         }
     }
 }

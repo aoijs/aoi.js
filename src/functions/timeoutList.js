@@ -17,12 +17,12 @@ module.exports = async (d) => {
             } else if (format === "key") {
                 return x.key;
             } else if (format === "id") {
-                return x.value.__id__;
+                return x.value.id;
             } else {
                 return format
                     .replaceAll("{duration}", x.value.__duration__)
                     .replaceAll("{key}", x.key)
-                    .replaceAll("{id}", x.value.__id__);
+                    .replaceAll("{id}", x.value.id);
             }
         });
 
