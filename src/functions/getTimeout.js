@@ -20,10 +20,10 @@ module.exports = async (d) => {
                 data.result = timeout.key;
                 break;
             case "id":
-                data.result = timeout.value.id;
+                data.result = timeout.value.__id__;
                 break;
             default:
-                data.result = format.replaceAll("{duration}", timeout.value.__duration__).replaceAll("{key}", timeout.key).replaceAll("{id}", timeout.value.id);
+                data.result = format.replaceAll("{duration}", timeout.value.__duration__).replaceAll("{key}", timeout.key).replaceAll("{id}", timeout.value.__id__);
                 break;
         }
     } else {

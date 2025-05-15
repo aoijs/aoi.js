@@ -280,10 +280,10 @@ module.exports = {
     Timeout(d, name, duration, timeoutData) {
         timeoutData.__duration__ = Date.now() + duration;
         timeoutData.__timeoutName__ = name;
-        timeoutData.id = Math.floor(Math.random() * 999999);
+        timeoutData.__id__ = Math.floor(Math.random() * 999999);
 
         require("../events/Custom/timeout.js")(d, duration, timeoutData, false);
-        return timeoutData.id;
+        return timeoutData.__id__;
     },
     CreateObjectAST(parser) {
         let left = 0,
