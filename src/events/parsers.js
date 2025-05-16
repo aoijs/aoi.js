@@ -840,13 +840,7 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     if (returnMsg === true) {
         return {
             embeds: options.context.send ? options.embeds : [],
-            components: [
-                (isCV2 ? {
-                    type: 10,
-                    content: options.content
-                } : undefined),
-                ...options.components
-            ],
+            components: Array.isArray(options.components) ? options.components : [],
             content: !isCV2 ? options.content : undefined,
             files: options.files,
             allowedMentions: options.allowedMentions,
