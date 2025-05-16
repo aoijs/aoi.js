@@ -1,6 +1,3 @@
-/**
- * @param {import("..").Data} d
- */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
@@ -16,6 +13,7 @@ module.exports = async (d) => {
     if (channel.type === 0) {
         type = d.util.threadTypes[type];
         if (!type) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Type Provided In");
+    }
     
         result = await channel.threads
             .create({
@@ -27,7 +25,8 @@ module.exports = async (d) => {
             .catch((e) => {
                 return d.aoiError.fnError(d, "custom", {}, "Failed To Create Thread With Reason: " + e);
             });
-    } else if (channel.type === 15) {
+            
+        if (channel.type === 15) {
         if (!startMessage) return d.aoiError.fnError(d, "custom", {}, "Forum Channels Require Start Message");
         result = await channel.threads
             .create({
