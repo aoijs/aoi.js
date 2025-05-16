@@ -11,8 +11,6 @@ module.exports = async (d, duration, timeoutData, onReady) => {
             });
         }
     } else {
-        await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, timeoutData);
-
         if (duration > MAX_SAFE_TIMEOUT_DURATION) {
             const interval = setInterval(
                 async () => {
@@ -33,8 +31,9 @@ module.exports = async (d, duration, timeoutData, onReady) => {
                 },
                 60 * 60 * 1000
             );
+            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __timerID__: interval[Symbol.toPrimitive]() });
         } else {
-            setTimeout(async () => {
+            const timeout = setTimeout(async () => {
                 cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
                 for (const cmd of cmds) {
                     if (cmd.channel) {
@@ -48,6 +47,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
                 }
                 await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
             }, duration);
+            await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __timerID__: timeout[Symbol.toPrimitive]() });
         }
     }
 };
@@ -80,8 +80,9 @@ async function handleResidueData(d) {
                     },
                     60 * 60 * 1000
                 );
+                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __timerID__: interval[Symbol.toPrimitive]() });
             } else {
-                setTimeout(async () => {
+                const timeout = setTimeout(async () => {
                     cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
                     for (const cmd of cmds) {
                         if (cmd.channel) {
@@ -95,6 +96,7 @@ async function handleResidueData(d) {
                     }
                     await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
                 }, timeoutData.__duration__ - Date.now());
+                await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, { ...timeoutData, __timerID__: timeout[Symbol.toPrimitive]() });
             }
         } else {
             cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
