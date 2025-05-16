@@ -31,9 +31,8 @@ module.exports = async (d) => {
             .catch((e) => {
                 return d.aoiError.fnError(d, "custom", {}, "Failed To Create Thread With Reason: " + e);
             });
-    }
-    
-        result = await channel.threads
+    } else {
+                result = await channel.threads
             .create({
                 name,
                 autoArchiveDuration: archive.toUpperCase().replace("MAX", "10080"),
@@ -43,6 +42,7 @@ module.exports = async (d) => {
             .catch((e) => {
                 return d.aoiError.fnError(d, "custom", {}, "Failed To Create Thread With Reason: " + e);
             });
+    }
 
     data.result = returnID === "true" ? result?.id : undefined;
 
