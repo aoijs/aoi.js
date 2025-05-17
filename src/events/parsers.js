@@ -27,18 +27,16 @@ async function extractEmoji(part, d) {
     if (part.startsWith(":") && part.endsWith(":"))
         return {
             id: null,
-            name: part.slice(1, -1)
+            name: part,
+            animated: false
         };
 
     emoji = await d.util.getEmoji(d, part);
-    if (!emoji) {
-        emoji = part.toString().addBrackets().trim();
-    } else {
+    if(emoji)
         emoji = {
-            name: emoji.name,
-            id: emoji.id,
-            animated: emoji.animated
-        };
+            name: emoji?.name,
+            id: emoji?.id,
+            animated: emoji?.animated
     }
     return emoji;
 }

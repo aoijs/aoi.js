@@ -165,6 +165,12 @@ class Util {
         if (!Emoji) return;
         if (Emoji.includes(":")) {
             Emoji = Emoji.split(":")[2].split(">")[0];
+        } else {
+            return {
+                id: null,
+                name: Emoji,
+                animated: false
+            };
         }
 
         const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
