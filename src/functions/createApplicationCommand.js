@@ -20,7 +20,7 @@ module.exports = async (d) => {
 
     if (appContext.includes(undefined)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Context, valid options: " + Object.keys(ContextTypes).join(","));
 
-    const appPermissions = (defaultMemberPermissions.toLocaleLowerCase()).split(",").map((x) => Permissions[x]);
+    const appPermissions = (defaultMemberPermissions.toLowerCase()).split(",").map((x) => Permissions[x]);
 
     const appData = {
         data: {
