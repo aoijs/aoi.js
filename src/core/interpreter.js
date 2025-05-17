@@ -125,15 +125,15 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-		for( let i = funcs.length;i > 0;i--) {
-			if (!funcs.length) break;
-			if (i > funcs.length && funcs.length !== 0) i = funcs.length;
-			let func = funcs[i - 1];
-			const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
-			code = code.replace(regex, func);
-		}
+         for( let i = funcs.length;i > 0;i--) {
+			   if (!funcs.length) break;
+			   if (i > funcs.length && funcs.length !== 0) i = funcs.length;
+			   let func = funcs[i - 1];
+			   const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
+			   code = code.replace(regex, func);
+		   }
 
-		let splitedCode = code.split("\n");
+        let splitedCode = code.split("\n");
 
         //parsing functions (dont touch)
 
@@ -161,31 +161,12 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
 
             // if the function is endif we find the corresponding if using valid parenthesis method and use the code between them to pass it to the if function
             if (func.match(/\$endif(\[)?$/i) && command["$if"] === "old") {
-                let count = 0;
-                let started = false;
-                let start = funcLine;
-                let end = funcLine;
-
-                while (start >= 0) {
-                    if (!started) started = true;
-                    if (splitedCode[start].match(/\$endif/gi)) count++;
-                    if (splitedCode[start].match(/\$if\[/gi)) {
-                        count--;
-                        if (count === 0 && started) break;
-                    }
-
-                    start--;
-                }
-
-                start = Math.max(0, start);
-                const ifCode = splitedCode.slice(start, end + 1).join("\n");
-
                 code = code.replace(
-                    ifCode,
+                    code,
                     (
-                       await IF({
+                        await IF({
                             client,
-                            code: ifCode,
+                            code,
                             message,
                             channel,
                             args,
