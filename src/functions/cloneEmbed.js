@@ -23,7 +23,7 @@ module.exports = async (d) => {
     }
 
     d.embeds = d.embeds.filter((embed) => embed);
-    if (returnJSON === "true") data.result = d.embeds
+    if (returnJSON === "true") data.result = JSON.stringify(d.embeds);
 
     return {
         code: d.util.setCode(data),
