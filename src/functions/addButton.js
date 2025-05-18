@@ -20,6 +20,8 @@ module.exports = async (d) => {
         emojiString = await d.util.getEmoji(d, emoji.addBrackets());
     }
 
+    console.log(emojiString);
+
     const button = {
         label,
         type: 2,

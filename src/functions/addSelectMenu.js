@@ -57,9 +57,9 @@ module.exports = async (d) => {
         }
     }
 
-    let emoji, label, description, value, def;
-
     for (let option of options) {
+        let emoji, label, description, value, def;
+
         if (type.toLowerCase() !== "channel") {
             option = option.split(":");
             label = option[0].addBrackets();
@@ -80,7 +80,13 @@ module.exports = async (d) => {
                     description,
                     value,
                     default: def,
-                    emoji
+                    emoji: emoji?.id
+                        ? {
+                              id: emoji?.id,
+                              name: emoji?.name,
+                              animated: emoji?.animated
+                          }
+                        : emoji?.name || undefined
                 });
                 break;
             case "user":
