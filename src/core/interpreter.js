@@ -511,6 +511,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                             console.error(e);
                         });
                     } else {
+                        if (useChannel.type === 15) return AoiError.consoleError("ChannelError", "Cannot send messages in Forum Channels");
                         msgobj = await useChannel?.send(send)?.catch((e) => {
                             console.error(e);
                         });

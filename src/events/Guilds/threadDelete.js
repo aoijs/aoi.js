@@ -1,9 +1,9 @@
 const Interpreter = require("../../core/interpreter.js");
 
-module.exports = async (oldThread, client) => {
+module.exports = async (oldChannel, client) => {
     const cmds = client.cmd?.threadDelete.V();
     if (!cmds) return;
-    const data = { guild: oldThread.guild, channel: oldThread, client: client };
+    const data = { guild: oldChannel.guild, channel: oldChannel, client: client };
     let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {
@@ -12,6 +12,6 @@ module.exports = async (oldThread, client) => {
         } else {
             guildChannel = client.channels.cache.get(cmd.channel);
         }
-        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldThread }, guildChannel);
+        await Interpreter(client, data, [], cmd, client.db, false, guildChannel?.id, { oldChannel }, guildChannel);
     }
 };
