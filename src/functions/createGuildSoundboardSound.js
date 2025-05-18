@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+const { readFileSync } = require("node:fs");
 
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
