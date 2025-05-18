@@ -1,5 +1,3 @@
-const { Agent, fetch } = require("undici");
-
 /**
  * @param {import("..").Data} d
  */
@@ -25,21 +23,20 @@ module.exports = async (d) => {
 
     let res = await fetch(link.addBrackets(), {
         method: "GET",
-        headers: headers,
-        agent: new Agent()
+        headers: headers
     }).catch(async (e) => {
         if (!error || error === "$default") {
             return { error: `Failed To Request To API With Reason: ${e}` };
         } else {
             const jsonError = await d.util.errorParser(error, d);
-            await d.aoiError.makeMessageError(d.client, d.channel, jsonError.data ?? jsonError, jsonError.options);
+            d.aoiError.makeMessageError(d.client, d.channel, jsonError.data ?? jsonError, jsonError.options);
             return { error: `Failed To Request To API With Reason: ${e}` };
         }
     });
 
-    res = await res.json();
-
     try {
+        res = await res.json();
+
         data.result =
             property?.trim() === ""
                 ? JSON.stringify(res, null, 2)
