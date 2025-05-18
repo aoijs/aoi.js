@@ -20,7 +20,7 @@ module.exports = async (d) => {
             allowedMentions: {
                 parse: allowedMentions === "all" ? ["everyone", "users", "roles"] : allowedMentions ? allowedMentions?.split(",") : []
             },
-            flags: ephemeral ? (parser.flags ? MessageFlags.Ephemeral | parser.flags : MessageFlags.Ephemeral) : parser.flags
+            flags: ephemeral === "true" ? (parser.flags ? MessageFlags.Ephemeral | parser.flags : MessageFlags.Ephemeral) : parser.flags
         })
         .catch((e) => {
             d.aoiError.fnError(d, "custom", {}, "Failed to Reply Interaction with Reason: " + e);

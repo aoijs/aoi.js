@@ -90,17 +90,23 @@ class AoiError {
             if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
             if (extraOptions?.defer) {
                 await d.data.interaction.deferReply({
-                    flags: extraOptions.ephemeral ? (options.flags ? MessageFlags.Ephemeral | options.flags : MessageFlags.Ephemeral) : options.flags
+                    flags: extraOptions.ephemeral == true
+                        ? (options.flags ? (MessageFlags.Ephemeral | options.flags) : MessageFlags.Ephemeral)
+                        : options.flags
                 });
-
+            
                 msg = await d.data.interaction.followUp({
                     ...options,
-                    flags: extraOptions.ephemeral ? (options.flags ? MessageFlags.Ephemeral | options.flags : MessageFlags.Ephemeral) : options.flags
+                    flags: extraOptions.ephemeral == true
+                        ? (options.flags ? (MessageFlags.Ephemeral | options.flags) : MessageFlags.Ephemeral)
+                        : options.flags
                 });
             } else {
                 msg = await d.data.interaction.reply({
                     ...options,
-                    flags: extraOptions.ephemeral ? (options.flags ? MessageFlags.Ephemeral | options.flags : MessageFlags.Ephemeral) : options.flags
+                    flags: extraOptions.ephemeral == true
+                        ? (options.flags ? (MessageFlags.Ephemeral | options.flags) : MessageFlags.Ephemeral)
+                        : options.flags
                 });
             }
         } else {

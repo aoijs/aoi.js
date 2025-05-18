@@ -17,7 +17,9 @@ module.exports = async (d) => {
             embeds: parser.embeds ?? parser.data?.embeds,
             components: parser.components ?? parser.data?.components,
             files: parser.files ?? parser.data?.files,
-            flags: ephemeral ? (parser.flags ? MessageFlags.Ephemeral | parser.flags : MessageFlags.Ephemeral) : parser.flags
+            flags: ephemeral === "true"
+                ? (parser.flags ? (MessageFlags.Ephemeral | parser.flags) : MessageFlags.Ephemeral)
+                : parser.flags
         })
         .catch((e) => {
             d.aoiError.fnError(d, "custom", {}, "Failed to Follow Up Interaction with Reason: " + e);
