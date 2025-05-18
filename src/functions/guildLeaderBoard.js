@@ -24,7 +24,13 @@ module.exports = async (d) => {
     let i = 0;
     for (const lbdata of db) {
         const key = lbdata.key.split("_")[1];
-        const guild = await d.util.getGuild(d, key);
+        let guild;
+
+        try {
+            guild = await d.util.getGuild(d, key)
+        } catch {
+            continue;
+        }
 
         if (!guild) continue;
 
