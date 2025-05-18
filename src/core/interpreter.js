@@ -125,15 +125,15 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
             }
         }
 
-		for( let i = funcs.length;i > 0;i--) {
-			if (!funcs.length) break;
-			if (i > funcs.length && funcs.length !== 0) i = funcs.length;
-			let func = funcs[i - 1];
-			const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
-			code = code.replace(regex, func);
-		}
+        for (let i = funcs.length; i > 0; i--) {
+            if (!funcs.length) break;
+            if (i > funcs.length && funcs.length !== 0) i = funcs.length;
+            let func = funcs[i - 1];
+            const regex = new RegExp("\\" + func.replace("[", "\\["), "gi");
+            code = code.replace(regex, func);
+        }
 
-		let splitedCode = code.split("\n");
+        let splitedCode = code.split("\n");
 
         //parsing functions (dont touch)
 
@@ -183,7 +183,7 @@ const Interpreter = async (client, message, args, command, _db, returnCode = fal
                 code = code.replace(
                     ifCode,
                     (
-                       await IF({
+                        await IF({
                             client,
                             code: ifCode,
                             message,

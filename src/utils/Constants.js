@@ -1,6 +1,4 @@
 const { IntentsBitField, ActivityType, PermissionsBitField, Events, ChannelType } = require("discord.js");
-const { Channel } = require("../core/functions");
-const { AoiError } = require("..");
 
 const IntentOptions = {
     ...IntentsBitField.Flags
@@ -106,28 +104,28 @@ const ChannelOptions = {
             .join("\n");
     },
     appliedTags: (channel) => {
-        if (channel.type !== ChannelType.GuildPrivateThread && channel.type !== ChannelType.GuildPublicThread)
-            return AoiError.consoleError("ChannelOptions", `appliedTags is not available for this channel type (${channel.type})`);
+        if (channel.type !== ChannelType.PrivateThread && channel.type !== ChannelType.PublicThread)
+            return console.error(`ChannelOptions: appliedTags is not available for this channel type (${channel.type})`);
         return channel.appliedTags?.map((x) => x.name?.deleteBrackets()).join(", ");
     },
     memberCount: (channel) => {
-        if (channel.type !== ChannelType.GuildPrivateThread && channel.type !== ChannelType.GuildPublicThread)
-            return AoiError.consoleError("ChannelOptions", `memberCount is not available for this channel type (${channel.type})`);
+        if (channel.type !== ChannelType.PrivateThread && channel.type !== ChannelType.PublicThread)
+            return console.error(`ChannelOptions: memberCount is not available for this channel type (${channel.type})`);
         return channel.memberCount;
     },
     totalMessageSent: (channel) => {
-        if (channel.type !== ChannelType.GuildPrivateThread && channel.type !== ChannelType.GuildPublicThread)
-            return AoiError.consoleError("ChannelOptions", `totalMessageSent is not available for this channel type (${channel.type})`);
+        if (channel.type !== ChannelType.PrivateThread && channel.type !== ChannelType.PublicThread)
+            return console.error(`ChannelOptions: totalMessageSent is not available for this channel type (${channel.type})`);
         return channel.totalMessageSent;
     },
     locked: (channel) => {
-        if (channel.type !== ChannelType.GuildPrivateThread && channel.type !== ChannelType.GuildPublicThread)
-            return AoiError.consoleError("ChannelOptions", `locked is not available for this channel type (${channel.type})`);
+        if (channel.type !== ChannelType.PrivateThread && channel.type !== ChannelType.PublicThread)
+            return console.error(`ChannelOptions: locked is not available for this channel type (${channel.type})`);
         return channel.locked;
     },
     ownerID: (channel) => {
-        if (channel.type !== ChannelType.GuildPrivateThread && channel.type !== ChannelType.GuildPublicThread)
-            return AoiError.consoleError("ChannelOptions", `ownerID is not available for this channel type (${channel.type})`);
+        if (channel.type !== ChannelType.PrivateThread && channel.type !== ChannelType.PublicThread)
+            return console.error(`ChannelOptions: ownerID is not available for this channel type (${channel.type})`);
         return channel.ownerId;
     },
     childrenID: (channel) => channel.parent.children.cache?.map((x) => x.id)?.join(", "),

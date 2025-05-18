@@ -1,8 +1,7 @@
 const Util = require("./Util.js");
 const chalk = require("chalk");
 const { ComponentParser, EmbedParser, FileParser } = Util.parsers;
-const { Time } = require("../core/Time.js");
-const { BaseInteraction } = require("discord.js");
+const { BaseInteraction, MessageFlags } = require("discord.js");
 
 class AoiError {
     constructor() {
@@ -91,17 +90,17 @@ class AoiError {
             if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
             if (extraOptions?.defer) {
                 await d.data.interaction.deferReply({
-                    ephemeral: extraOptions.ephemeral ?? options.ephemeral
+                    flags: extraOptions.ephemeral ? MessageFlags.Ephemeral : 0
                 });
 
                 msg = await d.data.interaction.followUp({
                     ...options,
-                    ephemeral: extraOptions.ephemeral ?? options.ephemeral
+                    flags: extraOptions.ephemeral ? MessageFlags.Ephemeral : 0
                 });
             } else {
                 msg = await d.data.interaction.reply({
                     ...options,
-                    ephemeral: extraOptions.ephemeral ?? options.ephemeral
+                    flags: extraOptions.ephemeral ? MessageFlags.Ephemeral : 0
                 });
             }
         } else {
@@ -112,7 +111,14 @@ class AoiError {
                     return undefined;
                 });
             } else {
-                if (options.content === " " && (options.embeds?.length ?? 0) === 0 && (options.files?.length ?? 0) === 0 && (options.stickers?.length ?? 0) === 0 && (options.components?.length ?? 0) === 0) return;
+                if (
+                    options.content === " " &&
+                    (options.embeds?.length ?? 0) === 0 &&
+                    (options.files?.length ?? 0) === 0 &&
+                    (options.stickers?.length ?? 0) === 0 &&
+                    (options.components?.length ?? 0) === 0
+                )
+                    return;
 
                 if (extraOptions.reply?.message) {
                     if (extraOptions.reply?.mention) options.allowedMentions.repliedUser = true;
