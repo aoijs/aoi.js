@@ -36,7 +36,6 @@ module.exports = async (d) => {
             "{top}": i,
             "{username}": user.username,
             "{displayName}": user?.displayName,
-            "{nickname}": member.nickname || member.user?.username,
             "{tag}": user?.tag,
             "{id}": user.id,
             "{mention}": user
