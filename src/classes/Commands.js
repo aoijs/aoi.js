@@ -13,13 +13,13 @@ class Command {
         }
 
         this.__client__ = client;
-        
+
         if (client.macros.list().length > 0 && hasMacros(client.macros.list(), data.code)) {
             data.code = resolveMacros(client.macros.toArray(), data.code);
         }
 
         this.code = data.code;
-        
+
         Object.entries(data).forEach(([key, value]) => (this[key] = value));
         this.functions = this.serializeFunctions();
         this.codeLines = this.serializeCode();
@@ -33,16 +33,16 @@ class Command {
 
         const functionTokens = code.split("$");
         for (const functionToken of functionTokens) {
-            const matchingFunctions = availableFunctions.filter(func =>
-                func.toLowerCase() === ("$" + functionToken.toLowerCase()).slice(0, func.length)
-            );
+            const matchingFunctions = availableFunctions.filter((func) => func.toLowerCase() === ("$" + functionToken.toLowerCase()).slice(0, func.length));
 
             if (matchingFunctions.length) {
+                let selectedFunc;
                 if (matchingFunctions.length === 1) {
-                    usedFunctions.push(matchingFunctions[0]);
+                    selectedFunc = matchingFunctions[0];
                 } else if (matchingFunctions.length > 1) {
-                    usedFunctions.push(matchingFunctions.sort((a, b) => b.length - a.length)[0]);
+                    selectedFunc = matchingFunctions.sort((a, b) => b.length - a.length)[0];
                 }
+                usedFunctions.push(selectedFunc.toLowerCase());
             }
         }
 
@@ -76,19 +76,82 @@ class CommandManager {
         this.client = client;
         this.isClientCommand = formCommand;
         this.types = [
-            "default", "awaited", "messageDelete", "messageUpdate", "messageDeleteBulk", "guildJoin",
-            "guildUpdate", "guildLeave", "guildUnavailable", "roleCreate", "roleUpdate", "roleDelete",
-            "channelCreate", "channelUpdate", "channelDelete", "channelPinsUpdate", "stageInstanceCreate",
-            "stageInstanceUpdate", "stageInstanceDelete", "stickerCreate", "stickerDelete", "stickerUpdate",
-            "threadCreate", "threadDelete", "threadListSync", "threadMemberUpdate", "threadMembersUpdate",
-            "threadUpdate", "join", "leave", "inviteCreate", "inviteDelete", "memberUpdate", "memberAvailable",
-            "membersChunk", "emojiCreate", "emojiUpdate", "emojiDelete", "banAdd", "banRemove", "webhooksUpdate",
-            "voiceStateUpdate", "presenceUpdate", "reactionAdd", "reactionRemove", "reactionRemoveEmoji",
-            "reactionRemoveAll", "typingStart", "pollVoteAdd", "pollVoteRemove", "loop", "timeout", "ready", "variableCreate",
-            "variableDelete", "variableUpdate", "functionError", "interaction", "applicationCmdCreate",
-            "applicationCmdUpdate", "applicationCmdDelete", "applicationCmdPermissionsUpdate", "userUpdate",
-            "rateLimit", "shardReady", "shardResume", "shardReconnecting", "shardDisconnect", "shardError",
-            "autoModActionExecution", "autoModCreate", "autoModDelete", "autoModUpdate", "entitlementCreate", "entitlementDelete", "entitlementUpdate"
+            "default",
+            "awaited",
+            "messageDelete",
+            "messageUpdate",
+            "messageDeleteBulk",
+            "guildJoin",
+            "guildUpdate",
+            "guildLeave",
+            "guildUnavailable",
+            "roleCreate",
+            "roleUpdate",
+            "roleDelete",
+            "channelCreate",
+            "channelUpdate",
+            "channelDelete",
+            "channelPinsUpdate",
+            "stageInstanceCreate",
+            "stageInstanceUpdate",
+            "stageInstanceDelete",
+            "stickerCreate",
+            "stickerDelete",
+            "stickerUpdate",
+            "threadCreate",
+            "threadDelete",
+            "threadListSync",
+            "threadMemberUpdate",
+            "threadMembersUpdate",
+            "threadUpdate",
+            "join",
+            "leave",
+            "inviteCreate",
+            "inviteDelete",
+            "memberUpdate",
+            "memberAvailable",
+            "membersChunk",
+            "emojiCreate",
+            "emojiUpdate",
+            "emojiDelete",
+            "banAdd",
+            "banRemove",
+            "webhooksUpdate",
+            "voiceStateUpdate",
+            "presenceUpdate",
+            "reactionAdd",
+            "reactionRemove",
+            "reactionRemoveEmoji",
+            "reactionRemoveAll",
+            "typingStart",
+            "pollVoteAdd",
+            "pollVoteRemove",
+            "loop",
+            "timeout",
+            "ready",
+            "variableCreate",
+            "variableDelete",
+            "variableUpdate",
+            "functionError",
+            "interaction",
+            "applicationCmdCreate",
+            "applicationCmdUpdate",
+            "applicationCmdDelete",
+            "applicationCmdPermissionsUpdate",
+            "userUpdate",
+            "rateLimit",
+            "shardReady",
+            "shardResume",
+            "shardReconnecting",
+            "shardDisconnect",
+            "shardError",
+            "autoModActionExecution",
+            "autoModCreate",
+            "autoModDelete",
+            "autoModUpdate",
+            "entitlementCreate",
+            "entitlementDelete",
+            "entitlementUpdate"
         ];
 
         if (formCommand) {
@@ -100,12 +163,12 @@ class CommandManager {
     }
 
     formCommand() {
-        this.types.forEach(x => (this[x] = new Group()));
+        this.types.forEach((x) => (this[x] = new Group()));
         this.interaction = {
             selectMenu: new Group(),
             button: new Group(),
             slash: new Group(),
-            modal: new Group(),
+            modal: new Group()
         };
     }
 
@@ -121,7 +184,7 @@ class CommandManager {
     }
 
     formCustomCommand(customCmds) {
-        customCmds.forEach(x => {
+        customCmds.forEach((x) => {
             this[x] = new Group();
         });
 
@@ -133,5 +196,5 @@ class CommandManager {
 
 module.exports = {
     CommandManager,
-    Command,
+    Command
 };
