@@ -17,8 +17,7 @@ module.exports = async (d) => {
 
     let emojiString;
     if (emoji) {
-        emojiString = await d.util.getEmoji(d, emoji.addBrackets()).id;
-        if (!emojiString) emojiString = emoji?.addBrackets().trim();
+        emojiString = await d.util.getEmoji(d, emoji.addBrackets());
     }
 
     const button = {

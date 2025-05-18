@@ -98,6 +98,7 @@ export declare class Util {
     static fetchRole(guild: Guild, id: string): Promise<Role | undefined>;
     static aoiFunc(d: Data, FieldsRequired?: boolean): SetCodeOptions & { err?: string };
     static getEmoji(d: any, Emoji: string): Emoji | undefined;
+    static isUnicodeEmoji(string: string): boolean;
     static getSticker(guild: Guild, Sticker: string): any;
     static findMember(guild: Guild, memberResolver: string): string | undefined;
     static findGuildChannel(guild: Guild, ChannelResolver: string): string | undefined;

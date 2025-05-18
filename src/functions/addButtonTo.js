@@ -35,8 +35,7 @@ module.exports = async d => {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Button Style Provided In");
 
     if (emoji && emoji !== "") {
-        const customEmoji = await d.util.getEmoji(d, emoji.addBrackets())?.id;
-        emoji = customEmoji ? customEmoji : emoji.addBrackets().trim();
+        emoji = await d.util.getEmoji(d, emoji.addBrackets());
     }
 
     const button = new ButtonBuilder({

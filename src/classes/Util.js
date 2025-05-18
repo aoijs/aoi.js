@@ -90,8 +90,8 @@ class Util {
 
     static async getGuild(d, id) {
         if (d.guild?.id === id && d.guild?.id) return d.guild;
-    
-        return d.client.guilds.cache.get(id) || await d.client.guilds.fetch(id, { force: true });
+
+        return d.client.guilds.cache.get(id) || (await d.client.guilds.fetch(id, { force: true }));
     }
 
     static get channelTypes() {
@@ -161,16 +161,24 @@ class Util {
         return data;
     }
 
+    static isUnicodeEmoji(str) {
+        const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F1E6}-\u{1F1FF}][\u{FE00}-\u{FE0F}\u200D]?/gu;
+        return emojiRegex.test(str);
+    }
+
     static getEmoji(d, Emoji) {
         if (!Emoji) return;
-        if (Emoji.includes(":")) {
-            Emoji = Emoji.split(":")[2].split(">")[0];
-        } else {
+
+        if (this.isUnicodeEmoji(Emoji)) {
             return {
-                id: null,
-                name: Emoji,
+            id: null,
+                name: Emoji.trim(),
                 animated: false
             };
+        }
+
+        if (Emoji.includes(":")) {
+            Emoji = Emoji.split(":")[2].split(">")[0];
         }
 
         const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
@@ -186,7 +194,7 @@ class Util {
             return appEmojis;
         });
     }
-    
+
     static getSticker(guild, Sticker) {
         return guild.stickers.cache.find((x) => x.name.toLowerCase() === Sticker.toLowerCase().addBrackets() || x.id === Sticker);
     }

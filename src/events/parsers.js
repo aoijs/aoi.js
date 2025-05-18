@@ -13,14 +13,11 @@ const Checker = (content, parser) => content.includes(`{${parser}:`);
 // {parser}
 const SingleChecker = (content, parser) => content.includes("{" + parser + "}");
 
-const extractParser = (content, parser, more) => more
-    ? content.split(`{${parser}:`)[1].split("}")[0].split(":")
-    : content.split(`{${parser}:`)[1].split("}")[0].addBrackets().trim();
+const extractParser = (content, parser, more) => (more ? content.split(`{${parser}:`)[1].split("}")[0].split(":") : content.split(`{${parser}:`)[1].split("}")[0].addBrackets().trim());
 
 async function extractEmoji(part, d) {
     if (!part) return null;
-    if (Array.isArray(part))
-        part = part.join(":").trim().addBrackets();
+    if (Array.isArray(part)) part = part.join(":").trim().addBrackets();
 
     let emoji;
 
@@ -32,12 +29,7 @@ async function extractEmoji(part, d) {
         };
 
     emoji = await d.util.getEmoji(d, part);
-    if(emoji)
-        emoji = {
-            name: emoji?.name,
-            id: emoji?.id,
-            animated: emoji?.animated
-    }
+    if (!emoji) return null;
     return emoji;
 }
 
@@ -191,9 +183,7 @@ let ComponentParser = async (message, d) => {
 
             for (let button of inside) {
                 button = button?.split("}")[0];
-                button = button
-                    ?.split(/:(?![/][/])/)
-                    .map((x) => x.trim().addBrackets());
+                button = button?.split(/:(?![/][/])/).map((x) => x.trim().addBrackets());
 
                 const label = button.shift();
                 let style = isNaN(button[0]) ? button.shift() : Number(button.shift());
@@ -216,7 +206,7 @@ let ComponentParser = async (message, d) => {
                         style: ButtonStyle.Premium,
                         sku_id: customId,
                         disabled: disabled
-                    }
+                    };
                 }
 
                 if (button && Number(style) !== 6) {
@@ -412,7 +402,7 @@ let ComponentParser = async (message, d) => {
  *   import('discord.js').APITextDisplayComponent  |
  *   import('discord.js').APISeparatorComponent
  * >>}
-*/
+ */
 let ComponentV2Parser = async (message, d) => {
     message = mustEscape(message);
 
@@ -423,31 +413,31 @@ let ComponentV2Parser = async (message, d) => {
         const contents = message.split("{newContainer:").slice(1);
 
         const containers = [];
-    
+
         for (let content of contents) {
             content = content.slice(0, content.lastIndexOf("}"));
-    
+
             const container = {
                 type: 17,
                 accent_color: null,
                 spoiler: false,
                 components: []
             };
-    
+
             // Accent Color
             // {color:DiscordResolvableColor}
             if (Checker(content, "color")) {
                 const color = extractParser(content, "color");
                 container.accent_color = resolveColor(color);
             }
-    
+
             // Spoiler?
             // {spoiler:boolean}
             if (Checker(content, "spoiler")) {
                 const spoiler = extractParser(content, "spoiler");
-                container.spoiler = spoiler?.toLowerCase()?.trim() === 'true';
+                container.spoiler = spoiler?.toLowerCase()?.trim() === "true";
             }
-    
+
             const components = CreateObjectAST(content);
             for (const component of components) {
                 // Media Gallery
@@ -477,23 +467,21 @@ let ComponentV2Parser = async (message, d) => {
                         content: text
                     });
                 }
-        
+
                 // Separator
                 // {separator:divider?:spacing?}
                 if (Checker(component, "separator")) {
                     const separator = extractParser(component, "separator");
                     container.components.push(parseSeparator(separator));
                 }
-        
+
                 // File
                 // {file:attachmentName:spoiler?}
                 if (Checker(component, "file")) {
                     const file = extractParser(component, "file", true);
-                    const spoiler = ["true", "false"].find(
-                        (x) => x === file[file.length - 1]?.trim()
-                    ) ? file.pop()?.trim() === "true" : false;
+                    const spoiler = ["true", "false"].find((x) => x === file[file.length - 1]?.trim()) ? file.pop()?.trim() === "true" : false;
                     const filename = file.join(":").trim();
-        
+
                     container.components.push({
                         type: 13,
                         file: { url: `attachment://${filename}` },
@@ -506,8 +494,7 @@ let ComponentV2Parser = async (message, d) => {
         comps = containers;
     } else {
         // Determine the parser
-        const parser = ["newSection", "gallery", "text", "separator"]
-            .find(x => Checker(message, x));
+        const parser = ["newSection", "gallery", "text", "separator"].find((x) => Checker(message, x));
         const contents = message.split(`{${parser}:`).slice(1);
 
         const components = [];
@@ -517,13 +504,7 @@ let ComponentV2Parser = async (message, d) => {
 
             // Run the determined parser and add the response to the components
             components.push(
-                parser === "text"
-                    ? { type: 10, content }
-                : parser === "separator"
-                    ? parseSeparator(content)
-                : parser === "section"
-                    ? await parseSection(content, d)
-                : parseGallery(content)
+                parser === "text" ? { type: 10, content } : parser === "separator" ? parseSeparator(content) : parser === "section" ? await parseSection(content, d) : parseGallery(content)
             );
         }
 
@@ -532,8 +513,7 @@ let ComponentV2Parser = async (message, d) => {
 
     function parseSeparator(inside) {
         const args = inside.split(":");
-        const divider = (args.shift() || "true")
-            ?.toLowerCase()?.trim() === 'true';
+        const divider = (args.shift() || "true")?.toLowerCase()?.trim() === "true";
         const spacing = Number(args.shift()?.trim());
 
         return {
@@ -555,7 +535,8 @@ let ComponentV2Parser = async (message, d) => {
             const inside = str.split("{media:").slice(1);
 
             for (const media of inside) {
-                const insides = media.split("}")[0]
+                const insides = media
+                    .split("}")[0]
                     ?.split(/:(?![/][/])/)
                     .map((x) => x.trim().addBrackets());
 
@@ -640,7 +621,7 @@ let ComponentV2Parser = async (message, d) => {
                     style: ButtonStyle.Premium,
                     sku_id: customId,
                     disabled: disabled
-                }
+                };
             }
 
             if (button && Number(style) !== 6) {
@@ -680,9 +661,7 @@ let FileParser = (message) => {
             const content = attachmentInner.pop().addBrackets();
             const name = attachmentInner.join(":").toString().addBrackets() ?? "attachment.png";
 
-            const attachment = new AttachmentBuilder(
-                content, { name }
-            );
+            const attachment = new AttachmentBuilder(content, { name });
 
             attachments.push(attachment);
         }
@@ -814,10 +793,10 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     for (const part of parts) {
         errorMessage = errorMessage.replace(part, "");
         if (Checker(part, "newEmbed")) await parseEmbeds(part);
-        else if (["newContainer", "newSection", "gallery", "text"].find(x => Checker(part, x))) await parseComponentsV2(part, d);
+        else if (["newContainer", "newSection", "gallery", "text"].find((x) => Checker(part, x))) await parseComponentsV2(part, d);
         else if (Checker(part, "actionRow")) await parseComponents(part, d);
         else if (Checker(part, "attachment") || Checker(part, "file")) await parseFiles(part);
-        else if (["edit", "deleteIn", "reactions"].find(x => Checker(part, x))) await parseOptions(part, d);
+        else if (["edit", "deleteIn", "reactions"].find((x) => Checker(part, x))) await parseOptions(part, d);
         else if (Checker(part, "reply")) parseReply(part);
         else if (Checker(part, "suppress")) options.context.suppress = true;
         else if (Checker(part, "execute")) await parseExecute(part, d);
@@ -868,7 +847,8 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
                 content: !isCV2 ? options.content : undefined,
                 embeds: options.context.send ? options.embeds : [],
                 files: options.files?.length ? options.files : []
-            }).catch(() => {});
+            })
+            .catch(() => {});
 
         if (!message) return;
 
@@ -879,9 +859,11 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         }
 
         if (message && deleteIn) {
-            message.delete({
-                timeout: options.context.deleteIn
-            }).catch(() => null);
+            message
+                .delete({
+                    timeout: options.context.deleteIn
+                })
+                .catch(() => null);
         }
 
         if (returnMsg === "id") return message.id;
@@ -937,7 +919,7 @@ let SlashOptionsParser = async (options) => {
 
 /**
  * @param {string} options The options to parse.
- * @param {import('../index.d.ts').Data} d 
+ * @param {import('../index.d.ts').Data} d
  * @returns {Promise<{
  *   edits: {
  *     time: number;
