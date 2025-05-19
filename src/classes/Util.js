@@ -162,7 +162,7 @@ class Util {
     }
 
     static isUnicodeEmoji(str) {
-        const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F1E6}-\u{1F1FF}][\u{FE00}-\u{FE0F}\u200D]?/gu;
+        const emojiRegex = /(?:\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\d\uFE0F\u20E3)/gu;
         return emojiRegex.test(str);
     }
 
@@ -171,7 +171,7 @@ class Util {
 
         if (this.isUnicodeEmoji(Emoji)) {
             return {
-            id: null,
+                id: null,
                 name: Emoji.trim(),
                 animated: false
             };
