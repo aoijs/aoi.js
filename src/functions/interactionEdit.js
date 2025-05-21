@@ -10,10 +10,10 @@ module.exports = async d => {
     const parser = await d.util.errorParser(content, d);
 
     await d.data.interaction?.editReply({
-        content: parser.content?.trim() === "" ? " " : parser.content?.addBrackets() ?? parser.data?.content,
-        embeds: parser.embeds ?? parser.data?.embeds,
-        components: parser.components ?? parser.data?.components,
-        files: parser.files ?? parser.data?.files,
+        content: parser.content?.trim() === "" ? " " : parser.content?.addBrackets(),
+        embeds: parser.embeds,
+        components: parser.components,
+        files: parser.files,
         flags: parser.flags ?? 0,
         allowedMentions: {
             parse: allowedMentions === "all" ? [ "everyone", "users", "roles" ] : (allowedMentions ? allowedMentions?.split(",") : [])

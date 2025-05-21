@@ -816,9 +816,9 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     if (returnMsg === true) {
         return {
-            embeds: options.context.send ? options.embeds : [],
+            embeds: !isCV2 ? (options.context.send ? options.embeds : []) : null,
             components: Array.isArray(options.components) ? options.components : [],
-            content: !isCV2 ? options.content : undefined,
+            content: !isCV2 ? options.content : null,
             files: options.files,
             allowedMentions: options.allowedMentions,
             flags: options.flags,
