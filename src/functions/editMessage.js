@@ -1,3 +1,5 @@
+const { MessageFlags } = require("discord.js");
+
 /**
  * @param {import("..").Data} d
  */
@@ -15,7 +17,9 @@ module.exports = async d => {
 
     msg = await d.util.errorParser(msg, d);
 
-    message.edit(msg?.data ? msg?.data : msg).catch(e => {
+    if (msg.flags & MessageFlags.IsComponentsV2) msg.content = null;
+
+    message.edit(msg).catch(e => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Edit Message With Reason: " + e);
     });
 
