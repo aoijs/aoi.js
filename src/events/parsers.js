@@ -816,7 +816,7 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
 
     if (returnMsg === true) {
         return {
-            embeds: !isCV2 ? (options.context.send ? options.embeds : []) : null,
+            embeds: !isCV2 ? (options.context.send ? options.embeds : null) : null,
             components: Array.isArray(options.components) ? options.components : [],
             content: !isCV2 ? options.content : null,
             files: options.files,
@@ -845,8 +845,8 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         const message = await targetChannel
             .send({
                 content: !isCV2 ? options.content : null,
-                embeds: options.context.send ? options.embeds : [],
-                files: options.files?.length ? options.files : []
+                embeds: options.context.send ? options.embeds : null,
+                files: options.files?.length ? options.files : null
             })
             .catch(() => {});
 
