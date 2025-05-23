@@ -844,7 +844,7 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     if ((errorMessage.length || options.context.send || options.files.length) && d && targetChannel && !returnMsg) {
         const message = await targetChannel
             .send({
-                content: !isCV2 ? options.content : undefined,
+                content: !isCV2 ? options.content : null,
                 embeds: options.context.send ? options.embeds : [],
                 files: options.files?.length ? options.files : []
             })
