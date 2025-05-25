@@ -162,7 +162,7 @@ class Util {
     }
 
     static isUnicodeEmoji(str) {
-        const emojiRegex = /(?:\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\d\uFE0F\u20E3)/gu;
+        const emojiRegex = /(?:\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D(?:\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?))*)|\d\uFE0F\u20E3/gu;
         return emojiRegex.test(str);
     }
 
