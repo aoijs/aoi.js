@@ -162,7 +162,7 @@ class Util {
     }
 
     static isUnicodeEmoji(str) {
-        const emojiRegex = /(?:\p{Emoji_Presentation}|\p{Emoji}\uFE0F|\d\uFE0F\u20E3)/gu;
+        const emojiRegex = /(?:\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D(?:\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?))*)|\d\uFE0F\u20E3/gu;
         return emojiRegex.test(str);
     }
 
@@ -181,7 +181,15 @@ class Util {
             Emoji = Emoji.split(":")[2].split(">")[0];
         }
 
-        const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        let clientEmojis;
+
+        if (d.client.shard) {
+            clientEmojis = d.client.shard.broadcastEval((client, { Emoji }) => {
+                return client.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+            }, { context: { Emoji } }).then(arr => arr.find(x => x));
+        } else {
+            clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        }
 
         if (clientEmojis) return clientEmojis;
 
@@ -189,7 +197,7 @@ class Util {
         const fetchEmojis = application.emojis.cache.size ? Promise.resolve() : application.emojis.fetch();
 
         return fetchEmojis.then(() => {
-            const appEmojis = application.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+            const appEmojis = application.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
 
             return appEmojis;
         });
