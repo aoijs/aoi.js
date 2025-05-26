@@ -7,7 +7,9 @@ module.exports = async d => {
 
     const guildID = data.inside.inside;
 
-    data.result = !!(await d.util.getGuild(d, guildID));
+    const guild = await d.util.getGuild(d, guildID);
+    
+    data.result = guild ? true : false;
 
     return {
         code: d.util.setCode(data)
