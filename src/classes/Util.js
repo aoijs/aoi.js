@@ -181,7 +181,15 @@ class Util {
             Emoji = Emoji.split(":")[2].split(">")[0];
         }
 
-        const clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        let clientEmojis;
+
+        if (d.client.shard) {
+            clientEmojis = d.client.shard.broadcastEval((client, { Emoji }) => {
+                return client.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+            }, { context: { Emoji } }).then(arr => arr.find(x => x));
+        } else {
+            clientEmojis = d.client.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+        }
 
         if (clientEmojis) return clientEmojis;
 
@@ -189,7 +197,7 @@ class Util {
         const fetchEmojis = application.emojis.cache.size ? Promise.resolve() : application.emojis.fetch();
 
         return fetchEmojis.then(() => {
-            const appEmojis = application.emojis.cache.find((x) => x.name.toLowerCase().addBrackets() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
+            const appEmojis = application.emojis.cache.find((x) => x.name.toLowerCase() === Emoji.toLowerCase() || x.id === Emoji || x.toString() === Emoji);
 
             return appEmojis;
         });
