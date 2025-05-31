@@ -638,6 +638,58 @@ let ComponentV2Parser = async (message, d) => {
 };
 
 /**
+ * The Poll Parser.
+ * @param {string} message The message to parse.
+ * @param {import('../index.d.ts').Data} d
+ * @returns {Promise<import('discord.js').PollData | null>}
+ */
+let PollParser = async (message, d) => {
+    message = mustEscape(message);
+    const answerArray = [];
+
+    // Poll
+    // {poll:question:duration:allowMultiselect?:answers}
+    if (Checker(message, "poll")) {
+        let inside = message.split("{poll:").slice(1).join("");
+        inside = inside.split(":").map((c) => c.trim());
+  
+        const question = inside.shift()?.addBrackets();
+        const duration = (Time.parse(inside.shift())?.ms || 3600000) / 3600000;
+        const allow = inside[0] === "" ? false : inside.shift() === "true";
+        const rest = inside.join(":");
+        
+        if (question === '' || duration > 168 || duration < 1) return null;
+
+        // Answer Option
+        // {answer:text:emoji?}
+        if (Checker(rest, "answer")) {
+            const matches = [...rest.matchAll(/{answer:(.*?[^}])}/gim)];
+    
+            for (const answer of matches) {
+                let [text, emoji] = answer[1].match(/(?:<a?:.*?:\d+>|[^:|^}])+/gim) ?? [];
+                if (text === '') continue;
+
+                text = text.addBrackets();
+                emoji = (await d.util.getEmoji(d, emoji?.addBrackets()))?.id ?? emoji?.addBrackets();
+        
+                answerArray.push({
+                    text,
+                    emoji
+                });
+            }
+    
+            if (answerArray.length === 0) return null;
+            return {
+                question: { text: question },
+                duration: Number.parseInt(duration),
+                allowMultiselect: allow,
+                answers: answerArray.filter(Boolean)
+            };
+        }
+    }
+};
+
+/**
  * The File Parser.
  * @param {string} message The message to parse.
  * @returns {Array<import('discord.js').AttachmentBuilder>}
@@ -727,7 +779,8 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         content: "",
         embeds: [],
         components: [],
-        flags: []
+        flags: [],
+        poll: null
     };
 
     async function parseEmbeds(part) {
@@ -741,6 +794,10 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
     async function parseComponentsV2(part, d) {
         options.components.push(...(await ComponentV2Parser(part, d)));
         options.flags.push(MessageFlags.IsComponentsV2);
+    }
+
+    async function parsePoll(part, d) {
+        options.poll = await PollParser(part, d);
     }
 
     function parseFiles(part) {
@@ -795,6 +852,7 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
         if (Checker(part, "newEmbed")) await parseEmbeds(part);
         else if (["newContainer", "newSection", "gallery", "text"].find((x) => Checker(part, x))) await parseComponentsV2(part, d);
         else if (Checker(part, "actionRow")) await parseComponents(part, d);
+        else if (Checker(part, "poll")) await parsePoll(part, d);
         else if (Checker(part, "attachment") || Checker(part, "file")) await parseFiles(part);
         else if (["edit", "deleteIn", "reactions"].find((x) => Checker(part, x))) await parseOptions(part, d);
         else if (Checker(part, "reply")) parseReply(part);
@@ -822,6 +880,7 @@ let errorHandler = async (errorMessage, d, returnMsg = false, channel) => {
             files: options.files,
             allowedMentions: options.allowedMentions,
             flags: options.flags,
+            poll: options.poll,
             options: {
                 reply: options.reply,
                 reactions: options.reactions.length ? options.reactions : undefined,
@@ -986,5 +1045,6 @@ module.exports = {
     FileParser,
     ErrorHandler: errorHandler,
     SlashOptionsParser,
-    OptionParser
+    OptionParser,
+    PollParser
 };
