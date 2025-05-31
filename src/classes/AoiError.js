@@ -1,6 +1,6 @@
 const Util = require("./Util.js");
 const chalk = require("chalk");
-const { ComponentParser, EmbedParser, FileParser } = Util.parsers;
+const { ComponentParser, EmbedParser, FileParser, PollParser } = Util.parsers;
 const { BaseInteraction, MessageFlags } = require("discord.js");
 
 class AoiError {
@@ -87,15 +87,14 @@ class AoiError {
 
         let msg;
         if (extraOptions.interaction) {
-            if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
-            if (extraOptions?.defer && !d.data.interaction?.deferred) {
+            if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0 && !options.poll) return;
+            if (extraOptions?.defer) {
                 await d.data.interaction.deferReply({
                     flags: extraOptions.ephemeral == true
                         ? (options.flags ? (MessageFlags.Ephemeral | options.flags) : MessageFlags.Ephemeral)
                         : options.flags
                 });
-            }
-            if (d.data.interaction?.deferred) {
+            
                 msg = await d.data.interaction.followUp({
                     ...options,
                     flags: extraOptions.ephemeral == true
@@ -112,7 +111,7 @@ class AoiError {
             }
         } else {
             if (channel instanceof BaseInteraction) {
-                if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0) return;
+                if (options.content === "" && options.embeds?.length === 0 && options.files?.length === 0 && options.components?.length === 0 && !options.poll) return;
                 msg = await channel.reply(options).catch((e) => {
                     AoiError.consoleError("CreateMessageError", e);
                     return undefined;
@@ -123,7 +122,8 @@ class AoiError {
                     (options.embeds?.length ?? 0) === 0 &&
                     (options.files?.length ?? 0) === 0 &&
                     (options.stickers?.length ?? 0) === 0 &&
-                    (options.components?.length ?? 0) === 0
+                    (options.components?.length ?? 0) === 0 &&
+                    !options.poll
                 )
                     return;
 
