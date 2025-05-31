@@ -650,39 +650,34 @@ let PollParser = async (message, d) => {
     // Poll
     // {poll:question:duration:allowMultiselect?:answers}
     if (Checker(message, "poll")) {
-        let inside = message.split("{poll:").slice(1).join("");
-        inside = inside.split(":").map((c) => c.trim());
-  
-        const question = inside.shift()?.addBrackets();
-        const duration = (Time.parse(inside.shift())?.ms || 3600000) / 3600000;
-        const allow = inside[0] === "" ? false : inside.shift() === "true";
-        const rest = inside.join(":");
-        
-        if (question === '' || duration > 168 || duration < 1) return null;
+        let [question, duration, allowMultiselect] = extractParser(message, "poll", true);
+        question = question?.addBrackets().trim() ?? "";
+        duration = (Time.parse(duration)?.ms || 3600000) / 3600000;
+        allowMultiselect = allowMultiselect?.toLowerCase() === "true";
+
+        if (question === "" || duration > 168 || duration < 1) return null;
 
         // Answer Option
         // {answer:text:emoji?}
-        if (Checker(rest, "answer")) {
-            const matches = [...rest.matchAll(/{answer:(.*?[^}])}/gim)];
-    
-            for (const answer of matches) {
-                let [text, emoji] = answer[1].match(/(?:<a?:.*?:\d+>|[^:|^}])+/gim) ?? [];
-                if (text === '') continue;
+        if (Checker(message, "answer")) {
+            let rest = message.split("{answer:").slice(1);
+            for (let answer of rest) {
+                answer = answer.split("}")[0];
+                let [text, emoji] = answer?.match(/(?:<a?:.*?:\d+>|[^:|^}])+/gim) ?? [];
+                if (!text || text === "") continue;
 
-                text = text.addBrackets();
+                text = text?.addBrackets().trim();
                 emoji = (await d.util.getEmoji(d, emoji?.addBrackets()))?.id ?? emoji?.addBrackets();
-        
-                answerArray.push({
-                    text,
-                    emoji
-                });
+                answerArray.push({ text, emoji });
+                if (answerArray.length >= 10) break;
             }
-    
+
             if (answerArray.length === 0) return null;
+
             return {
                 question: { text: question },
-                duration: Number.parseInt(duration),
-                allowMultiselect: allow,
+                duration,
+                allowMultiselect,
                 answers: answerArray.filter(Boolean)
             };
         }
