@@ -79,7 +79,7 @@ class FunctionManager {
 
                 if (fileEntry) {
                     const [file] = fileEntry;
-                    const funcPath = `../functions/${ogname}.js`;
+                    const funcPath = `../functions/${file}/${ogname}.js`;
                     this.cache.set(
                         ogname,
                         new Function(require(funcPath), func)
