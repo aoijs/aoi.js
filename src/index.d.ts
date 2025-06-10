@@ -97,7 +97,7 @@ export declare class Util {
     static getRole(guild: Guild, id: string): Promise<Role | undefined>;
     static fetchRole(guild: Guild, id: string): Promise<Role | undefined>;
     static aoiFunc(d: Data, FieldsRequired?: boolean): SetCodeOptions & { err?: string };
-    static getEmoji(d: any, Emoji: string): Emoji | undefined;
+    static getEmoji(d: any, emoji: string, options?: { guild?: Guild }): Promise<Emoji | undefined>;
     static isUnicodeEmoji(string: string): boolean;
     static getSticker(guild: Guild, Sticker: string): any;
     static findMember(guild: Guild, memberResolver: string): string | undefined;
@@ -118,9 +118,9 @@ export declare class CustomEvent extends EventEmitter {
 
 export type FunctionResolveErrorType = "member" | "message" | "channel" | "user" | "role" | "guild" | "emoji" | "option" | "custom";
 export interface ConsoleMessageData {
-    text: string,
-    textColor?: string,
-    centered?: boolean
+    text: string;
+    textColor?: string;
+    centered?: boolean;
 }
 
 export declare class AoiError {
@@ -369,13 +369,13 @@ export type Interpreter = (
     message:
         | Message
         | {
-            message?: Message;
-            channel?: PartialDMChannel | DMChannel | NewsChannel | TextChannel | ThreadChannel;
-            guild?: Guild | null;
-            author?: User;
-            member?: GuildMember;
-            mentions?: MessageMentions;
-        },
+              message?: Message;
+              channel?: PartialDMChannel | DMChannel | NewsChannel | TextChannel | ThreadChannel;
+              guild?: Guild | null;
+              author?: User;
+              member?: GuildMember;
+              mentions?: MessageMentions;
+          },
     args: string[],
     command: BaseCommand | Command | EventCommand | AwaitCommand | InteractionCommand | LoopCommand,
     _db: KeyValue | Transmitter,
@@ -414,7 +414,7 @@ export interface CustomAoiJSFunction<Type = "aoi.js"> extends BaseCustomFunction
  * Represents the structure for a discord.js custom function type.
  */
 export interface CustomDiscordJSFunction<Type = "djs"> extends BaseCustomFunction<Type> {
-    code(d: Data): Promise<Record<string, any>> | Record<string, any>
+    code(d: Data): Promise<Record<string, any>> | Record<string, any>;
 }
 
 // FunctionManager
@@ -507,14 +507,7 @@ export interface Data<T extends Record<string, unknown> = Record<string, unknown
     allowedMentions: string[];
     embeds: APIEmbed[];
     components: APIActionRowComponent[];
-    files: (
-        BufferResolvable
-        | Stream
-        | JSONEncodable<APIAttachment>
-        | Attachment
-        | AttachmentBuilder
-        | AttachmentPayload
-    )[];
+    files: (BufferResolvable | Stream | JSONEncodable<APIAttachment> | Attachment | AttachmentBuilder | AttachmentPayload)[];
     timezone: string;
     channelUsed: string | undefined;
     vars: Record<string, string>;
@@ -522,15 +515,18 @@ export interface Data<T extends Record<string, unknown> = Record<string, unknown
     disableMentions: string;
     array: string[];
     arrays: string[][];
-    requests: Record<string, {
-        body?: string;
-        credentials?: string;
-        headers?: Record<string, string>;
-        ok: boolean;
-        redirected: boolean;
-        statusCode: number;
-        result: string | object;
-    }>;
+    requests: Record<
+        string,
+        {
+            body?: string;
+            credentials?: string;
+            headers?: Record<string, string>;
+            ok: boolean;
+            redirected: boolean;
+            statusCode: number;
+            result: string | object;
+        }
+    >;
     reactions: string[];
     message: Message | undefined;
     msg: Message | undefined;

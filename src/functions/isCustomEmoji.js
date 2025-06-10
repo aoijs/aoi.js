@@ -5,22 +5,17 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [emoji, guildID = d.guild?.id] = data.inside.splits;
-    emoji = emoji.split(":");
-    if (emoji.length > 1) {
-        emoji = emoji.pop().replace(">", "");
-    } else {
-        emoji = emoji[0];
-    }
-    const guild =
-        guildID === "global" ? d.client : await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
+    const [emojiResolver, guildID = "global"] = data.inside.splits;
 
-    let isemoji = emoji.trim() === "" ? undefined : guild.emojis.cache.get(emoji);
+    const emoji = await d.util.getEmoji(
+        d, 
+        emojiResolver, 
+        { guild: guildID === "global" ? null : d.util.getGuild(d, guildID) }
+    );
 
-    data.result = !!isemoji;
+    data.result = !!emoji?.id;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

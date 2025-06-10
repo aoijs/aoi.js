@@ -7,8 +7,7 @@ module.exports = async (d) => {
 
     const [emoji] = data.inside.splits;
 
-    const regex = /\p{Extended_Pictographic}/gu;
-    data.result = regex.test(emoji);
+    data.result = d.util.isUnicodeEmoji(emoji);
 
     return {
         code: d.util.setCode(data)

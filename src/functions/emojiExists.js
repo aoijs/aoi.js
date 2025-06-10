@@ -9,15 +9,9 @@ module.exports = async (d) => {
 
     const [emoji] = data.inside.splits;
 
-    let emojiString = (await d.util.getEmoji(d, emoji.addBrackets()));
-    if (!emojiString) emojiString = emoji.toString().addBrackets();
+    const emojiString = await d.util.getEmoji(d, emoji.addBrackets());
 
-    if (!(emojiString instanceof GuildEmoji)) {
-        data.result = true;
-    } else {
-        const regex = /\p{Extended_Pictographic}/gu;
-        data.result = regex.test(emojiId);
-    }
+    data.result = !!emojiString;
 
     return {
         code: d.util.setCode(data)
