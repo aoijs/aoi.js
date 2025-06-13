@@ -27,9 +27,9 @@ module.exports = async (d) => {
         .map((role) => {
             if (type.includes("{")) {
                 return type.replaceAll(/{(.+?)}/g, (_, prop) => role[prop]);
-            } else {
-                return role[type];
             }
+            if (type == "mention") return role.toString();
+            return role[type];
         })
         .join(sep)
         .removeBrackets();
