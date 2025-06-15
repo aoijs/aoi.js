@@ -29,6 +29,7 @@ module.exports = async (d) => {
                 return type.replaceAll(/{(.+?)}/g, (_, prop) => role[prop]);
             }
             if (type == "mention") return role.toString();
+            if (type == "memberCount") return role.members?.size ?? 0;
             return role[type];
         })
         .join(sep)
