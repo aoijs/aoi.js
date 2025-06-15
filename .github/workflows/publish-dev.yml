@@ -1,8 +1,10 @@
 name: publish-dev
+
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 */12 * * *'
+  push:
+    branches:
+      - main
+
 jobs:
   npm:
     name: npm
@@ -25,9 +27,39 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
-      - name: Publish
+      - name: Set dev version (auto-increment patch)
+        id: set_version
         run: |
-          npm version --git-tag-version=false $(jq --raw-output '.version' package.json).$(git rev-parse --short HEAD).$(date +%s)
-          npm publish --tag dev || true
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+          MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+          PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
+
+          NEW_PATCH=$((PATCH + 1))
+          BASE_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+          GIT_HASH=$(git rev-parse --short HEAD)
+          TIMESTAMP=$(date +%s)
+          DEV_VERSION="${BASE_VERSION}-dev.${GIT_HASH}.${TIMESTAMP}"
+
+          echo "Setting version to: $DEV_VERSION"
+          npm version --git-tag-version=false "$DEV_VERSION"
+
+          echo "version=$BASE_VERSION" >> $GITHUB_OUTPUT
+          echo "hash=$GIT_HASH" >> $GITHUB_OUTPUT
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+
+      - name: Publish
+        run: npm publish --tag dev || true
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+
+      - name: Notify Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"Published new dev version of aoi.js: ${{ steps.set_version.outputs.version }}-dev.${{ steps.set_version.outputs.hash }}.${{ steps.set_version.outputs.timestamp }}\"}" \
+               "$DISCORD_WEBHOOK_URL"
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+               
