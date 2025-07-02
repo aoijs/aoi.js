@@ -37,12 +37,13 @@ module.exports = async (d) => {
     try {
         res = await res.json();
 
+        const value = eval(`res?.${property?.addBrackets()}`);
         data.result =
             property?.trim() === ""
                 ? JSON.stringify(res, null, 2)
-                : typeof eval(`res?.${property?.addBrackets()}`) === "object" || Array.isArray(eval(`res?.${property?.addBrackets()}`))
-                  ? JSON.stringify(eval(`res?.${property?.addBrackets()}`), null, 2)
-                  : eval(`res?.${property?.addBrackets()}`);
+                : (typeof value === "object" && value !== null)
+                  ? JSON.stringify(value, null, 2)
+                  : value;
     } catch (e) {
         data.result = res;
     }
