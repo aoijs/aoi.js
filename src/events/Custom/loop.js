@@ -13,13 +13,13 @@ module.exports = async (client) => {
     };
     for (const cmd of cmds) {
         const data = { ...Data };
-        if (cmd.channel?.includes("$")) {
+        if (cmd.channel?.includes("$") && cmd.channel) {
             const id = await Interpreter(client, data, [], { name: "ChannelParser", code: cmd.channel }, client.db, true);
-            guildChannel = await client.channels.fetch(id?.code);
+            guildChannel = await client.channels.fetch(id?.code).catch(() => null);
             data.channel = guildChannel;
             data.guild = guildChannel?.guild;
-        } else {
-            guildChannel = await client.channels.fetch(cmd.channel);
+        } else if (cmd.channel) {
+            guildChannel = await client.channels.fetch(cmd.channel).catch(() => null);
             data.channel = guildChannel;
             data.guild = guildChannel?.guild;
         }
