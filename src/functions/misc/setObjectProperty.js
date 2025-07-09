@@ -9,7 +9,7 @@ module.exports = async (d) => {
     if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "Invalid object");
 
     try {
-        value = JSON.parse(value);
+        value = JSON.parse(value.addBrackets());
     } catch (e) {
         data.result = undefined;
     }
