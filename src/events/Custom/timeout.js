@@ -1,5 +1,6 @@
+const MAX_SAFE_TIMEOUT_DURATION = 0x7fffffff;
+
 module.exports = async (d, duration, timeoutData, onReady) => {
-    const MAX_SAFE_TIMEOUT_DURATION = 0x7fffffff;
     let cmds = d.client.cmd?.timeout.V();
 
     if (onReady) {
@@ -30,7 +31,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
 
             await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
             clearInterval(interval);
-        }, 3600000);
+        }, 3_600_000);
 
         await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, {
             ...timeoutData,
@@ -60,7 +61,6 @@ module.exports = async (d, duration, timeoutData, onReady) => {
 };
 
 async function handleResidueData(d) {
-    const MAX_SAFE_TIMEOUT_DURATION = 0x7fffffff;
     const td = await d.client.db.all("__aoijs_vars__", (data) => data.key.startsWith("setTimeout_"));
     let cmds = d.client.cmd?.timeout.V();
 
@@ -87,7 +87,7 @@ async function handleResidueData(d) {
 
                     await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
                     clearInterval(interval);
-                }, 3600000);
+                }, 3_600_000);
 
                 await d.client.db.set("__aoijs_vars__", "setTimeout", timeoutData.__id__, {
                     ...timeoutData,
