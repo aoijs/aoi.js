@@ -20,7 +20,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
             cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
             for (const cmd of cmds) {
                 if (cmd.channel) {
-                    const channel = await d.util.getChannel(d, cmd.channel);
+                    const channel = await getChannel(d, cmd.channel);
                     if (!channel) return d.aoiError.fnError(d, "custom", {}, `Invalid channel ID in timeout command: ${cmd.channel}`);
                     await d.interpreter(d.client, { channel }, [], cmd, d.client.db, false, undefined, { timeoutData });
                 } else {
@@ -41,7 +41,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
             cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
             for (const cmd of cmds) {
                 if (cmd.channel) {
-                    const channel = await d.util.getChannel(d, cmd.channel);
+                    const channel = await getChannel(d, cmd.channel);
                     if (!channel) return d.aoiError.fnError(d, "custom", {}, `Invalid channel ID in timeout command: ${cmd.channel}`);
                     await d.interpreter(d.client, { channel }, [], cmd, d.client.db, false, undefined, { timeoutData });
                 } else {
@@ -77,7 +77,7 @@ async function handleResidueData(d) {
                     cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
                     for (const cmd of cmds) {
                         if (cmd.channel) {
-                            const channel = await d.util.getChannel(d, cmd.channel);
+                            const channel = await getChannel(d, cmd.channel);
                             if (!channel) return d.aoiError.fnError(d, "custom", {}, `Invalid channel ID in timeout command: ${cmd.channel}`);
                             await d.interpreter(d.client, { channel }, [], cmd, d.client.db, false, undefined, { timeoutData });
                         } else {
@@ -98,7 +98,7 @@ async function handleResidueData(d) {
                     cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
                     for (const cmd of cmds) {
                         if (cmd.channel) {
-                            const channel = await d.util.getChannel(d, cmd.channel);
+                            const channel = await getChannel(d, cmd.channel);
                             if (!channel) return d.aoiError.fnError(d, "custom", {}, `Invalid channel ID in timeout command: ${cmd.channel}`);
                             await d.interpreter(d.client, { channel }, [], cmd, d.client.db, false, undefined, { timeoutData });
                         } else {
@@ -118,7 +118,7 @@ async function handleResidueData(d) {
             cmds = cmds.filter((x) => x.name === timeoutData.__timeoutName__);
             for (const cmd of cmds) {
                 if (cmd.channel) {
-                    const channel = d.client.channels.cache.get(cmd.channel) || (await d.client.channels.fetch(cmd.channel).catch(() => null));
+                    const channel = await getChannel(d, cmd.channel);
                     if (!channel) return d.aoiError.fnError(d, "custom", {}, `Invalid channel ID in timeout command: ${cmd.channel}`);
                     await d.interpreter(d.client, { channel }, [], cmd, d.client.db, false, undefined, { timeoutData });
                 } else {
@@ -129,4 +129,9 @@ async function handleResidueData(d) {
             await d.client.db.delete("__aoijs_vars__", `setTimeout_${timeoutData.__id__}`);
         }
     }
+}
+
+async function getChannel(d, channel) {
+    if (d.util) return await d.util.getChannel(d, channel, true);
+    return d.client.channels.cache.get(cmd.channel) || (await d.client.channels.fetch(cmd.channel).catch(() => null));
 }
