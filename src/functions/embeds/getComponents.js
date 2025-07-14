@@ -5,24 +5,22 @@ module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
-  const [channelID = d.channel?.id, messageID] = data.inside.splits;
+  const [channelID = d.channel?.id, messageID = d.message?.id] = data.inside.splits;
 
   if (!messageID) {
     return d.aoiError.fnError(
       d,
-      "custom",
+      "message",
       { inside: data.inside },
-      "You must provide the message ID."
     );
   }
 
-  const channel = d.client.channels.cache.get(channelID);
-  if (!channel) {
+  const channel = d.util.getChannel(channelID);
+ if (!channel) {
     return d.aoiError.fnError(
       d,
-      "custom",
+      "channel",
       { inside: data.inside },
-      `Channel with ID "${channelID}" was not found.`
     );
   }
 
@@ -32,17 +30,15 @@ module.exports = async (d) => {
   } catch {
     return d.aoiError.fnError(
       d,
-      "custom",
+      "message",
       { inside: data.inside },
-      `Failed to fetch message with ID "${messageID}".`
     );
-  }
 
   if (!msg.components?.length) {
     return d.aoiError.fnError(
       d,
       "custom",
-      { inside: data.inside },
+      {},
       "The message does not contain any components."
     );
   }
