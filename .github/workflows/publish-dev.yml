@@ -6,6 +6,10 @@ on:
     branches:
       - v6
 
+concurrency:
+  group: publish-dev-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   npm:
     name: npm
@@ -63,4 +67,3 @@ jobs:
                "$DISCORD_WEBHOOK_URL"
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-               
