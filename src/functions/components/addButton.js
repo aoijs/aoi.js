@@ -16,7 +16,19 @@ module.exports = async (d) => {
     if (!style || style > 6 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Style Provided In");
 
     let emojiString;
-    if (emoji) {
+if (emoji) {
+        const match = emoji.match(/<?a?:\w+:(\d+)>?/);
+        if (match) {
+            const emojiID = match[1];
+
+            for (const [_, guild] of d.client.guilds.cache) {
+                try {
+                    await guild.emojis.fetch(emojiID);
+                } catch (_) {
+                }
+            }
+        }
+
         emojiString = await d.util.getEmoji(d, emoji.addBrackets());
     }
 
