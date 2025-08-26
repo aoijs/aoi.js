@@ -1,4 +1,4 @@
-
+const { MessageFlags } = require("discord.js");
 /**
  * @param {import("..").Data} d
  */
