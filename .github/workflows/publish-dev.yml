@@ -25,7 +25,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: npx pnpm i
 
       - name: Deprecate old versions
         run: npm deprecate aoi.js@"~6.1.0-dev" "This is no longer supported" || true
