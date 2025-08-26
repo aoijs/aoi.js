@@ -135,6 +135,8 @@ class CommandManager {
             "pollVoteRemove",
             "loop",
             "timeout",
+            "clientReady",
+            // TODO: remove once djs v15 releases
             "ready",
             "variableCreate",
             "variableDelete",

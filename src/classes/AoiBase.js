@@ -3,13 +3,7 @@ const { DefaultWebSocketManagerOptions } = require("@discordjs/ws");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
-const {
-    ActivityTypeAvailables,
-    IntentOptions,
-    EventsToIntents,
-    EventsToDjsEvents,
-    EventstoFile
-} = require("../utils/Constants.js");
+const { ActivityTypeAvailables, IntentOptions, EventsToIntents, EventsToDjsEvents, EventstoFile } = require("../utils/Constants.js");
 const Database = require("./Database.js");
 const { MacrosManager } = require("./Macros.js");
 const CacheManager = require("./CacheManager.js");
@@ -24,15 +18,7 @@ class BaseClient extends Client {
             options.makeCache = CacheManager._setDjsCacheManagers(options.cache);
         }
 
-        options.partials = options.partials || [
-            Partials.GuildMember,
-            Partials.Channel,
-            Partials.Message,
-            Partials.Reaction,
-            Partials.User,
-            Partials.GuildScheduledEvent,
-            Partials.ThreadMember
-        ];
+        options.partials = options.partials || [Partials.GuildMember, Partials.Channel, Partials.Message, Partials.Reaction, Partials.User, Partials.GuildScheduledEvent, Partials.ThreadMember];
 
         const aoiOptions = {};
         Object.assign(aoiOptions, options);
@@ -58,11 +44,7 @@ class BaseClient extends Client {
         this.variableManager = new VariableManager(this);
         this.macros = new MacrosManager();
 
-        if (
-            options.disableAoiDB !== true &&
-            (["default", "aoi.db"].includes(options?.database?.type) ||
-                !options?.database)
-        ) {
+        if (options.disableAoiDB !== true && (["default", "aoi.db"].includes(options?.database?.type) || !options?.database)) {
             const dbData = options?.database;
 
             this.db = new Database(
@@ -72,9 +54,7 @@ class BaseClient extends Client {
                 {
                     dataConfig: {
                         path: dbData?.path ?? "./database",
-                        tables: dbData?.tables?.length
-                            ? [...dbData?.tables, "__aoijs_vars__"]
-                            : ["main", "__aoijs_vars__"]
+                        tables: dbData?.tables?.length ? [...dbData?.tables, "__aoijs_vars__"] : ["main", "__aoijs_vars__"]
                     },
                     cacheConfig: {
                         sortFunction: (a, b) => {
@@ -91,10 +71,7 @@ class BaseClient extends Client {
             );
         }
 
-        if (
-            Array.isArray(options?.disableFunctions) &&
-            options?.disableFunctions.length
-        ) {
+        if (Array.isArray(options?.disableFunctions) && options?.disableFunctions.length) {
             options?.disableFunctions.forEach((func) => {
                 const index = parser.findIndex((f) => f === func);
                 if (index !== -1) {
@@ -108,8 +85,8 @@ class BaseClient extends Client {
 
         Object.defineProperty(this, "statuses", { value: new Group() });
 
-        this.on("ready", async () => {
-            await require("../events/NonIntents/ready.js")(this);
+        this.once("clientReady", async () => {
+            await require("../events/NonIntents/clientReady.js")(this);
             await require("../events/status.js")(this.statuses, this);
             await require("../events/AoiStart.js")(this);
         });
@@ -133,9 +110,7 @@ class BaseClient extends Client {
     status(...statuses) {
         for (const status of statuses) {
             status.type =
-                Object.keys(ActivityTypeAvailables).includes(
-                    status.type.toLowerCase()
-                ) || Object.values(ActivityTypeAvailables).includes(status.type)
+                Object.keys(ActivityTypeAvailables).includes(status.type.toLowerCase()) || Object.values(ActivityTypeAvailables).includes(status.type)
                     ? ActivityTypeAvailables[status.type.toLowerCase()]
                     : ActivityTypeAvailables.playing;
 
@@ -163,9 +138,7 @@ class BaseClient extends Client {
      */
     variables(d, table = this.db?.tables?.[0]) {
         if (this.db === undefined) {
-            throw new TypeError(
-                "A database must be provided to use the variables method."
-            );
+            throw new TypeError("A database must be provided to use the variables method.");
         }
 
         for (const [name, value] of Object.entries(d)) {
@@ -186,27 +159,17 @@ class BaseClient extends Client {
             const file = EventstoFile[event];
             if (intent === "GuildEmojis") intent = "GuildEmojisAndStickers";
             if (intent === "GuildMessageTypings") intent = "GuildMessageTyping";
-            if (
-                intent &&
-                !["Custom", "NonIntents"].includes(intent) &&
-                !bits.has(intent[0].toUpperCase() + intent.slice(1))
-            ) {
+            if (intent && !["Custom", "NonIntents"].includes(intent) && !bits.has(intent[0].toUpperCase() + intent.slice(1))) {
                 return AoiError.EventError(event, intent, 357);
             }
 
             try {
-                const func = [
-                    "shardDisconnect",
-                    "shardError",
-                    "shardReconnecting",
-                    "shardResume",
-                    "shardReady",
-                    "shardCreate"
-                ].includes(event)
+                const func = ["shardDisconnect", "shardError", "shardReconnecting", "shardResume", "shardReady", "shardCreate"].includes(event)
                     ? require(`../sharding/${event}.js`)
                     : Array.isArray(file)
-                        ? file.map((x) => require(`../events/${filedir}/${x}.js`))
-                        : require(`../events/${filedir}/${file}.js`);
+                      ? // TODO: remove 'ready' once djs v15 releases
+                        file.map((x) => require(`../events/${filedir}/${x === "ready" ? "clientReady" : x}.js`))
+                      : require(`../events/${filedir}/${file === "ready" ? "clientReady" : file}.js`);
 
                 this.on(eventName, (...args) => {
                     if (Array.isArray(func)) func.forEach((x) => x(...args, this));
