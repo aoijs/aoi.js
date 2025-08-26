@@ -252,6 +252,89 @@ class Util {
             })
             .first(options.limit);
     }
+
+    static buildInside(keys, input) {
+        const parseValue = (val) => {
+            const v = val.trim();
+            if (v.toLowerCase() === "null") return null;
+            if (v.toLowerCase() === "true") return true;
+            if (v.toLowerCase() === "false") return false;
+            return v;
+        };
+
+        if (Array.isArray(input) && input.length > 1) {
+            if (input.length > keys.length) {
+                throw new Error(`Too many fields in input: expected ${keys.length}, got ${input.length}`);
+            }
+            const obj = {};
+            keys.forEach((key, i) => {
+                obj[key] = i < input.length ? parseValue(input[i]) : null;
+            });
+            return obj;
+        }
+
+        let strInput = Array.isArray(input) ? input[0] : input;
+        if (typeof strInput === "string" && strInput.includes(":")) {
+            const obj = {};
+            strInput.split("\n").forEach((line, lineIndex) => {
+                const clean = line.trim();
+                if (!clean) return;
+
+                const [key, ...rest] = clean.split(":");
+                if (!key) return;
+
+                const trimmedKey = key.trim();
+                if (!keys.includes(trimmedKey)) {
+                    throw new Error(`Invalid field "${trimmedKey}", expected one of: ${keys.join(", ")}`);
+                }
+
+                let value = rest.join(":").trim();
+
+                let final = "";
+                let escaped = false;
+                for (let i = 0; i < value.length; i++) {
+                    const char = value[i];
+                    if (char === "\\" && !escaped) {
+                        escaped = true;
+                        continue;
+                    }
+                    final += (escaped ? "\\" : "") + char;
+                    escaped = false;
+                }
+
+                if (final !== "") obj[trimmedKey] = parseValue(final);
+            });
+
+            return obj;
+        }
+
+        if (typeof strInput === "string") {
+            const obj = {};
+            let finalValues = [];
+            let current = "";
+            let escaped = false;
+
+            for (let i = 0; i < strInput.length; i++) {
+                const char = strInput[i];
+                if (char === "\\" && !escaped) {
+                    escaped = true;
+                    continue;
+                }
+                current += (escaped ? "\\" : "") + char;
+                escaped = false;
+            }
+            finalValues.push(current);
+
+            keys.forEach((key, i) => {
+                const val = finalValues[i] !== undefined ? finalValues[i] : "";
+                obj[key] = val !== "" ? parseValue(val) : undefined;
+            });
+
+            return obj;
+        }
+
+        return {};
+    }
 }
 
 module.exports = Util;
