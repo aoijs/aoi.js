@@ -27,7 +27,7 @@ module.exports = async (d) => {
     ];
     const insides = d.util.buildInside(keys, info);
 
-    const channel = await d.util.getChannel(d, channelID);
+    const channel = await d.util.getChannel(d, insides.channelId);
     if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
 
     channel
