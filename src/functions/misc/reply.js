@@ -1,19 +1,20 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [messageID = d.message?.id, mentionUser = 'true'] = data.inside.splits;
+    const [channelID, messageID, disablePing = 'false'] = data.inside.splits;
 
-    d.allowedMentions.repliedUser = mentionUser === "true";
+    d.allowedMentions.repliedUser = disablePing === "false";
 
     return {
         code: d.util.setCode(data),
         reply: {
             message: messageID,
-            user: mentionUser === 'true'
+            channel: channelID,
+            user: disablePing === 'false'
         },
         allowedMentions: d.allowedMentions
-    }
-}
+    };
+};
