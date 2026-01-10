@@ -106,6 +106,7 @@ export declare class Util {
     static findRole(guild: Guild, RoleResolver: string): string | undefined;
     static findUser(client: Client, UserResolver: string): string | undefined;
     static findRoles(guild: Guild, options: { type: string; query: string; limit: number }): Collection<Snowflake, Role>;
+    static buildInside(fields: Array, input: String | Array): Object;
 }
 
 export declare class CustomEvent extends EventEmitter {

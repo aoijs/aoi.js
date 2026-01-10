@@ -44,7 +44,6 @@ class Client extends BaseClient {
         if (!d.code) {
             throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: ${type}. position: ${this.cmd[type].size}`);
         }
-
         this.cmd[type].set(this.cmd[type].size, new Command(d, this));
     }
 
@@ -261,7 +260,7 @@ class Client extends BaseClient {
     }
 
     readyCommand(d = {}) {
-        this.addCommandType("ready", d);
+        this.addCommandType("clientReady", d);
     }
 
     functionErrorCommand(d = {}) {

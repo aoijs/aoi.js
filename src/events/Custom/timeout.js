@@ -7,7 +7,7 @@ module.exports = async (d, duration, timeoutData, onReady) => {
         if (d.client?.db?.db?.readyAt) {
             await handleResidueData(d);
         } else {
-            d.client.db.db.on("ready", async () => {
+            d.client.db.db.once("clientReady", async () => {
                 await handleResidueData(d);
             });
         }

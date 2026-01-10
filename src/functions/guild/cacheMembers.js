@@ -3,7 +3,6 @@
  */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
-    if (data.err) return d.error(data.err);
     const [guildID = d.guild.id, returnCount = "false"] = data.inside.splits;
     let result;
   

@@ -6,6 +6,10 @@ on:
     branches:
       - v6
 
+concurrency:
+  group: publish-dev-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   npm:
     name: npm
@@ -14,14 +18,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Node v16
+      - name: Install Node v19
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 19
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: npx pnpm i
 
       - name: Deprecate old versions
         run: npm deprecate aoi.js@"~6.1.0-dev" "This is no longer supported" || true
@@ -63,4 +67,3 @@ jobs:
                "$DISCORD_WEBHOOK_URL"
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-               

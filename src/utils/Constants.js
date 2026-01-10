@@ -403,6 +403,7 @@ const EventsToIntents = {
     onEntitlementCreate: "NonIntents",
     onEntitlementUpdate: "NonIntents",
     onEntitlementDelete: "NonIntents",
+    onClientReady: "NonIntents",
     onVariableCreate: "Custom",
     onVariableDelete: "Custom",
     onVariableUpdate: "Custom",

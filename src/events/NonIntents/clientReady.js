@@ -1,10 +1,18 @@
 const Interpreter = require("../../core/interpreter.js");
+const util = require("node:util");
 /**
  * @param {import('../../classes/AoiClient.js')} client
  */
 module.exports = async (client) => {
-    const cmds = client.cmd?.ready.V();
-    if (!cmds) return;
+    const cmds = ["clientReady", "ready"].flatMap((k) => client.cmd?.[k]?.V() ?? []);
+
+    // TODO: remove when djs v15 releases
+    if (client.cmd?.ready?.V()?.length) {
+        util.deprecate(() => {}, "The client event 'ready' is deprecated & will be removed in the future. Use 'clientReady' instead.")();
+    }
+
+    if (!cmds.length) return;
+
     let guildChannel;
     const data = {
         client: client
