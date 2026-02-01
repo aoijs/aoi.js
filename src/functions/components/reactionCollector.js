@@ -1,7 +1,7 @@
 const {Time} = require("../../core/Time.js");
 
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
@@ -16,7 +16,7 @@ module.exports = async (d) => {
     if (!msg) return d.aoiError.fnError(d, "message", {inside: data.inside});
 
     time = isNaN(time) ? Time.parse(time)?.ms : Number(time);
-    
+
     try {
         awaitData = JSON.parse(awaitData);
     } catch (e) {

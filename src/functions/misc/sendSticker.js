@@ -1,5 +1,5 @@
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
@@ -11,7 +11,7 @@ module.exports = async (d) => {
 
   const sticker = await d.util.getSticker(guild, resolver);
   if (!sticker) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "sticker");
-  
+
   try {
     await d.channel.send({ stickers: [sticker.id] });
    } catch (err) {

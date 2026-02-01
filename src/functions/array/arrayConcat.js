@@ -1,12 +1,12 @@
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async (d) => {
   const data = d.util.aoiFunc(d);
   if (data.err) return d.error(data.err);
 
   const [separator, ...names] = data.inside.splits;
-  
+
   const name = names.shift();
 
   if (!d.data.arrays?.[name]) {

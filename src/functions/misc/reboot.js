@@ -1,5 +1,5 @@
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = d => {
     const { code } = d.util.aoiFunc(d);

@@ -1,7 +1,7 @@
 const PLACEHOLDER_PATTERN = /\{.*?\}/g
 
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async d => {
     const data = d.util.aoiFunc(d)
@@ -19,7 +19,7 @@ module.exports = async d => {
 
     const foundCase = cases.find((c) => c.type === "case" && c.value === value)
     const defaultCase = cases.find((c) => c.type === "default")
-        
+
     if (foundCase) {
         const awaitedCommand = d.client.cmd.awaited.find((cmd) => cmd.name.toLowerCase() === foundCase.awaitedName.toLowerCase())
         if (!awaitedCommand) {

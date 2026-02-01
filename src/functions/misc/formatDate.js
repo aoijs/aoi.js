@@ -1,7 +1,7 @@
 const formatDate = require("../../events/FormatDate");
 
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = (d) => {
     const code = d.command.code,

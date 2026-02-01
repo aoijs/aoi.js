@@ -1,5 +1,5 @@
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async d => {
     const {client, message, msg, author, guild, channel, member, mentions, reactions, util, aoiError, args} = d;

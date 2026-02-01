@@ -1,5 +1,5 @@
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = async d => {
     const {ActivityType} = require("discord.js");

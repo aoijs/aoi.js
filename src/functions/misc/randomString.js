@@ -1,6 +1,6 @@
 const {Characters} = require("../../utils/Constants.js");
 /**
- * @param {import("..").Data} d
+ * @param {import("../..").Data} d
  */
 module.exports = (d) => {
     const data = d.util.aoiFunc(d);
