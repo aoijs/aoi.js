@@ -25,8 +25,6 @@
       return d.aoiError.fnError(d, "custom", {}, "Invalid JSON in options: " + err.message);
     }
 
-    console.log(options, parsedOptions)
-
     const appData = {
       data: {
         name: name,
