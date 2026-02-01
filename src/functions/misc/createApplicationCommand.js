@@ -23,8 +23,8 @@ module.exports = async (d) => {
     options
   ] = data.inside.splits;
 
-  const guild = guildID === "global" ? undefined : await d.util.getGuild(d, guildID);
-  if (!guild && guildID !== "global") return d.aoiError.fnError(d, "guild", { inside: data.inside });
+    const guild = guildID === "global" ? undefined : await d.util.getGuild(d, guildID);
+    if (!guild && guildID !== "global") return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
   const appContext = contexts === "all" || !contexts.trim().length
     ? [ContextTypes.botdm, ContextTypes.dm, ContextTypes.guild]
