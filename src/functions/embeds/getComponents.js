@@ -33,6 +33,7 @@ module.exports = async (d) => {
       "message",
       { inside: data.inside },
     );
+  }
 
   if (!msg.components?.length) {
     return d.aoiError.fnError(
