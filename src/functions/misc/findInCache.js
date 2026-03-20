@@ -42,7 +42,7 @@ module.exports = async (d) => {
                 "Invalid FindType Provided In",
             );
     try {
-        // セキュリティ: eval()の代わりに安全なキャッシュ検索（RCE対策）
+        // Security: safe cache lookup instead of eval() to prevent RCE
         const cache = d.client.cacheManager.caches[type]?.[name];
 
         if (["includes", "startsWith", "endsWith"].includes(findType)) {

@@ -7,7 +7,7 @@ const { mustEscape } = require('../../core/mustEscape.js')
  */
 function safeEvalBoolean(expr) {
     const sanitized = expr.replace(/\s/g, "");
-    // true, false, &&, ||, (, ) のみ許可
+    // Only allow: true, false, &&, ||, (, )
     if (!/^[truefals&|()]+$/.test(sanitized)) return undefined;
 
     try {
@@ -30,7 +30,7 @@ module.exports = async (d) => {
         return d.aoiError.fnError(d, "custom", data.inside, "Valid Operators Not Provided In");
     }
 
-    // セキュリティ: eval()の代わりに安全なboolean評価（RCE対策）
+    // Security: safe boolean evaluation instead of eval() to prevent RCE
     let result = CheckCondition.solve(mustEscape(condition) || "");
     result = safeEvalBoolean(result)?.toString();
 

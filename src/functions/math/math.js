@@ -15,7 +15,7 @@ module.exports = async (d) => {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
     }
 
-    // セキュリティ: 安全な数式文字のみ許可（eval RCE対策）
+    // Security: only allow safe math expression characters to prevent RCE
     const safeExpr = math.replace(/\s/g, "");
     if (!/^[0-9+\-*/%.(),eEMath a-z_]+$/i.test(safeExpr)) {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");

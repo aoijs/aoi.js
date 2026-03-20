@@ -10,7 +10,7 @@ module.exports = (d) => {
     const object = d.data.objects?.[objectName];
     if (!object) return d.aoiError.fnError("Object not found");
 
-    // セキュリティ: eval()の代わりに安全なプロパティアクセス（RCE対策）
+    // Security: safe property access instead of eval() to prevent RCE
     try {
         const keys = option
             .replace(/\[["']?/g, ".")
