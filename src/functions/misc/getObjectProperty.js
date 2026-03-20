@@ -10,12 +10,14 @@ module.exports = (d) => {
     const object = d.data.objects?.[objectName];
     if (!object) return d.aoiError.fnError("Object not found");
 
+    // セキュリティ: eval()の代わりに安全なプロパティアクセス（RCE対策）
     try {
-        if (option.startsWith("[")) {
-            data.result = eval(`object${option}`);
-        } else {
-            data.result = eval(`object.${option}`);
-        }
+        const keys = option
+            .replace(/\[["']?/g, ".")
+            .replace(/["']?\]/g, "")
+            .split(".")
+            .filter(Boolean);
+        data.result = keys.reduce((obj, key) => obj?.[key], object);
     } catch (e) {
         data.result = "undefined";
     }

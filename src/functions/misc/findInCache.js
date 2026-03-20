@@ -1,4 +1,27 @@
 /**
+ * 安全なプロパティアクセス（eval RCE対策）
+ */
+function safeGet(obj, path) {
+    if (!path || path.trim() === "") return obj;
+    return path.replace(/^\??\./, "").split(".").filter(Boolean).reduce((o, k) => o?.[k], obj);
+}
+
+/**
+ * 比較演算を安全に実行する
+ */
+function safeCompare(a, b, op) {
+    switch (op) {
+        case "===": return a === b;
+        case "==": return a == b;
+        case ">=": return a >= b;
+        case "<=": return a <= b;
+        case ">": return a > b;
+        case "<": return a < b;
+        default: return false;
+    }
+}
+
+/**
  * @param {import("..").Data} d
  */
 module.exports = async (d) => {
@@ -7,7 +30,6 @@ module.exports = async (d) => {
 
     let [type, name, prop, value, findType = "===", returnValue = "$default"] =
         data.inside.splits;
-    prop = prop.trim() === "" ? "" : "?." + prop;
 
     findType = ["includes", "startsWith", "endsWith"].includes(findType)
         ? findType
@@ -20,28 +42,27 @@ module.exports = async (d) => {
                 "Invalid FindType Provided In",
             );
     try {
+        // セキュリティ: eval()の代わりに安全なキャッシュ検索（RCE対策）
+        const cache = d.client.cacheManager.caches[type]?.[name];
+
         if (["includes", "startsWith", "endsWith"].includes(findType)) {
-            data.result = eval(
-                `d.client.cacheManager.caches[type][name].find(x => (prop.trim() === "" ? x : x${prop})[findType]("${value}"))`,
-            );
-
-            data.result =
-                typeof data.result === "object"
-                    ? returnValue === "$default"
-                        ? JSON.stringify(data.result, null, 2)
-                        : eval(`data.result?.${returnValue}`)
-                    : data.result;
+            data.result = cache?.find(x => {
+                const target = prop.trim() === "" ? x : safeGet(x, prop);
+                return typeof target?.[findType] === "function" && target[findType](value);
+            });
         } else {
-            data.result =
-                eval(`d.client.cacheManager.caches[type][name].find(x => (prop.trim() === "" ? x : x${prop}) ${findType} "${value}")`);
-
-            data.result =
-                typeof data.result === "object"
-                    ? returnValue === "$default"
-                        ? JSON.stringify(data.result, null, 2)
-                        : eval(`data.result?.${returnValue}`)
-                    : data.result;
+            data.result = cache?.find(x => {
+                const target = prop.trim() === "" ? x : safeGet(x, prop);
+                return safeCompare(target, value, findType);
+            });
         }
+
+        data.result =
+            typeof data.result === "object"
+                ? returnValue === "$default"
+                    ? JSON.stringify(data.result, null, 2)
+                    : safeGet(data.result, returnValue)
+                : data.result;
     } catch (e) {
         console.error(e);
         data.result = "";

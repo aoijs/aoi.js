@@ -15,7 +15,17 @@ module.exports = async (d) => {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
     }
 
-    data.result = eval(math);
+    // セキュリティ: 安全な数式文字のみ許可（eval RCE対策）
+    const safeExpr = math.replace(/\s/g, "");
+    if (!/^[0-9+\-*/%.(),eEMath a-z_]+$/i.test(safeExpr)) {
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
+    }
+
+    try {
+        data.result = new Function('"use strict"; return (' + math + ")")();
+    } catch {
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid math expression");
+    }
 
     return {
         code: d.util.setCode(data)
