@@ -1,5 +1,6 @@
 const AoiClient = require("./classes/AoiClient");
 const CustomEvent = require("./classes/CustomEvent.js");
+const LoadFunctions = require("./classes/LoadFunctions.js");
 const LoadCommands = require("./classes/LoadCommands.js");
 const ClientShard = require("./classes/ClientShard.js");
 const AoiError = require("./classes/AoiError.js");
@@ -14,6 +15,7 @@ const CacheManager = require("./classes/CacheManager.js");
 module.exports = {
     AoiClient,
     CustomEvent,
+    LoadFunctions,
     LoadCommands,
     ClientShard,
     AoiError,
