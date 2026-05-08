@@ -180,10 +180,14 @@ class LoadEvents {
                     continue;
                 }
 
-                const type = event.type || event.name;
-                let eventName;
+                let type = (event.type || event.name).toString();
                 const source = (event.source || event.mode || "").toString().toLowerCase();
 
+                if (type.startsWith("$")) {
+                    type = type.slice(1);
+                }
+
+                let eventName;
                 if (source === "aoi" || source === "aoijs" || source === "aoi.js") {
                     eventName = EventsToDjsEvents[type];
                 } else if (source === "djs" || source === "discordjs" || source === "discord") {
