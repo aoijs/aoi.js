@@ -8,13 +8,10 @@ module.exports = (d) => {
     if (d.randoms.randomUserId) data.result = d.randoms.randomUserId;
     else {
         if (guildID === "global") data.result = d.client.users.cache.random()?.id;
-        else
-            data.result = d.client.guilds.cache
-                .get(guildID)
-                ?.members.cache.random()?.id;
+        else data.result = d.client.guilds.cache.get(guildID)?.members.cache.random()?.id;
         d.randoms.randomUserId = data.result;
     }
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

@@ -1,10 +1,10 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
 
-    let [text, sep = ' '] = data.inside.splits;
+    let [text, sep = " "] = data.inside.splits;
 
     d.array = text.addBrackets().split(sep.addBrackets());
     d.data.array = d.array;
@@ -12,6 +12,6 @@ module.exports = d => {
     return {
         code: d.util.setCode(data),
         data: d.data,
-        array: d.array,
-    }
-}
+        array: d.array
+    };
+};

@@ -12,26 +12,17 @@ module.exports = (d) => {
 
     if (err) return d.error(err);
 
-    let [
-        date = Date.now().toLocaleString("en-us", {timeZone: d.timezone}),
-        format = "dddd, DD MMMM YYYY",
-    ] = inside.splits;
-    const checkIsValid = new Date(
-        isNaN(Number(date)) ? date : Number(date)
-    );
+    let [date = Date.now().toLocaleString("en-us", { timeZone: d.timezone }), format = "dddd, DD MMMM YYYY"] = inside.splits;
+    const checkIsValid = new Date(isNaN(Number(date)) ? date : Number(date));
 
     if (isNaN(checkIsValid.getTime())) {
-        return d.error(
-            `\`${d.func}: Invalid date in ${inside}\``
-        );
+        return d.error(`\`${d.func}: Invalid date in ${inside}\``);
     }
 
     return {
         code: code.replaceLast(
             `$formatDate${inside}`,
-            format.replace(/\w+/g, (value) =>
-                formatDate(value, checkIsValid, d.timezone)
-            )
-        ),
+            format.replace(/\w+/g, (value) => formatDate(value, checkIsValid, d.timezone))
+        )
     };
 };

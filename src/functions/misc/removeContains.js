@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -9,11 +9,11 @@ module.exports = d => {
 
     data.result = text.addBrackets();
 
-    words.forEach(x => {
-        data.result = data.result.replaceAll(x, '');
+    words.forEach((x) => {
+        data.result = data.result.replaceAll(x, "");
     });
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

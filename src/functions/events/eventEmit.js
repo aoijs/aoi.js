@@ -1,18 +1,18 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
     if (!d.client.customEvents) return d.aoiError.fnError(d.func, "custom", {}, "CustomEvent Class Was Not Initialised");
 
     let [name, ...datas] = data.inside.splits;
     name = name.addBrackets();
-    datas = datas.map(x => {
+    datas = datas.map((x) => {
         try {
-            return JSON.parse(x)
+            return JSON.parse(x);
         } catch (e) {
-            return x
+            return x;
         }
     });
 
@@ -20,5 +20,5 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode(data)
-    }
-} 
+    };
+};

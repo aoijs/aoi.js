@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const { code } = d.util.aoiFunc(d);
 
     try {
@@ -9,11 +9,11 @@ module.exports = d => {
             require("child_process").spawn(process.argv.shift(), process.argv, {
                 cwd: process.cwd(),
                 detached: true,
-                stdio: "inherit",
+                stdio: "inherit"
             });
         });
         process.exit();
     } catch (e) {
-        return d.aoiError.fnError(d, 'custom', {}, `Failed To Restart With Reason: ${e}`);
+        return d.aoiError.fnError(d, "custom", {}, `Failed To Restart With Reason: ${e}`);
     }
-}
+};

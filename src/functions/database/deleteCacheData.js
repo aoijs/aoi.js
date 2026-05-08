@@ -7,22 +7,11 @@ module.exports = (d) => {
 
     const [type, cacheName, cacheKey] = data.inside.splits;
 
-    if (!d.client.cacheManager.caches[type])
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            `Cache type ${type} does not exist.`,
-        );
+    if (!d.client.cacheManager.caches[type]) return d.aoiError.fnError(d, "custom", { inside: data.inside }, `Cache type ${type} does not exist.`);
 
     const cache = d.client.cacheManager.caches[type][cacheName.addBrackets()];
     if (!cache) {
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            `Cache name ${cacheName} does not exist.`
-        );
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, `Cache name ${cacheName} does not exist.`);
     }
 
     if (cacheKey) {
@@ -34,6 +23,6 @@ module.exports = (d) => {
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

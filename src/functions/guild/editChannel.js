@@ -42,12 +42,10 @@ module.exports = async (d) => {
                 userLimit: insides.userLimit ? parseInt(insides.userLimit) : undefined,
                 parent: insides.parent || null,
                 lockPermissions: insides.lockPermissions?.toString().toLowerCase() === "true",
-                permissionOverwrites: insides.permissionOverwrites
-                    ? JSON.parse(insides.permissionOverwrites.addBrackets())
-                    : undefined,
+                permissionOverwrites: insides.permissionOverwrites ? JSON.parse(insides.permissionOverwrites.addBrackets()) : undefined,
                 rateLimitPerUser: insides.rateLimitPerUser ? Time.parse(insides.rateLimitPerUser)?.ms : undefined,
                 defaultAutoArchiveDuration: insides.defaultAutoArchiveDuration,
-                rtcRegion: insides.rtcRegion || null,
+                rtcRegion: insides.rtcRegion || null
             },
             insides.reason?.addBrackets() || null
         )

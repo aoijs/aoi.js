@@ -10,15 +10,11 @@ module.exports = (d) => {
         guildID === "global"
             ? type === "all"
                 ? d.client.channels.cache.random()?.id
-                : d.client.channels.cache
-                    .filter((x) => x.type === d.util.channelTypes[type])
-                    .random()?.id
+                : d.client.channels.cache.filter((x) => x.type === d.util.channelTypes[type]).random()?.id
             : d.client.guilds.cache
-                .get(guildID)
-                ?.channels.cache.filter((x) =>
-                    type === "all" ? true : x.type === d.util.channelTypes[type],
-                )
-                .random()?.id;
+                  .get(guildID)
+                  ?.channels.cache.filter((x) => (type === "all" ? true : x.type === d.util.channelTypes[type]))
+                  .random()?.id;
 
     if (!d.randoms[`randomChannelId${data.inside.splits}`]) {
         d.randoms[`randomChannelId${data.inside.splits}`] = data.result;
@@ -27,6 +23,6 @@ module.exports = (d) => {
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

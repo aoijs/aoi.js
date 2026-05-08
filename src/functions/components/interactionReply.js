@@ -13,7 +13,7 @@ module.exports = async (d) => {
 
     await d.data.interaction
         ?.reply({
-            content: parser.content?.trim() === "" ? " " : parser.content?.addBrackets() ?? parser.data?.content,
+            content: parser.content?.trim() === "" ? " " : (parser.content?.addBrackets() ?? parser.data?.content),
             embeds: parser.embeds ?? parser.data?.embeds,
             components: parser.components ?? parser.data?.components,
             files: parser.files ?? parser.data?.files,

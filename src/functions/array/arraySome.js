@@ -2,20 +2,16 @@
  * @param {import("..").Data} d
  */
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
-  if (data.err) return d.error(data.err);
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-  const [name, query, queryType = "=="] = data.inside.splits;
-  if (!d.data.arrays?.[name]) {
-    return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
-  }
+    const [name, query, queryType = "=="] = data.inside.splits;
+    if (!d.data.arrays?.[name]) {
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist.");
+    }
 
-  data.result = d.arrays[name].some((x) =>
-    ["==", "!=", "<=", ">=", "<", ">"].includes(queryType)
-      ? eval(d.helpers.checkCondition.solve(`${x}${queryType}${query}`))
-      : x[queryType](query),
-  );
-  return {
-    code: d.util.setCode(data),
-  };
+    data.result = d.arrays[name].some((x) => (["==", "!=", "<=", ">=", "<", ">"].includes(queryType) ? eval(d.helpers.checkCondition.solve(`${x}${queryType}${query}`)) : x[queryType](query)));
+    return {
+        code: d.util.setCode(data)
+    };
 };

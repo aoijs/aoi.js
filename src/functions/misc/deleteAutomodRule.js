@@ -9,11 +9,11 @@ module.exports = async (d) => {
 
     const autoModerationRules = await guild.autoModerationRules.fetch({ force: force, cache: force === false ? true : false });
 
-    const automodRule = autoModerationRules.find(rule => rule.name === automodRuleName || rule.id === automodRuleName);
+    const automodRule = autoModerationRules.find((rule) => rule.name === automodRuleName || rule.id === automodRuleName);
 
-    guild.autoModerationRules.delete(automodRule.id, { reason: reason })
+    guild.autoModerationRules.delete(automodRule.id, { reason: reason });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
-}
+};

@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -12,11 +12,11 @@ module.exports = async d => {
     sticker = await d.util.getSticker(d.guild, sticker);
     if (!sticker) return d.aoiError.fnError(d, "sticker", { inside: data.inside });
 
-    sticker.delete().catch(e => {
+    sticker.delete().catch((e) => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Delete Sticker: " + sticker.name + " With Reason: " + e);
     });
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

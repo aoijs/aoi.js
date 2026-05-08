@@ -19,6 +19,6 @@ module.exports = (d) => {
 
     return {
         code: d.util.setCode(data),
-        embeds: d.embeds,
+        embeds: d.embeds
     };
 };

@@ -13,8 +13,8 @@ module.exports = (d) => {
         return array;
     }
 
-    data.result = shuffle(texts)[Math.floor(Math.random() * texts.length)]
+    data.result = shuffle(texts)[Math.floor(Math.random() * texts.length)];
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
-}
+};

@@ -1,4 +1,4 @@
-const {Time} = require("../../core/Time");
+const { Time } = require("../../core/Time");
 
 /**
  * @param {import("..").Data} d
@@ -9,16 +9,10 @@ module.exports = async (d) => {
     const err = d.inside(inside);
     if (err) return d.error(err);
     //----------------------------------------//
-    let [messageID, filter, time, customIDs, cmds, errorMsg = {}, endcommand = "", awaitData = "{}",] = inside.splits;
+    let [messageID, filter, time, customIDs, cmds, errorMsg = {}, endcommand = "", awaitData = "{}"] = inside.splits;
     time = Time.parse(time)?.ms;
-    if (!time)
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {inside},
-            `Invalid Time provided In`,
-        );
-    errorMsg = await d.util.errorParser( errorMsg, d );
+    if (!time) return d.aoiError.fnError(d, "custom", { inside }, `Invalid Time provided In`);
+    errorMsg = await d.util.errorParser(errorMsg, d);
     errorMsg = errorMsg.data ?? errorMsg;
     awaitData = JSON.parse(awaitData);
     cmds = cmds.split(",");
@@ -32,23 +26,15 @@ module.exports = async (d) => {
     customIDs = customIDs.split(",");
     //---------------------------------------//
 
-    const button = new d.client.interactionManager.ComponentCollector(
-        {msgId: messageID, filter, time, customIDs, cmds, errorMessage: errorMsg},
-        d.client,
-    );
+    const button = new d.client.interactionManager.ComponentCollector({ msgId: messageID, filter, time, customIDs, cmds, errorMessage: errorMsg }, d.client);
     const endcmd = d.client.cmd.awaited.find((x) => x.name === endcommand);
 
     //---------------------------------------//
-    d.client.interactionManager.on(
-        "messageComponentInteraction",
-        async (data) => {
-            button.start(data.message.id, data.author.id, data.customId, data);
-        },
-    );
+    d.client.interactionManager.on("messageComponentInteraction", async (data) => {
+        button.start(data.message.id, data.author.id, data.customId, data);
+    });
     button.on("ItemFound", async (data) => {
-        const cmd = d.client.cmd.awaited.find(
-            (x) => x.name === cmds[customIDs.indexOf(data.customId)],
-        );
+        const cmd = d.client.cmd.awaited.find((x) => x.name === cmds[customIDs.indexOf(data.customId)]);
         if (!cmd) return;
         await d.interpreter(
             d.client,
@@ -58,7 +44,7 @@ module.exports = async (d) => {
                 channel: data.channel,
                 guild: data.guild,
                 member: data.member,
-                client: d.client,
+                client: d.client
             },
             [],
             cmd,
@@ -67,29 +53,20 @@ module.exports = async (d) => {
             undefined,
             {
                 interaction: data,
-                awaitData: awaitData,
-            },
+                awaitData: awaitData
+            }
         );
     });
     if (endcommand !== "") {
         button.once("CustomCollectorOff", async (data) => {
-            await d.interpreter(
-                d.client,
-                {},
-                [],
-                endcmd,
-                undefined,
-                undefined,
-                undefined,
-                {
-                    interaction: data[data.length - 1],
-                    endData: data,
-                    awaitData: awaitData,
-                },
-            );
+            await d.interpreter(d.client, {}, [], endcmd, undefined, undefined, undefined, {
+                interaction: data[data.length - 1],
+                endData: data,
+                awaitData: awaitData
+            });
         });
     }
     return {
-        code: d.util.setCode({function: d.func, code, inside}),
+        code: d.util.setCode({ function: d.func, code, inside })
     };
 };

@@ -9,13 +9,10 @@ module.exports = (d) => {
 
     data.result = texts
         .split(" ")
-        .map(
-            (text) =>
-                text.addBrackets().slice(0, 1).toUpperCase() +
-                text.addBrackets().slice(1).toLowerCase(),
-        ).join(" ");
+        .map((text) => text.addBrackets().slice(0, 1).toUpperCase() + text.addBrackets().slice(1).toLowerCase())
+        .join(" ");
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

@@ -1,6 +1,6 @@
 const EventExecuter = require("../events/eventExecuter.js");
-const {EventEmitter} = require("events");
-const { Group : Collection } = require( "@aoijs/aoi.structures" );
+const { EventEmitter } = require("events");
+const { Group: Collection } = require("@aoijs/aoi.structures");
 
 class CustomEvent extends EventEmitter {
     constructor(client) {
@@ -23,9 +23,7 @@ class CustomEvent extends EventEmitter {
 
     listen(event) {
         this.on(event, async (...data) => {
-            const commands = this.commands.filter(
-                (x) => x.listen === event,
-            );
+            const commands = this.commands.filter((x) => x.listen === event);
             await EventExecuter(event, this.client, commands, ...data);
         });
     }

@@ -5,24 +5,13 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [
-        query,
-        limit = 10,
-        type = "startsWith",
-        res = "{position}) {username}: {id}",
-    ] = data.inside.splits;
+    let [query, limit = 10, type = "startsWith", res = "{position}) {username}: {id}"] = data.inside.splits;
     query = query.addBrackets();
-    if (isNaN(limit))
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {inside: data.inside},
-            "Limit is Not A Number In",
-        );
+    if (isNaN(limit)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Limit is Not A Number In");
 
     limit = Number(limit);
 
-    const result = await d.util.findRoles(d.guild, {query, limit, type});
+    const result = await d.util.findRoles(d.guild, { query, limit, type });
 
     const props = res.match(/{([^}]+)}/g);
 
@@ -43,6 +32,6 @@ module.exports = async (d) => {
         .join("\n");
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

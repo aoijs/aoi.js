@@ -17,15 +17,10 @@ module.exports = async (d) => {
             code: d.util.setCode(data)
         };
     }
-    
+
     await d.message.channel.delete().catch(async () => {
         if (error) {
-            await d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                error.data ?? error,
-                error.options,
-            );
+            await d.aoiError.makeMessageError(d.client, d.channel, error.data ?? error, error.options);
         }
     });
 

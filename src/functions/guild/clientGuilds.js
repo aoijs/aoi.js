@@ -4,13 +4,13 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
-    
+
     let [format = "{position}: {guild.name}", list = "10", sep = ", ", sort = "desc"] = data.inside.splits;
 
     let guilds;
 
     if (d.client.shard) {
-        guilds = await d.client.shard.broadcastEval(client => Array.from(client.guilds.cache.values()));
+        guilds = await d.client.shard.broadcastEval((client) => Array.from(client.guilds.cache.values()));
         guilds = guilds.reduce((acc, val) => acc.concat(val), []);
     } else {
         guilds = Array.from(d.client.guilds.cache.values());
@@ -22,7 +22,7 @@ module.exports = async (d) => {
         guilds.sort((a, b) => b.memberCount - a.memberCount);
     }
 
-    const owners = await Promise.all(guilds.map(guild => d.util.getUser(d, guild.ownerId)));
+    const owners = await Promise.all(guilds.map((guild) => d.util.getUser(d, guild.ownerId)));
 
     const result = [];
 
@@ -38,7 +38,7 @@ module.exports = async (d) => {
             "{guild.id}": guild.id,
             "{owner.name}": owner.username,
             "{owner.id}": owner.id,
-            "{membersCount}": guild.memberCount,
+            "{membersCount}": guild.memberCount
         };
 
         for (const r in placeholders) {
@@ -51,6 +51,6 @@ module.exports = async (d) => {
     data.result = result.slice(0, list).join(sep);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

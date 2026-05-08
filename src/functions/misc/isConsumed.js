@@ -13,7 +13,7 @@ module.exports = async (d) => {
     if (!entitlements.size) {
         data.result = false;
     } else {
-        data.result = entitlements.get(consumableId)?.consumed ?? false
+        data.result = entitlements.get(consumableId)?.consumed ?? false;
     }
 
     return {

@@ -10,9 +10,7 @@ class MacrosManager {
      * @returns {this}
      */
     add(macro) {
-        macro.name = macro.name.startsWith("#")
-            ? macro.name.slice(1)
-            : macro.name;
+        macro.name = macro.name.startsWith("#") ? macro.name.slice(1) : macro.name;
 
         this.cache.set(macro.name, macro);
 
@@ -57,7 +55,7 @@ class MacrosManager {
     toArray() {
         return [...this.cache.values()];
     }
-};
+}
 
 /**
  * Creates a pattern to match the cached macros.
@@ -65,8 +63,8 @@ class MacrosManager {
  * @returns {RegExp}
  */
 function createMacrosPattern(names) {
-    return new RegExp(`(${names.map(name => `#${name}`).join("|")})`, "g");
-};
+    return new RegExp(`(${names.map((name) => `#${name}`).join("|")})`, "g");
+}
 
 /**
  * Check whether the given code has macros inside.
@@ -75,8 +73,8 @@ function createMacrosPattern(names) {
  * @returns {boolean}
  */
 function hasMacros(names, code) {
-    return Array.isArray(code.match(createMacrosPattern(names)))
-};
+    return Array.isArray(code.match(createMacrosPattern(names)));
+}
 
 /**
  * Resolve the macros in the command code with actual code.
@@ -87,23 +85,18 @@ function hasMacros(names, code) {
 function resolveMacros(macros, code) {
     if (macros.length === 0) return code;
 
-    const matchedMacros = [...new Set(code.match(createMacrosPattern(macros.map(m => m.name))) ?? [])];
+    const matchedMacros = [...new Set(code.match(createMacrosPattern(macros.map((m) => m.name))) ?? [])];
     let newCode = code;
 
     for (const matchedMacro of matchedMacros) {
-        const gotMacro = macros.find(macro => macro.name === matchedMacro.slice(1))
+        const gotMacro = macros.find((macro) => macro.name === matchedMacro.slice(1));
         if (!gotMacro) continue;
 
-        newCode = newCode.replace(
-            createMacrosPattern(
-                [matchedMacro.slice(1)]
-            ),
-            gotMacro.code
-        );
+        newCode = newCode.replace(createMacrosPattern([matchedMacro.slice(1)]), gotMacro.code);
     }
 
     return newCode;
-};
+}
 
 module.exports = {
     hasMacros,

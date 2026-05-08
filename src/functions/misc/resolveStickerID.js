@@ -10,6 +10,6 @@ module.exports = async (d) => {
     data.result = (await d.util.getSticker(d, sticker))?.id ?? "";
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

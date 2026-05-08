@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
     let [text = d.args.join(" "), sep = " , "] = data.inside.splits;
@@ -9,13 +9,13 @@ module.exports = async d => {
 
     const emojis = [];
 
-    text.forEach(x => {
-        if (x.match(/\p{Emoji}/ug) || d.client.emojis.cache.find(y => y.toString() === x)) emojis.push(x)
+    text.forEach((x) => {
+        if (x.match(/\p{Emoji}/gu) || d.client.emojis.cache.find((y) => y.toString() === x)) emojis.push(x);
     });
 
     data.result = emojis.join(sep);
 
     return {
         code: d.util.setCode(data)
-    }
-} 
+    };
+};

@@ -123,7 +123,7 @@ module.exports = {
             description: embed.description,
             title: embed.title,
             url: embed?.url,
-            timestamp: embed.timestamp? new Date(embed.timestamp).toISOString() : null
+            timestamp: embed.timestamp ? new Date(embed.timestamp).toISOString() : null
         };
 
         embed.fields.forEach((x, y) => (data[`field${y + 1}`] = x));

@@ -8,11 +8,11 @@ module.exports = async (d) => {
     const [userID, nickname, reason] = data.inside.splits;
 
     const member = await d.util.getMember(d.guild, userID);
-    if (!member) return d.aoiError.fnError(d, "member", {inside: data.inside});
+    if (!member) return d.aoiError.fnError(d, "member", { inside: data.inside });
 
     await member.setNickname(nickname === "" ? null : nickname.addBrackets(), reason);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

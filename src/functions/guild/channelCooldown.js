@@ -1,4 +1,4 @@
-const {Time} = require("../../core/Time.js");
+const { Time } = require("../../core/Time.js");
 /**
  * @param {import("..").Data} d
  */
@@ -9,24 +9,15 @@ module.exports = async (d) => {
     let [time, errorObject = ""] = data.inside.splits;
     let error;
 
-    let cooldown = await d.client.db.get(
-        "__aoijs_vars__",
-        "cooldown",
-        `${d.command.name}_${d.channel.id}`,
-    );
+    let cooldown = await d.client.db.get("__aoijs_vars__", "cooldown", `${d.command.name}_${d.channel.id}`);
 
     if (!cooldown) {
         cooldown = Date.now() + Time.parse(time).ms;
-        await d.client.db.set(
-            "__aoijs_vars__",
-            "cooldown",
-            `${d.command.name}_${d.channel.id}`,
-            cooldown,
-        );
+        await d.client.db.set("__aoijs_vars__", "cooldown", `${d.command.name}_${d.channel.id}`, cooldown);
     } else if (Date.now() < cooldown?.value) {
         if (errorObject.trim() === "") {
         } else {
-            const {object, humanize, toString} = Time.format(cooldown.value - Date.now());
+            const { object, humanize, toString } = Time.format(cooldown.value - Date.now());
             errorObject = errorObject
                 .replaceAll("%time%", humanize())
                 .replaceAll("%year%", object.years)
@@ -40,27 +31,16 @@ module.exports = async (d) => {
                 .replaceAll("%fullTime%", toString());
 
             errorObject = await d.util.errorParser(errorObject, d);
-            await d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                errorObject.data ?? errorObject,
-                errorObject.options,
-                d
-            );
+            await d.aoiError.makeMessageError(d.client, d.channel, errorObject.data ?? errorObject, errorObject.options, d);
         }
         error = true;
     } else {
         cooldown = Date.now() + Time.parse(time).ms;
-        await d.client.db.set(
-            "__aoijs_vars__",
-            "cooldown",
-            `${d.command.name}_${d.channel.id}`,
-            cooldown,
-        );
+        await d.client.db.set("__aoijs_vars__", "cooldown", `${d.command.name}_${d.channel.id}`, cooldown);
     }
 
     return {
         code: d.util.setCode(data),
-        error,
+        error
     };
 };

@@ -13,18 +13,13 @@ module.exports = async (d) => {
         .showModal({
             title: title.addBrackets(),
             customId: customID.addBrackets(),
-            components: parsedComponents,
+            components: parsedComponents
         })
         .catch((e) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed to render modals with Reason: " + e,
-            );
+            d.aoiError.fnError(d, "custom", {}, "Failed to render modals with Reason: " + e);
         });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

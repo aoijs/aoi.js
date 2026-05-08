@@ -11,7 +11,7 @@ module.exports = async (d) => {
     if (!d.data.objects?.[name]) {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Object With Name '" + name + "' Does Not Exist.");
     }
-    
+
     if (!property) {
         return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Property not found. ");
     }
@@ -26,35 +26,25 @@ module.exports = async (d) => {
     let i = 0;
     for (const key in d.data.objects[name]) {
         if (d.data.objects[name].hasOwnProperty(key)) {
+            el[key] = d.data.objects[name][key];
+            const c = { ...cmd };
+            c.code = c.code.replaceAll("{value}", el);
 
-            el[key] = d.data.objects[name][key]; 
-            const c = { ...cmd }; 
-            c.code = c.code.replaceAll("{value}", el); 
-
-            if(!Array.isArray(el[key])) continue;
-            el[key] = d.data.objects[name][key]
-            let parsedResult = JSON.stringify(el[property][i])
-            await Interpreter(
-                d.client,
-                d.message,
-                d.args,
-                c,
-                d.client.db,
-                true,
-                undefined,
-                { ...d.data, awaitData: parsedResult, index: i }
-            );
+            if (!Array.isArray(el[key])) continue;
+            el[key] = d.data.objects[name][key];
+            let parsedResult = JSON.stringify(el[property][i]);
+            await Interpreter(d.client, d.message, d.args, c, d.client.db, true, undefined, { ...d.data, awaitData: parsedResult, index: i });
             i++;
+        }
     }
-}
 
-if (endCmd.trim() !== "") {
-    const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
-    if (!cmd) return;
-    await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {
-        index: i-1
-    });
-}
+    if (endCmd.trim() !== "") {
+        const cmd = d.client.cmd.awaited.find((x) => x.name.toLowerCase() === endCmd.addBrackets().toLowerCase());
+        if (!cmd) return;
+        await d.interpreter(d.client, d.message, d.args, cmd, d.client.db, false, undefined, {
+            index: i - 1
+        });
+    }
 
     return {
         code: d.util.setCode(data)

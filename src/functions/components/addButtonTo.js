@@ -3,23 +3,13 @@ const { ButtonBuilder, ActionRowBuilder } = require("discord.js");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    let [
-        channelId = d.channel?.id,
-        messageId = d.message?.id,
-        index = "1",
-        label,
-        style,
-        custom,
-        disabled = "false",
-        emoji
-    ] = data.inside.splits;
+    let [channelId = d.channel?.id, messageId = d.message?.id, index = "1", label, style, custom, disabled = "false", emoji] = data.inside.splits;
 
-    if (isNaN(index) || Number(index) < 1)
-        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
+    if (isNaN(index) || Number(index) < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Index Provided In");
 
     const channel = d.client.channels.cache.get(channelId);
     if (!channel) return d.aoiError.fnError(d, "channel", { inside: data.inside });
@@ -31,8 +21,7 @@ module.exports = async d => {
     style = isNaN(style) ? d.util.constants.ButtonStyleOptions[style] : Number(style);
     disabled = disabled === "true";
 
-    if (!style || style > 6 || style < 1)
-        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Button Style Provided In");
+    if (!style || style > 6 || style < 1) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Button Style Provided In");
 
     if (emoji && emoji !== "") {
         emoji = await d.util.getEmoji(d, emoji.addBrackets());
@@ -51,7 +40,7 @@ module.exports = async d => {
     components[index] = components[index] || { type: 1, components: [] };
 
     components[index].components.push(button);
-    const row = components.map(row => ActionRowBuilder.from(row)).filter(Boolean);
+    const row = components.map((row) => ActionRowBuilder.from(row)).filter(Boolean);
 
     try {
         await message.edit({ components: row });

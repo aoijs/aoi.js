@@ -10,11 +10,11 @@ module.exports = async (d) => {
 
     const [condition, truecon, falsecon] = data.inside.splits;
 
-    const res = eval(CheckCondition.solve(mustEscape(condition)))
+    const res = eval(CheckCondition.solve(mustEscape(condition)));
 
     data.result = res ? truecon?.addBrackets() : falsecon?.addBrackets();
-    
+
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

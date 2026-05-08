@@ -1,4 +1,4 @@
-const {WebhookUpdateOptions} = require("../../utils/EventUtil.js")
+const { WebhookUpdateOptions } = require("../../utils/EventUtil.js");
 
 /**
  * @param {import("..").Data} d
@@ -9,7 +9,7 @@ module.exports = async (d) => {
 
     const option = WebhookUpdateOptions.includes(data.inside.inside);
 
-    if (!option) return d.aoiError.fnError(d, 'custom', {inside: data.inside}, `Invalid option in`);
+    if (!option) return d.aoiError.fnError(d, "custom", { inside: data.inside }, `Invalid option in`);
 
     data.result = d.data.channel[WebhookUpdateOptions[option]];
 

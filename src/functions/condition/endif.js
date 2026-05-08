@@ -1,5 +1,4 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
-}
+module.exports = (d) => {};

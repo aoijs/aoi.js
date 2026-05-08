@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -9,9 +9,9 @@ module.exports = d => {
 
     mention = mention.replace(/[\\<>#!@&]/g, "");
 
-    data.result = d.mentions.everyone || 'none'
+    data.result = d.mentions.everyone || "none";
 
-    for (const type of ['users', 'channels', 'members', 'roles', 'crosspostedChannels']) {
+    for (const type of ["users", "channels", "members", "roles", "crosspostedChannels"]) {
         if (d.mentions[type].has(mention)) {
             data.result = type;
             break;
@@ -20,5 +20,5 @@ module.exports = d => {
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

@@ -3,6 +3,7 @@ const { DefaultWebSocketManagerOptions } = require("@discordjs/ws");
 const { VariableManager } = require("./Variables.js");
 const InteractionManager = require("./Interaction.js");
 const LoadCommands = require("./LoadCommands.js");
+const LoadEvents = require("./LoadEvents.js");
 const { ActivityTypeAvailables, IntentOptions, EventsToIntents, EventsToDjsEvents, EventstoFile } = require("../utils/Constants.js");
 const Database = require("./Database.js");
 const { MacrosManager } = require("./Macros.js");
@@ -98,9 +99,14 @@ class BaseClient extends Client {
         loader.load(this.cmd, directory, debug);
     }
 
+    loadEvents(directory, debug = true) {
+        const loader = new LoadEvents(this);
+        loader.load(this, directory, debug);
+    }
+
     /**
      * Adds many macros to the manager.
-     * @param {import("..").MacroOptions[]} macros - The macros to be added.
+     * @param {import(".." ).MacroOptions[]} macros - The macros to be added.
      * @returns {void}
      */
     macro(...macros) {

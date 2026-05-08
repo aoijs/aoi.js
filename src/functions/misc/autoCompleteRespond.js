@@ -13,7 +13,7 @@ module.exports = async (d) => {
             opt = JSON.parse(options[0].addBrackets());
             if (!Array.isArray(opt)) opt = [opt];
         } catch (e) {
-            console.error(e)
+            console.error(e);
             return d.aoiError.fnError(d, "custom", {}, `Invalid JSON: ${options[0]}`);
         }
     } else {
@@ -23,7 +23,7 @@ module.exports = async (d) => {
         while (i < options.length) {
             opt[u] = {
                 name: options[i],
-                value: options[i + 1],
+                value: options[i + 1]
             };
             u++;
             i += 2;
@@ -35,15 +35,10 @@ module.exports = async (d) => {
     }
 
     await d.data.interaction.respond(opt).catch((e) => {
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {},
-            `Failed to respond with reason: ${e}`,
-        );
+        return d.aoiError.fnError(d, "custom", {}, `Failed to respond with reason: ${e}`);
     });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

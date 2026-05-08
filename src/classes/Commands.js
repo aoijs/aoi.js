@@ -52,7 +52,7 @@ class Command {
             code = code.replace(regex, func);
         }
 
-        this.code = code; 
+        this.code = code;
         return usedFunctions;
     }
 

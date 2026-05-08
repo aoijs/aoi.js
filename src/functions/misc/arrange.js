@@ -4,7 +4,7 @@
 module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
-    
+
     const [type = "asc", separator = ", ", ...numbers] = data.inside.splits;
 
     if (type === "asc") {
@@ -18,6 +18,6 @@ module.exports = async (d) => {
     data.result = data.result?.join(separator);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
-}
+};

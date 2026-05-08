@@ -3,7 +3,7 @@ const { AutoModerationRuleTriggerType } = require("discord.js");
 /**
  * @param {import(".").Data} d
  */
-module.exports = async(d) => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     const [type = "Keyword"] = data.inside.splits;
 
@@ -11,11 +11,11 @@ module.exports = async(d) => {
 
     return {
         code: d.util.setCode(data),
-        data: { 
-            automodRule: { 
+        data: {
+            automodRule: {
                 ...d.data.automodRule,
-                triggerType: AutoModerationRuleTriggerType[type.addBrackets()], 
-            },
-        },
+                triggerType: AutoModerationRuleTriggerType[type.addBrackets()]
+            }
+        }
     };
-}
+};

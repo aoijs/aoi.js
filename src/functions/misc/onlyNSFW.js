@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
     let error = false;
@@ -11,21 +11,15 @@ module.exports = async d => {
 
     if (!d.channel.nsfw) {
         error = true;
-        if (err?.trim() === '') {
+        if (err?.trim() === "") {
         } else {
             const errorMsg = await d.util.errorParser(err, d);
-            d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                errorMsg.data ?? errorMsg,
-                errorMsg.options,
-                d,
-            );
+            d.aoiError.makeMessageError(d.client, d.channel, errorMsg.data ?? errorMsg, errorMsg.options, d);
         }
     }
 
     return {
         code: d.util.setCode(data),
         error
-    }
-}
+    };
+};

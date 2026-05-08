@@ -37,9 +37,9 @@ const IF = async (d) => {
                         true,
                         undefined,
                         {
-							...Data,
-							...Data.data
-						}
+                            ...Data,
+                            ...Data.data
+                        }
                     )
                 )?.code === "true";
 
@@ -104,9 +104,9 @@ const IF = async (d) => {
                                     true,
                                     undefined,
                                     {
-										...Data,
-										...Data.data
-									}
+                                        ...Data,
+                                        ...Data.data
+                                    }
                                 )
                             )?.code === "true";
 

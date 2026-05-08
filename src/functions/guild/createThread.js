@@ -18,7 +18,7 @@ module.exports = async (d) => {
         if (!type) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Type Provided In");
     }
 
-            if (channel.type === 15) {
+    if (channel.type === 15) {
         if (!startMessage) return d.aoiError.fnError(d, "custom", {}, "Forum Channels Require Start Message");
         result = await channel.threads
             .create({
@@ -32,7 +32,7 @@ module.exports = async (d) => {
                 return d.aoiError.fnError(d, "custom", {}, "Failed To Create Thread With Reason: " + e);
             });
     } else {
-                result = await channel.threads
+        result = await channel.threads
             .create({
                 name,
                 autoArchiveDuration: archive.toUpperCase().replace("MAX", "10080"),

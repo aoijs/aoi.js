@@ -10,6 +10,6 @@ module.exports = async (d) => {
     data.result = d.data.interaction.options.get(option.addBrackets())?.value;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

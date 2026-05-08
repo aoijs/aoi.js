@@ -3,10 +3,10 @@ const { ComponentType } = require("discord.js");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [ channelId = d.channel?.id, messageId = d.message?.id, type = "any" ] = data.inside.splits;
+    const [channelId = d.channel?.id, messageId = d.message?.id, type = "any"] = data.inside.splits;
 
     const channel = await d.util.getChannel(d, channelId);
     const message = await d.util.getMessage(channel, messageId);
@@ -27,5 +27,5 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode(data)
-    }
+    };
 };

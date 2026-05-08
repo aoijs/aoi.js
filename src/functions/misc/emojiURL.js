@@ -5,7 +5,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [ emojiResolver ] = data.inside.splits;
+    const [emojiResolver] = data.inside.splits;
 
     const emoji = await d.util.getEmoji(d, emojiResolver);
 
@@ -16,4 +16,4 @@ module.exports = async (d) => {
     return {
         code: d.util.setCode(data)
     };
-}
+};

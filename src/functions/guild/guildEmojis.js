@@ -7,11 +7,11 @@ module.exports = async (d) => {
     const [sep = " , ", guildID = d.guild?.id] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     data.result = guild.emojis.cache.map((x) => x.toString()).join(sep);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

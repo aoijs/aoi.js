@@ -12,7 +12,7 @@ module.exports = async (d) => {
     const soundboardSoundsResolvable = guild.soundboardSounds.cache.find((x) => x.name === soundboardSound || x.id === soundboardSound);
 
     if (!soundboardSoundsResolvable) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Soundboard Sound");
-    
+
     data.result = soundboardSoundsResolvable[property];
 
     return {

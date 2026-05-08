@@ -1,6 +1,6 @@
 const BaseClient = require("./AoiBase");
-const {Command} = require("./Commands");
-const {FunctionManager} = require("./Functions");
+const { Command } = require("./Commands");
+const { FunctionManager } = require("./Functions");
 
 const [major] = process.version.replace("v", "").split(".");
 if (isNaN(Number(major)) || Number(major) < 20) {
@@ -13,18 +13,15 @@ class Client extends BaseClient {
         super(options);
         this.functionManager = new FunctionManager(this);
         if (this.aoiOptions.respondOnEdit) {
-            this.aoiOptions.respondOnEdit.time =
-                this.aoiOptions.respondOnEdit.time ?? 60000;
+            this.aoiOptions.respondOnEdit.time = this.aoiOptions.respondOnEdit.time ?? 60000;
         }
     }
 
     // Commands
     command(...args) {
         for (const d of args) {
-            if (!d.name)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a name!`);
-            if (!d.code)
-                throw new TypeError(`Command ${this.cmd.default.size} needs a code!`);
+            if (!d.name) throw new TypeError(`Command ${this.cmd.default.size} needs a name!`);
+            if (!d.code) throw new TypeError(`Command ${this.cmd.default.size} needs a code!`);
 
             this.cmd.default.set(this.cmd.default.size, new Command(d, this));
         }
@@ -32,10 +29,10 @@ class Client extends BaseClient {
 
     interactionCommand(d = {}) {
         if (!d.prototype) {
-            throw new TypeError(`Prototype is not provided in ${d.name || "unknown name"}: interactionCommand.`,);
+            throw new TypeError(`Prototype is not provided in ${d.name || "unknown name"}: interactionCommand.`);
         }
         if (!d.code) {
-            throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: interactionCommand. position: ${this.cmd.interaction[d.prototype]?.size}`,);
+            throw new TypeError(`Code is not provided in ${d?.name || "unknown name"}: interactionCommand. position: ${this.cmd.interaction[d.prototype]?.size}`);
         }
         this.cmd.interaction[d.prototype]?.set(this.cmd.interaction[d.prototype].size, d);
     }
@@ -218,7 +215,7 @@ class Client extends BaseClient {
     entitlementCreateCommand(d = {}) {
         this.addCommandType("entitlementCreate", d);
     }
-    
+
     entitlementUpdateCommand(d = {}) {
         this.addCommandType("entitlementUpdate", d);
     }

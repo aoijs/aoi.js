@@ -7,15 +7,15 @@ module.exports = (d) => {
     const [option] = data.inside.splits;
 
     try {
-        if(option){
+        if (option) {
             data.result = eval(`d.data.awaitData?.${option}`);
         } else {
             data.result = eval(`d.data.awaitData`);
         }
-    } catch (e){
+    } catch (e) {
         return d.aoiError.fnError(d, "custom", {}, e);
     }
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

@@ -7,7 +7,7 @@ module.exports = async (d) => {
     const [guildID = d.guild?.id, separator = ", "] = data.inside.splits;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, 'guild', { inside: data.inside });
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     const autoModRules = await guild.autoModerationRules.fetch();
 

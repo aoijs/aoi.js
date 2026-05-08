@@ -11,6 +11,6 @@ module.exports = async (d) => {
     data.result = !!isTicket;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

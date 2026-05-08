@@ -236,6 +236,7 @@ export declare class BaseClient extends Client {
     macro(...macros: MacroOptions[]): void;
     status(...statuses: StatusOption[]): void;
     loadCommands(directory: string, debug?: boolean): void;
+    loadEvents(directory: string, debug?: boolean): void;
     variables(data: Record<string, unknown>, table?: string): void;
 }
 
@@ -440,6 +441,15 @@ export declare class LoadCommands {
     load(cmd: CommandManager, path: string, debug?: boolean): void;
     update(debug?: boolean): void;
     setColors(colors: object): void;
+    get allColors(): object;
+    get themes(): object;
+}
+
+export declare class LoadEvents {
+    Client: AoiClient;
+    AddToClient?: boolean;
+    constructor(Client: AoiClient, AddToClient?: boolean);
+    load(client: AoiClient, path: string, debug?: boolean): Promise<void>;
     get allColors(): object;
     get themes(): object;
 }

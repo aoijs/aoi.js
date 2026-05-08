@@ -9,10 +9,12 @@ module.exports = async (d) => {
 
     const forum = await d.util.fetchChannel(d, forumId);
 
-    const parseTags = appliedTags.map(tag => {
-        const tags = forum.availableTags.find(t => t.name === tag || t.id === tag);
-        return tags ? tags.id : null;
-    }).filter(tag => tag !== null);
+    const parseTags = appliedTags
+        .map((tag) => {
+            const tags = forum.availableTags.find((t) => t.name === tag || t.id === tag);
+            return tags ? tags.id : null;
+        })
+        .filter((tag) => tag !== null);
 
     content = await d.util.errorParser(content, d);
 
@@ -29,4 +31,4 @@ module.exports = async (d) => {
     return {
         code: d.util.setCode(data)
     };
-}
+};

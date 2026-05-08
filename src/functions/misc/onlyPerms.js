@@ -1,4 +1,4 @@
-const {Permissions} = require("../../utils/Constants.js");
+const { Permissions } = require("../../utils/Constants.js");
 
 /**
  * @param {import("..").Data} d
@@ -12,13 +12,7 @@ module.exports = async (d) => {
     const err = stuffs.pop();
     const errorMsg = await d.util.errorParser(err, d);
 
-    if (stuffs.some((x) => !Permissions[x]))
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {inside: data.inside},
-            "Invalid Permission(s) Provided In",
-        );
+    if (stuffs.some((x) => !Permissions[x])) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Permission(s) Provided In");
 
     const memPerms = d.member.permissions;
     if (memPerms.has(Permissions.administrator)) {
@@ -27,18 +21,12 @@ module.exports = async (d) => {
         if (err?.trim() === "") {
         } else {
             const errorMsg = await d.util.errorParser(err, d);
-            d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                errorMsg.data ?? errorMsg,
-                errorMsg.options,
-                d,
-            );
+            d.aoiError.makeMessageError(d.client, d.channel, errorMsg.data ?? errorMsg, errorMsg.options, d);
         }
     }
 
     return {
         code: d.util.setCode(data),
-        error,
+        error
     };
 };

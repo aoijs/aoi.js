@@ -1,9 +1,9 @@
-const {wait} = require('../../core/functions.js');
-const {Time} = require('../../core/Time.js');
+const { wait } = require("../../core/functions.js");
+const { Time } = require("../../core/Time.js");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -15,5 +15,5 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

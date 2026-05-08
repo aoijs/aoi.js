@@ -1,19 +1,19 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
-    const [name,separator = ","] = data.inside.splits;
+    const [name, separator = ","] = data.inside.splits;
 
     if (!d.data.arrays?.[name]) {
-        return d.aoiError.fnError( d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist." );
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Array with name '" + name + "' does not exist.");
     }
 
     data.result = d.arrays[name].join(separator);
 
     return {
-        code: d.util.setCode(data),
-    }
-}
+        code: d.util.setCode(data)
+    };
+};

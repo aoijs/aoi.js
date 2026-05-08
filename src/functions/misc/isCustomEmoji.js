@@ -7,11 +7,7 @@ module.exports = async (d) => {
 
     const [emojiResolver, guildID = "global"] = data.inside.splits;
 
-    const emoji = await d.util.getEmoji(
-        d, 
-        emojiResolver, 
-        { guild: guildID === "global" ? null : d.util.getGuild(d, guildID) }
-    );
+    const emoji = await d.util.getEmoji(d, emojiResolver, { guild: guildID === "global" ? null : d.util.getGuild(d, guildID) });
 
     data.result = !!emoji?.id;
 

@@ -2,26 +2,26 @@
  * @param {import("..").Data} d
  */
 module.exports = async (d) => {
-  const data = d.util.aoiFunc(d);
-  if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
+    const data = d.util.aoiFunc(d);
+    if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
-  const [objectName, property, format = false] = data.inside.splits;
-  let object = d.data.objects?.[objectName];
+    const [objectName, property, format = false] = data.inside.splits;
+    let object = d.data.objects?.[objectName];
 
-  if (!object) {
-    return d.aoiError.fnError(d, "custom", {}, "Object not found!");
-  }
-
-  const properties = {};
-  for (const prop in object) {
-    if (prop === property) {
-      properties[prop] = object[prop];
+    if (!object) {
+        return d.aoiError.fnError(d, "custom", {}, "Object not found!");
     }
-  }
 
-  data.result = JSON.stringify(properties, null, format === "true" ? 2 : 0);
+    const properties = {};
+    for (const prop in object) {
+        if (prop === property) {
+            properties[prop] = object[prop];
+        }
+    }
 
-  return {
-    code: d.util.setCode(data),
-  };
+    data.result = JSON.stringify(properties, null, format === "true" ? 2 : 0);
+
+    return {
+        code: d.util.setCode(data)
+    };
 };
