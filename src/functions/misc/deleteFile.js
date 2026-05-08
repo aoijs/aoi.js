@@ -9,17 +9,10 @@ module.exports = async (d) => {
 
     const [file] = data.inside.splits;
 
-    await fs
-        .unlink(file)
-        .catch((e) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed To Delete File With Reason: " + e,
-            );
-        });
+    await fs.unlink(file).catch((e) => {
+        d.aoiError.fnError(d, "custom", {}, "Failed To Delete File With Reason: " + e);
+    });
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

@@ -31,20 +31,13 @@ class CustomFunction {
 
     serializeFunctions() {
         const Functions = this.client.functionManager.functions;
-        const code = this.code
-            ?.replace(/\\]/g, "#LEFT#")
-            .replace(/\\\[/g, "#RIGHT#")
-            .replace(/\\,/g, "#COMMA#");
+        const code = this.code?.replace(/\\]/g, "#LEFT#").replace(/\\\[/g, "#RIGHT#").replace(/\\,/g, "#COMMA#");
         const funcs = [];
-        const loadsOfFunc = Functions.filter(func =>
-            code.toLowerCase().includes(func.toLowerCase())
-        );
+        const loadsOfFunc = Functions.filter((func) => code.toLowerCase().includes(func.toLowerCase()));
         const funcParts = code.split("$");
 
-        funcParts.forEach(part => {
-            const matches = loadsOfFunc.filter(f =>
-                ("$" + part.toLowerCase()).startsWith(f.toLowerCase())
-            );
+        funcParts.forEach((part) => {
+            const matches = loadsOfFunc.filter((f) => ("$" + part.toLowerCase()).startsWith(f.toLowerCase()));
             if (matches.length > 0) {
                 const longestMatch = matches.reduce((a, b) => (a.length > b.length ? a : b));
                 funcs.push(longestMatch);
@@ -73,17 +66,12 @@ class FunctionManager {
         for (const func of this.functions) {
             try {
                 const ogname = func.replace("$", "").replace("[", "");
-                const fileEntry = functionEntries.find(([key, value]) =>
-                    value.includes(ogname)
-                );
+                const fileEntry = functionEntries.find(([key, value]) => value.includes(ogname));
 
                 if (fileEntry) {
                     const [file] = fileEntry;
                     const funcPath = `../functions/${file}/${ogname}.js`;
-                    this.cache.set(
-                        ogname,
-                        new Function(require(funcPath), func)
-                    );
+                    this.cache.set(ogname, new Function(require(funcPath), func));
                 }
             } catch (e) {
                 console.error(`Failed to cache function ${func}:`, e);
@@ -92,7 +80,7 @@ class FunctionManager {
     }
 
     createFunction(...ds) {
-        ds.forEach(d => {
+        ds.forEach((d) => {
             const customFunc = new CustomFunction(d, this.client);
             this.cache.set(d.name.replace("$", ""), customFunc);
             this.functions.push(d.name);
@@ -101,20 +89,13 @@ class FunctionManager {
 
     findFunctions(code = "") {
         const Functions = this.functions;
-        const normalizedCode = code
-            ?.replace(/\\]/g, "#LEFT#")
-            .replace(/\\\[/g, "#RIGHT#")
-            .replace(/\\,/g, "#COMMA#");
+        const normalizedCode = code?.replace(/\\]/g, "#LEFT#").replace(/\\\[/g, "#RIGHT#").replace(/\\,/g, "#COMMA#");
         const funcs = [];
-        const loadsOfFunc = Functions.filter(func =>
-            normalizedCode.toLowerCase().includes(func.toLowerCase())
-        );
+        const loadsOfFunc = Functions.filter((func) => normalizedCode.toLowerCase().includes(func.toLowerCase()));
         const funcParts = normalizedCode.split("$");
 
-        funcParts.forEach(part => {
-            const matches = loadsOfFunc.filter(f =>
-                ("$" + part.toLowerCase()).startsWith(f.toLowerCase())
-            );
+        funcParts.forEach((part) => {
+            const matches = loadsOfFunc.filter((f) => ("$" + part.toLowerCase()).startsWith(f.toLowerCase()));
             if (matches.length > 0) {
                 const longestMatch = matches.reduce((a, b) => (a.length > b.length ? a : b));
                 funcs.push(longestMatch);

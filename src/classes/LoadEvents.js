@@ -1,16 +1,16 @@
 const fs = require("fs");
-const { CommandManager } = require("./Commands.js");
 const PATH = require("path");
 const chalk = require("chalk");
+const { EventsToDjsEvents } = require("../utils/Constants.js");
 const AoiError = require("./AoiError");
 
-class LoadCommands {
+class LoadEvents {
     constructor(client, addClassInClient = true) {
         this.client = client;
         this.paths = [];
         this.colors = {};
         if (addClassInClient) {
-            this.client.loader = this;
+            this.client.eventLoader = this;
         }
     }
 
@@ -55,17 +55,17 @@ class LoadCommands {
                     text: [chalk.bold.red]
                 },
                 typeError: {
-                    command: [chalk.bold.yellow],
+                    event: [chalk.bold.yellow],
                     type: [chalk.yellow],
                     text: [chalk.bold.red]
                 },
                 failLoad: {
-                    command: [chalk.bold.magenta],
+                    event: [chalk.bold.magenta],
                     type: [chalk.red],
                     text: [chalk.bold.red]
                 },
                 loaded: {
-                    command: [chalk.bold.cyan],
+                    event: [chalk.bold.cyan],
                     type: [chalk.bold.blue],
                     text: [chalk.bold.green]
                 }
@@ -77,17 +77,17 @@ class LoadCommands {
                     name: [chalk.bold.red]
                 },
                 typeError: {
-                    command: [chalk.bold.red],
+                    event: [chalk.bold.red],
                     type: [chalk.red],
                     text: [chalk.dim.red]
                 },
                 failLoad: {
-                    command: [chalk.bold.red],
+                    event: [chalk.bold.red],
                     type: [chalk.red],
                     text: [chalk.dim.red]
                 },
                 loaded: {
-                    command: [chalk.bold.cyan],
+                    event: [chalk.bold.cyan],
                     type: [chalk.cyan],
                     text: [chalk.dim.cyan]
                 }
@@ -139,76 +139,83 @@ class LoadCommands {
         const index = this.paths.findIndex((d) => d.path === path);
 
         if (index < 0) {
-            this.paths.push({
-                path,
-                debug,
-                commandsLocation: client,
-                keys: client instanceof CommandManager ? client.types : Object.keys(client)
-            });
+            this.paths.push({ path, debug, client });
         }
 
-        const validCmds = Object.getOwnPropertyNames(client);
+        const validAoi = Object.keys(EventsToDjsEvents);
+        const validDjs = new Set(Object.values(EventsToDjsEvents));
         const dirents = await walk(path);
         let debugs = [];
 
         for (const { name } of dirents) {
+            if (!name.endsWith(".js")) continue;
             delete require.cache[name];
 
-            let cmds;
-
+            let events;
             try {
-                cmds = require(name);
+                events = require(name);
             } catch {
                 debugs.push(`${chalk.red("✖ Failed to load")} ${name}`);
-                debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
 
-            if (cmds == null) {
+            if (events == null) {
                 debugs.push(`${chalk.red("✖ No data provided in")} ${name}`);
-                debugs.push("- " + name.split(PATH.sep).slice(-2).join(PATH.sep));
                 continue;
             }
 
-            if (!Array.isArray(cmds)) cmds = [cmds];
+            if (!Array.isArray(events)) events = [events];
 
-            for (const cmd of cmds) {
-                const path = name.split(PATH.sep);
-                const pathName = path.length > 2 ? path.slice(-3).join(PATH.sep) : name;
+            for (const event of events) {
+                const pathArr = name.split(PATH.sep);
+                const pathName = pathArr.length > 2 ? pathArr.slice(-3).join(PATH.sep) : name;
 
-                if (!isObject(cmd)) {
-                    const debugMessage = `${chalk.red("✖ Provided data is not an object in")} ${pathName}`;
+                if (!isObject(event)) {
+                    debugs.push(`${chalk.red("✖ Provided data is not an object in")} ${pathName}`);
+                    continue;
+                }
+
+                if (!event.type && !event.name) {
+                    debugs.push(`${chalk.red("✖ Missing Type Or Name For Event in")} '${pathName}'`);
+                    continue;
+                }
+
+                const type = event.type || event.name;
+                let eventName;
+                const source = (event.source || event.mode || "").toString().toLowerCase();
+
+                if (source === "aoi" || source === "aoijs" || source === "aoi.js") {
+                    eventName = EventsToDjsEvents[type];
+                } else if (source === "djs" || source === "discordjs" || source === "discord") {
+                    eventName = type;
+                } else if (validAoi.includes(type)) {
+                    eventName = EventsToDjsEvents[type];
+                } else if (validDjs.has(type)) {
+                    eventName = type;
+                }
+
+                if (!eventName) {
+                    const debugMessage = `${chalk.red("✖ Invalid Type Provided For Event")} '${pathName}' ${chalk.gray(`(${type})`)}`;
                     debugs.push(debugMessage);
                     continue;
                 }
 
-                if (!("type" in cmd)) cmd.type = "default";
+                const handler = typeof event.code === "function" ? event.code : typeof event.handler === "function" ? event.handler : typeof event.execute === "function" ? event.execute : undefined;
 
-                const valid = validCmds.includes(cmd.type);
-
-                if (!valid) {
-                    const debugMessage = `${chalk.red("✖ Invalid Type Provided For")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)} ${chalk.red("in")} '${pathName}'`;
+                if (!handler) {
+                    const debugMessage = `${chalk.red("✖ Missing Handler For Event")} '${pathName}' ${chalk.gray(`(${type})`)}`;
                     debugs.push(debugMessage);
                     continue;
                 }
 
-                cmd.load = true;
-                cmd.__path__ = name.split(PATH.sep).slice(-2).join(PATH.sep);
-
-                try {
-                    if (client instanceof CommandManager) {
-                        client.createCommand(cmd);
-                    } else {
-                        client[cmd.type].set(client[cmd.type].size, cmd);
-                    }
-                } catch (e) {
-                    console.error(e);
-                    const debugMessage = `${chalk.red("✖ Failed to load")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)} ${chalk.red("in")} '${pathName}'`;
-                    debugs.push(debugMessage);
-                    continue;
+                const listener = (...args) => handler(...args, client);
+                if (event.once) {
+                    client.once(eventName, listener);
+                } else {
+                    client.on(eventName, listener);
                 }
 
-                const debugMessage = `${chalk.green("✔ Loaded")} '${cmd.name || cmd.channel}' ${chalk.gray(`(${cmd.type})`)}`;
+                const debugMessage = `${chalk.green("✔ Loaded")} '${pathName}' ${chalk.gray(`(${type})`)}`;
                 debugs.push(debugMessage);
             }
         }
@@ -222,52 +229,10 @@ class LoadCommands {
                     }))
                 ],
                 "white",
-                { text: "LoadCommands", textColor: "cyan" }
+                { text: "LoadEvents", textColor: "cyan" }
             );
-        }
-    }
-
-    async update(debug = true) {
-        for (const dp of this.paths) {
-            for (const cmd of dp.keys) {
-                try {
-                    if (cmd === "interaction") {
-                        dp.commandsLocation.interaction.slash = dp.commandsLocation.interaction.slash.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.button = dp.commandsLocation.interaction.button.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.selectMenu = dp.commandsLocation.interaction.selectMenu.filter((x) => !x.load);
-                        dp.commandsLocation.interaction.modal = dp.commandsLocation.interaction.modal.filter((x) => !x.load);
-                    } else {
-                        dp.commandsLocation[cmd] = dp.commandsLocation[cmd].filter((x) => !x.load);
-                    }
-                    if (cmd.loopInterval) {
-                        clearInterval(cmd.loopInterval);
-                    }
-                } catch (e) {
-                    throw new TypeError("Something went wrong, please check the error message: " + e);
-                }
-            }
-            await this.load(dp.commandsLocation, dp.path, debug);
-        }
-    }
-
-    setColors(c = { failLoad: null, loading: null, failedLoading: null, loaded: null, typeError: null, noData: null }) {
-        for (const co of Object.keys(c)) {
-            if (Array.isArray(c[co])) {
-                this.colors[co] = c[co].map((x) => this.allColors[x]).join(" ");
-            } else if (typeof c[co] === "object" && !Array.isArray(c[co])) {
-                this.colors[co] = {};
-                for (const coo of Object.keys(c[co])) {
-                    if (Array.isArray(c[co][coo])) {
-                        this.colors[co][coo] = c[co][coo].map((x) => this.allColors[x]).join(" ");
-                    } else {
-                        this.colors[co][coo] = c[co][coo];
-                    }
-                }
-            } else {
-                this.colors[co] = this.allColors[c[co]];
-            }
         }
     }
 }
 
-module.exports = LoadCommands;
+module.exports = LoadEvents;

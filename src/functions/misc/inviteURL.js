@@ -7,6 +7,6 @@ module.exports = async (d) => {
     data.result = d.data.inviteData.url;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

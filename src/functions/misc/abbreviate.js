@@ -12,18 +12,7 @@ module.exports = async (d) => {
     const de = Number(dec);
 
     if (isNaN(n) || isNaN(de)) {
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            `${
-                isNaN(n)
-                    ? "Invalid Number in "
-                    : isNaN(de)
-                        ? "Invalid Decimal Position in"
-                        : ""
-            }`
-        );
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, `${isNaN(n) ? "Invalid Number in " : isNaN(de) ? "Invalid Decimal Position in" : ""}`);
     }
 
     let a;
@@ -35,6 +24,6 @@ module.exports = async (d) => {
 
     data.result = a;
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

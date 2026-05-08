@@ -8,7 +8,7 @@ class SlashOption {
 
             const name = opt.shift()?.addBrackets();
             const value = opt.shift()?.addBrackets();
-            Choice.push({name, value});
+            Choice.push({ name, value });
         }
 
         return Choice;
@@ -28,7 +28,7 @@ class SlashOption {
             if (choice.trim().length) {
                 choices = this.choice(choice);
             } else choices = [];
-            stringOptions.push({type: 3, name, description, required, choices});
+            stringOptions.push({ type: 3, name, description, required, choices });
         }
 
         return stringOptions;
@@ -47,7 +47,7 @@ class SlashOption {
             if (choice.trim().length) {
                 choices = this.choice(choice);
             } else choices = [];
-            integerOptions.push({type: 4, name, description, required, choices});
+            integerOptions.push({ type: 4, name, description, required, choices });
         }
         return integerOptions;
     }
@@ -58,18 +58,13 @@ class SlashOption {
         for (const option of options) {
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
             const choice = option.join(":");
             let choices;
             if (choice.trim().length) {
                 choices = this.choice(choice);
             } else choices = [];
-            numberOptions.push({type: 10, name, description, required, choices});
+            numberOptions.push({ type: 10, name, description, required, choices });
         }
         return numberOptions;
     }
@@ -80,13 +75,8 @@ class SlashOption {
         for (const option of options) {
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
-            booleanOptions.push({type: 5, name, description, required});
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
+            booleanOptions.push({ type: 5, name, description, required });
         }
         return booleanOptions;
     }
@@ -97,13 +87,8 @@ class SlashOption {
         for (const option of options) {
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
-            userOptions.push({type: 6, name, description, required});
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
+            userOptions.push({ type: 6, name, description, required });
         }
         return userOptions;
     }
@@ -114,13 +99,8 @@ class SlashOption {
         for (const option of options) {
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
-            channelOptions.push({type: 7, name, description, required});
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
+            channelOptions.push({ type: 7, name, description, required });
         }
         return channelOptions;
     }
@@ -131,13 +111,8 @@ class SlashOption {
         for (const option of options) {
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
-            roleOptions.push({type: 8, name, description, required});
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
+            roleOptions.push({ type: 8, name, description, required });
         }
         return roleOptions;
     }
@@ -149,13 +124,8 @@ class SlashOption {
             option = option.split("}")[0].split(":");
             const name = option.shift()?.addBrackets();
             const description = option.shift()?.addBrackets();
-            const required =
-                option
-                    ?.shift()
-                    ?.addBrackets()
-                    ?.replace("true", true)
-                    ?.replace("false", false) || true;
-            mentionOptions.push({type: 9, name, description, required});
+            const required = option?.shift()?.addBrackets()?.replace("true", true)?.replace("false", false) || true;
+            mentionOptions.push({ type: 9, name, description, required });
         }
         return mentionOptions;
     }
@@ -181,11 +151,10 @@ class SlashOption {
             if (Checker("user")) Options = Options.concat(await this.user(opt));
             if (Checker("channel")) Options = Options.concat(await this.channel(opt));
             if (Checker("role")) Options = Options.concat(await this.role(opt));
-            if (Checker("mentionable"))
-                Options = Options.concat(await this.mentionable(opt));
+            if (Checker("mentionable")) Options = Options.concat(await this.mentionable(opt));
             if (Checker("number")) Options = Options.concat(await this.number(opt));
 
-            subOptions.push({name, description, type: 1, options: Options});
+            subOptions.push({ name, description, type: 1, options: Options });
         }
         return subOptions;
     }
@@ -203,7 +172,7 @@ class SlashOption {
 
             Option = Option.concat(await this.subCommand(opts));
 
-            GroupOptions.push({name, description, type: 2, options: Option});
+            GroupOptions.push({ name, description, type: 2, options: Option });
         }
         return GroupOptions;
     }

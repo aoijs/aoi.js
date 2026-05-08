@@ -13,13 +13,11 @@ module.exports = async (d) => {
 
     const interaction = await d.data.interaction
         ?.followUp({
-            content: parser.content?.trim() === "" ? " " : parser.content?.addBrackets() ?? parser.data?.content,
+            content: parser.content?.trim() === "" ? " " : (parser.content?.addBrackets() ?? parser.data?.content),
             embeds: parser.embeds ?? parser.data?.embeds,
             components: parser.components ?? parser.data?.components,
             files: parser.files ?? parser.data?.files,
-            flags: ephemeral === "true"
-                ? (parser.flags ? (MessageFlags.Ephemeral | parser.flags) : MessageFlags.Ephemeral)
-                : parser.flags
+            flags: ephemeral === "true" ? (parser.flags ? MessageFlags.Ephemeral | parser.flags : MessageFlags.Ephemeral) : parser.flags
         })
         .catch((e) => {
             d.aoiError.fnError(d, "custom", {}, "Failed to Follow Up Interaction with Reason: " + e);

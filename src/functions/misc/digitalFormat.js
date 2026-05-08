@@ -1,4 +1,4 @@
-const {Time} = require("../../core/Time.js");
+const { Time } = require("../../core/Time.js");
 
 /**
  * @param {import("..").Data} d
@@ -11,6 +11,6 @@ module.exports = async (d) => {
     data.result = Time.digital(time);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

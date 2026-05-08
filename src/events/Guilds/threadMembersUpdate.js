@@ -8,7 +8,7 @@ module.exports = async (oldThreadMembers, newThreadMembers, client) => {
         channel: oldThreadMembers.first().thread || newThreadMembers.first().thread,
         client: client
     };
-    
+
     let guildChannel;
     for (const cmd of cmds) {
         if (cmd?.channel?.includes("$")) {

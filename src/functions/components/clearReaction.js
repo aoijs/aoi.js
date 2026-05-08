@@ -14,23 +14,13 @@ module.exports = async (d) => {
     if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
 
     message.reactions.cache
-        .find(
-            (x) =>
-                x.emoji.name.toLowerCase() === emoji.toLowerCase() ||
-                x.emoji.toString() === emoji.addBrackets() ||
-                x.emoji.id === emoji,
-        )
+        .find((x) => x.emoji.name.toLowerCase() === emoji.toLowerCase() || x.emoji.toString() === emoji.addBrackets() || x.emoji.id === emoji)
         ?.users.remove(userID)
         .catch((err) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                `Failed To Remove Reaction For The User:'${userID}' With Reason: ${err}`,
-            );
+            d.aoiError.fnError(d, "custom", {}, `Failed To Remove Reaction For The User:'${userID}' With Reason: ${err}`);
         });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

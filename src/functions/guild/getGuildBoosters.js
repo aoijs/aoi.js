@@ -8,7 +8,8 @@ module.exports = async (d) => {
     const guild = await d.util.getGuild(d, guildId);
     const guildBoosters = guild.members.cache.filter((member) => member.premiumSince !== null);
 
-    data.result = guildBoosters.map((member) => {
+    data.result = guildBoosters
+        .map((member) => {
             if (option.includes("{")) {
                 return option.replaceAll(/{(.+?)}/g, (_, prop) => member.user[prop]);
             } else {

@@ -10,6 +10,6 @@ module.exports = (d) => {
     data.result = text.split("").reverse().join("");
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

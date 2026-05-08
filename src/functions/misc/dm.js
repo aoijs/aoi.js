@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
     const [id = d.author.id] = data.inside.splits;
@@ -12,5 +12,5 @@ module.exports = async d => {
     return {
         code: d.util.setCode(data),
         useChannel: dm
-    }
-} 
+    };
+};

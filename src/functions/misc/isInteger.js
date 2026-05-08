@@ -13,7 +13,7 @@ module.exports = (d) => {
         number = Number(number);
         data.result = Number.isInteger(number);
     }
-    
+
     return {
         code: d.util.setCode(data)
     };

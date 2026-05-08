@@ -3,7 +3,7 @@ const { MessageFlags } = require("discord.js");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -19,11 +19,11 @@ module.exports = async d => {
 
     if (msg.flags & MessageFlags.IsComponentsV2) msg.content = null;
 
-    message.edit(msg).catch(e => {
+    message.edit(msg).catch((e) => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Edit Message With Reason: " + e);
     });
 
     return {
         code: d.util.setCode(data)
-    }
-} 
+    };
+};

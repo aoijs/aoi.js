@@ -5,13 +5,7 @@ module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
 
     const [type = "all"] = data.inside.splits;
-    if (!["everyone", "users", "roles", "all"].includes(type))
-        d.aoiError.fnError(
-            d,
-            "custom",
-            {inside: data.inside},
-            "Invalid Type Provided In",
-        );
+    if (!["everyone", "users", "roles", "all"].includes(type)) d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Type Provided In");
 
     switch (type) {
         case "all":
@@ -32,5 +26,5 @@ module.exports = async (d) => {
     return {
         code: d.util.setCode(data),
         allowedMentions: d.allowedMentions
-    }
+    };
 };

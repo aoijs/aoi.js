@@ -11,18 +11,13 @@ module.exports = async (d) => {
 
     await fs
         .appendFile(file, text.addBrackets(), {
-            encoding: encode,
+            encoding: encode
         })
         .catch((e) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed To Append File With Reason: " + e,
-            );
+            d.aoiError.fnError(d, "custom", {}, "Failed To Append File With Reason: " + e);
         });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

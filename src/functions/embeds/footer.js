@@ -18,11 +18,11 @@ module.exports = async (d) => {
 
     d.embeds[index].setFooter({
         text,
-        iconURL,
+        iconURL
     });
 
     return {
         code: d.util.setCode(data),
-        embeds: d.embeds,
+        embeds: d.embeds
     };
 };

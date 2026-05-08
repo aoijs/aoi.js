@@ -10,6 +10,6 @@ module.exports = async (d) => {
     data.result = (await d.util.getEmoji(d, emoji))?.id ?? null;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

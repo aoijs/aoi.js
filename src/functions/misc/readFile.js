@@ -12,18 +12,13 @@ module.exports = async (d) => {
     data.result = await fs
         .readFile(file.addBrackets(), {
             encoding,
-            flag,
+            flag
         })
         .catch((e) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed To Read File With Reason: " + e,
-            );
+            d.aoiError.fnError(d, "custom", {}, "Failed To Read File With Reason: " + e);
         });
     data.result = data.result.deleteBrackets();
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

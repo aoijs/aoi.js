@@ -20,11 +20,11 @@ module.exports = async (d) => {
     } catch (e) {
         data.result = undefined;
     }
-    
+
     d.data.objects[name] = object;
 
     return {
         code: d.util.setCode(data),
-        data: d.data,
+        data: d.data
     };
 };

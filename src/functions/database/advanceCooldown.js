@@ -1,4 +1,4 @@
-const {Time} = require("../../core/Time.js");
+const { Time } = require("../../core/Time.js");
 
 /**
  * @param {import("..").Data} d
@@ -18,7 +18,7 @@ module.exports = async (d) => {
     } else if (Date.now() < cooldown) {
         if (errorObject.trim() === "") {
         } else {
-            const {object, humanize, toString} = Time.format(cooldown - Date.now());
+            const { object, humanize, toString } = Time.format(cooldown - Date.now());
             errorObject = errorObject
                 .replaceAll("%time%", humanize())
                 .replaceAll("%year%", object.years)
@@ -32,13 +32,7 @@ module.exports = async (d) => {
                 .replaceAll("%fullTime%", toString());
 
             errorObject = await d.util.errorParser(errorObject, d);
-            await d.aoiError.makeMessageError(
-                d.client,
-                d.channel,
-                errorObject.data ?? errorObject,
-                errorObject.options,
-                d
-            );
+            await d.aoiError.makeMessageError(d.client, d.channel, errorObject.data ?? errorObject, errorObject.options, d);
         }
         error = true;
     } else {
@@ -48,6 +42,6 @@ module.exports = async (d) => {
 
     return {
         code: d.util.setCode(data),
-        error,
+        error
     };
 };

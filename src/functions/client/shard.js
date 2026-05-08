@@ -10,6 +10,6 @@ module.exports = async (d) => {
     data.result = eval(`d.data.shard.${option}`);
 
     return {
-        code: d.util.setCode(d),
+        code: d.util.setCode(d)
     };
 };

@@ -46,9 +46,7 @@ module.exports = async (interaction, client) => {
             );
         }
     } else if (type === "modal") {
-        cmds = client.cmd?.interaction.modal.filter((x) => (
-            x.name ? (Array.isArray(x.name) ? x.name?.includes(interaction.customId) : x.name === interaction.customId) : !x.name
-        )).V();
+        cmds = client.cmd?.interaction.modal.filter((x) => (x.name ? (Array.isArray(x.name) ? x.name?.includes(interaction.customId) : x.name === interaction.customId) : !x.name)).V();
         if (!cmds.length) return;
         const data = {
             client: client,

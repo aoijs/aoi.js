@@ -7,6 +7,6 @@ module.exports = async (d) => {
     data.result = await d.channel.sendTyping();
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

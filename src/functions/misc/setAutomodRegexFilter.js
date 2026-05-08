@@ -7,14 +7,14 @@ module.exports = async (d) => {
 
     return {
         code: d.util.setCode(data),
-        data: { 
-            automodRule: { 
+        data: {
+            automodRule: {
                 ...d.data.automodRule,
-                triggerMetadata: { 
+                triggerMetadata: {
                     ...d.data.automodRule?.triggerMetadata,
-                    regexPatterns: regex, 
-                },
-            },
-        },
+                    regexPatterns: regex
+                }
+            }
+        }
     };
 };

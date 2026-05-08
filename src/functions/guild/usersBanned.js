@@ -15,14 +15,16 @@ module.exports = async (d) => {
 
     if (option.includes("{")) {
         const options = option.match(/{(.*?)}/g);
-        data.result = bannedUsers.map((x) => {
-            let result = option;
-            for (const opt of options) {
-                const n = opt.replace(/{|}/g, "");
-                if (x.user[n]) result = result.replace(opt, x.user[n].toString());
-            }
-            return result;
-        }).join(sep);
+        data.result = bannedUsers
+            .map((x) => {
+                let result = option;
+                for (const opt of options) {
+                    const n = opt.replace(/{|}/g, "");
+                    if (x.user[n]) result = result.replace(opt, x.user[n].toString());
+                }
+                return result;
+            })
+            .join(sep);
     } else {
         data.result = bannedUsers.map((x) => (option === "mention" ? x.user.toString() : x.user[option])).join(sep);
     }

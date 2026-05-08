@@ -1,19 +1,19 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
-  const data = d.util.aoiFunc(d);
-  if (data.err) return d.error(data.err);
-  
-  const [name] = data.inside.splits;
+module.exports = async (d) => {
+    const data = d.util.aoiFunc(d);
+    if (data.err) return d.error(data.err);
 
-  if (!d.data?.vars?.hasOwnProperty(name.addBrackets())) {
-    return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid variable name");
-  }
+    const [name] = data.inside.splits;
 
-  data.result = d.data.vars[name.addBrackets()];
+    if (!d.data?.vars?.hasOwnProperty(name.addBrackets())) {
+        return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid variable name");
+    }
 
-  return {
-    code: d.util.setCode(data)
-  };
+    data.result = d.data.vars[name.addBrackets()];
+
+    return {
+        code: d.util.setCode(data)
+    };
 };

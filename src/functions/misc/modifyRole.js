@@ -1,9 +1,9 @@
-const {ReactionUserManager} = require("discord.js");
+const { ReactionUserManager } = require("discord.js");
 
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -11,33 +11,32 @@ module.exports = async d => {
     let RoleData;
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, 'guild', {inside: data.inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
-    const role = await guild.roles.fetch(roleID).catch(e => undefined);
-    if (!role) return d.aoiError.fnError(d, 'role', {inside: data.inside});
+    const role = await guild.roles.fetch(roleID).catch((e) => undefined);
+    if (!role) return d.aoiError.fnError(d, "role", { inside: data.inside });
 
     if (roleDatas.length === 1) {
         try {
             RoleData = JSON.parse(roleDatas[0].addBrackets());
-        } catch (e) {
-        }
+        } catch (e) {}
     } else {
         RoleData = {
             name: roleDatas[0]?.addBrackets(),
             color: roleDatas[1]?.addBrackets(),
-            hoist: roleDatas[2] === 'true',
-            position: roleDatas[3] === '$default' ? role.position : Number(roleDatas[3]),
-            mentionable: roleDatas[4] === 'true',
+            hoist: roleDatas[2] === "true",
+            position: roleDatas[3] === "$default" ? role.position : Number(roleDatas[3]),
+            mentionable: roleDatas[4] === "true",
             icon: roleDatas[5]?.addBrackets(),
             unicodeEmoji: roleDatas[6]?.addBrackets()
-        }
+        };
     }
 
-    role.edit(RoleData).catch(e => {
-        d.aoiError.fnError(d, 'custom', {inside: data.inside}, 'Failed To Modify Role With Reason: ' + e);
+    role.edit(RoleData).catch((e) => {
+        d.aoiError.fnError(d, "custom", { inside: data.inside }, "Failed To Modify Role With Reason: " + e);
     });
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

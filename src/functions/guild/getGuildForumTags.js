@@ -10,8 +10,8 @@ module.exports = async (d) => {
     const forum = await d.util.fetchChannel(d, forumId);
 
     const parseTags = forum.availableTags
-        .filter(tag => tag.emoji !== null)
-        .map(tag => {
+        .filter((tag) => tag.emoji !== null)
+        .map((tag) => {
             let result;
             switch (option.toLowerCase()) {
                 case "emoji":
@@ -66,10 +66,10 @@ module.exports = async (d) => {
         }
         data.result = parseCustomTags.length > 0 ? parseCustomTags.join(separator) : "null";
     } else {
-        data.result = parseTags[0] === "unknown" ? d.aoiError.fnError(d, "custom", { inside: data.inside }, "option provided.") : (parseTags.length > 0 ? parseTags.join(separator) : "null");
+        data.result = parseTags[0] === "unknown" ? d.aoiError.fnError(d, "custom", { inside: data.inside }, "option provided.") : parseTags.length > 0 ? parseTags.join(separator) : "null";
     }
 
     return {
         code: d.util.setCode(data)
     };
-}
+};

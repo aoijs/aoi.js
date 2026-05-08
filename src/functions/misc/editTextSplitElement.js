@@ -9,13 +9,7 @@ module.exports = async (d) => {
     data.function = d.func;
     index = index - 1;
 
-    if (isNaN(index) || index < 0)
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            {inside},
-            "Invalid Index Provided In",
-        );
+    if (isNaN(index) || index < 0) return d.aoiError.fnError(d, "custom", { inside }, "Invalid Index Provided In");
 
     d.array[index] = text;
 
@@ -23,7 +17,7 @@ module.exports = async (d) => {
         code: d.util.setCode(data),
         data: {
             ...d.data,
-            array: d.array,
-        },
+            array: d.array
+        }
     };
 };

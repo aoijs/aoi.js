@@ -1,5 +1,5 @@
-const { CheckCondition } = require('../../core/CheckCondition.js')
-const { mustEscape } = require('../../core/mustEscape.js')
+const { CheckCondition } = require("../../core/CheckCondition.js");
+const { mustEscape } = require("../../core/mustEscape.js");
 
 /**
  * @param {import("..").Data} d
@@ -10,7 +10,7 @@ module.exports = async (d) => {
 
     const [condition] = data.inside.splits;
 
-    if (!["==", "!=", "<=", ">=", "||", "&&", "<", ">"].some(x => condition.includes(x))) {
+    if (!["==", "!=", "<=", ">=", "||", "&&", "<", ">"].some((x) => condition.includes(x))) {
         return d.aoiError.fnError(d, "custom", data.inside, "Valid Operators Not Provided In");
     }
 
@@ -25,5 +25,5 @@ module.exports = async (d) => {
     data.result = result;
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

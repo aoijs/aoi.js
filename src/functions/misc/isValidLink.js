@@ -1,9 +1,9 @@
-const { Agent, fetch } = require('undici');
+const { Agent, fetch } = require("undici");
 
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -11,7 +11,7 @@ module.exports = async d => {
 
     const response = await fetch(link.addBrackets(), {
         agent: new Agent(),
-        method: 'GET',
+        method: "GET"
     }).catch(() => null);
 
     data.result = response !== null;
@@ -19,4 +19,4 @@ module.exports = async d => {
     return {
         code: d.util.setCode(data)
     };
-}
+};

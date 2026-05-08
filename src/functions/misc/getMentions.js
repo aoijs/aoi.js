@@ -1,26 +1,26 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
     const [type = "users", sep = ", "] = data.inside.splits;
 
     const mentions = d.mentions;
-    let result = ""
+    let result = "";
     switch (type) {
-        case 'users':
-            result = mentions.users.map(u => u.id).join(sep);
+        case "users":
+            result = mentions.users.map((u) => u.id).join(sep);
             break;
-        case 'roles':
-            result = mentions.roles.map(r => r.id).join(sep);
+        case "roles":
+            result = mentions.roles.map((r) => r.id).join(sep);
             break;
         default:
             break;
     }
 
-    data.result = result
+    data.result = result;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
-}
+};

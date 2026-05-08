@@ -1,4 +1,3 @@
-
 /**
  * @param {import("..").Data} d
  */
@@ -11,14 +10,10 @@ module.exports = async (d) => {
     if (!d.client.variableManager.has(varname.addBrackets(), table)) return d.aoiError.fnError(d, "custom", {}, `Variable ${varname.addBrackets()} doesn't exist`);
 
     await d.client.db.deleteMany(table, (Data) => {
-        return (
-            Data.key.startsWith(`${varname}_`) &&
-            Data.key.split("_").length === 3 && 
-            Data.key.endsWith(`_${guildID}`)
-        );
+        return Data.key.startsWith(`${varname}_`) && Data.key.split("_").length === 3 && Data.key.endsWith(`_${guildID}`);
     });
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

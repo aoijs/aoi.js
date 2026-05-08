@@ -19,7 +19,7 @@ module.exports = async (d) => {
         code: d.util.setCode({ function: d.func, code, inside }),
         editIn: {
             time,
-            msgs,
-        },
+            msgs
+        }
     };
 };

@@ -14,7 +14,7 @@ module.exports = async (d) => {
     if (!message) return d.aoiError.fnError(d, "message", { inside: data.inside });
     reactions = reactions.reverse();
 
-    for (let i = reactions.length - 1; i >= 0; i--) {        
+    for (let i = reactions.length - 1; i >= 0; i--) {
         let reaction = await d.util.getEmoji(d, reactions[i]);
         if (!reaction) reaction = reactions[i].addBrackets().trim();
         await message.react(reaction).catch((err) => d.aoiError.fnError(d, "custom", {}, err.message));

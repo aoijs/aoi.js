@@ -14,9 +14,6 @@ module.exports = async (d) => {
         text = text.addBrackets().split(split.addBrackets())[index] || "";
     }
     return {
-        code: code.replaceLast(
-            `$advancedTextSplit${inside.total}`,
-            text.deleteBrackets(),
-        ),
+        code: code.replaceLast(`$advancedTextSplit${inside.total}`, text.deleteBrackets())
     };
 };

@@ -15,29 +15,17 @@ module.exports = async (d) => {
 
     if (emoji === "all") {
         message.reactions.removeAll().catch((err) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed To Remove All Reactions With Reason: " + err,
-            );
+            d.aoiError.fnError(d, "custom", {}, "Failed To Remove All Reactions With Reason: " + err);
         });
 
         return {
-            code: d.util.setCode(data),
+            code: d.util.setCode(data)
         };
     } else {
-        message.reactions.cache
-            .find(
-                (x) =>
-                    x.emoji.toString() === emoji ||
-                    x.emoji.name.toLowerCase() === emoji.toLowerCase() ||
-                    x.emoji.id === emoji,
-            )
-            ?.remove();
+        message.reactions.cache.find((x) => x.emoji.toString() === emoji || x.emoji.name.toLowerCase() === emoji.toLowerCase() || x.emoji.id === emoji)?.remove();
     }
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

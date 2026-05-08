@@ -1,4 +1,4 @@
-const {Time} = require("../../core/Time.js");
+const { Time } = require("../../core/Time.js");
 /**
  * @param {import("..").Data} d
  */
@@ -11,17 +11,10 @@ module.exports = async (d) => {
 
     time = isNaN(time) ? Time.parse(time).ms : time;
 
-    if (!time)
-        return d.aoiError.fnError(
-            d,
-            "custom",
-            { inside: data.inside },
-            "Invalid Time Provided In",
-        );
+    if (!time) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Time Provided In");
 
     let CooldownTable = d.client.cacheManager.caches.cache.cooldowns;
-    if (!CooldownTable)
-        CooldownTable = d.client.cacheManager.createCache("cache", "cooldowns");
+    if (!CooldownTable) CooldownTable = d.client.cacheManager.createCache("cache", "cooldowns");
 
     let cooldown = CooldownTable.get(id);
 
@@ -29,7 +22,7 @@ module.exports = async (d) => {
         cooldown = Date.now() + time;
         CooldownTable.set(id, cooldown);
     } else if (Date.now() < cooldown) {
-        const {object, humanize, toString} = Time.format(cooldown - Date.now());
+        const { object, humanize, toString } = Time.format(cooldown - Date.now());
         errorObject = errorObject
             .replaceAll("%time%", humanize())
             .replaceAll("%year%", object.years)
@@ -43,13 +36,7 @@ module.exports = async (d) => {
             .replaceAll("%fullTime%", toString());
 
         errorObject = await d.util.errorParser(errorObject);
-        d.aoiError.makeMessageError(
-            d.client,
-            d.channel,
-            errorObject.data ?? errorObject,
-            errorObject.options,
-            d,
-        );
+        d.aoiError.makeMessageError(d.client, d.channel, errorObject.data ?? errorObject, errorObject.options, d);
         error = true;
     } else {
         cooldown = Date.now() + time;
@@ -58,6 +45,6 @@ module.exports = async (d) => {
 
     return {
         code: d.util.setCode(data),
-        error,
+        error
     };
 };

@@ -34,7 +34,7 @@ const ContextTypes = {
 const IntegrationTypes = {
     guild: ApplicationIntegrationType.GuildInstall,
     user: ApplicationIntegrationType.UserInstall
-}
+};
 
 module.exports = {
     InteractionTypes: InteractionTypes,

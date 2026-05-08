@@ -6,11 +6,11 @@ module.exports = async (d) => {
 
     const i = d?.data.index;
 
-    if (!i && i !== 0) return d.aoiError.fnError(d, 'custom', {}, 'No loop command.');
+    if (!i && i !== 0) return d.aoiError.fnError(d, "custom", {}, "No loop command.");
 
     data.result = Number(i) + 1;
-    
+
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

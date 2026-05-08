@@ -2,20 +2,20 @@
  * @param {import("..").Data} d
  */
 module.exports = (d) => {
-  const data = d.util.aoiFunc(d);
-  
-  const [objectName, format] = data.inside.splits;
-  if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
+    const data = d.util.aoiFunc(d);
 
-  const object = d.data.objects?.[objectName];
+    const [objectName, format] = data.inside.splits;
+    if (!d.data.objects) return d.aoiError.fnError(d, "custom", {}, "object");
 
-  if (!object) {
-    return d.aoiError.fnError(d, "custom", {}, "Object not found!");
-  }
+    const object = d.data.objects?.[objectName];
 
-  data.result = JSON.stringify(object, null, format === "true" ? 2 : 0);
+    if (!object) {
+        return d.aoiError.fnError(d, "custom", {}, "Object not found!");
+    }
 
-  return {
-    code: d.util.setCode(data),
-  };
+    data.result = JSON.stringify(object, null, format === "true" ? 2 : 0);
+
+    return {
+        code: d.util.setCode(data)
+    };
 };

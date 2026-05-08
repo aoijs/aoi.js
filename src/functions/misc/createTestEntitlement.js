@@ -10,12 +10,14 @@ module.exports = async (d) => {
 
     if (!["guild", "user"].includes(type)) return d.aoiError.fnError(d, "custom", { inside: data.inside }, "Invalid Type, must be either guild or user");
 
-    const entitlement = await d.client.application.entitlements.createTest({
-        sku: skuId,
-        [type]: userOrGuildId
-    }).catch(e => {
-        return d.aoiError.fnError(d, "custom", { inside: data.inside }, e.message);
-    })
+    const entitlement = await d.client.application.entitlements
+        .createTest({
+            sku: skuId,
+            [type]: userOrGuildId
+        })
+        .catch((e) => {
+            return d.aoiError.fnError(d, "custom", { inside: data.inside }, e.message);
+        });
 
     data.result = returnId === "true" ? entitlement?.id : null;
 

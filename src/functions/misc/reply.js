@@ -1,10 +1,10 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = d => {
+module.exports = (d) => {
     const data = d.util.aoiFunc(d);
 
-    const [messageID = d.message?.id, mentionUser = 'true'] = data.inside.splits;
+    const [messageID = d.message?.id, mentionUser = "true"] = data.inside.splits;
 
     d.allowedMentions.repliedUser = mentionUser === "true";
 
@@ -12,8 +12,8 @@ module.exports = d => {
         code: d.util.setCode(data),
         reply: {
             message: messageID,
-            user: mentionUser === 'true'
+            user: mentionUser === "true"
         },
         allowedMentions: d.allowedMentions
-    }
-}
+    };
+};

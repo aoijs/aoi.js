@@ -1,7 +1,7 @@
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -12,12 +12,12 @@ module.exports = async d => {
 
     name = name.addBrackets();
     avatar = avatar.trim() === "" ? undefined : avatar.addBrackets();
-    let result = await channel.createWebhook({name, avatar, reason}).catch(e => {
+    let result = await channel.createWebhook({ name, avatar, reason }).catch((e) => {
         d.aoiError.fnError(d, "custom", {}, "Failed To Create Webhook With Reason: " + e);
     });
     data.result = [result.id, result.token].join(separator);
 
     return {
         code: d.util.setCode(data)
-    }
-}
+    };
+};

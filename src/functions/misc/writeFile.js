@@ -11,17 +11,12 @@ module.exports = async (d) => {
 
     await fs
         .writeFile(file, text.addBrackets(), {
-            encoding: encode,
+            encoding: encode
         })
         .catch((e) => {
-            d.aoiError.fnError(
-                d,
-                "custom",
-                {},
-                "Failed To Write File With Reason: " + e,
-            );
+            d.aoiError.fnError(d, "custom", {}, "Failed To Write File With Reason: " + e);
         });
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

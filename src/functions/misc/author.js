@@ -20,11 +20,11 @@ module.exports = async (d) => {
     d.embeds[index].setAuthor({
         name,
         iconURL,
-        url,
+        url
     });
 
     return {
         code: d.util.setCode(data),
-        embeds: d.embeds,
+        embeds: d.embeds
     };
 };

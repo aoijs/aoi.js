@@ -1,22 +1,21 @@
 const units = {
     byte: 1,
     kiloByte: 1024,
-    megaByte: (1024 ** 2),
-    gigaByte: (1024 ** 3),
+    megaByte: 1024 ** 2,
+    gigaByte: 1024 ** 3,
 
     bit: 1 / 8,
-    kiloBit: (1024 / 8),
-    megaBit: (1024 ** 2) / 8,
-    gigaBit: (1024 ** 3) / 8
-
+    kiloBit: 1024 / 8,
+    megaBit: 1024 ** 2 / 8,
+    gigaBit: 1024 ** 3 / 8
 };
 [units.B, units.KB, units.MB, units.GB, units.b, units.kb, units.mb, units.gb] = Object.values(units);
 
-const {statSync} = require('fs');
+const { statSync } = require("fs");
 /**
  * @param {import("..").Data} d
  */
-module.exports = async d => {
+module.exports = async (d) => {
     const data = d.util.aoiFunc(d);
     if (data.err) return d.error(data.err);
 
@@ -29,5 +28,5 @@ module.exports = async d => {
 
     return {
         code: d.util.setCode(data)
-    }
-} 
+    };
+};

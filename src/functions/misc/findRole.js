@@ -9,11 +9,11 @@ module.exports = async (d) => {
     roleResolver = roleResolver.addBrackets();
 
     const guild = await d.util.getGuild(d, guildID);
-    if (!guild) return d.aoiError.fnError(d, "guild", {inside: data.inside});
+    if (!guild) return d.aoiError.fnError(d, "guild", { inside: data.inside });
 
     data.result = d.util.findRole(guild, roleResolver);
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };

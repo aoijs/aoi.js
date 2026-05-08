@@ -11,6 +11,6 @@ module.exports = async (d) => {
     data.result = !!user?.bot;
 
     return {
-        code: d.util.setCode(data),
+        code: d.util.setCode(data)
     };
 };
